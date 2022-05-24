@@ -63,7 +63,7 @@ bool check_equal(int a, int b, const char* fmt, ...)
 void test_init()
 {
     struct MipPacket packet;
-    MipPacket_init(&packet, buffer, sizeof(buffer));
+    MipPacket_fromBuffer(&packet, buffer, sizeof(buffer));
 
     check(packet.buffer == buffer && packet.length == sizeof(buffer)-EXTRA, "MipPacket_init is broken");
 }
