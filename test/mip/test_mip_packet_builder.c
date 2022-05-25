@@ -65,7 +65,7 @@ void test_init()
     struct MipPacket packet;
     MipPacket_fromBuffer(&packet, buffer, sizeof(buffer));
 
-    check(packet.buffer == buffer && packet.length == sizeof(buffer)-EXTRA, "MipPacket_init is broken");
+    check(packet.buffer == buffer && packet.bufferLength == sizeof(buffer)-EXTRA, "MipPacket_init is broken");
 }
 
 void test_create()
@@ -78,7 +78,7 @@ void test_create()
     {
         MipPacket_create(&packet, buffer, sizeof(buffer), descriptors[i]);
 
-        check(packet.buffer == buffer && packet.length == sizeof(buffer)-EXTRA, "MipPacket_create sets wrong buffer info");
+        check(packet.buffer == buffer && packet.bufferLength == sizeof(buffer)-EXTRA, "MipPacket_create sets wrong buffer info");
         check(packet.buffer[MIP_INDEX_DESCSET] == descriptors[i], "MipPacket_create sets wrong descriptor set (%02X != %02X)", packet.buffer[MIP_INDEX_DESCSET], descriptors[i]);
     }
 }

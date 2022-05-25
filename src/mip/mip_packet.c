@@ -39,8 +39,8 @@ void MipPacket_fromBuffer(struct MipPacket* packet, uint8_t* buffer, size_t leng
     if( length > MIP_PACKET_LENGTH_MAX )
         length = MIP_PACKET_LENGTH_MAX;
 
-    packet->buffer = buffer;
-    packet->length = length;
+    packet->buffer       = buffer;
+    packet->bufferLength = length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +98,8 @@ uint8_t MipPacket_payloadLength(const struct MipPacket* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the total length of the packet, in bytes.
 ///
+///@returns The length of the packet. Always at least MIP_PACKET_LENGTH_MIN.
+///
 PacketLength MipPacket_totalLength(const struct MipPacket* packet)
 {
     return MipPacket_payloadLength(packet) + MIP_PACKET_LENGTH_MIN;
@@ -132,22 +134,54 @@ uint16_t MipPacket_checksumValue(const struct MipPacket* packet)
     return ((uint16_t)(packet->buffer[index+0]) << 8) | (uint16_t)(packet->buffer[index+1]);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Computes the checksum of the MIP packet.
+///
+///@returns The computed checksum value.
+///
+uint16_t MipPacket_computeChecksum(const struct MipPacket* packet)
+{
+    uint8_t a = 0;
+    uint8_t b = 0;
+
+    // MipPacket_totalLength always returns at least MIP_PACKET_LENGTH_MIN so this
+    // subtraction is guaranteed to be safe.
+    const PacketLength length = MipPacket_totalLength(packet) - MIP_CHECKSUM_LENGTH;
+
+    for(PacketLength i=0; i<length; i++)
+    {
+        a += packet->buffer[i];
+        b += a;
+    }
+
+    return ((uint16_t)(a) << 8) | (uint16_t)(b);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns true if the packet buffer is large enough, not NULL, and has a valid
-///         descriptor set.
+///@brief Returns true if the packet buffer is not NULL and is at least the
+///       minimum size (MIP_PACKET_LENGTH_MIN).
+///
+/// If the packet is not 'sane', then none of the MipPacket_* functions may be
+/// used to access it (to do so is undefined behavior). This should never occur
+/// in normal circumstances.
 ///
 bool MipPacket_isSane(const struct MipPacket* packet)
 {
-    return packet->buffer && (MipPacket_bufferSize(packet) > MIP_PACKET_LENGTH_MIN) && (MipPacket_descriptorSet(packet) != 0x00);
+    return packet->buffer && (MipPacket_bufferSize(packet) >= MIP_PACKET_LENGTH_MIN);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns true if MipPacket_isSane() returns true and the checksum is valid.
+///@brief Returns true if the packet is valid.
+///
+/// A packet is valid if:
+/// * MipPacket_isSane() returns true,
+/// * The descriptor set is not 0x00, and
+/// * The checksum is valid.
 ///
 bool MipPacket_isValid(const struct MipPacket* packet)
 {
-    if( !MipPacket_isSane(packet) )
+    if( !MipPacket_isSane(packet) || (MipPacket_descriptorSet(packet) == 0x00) )
         return false;
 
     const uint16_t listedChecksum = MipPacket_checksumValue(packet);
@@ -164,7 +198,7 @@ bool MipPacket_isValid(const struct MipPacket* packet)
 ///
 PacketLength MipPacket_bufferSize(const struct MipPacket* packet)
 {
-    return packet->length;
+    return packet->bufferLength;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -183,28 +217,21 @@ RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet)
 //
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Computes the checksum of the MIP packet.
-///
-///@returns The computed checksum value.
-///
-uint16_t MipPacket_computeChecksum(const struct MipPacket* packet)
-{
-    uint8_t a = 0;
-    uint8_t b = 0;
-
-    const PacketLength length = MipPacket_totalLength(packet) - MIP_CHECKSUM_LENGTH;
-
-    for(PacketLength i=0; i<length; i++)
-    {
-        a += packet->buffer[i];
-        b += a;
-    }
-
-    return ((uint16_t)(a) << 8) | (uint16_t)(b);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Adds a pre-constructed MIP field to the packet.
+///
+///~~~
+///                                             +--------------------+
+///                                             |  Payload Bytes     |
+///                               Len  Desc     +--------------------+
+///                                |    |        | copy
+///  Packet Buffer                 V    V        V
+/// ---------------+------------+-   -+-    -+--                  -+-
+///  ...   Header  |   Field    | Len | Desc |  Payload            |
+/// ---------------+------------+-----+------+---------------------+----------
+///                             |                                  |
+///                     End of last field   --------------->  End of new field
+///~~~
+///
 ///
 ///@param packet
 ///@param fieldDescriptor
@@ -231,6 +258,17 @@ bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Allocate a MIP field within the packet and return the payload pointer.
+///
+///~~~
+///                               Len   Desc  .---> Payload ptr out
+///                                |     |    |
+///  Packet Buffer                 V     V    |
+/// ---------------+------------+-   -+-    -+---------------------+----------
+///  ...   Header  |   Field    | Len | Desc | (unwritten payload) |
+/// ---------------+------------+-----+------+---------------------+----------
+///                             |                                  |
+///                     End of last field   --------------->  End of new field
+///~~~
 ///
 ///@param packet
 ///@param fieldDescriptor
@@ -284,6 +322,23 @@ RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescr
 //     }
 // }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Prepares the packet for transmission by adding the checksum.
+///
+/// This does not increase the total packet length since the checksum is always
+/// implicitly included.
+///
+///~~~
+///                                                          Checksum
+///                                                            VVVV
+/// ---------------+------------+------------+-----//-----+--        --+----
+///  ...   Header  |   Field    |   Field    |     ...    |  (empty)   |
+/// ---------------+------------+------------+-----//-----+------------+----
+///                                                       |            |
+///                                            End of last field       |
+///                                                               Total Length
+///~~~
+///
 void MipPacket_finalize(struct MipPacket* packet)
 {
     uint16_t checksum = MipPacket_computeChecksum(packet);

@@ -30,8 +30,13 @@ typedef uint32_t Timestamp;
 typedef bool (*PacketCallback)(void* user, const struct MipPacket* packet, Timestamp timestamp);
 
 
-
+////////////////////////////////////////////////////////////////////////////////
 ///@brief MIP Parser state.
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
+///
 struct MipParsingState
 {
     Timestamp startTime;                         ///<@internal The timestamp when the first byte was observed by the parser.

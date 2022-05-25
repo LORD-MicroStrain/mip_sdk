@@ -52,7 +52,7 @@ int main(int argc, const char* argv[])
     unsigned int lastParsed = 0;
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        uint8_t descSet = rand() & 0xFF;  // Random descriptor set.
+        uint8_t descSet = (rand() % 255) + 1;  // Random descriptor set.
 
         uint8_t buffer[MIP_PACKET_LENGTH_MAX];
         struct MipPacket packet;
@@ -68,7 +68,7 @@ int main(int argc, const char* argv[])
 
             const uint8_t paylen = (rand() % (maxPayload+1)) >> (rand() % 8);
 
-            const uint8_t fieldDesc = rand() & 0xFF;  // Random field descriptor.
+            const uint8_t fieldDesc = (rand() % 255) + 1;  // Random field descriptor.
 
             uint8_t* payload;
             RemainingCount available = MipPacket_allocField(&packet, fieldDesc, paylen, &payload);
@@ -102,8 +102,8 @@ int main(int argc, const char* argv[])
 
 
         // Keep track of offsets and timestamps for debug purposes.
-        size_t offsets[MIP_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
-        Timestamp timestamps[MIP_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
+        size_t offsets[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
+        Timestamp timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
         unsigned int c = 0;
 
         const Timestamp startTime = rand();
