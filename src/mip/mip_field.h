@@ -48,7 +48,7 @@ struct MipField
 };
 
 
-void MipField_init(struct MipField* field, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t totalLength);
+void MipField_init(struct MipField* field, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup FieldAccess  Field Accessors - Functions for inspecting a MIP field.

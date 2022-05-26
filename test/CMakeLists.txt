@@ -5,18 +5,18 @@ set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}")
 # MIP
 #
 
-add_executable(TestMipPacketBuilding "${TEST_DIR}/mip/test_mip_packet_builder.c")
-add_executable(TestMipParsing        "${TEST_DIR}/mip/test_mip_parser.c")
-add_executable(TestMipRandom         "${TEST_DIR}/mip/test_mip_random.c")
-add_executable(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c")
+macro(add_mip_test name sources command)
 
-target_link_libraries(TestMipPacketBuilding mip)
-target_link_libraries(TestMipParsing        mip)
-target_link_libraries(TestMipRandom         mip)
-target_link_libraries(TestMipFields         mip)
+    add_executable(${name} ${sources})
 
+    target_link_libraries(${name} mip)
 
-add_test(NAME MipPacketBuilding COMMAND TestMipPacketBuilding)
-add_test(NAME MipParsing        COMMAND TestMipParsing "mip_data.bin" WORKING_DIRECTORY "${TEST_DIR}/data")
-add_test(NAME TestMipRandom     COMMAND TestMipRandom)
-add_test(NAME TestMipFields     COMMAND TestMipFields)
+    add_test(${name} ${command} ${ARGN})
+
+endmacro()
+
+add_mip_test(TestMipPacketBuilding "${TEST_DIR}/mip/test_mip_packet_builder.c" TestMipPacketBuilding)
+add_mip_test(TestMipParsing        "${TEST_DIR}/mip/test_mip_parser.c" TestMipParsing "${TEST_DIR}/data/mip_data.bin")
+add_mip_test(TestMipRandom         "${TEST_DIR}/mip/test_mip_random.c" TestMipRandom)
+add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFields)
+add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)

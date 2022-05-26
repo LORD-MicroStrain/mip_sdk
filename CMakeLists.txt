@@ -6,7 +6,7 @@ project(
     mscl_embedded
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
@@ -40,6 +40,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_parser.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/mip.hpp"
 )
 
 add_library(mip ${MIP_SOURCES} ${UTILS_SOURCES})
