@@ -10,11 +10,13 @@ project(
 )
 
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
+set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
 
 include_directories(
     "${SRC_DIR}"
 )
 
+add_subdirectory("${EXT_DIR}")
 
 #
 # Utils
