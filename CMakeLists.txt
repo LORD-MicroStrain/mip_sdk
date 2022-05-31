@@ -41,6 +41,10 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
     "${MIP_DIR}/mip.hpp"
+    "${MIP_DIR}/mip_cmdqueue.c"
+    "${MIP_DIR}/mip_cmdqueue.h"
+    "${MIP_DIR}/mip_device.c"
+    "${MIP_DIR}/mip_device.h"
 )
 
 add_library(mip ${MIP_SOURCES} ${UTILS_SOURCES})
