@@ -128,7 +128,8 @@ RemainingCount MipParser_parse(struct MipParsingState* parser, const uint8_t* in
             {
                 // Pull more data from the input buffer if possible.
                 ByteRing_copyFromAndUpdate(&parser->ring, &inputBuffer, &inputCount);
-                goto done;
+
+                return -inputCount;
             }
         }
 
@@ -138,7 +139,6 @@ RemainingCount MipParser_parse(struct MipParsingState* parser, const uint8_t* in
 
     } while( inputCount );
 
-done:
     return -inputCount;
 }
 
@@ -175,10 +175,10 @@ bool MipParser_parseOnePacketFromRing(struct MipParsingState* parser, struct Mip
         else if( parser->expectedLength == MIP_PACKET_LENGTH_MIN )
         {
             // Check the sync bytes and drop a single byte if not sync'd.
-            if( ByteRing_at(&parser->ring, MIP_INDEX_SYNC1) != MIP_SYNC1 ||
-                ByteRing_at(&parser->ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
+            if( ByteRing_at(&parser->ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
             {
                 ByteRing_pop(&parser->ring, 1);
+                parser->expectedLength = MIPPARSER_RESET_LENGTH;
             }
             else
             {

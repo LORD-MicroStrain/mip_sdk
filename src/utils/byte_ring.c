@@ -27,7 +27,7 @@ size_t ByteRing_capacity(const struct ByteRingState* state)
 
 size_t ByteRing_count(const struct ByteRingState* state)
 {
-    assert(state->head >= state->tail);
+    assert(state->head - state->tail <= state->size);  // Buffer hasn't been overrun
 
     return state->head - state->tail;
 }
@@ -44,7 +44,7 @@ size_t ByteRing_freeSpace(const struct ByteRingState* state)
 
 uint8_t ByteRing_at(const struct ByteRingState* state, size_t index)
 {
-    assert(state->head >= (state->tail+index));
+    assert(index < (state->head - state->tail));  // Index must be in bounds (less than count)
 
     return state->buffer[ (state->tail + index) % state->size ];
 }
