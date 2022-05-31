@@ -4,23 +4,19 @@
 #include "mip_offsets.h"
 
 #include "utils/byte_ring.h"
+#include "../types.h"
+
+#ifdef __cplusplus
+namespace mscl{
+namespace C {
+extern "C" {
+#endif
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup MipParser MipParser - Functions for parsing MIP packets
 ///@{
 ///
-
-///@brief Type used for packet timestamps and timeouts.
-///
-/// Timestamps must be monotonic except for overflow at the maximum value back to 0.
-/// The units can be anything, but typically are milliseconds. Choose a long enough
-/// unit so that consecutive calls to the parser will not exceed half of the maximum
-/// value for this type. For milliseconds, the time to overflow is approximately 50
-/// days, so the parser should be invoked at least every 25 days. Failure to observe
-/// this requirement may result in false timeouts or delays in getting parsed packets.
-///
-typedef uint32_t Timestamp;
 
 
 ///@brief Callback function which receives parsed MIP packets.
@@ -39,13 +35,13 @@ typedef bool (*PacketCallback)(void* user, const struct MipPacket* packet, Times
 ///
 struct MipParsingState
 {
-    Timestamp startTime;                         ///<@internal The timestamp when the first byte was observed by the parser.
-    Timestamp timeout;                           ///<@internal Duration to wait for the rest of the data in a packet.
-    uint8_t resultBuffer[MIP_PACKET_LENGTH_MAX]; ///<@internal Buffer used to output MIP packets to the callback.
-    PacketLength expectedLength;                 ///<@internal Expected length of the packet currently being parsed. Keeps track of parser state.
-    struct ByteRingState ring;                   ///<@internal Ring buffer which holds data being parsed. User-specified backing buffer and size.
-    PacketCallback callback;                     ///<@internal Callback called when a valid packet is parsed.
-    void* callbackObject;                        ///<@internal User-specified pointer passed to the callback function.
+    Timestamp startTime;                         ///<@private The timestamp when the first byte was observed by the parser.
+    Timestamp timeout;                           ///<@private Duration to wait for the rest of the data in a packet.
+    uint8_t resultBuffer[MIP_PACKET_LENGTH_MAX]; ///<@private Buffer used to output MIP packets to the callback.
+    PacketLength expectedLength;                 ///<@private Expected length of the packet currently being parsed. Keeps track of parser state.
+    struct ByteRingState ring;                   ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
+    PacketCallback callback;                     ///<@private Callback called when a valid packet is parsed.
+    void* callbackObject;                        ///<@private User-specified pointer passed to the callback function.
 };
 
 
@@ -69,3 +65,9 @@ void MipParser_setTimeout(struct MipParsingState* parser, Timestamp timeout);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // namespace mscl
+} // namespace C
+} // extern "C"
+#endif

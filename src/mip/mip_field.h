@@ -3,6 +3,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+namespace mscl{
+namespace C {
+extern "C" {
+#endif
+
+
 struct MipPacket;
 
 
@@ -40,11 +47,11 @@ struct MipPacket;
 ///
 struct MipField
 {
-    const uint8_t* payload;   ///<@internal The field payload, excluding the header.
-    uint8_t payloadLength;    ///<@internal The length of the payload, excluding the header.
-    uint8_t fieldDescriptor;  ///<@internal MIP field descriptor. Field not valid if set to 0x00.
-    uint8_t descriptorSet;    ///<@internal MIP descriptor set (from the packet)
-    uint8_t remainingLength;  ///<@internal Remaining space after this field.
+    const uint8_t* payload;   ///<@private The field payload, excluding the header.
+    uint8_t payloadLength;    ///<@private The length of the payload, excluding the header.
+    uint8_t fieldDescriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
+    uint8_t descriptorSet;    ///<@private MIP descriptor set (from the packet)
+    uint8_t remainingLength;  ///<@private Remaining space after this field.
 };
 
 
@@ -69,37 +76,15 @@ bool MipField_isValid(const struct MipField* field);
 ///
 /// Example:
 ///~~~{.c}
-/// void handlScaledAccelData(const uint8_t* ptr, uint8_t length);
-///
-/// // Assume this is called from the MIP parser for packets with the Sensor Data descriptor set.
-/// void handleSensorDataPacket(const struct MipPacket* packet)
+/// // Iterate over fields, starting with the first in the packet.
+/// // Continue as long as a valid field is found.
+/// for(struct MipField field = MipField_fromPacket(packet); MipField_isValid(&field); MipField_next(&field))
 /// {
-///
-///     // Iterate over fields, starting with the first in the packet.
-///     // Continue as long as a valid field is found.
-///     for(struct MipField field = MipField_fromPacket(packet); MipField_isValid(&field); MipField_next(&field))
+///     // Check the field descriptor for what kind of data it holds.
+///     switch( MipField_fieldDesriptor(&field) )
 ///     {
-///
-///         // Check the field descriptor for what kind of data it holds.
-///         switch( MipField_fieldDesriptor(&field) )
-///         {
-///         case MIP_DATA_DESC_SENSOR_SCALED_ACCEL:
-///
-///             // This field holds scaled acceleration data, so call the function to deal with it.
-///             handleScaledAccelData( MipField_payload(&field), MipField_payloadLength(&field) );
-///
-///             break;
-///
-///         // ...
-///
-///         default:
-///             fprintf(stderr, "Unexpected field with descriptor %02X,%02X and payload length %d!",
-///                 MipField_descriptorSet(&field),
-///                 MipField_fieldDescriptor(&field),
-///                 MipField_payloadLength(&field)
-///             );
-///             break;
-///         }
+///     case MIP_DATA_DESC_SENSOR_SCALED_ACCEL:
+///         break;
 ///     }
 /// }
 ///~~~
@@ -118,3 +103,9 @@ bool MipField_next(struct MipField* field);
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 ///
+
+#ifdef __cplusplus
+} // namespace mscl
+} // namespace C
+} // extern "C"
+#endif

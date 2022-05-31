@@ -1,10 +1,16 @@
 #pragma once
 
-#include "types.h"
+#include "../types.h"
+
+#ifdef __cplusplus
+namespace mscl{
+namespace C {
+extern "C" {
+#endif
 
 
 
-///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup MipPacket MipPacket - Functions for handling MIP packets.
 ///
 /// A MIP Packet is represented by the MipPacket struct.
@@ -31,8 +37,8 @@ typedef uint_least16_t PacketLength;  ///< Type used for the length of a MIP pac
 ///
 struct MipPacket
 {
-    uint8_t*       buffer;        ///<@internal Pointer to the packet data.
-    uint_least16_t bufferLength;  ///<@internal Length of the buffer (NOT the packet length!).
+    uint8_t*       buffer;        ///<@private Pointer to the packet data.
+    uint_least16_t bufferLength;  ///<@private Length of the buffer (NOT the packet length!).
 };
 
 
@@ -86,3 +92,9 @@ RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet);
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // namespace mscl
+} // namespace C
+} // extern "C"
+#endif
