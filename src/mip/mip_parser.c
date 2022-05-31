@@ -94,6 +94,13 @@ void MipParser_reset(struct MipParsingState* parser)
 ///      use a large internal buffer (see MipParser_init) to help average out
 ///      the packet processing load.
 ///
+///@note The timestamp of parsed packets is based on the time the packet was
+///      parsed. When maxPackets==0, this is the same as the input timestamp.
+///      When maxPackets!=0, packets received during an earlier parse call
+///      may be timestamped with the time from a later parse call. Therefore,
+///      if packet timestamping is critical to your application, avoid using
+///      maxPackets > 0.
+///
 ///@note The parser will do its best to ignore non-MIP data. However, it is
 ///      possible for some binary data to appear to be a MIP packet if it
 ///      conntains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
@@ -102,7 +109,7 @@ void MipParser_reset(struct MipParsingState* parser)
 RemainingCount MipParser_parse(struct MipParsingState* parser, const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets)
 {
     // Reset the state if the timeout time has elapsed.
-    if( (timestamp - parser->startTime) > parser->timeout )
+    if( parser->expectedLength != MIPPARSER_RESET_LENGTH && (timestamp - parser->startTime) > parser->timeout )
     {
         if( ByteRing_count(&parser->ring) > 0 )
             ByteRing_pop(&parser->ring, 1);
@@ -169,10 +176,10 @@ bool MipParser_parseOnePacketFromRing(struct MipParsingState* parser, struct Mip
             {
                 // Synchronized - set the start time and expect more data.
                 parser->startTime = timestamp;
-                parser->expectedLength = MIP_PACKET_LENGTH_MIN;
+                parser->expectedLength = MIP_HEADER_LENGTH;
             }
         }
-        else if( parser->expectedLength == MIP_PACKET_LENGTH_MIN )
+        else if( parser->expectedLength == MIP_HEADER_LENGTH )
         {
             // Check the sync bytes and drop a single byte if not sync'd.
             if( ByteRing_at(&parser->ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
@@ -182,9 +189,8 @@ bool MipParser_parseOnePacketFromRing(struct MipParsingState* parser, struct Mip
             }
             else
             {
-                // Synchronized - set the start time and read the payload length.
-                // parser->startTime = timestamp;
-                parser->expectedLength += ByteRing_at(&parser->ring, MIP_INDEX_LENGTH);
+                // Read the payload length and add it and the checksum size to the complete packet size.
+                parser->expectedLength += ByteRing_at(&parser->ring, MIP_INDEX_LENGTH) + MIP_CHECKSUM_LENGTH;
             }
         }
         else // Just waiting on enough data
@@ -217,6 +223,7 @@ bool MipParser_parseOnePacketFromRing(struct MipParsingState* parser, struct Mip
     return false;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the packet timeout of the parser.
 ///
@@ -226,6 +233,7 @@ Timestamp MipParser_timeout(const struct MipParsingState* parser)
     return parser->timeout;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Changes the timeout of the MIP parser.
 ///
@@ -233,4 +241,27 @@ Timestamp MipParser_timeout(const struct MipParsingState* parser)
 void MipParser_setTimeout(struct MipParsingState* parser, Timestamp timeout)
 {
     parser->timeout = timeout;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the timestamp of the last parsed packet.
+///
+/// This is only valid after a valid packet has been parsed.
+///
+/// This function is provided to allow additional calls to MipParser_parse()
+/// with no input data (buffer=NULL and length=0) when maxPackets > 0. The
+/// additional calls can use the same timestamp because no new data will be
+/// processed.
+///
+/// There are two possible situations after the last call to parse:
+/// 1. Either maxPackets was reached, meaning at least one packet was parsed, and
+///    thus the timestamp is valid, or
+/// 2. More data is required, in which case this time may not be valid, but it
+///    won't matter because an additional call to parse won't produce a new
+///    packet to be timestamped.
+///
+Timestamp MipParser_lastPacketTimestamp(const struct MipParsingState* parser)
+{
+    return parser->startTime;
 }
