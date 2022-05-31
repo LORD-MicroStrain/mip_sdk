@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 
 
 project(
-    mscl_embedded
+    MSCL-Embedded
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
