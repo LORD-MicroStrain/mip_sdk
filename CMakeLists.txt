@@ -30,7 +30,7 @@ set(UTILS_SOURCES
 )
 
 #
-# MIP
+# MIP Control
 #
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -42,6 +42,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_parser.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
@@ -49,7 +50,32 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_device.h"
 )
 
-add_library(mip ${MIP_SOURCES} ${UTILS_SOURCES})
+set(MIPDEF_SOURCES
+    "${MIP_DIR}/definitions/commands_3dm.c"
+    "${MIP_DIR}/definitions/commands_3dm.h"
+    "${MIP_DIR}/definitions/commands_base.c"
+    "${MIP_DIR}/definitions/commands_base.h"
+    "${MIP_DIR}/definitions/commands_filter.c"
+    "${MIP_DIR}/definitions/commands_filter.h"
+    "${MIP_DIR}/definitions/commands_gnss.c"
+    "${MIP_DIR}/definitions/commands_gnss.h"
+    "${MIP_DIR}/definitions/commands_rtk.c"
+    "${MIP_DIR}/definitions/commands_rtk.h"
+    "${MIP_DIR}/definitions/commands_system.c"
+    "${MIP_DIR}/definitions/commands_system.h"
+    "${MIP_DIR}/definitions/data_filter.c"
+    "${MIP_DIR}/definitions/data_filter.h"
+    "${MIP_DIR}/definitions/data_gnss.c"
+    "${MIP_DIR}/definitions/data_gnss.h"
+    "${MIP_DIR}/definitions/data_sensor.c"
+    "${MIP_DIR}/definitions/data_sensor.h"
+    "${MIP_DIR}/definitions/data_shared.c"
+    "${MIP_DIR}/definitions/data_shared.h"
+    "${MIP_DIR}/definitions/data_system.c"
+    "${MIP_DIR}/definitions/data_system.h"
+)
+
+add_library(mip ${MIPDEF_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
 
 #

@@ -55,6 +55,7 @@ void pack_double(uint8_t* buffer, double value)
 }
 
 void pack_bool(uint8_t* buffer, bool value) { return pack_u8(buffer, value); }
+void pack_char(uint8_t* buffer, char value) { return pack_u8(buffer, value); }
 
 void pack_s8 (uint8_t* buffer, int8_t  value) { return pack_u8 (buffer, value); }
 void pack_s16(uint8_t* buffer, int16_t value) { return pack_u16(buffer, value); }
@@ -62,9 +63,27 @@ void pack_s32(uint8_t* buffer, int32_t value) { return pack_u32(buffer, value); 
 void pack_s64(uint8_t* buffer, int64_t value) { return pack_u64(buffer, value); }
 
 
-#define APPEND_MACRO(name, type) void append_##name(uint8_t** buffer, type value) { pack_##name(*buffer, value); *buffer += sizeof(value); }
+#define APPEND_MACRO(name, type) \
+void append_##name(uint8_t** buffer, RemainingCount* space, type value) { \
+    *space -= sizeof(value); \
+    if( *space >= 0 ) \
+    { \
+        pack_##name(*buffer, value); \
+        *buffer += sizeof(value); \
+    } \
+}
+
+#define INSERT_MACRO(name, type) \
+size_t insert_##name(uint8_t* buffer, size_t space, size_t offset, type value) \
+{ \
+    const size_t postOffset = offset + sizeof(type); \
+    if( space >= postOffset ) \
+        pack_##name(&buffer[offset], value); \
+    return postOffset; \
+}
 
 APPEND_MACRO(bool,   bool    )
+APPEND_MACRO(char,   char    )
 APPEND_MACRO(u8,     uint8_t )
 APPEND_MACRO(u16,    uint16_t)
 APPEND_MACRO(u32,    uint32_t)
@@ -78,6 +97,7 @@ APPEND_MACRO(double, double  )
 
 
 bool unpack_bool(const uint8_t* buffer) { return unpack_u8(buffer) > 0; }
+char unpack_char(const uint8_t* buffer) { return unpack_u8(buffer); }
 
 uint8_t unpack_u8(const uint8_t* buffer)
 {
@@ -142,9 +162,17 @@ int32_t unpack_s32(const uint8_t* buffer) { return unpack_u32(buffer); }
 int64_t unpack_s64(const uint8_t* buffer) { return unpack_u64(buffer); }
 
 
-#define EXTRACT_MACRO(name, type) type extract_##name(const uint8_t** buffer) { type value = unpack_##name(*buffer); buffer += sizeof(value); return value; }
+#define EXTRACT_MACRO(name, type) \
+size_t extract_##name(const uint8_t* buffer, size_t bufferSize, size_t offset, type* value) \
+{ \
+    size_t postOffset = offset + sizeof(type); \
+    if( postOffset <= bufferSize ) \
+        *value = unpack_##name(buffer); \
+    return postOffset; \
+}
 
 EXTRACT_MACRO(bool,   bool    )
+EXTRACT_MACRO(char,   char    )
 EXTRACT_MACRO(u8,     uint8_t )
 EXTRACT_MACRO(u16,    uint16_t)
 EXTRACT_MACRO(u32,    uint32_t)
