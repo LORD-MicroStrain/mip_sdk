@@ -8,7 +8,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Constructs a MipField given the parameters.
+///@brief Constructs a %MipField given the parameters.
 ///
 ///@param field
 ///@param descriptorSet
@@ -22,7 +22,7 @@
 ///@param payloadLength
 ///       The length of the payload. Cannot exceed MIP_FIELD_PAYLOAD_LENGTH_MAX.
 ///
-///@returns A MipField initialized with the specified values.
+///@returns A %MipField initialized with the specified values.
 ///
 void MipField_init(struct MipField* field, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength)
 {
@@ -82,11 +82,11 @@ bool MipField_isValid(const struct MipField* field)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Constructs a MipField from a pointer to the heaader.
+///@brief Constructs a %MipField from a pointer to the heaader.
 ///
 /// Generally you should use MipField_fromPacket() or MipField_create() instead.
 ///
-///@param headerPtr
+///@param header
 ///       A pointer to the header and payload. Usually inside of a MIP packet.
 ///@param totalLength
 ///       The total length of either the field or packet payload, starting from
@@ -99,11 +99,11 @@ bool MipField_isValid(const struct MipField* field)
 ///
 ///@returns a MipField struct with the field data.
 ///
-struct MipField MipField_fromHeaderPtr(const uint8_t* headerPtr, uint8_t totalLength, uint8_t descriptorSet)
+struct MipField MipField_fromHeaderPtr(const uint8_t* header, uint8_t totalLength, uint8_t descriptorSet)
 {
     struct MipField field;
 
-    field.payload         = headerPtr + MIP_INDEX_FIELD_PAYLOAD;
+    field.payload         = header + MIP_INDEX_FIELD_PAYLOAD;
     field.descriptorSet   = descriptorSet;
 
     // Default invalid values.
@@ -114,7 +114,7 @@ struct MipField MipField_fromHeaderPtr(const uint8_t* headerPtr, uint8_t totalLe
     if( totalLength >= MIP_FIELD_HEADER_LENGTH )
     {
         // Field length is external input so it must be sanitized.
-        uint8_t fieldLength = headerPtr[MIP_INDEX_FIELD_LEN];
+        uint8_t fieldLength = header[MIP_INDEX_FIELD_LEN];
 
         // Ensure field length does not exceed totalLength.
         if( fieldLength > totalLength )
@@ -123,7 +123,7 @@ struct MipField MipField_fromHeaderPtr(const uint8_t* headerPtr, uint8_t totalLe
         // Check for invalid field length.
         if( fieldLength >= MIP_FIELD_HEADER_LENGTH )
         {
-            field.fieldDescriptor = headerPtr[MIP_INDEX_FIELD_DESC];
+            field.fieldDescriptor = header[MIP_INDEX_FIELD_DESC];
             field.payloadLength   = fieldLength - MIP_FIELD_HEADER_LENGTH;
             field.remainingLength = totalLength - fieldLength;
         }
@@ -170,10 +170,10 @@ struct MipField MipField_nextAfter(const struct MipField* field)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Updates the MipField to refer to the next field in a packet.
+///@brief Updates the %MipField to refer to the next field in a packet.
 ///
 ///@param field
-///       This MipField struct will be updated to the next field. Can be an
+///       This %MipField struct will be updated to the next field. Can be an
 ///       invalid field, in which case the result will be invalid as well.
 ///
 ///@returns true if the field exists and is valid.
