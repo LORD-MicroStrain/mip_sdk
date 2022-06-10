@@ -6,6 +6,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
@@ -487,3 +492,8 @@ size_t extract_MipData_Sensor_OdometerData(const uint8_t* buffer, size_t bufferS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

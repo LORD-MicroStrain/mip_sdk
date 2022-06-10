@@ -3,6 +3,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 #define MIP_INVALID_DESCRIPTOR_SET   0x00
 #define MIP_INVALID_FIELD_DESCRIPTOR 0x00
@@ -25,3 +30,8 @@ struct MipDescriptorRate
 };
 size_t insert_MipDescriptorRate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipDescriptorRate* self);
 size_t extract_MipDescriptorRate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipDescriptorRate* self);
+
+#ifdef __cplusplus
+} // namespace mscl
+} // extern "C"
+#endif // __cplusplus

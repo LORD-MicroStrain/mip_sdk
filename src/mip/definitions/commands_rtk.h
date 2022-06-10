@@ -6,6 +6,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
 ///@{
@@ -377,3 +382,8 @@ size_t extract_MipCmd_Rtk_ModemHardReset_Response(const uint8_t* buffer, size_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

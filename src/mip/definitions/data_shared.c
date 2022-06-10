@@ -6,6 +6,11 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -65,6 +70,19 @@ size_t extract_MipData_Shared_DeltaTicks(const uint8_t* buffer, size_t bufferSiz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Shared_GpsTimestamp_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Shared_GpsTimestamp_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Shared_GpsTimestamp_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Shared_GpsTimestamp_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Shared_GpsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Shared_GpsTimestamp* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->tow);
@@ -133,6 +151,19 @@ size_t extract_MipData_Shared_ReferenceTimeDelta(const uint8_t* buffer, size_t b
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Shared_ExternalTimestamp_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Shared_ExternalTimestamp_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Shared_ExternalTimestamp_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Shared_ExternalTimestamp_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Shared_ExternalTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Shared_ExternalTimestamp* self)
 {
     offset = insert_u64(buffer, bufferSize, offset, self->nanoseconds);
@@ -151,6 +182,19 @@ size_t extract_MipData_Shared_ExternalTimestamp(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Shared_ExternalTimeDelta_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Shared_ExternalTimeDelta_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Shared_ExternalTimeDelta_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Shared_ExternalTimeDelta_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Shared_ExternalTimeDelta(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Shared_ExternalTimeDelta* self)
 {
     offset = insert_u64(buffer, bufferSize, offset, self->dt_nanos);
@@ -168,3 +212,8 @@ size_t extract_MipData_Shared_ExternalTimeDelta(const uint8_t* buffer, size_t bu
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

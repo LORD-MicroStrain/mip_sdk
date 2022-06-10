@@ -5,6 +5,11 @@
 
 #include "../types.h"
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup Serialization Functions for reading and writing to byte buffers.
@@ -120,3 +125,8 @@ size_t extract_double(const uint8_t* buffer, size_t bufferSize, size_t offset, d
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // namespace mscl
+} // extern "C"
+#endif // __cplusplus
