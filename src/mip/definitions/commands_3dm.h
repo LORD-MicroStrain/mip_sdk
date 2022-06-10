@@ -6,6 +6,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
 ///@{
@@ -1611,3 +1616,8 @@ size_t extract_MipCmd_3Dm_CalibratedSensorRanges_Response(const uint8_t* buffer,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

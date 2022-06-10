@@ -6,10 +6,39 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_MipPpsSource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipPpsSource self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipPpsSource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipPpsSource* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipSensorRangeType(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipSensorRangeType self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipSensorRangeType(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipSensorRangeType* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -512,6 +541,18 @@ size_t extract_MipCmd_3Dm_UartBaudrate_Response(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_FactoryStreaming_Action(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_FactoryStreaming_Action self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_FactoryStreaming_Action(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_FactoryStreaming_Action* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_3Dm_FactoryStreaming(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_FactoryStreaming* self)
 {
     offset = insert_MipCmd_3Dm_FactoryStreaming_Action(buffer, bufferSize, offset, self->action);
@@ -567,6 +608,19 @@ size_t extract_MipCmd_3Dm_DatastreamControl_Response(const uint8_t* buffer, size
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_GnssSbasSettings_Sbasoptions(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_GnssSbasSettings_Sbasoptions self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_GnssSbasSettings_Sbasoptions(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_GnssSbasSettings_Sbasoptions* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_GnssSbasSettings(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_GnssSbasSettings* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -747,6 +801,43 @@ size_t extract_MipCmd_3Dm_PpsSource_Response(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_GpioConfig_Feature(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_GpioConfig_Feature self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_GpioConfig_Feature(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_GpioConfig_Feature* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_GpioConfig_Behavior(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_GpioConfig_Behavior self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_GpioConfig_Behavior(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_GpioConfig_Behavior* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_GpioConfig_Pinmode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_GpioConfig_Pinmode self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_GpioConfig_Pinmode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_GpioConfig_Pinmode* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_GpioConfig(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_GpioConfig* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -829,6 +920,18 @@ size_t extract_MipCmd_3Dm_GpioState_Response(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_Odometer_Mode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_Odometer_Mode self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_Odometer_Mode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_Odometer_Mode* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_3Dm_Odometer(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_Odometer* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -870,6 +973,18 @@ size_t extract_MipCmd_3Dm_Odometer_Response(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_EventSupport_Query(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventSupport_Query self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventSupport_Query(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventSupport_Query* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_3Dm_EventSupport(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventSupport* self)
 {
     offset = insert_MipCmd_3Dm_EventSupport_Query(buffer, bufferSize, offset, self->query);
@@ -880,6 +995,23 @@ size_t insert_MipCmd_3Dm_EventSupport(uint8_t* buffer, size_t bufferSize, size_t
 size_t extract_MipCmd_3Dm_EventSupport(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventSupport* self)
 {
     offset = extract_MipCmd_3Dm_EventSupport_Query(buffer, bufferSize, offset, &self->query);
+    
+    return offset;
+}
+
+
+size_t insert_MipCmd_3Dm_EventSupport_Info(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventSupport_Info* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->type);
+    offset = insert_u8(buffer, bufferSize, offset, self->count);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventSupport_Info(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventSupport_Info* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->type);
+    offset = extract_u8(buffer, bufferSize, offset, &self->count);
     
     return offset;
 }
@@ -913,6 +1045,18 @@ size_t extract_MipCmd_3Dm_EventSupport_Response(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_EventControl_Mode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventControl_Mode self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventControl_Mode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventControl_Mode* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_3Dm_EventControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventControl* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -973,6 +1117,36 @@ size_t extract_MipCmd_3Dm_EventTriggerStatus(const uint8_t* buffer, size_t buffe
 }
 
 
+size_t insert_MipCmd_3Dm_EventTriggerStatus_Status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventTriggerStatus_Status self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventTriggerStatus_Status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventTriggerStatus_Status* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipCmd_3Dm_EventTriggerStatus_Entry(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTriggerStatus_Entry* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->type);
+    offset = insert_MipCmd_3Dm_EventTriggerStatus_Status(buffer, bufferSize, offset, self->status);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventTriggerStatus_Entry(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventTriggerStatus_Entry* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->type);
+    offset = extract_MipCmd_3Dm_EventTriggerStatus_Status(buffer, bufferSize, offset, &self->status);
+    
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_EventTriggerStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTriggerStatus_Response* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->count);
@@ -1020,6 +1194,23 @@ size_t extract_MipCmd_3Dm_EventActionStatus(const uint8_t* buffer, size_t buffer
 }
 
 
+size_t insert_MipCmd_3Dm_EventActionStatus_Entry(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventActionStatus_Entry* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->action_type);
+    offset = insert_u8(buffer, bufferSize, offset, self->trigger_id);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventActionStatus_Entry(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventActionStatus_Entry* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->action_type);
+    offset = extract_u8(buffer, bufferSize, offset, &self->trigger_id);
+    
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_EventActionStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventActionStatus_Response* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->count);
@@ -1044,6 +1235,123 @@ size_t extract_MipCmd_3Dm_EventActionStatus_Response(const uint8_t* buffer, size
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_EventTrigger_Type(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventTrigger_Type self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventTrigger_Type(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventTrigger_Type* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_EventTrigger_Gpioparams_Mode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventTrigger_Gpioparams_Mode self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventTrigger_Gpioparams_Mode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventTrigger_Gpioparams_Mode* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_EventTrigger_Gpioparams(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTrigger_Gpioparams* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->pin);
+    offset = insert_MipCmd_3Dm_EventTrigger_Gpioparams_Mode(buffer, bufferSize, offset, self->mode);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventTrigger_Gpioparams(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventTrigger_Gpioparams* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->pin);
+    offset = extract_MipCmd_3Dm_EventTrigger_Gpioparams_Mode(buffer, bufferSize, offset, &self->mode);
+    
+    return offset;
+}
+
+
+size_t insert_MipCmd_3Dm_EventTrigger_Thresholdparams_Type(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventTrigger_Thresholdparams_Type self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventTrigger_Thresholdparams_Type(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventTrigger_Thresholdparams_Type* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_EventTrigger_Thresholdparams(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTrigger_Thresholdparams* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->desc_set);
+    offset = insert_u8(buffer, bufferSize, offset, self->field_desc);
+    offset = insert_u8(buffer, bufferSize, offset, self->param_id);
+    offset = insert_MipCmd_3Dm_EventTrigger_Thresholdparams_Type(buffer, bufferSize, offset, self->type);
+    
+    if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_WINDOW )
+        offset = insert_double(buffer, bufferSize, offset, self->low_thres);
+    else if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_INTERVAL )
+        offset = insert_double(buffer, bufferSize, offset, self->int_thres);
+    
+    if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_WINDOW )
+        offset = insert_double(buffer, bufferSize, offset, self->high_thres);
+    else if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_INTERVAL )
+        offset = insert_double(buffer, bufferSize, offset, self->interval);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventTrigger_Thresholdparams(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventTrigger_Thresholdparams* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->desc_set);
+    offset = extract_u8(buffer, bufferSize, offset, &self->field_desc);
+    offset = extract_u8(buffer, bufferSize, offset, &self->param_id);
+    offset = extract_MipCmd_3Dm_EventTrigger_Thresholdparams_Type(buffer, bufferSize, offset, &self->type);
+    
+    if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_WINDOW )
+        offset = extract_double(buffer, bufferSize, offset, &self->low_thres);
+    else if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_INTERVAL )
+        offset = extract_double(buffer, bufferSize, offset, &self->int_thres);
+    
+    if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_WINDOW )
+        offset = extract_double(buffer, bufferSize, offset, &self->high_thres);
+    else if( self->type == MIPCMD_3DM_EVENTTRIGGER_THRESHOLDPARAMS_TYPE_INTERVAL )
+        offset = extract_double(buffer, bufferSize, offset, &self->interval);
+    
+    return offset;
+}
+
+
+size_t insert_MipCmd_3Dm_EventTrigger_Combinationparams(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTrigger_Combinationparams* self)
+{
+    offset = insert_u16(buffer, bufferSize, offset, self->logic_table);
+    
+    assert(4 <= 4);
+    for(unsigned int i=0; i < 4; i++)
+        offset = insert_u8(buffer, bufferSize, offset, self->input_triggers[i]);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventTrigger_Combinationparams(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventTrigger_Combinationparams* self)
+{
+    offset = extract_u16(buffer, bufferSize, offset, &self->logic_table);
+    
+    assert(4 <= 4);
+    for(unsigned int i=0; i < 4; i++)
+        offset = extract_u8(buffer, bufferSize, offset, &self->input_triggers[i]);
+    
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_EventTrigger(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventTrigger* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -1109,6 +1417,74 @@ size_t extract_MipCmd_3Dm_EventTrigger_Response(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_3Dm_EventAction_Type(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventAction_Type self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventAction_Type(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventAction_Type* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_EventAction_Gpioparams_Mode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_3Dm_EventAction_Gpioparams_Mode self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_3Dm_EventAction_Gpioparams_Mode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_3Dm_EventAction_Gpioparams_Mode* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_3Dm_EventAction_Gpioparams(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventAction_Gpioparams* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->pin);
+    offset = insert_MipCmd_3Dm_EventAction_Gpioparams_Mode(buffer, bufferSize, offset, self->mode);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventAction_Gpioparams(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventAction_Gpioparams* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->pin);
+    offset = extract_MipCmd_3Dm_EventAction_Gpioparams_Mode(buffer, bufferSize, offset, &self->mode);
+    
+    return offset;
+}
+
+
+size_t insert_MipCmd_3Dm_EventAction_Messageparams(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventAction_Messageparams* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->desc_set);
+    offset = insert_u16(buffer, bufferSize, offset, self->decimation);
+    offset = insert_u8(buffer, bufferSize, offset, self->num_fields);
+    
+    assert(self->num_fields <= 20);
+    for(unsigned int i=0; i < self->num_fields; i++)
+        offset = insert_u8(buffer, bufferSize, offset, self->descriptors[i]);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_EventAction_Messageparams(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_EventAction_Messageparams* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->desc_set);
+    offset = extract_u16(buffer, bufferSize, offset, &self->decimation);
+    offset = extract_u8(buffer, bufferSize, offset, &self->num_fields);
+    
+    assert(self->num_fields <= 20);
+    for(unsigned int i=0; i < self->num_fields; i++)
+        offset = extract_u8(buffer, bufferSize, offset, &self->descriptors[i]);
+    
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_EventAction(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_EventAction* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -1615,6 +1991,23 @@ size_t extract_MipCmd_3Dm_CalibratedSensorRanges(const uint8_t* buffer, size_t b
 }
 
 
+size_t insert_MipCmd_3Dm_CalibratedSensorRanges_Entry(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_CalibratedSensorRanges_Entry* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->setting);
+    offset = insert_float(buffer, bufferSize, offset, self->range);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_3Dm_CalibratedSensorRanges_Entry(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3Dm_CalibratedSensorRanges_Entry* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->setting);
+    offset = extract_float(buffer, bufferSize, offset, &self->range);
+    
+    return offset;
+}
+
+
 size_t insert_MipCmd_3Dm_CalibratedSensorRanges_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3Dm_CalibratedSensorRanges_Response* self)
 {
     offset = insert_MipSensorRangeType(buffer, bufferSize, offset, self->sensor);
@@ -1640,3 +2033,8 @@ size_t extract_MipCmd_3Dm_CalibratedSensorRanges_Response(const uint8_t* buffer,
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

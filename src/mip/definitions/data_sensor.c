@@ -6,6 +6,11 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -367,6 +372,19 @@ size_t extract_MipData_Sensor_1ppsTimestamp(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Sensor_GpsTimestamp_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_GpsTimestamp_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Sensor_GpsTimestamp_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_GpsTimestamp_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Sensor_GpsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_GpsTimestamp* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->tow);
@@ -451,6 +469,19 @@ size_t extract_MipData_Sensor_NorthVector(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Sensor_OverrangeStatus_Status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_OverrangeStatus_Status self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Sensor_OverrangeStatus_Status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_OverrangeStatus_Status* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Sensor_OverrangeStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OverrangeStatus* self)
 {
     offset = insert_MipData_Sensor_OverrangeStatus_Status(buffer, bufferSize, offset, self->status);
@@ -486,3 +517,8 @@ size_t extract_MipData_Sensor_OdometerData(const uint8_t* buffer, size_t bufferS
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

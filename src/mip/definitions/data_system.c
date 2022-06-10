@@ -6,6 +6,11 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -90,3 +95,8 @@ size_t extract_MipData_System_GpioAnalogValue(const uint8_t* buffer, size_t buff
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

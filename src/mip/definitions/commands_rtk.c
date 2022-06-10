@@ -6,10 +6,51 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_MipConnectedDeviceType(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipConnectedDeviceType self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipConnectedDeviceType(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipConnectedDeviceType* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipMediaSelector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipMediaSelector self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipMediaSelector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipMediaSelector* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipLedAction(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipLedAction self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipLedAction(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipLedAction* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +65,19 @@ size_t insert_MipCmd_Rtk_GetStatusFlags(uint8_t* buffer, size_t bufferSize, size
 
 size_t extract_MipCmd_Rtk_GetStatusFlags(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetStatusFlags* self)
 {
+    return offset;
+}
+
+
+size_t insert_MipCmd_Rtk_GetStatusFlags_Statusflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Rtk_GetStatusFlags_Statusflags self)
+{
+    return insert_u32(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Rtk_GetStatusFlags_Statusflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Rtk_GetStatusFlags_Statusflags* self)
+{
+    uint32_t tmp;
+    offset = extract_u32(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
     return offset;
 }
 
@@ -290,6 +344,19 @@ size_t extract_MipCmd_Rtk_ServiceStatus(const uint8_t* buffer, size_t bufferSize
 }
 
 
+size_t insert_MipCmd_Rtk_ServiceStatus_Serviceflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Rtk_ServiceStatus_Serviceflags self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Rtk_ServiceStatus_Serviceflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Rtk_ServiceStatus_Serviceflags* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_Rtk_ServiceStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ServiceStatus_Response* self)
 {
     offset = insert_MipCmd_Rtk_ServiceStatus_Serviceflags(buffer, bufferSize, offset, self->flags);
@@ -432,3 +499,8 @@ size_t extract_MipCmd_Rtk_ModemHardReset_Response(const uint8_t* buffer, size_t 
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

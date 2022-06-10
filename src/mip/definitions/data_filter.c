@@ -6,10 +6,90 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_MipFilterMode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterMode self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterMode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterMode* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipFilterDynamicsMode(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterDynamicsMode self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterDynamicsMode(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterDynamicsMode* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipFilterStatusFlags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterStatusFlags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterStatusFlags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterStatusFlags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipFilterAidingMeasurementType(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterAidingMeasurementType self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterAidingMeasurementType(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterAidingMeasurementType* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipFilterMeasurementIndicator(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterMeasurementIndicator self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterMeasurementIndicator(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterMeasurementIndicator* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipGnssAidStatusFlags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipGnssAidStatusFlags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipGnssAidStatusFlags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipGnssAidStatusFlags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -471,6 +551,18 @@ size_t extract_MipData_Filter_Wgs84GravityMag(const uint8_t* buffer, size_t buff
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Filter_HeadingUpdateState_Headingsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Filter_HeadingUpdateState_Headingsource self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Filter_HeadingUpdateState_Headingsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Filter_HeadingUpdateState_Headingsource* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipData_Filter_HeadingUpdateState(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_HeadingUpdateState* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->heading);
@@ -1067,6 +1159,18 @@ size_t extract_MipData_Filter_GnssAttAidStatus(const uint8_t* buffer, size_t buf
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Filter_HeadAidStatus_Headingaidtype(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Filter_HeadAidStatus_Headingaidtype self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Filter_HeadAidStatus_Headingaidtype(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Filter_HeadAidStatus_Headingaidtype* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipData_Filter_HeadAidStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_HeadAidStatus* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->time_of_week);
@@ -1271,6 +1375,31 @@ size_t extract_MipData_Filter_OdometerScaleFactorErrorUncertainty(const uint8_t*
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Filter_GnssDualAntennaStatus_Fixtype(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Filter_GnssDualAntennaStatus_Fixtype self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Filter_GnssDualAntennaStatus_Fixtype(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Filter_GnssDualAntennaStatus_Fixtype* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Filter_GnssDualAntennaStatus_Dualantennastatusflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Filter_GnssDualAntennaStatus_Dualantennastatusflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Filter_GnssDualAntennaStatus_Dualantennastatusflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Filter_GnssDualAntennaStatus_Dualantennastatusflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Filter_GnssDualAntennaStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GnssDualAntennaStatus* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->time_of_week);
@@ -1296,3 +1425,8 @@ size_t extract_MipData_Filter_GnssDualAntennaStatus(const uint8_t* buffer, size_
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

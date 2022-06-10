@@ -6,10 +6,95 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_Mipbase_device_info(uint8_t* buffer, size_t bufferSize, size_t offset, const struct Mipbase_device_info* self)
+{
+    offset = insert_u16(buffer, bufferSize, offset, self->firmware_version);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->model_name[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->model_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->serial_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->lot_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->device_options[i]);
+    
+    return offset;
+}
+
+size_t extract_Mipbase_device_info(const uint8_t* buffer, size_t bufferSize, size_t offset, struct Mipbase_device_info* self)
+{
+    offset = extract_u16(buffer, bufferSize, offset, &self->firmware_version);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->model_name[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->model_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->serial_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->lot_number[i]);
+    
+    assert(16 <= 16);
+    for(unsigned int i=0; i < 16; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->device_options[i]);
+    
+    return offset;
+}
+
+
+size_t insert_MipTimeFormat(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipTimeFormat self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipTimeFormat(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipTimeFormat* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCommandedTestBits_Gq7(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCommandedTestBits_Gq7 self)
+{
+    return insert_u32(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCommandedTestBits_Gq7(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCommandedTestBits_Gq7* self)
+{
+    uint32_t tmp;
+    offset = extract_u32(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +332,18 @@ size_t extract_MipCmd_Base_CommSpeed_Response(const uint8_t* buffer, size_t buff
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Base_GpsTimeUpdate_Fieldid(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Base_GpsTimeUpdate_Fieldid self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Base_GpsTimeUpdate_Fieldid(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Base_GpsTimeUpdate_Fieldid* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_Base_GpsTimeUpdate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GpsTimeUpdate* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -278,3 +375,8 @@ size_t extract_MipCmd_Base_SoftReset(const uint8_t* buffer, size_t bufferSize, s
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

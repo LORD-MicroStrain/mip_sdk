@@ -6,10 +6,39 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_MipFilterReferenceFrame(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterReferenceFrame self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterReferenceFrame(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterReferenceFrame* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipFilterMagDeclinationSource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterMagDeclinationSource self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipFilterMagDeclinationSource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterMagDeclinationSource* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +78,19 @@ size_t extract_MipCmd_Filter_SetInitialAttitude(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Filter_EstimationControl_Enableflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_EstimationControl_Enableflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_EstimationControl_Enableflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_EstimationControl_Enableflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_Filter_EstimationControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_EstimationControl* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -174,6 +216,19 @@ size_t extract_MipCmd_Filter_ExternalHeadingUpdateWithTime(const uint8_t* buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Filter_TareOrientation_Miptareaxes(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_TareOrientation_Miptareaxes self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_TareOrientation_Miptareaxes(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_TareOrientation_Miptareaxes* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_Filter_TareOrientation(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_TareOrientation* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -461,6 +516,18 @@ size_t extract_MipCmd_Filter_GnssSource_Response(const uint8_t* buffer, size_t b
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Filter_HeadingSource_Headingsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_HeadingSource_Headingsource self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_HeadingSource_Headingsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_HeadingSource_Headingsource* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_Filter_HeadingSource(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_HeadingSource* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -625,6 +692,18 @@ size_t extract_MipCmd_Filter_CommandedAngularZupt(const uint8_t* buffer, size_t 
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
 size_t insert_MipCmd_Filter_AidingMeasurementEnable(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AidingMeasurementEnable* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -715,6 +794,31 @@ size_t extract_MipCmd_Filter_KinematicConstraint_Response(const uint8_t* buffer,
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipCmd_Filter_InitializationConfiguration_Initialconditionsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_InitializationConfiguration_Initialconditionsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipCmd_Filter_InitializationConfiguration_Alignmentselector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_InitializationConfiguration_Alignmentselector self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipCmd_Filter_InitializationConfiguration_Alignmentselector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_InitializationConfiguration_Alignmentselector* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipCmd_Filter_InitializationConfiguration(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_InitializationConfiguration* self)
 {
     offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
@@ -1169,3 +1273,8 @@ size_t extract_MipCmd_Filter_SetInitialHeading(const uint8_t* buffer, size_t buf
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

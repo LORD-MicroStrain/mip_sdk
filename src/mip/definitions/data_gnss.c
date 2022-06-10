@@ -6,10 +6,51 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+size_t insert_MipGnssConstellationId(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipGnssConstellationId self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipGnssConstellationId(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipGnssConstellationId* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipGnssSignalId(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipGnssSignalId self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipGnssSignalId(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipGnssSignalId* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipSbasSystem(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipSbasSystem self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipSbasSystem(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipSbasSystem* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,6 +58,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_LlhPos_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_LlhPos_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_LlhPos_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_LlhPos_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_LlhPos(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_LlhPos* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->latitude);
@@ -45,6 +99,19 @@ size_t extract_MipData_Gnss_LlhPos(const uint8_t* buffer, size_t bufferSize, siz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_EcefPos_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_EcefPos_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_EcefPos_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_EcefPos_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_EcefPos(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_EcefPos* self)
 {
     
@@ -71,6 +138,19 @@ size_t extract_MipData_Gnss_EcefPos(const uint8_t* buffer, size_t bufferSize, si
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_NedVel_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_NedVel_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_NedVel_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_NedVel_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_NedVel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_NedVel* self)
 {
     
@@ -105,6 +185,19 @@ size_t extract_MipData_Gnss_NedVel(const uint8_t* buffer, size_t bufferSize, siz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_EcefVel_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_EcefVel_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_EcefVel_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_EcefVel_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_EcefVel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_EcefVel* self)
 {
     
@@ -131,6 +224,19 @@ size_t extract_MipData_Gnss_EcefVel(const uint8_t* buffer, size_t bufferSize, si
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_Dop_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_Dop_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_Dop_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_Dop_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_Dop(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_Dop* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->gdop);
@@ -161,6 +267,19 @@ size_t extract_MipData_Gnss_Dop(const uint8_t* buffer, size_t bufferSize, size_t
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_UtcTime_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_UtcTime_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_UtcTime_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_UtcTime_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_UtcTime(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_UtcTime* self)
 {
     offset = insert_u16(buffer, bufferSize, offset, self->year);
@@ -191,6 +310,19 @@ size_t extract_MipData_Gnss_UtcTime(const uint8_t* buffer, size_t bufferSize, si
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GpsTime_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GpsTime_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GpsTime_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GpsTime_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GpsTime(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GpsTime* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->tow);
@@ -211,6 +343,19 @@ size_t extract_MipData_Gnss_GpsTime(const uint8_t* buffer, size_t bufferSize, si
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_ClockInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_ClockInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_ClockInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_ClockInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_ClockInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_ClockInfo* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->bias);
@@ -233,6 +378,44 @@ size_t extract_MipData_Gnss_ClockInfo(const uint8_t* buffer, size_t bufferSize, 
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_FixInfo_Fixtype(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_FixInfo_Fixtype self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_FixInfo_Fixtype(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_FixInfo_Fixtype* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_FixInfo_Fixflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_FixInfo_Fixflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_FixInfo_Fixflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_FixInfo_Fixflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipData_Gnss_FixInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_FixInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_FixInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_FixInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_FixInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_FixInfo* self)
 {
     offset = insert_MipData_Gnss_FixInfo_Fixtype(buffer, bufferSize, offset, self->fix_type);
@@ -255,6 +438,32 @@ size_t extract_MipData_Gnss_FixInfo(const uint8_t* buffer, size_t bufferSize, si
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_SvInfo_Svflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SvInfo_Svflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SvInfo_Svflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SvInfo_Svflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipData_Gnss_SvInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SvInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SvInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SvInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_SvInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_SvInfo* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->channel);
@@ -283,6 +492,55 @@ size_t extract_MipData_Gnss_SvInfo(const uint8_t* buffer, size_t bufferSize, siz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_HwStatus_Receiverstate(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_HwStatus_Receiverstate self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_HwStatus_Receiverstate(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_HwStatus_Receiverstate* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_HwStatus_Antennastate(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_HwStatus_Antennastate self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_HwStatus_Antennastate(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_HwStatus_Antennastate* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_HwStatus_Antennapower(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_HwStatus_Antennapower self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_HwStatus_Antennapower(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_HwStatus_Antennapower* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_HwStatus_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_HwStatus_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_HwStatus_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_HwStatus_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_HwStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_HwStatus* self)
 {
     offset = insert_MipData_Gnss_HwStatus_Receiverstate(buffer, bufferSize, offset, self->receiver_state);
@@ -305,6 +563,19 @@ size_t extract_MipData_Gnss_HwStatus(const uint8_t* buffer, size_t bufferSize, s
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_DgpsInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_DgpsInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_DgpsInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_DgpsInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_DgpsInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_DgpsInfo* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->sv_id);
@@ -329,6 +600,19 @@ size_t extract_MipData_Gnss_DgpsInfo(const uint8_t* buffer, size_t bufferSize, s
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_DgpsChannel_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_DgpsChannel_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_DgpsChannel_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_DgpsChannel_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_DgpsChannel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_DgpsChannel* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->sv_id);
@@ -353,6 +637,19 @@ size_t extract_MipData_Gnss_DgpsChannel(const uint8_t* buffer, size_t bufferSize
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_ClockInfo2_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_ClockInfo2_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_ClockInfo2_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_ClockInfo2_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_ClockInfo2(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_ClockInfo2* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->bias);
@@ -377,6 +674,19 @@ size_t extract_MipData_Gnss_ClockInfo2(const uint8_t* buffer, size_t bufferSize,
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GpsLeapSeconds_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GpsLeapSeconds_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GpsLeapSeconds_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GpsLeapSeconds_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GpsLeapSeconds(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GpsLeapSeconds* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->leap_seconds);
@@ -395,6 +705,32 @@ size_t extract_MipData_Gnss_GpsLeapSeconds(const uint8_t* buffer, size_t bufferS
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_SbasInfo_Sbasstatus(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SbasInfo_Sbasstatus self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SbasInfo_Sbasstatus(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SbasInfo_Sbasstatus* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipData_Gnss_SbasInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SbasInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SbasInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SbasInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_SbasInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_SbasInfo* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
@@ -423,6 +759,19 @@ size_t extract_MipData_Gnss_SbasInfo(const uint8_t* buffer, size_t bufferSize, s
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_SbasCorrection_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SbasCorrection_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SbasCorrection_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SbasCorrection_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_SbasCorrection(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_SbasCorrection* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->index);
@@ -457,6 +806,55 @@ size_t extract_MipData_Gnss_SbasCorrection(const uint8_t* buffer, size_t bufferS
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_RfErrorDetection_Rfband(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RfErrorDetection_Rfband self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RfErrorDetection_Rfband(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RfErrorDetection_Rfband* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_RfErrorDetection_Jammingstate(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RfErrorDetection_Jammingstate self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RfErrorDetection_Jammingstate(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RfErrorDetection_Jammingstate* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_RfErrorDetection_Spoofingstate(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RfErrorDetection_Spoofingstate self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RfErrorDetection_Spoofingstate(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RfErrorDetection_Spoofingstate* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_RfErrorDetection_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RfErrorDetection_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RfErrorDetection_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RfErrorDetection_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_RfErrorDetection(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_RfErrorDetection* self)
 {
     offset = insert_MipData_Gnss_RfErrorDetection_Rfband(buffer, bufferSize, offset, self->rf_band);
@@ -487,6 +885,32 @@ size_t extract_MipData_Gnss_RfErrorDetection(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_BaseStationInfo_Indicatorflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_BaseStationInfo_Indicatorflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_BaseStationInfo_Indicatorflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_BaseStationInfo_Indicatorflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipData_Gnss_BaseStationInfo_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_BaseStationInfo_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_BaseStationInfo_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_BaseStationInfo_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_BaseStationInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_BaseStationInfo* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
@@ -521,6 +945,32 @@ size_t extract_MipData_Gnss_BaseStationInfo(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_RtkCorrectionsStatus_Epochstatus(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RtkCorrectionsStatus_Epochstatus self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RtkCorrectionsStatus_Epochstatus(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RtkCorrectionsStatus_Epochstatus* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
+size_t insert_MipData_Gnss_RtkCorrectionsStatus_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_RtkCorrectionsStatus_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_RtkCorrectionsStatus_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_RtkCorrectionsStatus_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_RtkCorrectionsStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_RtkCorrectionsStatus* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
@@ -561,6 +1011,19 @@ size_t extract_MipData_Gnss_RtkCorrectionsStatus(const uint8_t* buffer, size_t b
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_SatelliteStatus_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_SatelliteStatus_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_SatelliteStatus_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_SatelliteStatus_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_SatelliteStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_SatelliteStatus* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->index);
@@ -595,6 +1058,31 @@ size_t extract_MipData_Gnss_SatelliteStatus(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_Raw_Gnsssignalquality(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_Raw_Gnsssignalquality self)
+{
+    return insert_u8(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_Raw_Gnsssignalquality(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_Raw_Gnsssignalquality* self)
+{
+    uint8_t tmp;
+    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+size_t insert_MipData_Gnss_Raw_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_Raw_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_Raw_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_Raw_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_Raw(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_Raw* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->index);
@@ -647,6 +1135,19 @@ size_t extract_MipData_Gnss_Raw(const uint8_t* buffer, size_t bufferSize, size_t
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GpsEphemeris_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GpsEphemeris_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GpsEphemeris_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GpsEphemeris_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GpsEphemeris(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GpsEphemeris* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->index);
@@ -729,6 +1230,19 @@ size_t extract_MipData_Gnss_GpsEphemeris(const uint8_t* buffer, size_t bufferSiz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GloEphemeris_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GloEphemeris_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GloEphemeris_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GloEphemeris_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GloEphemeris(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GloEphemeris* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->index);
@@ -811,6 +1325,19 @@ size_t extract_MipData_Gnss_GloEphemeris(const uint8_t* buffer, size_t bufferSiz
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GpsIonoCorr_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GpsIonoCorr_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GpsIonoCorr_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GpsIonoCorr_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GpsIonoCorr(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GpsIonoCorr* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
@@ -847,6 +1374,19 @@ size_t extract_MipData_Gnss_GpsIonoCorr(const uint8_t* buffer, size_t bufferSize
 
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t insert_MipData_Gnss_GalileoIonoCorr_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Gnss_GalileoIonoCorr_Validflags self)
+{
+    return insert_u16(buffer, bufferSize, offset, self);
+}
+size_t extract_MipData_Gnss_GalileoIonoCorr_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Gnss_GalileoIonoCorr_Validflags* self)
+{
+    uint16_t tmp;
+    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    *self = tmp;
+    return offset;
+}
+
+
 size_t insert_MipData_Gnss_GalileoIonoCorr(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_GalileoIonoCorr* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
@@ -876,3 +1416,8 @@ size_t extract_MipData_Gnss_GalileoIonoCorr(const uint8_t* buffer, size_t buffer
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus

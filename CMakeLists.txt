@@ -44,6 +44,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_parser.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_cmdqueue.c"

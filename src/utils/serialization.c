@@ -95,6 +95,20 @@ APPEND_MACRO(s64,    int64_t )
 APPEND_MACRO(float,  float   )
 APPEND_MACRO(double, double  )
 
+INSERT_MACRO(bool,   bool    )
+INSERT_MACRO(char,   char    )
+INSERT_MACRO(u8,     uint8_t )
+INSERT_MACRO(u16,    uint16_t)
+INSERT_MACRO(u32,    uint32_t)
+INSERT_MACRO(u64,    uint64_t)
+INSERT_MACRO(s8,     int8_t  )
+INSERT_MACRO(s16,    int16_t )
+INSERT_MACRO(s32,    int32_t )
+INSERT_MACRO(s64,    int64_t )
+INSERT_MACRO(float,  float   )
+INSERT_MACRO(double, double  )
+
+
 
 bool unpack_bool(const uint8_t* buffer) { return unpack_u8(buffer) > 0; }
 char unpack_char(const uint8_t* buffer) { return unpack_u8(buffer); }

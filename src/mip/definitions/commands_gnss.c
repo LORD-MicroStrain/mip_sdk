@@ -6,6 +6,11 @@
 #include <assert.h>
 
 
+#ifdef __cplusplus
+namespace mscl {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -24,6 +29,31 @@ size_t insert_MipCmd_Gnss_ReceiverInfo(uint8_t* buffer, size_t bufferSize, size_
 
 size_t extract_MipCmd_Gnss_ReceiverInfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo* self)
 {
+    return offset;
+}
+
+
+size_t insert_MipCmd_Gnss_ReceiverInfo_Receiverinfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* self)
+{
+    offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
+    offset = insert_u8(buffer, bufferSize, offset, self->mip_data_descriptor_set);
+    
+    assert(32 <= 32);
+    for(unsigned int i=0; i < 32; i++)
+        offset = insert_char(buffer, bufferSize, offset, self->description[i]);
+    
+    return offset;
+}
+
+size_t extract_MipCmd_Gnss_ReceiverInfo_Receiverinfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* self)
+{
+    offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
+    offset = extract_u8(buffer, bufferSize, offset, &self->mip_data_descriptor_set);
+    
+    assert(32 <= 32);
+    for(unsigned int i=0; i < 32; i++)
+        offset = extract_char(buffer, bufferSize, offset, &self->description[i]);
+    
     return offset;
 }
 
@@ -179,3 +209,8 @@ size_t extract_MipCmd_Gnss_ReceiverSafeMode(const uint8_t* buffer, size_t buffer
 }
 
 
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace mscl
+#endif // __cplusplus
