@@ -22,7 +22,6 @@ add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFi
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
 
 if(WITH_SERIALPORT)
-    message("INC ${SERIAL_INCLUDE_DIRS}")
     add_executable(TestSerial "${TEST_DIR}/test_serial.cpp")
     target_include_directories(TestSerial PUBLIC "${SERIAL_INCLUDE_DIRS}")
     target_link_libraries(TestSerial PUBLIC "serial")
