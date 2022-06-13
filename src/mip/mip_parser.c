@@ -3,6 +3,8 @@
 
 #include "mip_offsets.h"
 
+#include <assert.h>
+
 
 #define MIPPARSER_RESET_LENGTH 1
 
@@ -13,7 +15,7 @@
 ///@param parser
 ///@param buffer
 ///       Scratch space for the parser to use internally; input data is consumed
-///       and fed to this buffer.
+///       and fed to this buffer. Cannot be NULL.
 ///@param bufferSize
 ///       Size of buffer, in bytes.
 ///@param callback
@@ -38,6 +40,7 @@ void MipParser_init(struct MipParsingState* parser, uint8_t* buffer, size_t buff
 
     parser->expectedLength = MIPPARSER_RESET_LENGTH;
 
+    assert(callback != NULL);
     parser->callback = callback;
     parser->callbackObject = callbackObject;
 }
@@ -264,4 +267,80 @@ void MipParser_setTimeout(struct MipParsingState* parser, Timestamp timeout)
 Timestamp MipParser_lastPacketTimestamp(const struct MipParsingState* parser)
 {
     return parser->startTime;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Obtain a pointer into which data may be read for processing.
+///
+/// Use this function when the source data stream (e.g. a file or serial port)
+/// requires that you pass in a buffer when reading data. This avoids the need
+/// for an intermediate buffer.
+///
+/// Call MipParser_processWritten() after the data has been read to update the
+/// buffer count and process any packets.
+///
+///@code{.cpp}
+/// uint8_t ptr;
+/// size_t space = MipParser_getWritePtr(&parser, &ptr);
+/// size_t used = fread(ptr, 1, space, file);
+/// MipParser_processWritten(&parser, used);
+///@endcode
+///
+///@param parser
+///@param ptr_out
+///       A pointer to a pointer which will be set to the buffer where data
+///       should be written. Cannot be NULL.
+///
+///@returns How many bytes can be written to the buffer. Due to the use of a
+///         cicular buffer, this may be less than the total available buffer
+///         space. Do not write more data than specified.
+///
+size_t MipParser_getWritePtr(struct MipParsingState* parser, uint8_t** const ptr_out)
+{
+    assert(ptr_out != NULL);
+
+    return ByteRing_getWritePtr(&parser->ring, ptr_out);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Notify the parser that data has been written to the pointer previously
+///       obtained via MipParser_getWritePtr().
+///
+/// The write pointer changes after calling this with count > 0. To write more
+/// data, call MipParser_getWritePtr again.
+///
+///@param parser
+///@param count
+///@param timestamp
+///@param maxPackets
+///
+void MipParser_processWritten(struct MipParsingState* parser, size_t count, Timestamp timestamp, unsigned int maxPackets)
+{
+    ByteRing_notifyWritten(&parser->ring, count);
+    MipParser_parse(parser, NULL, 0, timestamp, maxPackets);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Computes an appropriate packet timeout for a given serial baud rate.
+///
+///@note This function assumes a standard serial port with 10 symbols per byte:
+/// 1 start bit, 8 data bits, and 1 stop bit.
+///
+///@param baudrate Serial baud rate in bits per second
+///
+///@return A timeout value representing the time it would take to transmit a
+///        single mip packet of maximum size at the given baud rate, plus some
+///        tolerance.
+///
+Timeout mipTimeoutFromBaudrate(uint32_t baudrate)
+{
+    // numSymbols [b] = (packetLength [B]) * (10 [b/B])
+    unsigned int numSymbols = MIP_PACKET_LENGTH_MAX * 10;
+
+    // packetTime [s] = (numSymbols [b]) / (baudrate [b/s])
+
+    // timeout [ms] = (packetTime [s]) * (1000 [ms/s]) * tolerance
+    return numSymbols * 1500 / baudrate;
 }

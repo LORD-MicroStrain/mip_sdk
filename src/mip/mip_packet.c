@@ -238,6 +238,7 @@ RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet)
 ///       The MIP field descriptor (e.g. command or data descriptor).
 ///@param payload
 ///       A pointer to the field payload data (without the header).
+///       Can be NULL if payloadLength is 0.
 ///@param payloadLength
 ///       The length of the payload data. Must be less than or equal to
 ///       MIP_FIELD_PAYLOAD_LENGTH_MAX. Does not include the header.
@@ -286,7 +287,7 @@ bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const
 ///         is negative, the field could not be allocated and the payload must
 ///         not be written.
 ///
-RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out)
+RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** const payloadPtr_out)
 {
     assert(payloadPtr_out != NULL);
     // assert( payloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );

@@ -49,8 +49,13 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
-    "${MIP_DIR}/mip_device.c"
-    "${MIP_DIR}/mip_device.h"
+)
+
+set(MIPDEV_SOURCES
+    "${MIP_DIR}/mip_interface.c"
+    "${MIP_DIR}/mip_interface.h"
+    "${MIP_DIR}/mip_device.cpp"
+    "${MIP_DIR}/mip_device.hpp"
 )
 
 set(MIPDEF_SOURCES
@@ -78,7 +83,7 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_system.h"
 )
 
-add_library(mip ${MIPDEF_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
+add_library(mip ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
 
 #

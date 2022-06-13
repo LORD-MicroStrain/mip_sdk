@@ -6,6 +6,7 @@
 
 void ByteRing_init(struct ByteRingState* state, uint8_t* buffer, size_t size)
 {
+    assert(buffer != NULL);
     assert( ((size - 1) & size) == 0 );  // Size must be a power of 2
 
     state->buffer = buffer;
@@ -73,7 +74,7 @@ size_t ByteRing_copyTo(const struct ByteRingState* state, uint8_t* buffer, size_
     return count;
 }
 
-size_t ByteRing_copyFromAndUpdate(struct ByteRingState* state, const uint8_t** bytes, size_t* available)
+size_t ByteRing_copyFromAndUpdate(struct ByteRingState* state, const uint8_t** const bytes, size_t* available)
 {
     const size_t space = ByteRing_freeSpace(state);
     const size_t count = (*available < space) ? *available : space;
@@ -88,4 +89,28 @@ size_t ByteRing_copyFromAndUpdate(struct ByteRingState* state, const uint8_t** b
     *bytes += count;
     *available -= count;
     return count;
+}
+
+
+size_t ByteRing_getWritePtr(struct ByteRingState* state, uint8_t** const ptr_out)
+{
+    const size_t remainingSpace = ByteRing_freeSpace(state);
+    const size_t capacity = ByteRing_capacity(state);
+
+    const size_t head = state->head % capacity;
+    const size_t bytesUntilWrap = capacity - head;
+
+    *ptr_out = &state->buffer[head];
+
+    if( remainingSpace >= bytesUntilWrap )
+        return bytesUntilWrap;
+    else
+        return remainingSpace;
+}
+
+void ByteRing_notifyWritten(struct ByteRingState* state, size_t count)
+{
+    assert( count < ByteRing_freeSpace(state) );
+
+    state->head += count;
 }

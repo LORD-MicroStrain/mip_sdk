@@ -32,6 +32,7 @@ enum MipCmdStatus
 };
 
 bool MipCmdStatus_isFinished(enum MipCmdStatus status);
+const char* MipCmdStatus_toString(enum MipCmdStatus status);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +47,8 @@ enum MipAck
     MIP_NACK_COMMAND_FAILED   = 0x04,  ///< The device could not complete the command.
     MIP_NACK_COMMAND_TIMEOUT  = 0x05,  ///< No response from the device.
 };
+
+const char* MipAck_toString(enum MipAck ack);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +90,8 @@ enum MipAck MipPendingCmd_ackCode(const struct MipPendingCmd* cmd);
 const uint8_t* MipPendingCmd_response(const struct MipPendingCmd* cmd);
 uint8_t MipPendingCmd_responseLength(const struct MipPendingCmd* cmd);
 
+bool MipPendingCmd_checkTimeout(const struct MipPendingCmd* cmd, Timestamp now);
+
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup CommandQueue  MipCmdQueue functions
@@ -101,6 +106,8 @@ struct MipCmdQueue
 
 void MipCmdQueue_init(struct MipCmdQueue* queue, Timeout baseReplyTimeout);
 void MipCmdQueue_enqueue(struct MipCmdQueue* queue, struct MipPendingCmd* cmd);
+
+void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp timestamp);
 
 struct MipPacket;
 

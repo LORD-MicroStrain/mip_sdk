@@ -1,5 +1,5 @@
 
-#include "mip_device.h"
+#include "mip_interface.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,4 +187,24 @@ struct MipParsingState* MipInterface_parser(struct MipInterfaceState* device)
 struct MipCmdQueue* MipInterface_cmdQueue(struct MipInterfaceState* device)
 {
     return &device->queue;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Blocks until the pending command completes or times out.
+///
+///@param device
+///@param cmd
+///
+///@returns The final status of the command.
+///
+enum MipCmdStatus MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd)
+{
+    enum MipCmdStatus status;
+    while( !MipCmdStatus_isFinished(status = MipPendingCmd_status(cmd)) )
+    {
+        if( !MipInterface_poll(device) )
+            return MIP_STATUS_ERROR;
+    }
+    return status;
 }

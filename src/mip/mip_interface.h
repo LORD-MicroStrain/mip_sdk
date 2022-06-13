@@ -70,8 +70,9 @@ struct MipInterfaceState
 
 void MipInterface_init(struct MipInterfaceState* device, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout);
 
-void MipInterface_setMaxPacketsPerPoll(struct MipInterfaceState* device, unsigned int maxPackets);
-unsigned int MipInterface_maxPacketsPerPoll(const struct MipInterfaceState* device);
+//
+// Communications
+//
 
 RemainingCount MipInterface_receiveBytes(struct MipInterfaceState* device, const uint8_t* data, size_t length, Timestamp timestamp);
 void MipInterface_processUnparsedPackets(struct MipInterfaceState* device);
@@ -82,9 +83,22 @@ bool MipInterface_sendToDevice(struct MipInterfaceState* device, const uint8_t* 
 bool MipInterface_parseCallback(void* device, const struct MipPacket* packet, Timestamp timestamp);
 void MipInterface_receivePacket(struct MipInterfaceState* device, const struct MipPacket* packet, Timestamp timestamp);
 
+//
+// Commands
+//
+
+enum MipCmdStatus MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd);
+
+//
+// Accessors
+//
+
+void MipInterface_setMaxPacketsPerPoll(struct MipInterfaceState* device, unsigned int maxPackets);
+unsigned int MipInterface_maxPacketsPerPoll(const struct MipInterfaceState* device);
 
 struct MipParsingState* MipInterface_parser(struct MipInterfaceState* device);
 struct MipCmdQueue*     MipInterface_cmdQueue(struct MipInterfaceState* device);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////

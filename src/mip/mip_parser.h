@@ -56,6 +56,9 @@ RemainingCount MipParser_parse(struct MipParsingState* parser, const uint8_t* in
 
 void MipParser_reset(struct MipParsingState* parser);
 
+size_t MipParser_getWritePtr(struct MipParsingState* parser, uint8_t** ptr_out);
+void MipParser_processWritten(struct MipParsingState* parser, size_t count, Timestamp timestamp, unsigned int maxPackets);
+
 //
 // Accessors
 //
@@ -64,6 +67,12 @@ Timeout MipParser_timeout(const struct MipParsingState* parser);
 void MipParser_setTimeout(struct MipParsingState* parser, Timeout timeout);
 
 Timestamp MipParser_lastPacketTimestamp(const struct MipParsingState* parser);
+
+//
+// Misc
+//
+
+Timeout mipTimeoutFromBaudrate(uint32_t baudrate);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

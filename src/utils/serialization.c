@@ -181,7 +181,7 @@ size_t extract_##name(const uint8_t* buffer, size_t bufferSize, size_t offset, t
 { \
     size_t postOffset = offset + sizeof(type); \
     if( postOffset <= bufferSize ) \
-        *value = unpack_##name(buffer); \
+        *value = unpack_##name(&buffer[offset]); \
     return postOffset; \
 }
 

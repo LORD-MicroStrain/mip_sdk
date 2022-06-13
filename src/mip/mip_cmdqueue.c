@@ -22,6 +22,48 @@ bool MipCmdStatus_isFinished(enum MipCmdStatus status)
     return status >= MIP_STATUS_COMPLETED;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Converts the status code to a string for debugging.
+///
+///@param status
+///
+///@returns A constant string.
+///
+const char* MipCmdStatus_toString(enum MipCmdStatus status)
+{
+    switch(status)
+    {
+    case MIP_STATUS_NONE:      return "MIP_STATUS_NONE";
+    case MIP_STATUS_PENDING:   return "MIP_STATUS_PENDING";
+    case MIP_STATUS_WAITING:   return "MIP_STATUS_WAITING";
+    case MIP_STATUS_COMPLETED: return "MIP_STATUS_COMPLETED";
+    case MIP_STATUS_TIMEDOUT:  return "MIP_STATUS_TIMEDOUT";
+    case MIP_STATUS_CANCELLED: return "MIP_STATUS_CANCELLED";
+    case MIP_STATUS_ERROR:     return "MIP_STATUS_ERROR";
+    }
+    return "MIP_STATUS_INVALID";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Converts the ack/nack code to a string.
+///
+///@param ack
+///@returns A constant string.
+///
+const char* MipAck_toString(enum MipAck ack)
+{
+    switch(ack)
+    {
+    case MIP_ACK_OK:                return "Ok";
+    case MIP_NACK_UNKNOWN_CMD:      return "Unknown Command";
+    case MIP_NACK_INVALID_CHECKSUM: return "Invalid Checksum";
+    case MIP_NACK_INVALID_PARAM:    return "Invalid Parameter";
+    case MIP_NACK_COMMAND_FAILED:   return "Command Failed";
+    case MIP_NACK_COMMAND_TIMEOUT:  return "Timed out";
+    }
+    return "Invalid";
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -155,6 +197,27 @@ uint8_t MipPendingCmd_responseLength(const struct MipPendingCmd* cmd)
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Checks if the command should time out.
+///
+///@param cmd
+///@param now Current time
+///
+///@returns true if the command should time out. Only possible for MIP_STATUS_WAITING.
+///@returns false if the command should not time out.
+///
+bool MipPendingCmd_checkTimeout(const struct MipPendingCmd* cmd, Timestamp now)
+{
+    if( cmd->status == MIP_STATUS_WAITING )
+    {
+        if( (int)(now - cmd->timeoutTime) > 0 )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -295,7 +358,7 @@ static enum MipCmdStatus processFieldsForPendingCmd(struct MipPendingCmd* pendin
     // No matching reply descriptors in this packet.
 
     // Check for timeout
-    if( (int)(timestamp - pending->timeoutTime) < 0 )
+    if( MipPendingCmd_checkTimeout(pending, timestamp) )
     {
         pending->responseLength = 0;
         pending->ackCode        = MIP_NACK_COMMAND_TIMEOUT;
@@ -336,6 +399,42 @@ void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket
             // This must be done last b/c it may trigger the thread which queued the command.
             // The command could go out of scope or its attributes inspected.
             pending->status = status;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Call periodically to make sure commands time out if no packets are
+///       received.
+///
+/// Call this during the device update if no calls to MipCmdQueue_processPacket
+/// are made (e.g. because no packets were received). It is safe to call this
+/// in either case.
+///
+///@param queue
+///@param now
+///
+void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp now)
+{
+    if( queue->firstPendingCmd )
+    {
+        struct MipPendingCmd* pending = queue->firstPendingCmd;
+
+        if( pending->status == MIP_STATUS_PENDING )
+        {
+            // Update the timeout to the timestamp of the timeout time.
+            pending->timeoutTime = now + queue->baseTimeout + pending->extraTimeout;
+            pending->status = MIP_STATUS_WAITING;
+        }
+        else if( MipPendingCmd_checkTimeout(pending, now) )
+        {
+            queue->firstPendingCmd = queue->firstPendingCmd->next;
+
+            pending->responseLength = 0;
+            pending->ackCode = MIP_NACK_COMMAND_TIMEOUT;
+
+            // This must be last!
+            pending->status = MIP_STATUS_TIMEDOUT;
         }
     }
 }

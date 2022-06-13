@@ -25,3 +25,7 @@ size_t ByteRing_pop(struct ByteRingState* state, size_t count);
 
 size_t ByteRing_copyTo(const struct ByteRingState* state, uint8_t* buffer, size_t count);
 size_t ByteRing_copyFromAndUpdate(struct ByteRingState* state, const uint8_t** bytes, size_t* count);
+
+
+size_t ByteRing_getWritePtr(struct ByteRingState* state, uint8_t** ptr_out);
+void ByteRing_notifyWritten(struct ByteRingState* state, size_t count);
