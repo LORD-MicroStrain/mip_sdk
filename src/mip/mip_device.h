@@ -71,7 +71,7 @@ struct MipInterfaceState
 void MipInterface_init(struct MipInterfaceState* device, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout);
 
 void MipInterface_setMaxPacketsPerPoll(struct MipInterfaceState* device, unsigned int maxPackets);
-unsigned int MipInterface_maxPacketsPerPoll(struct MipInterfaceState* device);
+unsigned int MipInterface_maxPacketsPerPoll(const struct MipInterfaceState* device);
 
 RemainingCount MipInterface_receiveBytes(struct MipInterfaceState* device, const uint8_t* data, size_t length, Timestamp timestamp);
 void MipInterface_processUnparsedPackets(struct MipInterfaceState* device);

@@ -288,6 +288,7 @@ bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const
 ///
 RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out)
 {
+    assert(payloadPtr_out != NULL);
     // assert( payloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
 
     const RemainingCount remaining = MipPacket_remainingSpace(packet);
@@ -311,16 +312,73 @@ RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescr
     return remaining - fieldLength;
 }
 
-// RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* payloadPtr, uint8_t newPayloadLength)
-// {
-//     assert( payloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
-//
-//     const RemainingCount remaining = MipPacket_remainingSpace(packet);
-//
-//     if( payloadLength < remaining )
-//     {
-//     }
-// }
+////////////////////////////////////////////////////////////////////////////////
+///@brief Changes the size of the last field in the packet.
+///
+/// Use this in conjunction with MipPacket_allocField() when the size of the
+/// field is not known in advance. Pass a payload size of 0 to allocField and
+/// check that the returned available space is sufficient, then write the
+/// payload and call this function with the actual space used.
+///
+///@param packet
+///@param payloadPtr
+///       Pointer to the field payload. This must be the same value returned
+///       from allocField and must point to the last field.
+///@param newPayloadLength
+///       Length of payload written. Generally it is an error for this to
+///       exceed the actual amount of space available in the packet. In this
+///       case, the packet is left with just the empty field and the return
+///       value will be negative.
+///
+///@returns The space remaining in the packet after changing the field size.
+///         This will be negative if the new length did not fit.
+///
+RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* payloadPtr, uint8_t newPayloadLength)
+{
+    assert(payloadPtr != NULL);
+    assert( newPayloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
+
+    uint8_t* fieldPtr = payloadPtr - MIP_INDEX_FIELD_PAYLOAD;
+    const uint8_t oldPayloadLength = fieldPtr[MIP_INDEX_FIELD_LEN];
+
+    const RemainingCount deltaLength = newPayloadLength - oldPayloadLength;
+
+    RemainingCount remaining = MipPacket_remainingSpace(packet) + deltaLength;
+
+    if( remaining >= 0 )
+    {
+        fieldPtr[MIP_INDEX_FIELD_LEN] = newPayloadLength;
+        packet->buffer[MIP_INDEX_LENGTH] += deltaLength;
+    }
+
+    return remaining;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Removes the last field from the packet after having allocated it.
+///
+/// Use only after allocating a field with MipPacket_allocField to cancel it.
+/// E.g. if it turns out that there isn't enough buffer space to write the
+/// payload.
+///
+///@param packet
+///@param payloadPtr
+///       Pointer to the field payload. This must be the same value returned
+///       from allocField and must point to the last field.
+///
+///@returns The remaining space in the packet after removing the field.
+///
+RemainingCount MipPacket_cancelLastField(struct MipPacket* packet, uint8_t* payloadPtr)
+{
+    assert(payloadPtr != NULL);
+
+    uint8_t* fieldPtr = payloadPtr - MIP_INDEX_FIELD_PAYLOAD;
+    const uint8_t oldPayloadLength = fieldPtr[MIP_INDEX_FIELD_LEN];
+
+    packet->buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + oldPayloadLength;
+
+    return MipPacket_remainingSpace(packet);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Prepares the packet for transmission by adding the checksum.

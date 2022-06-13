@@ -4,6 +4,12 @@
 
 #include "../types.h"
 
+#ifdef __cplusplus
+namespace mscl{
+namespace C {
+extern "C" {
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup MipCommandHandling MIP Command Handling - Functions for handling command responses.
@@ -104,3 +110,9 @@ void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+} // namespace mscl
+} // namespace C
+} // extern "C"
+#endif

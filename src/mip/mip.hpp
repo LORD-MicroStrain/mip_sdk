@@ -10,7 +10,7 @@
 #include "mip_parser.h"
 #include "mip_offsets.h"
 
-///@defgroup CppApi  C++ API for MSCL-Embedded
+///@addtogroup CppApi
 ///
 ///@see mscl namespace
 ///
@@ -70,6 +70,8 @@ public:
 ///
 class MipPacket : public C::MipPacket
 {
+    class FieldIterator;
+
 public:
     ///@copydoc MipPacket_create
     MipPacket(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::MipPacket_create(this, buffer, bufferSize, descriptorSet); }
@@ -96,13 +98,33 @@ public:
 
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, size_t payloadLength) { return C::MipPacket_addField(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc MipPacket_addField
     RemainingCount allocField(uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out) { return C::MipPacket_allocField(this, fieldDescriptor, payloadLength, payloadPtr_out); }  ///<@copydoc MipPacket_allocField
-    // RemainingCount reallocLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::MipPacket_reallocField(this, payload, newPayloadLength); }  ///<@copydoc MipPacket_reallocField
+    RemainingCount reallocLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::MipPacket_reallocLastField(this, payloadPtr, newPayloadLength); }  ///<@copydoc MipPacket_reallocField
+    RemainingCount cancelLastField(uint8_t* payloadPtr) { return C::MipPacket_cancelLastField(this, payloadPtr); }
 
     void finalize() { C::MipPacket_finalize(this); }  ///<@copydoc MipPacket_finalize
 
     /// Returns the first field in the packet.
     MipField firstField() const { return MipField(C::MipField_fromPacket(this)); }
 
+    /// Returns a forward iterator to the first field in the packet.
+    ///@internal
+    FieldIterator begin() const { return firstField(); }
+
+    /// Returns a sentry object representing the end of fields in the packet.
+    ///@internal
+#if __cpp_range_based_for >= 201603
+    nullptr_t     end() const { return nullptr; }
+#else
+    FieldIterator end() const { return MipField(); }
+#endif
+
+    template<class FieldType>
+    RemainingCount addField(const FieldType& field);
+
+
+
+
+private:
     /// Iterator class for use with the range-based for loop.
     ///@internal
     class FieldIterator
@@ -129,17 +151,6 @@ public:
         MipField mField;
     };
 
-    /// Returns a forward iterator to the first field in the packet.
-    ///@internal
-    FieldIterator begin() const { return firstField(); }
-
-    /// Returns a sentry object representing the end of fields in the packet.
-    ///@internal
-#if __cpp_range_based_for >= 201603
-    nullptr_t     end() const { return nullptr; }
-#else
-    FieldIterator end() const { return MipField(); }
-#endif
 };
 
 

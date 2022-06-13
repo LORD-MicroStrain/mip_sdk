@@ -44,7 +44,7 @@ void MipInterface_init(struct MipInterfaceState* device, uint8_t* parseBuffer, s
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the maximum number of packets to parser per poll call.
 ///
-unsigned int MipInterface_maxPacketsPerPoll(struct MipInterfaceState* device)
+unsigned int MipInterface_maxPacketsPerPoll(const struct MipInterfaceState* device)
 {
     return device->maxPacketsPerPoll;
 }

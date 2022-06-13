@@ -55,6 +55,7 @@ void MipPacket_create(struct MipPacket* packet, uint8_t* buffer, size_t bufferSi
 bool           MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
 RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out);
 RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* payloadPtr, uint8_t newPayloadLength);
+RemainingCount MipPacket_cancelLastField(struct MipPacket* packet, uint8_t* payloadPtr);
 
 void MipPacket_finalize(struct MipPacket* packet);
 
