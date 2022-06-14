@@ -85,6 +85,11 @@ set(MIPDEF_SOURCES
 
 add_library(mip ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
+if(MSVC)
+  target_compile_options(mip PRIVATE /W4)
+else()
+  target_compile_options(mip PRIVATE -Wall -Wextra)
+endif()
 
 #
 # TESTING
