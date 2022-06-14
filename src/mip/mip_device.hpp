@@ -24,9 +24,9 @@ public:
 
     // bool sendToDevice(const uint8_t* data, size_t length) { return C::MipInterface_sendToDevice(this, data, length); }
 
-    void receivePacket(const MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
+    void receivePacket(const C::MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
 
-    C::MipCmdStatus waitForReply(const C::MipPendingCmd& cmd) { C::MipInterface_waitForReply(this, &cmd); }
+    C::MipCmdResult waitForReply(const C::MipPendingCmd& cmd) { return C::MipInterface_waitForReply(this, &cmd); }
 
     C::MipParsingState* parser() { return C::MipInterface_parser(this); }
     C::MipCmdQueue* cmdQueue() { return C::MipInterface_cmdQueue(this); }

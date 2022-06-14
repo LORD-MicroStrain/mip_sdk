@@ -14,15 +14,6 @@
 #define MIP_INDEX_REPLY_ACK_CODE   1
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Determines if the command has completed, timed out, been cancelled, or
-///       otherwise is no longer waiting for a response.
-///
-bool MipCmdStatus_isFinished(enum MipCmdStatus status)
-{
-    return status >= MIP_STATUS_COMPLETED;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Converts the status code to a string for debugging.
 ///
 ///@param status
@@ -36,7 +27,7 @@ const char* MipCmdStatus_toString(enum MipCmdStatus status)
     case MIP_STATUS_NONE:      return "MIP_STATUS_NONE";
     case MIP_STATUS_PENDING:   return "MIP_STATUS_PENDING";
     case MIP_STATUS_WAITING:   return "MIP_STATUS_WAITING";
-    case MIP_STATUS_COMPLETED: return "MIP_STATUS_COMPLETED";
+    // case MIP_STATUS_COMPLETED: return "MIP_STATUS_COMPLETED";
     case MIP_STATUS_TIMEDOUT:  return "MIP_STATUS_TIMEDOUT";
     case MIP_STATUS_CANCELLED: return "MIP_STATUS_CANCELLED";
     case MIP_STATUS_ERROR:     return "MIP_STATUS_ERROR";
@@ -64,6 +55,28 @@ const char* MipAck_toString(enum MipAck ack)
     return "Invalid";
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Converts the command result to a string for debugging.
+///
+///@param result Any value, generally from the MipCmdStatus or MipAck enum.
+///@return A constant string.
+///
+const char* MipCmdResult_toString(MipCmdResult result)
+{
+    if( result >= 0 )
+        return MipAck_toString((enum MipAck)result);
+    else
+        return MipCmdStatus_toString((enum MipCmdStatus)result);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Determines if the command has completed, timed out, been cancelled, or
+///       otherwise is no longer waiting for a response.
+///
+bool MipCmdResult_isFinished(enum MipCmdStatus status)
+{
+    return (status >= 0) || (status <= MIP_STATUS_TIMEDOUT);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +158,7 @@ void MipPendingCmd_initFull(struct MipPendingCmd* cmd, uint8_t descriptorSet, ui
     cmd->responseDescriptor = responseDescriptor;
     cmd->responseBuffer     = responseBuffer;
     cmd->responseBufferSize = responseBufferSize;
-    cmd->ackCode            = 0xFF; // invalid
+    // cmd->ackCode            = 0xFF; // invalid
     cmd->status             = MIP_STATUS_NONE;
 }
 
@@ -161,23 +174,13 @@ enum MipCmdStatus MipPendingCmd_status(const struct MipPendingCmd* cmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the ack/nack code sent by the device.
-///
-/// This is only valid if the command completed with status MIP_STATUS_COMPLETED.
-enum MipAck MipPendingCmd_ackCode(const struct MipPendingCmd* cmd)
-{
-    return cmd->ackCode;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the response payload pointer.
 ///
 /// This function may only be called after the command finishes with an ACK.
 ///
 const uint8_t* MipPendingCmd_response(const struct MipPendingCmd* cmd)
 {
-    assert(cmd->status == MIP_STATUS_COMPLETED);
-    assert(cmd->ackCode == MIP_ACK_OK);
+    assert(MipCmdResult_isFinished(cmd->status));
 
     return cmd->responseBuffer;
 }
@@ -191,7 +194,7 @@ const uint8_t* MipPendingCmd_response(const struct MipPendingCmd* cmd)
 ///
 uint8_t MipPendingCmd_responseLength(const struct MipPendingCmd* cmd)
 {
-    assert(cmd->status == MIP_STATUS_COMPLETED);
+    assert(MipCmdResult_isFinished(cmd->status));
 
     return cmd->responseLength;
 }
@@ -276,7 +279,7 @@ void MipCmdQueue_enqueue(struct MipCmdQueue* queue, struct MipPendingCmd* cmd)
 static enum MipCmdStatus processFieldsForPendingCmd(struct MipPendingCmd* pending, const struct MipPacket* packet, Timeout baseTimeout, Timestamp timestamp)
 {
     assert( pending->status != MIP_STATUS_NONE );         // pending->status must be set to MIP_STATUS_PENDING in MipCmdQueue_enqueue to get here.
-    assert( !MipCmdStatus_isFinished(pending->status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
+    assert( !MipCmdResult_isFinished(pending->status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
 
     if( pending->status == MIP_STATUS_PENDING )
     {
@@ -348,10 +351,10 @@ static enum MipCmdStatus processFieldsForPendingCmd(struct MipPendingCmd* pendin
             if( pending->responseLength > 0 )
                 memcpy(pending->responseBuffer, MipField_payload(&responseField), pending->responseLength);
 
-            pending->ackCode   = ackCode;
+            // pending->ackCode   = ackCode;
             pending->replyTime = timestamp;  // Completion time
 
-            return MIP_STATUS_COMPLETED;
+            return ackCode;
         }
     }
 
@@ -361,7 +364,7 @@ static enum MipCmdStatus processFieldsForPendingCmd(struct MipPendingCmd* pendin
     if( MipPendingCmd_checkTimeout(pending, timestamp) )
     {
         pending->responseLength = 0;
-        pending->ackCode        = MIP_NACK_COMMAND_TIMEOUT;
+        // pending->ackCode        = MIP_NACK_COMMAND_TIMEOUT;
 
         // Must be last!
         return MIP_STATUS_TIMEDOUT;
@@ -390,9 +393,9 @@ void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket
     {
         struct MipPendingCmd* pending = queue->firstPendingCmd;
 
-        const enum MipCmdStatus status = processFieldsForPendingCmd(pending, packet, queue->baseTimeout, timestamp);
+        const MipCmdResult status = processFieldsForPendingCmd(pending, packet, queue->baseTimeout, timestamp);
 
-        if( MipCmdStatus_isFinished(status) )
+        if( MipCmdResult_isFinished(status) )
         {
             queue->firstPendingCmd = queue->firstPendingCmd->next;
 
@@ -431,7 +434,7 @@ void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp now)
             queue->firstPendingCmd = queue->firstPendingCmd->next;
 
             pending->responseLength = 0;
-            pending->ackCode = MIP_NACK_COMMAND_TIMEOUT;
+            // pending->ackCode = MIP_NACK_COMMAND_TIMEOUT;
 
             // This must be last!
             pending->status = MIP_STATUS_TIMEDOUT;

@@ -198,10 +198,10 @@ struct MipCmdQueue* MipInterface_cmdQueue(struct MipInterfaceState* device)
 ///
 ///@returns The final status of the command.
 ///
-enum MipCmdStatus MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd)
+MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd)
 {
-    enum MipCmdStatus status;
-    while( !MipCmdStatus_isFinished(status = MipPendingCmd_status(cmd)) )
+    MipCmdResult status;
+    while( !MipCmdResult_isFinished(status = MipPendingCmd_status(cmd)) )
     {
         if( !MipInterface_poll(device) )
             return MIP_STATUS_ERROR;

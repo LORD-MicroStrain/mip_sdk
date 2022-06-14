@@ -108,52 +108,44 @@ int main(int argc, const char* argv[])
 
         device.sendToDevice(packet);
 
-        mscl::C::MipCmdStatus result = device.waitForReply(cmd);
+        mscl::C::MipCmdResult result = device.waitForReply(cmd);
 
-        if( result == mscl::C::MIP_STATUS_COMPLETED )
+        if( result == mscl::C::MIP_ACK_OK )
         {
-            mscl::C::MipAck ack = mscl::C::MipPendingCmd_ackCode(&cmd);
-            if( ack == mscl::C::MIP_ACK_OK )
+            const size_t responseSize = mscl::C::MipPendingCmd_responseLength(&cmd);
+            printf("Success: command completed with ACK: responseLength=%ld\n", responseSize);
+
+            mscl::MipCmd_Base_GetDeviceInfo_Response response;
+            size_t used = mscl::extract_MipCmd_Base_GetDeviceInfo_Response(mscl::C::MipPendingCmd_response(&cmd), responseSize, 0, &response);
+            if( used == responseSize )
             {
-                const size_t responseSize = mscl::C::MipPendingCmd_responseLength(&cmd);
-                printf("Success: command completed with ACK: responseLength=%ld\n", responseSize);
-
-                mscl::MipCmd_Base_GetDeviceInfo_Response response;
-                size_t used = mscl::extract_MipCmd_Base_GetDeviceInfo_Response(mscl::C::MipPendingCmd_response(&cmd), responseSize, 0, &response);
-                if( used == responseSize )
+                auto print_info = [](const char* name, const char info[16])
                 {
-                    auto print_info = [](const char* name, const char info[16])
-                    {
-                        char msg[17] = {0};
-                        std::strncpy(msg, info, 16);
-                        printf("  %s%s\n", name, msg);
-                    };
+                    char msg[17] = {0};
+                    std::strncpy(msg, info, 16);
+                    printf("  %s%s\n", name, msg);
+                };
 
-                    print_info("Model name:     ", response.device_info.model_name);
-                    print_info("Model number:   ", response.device_info.model_number);
-                    print_info("Serial Number:  ", response.device_info.serial_number);
-                    print_info("Device Options: ", response.device_info.device_options);
-                    print_info("Lot Number:     ", response.device_info.lot_number);
+                print_info("Model name:     ", response.device_info.model_name);
+                print_info("Model number:   ", response.device_info.model_number);
+                print_info("Serial Number:  ", response.device_info.serial_number);
+                print_info("Device Options: ", response.device_info.device_options);
+                print_info("Lot Number:     ", response.device_info.lot_number);
 
-                    printf(  "  Firmware version %d.%d.%d\n\n",
-                        (response.device_info.firmware_version / 1000),
-                        (response.device_info.firmware_version / 100) % 10,
-                        (response.device_info.firmware_version / 1)   % 100
-                    );
-                }
-                else
-                {
-                    printf("Error: response size does not match expected (at least %ld bytes)\n", used);
-                }
+                printf(  "  Firmware version %d.%d.%d\n\n",
+                    (response.device_info.firmware_version / 1000),
+                    (response.device_info.firmware_version / 100) % 10,
+                    (response.device_info.firmware_version / 1)   % 100
+                );
             }
             else
             {
-                printf("Error: command completed with NACK: %s (%d)\n", mscl::C::MipAck_toString(ack), ack);
+                printf("Error: response size does not match expected (at least %ld bytes)\n", used);
             }
         }
         else
         {
-            printf("Error: the command completed with status code %s (%d)\n", mscl::C::MipCmdStatus_toString(result), result);
+            printf("Error: command completed with NACK: %s (%d)\n", mscl::C::MipCmdResult_toString(result), result);
         }
 
 #endif

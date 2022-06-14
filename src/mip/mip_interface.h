@@ -87,7 +87,7 @@ void MipInterface_receivePacket(struct MipInterfaceState* device, const struct M
 // Commands
 //
 
-enum MipCmdStatus MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd);
+MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd);
 
 //
 // Accessors
