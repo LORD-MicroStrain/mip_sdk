@@ -3,9 +3,12 @@
 #include "mip.hpp"
 #include "mip_interface.h"
 
+#include "definitions/descriptors.h"
+
 
 namespace mscl
 {
+
 
 class MipDeviceInterface : public C::MipInterfaceState
 {
@@ -26,7 +29,7 @@ public:
 
     void receivePacket(const C::MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
 
-    C::MipCmdResult waitForReply(const C::MipPendingCmd& cmd) { return C::MipInterface_waitForReply(this, &cmd); }
+    MipCmdResult waitForReply(const C::MipPendingCmd& cmd) { return C::MipInterface_waitForReply(this, &cmd); }
 
     C::MipParsingState* parser() { return C::MipInterface_parser(this); }
     C::MipCmdQueue* cmdQueue() { return C::MipInterface_cmdQueue(this); }
@@ -38,6 +41,42 @@ public:
     virtual bool poll() = 0;
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
 };
+
+
+
+template<class Cmd>
+MipCmdResult runCommand(C::MipInterfaceState* device, const Cmd& cmd)
+{
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
+
+    C::MipPendingCmd pending;
+    C::MipPendingCmd_init(&pending, MipFieldInfo<Cmd>::descriptorSet, MipFieldInfo<Cmd>::fieldDescriptor);
+    C::MipCmdQueue_enqueue(C::MipInterface_cmdQueue(device), &pending);
+
+    return C::MipInterface_runCommandPacket(device, &packet, &pending);
+}
+
+template<class Cmd>
+MipCmdResult runCommand(C::MipInterfaceState* device, const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response)
+{
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
+
+    C::MipPendingCmd pending;
+    C::MipPendingCmd_initWithResponse(&pending, MipFieldInfo<Cmd>::descriptorSet, MipFieldInfo<Cmd>::fieldDescriptor, MipFieldInfo<Cmd>::responseDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX);
+
+    MipCmdResult result = C::MipInterface_runCommandPacket(device, &packet, &pending);
+    if( result != MIP_ACK_OK )
+        return result;
+
+    size_t responseLength = C::MipPendingCmd_responseLength(&pending);
+    size_t offset = MipFieldInfo<Cmd>::extract_response(buffer, responseLength, 0, response);
+    if( offset != responseLength )
+        return MIP_STATUS_ERROR;
+
+    return MIP_ACK_OK;
+}
 
 
 } // namespace mscl

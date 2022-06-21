@@ -1,6 +1,10 @@
 
 #include "mip_interface.h"
 
+#include "mip_field.h"
+
+#include "definitions/descriptors.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper around MipInterface_receivePacket for use with MipParser.
@@ -207,4 +211,69 @@ MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const s
             return MIP_STATUS_ERROR;
     }
     return status;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Runs a command using a pre-serialized payload.
+///
+///@param device
+///@param descriptorSet
+///       Command descriptor set.
+///@param cmdDescriptor
+///       Command field descriptor.
+///@param cmdData
+///       Optional payload data. May be NULL if cmdLength == 0.
+///@param cmdLength
+///       Length of the command payload (parameters).
+///
+///@return MipCmdResult, any value from MipAck or MipCmdStatus.
+///        MIP_ACK_OK - Command completed successfully.
+///        MIP_NACK_* - Device rejected the command.
+///        MIP_STATUS_* - An error occured (e.g. timeout).
+///
+MipCmdResult MipInterface_runCommand(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t cmdDescriptor, const uint8_t* cmdData, uint8_t cmdLength)
+{
+    return MipInterface_runCommandWithResponse(device, descriptorSet, cmdDescriptor, cmdData, cmdLength, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@copydoc MipInterface_runCommand
+///
+///@param responseDescriptor
+///       Descriptor of the response data. May be MIP_INVALID_FIELD_DESCRIPTOR
+///       if no response is expected.
+///
+MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* device,
+    uint8_t descriptorSet, uint8_t cmdDescriptor, const uint8_t* cmdData, uint8_t cmdLength,
+    uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t* responseLength_inout)
+{
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+
+    struct MipPacket packet;
+    MipPacket_create(&packet, buffer, sizeof(buffer), descriptorSet);
+    MipPacket_addField(&packet, cmdDescriptor, cmdData, cmdLength);
+    MipPacket_finalize(&packet);
+
+    struct MipPendingCmd cmd;
+    MipPendingCmd_initWithResponse(&cmd, descriptorSet, cmdDescriptor, responseDescriptor, responseBuffer, *responseLength_inout);
+
+    MipCmdResult result = MipInterface_runCommandPacket(device, &packet, &cmd);
+
+    if( responseLength_inout != NULL )
+        *responseLength_inout = MipPendingCmd_responseLength(&cmd);
+
+    return result;
+}
+
+MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, const struct MipPacket* packet, struct MipPendingCmd* cmd)
+{
+    MipCmdQueue_enqueue(MipInterface_cmdQueue(device), cmd);
+
+    if( !MipInterface_sendToDevice(device, MipPacket_pointer(packet), MipPacket_totalLength(packet)) )
+    {
+        MipCmdQueue_dequeue(MipInterface_cmdQueue(device), &cmd);
+        return MIP_STATUS_ERROR;
+    }
+
+    return MipInterface_waitForReply(device, cmd);
 }

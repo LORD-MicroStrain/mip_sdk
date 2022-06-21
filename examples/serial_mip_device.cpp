@@ -1,13 +1,13 @@
 
 #include "serial_mip_device.hpp"
 
-#include <ctime>
-
+#include <chrono>
+#include <cstdio>
 
 mscl::Timestamp getCurrentTimestamp()
 {
-    // Todo: this will overflow and clamp to -1 after about 25 days.
-    return std::clock() * 1000 / CLOCKS_PER_SEC;
+    using namespace std::chrono;
+    duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
 
@@ -21,7 +21,8 @@ bool MipDevice::poll()
 {
     try
     {
-        mscl::C::MipCmdQueue_update(cmdQueue(), getCurrentTimestamp());
+        mscl::Timestamp now = getCurrentTimestamp();
+        mscl::C::MipCmdQueue_update(cmdQueue(), now);
 
         return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mscl::Timestamp* timestamp_out)->bool
         {
@@ -42,6 +43,7 @@ bool MipDevice::sendToDevice(const uint8_t* data, size_t length)
     try
     {
         mPort.write(data, length);
+        return true;
     }
     catch(const std::exception& e)
     {
