@@ -26,6 +26,8 @@ namespace mscl
 
 using C::PacketLength;
 
+template<class Field> struct MipFieldInfo;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP field.
@@ -120,11 +122,23 @@ public:
     FieldIterator end() const { return MipField(); }
 #endif
 
-    template<class FieldType>
-    RemainingCount addField(const FieldType& field);
+    template<class Field>
+    bool addField(const Field& field, uint8_t fieldDescriptor = MipFieldInfo<Field>::fieldDescriptor)
+    {
+        uint8_t* payload;
+        size_t available = allocField(fieldDescriptor, 0, &payload);
+        size_t used = MipFieldInfo<Field>::insert(payload, available, 0, field);
+        return reallocLastField(payload, used) >= 0;
+    }
 
-
-
+    template<class Field>
+    static MipPacket createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=MipFieldInfo<Field>::fieldDescriptor)
+    {
+        MipPacket packet(buffer, bufferSize, MipFieldInfo<Field>::descriptorSet);
+        packet.addField<Field>(field, fieldDescriptor);
+        packet.finalize();
+        return packet;
+    }
 
 private:
     /// Iterator class for use with the range-based for loop.
