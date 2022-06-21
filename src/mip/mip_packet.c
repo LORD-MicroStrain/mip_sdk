@@ -340,15 +340,16 @@ RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* pay
     assert( newPayloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
 
     uint8_t* fieldPtr = payloadPtr - MIP_INDEX_FIELD_PAYLOAD;
-    const uint8_t oldPayloadLength = fieldPtr[MIP_INDEX_FIELD_LEN];
+    const uint8_t oldFieldLength = fieldPtr[MIP_INDEX_FIELD_LEN];
+    const uint8_t newFieldLength = newPayloadLength + MIP_FIELD_HEADER_LENGTH;
 
-    const RemainingCount deltaLength = newPayloadLength - oldPayloadLength;
+    const RemainingCount deltaLength = newFieldLength - oldFieldLength;
 
     RemainingCount remaining = MipPacket_remainingSpace(packet) + deltaLength;
 
     if( remaining >= 0 )
     {
-        fieldPtr[MIP_INDEX_FIELD_LEN] = newPayloadLength;
+        fieldPtr[MIP_INDEX_FIELD_LEN] = newFieldLength;
         packet->buffer[MIP_INDEX_LENGTH] += deltaLength;
     }
 
