@@ -38,17 +38,20 @@ set(UTILS_SOURCES
 set(MIP_DIR "${SRC_DIR}/mip")
 
 set(MIP_SOURCES
+    "${MIP_DIR}/mip_cmdqueue.c"
+    "${MIP_DIR}/mip_cmdqueue.h"
+    "${MIP_DIR}/mip_field.c"
+    "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/mip_offsets.h"
     "${MIP_DIR}/mip_packet.c"
     "${MIP_DIR}/mip_packet.h"
     "${MIP_DIR}/mip_parser.c"
     "${MIP_DIR}/mip_parser.h"
-    "${MIP_DIR}/mip_field.c"
-    "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/mip_result.c"
+    "${MIP_DIR}/mip_result.h"
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
-    "${MIP_DIR}/mip_cmdqueue.c"
-    "${MIP_DIR}/mip_cmdqueue.h"
 )
 
 set(MIPDEV_SOURCES
