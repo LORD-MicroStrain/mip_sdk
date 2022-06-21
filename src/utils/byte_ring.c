@@ -110,7 +110,7 @@ size_t ByteRing_getWritePtr(struct ByteRingState* state, uint8_t** const ptr_out
 
 void ByteRing_notifyWritten(struct ByteRingState* state, size_t count)
 {
-    assert( count < ByteRing_freeSpace(state) );
+    assert( count <= ByteRing_freeSpace(state) );
 
     state->head += count;
 }
