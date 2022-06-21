@@ -24,7 +24,6 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_System_CommMode(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_System_CommMode* self)
 {
-    offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
     offset = insert_u8(buffer, bufferSize, offset, self->mode);
     
     return offset;
@@ -32,7 +31,6 @@ size_t insert_MipCmd_System_CommMode(uint8_t* buffer, size_t bufferSize, size_t 
 
 size_t extract_MipCmd_System_CommMode(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_System_CommMode* self)
 {
-    offset = extract_MipFunctionSelector(buffer, bufferSize, offset, &self->function);
     offset = extract_u8(buffer, bufferSize, offset, &self->mode);
     
     return offset;

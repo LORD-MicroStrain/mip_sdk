@@ -143,8 +143,6 @@ size_t extract_MipData_Filter_NedVelocity(const uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AttitudeQuaternion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AttitudeQuaternion* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_float(buffer, bufferSize, offset, self->q[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -154,8 +152,6 @@ size_t insert_MipData_Filter_AttitudeQuaternion(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_AttitudeQuaternion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AttitudeQuaternion* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->q[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -167,8 +163,6 @@ size_t extract_MipData_Filter_AttitudeQuaternion(const uint8_t* buffer, size_t b
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AttitudeDcm(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AttitudeDcm* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->dcm[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -178,8 +172,6 @@ size_t insert_MipData_Filter_AttitudeDcm(uint8_t* buffer, size_t bufferSize, siz
 
 size_t extract_MipData_Filter_AttitudeDcm(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AttitudeDcm* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->dcm[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -213,8 +205,6 @@ size_t extract_MipData_Filter_EulerAngles(const uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_GyroBias(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GyroBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -224,8 +214,6 @@ size_t insert_MipData_Filter_GyroBias(uint8_t* buffer, size_t bufferSize, size_t
 
 size_t extract_MipData_Filter_GyroBias(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_GyroBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -237,8 +225,6 @@ size_t extract_MipData_Filter_GyroBias(const uint8_t* buffer, size_t bufferSize,
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AccelBias(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AccelBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -248,8 +234,6 @@ size_t insert_MipData_Filter_AccelBias(uint8_t* buffer, size_t bufferSize, size_
 
 size_t extract_MipData_Filter_AccelBias(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AccelBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -327,8 +311,6 @@ size_t extract_MipData_Filter_EulerAnglesUncertainty(const uint8_t* buffer, size
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_GyroBiasUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GyroBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -338,8 +320,6 @@ size_t insert_MipData_Filter_GyroBiasUncertainty(uint8_t* buffer, size_t bufferS
 
 size_t extract_MipData_Filter_GyroBiasUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_GyroBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -351,8 +331,6 @@ size_t extract_MipData_Filter_GyroBiasUncertainty(const uint8_t* buffer, size_t 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AccelBiasUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AccelBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -362,8 +340,6 @@ size_t insert_MipData_Filter_AccelBiasUncertainty(uint8_t* buffer, size_t buffer
 
 size_t extract_MipData_Filter_AccelBiasUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AccelBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -415,8 +391,6 @@ size_t extract_MipData_Filter_Status(const uint8_t* buffer, size_t bufferSize, s
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_LinearAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_LinearAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->accel[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -426,8 +400,6 @@ size_t insert_MipData_Filter_LinearAccel(uint8_t* buffer, size_t bufferSize, siz
 
 size_t extract_MipData_Filter_LinearAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_LinearAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->accel[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -439,8 +411,6 @@ size_t extract_MipData_Filter_LinearAccel(const uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_GravityVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GravityVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->gravity[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -450,8 +420,6 @@ size_t insert_MipData_Filter_GravityVector(uint8_t* buffer, size_t bufferSize, s
 
 size_t extract_MipData_Filter_GravityVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_GravityVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->gravity[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -463,8 +431,6 @@ size_t extract_MipData_Filter_GravityVector(const uint8_t* buffer, size_t buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_CompAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_CompAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->accel[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -474,8 +440,6 @@ size_t insert_MipData_Filter_CompAccel(uint8_t* buffer, size_t bufferSize, size_
 
 size_t extract_MipData_Filter_CompAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_CompAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->accel[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -487,8 +451,6 @@ size_t extract_MipData_Filter_CompAccel(const uint8_t* buffer, size_t bufferSize
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_CompAngularRate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_CompAngularRate* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->gyro[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -498,8 +460,6 @@ size_t insert_MipData_Filter_CompAngularRate(uint8_t* buffer, size_t bufferSize,
 
 size_t extract_MipData_Filter_CompAngularRate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_CompAngularRate* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->gyro[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -511,8 +471,6 @@ size_t extract_MipData_Filter_CompAngularRate(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_QuaternionAttitudeUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_QuaternionAttitudeUncertainty* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_float(buffer, bufferSize, offset, self->q[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -522,8 +480,6 @@ size_t insert_MipData_Filter_QuaternionAttitudeUncertainty(uint8_t* buffer, size
 
 size_t extract_MipData_Filter_QuaternionAttitudeUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_QuaternionAttitudeUncertainty* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->q[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -613,8 +569,6 @@ size_t extract_MipData_Filter_MagneticModel(const uint8_t* buffer, size_t buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AccelScaleFactor(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AccelScaleFactor* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scale_factor[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -624,8 +578,6 @@ size_t insert_MipData_Filter_AccelScaleFactor(uint8_t* buffer, size_t bufferSize
 
 size_t extract_MipData_Filter_AccelScaleFactor(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AccelScaleFactor* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scale_factor[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -637,8 +589,6 @@ size_t extract_MipData_Filter_AccelScaleFactor(const uint8_t* buffer, size_t buf
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AccelScaleFactorUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AccelScaleFactorUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scale_factor_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -648,8 +598,6 @@ size_t insert_MipData_Filter_AccelScaleFactorUncertainty(uint8_t* buffer, size_t
 
 size_t extract_MipData_Filter_AccelScaleFactorUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AccelScaleFactorUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scale_factor_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -661,8 +609,6 @@ size_t extract_MipData_Filter_AccelScaleFactorUncertainty(const uint8_t* buffer,
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_GyroScaleFactor(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GyroScaleFactor* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scale_factor[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -672,8 +618,6 @@ size_t insert_MipData_Filter_GyroScaleFactor(uint8_t* buffer, size_t bufferSize,
 
 size_t extract_MipData_Filter_GyroScaleFactor(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_GyroScaleFactor* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scale_factor[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -685,8 +629,6 @@ size_t extract_MipData_Filter_GyroScaleFactor(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_GyroScaleFactorUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_GyroScaleFactorUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scale_factor_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -696,8 +638,6 @@ size_t insert_MipData_Filter_GyroScaleFactorUncertainty(uint8_t* buffer, size_t 
 
 size_t extract_MipData_Filter_GyroScaleFactorUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_GyroScaleFactorUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scale_factor_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -709,8 +649,6 @@ size_t extract_MipData_Filter_GyroScaleFactorUncertainty(const uint8_t* buffer, 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagBias(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -720,8 +658,6 @@ size_t insert_MipData_Filter_MagBias(uint8_t* buffer, size_t bufferSize, size_t 
 
 size_t extract_MipData_Filter_MagBias(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagBias* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -733,8 +669,6 @@ size_t extract_MipData_Filter_MagBias(const uint8_t* buffer, size_t bufferSize, 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagBiasUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->bias_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -744,8 +678,6 @@ size_t insert_MipData_Filter_MagBiasUncertainty(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_MagBiasUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagBiasUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->bias_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -819,8 +751,6 @@ size_t extract_MipData_Filter_DensityAltitude(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AntennaOffsetCorrection(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AntennaOffsetCorrection* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->offset[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -830,8 +760,6 @@ size_t insert_MipData_Filter_AntennaOffsetCorrection(uint8_t* buffer, size_t buf
 
 size_t extract_MipData_Filter_AntennaOffsetCorrection(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AntennaOffsetCorrection* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->offset[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -843,8 +771,6 @@ size_t extract_MipData_Filter_AntennaOffsetCorrection(const uint8_t* buffer, siz
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_AntennaOffsetCorrectionUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_AntennaOffsetCorrectionUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->offset_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -854,8 +780,6 @@ size_t insert_MipData_Filter_AntennaOffsetCorrectionUncertainty(uint8_t* buffer,
 
 size_t extract_MipData_Filter_AntennaOffsetCorrectionUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_AntennaOffsetCorrectionUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->offset_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -868,8 +792,6 @@ size_t extract_MipData_Filter_AntennaOffsetCorrectionUncertainty(const uint8_t* 
 size_t insert_MipData_Filter_MultiAntennaOffsetCorrection(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MultiAntennaOffsetCorrection* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->offset[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -880,8 +802,6 @@ size_t insert_MipData_Filter_MultiAntennaOffsetCorrection(uint8_t* buffer, size_
 size_t extract_MipData_Filter_MultiAntennaOffsetCorrection(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MultiAntennaOffsetCorrection* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->offset[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -894,8 +814,6 @@ size_t extract_MipData_Filter_MultiAntennaOffsetCorrection(const uint8_t* buffer
 size_t insert_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MultiAntennaOffsetCorrectionUncertainty* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->offset_uncert[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -906,8 +824,6 @@ size_t insert_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(uint8_t* bu
 size_t extract_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MultiAntennaOffsetCorrectionUncertainty* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->offset_uncert[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -919,8 +835,6 @@ size_t extract_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(const uint
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerOffset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerOffset* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->hard_iron[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -930,8 +844,6 @@ size_t insert_MipData_Filter_MagnetometerOffset(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_MagnetometerOffset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerOffset* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->hard_iron[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -943,8 +855,6 @@ size_t extract_MipData_Filter_MagnetometerOffset(const uint8_t* buffer, size_t b
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->soft_iron[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -954,8 +864,6 @@ size_t insert_MipData_Filter_MagnetometerMatrix(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_MagnetometerMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->soft_iron[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -967,8 +875,6 @@ size_t extract_MipData_Filter_MagnetometerMatrix(const uint8_t* buffer, size_t b
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerOffsetUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerOffsetUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->hard_iron_uncertainty[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -978,8 +884,6 @@ size_t insert_MipData_Filter_MagnetometerOffsetUncertainty(uint8_t* buffer, size
 
 size_t extract_MipData_Filter_MagnetometerOffsetUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerOffsetUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->hard_iron_uncertainty[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -991,8 +895,6 @@ size_t extract_MipData_Filter_MagnetometerOffsetUncertainty(const uint8_t* buffe
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerMatrixUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerMatrixUncertainty* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->soft_iron_uncertainty[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1002,8 +904,6 @@ size_t insert_MipData_Filter_MagnetometerMatrixUncertainty(uint8_t* buffer, size
 
 size_t extract_MipData_Filter_MagnetometerMatrixUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerMatrixUncertainty* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->soft_iron_uncertainty[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1015,8 +915,6 @@ size_t extract_MipData_Filter_MagnetometerMatrixUncertainty(const uint8_t* buffe
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerCovarianceMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerCovarianceMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->covariance[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1026,8 +924,6 @@ size_t insert_MipData_Filter_MagnetometerCovarianceMatrix(uint8_t* buffer, size_
 
 size_t extract_MipData_Filter_MagnetometerCovarianceMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerCovarianceMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->covariance[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1039,8 +935,6 @@ size_t extract_MipData_Filter_MagnetometerCovarianceMatrix(const uint8_t* buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_MagnetometerResidualVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_MagnetometerResidualVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->residual[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1050,8 +944,6 @@ size_t insert_MipData_Filter_MagnetometerResidualVector(uint8_t* buffer, size_t 
 
 size_t extract_MipData_Filter_MagnetometerResidualVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_MagnetometerResidualVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->residual[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1110,8 +1002,6 @@ size_t insert_MipData_Filter_GnssPosAidStatus(uint8_t* buffer, size_t bufferSize
     offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
     offset = insert_float(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_MipGnssAidStatusFlags(buffer, bufferSize, offset, self->status);
-    
-    assert(8 <= 8);
     for(unsigned int i=0; i < 8; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->reserved[i]);
     
@@ -1123,8 +1013,6 @@ size_t extract_MipData_Filter_GnssPosAidStatus(const uint8_t* buffer, size_t buf
     offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
     offset = extract_float(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_MipGnssAidStatusFlags(buffer, bufferSize, offset, &self->status);
-    
-    assert(8 <= 8);
     for(unsigned int i=0; i < 8; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->reserved[i]);
     
@@ -1137,8 +1025,6 @@ size_t insert_MipData_Filter_GnssAttAidStatus(uint8_t* buffer, size_t bufferSize
 {
     offset = insert_float(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_MipGnssAidStatusFlags(buffer, bufferSize, offset, self->status);
-    
-    assert(8 <= 8);
     for(unsigned int i=0; i < 8; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->reserved[i]);
     
@@ -1149,8 +1035,6 @@ size_t extract_MipData_Filter_GnssAttAidStatus(const uint8_t* buffer, size_t buf
 {
     offset = extract_float(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_MipGnssAidStatusFlags(buffer, bufferSize, offset, &self->status);
-    
-    assert(8 <= 8);
     for(unsigned int i=0; i < 8; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->reserved[i]);
     
@@ -1175,8 +1059,6 @@ size_t insert_MipData_Filter_HeadAidStatus(uint8_t* buffer, size_t bufferSize, s
 {
     offset = insert_float(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_MipData_Filter_HeadAidStatus_Headingaidtype(buffer, bufferSize, offset, self->type);
-    
-    assert(2 <= 2);
     for(unsigned int i=0; i < 2; i++)
         offset = insert_float(buffer, bufferSize, offset, self->reserved[i]);
     
@@ -1187,8 +1069,6 @@ size_t extract_MipData_Filter_HeadAidStatus(const uint8_t* buffer, size_t buffer
 {
     offset = extract_float(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_MipData_Filter_HeadAidStatus_Headingaidtype(buffer, bufferSize, offset, &self->type);
-    
-    assert(2 <= 2);
     for(unsigned int i=0; i < 2; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->reserved[i]);
     
@@ -1199,8 +1079,6 @@ size_t extract_MipData_Filter_HeadAidStatus(const uint8_t* buffer, size_t buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_RelPosNed(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_RelPosNed* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->relative_position[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1210,8 +1088,6 @@ size_t insert_MipData_Filter_RelPosNed(uint8_t* buffer, size_t bufferSize, size_
 
 size_t extract_MipData_Filter_RelPosNed(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_RelPosNed* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->relative_position[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1223,8 +1099,6 @@ size_t extract_MipData_Filter_RelPosNed(const uint8_t* buffer, size_t bufferSize
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_EcefPos(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_EcefPos* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->position_ecef[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1234,8 +1108,6 @@ size_t insert_MipData_Filter_EcefPos(uint8_t* buffer, size_t bufferSize, size_t 
 
 size_t extract_MipData_Filter_EcefPos(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_EcefPos* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->position_ecef[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1247,8 +1119,6 @@ size_t extract_MipData_Filter_EcefPos(const uint8_t* buffer, size_t bufferSize, 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_EcefVel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_EcefVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->velocity_ecef[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1258,8 +1128,6 @@ size_t insert_MipData_Filter_EcefVel(uint8_t* buffer, size_t bufferSize, size_t 
 
 size_t extract_MipData_Filter_EcefVel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_EcefVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->velocity_ecef[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1271,8 +1139,6 @@ size_t extract_MipData_Filter_EcefVel(const uint8_t* buffer, size_t bufferSize, 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_EcefPosUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_EcefPosUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->pos_uncertainty[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1282,8 +1148,6 @@ size_t insert_MipData_Filter_EcefPosUncertainty(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_EcefPosUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_EcefPosUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->pos_uncertainty[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
@@ -1295,8 +1159,6 @@ size_t extract_MipData_Filter_EcefPosUncertainty(const uint8_t* buffer, size_t b
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Filter_EcefVelUncertainty(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Filter_EcefVelUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->vel_uncertainty[i]);
     offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
@@ -1306,8 +1168,6 @@ size_t insert_MipData_Filter_EcefVelUncertainty(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Filter_EcefVelUncertainty(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Filter_EcefVelUncertainty* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->vel_uncertainty[i]);
     offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);

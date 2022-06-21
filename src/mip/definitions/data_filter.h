@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipFilterData_Descriptors
+enum MipFilterDataDescriptors
 {
     MIP_FILTER_DATA_DESC_SET                                         = 0x82,
     
@@ -1205,5 +1205,1162 @@ size_t extract_MipData_Filter_GnssDualAntennaStatus(const uint8_t* buffer, size_
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_LlhPos>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LLH_POS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_LlhPos& self)
+    {
+        return insert_MipData_Filter_LlhPos(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_LlhPos& self)
+    {
+        return extract_MipData_Filter_LlhPos(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_NedVelocity>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_NED_VEL;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_NedVelocity& self)
+    {
+        return insert_MipData_Filter_NedVelocity(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_NedVelocity& self)
+    {
+        return extract_MipData_Filter_NedVelocity(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AttitudeQuaternion>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_QUATERNION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AttitudeQuaternion& self)
+    {
+        return insert_MipData_Filter_AttitudeQuaternion(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AttitudeQuaternion& self)
+    {
+        return extract_MipData_Filter_AttitudeQuaternion(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AttitudeDcm>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_MATRIX;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AttitudeDcm& self)
+    {
+        return insert_MipData_Filter_AttitudeDcm(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AttitudeDcm& self)
+    {
+        return extract_MipData_Filter_AttitudeDcm(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EulerAngles>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EulerAngles& self)
+    {
+        return insert_MipData_Filter_EulerAngles(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EulerAngles& self)
+    {
+        return extract_MipData_Filter_EulerAngles(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GyroBias>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GyroBias& self)
+    {
+        return insert_MipData_Filter_GyroBias(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GyroBias& self)
+    {
+        return extract_MipData_Filter_GyroBias(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AccelBias>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AccelBias& self)
+    {
+        return insert_MipData_Filter_AccelBias(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AccelBias& self)
+    {
+        return extract_MipData_Filter_AccelBias(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_LlhPosUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_POS_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_LlhPosUncertainty& self)
+    {
+        return insert_MipData_Filter_LlhPosUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_LlhPosUncertainty& self)
+    {
+        return extract_MipData_Filter_LlhPosUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_NedVelUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_VEL_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_NedVelUncertainty& self)
+    {
+        return insert_MipData_Filter_NedVelUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_NedVelUncertainty& self)
+    {
+        return extract_MipData_Filter_NedVelUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EulerAnglesUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_EULER;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EulerAnglesUncertainty& self)
+    {
+        return insert_MipData_Filter_EulerAnglesUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EulerAnglesUncertainty& self)
+    {
+        return extract_MipData_Filter_EulerAnglesUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GyroBiasUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GyroBiasUncertainty& self)
+    {
+        return insert_MipData_Filter_GyroBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GyroBiasUncertainty& self)
+    {
+        return extract_MipData_Filter_GyroBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AccelBiasUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AccelBiasUncertainty& self)
+    {
+        return insert_MipData_Filter_AccelBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AccelBiasUncertainty& self)
+    {
+        return extract_MipData_Filter_AccelBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_Timestamp>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_Timestamp& self)
+    {
+        return insert_MipData_Filter_Timestamp(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_Timestamp& self)
+    {
+        return extract_MipData_Filter_Timestamp(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_Status>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_Status& self)
+    {
+        return insert_MipData_Filter_Status(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_Status& self)
+    {
+        return extract_MipData_Filter_Status(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_LinearAccel>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LINEAR_ACCELERATION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_LinearAccel& self)
+    {
+        return insert_MipData_Filter_LinearAccel(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_LinearAccel& self)
+    {
+        return extract_MipData_Filter_LinearAccel(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GravityVector>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GRAVITY_VECTOR;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GravityVector& self)
+    {
+        return insert_MipData_Filter_GravityVector(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GravityVector& self)
+    {
+        return extract_MipData_Filter_GravityVector(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_CompAccel>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ACCELERATION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_CompAccel& self)
+    {
+        return insert_MipData_Filter_CompAccel(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_CompAccel& self)
+    {
+        return extract_MipData_Filter_CompAccel(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_CompAngularRate>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ANGULAR_RATE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_CompAngularRate& self)
+    {
+        return insert_MipData_Filter_CompAngularRate(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_CompAngularRate& self)
+    {
+        return extract_MipData_Filter_CompAngularRate(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_QuaternionAttitudeUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_QUATERNION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_QuaternionAttitudeUncertainty& self)
+    {
+        return insert_MipData_Filter_QuaternionAttitudeUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_QuaternionAttitudeUncertainty& self)
+    {
+        return extract_MipData_Filter_QuaternionAttitudeUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_Wgs84GravityMag>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_WGS84_GRAVITY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_Wgs84GravityMag& self)
+    {
+        return insert_MipData_Filter_Wgs84GravityMag(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_Wgs84GravityMag& self)
+    {
+        return extract_MipData_Filter_Wgs84GravityMag(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_HeadingUpdateState>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEADING_UPDATE_STATE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_HeadingUpdateState& self)
+    {
+        return insert_MipData_Filter_HeadingUpdateState(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_HeadingUpdateState& self)
+    {
+        return extract_MipData_Filter_HeadingUpdateState(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagneticModel>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAGNETIC_MODEL;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagneticModel& self)
+    {
+        return insert_MipData_Filter_MagneticModel(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagneticModel& self)
+    {
+        return extract_MipData_Filter_MagneticModel(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AccelScaleFactor>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AccelScaleFactor& self)
+    {
+        return insert_MipData_Filter_AccelScaleFactor(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AccelScaleFactor& self)
+    {
+        return extract_MipData_Filter_AccelScaleFactor(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AccelScaleFactorUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AccelScaleFactorUncertainty& self)
+    {
+        return insert_MipData_Filter_AccelScaleFactorUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AccelScaleFactorUncertainty& self)
+    {
+        return extract_MipData_Filter_AccelScaleFactorUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GyroScaleFactor>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GyroScaleFactor& self)
+    {
+        return insert_MipData_Filter_GyroScaleFactor(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GyroScaleFactor& self)
+    {
+        return extract_MipData_Filter_GyroScaleFactor(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GyroScaleFactorUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GyroScaleFactorUncertainty& self)
+    {
+        return insert_MipData_Filter_GyroScaleFactorUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GyroScaleFactorUncertainty& self)
+    {
+        return extract_MipData_Filter_GyroScaleFactorUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagBias>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagBias& self)
+    {
+        return insert_MipData_Filter_MagBias(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagBias& self)
+    {
+        return extract_MipData_Filter_MagBias(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagBiasUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagBiasUncertainty& self)
+    {
+        return insert_MipData_Filter_MagBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagBiasUncertainty& self)
+    {
+        return extract_MipData_Filter_MagBiasUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_StandardAtmosphere>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_STANDARD_ATMOSPHERE_DATA;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_StandardAtmosphere& self)
+    {
+        return insert_MipData_Filter_StandardAtmosphere(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_StandardAtmosphere& self)
+    {
+        return extract_MipData_Filter_StandardAtmosphere(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_PressureAltitude>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_PRESSURE_ALTITUDE_DATA;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_PressureAltitude& self)
+    {
+        return insert_MipData_Filter_PressureAltitude(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_PressureAltitude& self)
+    {
+        return extract_MipData_Filter_PressureAltitude(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_DensityAltitude>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_DENSITY_ALTITUDE_DATA;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_DensityAltitude& self)
+    {
+        return insert_MipData_Filter_DensityAltitude(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_DensityAltitude& self)
+    {
+        return extract_MipData_Filter_DensityAltitude(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AntennaOffsetCorrection>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AntennaOffsetCorrection& self)
+    {
+        return insert_MipData_Filter_AntennaOffsetCorrection(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AntennaOffsetCorrection& self)
+    {
+        return extract_MipData_Filter_AntennaOffsetCorrection(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AntennaOffsetCorrectionUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AntennaOffsetCorrectionUncertainty& self)
+    {
+        return insert_MipData_Filter_AntennaOffsetCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AntennaOffsetCorrectionUncertainty& self)
+    {
+        return extract_MipData_Filter_AntennaOffsetCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MultiAntennaOffsetCorrection>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MultiAntennaOffsetCorrection& self)
+    {
+        return insert_MipData_Filter_MultiAntennaOffsetCorrection(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MultiAntennaOffsetCorrection& self)
+    {
+        return extract_MipData_Filter_MultiAntennaOffsetCorrection(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MultiAntennaOffsetCorrectionUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MultiAntennaOffsetCorrectionUncertainty& self)
+    {
+        return insert_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MultiAntennaOffsetCorrectionUncertainty& self)
+    {
+        return extract_MipData_Filter_MultiAntennaOffsetCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerOffset>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerOffset& self)
+    {
+        return insert_MipData_Filter_MagnetometerOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerOffset& self)
+    {
+        return extract_MipData_Filter_MagnetometerOffset(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerMatrix>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerMatrix& self)
+    {
+        return insert_MipData_Filter_MagnetometerMatrix(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerMatrix& self)
+    {
+        return extract_MipData_Filter_MagnetometerMatrix(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerOffsetUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerOffsetUncertainty& self)
+    {
+        return insert_MipData_Filter_MagnetometerOffsetUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerOffsetUncertainty& self)
+    {
+        return extract_MipData_Filter_MagnetometerOffsetUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerMatrixUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerMatrixUncertainty& self)
+    {
+        return insert_MipData_Filter_MagnetometerMatrixUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerMatrixUncertainty& self)
+    {
+        return extract_MipData_Filter_MagnetometerMatrixUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerCovarianceMatrix>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COVARIANCE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerCovarianceMatrix& self)
+    {
+        return insert_MipData_Filter_MagnetometerCovarianceMatrix(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerCovarianceMatrix& self)
+    {
+        return extract_MipData_Filter_MagnetometerCovarianceMatrix(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_MagnetometerResidualVector>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_RESIDUAL;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_MagnetometerResidualVector& self)
+    {
+        return insert_MipData_Filter_MagnetometerResidualVector(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_MagnetometerResidualVector& self)
+    {
+        return extract_MipData_Filter_MagnetometerResidualVector(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_ClockCorrection>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_ClockCorrection& self)
+    {
+        return insert_MipData_Filter_ClockCorrection(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_ClockCorrection& self)
+    {
+        return extract_MipData_Filter_ClockCorrection(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_ClockCorrectionUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_ClockCorrectionUncertainty& self)
+    {
+        return insert_MipData_Filter_ClockCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_ClockCorrectionUncertainty& self)
+    {
+        return extract_MipData_Filter_ClockCorrectionUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GnssPosAidStatus>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_POS_AID_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GnssPosAidStatus& self)
+    {
+        return insert_MipData_Filter_GnssPosAidStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GnssPosAidStatus& self)
+    {
+        return extract_MipData_Filter_GnssPosAidStatus(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GnssAttAidStatus>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_ATT_AID_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GnssAttAidStatus& self)
+    {
+        return insert_MipData_Filter_GnssAttAidStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GnssAttAidStatus& self)
+    {
+        return extract_MipData_Filter_GnssAttAidStatus(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_HeadAidStatus>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEAD_AID_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_HeadAidStatus& self)
+    {
+        return insert_MipData_Filter_HeadAidStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_HeadAidStatus& self)
+    {
+        return extract_MipData_Filter_HeadAidStatus(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_RelPosNed>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_REL_POS_NED;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_RelPosNed& self)
+    {
+        return insert_MipData_Filter_RelPosNed(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_RelPosNed& self)
+    {
+        return extract_MipData_Filter_RelPosNed(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EcefPos>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EcefPos& self)
+    {
+        return insert_MipData_Filter_EcefPos(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EcefPos& self)
+    {
+        return extract_MipData_Filter_EcefPos(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EcefVel>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EcefVel& self)
+    {
+        return insert_MipData_Filter_EcefVel(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EcefVel& self)
+    {
+        return extract_MipData_Filter_EcefVel(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EcefPosUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EcefPosUncertainty& self)
+    {
+        return insert_MipData_Filter_EcefPosUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EcefPosUncertainty& self)
+    {
+        return extract_MipData_Filter_EcefPosUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_EcefVelUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_EcefVelUncertainty& self)
+    {
+        return insert_MipData_Filter_EcefVelUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_EcefVelUncertainty& self)
+    {
+        return extract_MipData_Filter_EcefVelUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_AidingMeasurementSummary>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_AID_MEAS_SUMMARY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_AidingMeasurementSummary& self)
+    {
+        return insert_MipData_Filter_AidingMeasurementSummary(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_AidingMeasurementSummary& self)
+    {
+        return extract_MipData_Filter_AidingMeasurementSummary(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_OdometerScaleFactorError>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_OdometerScaleFactorError& self)
+    {
+        return insert_MipData_Filter_OdometerScaleFactorError(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_OdometerScaleFactorError& self)
+    {
+        return extract_MipData_Filter_OdometerScaleFactorError(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_OdometerScaleFactorErrorUncertainty>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_OdometerScaleFactorErrorUncertainty& self)
+    {
+        return insert_MipData_Filter_OdometerScaleFactorErrorUncertainty(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_OdometerScaleFactorErrorUncertainty& self)
+    {
+        return extract_MipData_Filter_OdometerScaleFactorErrorUncertainty(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Filter_GnssDualAntennaStatus>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Filter_GnssDualAntennaStatus& self)
+    {
+        return insert_MipData_Filter_GnssDualAntennaStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Filter_GnssDualAntennaStatus& self)
+    {
+        return extract_MipData_Filter_GnssDualAntennaStatus(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

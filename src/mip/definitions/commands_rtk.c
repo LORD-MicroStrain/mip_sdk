@@ -60,11 +60,19 @@ size_t extract_MipLedAction(const uint8_t* buffer, size_t bufferSize, size_t off
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetStatusFlags(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetStatusFlags* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetStatusFlags(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetStatusFlags* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
@@ -100,19 +108,25 @@ size_t extract_MipCmd_Rtk_GetStatusFlags_Response(const uint8_t* buffer, size_t 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetImei(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImei* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetImei(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImei* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_GetImei_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImei_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->IMEI[i]);
     
@@ -121,8 +135,6 @@ size_t insert_MipCmd_Rtk_GetImei_Response(uint8_t* buffer, size_t bufferSize, si
 
 size_t extract_MipCmd_Rtk_GetImei_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImei_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->IMEI[i]);
     
@@ -133,19 +145,25 @@ size_t extract_MipCmd_Rtk_GetImei_Response(const uint8_t* buffer, size_t bufferS
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetImsi(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImsi* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetImsi(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImsi* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_GetImsi_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImsi_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->IMSI[i]);
     
@@ -154,8 +172,6 @@ size_t insert_MipCmd_Rtk_GetImsi_Response(uint8_t* buffer, size_t bufferSize, si
 
 size_t extract_MipCmd_Rtk_GetImsi_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImsi_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->IMSI[i]);
     
@@ -166,19 +182,25 @@ size_t extract_MipCmd_Rtk_GetImsi_Response(const uint8_t* buffer, size_t bufferS
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetIccid(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetIccid* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetIccid(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetIccid* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_GetIccid_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetIccid_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ICCID[i]);
     
@@ -187,8 +209,6 @@ size_t insert_MipCmd_Rtk_GetIccid_Response(uint8_t* buffer, size_t bufferSize, s
 
 size_t extract_MipCmd_Rtk_GetIccid_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetIccid_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ICCID[i]);
     
@@ -199,7 +219,6 @@ size_t extract_MipCmd_Rtk_GetIccid_Response(const uint8_t* buffer, size_t buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_ConnectedDeviceType(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ConnectedDeviceType* self)
 {
-    offset = insert_MipFunctionSelector(buffer, bufferSize, offset, self->function);
     offset = insert_MipConnectedDeviceType(buffer, bufferSize, offset, self->devType);
     
     return offset;
@@ -207,7 +226,6 @@ size_t insert_MipCmd_Rtk_ConnectedDeviceType(uint8_t* buffer, size_t bufferSize,
 
 size_t extract_MipCmd_Rtk_ConnectedDeviceType(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ConnectedDeviceType* self)
 {
-    offset = extract_MipFunctionSelector(buffer, bufferSize, offset, &self->function);
     offset = extract_MipConnectedDeviceType(buffer, bufferSize, offset, &self->devType);
     
     return offset;
@@ -232,19 +250,25 @@ size_t extract_MipCmd_Rtk_ConnectedDeviceType_Response(const uint8_t* buffer, si
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetActCode(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetActCode* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetActCode(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetActCode* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_GetActCode_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetActCode_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ActivationCode[i]);
     
@@ -253,8 +277,6 @@ size_t insert_MipCmd_Rtk_GetActCode_Response(uint8_t* buffer, size_t bufferSize,
 
 size_t extract_MipCmd_Rtk_GetActCode_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetActCode_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ActivationCode[i]);
     
@@ -265,19 +287,25 @@ size_t extract_MipCmd_Rtk_GetActCode_Response(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetModemFirmwareVersion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetModemFirmwareVersion* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetModemFirmwareVersion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetModemFirmwareVersion* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_GetModemFirmwareVersion_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetModemFirmwareVersion_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ModemFirmwareVersion[i]);
     
@@ -286,8 +314,6 @@ size_t insert_MipCmd_Rtk_GetModemFirmwareVersion_Response(uint8_t* buffer, size_
 
 size_t extract_MipCmd_Rtk_GetModemFirmwareVersion_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetModemFirmwareVersion_Response* self)
 {
-    
-    assert(32 <= 32);
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ModemFirmwareVersion[i]);
     
@@ -298,11 +324,19 @@ size_t extract_MipCmd_Rtk_GetModemFirmwareVersion_Response(const uint8_t* buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_GetRssi(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetRssi* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_GetRssi(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetRssi* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
@@ -412,12 +446,8 @@ size_t extract_MipCmd_Rtk_ProdEraseStorage_Response(const uint8_t* buffer, size_
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_LedControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_LedControl* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->primaryColor[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->altColor[i]);
     offset = insert_MipLedAction(buffer, bufferSize, offset, self->act);
@@ -428,12 +458,8 @@ size_t insert_MipCmd_Rtk_LedControl(uint8_t* buffer, size_t bufferSize, size_t o
 
 size_t extract_MipCmd_Rtk_LedControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_LedControl* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->primaryColor[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->altColor[i]);
     offset = extract_MipLedAction(buffer, bufferSize, offset, &self->act);
@@ -445,12 +471,8 @@ size_t extract_MipCmd_Rtk_LedControl(const uint8_t* buffer, size_t bufferSize, s
 
 size_t insert_MipCmd_Rtk_LedControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_LedControl_Response* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->primaryColor[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->altColor[i]);
     offset = insert_MipLedAction(buffer, bufferSize, offset, self->act);
@@ -461,12 +483,8 @@ size_t insert_MipCmd_Rtk_LedControl_Response(uint8_t* buffer, size_t bufferSize,
 
 size_t extract_MipCmd_Rtk_LedControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_LedControl_Response* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->primaryColor[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->altColor[i]);
     offset = extract_MipLedAction(buffer, bufferSize, offset, &self->act);
@@ -479,22 +497,38 @@ size_t extract_MipCmd_Rtk_LedControl_Response(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Rtk_ModemHardReset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ModemHardReset* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_ModemHardReset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ModemHardReset* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 
 size_t insert_MipCmd_Rtk_ModemHardReset_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ModemHardReset_Response* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 
 size_t extract_MipCmd_Rtk_ModemHardReset_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ModemHardReset_Response* self)
 {
+    (void)buffer;
+    (void)bufferSize;
+    (void)self;
+    
     return offset;
 }
 

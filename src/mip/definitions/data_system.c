@@ -24,8 +24,6 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_System_BuiltInTest(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_System_BuiltInTest* self)
 {
-    
-    assert(16 <= 16);
     for(unsigned int i=0; i < 16; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->result[i]);
     
@@ -34,8 +32,6 @@ size_t insert_MipData_System_BuiltInTest(uint8_t* buffer, size_t bufferSize, siz
 
 size_t extract_MipData_System_BuiltInTest(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_System_BuiltInTest* self)
 {
-    
-    assert(16 <= 16);
     for(unsigned int i=0; i < 16; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->result[i]);
     

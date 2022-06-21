@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipRtkCommand_Descriptors
+enum MipRtkCommandDescriptors
 {
     MIP_RTK_COMMAND_DESC_SET                      = 0x0F,
     
@@ -385,5 +385,372 @@ size_t extract_MipCmd_Rtk_ModemHardReset_Response(const uint8_t* buffer, size_t 
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetStatusFlags>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_STATUS_FLAGS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS;
+    typedef MipCmd_Rtk_GetStatusFlags_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetStatusFlags& self)
+    {
+        return insert_MipCmd_Rtk_GetStatusFlags(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetStatusFlags& self)
+    {
+        return extract_MipCmd_Rtk_GetStatusFlags(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetStatusFlags_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetStatusFlags_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetStatusFlags_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetStatusFlags_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetImei>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_IMEI;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_IMEI;
+    typedef MipCmd_Rtk_GetImei_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetImei& self)
+    {
+        return insert_MipCmd_Rtk_GetImei(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetImei& self)
+    {
+        return extract_MipCmd_Rtk_GetImei(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetImei_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetImei_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetImei_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetImei_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetImsi>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_IMSI;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_IMSI;
+    typedef MipCmd_Rtk_GetImsi_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetImsi& self)
+    {
+        return insert_MipCmd_Rtk_GetImsi(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetImsi& self)
+    {
+        return extract_MipCmd_Rtk_GetImsi(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetImsi_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetImsi_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetImsi_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetImsi_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetIccid>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_ICCID;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_ICCID;
+    typedef MipCmd_Rtk_GetIccid_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetIccid& self)
+    {
+        return insert_MipCmd_Rtk_GetIccid(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetIccid& self)
+    {
+        return extract_MipCmd_Rtk_GetIccid(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetIccid_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetIccid_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetIccid_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetIccid_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_ConnectedDeviceType>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE;
+    typedef MipCmd_Rtk_ConnectedDeviceType_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ConnectedDeviceType& self)
+    {
+        return insert_MipCmd_Rtk_ConnectedDeviceType(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ConnectedDeviceType& self)
+    {
+        return extract_MipCmd_Rtk_ConnectedDeviceType(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ConnectedDeviceType_Response& self)
+    {
+        return insert_MipCmd_Rtk_ConnectedDeviceType_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ConnectedDeviceType_Response& self)
+    {
+        return extract_MipCmd_Rtk_ConnectedDeviceType_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetActCode>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_ACT_CODE;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_ACT_CODE;
+    typedef MipCmd_Rtk_GetActCode_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetActCode& self)
+    {
+        return insert_MipCmd_Rtk_GetActCode(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetActCode& self)
+    {
+        return extract_MipCmd_Rtk_GetActCode(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetActCode_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetActCode_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetActCode_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetActCode_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetModemFirmwareVersion>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION;
+    typedef MipCmd_Rtk_GetModemFirmwareVersion_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetModemFirmwareVersion& self)
+    {
+        return insert_MipCmd_Rtk_GetModemFirmwareVersion(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetModemFirmwareVersion& self)
+    {
+        return extract_MipCmd_Rtk_GetModemFirmwareVersion(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetModemFirmwareVersion_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetModemFirmwareVersion_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetModemFirmwareVersion_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetModemFirmwareVersion_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_GetRssi>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_RSSI;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_GET_RSSI;
+    typedef MipCmd_Rtk_GetRssi_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetRssi& self)
+    {
+        return insert_MipCmd_Rtk_GetRssi(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetRssi& self)
+    {
+        return extract_MipCmd_Rtk_GetRssi(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_GetRssi_Response& self)
+    {
+        return insert_MipCmd_Rtk_GetRssi_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_GetRssi_Response& self)
+    {
+        return extract_MipCmd_Rtk_GetRssi_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_ServiceStatus>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_SERVICE_STATUS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_SERVICE_STATUS;
+    typedef MipCmd_Rtk_ServiceStatus_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ServiceStatus& self)
+    {
+        return insert_MipCmd_Rtk_ServiceStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ServiceStatus& self)
+    {
+        return extract_MipCmd_Rtk_ServiceStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ServiceStatus_Response& self)
+    {
+        return insert_MipCmd_Rtk_ServiceStatus_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ServiceStatus_Response& self)
+    {
+        return extract_MipCmd_Rtk_ServiceStatus_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_ProdEraseStorage>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_PROD_ERASE_STORAGE;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_PROD_ERASE_STORAGE;
+    typedef MipCmd_Rtk_ProdEraseStorage_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ProdEraseStorage& self)
+    {
+        return insert_MipCmd_Rtk_ProdEraseStorage(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ProdEraseStorage& self)
+    {
+        return extract_MipCmd_Rtk_ProdEraseStorage(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ProdEraseStorage_Response& self)
+    {
+        return insert_MipCmd_Rtk_ProdEraseStorage_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ProdEraseStorage_Response& self)
+    {
+        return extract_MipCmd_Rtk_ProdEraseStorage_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_LedControl>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_LED_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_LED_CONTROL;
+    typedef MipCmd_Rtk_LedControl_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_LedControl& self)
+    {
+        return insert_MipCmd_Rtk_LedControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_LedControl& self)
+    {
+        return extract_MipCmd_Rtk_LedControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_LedControl_Response& self)
+    {
+        return insert_MipCmd_Rtk_LedControl_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_LedControl_Response& self)
+    {
+        return extract_MipCmd_Rtk_LedControl_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Rtk_ModemHardReset>
+{
+    static const uint8_t descriptorSet = MIP_RTK_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_MODEM_HARD_RESET;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_RTK_MODEM_HARD_RESET;
+    typedef MipCmd_Rtk_ModemHardReset_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ModemHardReset& self)
+    {
+        return insert_MipCmd_Rtk_ModemHardReset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ModemHardReset& self)
+    {
+        return extract_MipCmd_Rtk_ModemHardReset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Rtk_ModemHardReset_Response& self)
+    {
+        return insert_MipCmd_Rtk_ModemHardReset_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Rtk_ModemHardReset_Response& self)
+    {
+        return extract_MipCmd_Rtk_ModemHardReset_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

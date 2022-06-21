@@ -24,8 +24,6 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_RawAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_accel[i]);
     
@@ -34,8 +32,6 @@ size_t insert_MipData_Sensor_RawAccel(uint8_t* buffer, size_t bufferSize, size_t
 
 size_t extract_MipData_Sensor_RawAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_accel[i]);
     
@@ -46,8 +42,6 @@ size_t extract_MipData_Sensor_RawAccel(const uint8_t* buffer, size_t bufferSize,
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_RawGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawGyro* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_gyro[i]);
     
@@ -56,8 +50,6 @@ size_t insert_MipData_Sensor_RawGyro(uint8_t* buffer, size_t bufferSize, size_t 
 
 size_t extract_MipData_Sensor_RawGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawGyro* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_gyro[i]);
     
@@ -68,8 +60,6 @@ size_t extract_MipData_Sensor_RawGyro(const uint8_t* buffer, size_t bufferSize, 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_RawMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawMag* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_mag[i]);
     
@@ -78,8 +68,6 @@ size_t insert_MipData_Sensor_RawMag(uint8_t* buffer, size_t bufferSize, size_t o
 
 size_t extract_MipData_Sensor_RawMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawMag* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_mag[i]);
     
@@ -106,8 +94,6 @@ size_t extract_MipData_Sensor_RawPressure(const uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_ScaledAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_accel[i]);
     
@@ -116,8 +102,6 @@ size_t insert_MipData_Sensor_ScaledAccel(uint8_t* buffer, size_t bufferSize, siz
 
 size_t extract_MipData_Sensor_ScaledAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledAccel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_accel[i]);
     
@@ -128,8 +112,6 @@ size_t extract_MipData_Sensor_ScaledAccel(const uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_ScaledGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledGyro* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_gyro[i]);
     
@@ -138,8 +120,6 @@ size_t insert_MipData_Sensor_ScaledGyro(uint8_t* buffer, size_t bufferSize, size
 
 size_t extract_MipData_Sensor_ScaledGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledGyro* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_gyro[i]);
     
@@ -150,8 +130,6 @@ size_t extract_MipData_Sensor_ScaledGyro(const uint8_t* buffer, size_t bufferSiz
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_ScaledMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledMag* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_mag[i]);
     
@@ -160,8 +138,6 @@ size_t insert_MipData_Sensor_ScaledMag(uint8_t* buffer, size_t bufferSize, size_
 
 size_t extract_MipData_Sensor_ScaledMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledMag* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_mag[i]);
     
@@ -188,8 +164,6 @@ size_t extract_MipData_Sensor_ScaledPressure(const uint8_t* buffer, size_t buffe
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_DeltaTheta(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaTheta* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->delta_theta[i]);
     
@@ -198,8 +172,6 @@ size_t insert_MipData_Sensor_DeltaTheta(uint8_t* buffer, size_t bufferSize, size
 
 size_t extract_MipData_Sensor_DeltaTheta(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaTheta* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->delta_theta[i]);
     
@@ -210,8 +182,6 @@ size_t extract_MipData_Sensor_DeltaTheta(const uint8_t* buffer, size_t bufferSiz
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_DeltaVelocity(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaVelocity* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->delta_velocity[i]);
     
@@ -220,8 +190,6 @@ size_t insert_MipData_Sensor_DeltaVelocity(uint8_t* buffer, size_t bufferSize, s
 
 size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaVelocity* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->delta_velocity[i]);
     
@@ -232,8 +200,6 @@ size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t buffer
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_CompOrientationMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->m[i]);
     
@@ -242,8 +208,6 @@ size_t insert_MipData_Sensor_CompOrientationMatrix(uint8_t* buffer, size_t buffe
 
 size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
     
@@ -254,8 +218,6 @@ size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_CompQuaternion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompQuaternion* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_float(buffer, bufferSize, offset, self->q[i]);
     
@@ -264,8 +226,6 @@ size_t insert_MipData_Sensor_CompQuaternion(uint8_t* buffer, size_t bufferSize, 
 
 size_t extract_MipData_Sensor_CompQuaternion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompQuaternion* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->q[i]);
     
@@ -296,8 +256,6 @@ size_t extract_MipData_Sensor_CompEulerAngles(const uint8_t* buffer, size_t buff
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_CompOrientationUpdateMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationUpdateMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->m[i]);
     
@@ -306,8 +264,6 @@ size_t insert_MipData_Sensor_CompOrientationUpdateMatrix(uint8_t* buffer, size_t
 
 size_t extract_MipData_Sensor_CompOrientationUpdateMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationUpdateMatrix* self)
 {
-    
-    assert(9 <= 9);
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
     
@@ -318,8 +274,6 @@ size_t extract_MipData_Sensor_CompOrientationUpdateMatrix(const uint8_t* buffer,
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_OrientationRawTemp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OrientationRawTemp* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_u16(buffer, bufferSize, offset, self->raw_temp[i]);
     
@@ -328,8 +282,6 @@ size_t insert_MipData_Sensor_OrientationRawTemp(uint8_t* buffer, size_t bufferSi
 
 size_t extract_MipData_Sensor_OrientationRawTemp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OrientationRawTemp* self)
 {
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_u16(buffer, bufferSize, offset, &self->raw_temp[i]);
     
@@ -427,8 +379,6 @@ size_t extract_MipData_Sensor_TemperatureAbs(const uint8_t* buffer, size_t buffe
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_UpVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_UpVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->up[i]);
     
@@ -437,8 +387,6 @@ size_t insert_MipData_Sensor_UpVector(uint8_t* buffer, size_t bufferSize, size_t
 
 size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_UpVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->up[i]);
     
@@ -449,8 +397,6 @@ size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize,
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipData_Sensor_NorthVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_NorthVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->north[i]);
     
@@ -459,8 +405,6 @@ size_t insert_MipData_Sensor_NorthVector(uint8_t* buffer, size_t bufferSize, siz
 
 size_t extract_MipData_Sensor_NorthVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_NorthVector* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->north[i]);
     

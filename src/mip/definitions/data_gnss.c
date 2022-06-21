@@ -114,8 +114,6 @@ size_t extract_MipData_Gnss_EcefPos_Validflags(const uint8_t* buffer, size_t buf
 
 size_t insert_MipData_Gnss_EcefPos(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_EcefPos* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->x[i]);
     offset = insert_float(buffer, bufferSize, offset, self->x_accuracy);
@@ -126,8 +124,6 @@ size_t insert_MipData_Gnss_EcefPos(uint8_t* buffer, size_t bufferSize, size_t of
 
 size_t extract_MipData_Gnss_EcefPos(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Gnss_EcefPos* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->x[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->x_accuracy);
@@ -153,8 +149,6 @@ size_t extract_MipData_Gnss_NedVel_Validflags(const uint8_t* buffer, size_t buff
 
 size_t insert_MipData_Gnss_NedVel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_NedVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->v[i]);
     offset = insert_float(buffer, bufferSize, offset, self->speed);
@@ -169,8 +163,6 @@ size_t insert_MipData_Gnss_NedVel(uint8_t* buffer, size_t bufferSize, size_t off
 
 size_t extract_MipData_Gnss_NedVel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Gnss_NedVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->v[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->speed);
@@ -200,8 +192,6 @@ size_t extract_MipData_Gnss_EcefVel_Validflags(const uint8_t* buffer, size_t buf
 
 size_t insert_MipData_Gnss_EcefVel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Gnss_EcefVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->v[i]);
     offset = insert_float(buffer, bufferSize, offset, self->v_accuracy);
@@ -212,8 +202,6 @@ size_t insert_MipData_Gnss_EcefVel(uint8_t* buffer, size_t bufferSize, size_t of
 
 size_t extract_MipData_Gnss_EcefVel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Gnss_EcefVel* self)
 {
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->v[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->v_accuracy);
@@ -860,8 +848,6 @@ size_t insert_MipData_Gnss_RfErrorDetection(uint8_t* buffer, size_t bufferSize, 
     offset = insert_MipData_Gnss_RfErrorDetection_Rfband(buffer, bufferSize, offset, self->rf_band);
     offset = insert_MipData_Gnss_RfErrorDetection_Jammingstate(buffer, bufferSize, offset, self->jamming_state);
     offset = insert_MipData_Gnss_RfErrorDetection_Spoofingstate(buffer, bufferSize, offset, self->spoofing_state);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->reserved[i]);
     offset = insert_MipData_Gnss_RfErrorDetection_Validflags(buffer, bufferSize, offset, self->valid_flags);
@@ -874,8 +860,6 @@ size_t extract_MipData_Gnss_RfErrorDetection(const uint8_t* buffer, size_t buffe
     offset = extract_MipData_Gnss_RfErrorDetection_Rfband(buffer, bufferSize, offset, &self->rf_band);
     offset = extract_MipData_Gnss_RfErrorDetection_Jammingstate(buffer, bufferSize, offset, &self->jamming_state);
     offset = extract_MipData_Gnss_RfErrorDetection_Spoofingstate(buffer, bufferSize, offset, &self->spoofing_state);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->reserved[i]);
     offset = extract_MipData_Gnss_RfErrorDetection_Validflags(buffer, bufferSize, offset, &self->valid_flags);
@@ -915,8 +899,6 @@ size_t insert_MipData_Gnss_BaseStationInfo(uint8_t* buffer, size_t bufferSize, s
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->ecef_pos[i]);
     offset = insert_float(buffer, bufferSize, offset, self->height);
@@ -931,8 +913,6 @@ size_t extract_MipData_Gnss_BaseStationInfo(const uint8_t* buffer, size_t buffer
 {
     offset = extract_double(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->ecef_pos[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->height);
@@ -981,8 +961,6 @@ size_t insert_MipData_Gnss_RtkCorrectionsStatus(uint8_t* buffer, size_t bufferSi
     offset = insert_float(buffer, bufferSize, offset, self->glonass_correction_latency);
     offset = insert_float(buffer, bufferSize, offset, self->galileo_correction_latency);
     offset = insert_float(buffer, bufferSize, offset, self->beidou_correction_latency);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_u32(buffer, bufferSize, offset, self->reserved[i]);
     offset = insert_MipData_Gnss_RtkCorrectionsStatus_Validflags(buffer, bufferSize, offset, self->valid_flags);
@@ -1000,8 +978,6 @@ size_t extract_MipData_Gnss_RtkCorrectionsStatus(const uint8_t* buffer, size_t b
     offset = extract_float(buffer, bufferSize, offset, &self->glonass_correction_latency);
     offset = extract_float(buffer, bufferSize, offset, &self->galileo_correction_latency);
     offset = extract_float(buffer, bufferSize, offset, &self->beidou_correction_latency);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_u32(buffer, bufferSize, offset, &self->reserved[i]);
     offset = extract_MipData_Gnss_RtkCorrectionsStatus_Validflags(buffer, bufferSize, offset, &self->valid_flags);
@@ -1256,16 +1232,10 @@ size_t insert_MipData_Gnss_GloEphemeris(uint8_t* buffer, size_t bufferSize, size
     offset = insert_u8(buffer, bufferSize, offset, self->sat_type);
     offset = insert_double(buffer, bufferSize, offset, self->gamma);
     offset = insert_double(buffer, bufferSize, offset, self->tau_n);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->x[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->v[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->a[i]);
     offset = insert_u8(buffer, bufferSize, offset, self->health);
@@ -1296,16 +1266,10 @@ size_t extract_MipData_Gnss_GloEphemeris(const uint8_t* buffer, size_t bufferSiz
     offset = extract_u8(buffer, bufferSize, offset, &self->sat_type);
     offset = extract_double(buffer, bufferSize, offset, &self->gamma);
     offset = extract_double(buffer, bufferSize, offset, &self->tau_n);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->x[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->v[i]);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->a[i]);
     offset = extract_u8(buffer, bufferSize, offset, &self->health);
@@ -1342,12 +1306,8 @@ size_t insert_MipData_Gnss_GpsIonoCorr(uint8_t* buffer, size_t bufferSize, size_
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_double(buffer, bufferSize, offset, self->alpha[i]);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = insert_double(buffer, bufferSize, offset, self->beta[i]);
     offset = insert_MipData_Gnss_GpsIonoCorr_Validflags(buffer, bufferSize, offset, self->valid_flags);
@@ -1359,12 +1319,8 @@ size_t extract_MipData_Gnss_GpsIonoCorr(const uint8_t* buffer, size_t bufferSize
 {
     offset = extract_double(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->alpha[i]);
-    
-    assert(4 <= 4);
     for(unsigned int i=0; i < 4; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->beta[i]);
     offset = extract_MipData_Gnss_GpsIonoCorr_Validflags(buffer, bufferSize, offset, &self->valid_flags);
@@ -1391,8 +1347,6 @@ size_t insert_MipData_Gnss_GalileoIonoCorr(uint8_t* buffer, size_t bufferSize, s
 {
     offset = insert_double(buffer, bufferSize, offset, self->time_of_week);
     offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->alpha[i]);
     offset = insert_u8(buffer, bufferSize, offset, self->disturbance_flags);
@@ -1405,8 +1359,6 @@ size_t extract_MipData_Gnss_GalileoIonoCorr(const uint8_t* buffer, size_t buffer
 {
     offset = extract_double(buffer, bufferSize, offset, &self->time_of_week);
     offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    
-    assert(3 <= 3);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->alpha[i]);
     offset = extract_u8(buffer, bufferSize, offset, &self->disturbance_flags);

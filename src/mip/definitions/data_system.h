@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipSystemData_Descriptors
+enum MipSystemDataDescriptors
 {
     MIP_SYSTEM_DATA_DESC_SET               = 0xA0,
     
@@ -149,5 +149,91 @@ size_t extract_MipData_System_GpioAnalogValue(const uint8_t* buffer, size_t buff
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipData_System_BuiltInTest>
+{
+    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_System_BuiltInTest& self)
+    {
+        return insert_MipData_System_BuiltInTest(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_System_BuiltInTest& self)
+    {
+        return extract_MipData_System_BuiltInTest(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_System_TimeSyncStatus>
+{
+    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_System_TimeSyncStatus& self)
+    {
+        return insert_MipData_System_TimeSyncStatus(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_System_TimeSyncStatus& self)
+    {
+        return extract_MipData_System_TimeSyncStatus(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_System_GpioState>
+{
+    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_STATE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_System_GpioState& self)
+    {
+        return insert_MipData_System_GpioState(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_System_GpioState& self)
+    {
+        return extract_MipData_System_GpioState(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_System_GpioAnalogValue>
+{
+    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_System_GpioAnalogValue& self)
+    {
+        return insert_MipData_System_GpioAnalogValue(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_System_GpioAnalogValue& self)
+    {
+        return extract_MipData_System_GpioAnalogValue(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

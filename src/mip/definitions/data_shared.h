@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipSharedData_Descriptors
+enum MipSharedDataDescriptors
 {
     MIP_SHARED_DATA_DESC_SET            = 0xFF,
     
@@ -42,7 +42,7 @@ enum MipSharedData_Descriptors
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIPMIP_DATA_DESC_SHARED_START_MIP_DATA_DESC_SHARED_START 0xD0
+#define MIPMIPDATADESCSHAREDSTART_MIP_DATA_DESC_SHARED_START 0xD0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -276,5 +276,196 @@ size_t extract_MipData_Shared_ExternalTimeDelta(const uint8_t* buffer, size_t bu
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_EventSource>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_EventSource& self)
+    {
+        return insert_MipData_Shared_EventSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_EventSource& self)
+    {
+        return extract_MipData_Shared_EventSource(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_Ticks>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_TICKS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_Ticks& self)
+    {
+        return insert_MipData_Shared_Ticks(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_Ticks& self)
+    {
+        return extract_MipData_Shared_Ticks(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_DeltaTicks>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TICKS;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_DeltaTicks& self)
+    {
+        return insert_MipData_Shared_DeltaTicks(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_DeltaTicks& self)
+    {
+        return extract_MipData_Shared_DeltaTicks(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_GpsTimestamp>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_GPS_TIME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_GpsTimestamp& self)
+    {
+        return insert_MipData_Shared_GpsTimestamp(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_GpsTimestamp& self)
+    {
+        return extract_MipData_Shared_GpsTimestamp(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_DeltaTime>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TIME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_DeltaTime& self)
+    {
+        return insert_MipData_Shared_DeltaTime(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_DeltaTime& self)
+    {
+        return extract_MipData_Shared_DeltaTime(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_ReferenceTimestamp>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REFERENCE_TIME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_ReferenceTimestamp& self)
+    {
+        return insert_MipData_Shared_ReferenceTimestamp(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_ReferenceTimestamp& self)
+    {
+        return extract_MipData_Shared_ReferenceTimestamp(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_ReferenceTimeDelta>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REF_TIME_DELTA;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_ReferenceTimeDelta& self)
+    {
+        return insert_MipData_Shared_ReferenceTimeDelta(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_ReferenceTimeDelta& self)
+    {
+        return extract_MipData_Shared_ReferenceTimeDelta(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_ExternalTimestamp>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EXTERNAL_TIME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_ExternalTimestamp& self)
+    {
+        return insert_MipData_Shared_ExternalTimestamp(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_ExternalTimestamp& self)
+    {
+        return extract_MipData_Shared_ExternalTimestamp(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipData_Shared_ExternalTimeDelta>
+{
+    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_SYS_TIME_DELTA;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Shared_ExternalTimeDelta& self)
+    {
+        return insert_MipData_Shared_ExternalTimeDelta(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Shared_ExternalTimeDelta& self)
+    {
+        return extract_MipData_Shared_ExternalTimeDelta(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

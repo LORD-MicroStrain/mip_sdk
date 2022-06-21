@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipGnssCommand_Descriptors
+enum MipGnssCommandDescriptors
 {
     MIP_GNSS_COMMAND_DESC_SET                    = 0x0E,
     
@@ -40,14 +40,14 @@ enum MipGnssCommand_Descriptors
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIPGNSS_GPS_ENABLE_L1CA_GNSS_GPS_ENABLE_L1CA 0x0001
-#define MIPGNSS_GPS_ENABLE_L2C_GNSS_GPS_ENABLE_L2C 0x0002
-#define MIPGNSS_GLONASS_ENABLE_L1OF_GNSS_GLONASS_ENABLE_L1OF 0x0001
-#define MIPGNSS_GLONASS_ENABLE_L2OF_GNSS_GLONASS_ENABLE_L2OF 0x0002
-#define MIPGNSS_GALILEO_ENABLE_E1_GNSS_GALILEO_ENABLE_E1 0x0001
-#define MIPGNSS_GALILEO_ENABLE_E5B_GNSS_GALILEO_ENABLE_E5B 0x0002
-#define MIPGNSS_BEIDOU_ENABLE_B1_GNSS_BEIDOU_ENABLE_B1 0x0001
-#define MIPGNSS_BEIDOU_ENABLE_B2_GNSS_BEIDOU_ENABLE_B2 0x0002
+#define MIPGNSSGPSENABLEL1CA_GNSS_GPS_ENABLE_L1CA 0x0001
+#define MIPGNSSGPSENABLEL2C_GNSS_GPS_ENABLE_L2C 0x0002
+#define MIPGNSSGLONASSENABLEL1OF_GNSS_GLONASS_ENABLE_L1OF 0x0001
+#define MIPGNSSGLONASSENABLEL2OF_GNSS_GLONASS_ENABLE_L2OF 0x0002
+#define MIPGNSSGALILEOENABLEE1_GNSS_GALILEO_ENABLE_E1 0x0001
+#define MIPGNSSGALILEOENABLEE5B_GNSS_GALILEO_ENABLE_E5B 0x0002
+#define MIPGNSSBEIDOUENABLEB1_GNSS_BEIDOU_ENABLE_B1 0x0001
+#define MIPGNSSBEIDOUENABLEB2_GNSS_BEIDOU_ENABLE_B2 0x0002
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -169,5 +169,128 @@ size_t extract_MipCmd_Gnss_ReceiverSafeMode(const uint8_t* buffer, size_t buffer
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipCmd_Gnss_ReceiverInfo>
+{
+    static const uint8_t descriptorSet = MIP_GNSS_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_LIST_RECEIVERS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_GNSS_LIST_RECEIVERS;
+    typedef MipCmd_Gnss_ReceiverInfo_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_ReceiverInfo& self)
+    {
+        return insert_MipCmd_Gnss_ReceiverInfo(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_ReceiverInfo& self)
+    {
+        return extract_MipCmd_Gnss_ReceiverInfo(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_ReceiverInfo_Response& self)
+    {
+        return insert_MipCmd_Gnss_ReceiverInfo_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_ReceiverInfo_Response& self)
+    {
+        return extract_MipCmd_Gnss_ReceiverInfo_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Gnss_SignalConfiguration>
+{
+    static const uint8_t descriptorSet = MIP_GNSS_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION;
+    typedef MipCmd_Gnss_SignalConfiguration_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_SignalConfiguration& self)
+    {
+        return insert_MipCmd_Gnss_SignalConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_SignalConfiguration& self)
+    {
+        return extract_MipCmd_Gnss_SignalConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_SignalConfiguration_Response& self)
+    {
+        return insert_MipCmd_Gnss_SignalConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_SignalConfiguration_Response& self)
+    {
+        return extract_MipCmd_Gnss_SignalConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Gnss_RtkDongleConfiguration>
+{
+    static const uint8_t descriptorSet = MIP_GNSS_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION;
+    typedef MipCmd_Gnss_RtkDongleConfiguration_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_RtkDongleConfiguration& self)
+    {
+        return insert_MipCmd_Gnss_RtkDongleConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_RtkDongleConfiguration& self)
+    {
+        return extract_MipCmd_Gnss_RtkDongleConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_RtkDongleConfiguration_Response& self)
+    {
+        return insert_MipCmd_Gnss_RtkDongleConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_RtkDongleConfiguration_Response& self)
+    {
+        return extract_MipCmd_Gnss_RtkDongleConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Gnss_ReceiverSafeMode>
+{
+    static const uint8_t descriptorSet = MIP_GNSS_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Gnss_ReceiverSafeMode& self)
+    {
+        return insert_MipCmd_Gnss_ReceiverSafeMode(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Gnss_ReceiverSafeMode& self)
+    {
+        return extract_MipCmd_Gnss_ReceiverSafeMode(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

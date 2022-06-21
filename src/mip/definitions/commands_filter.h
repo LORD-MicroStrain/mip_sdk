@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipFilterCommand_Descriptors
+enum MipFilterCommandDescriptors
 {
     MIP_FILTER_COMMAND_DESC_SET                              = 0x0D,
     
@@ -1141,5 +1141,1022 @@ size_t extract_MipCmd_Filter_SetInitialHeading(const uint8_t* buffer, size_t buf
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_ResetFilter>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RESET_FILTER;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ResetFilter& self)
+    {
+        return insert_MipCmd_Filter_ResetFilter(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ResetFilter& self)
+    {
+        return extract_MipCmd_Filter_ResetFilter(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_SetInitialAttitude>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_ATTITUDE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SetInitialAttitude& self)
+    {
+        return insert_MipCmd_Filter_SetInitialAttitude(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SetInitialAttitude& self)
+    {
+        return extract_MipCmd_Filter_SetInitialAttitude(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_EstimationControl>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
+    typedef MipCmd_Filter_EstimationControl_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_EstimationControl& self)
+    {
+        return insert_MipCmd_Filter_EstimationControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_EstimationControl& self)
+    {
+        return extract_MipCmd_Filter_EstimationControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_EstimationControl_Response& self)
+    {
+        return insert_MipCmd_Filter_EstimationControl_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_EstimationControl_Response& self)
+    {
+        return extract_MipCmd_Filter_EstimationControl_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_ExternalGnssUpdate>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_GNSS_UPDATE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalGnssUpdate& self)
+    {
+        return insert_MipCmd_Filter_ExternalGnssUpdate(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalGnssUpdate& self)
+    {
+        return extract_MipCmd_Filter_ExternalGnssUpdate(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdate>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalHeadingUpdate& self)
+    {
+        return insert_MipCmd_Filter_ExternalHeadingUpdate(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalHeadingUpdate& self)
+    {
+        return extract_MipCmd_Filter_ExternalHeadingUpdate(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdateWithTime>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE_WITH_TIME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalHeadingUpdateWithTime& self)
+    {
+        return insert_MipCmd_Filter_ExternalHeadingUpdateWithTime(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalHeadingUpdateWithTime& self)
+    {
+        return extract_MipCmd_Filter_ExternalHeadingUpdateWithTime(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_TareOrientation>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_TARE_ORIENTATION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_TARE_ORIENTATION;
+    typedef MipCmd_Filter_TareOrientation_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_TareOrientation& self)
+    {
+        return insert_MipCmd_Filter_TareOrientation(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_TareOrientation& self)
+    {
+        return extract_MipCmd_Filter_TareOrientation(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_TareOrientation_Response& self)
+    {
+        return insert_MipCmd_Filter_TareOrientation_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_TareOrientation_Response& self)
+    {
+        return extract_MipCmd_Filter_TareOrientation_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationEuler>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
+    typedef MipCmd_Filter_Sensor2VehicleRotationEuler_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationEuler& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationEuler(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationEuler& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationEuler(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationEuler_Response& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationEuler_Response& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationDcm>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
+    typedef MipCmd_Filter_Sensor2VehicleRotationDcm_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationDcm& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationDcm(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationDcm& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationDcm(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationDcm_Response& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationDcm_Response& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationQuaternion>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
+    typedef MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationQuaternion& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationQuaternion& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleOffset>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
+    typedef MipCmd_Filter_Sensor2VehicleOffset_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleOffset& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleOffset& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleOffset_Response& self)
+    {
+        return insert_MipCmd_Filter_Sensor2VehicleOffset_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleOffset_Response& self)
+    {
+        return extract_MipCmd_Filter_Sensor2VehicleOffset_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AntennaOffset>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANTENNA_OFFSET;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ANTENNA_OFFSET;
+    typedef MipCmd_Filter_AntennaOffset_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AntennaOffset& self)
+    {
+        return insert_MipCmd_Filter_AntennaOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AntennaOffset& self)
+    {
+        return extract_MipCmd_Filter_AntennaOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AntennaOffset_Response& self)
+    {
+        return insert_MipCmd_Filter_AntennaOffset_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AntennaOffset_Response& self)
+    {
+        return extract_MipCmd_Filter_AntennaOffset_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_GnssSource>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_GNSS_SOURCE_CONTROL;
+    typedef MipCmd_Filter_GnssSource_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssSource& self)
+    {
+        return insert_MipCmd_Filter_GnssSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssSource& self)
+    {
+        return extract_MipCmd_Filter_GnssSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssSource_Response& self)
+    {
+        return insert_MipCmd_Filter_GnssSource_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssSource_Response& self)
+    {
+        return extract_MipCmd_Filter_GnssSource_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_HeadingSource>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_HEADING_UPDATE_CONTROL;
+    typedef MipCmd_Filter_HeadingSource_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_HeadingSource& self)
+    {
+        return insert_MipCmd_Filter_HeadingSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_HeadingSource& self)
+    {
+        return extract_MipCmd_Filter_HeadingSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_HeadingSource_Response& self)
+    {
+        return insert_MipCmd_Filter_HeadingSource_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_HeadingSource_Response& self)
+    {
+        return extract_MipCmd_Filter_HeadingSource_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AltitudeAiding>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
+    typedef MipCmd_Filter_AltitudeAiding_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AltitudeAiding& self)
+    {
+        return insert_MipCmd_Filter_AltitudeAiding(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AltitudeAiding& self)
+    {
+        return extract_MipCmd_Filter_AltitudeAiding(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AltitudeAiding_Response& self)
+    {
+        return insert_MipCmd_Filter_AltitudeAiding_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AltitudeAiding_Response& self)
+    {
+        return extract_MipCmd_Filter_AltitudeAiding_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AutoZupt>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ZUPT_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ZUPT_CONTROL;
+    typedef MipCmd_Filter_AutoZupt_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoZupt& self)
+    {
+        return insert_MipCmd_Filter_AutoZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoZupt& self)
+    {
+        return extract_MipCmd_Filter_AutoZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoZupt_Response& self)
+    {
+        return insert_MipCmd_Filter_AutoZupt_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoZupt_Response& self)
+    {
+        return extract_MipCmd_Filter_AutoZupt_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AutoAngularZupt>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
+    typedef MipCmd_Filter_AutoAngularZupt_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoAngularZupt& self)
+    {
+        return insert_MipCmd_Filter_AutoAngularZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoAngularZupt& self)
+    {
+        return extract_MipCmd_Filter_AutoAngularZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoAngularZupt_Response& self)
+    {
+        return insert_MipCmd_Filter_AutoAngularZupt_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoAngularZupt_Response& self)
+    {
+        return extract_MipCmd_Filter_AutoAngularZupt_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_CommandedZupt>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ZUPT;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_CommandedZupt& self)
+    {
+        return insert_MipCmd_Filter_CommandedZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_CommandedZupt& self)
+    {
+        return extract_MipCmd_Filter_CommandedZupt(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_CommandedAngularZupt>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ANGULAR_ZUPT;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_CommandedAngularZupt& self)
+    {
+        return insert_MipCmd_Filter_CommandedAngularZupt(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_CommandedAngularZupt& self)
+    {
+        return extract_MipCmd_Filter_CommandedAngularZupt(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AidingMeasurementEnable>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
+    typedef MipCmd_Filter_AidingMeasurementEnable_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AidingMeasurementEnable& self)
+    {
+        return insert_MipCmd_Filter_AidingMeasurementEnable(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AidingMeasurementEnable& self)
+    {
+        return extract_MipCmd_Filter_AidingMeasurementEnable(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AidingMeasurementEnable_Response& self)
+    {
+        return insert_MipCmd_Filter_AidingMeasurementEnable_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AidingMeasurementEnable_Response& self)
+    {
+        return extract_MipCmd_Filter_AidingMeasurementEnable_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_Run>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RUN;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Run& self)
+    {
+        return insert_MipCmd_Filter_Run(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Run& self)
+    {
+        return extract_MipCmd_Filter_Run(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_KinematicConstraint>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_KINEMATIC_CONSTRAINT;
+    typedef MipCmd_Filter_KinematicConstraint_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_KinematicConstraint& self)
+    {
+        return insert_MipCmd_Filter_KinematicConstraint(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_KinematicConstraint& self)
+    {
+        return extract_MipCmd_Filter_KinematicConstraint(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_KinematicConstraint_Response& self)
+    {
+        return insert_MipCmd_Filter_KinematicConstraint_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_KinematicConstraint_Response& self)
+    {
+        return extract_MipCmd_Filter_KinematicConstraint_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_InitializationConfiguration>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_INITIALIZATION_CONFIGURATION;
+    typedef MipCmd_Filter_InitializationConfiguration_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_InitializationConfiguration& self)
+    {
+        return insert_MipCmd_Filter_InitializationConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_InitializationConfiguration& self)
+    {
+        return extract_MipCmd_Filter_InitializationConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_InitializationConfiguration_Response& self)
+    {
+        return insert_MipCmd_Filter_InitializationConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_InitializationConfiguration_Response& self)
+    {
+        return extract_MipCmd_Filter_InitializationConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_AdaptiveFilterOptions>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
+    typedef MipCmd_Filter_AdaptiveFilterOptions_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AdaptiveFilterOptions& self)
+    {
+        return insert_MipCmd_Filter_AdaptiveFilterOptions(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AdaptiveFilterOptions& self)
+    {
+        return extract_MipCmd_Filter_AdaptiveFilterOptions(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AdaptiveFilterOptions_Response& self)
+    {
+        return insert_MipCmd_Filter_AdaptiveFilterOptions_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AdaptiveFilterOptions_Response& self)
+    {
+        return extract_MipCmd_Filter_AdaptiveFilterOptions_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_MultiAntennaOffset>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_MULTI_ANTENNA_OFFSET;
+    typedef MipCmd_Filter_MultiAntennaOffset_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MultiAntennaOffset& self)
+    {
+        return insert_MipCmd_Filter_MultiAntennaOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MultiAntennaOffset& self)
+    {
+        return extract_MipCmd_Filter_MultiAntennaOffset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MultiAntennaOffset_Response& self)
+    {
+        return insert_MipCmd_Filter_MultiAntennaOffset_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MultiAntennaOffset_Response& self)
+    {
+        return extract_MipCmd_Filter_MultiAntennaOffset_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_RelPosConfiguration>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_REL_POS_CONFIGURATION;
+    typedef MipCmd_Filter_RelPosConfiguration_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RelPosConfiguration& self)
+    {
+        return insert_MipCmd_Filter_RelPosConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RelPosConfiguration& self)
+    {
+        return extract_MipCmd_Filter_RelPosConfiguration(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RelPosConfiguration_Response& self)
+    {
+        return insert_MipCmd_Filter_RelPosConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RelPosConfiguration_Response& self)
+    {
+        return extract_MipCmd_Filter_RelPosConfiguration_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_SpeedMeasurement>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_MEASUREMENT;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedMeasurement& self)
+    {
+        return insert_MipCmd_Filter_SpeedMeasurement(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedMeasurement& self)
+    {
+        return extract_MipCmd_Filter_SpeedMeasurement(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_SpeedLeverArm>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SPEED_LEVER_ARM;
+    typedef MipCmd_Filter_SpeedLeverArm_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedLeverArm& self)
+    {
+        return insert_MipCmd_Filter_SpeedLeverArm(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedLeverArm& self)
+    {
+        return extract_MipCmd_Filter_SpeedLeverArm(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedLeverArm_Response& self)
+    {
+        return insert_MipCmd_Filter_SpeedLeverArm_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedLeverArm_Response& self)
+    {
+        return extract_MipCmd_Filter_SpeedLeverArm_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_WheeledVehicleConstraintControl>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
+    typedef MipCmd_Filter_WheeledVehicleConstraintControl_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_WheeledVehicleConstraintControl& self)
+    {
+        return insert_MipCmd_Filter_WheeledVehicleConstraintControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_WheeledVehicleConstraintControl& self)
+    {
+        return extract_MipCmd_Filter_WheeledVehicleConstraintControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_WheeledVehicleConstraintControl_Response& self)
+    {
+        return insert_MipCmd_Filter_WheeledVehicleConstraintControl_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_WheeledVehicleConstraintControl_Response& self)
+    {
+        return extract_MipCmd_Filter_WheeledVehicleConstraintControl_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_VerticalGyroConstraintControl>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
+    typedef MipCmd_Filter_VerticalGyroConstraintControl_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_VerticalGyroConstraintControl& self)
+    {
+        return insert_MipCmd_Filter_VerticalGyroConstraintControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_VerticalGyroConstraintControl& self)
+    {
+        return extract_MipCmd_Filter_VerticalGyroConstraintControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_VerticalGyroConstraintControl_Response& self)
+    {
+        return insert_MipCmd_Filter_VerticalGyroConstraintControl_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_VerticalGyroConstraintControl_Response& self)
+    {
+        return extract_MipCmd_Filter_VerticalGyroConstraintControl_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_GnssAntennaCalControl>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
+    typedef MipCmd_Filter_GnssAntennaCalControl_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssAntennaCalControl& self)
+    {
+        return insert_MipCmd_Filter_GnssAntennaCalControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssAntennaCalControl& self)
+    {
+        return extract_MipCmd_Filter_GnssAntennaCalControl(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssAntennaCalControl_Response& self)
+    {
+        return insert_MipCmd_Filter_GnssAntennaCalControl_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssAntennaCalControl_Response& self)
+    {
+        return extract_MipCmd_Filter_GnssAntennaCalControl_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_MagneticDeclinationSource>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_DECLINATION_SOURCE;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE;
+    typedef MipCmd_Filter_MagneticDeclinationSource_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MagneticDeclinationSource& self)
+    {
+        return insert_MipCmd_Filter_MagneticDeclinationSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MagneticDeclinationSource& self)
+    {
+        return extract_MipCmd_Filter_MagneticDeclinationSource(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MagneticDeclinationSource_Response& self)
+    {
+        return insert_MipCmd_Filter_MagneticDeclinationSource_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MagneticDeclinationSource_Response& self)
+    {
+        return extract_MipCmd_Filter_MagneticDeclinationSource_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Filter_SetInitialHeading>
+{
+    static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_HEADING;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SetInitialHeading& self)
+    {
+        return insert_MipCmd_Filter_SetInitialHeading(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SetInitialHeading& self)
+    {
+        return extract_MipCmd_Filter_SetInitialHeading(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus

@@ -22,7 +22,7 @@ extern "C" {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipBaseCommand_Descriptors
+enum MipBaseCommandDescriptors
 {
     MIP_BASE_COMMAND_DESC_SET                    = 0x01,
     
@@ -50,7 +50,7 @@ enum MipBaseCommand_Descriptors
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-struct Mipbase_device_info
+struct MipBaseDeviceInfo
 {
     uint16_t                                          firmware_version;
     char                                              model_name[16];
@@ -59,8 +59,8 @@ struct Mipbase_device_info
     char                                              lot_number[16];
     char                                              device_options[16];
 };
-size_t insert_Mipbase_device_info(uint8_t* buffer, size_t bufferSize, size_t offset, const struct Mipbase_device_info* self);
-size_t extract_Mipbase_device_info(const uint8_t* buffer, size_t bufferSize, size_t offset, struct Mipbase_device_info* self);
+size_t insert_MipBaseDeviceInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipBaseDeviceInfo* self);
+size_t extract_MipBaseDeviceInfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipBaseDeviceInfo* self);
 
 enum MipTimeFormat
 {
@@ -69,38 +69,38 @@ enum MipTimeFormat
 size_t insert_MipTimeFormat(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipTimeFormat self);
 size_t extract_MipTimeFormat(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipTimeFormat* self);
 
-enum MipCommandedTestBits_Gq7
+enum MipCommandedTestBitsGq7
 {
-    MIPCOMMANDEDTESTBITS_GQ7_GENERAL_HARDWARE_FAULT = 0x01,
-    MIPCOMMANDEDTESTBITS_GQ7_GENERAL_FIRMWARE_FAULT = 0x02,
-    MIPCOMMANDEDTESTBITS_GQ7_TIMING_OVERLOAD        = 0x04,
-    MIPCOMMANDEDTESTBITS_GQ7_BUFFER_OVERRUN         = 0x08,
-    MIPCOMMANDEDTESTBITS_GQ7_RESERVED               = 0xF0,
-    MIPCOMMANDEDTESTBITS_GQ7_IPC_IMU_FAULT          = 0x100,
-    MIPCOMMANDEDTESTBITS_GQ7_IPC_NAV_FAULT          = 0x200,
-    MIPCOMMANDEDTESTBITS_GQ7_IPC_GNSS_FAULT         = 0x400,
-    MIPCOMMANDEDTESTBITS_GQ7_COMMS_FAULT            = 0x800,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_ACCEL_FAULT        = 0x1000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_GYRO_FAULT         = 0x2000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_MAG_FAULT          = 0x4000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_PRESS_FAULT        = 0x8000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_RESERVED           = 0x30000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_CAL_ERROR          = 0x40000,
-    MIPCOMMANDEDTESTBITS_GQ7_IMU_GENERAL_FAULT      = 0x80000,
-    MIPCOMMANDEDTESTBITS_GQ7_FILT_RESERVED          = 0x300000,
-    MIPCOMMANDEDTESTBITS_GQ7_FILT_SOLUTION_FAULT    = 0x400000,
-    MIPCOMMANDEDTESTBITS_GQ7_FILT_GENERAL_FAULT     = 0x800000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_RECEIVER1_FAULT   = 0x1000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_ANTENNA1_FAULT    = 0x2000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_RECEIVER2_FAULT   = 0x4000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_ANTENNA2_FAULT    = 0x8000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_RTCM_FAILURE      = 0x10000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_RTK_FAULT         = 0x20000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000,
-    MIPCOMMANDEDTESTBITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000,
+    MIPCOMMANDEDTESTBITSGQ7_GENERAL_HARDWARE_FAULT = 0x01,
+    MIPCOMMANDEDTESTBITSGQ7_GENERAL_FIRMWARE_FAULT = 0x02,
+    MIPCOMMANDEDTESTBITSGQ7_TIMING_OVERLOAD        = 0x04,
+    MIPCOMMANDEDTESTBITSGQ7_BUFFER_OVERRUN         = 0x08,
+    MIPCOMMANDEDTESTBITSGQ7_RESERVED               = 0xF0,
+    MIPCOMMANDEDTESTBITSGQ7_IPC_IMU_FAULT          = 0x100,
+    MIPCOMMANDEDTESTBITSGQ7_IPC_NAV_FAULT          = 0x200,
+    MIPCOMMANDEDTESTBITSGQ7_IPC_GNSS_FAULT         = 0x400,
+    MIPCOMMANDEDTESTBITSGQ7_COMMS_FAULT            = 0x800,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_ACCEL_FAULT        = 0x1000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_GYRO_FAULT         = 0x2000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_MAG_FAULT          = 0x4000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_PRESS_FAULT        = 0x8000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_RESERVED           = 0x30000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_CAL_ERROR          = 0x40000,
+    MIPCOMMANDEDTESTBITSGQ7_IMU_GENERAL_FAULT      = 0x80000,
+    MIPCOMMANDEDTESTBITSGQ7_FILT_RESERVED          = 0x300000,
+    MIPCOMMANDEDTESTBITSGQ7_FILT_SOLUTION_FAULT    = 0x400000,
+    MIPCOMMANDEDTESTBITSGQ7_FILT_GENERAL_FAULT     = 0x800000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_RECEIVER1_FAULT   = 0x1000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_ANTENNA1_FAULT    = 0x2000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_RECEIVER2_FAULT   = 0x4000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_ANTENNA2_FAULT    = 0x8000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_RTCM_FAILURE      = 0x10000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_RTK_FAULT         = 0x20000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_SOLUTION_FAULT    = 0x40000000,
+    MIPCOMMANDEDTESTBITSGQ7_GNSS_GENERAL_FAULT     = 0x80000000,
 };
-size_t insert_MipCommandedTestBits_Gq7(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCommandedTestBits_Gq7 self);
-size_t extract_MipCommandedTestBits_Gq7(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCommandedTestBits_Gq7* self);
+size_t insert_MipCommandedTestBitsGq7(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCommandedTestBitsGq7 self);
+size_t extract_MipCommandedTestBitsGq7(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCommandedTestBitsGq7* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ size_t extract_MipCmd_Base_GetDeviceInfo(const uint8_t* buffer, size_t bufferSiz
 
 struct MipCmd_Base_GetDeviceInfo_Response
 {
-    struct Mipbase_device_info                        device_info;
+    struct MipBaseDeviceInfo                          device_info;
 };
 size_t insert_MipCmd_Base_GetDeviceInfo_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceInfo_Response* self);
 size_t extract_MipCmd_Base_GetDeviceInfo_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceInfo_Response* self);
@@ -181,8 +181,8 @@ size_t extract_MipCmd_Base_GetDeviceDescriptors(const uint8_t* buffer, size_t bu
 
 struct MipCmd_Base_GetDeviceDescriptors_Response
 {
-    uint16_t*                                         descriptors;
     uint8_t                                           descriptors_count;
+    uint16_t*                                         descriptors;
 };
 size_t insert_MipCmd_Base_GetDeviceDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceDescriptors_Response* self);
 size_t extract_MipCmd_Base_GetDeviceDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceDescriptors_Response* self);
@@ -248,8 +248,8 @@ size_t extract_MipCmd_Base_GetExtendedDescriptors(const uint8_t* buffer, size_t 
 
 struct MipCmd_Base_GetExtendedDescriptors_Response
 {
-    uint16_t*                                         descriptors;
     uint8_t                                           descriptors_count;
+    uint16_t*                                         descriptors;
 };
 size_t insert_MipCmd_Base_GetExtendedDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetExtendedDescriptors_Response* self);
 size_t extract_MipCmd_Base_GetExtendedDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetExtendedDescriptors_Response* self);
@@ -368,5 +368,302 @@ size_t extract_MipCmd_Base_SoftReset(const uint8_t* buffer, size_t bufferSize, s
 
 #ifdef __cplusplus
 } // extern "C"
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_Ping>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_PING;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_Ping& self)
+    {
+        return insert_MipCmd_Base_Ping(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_Ping& self)
+    {
+        return extract_MipCmd_Base_Ping(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_SetIdle>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SET_TO_IDLE;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_SetIdle& self)
+    {
+        return insert_MipCmd_Base_SetIdle(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_SetIdle& self)
+    {
+        return extract_MipCmd_Base_SetIdle(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_GetDeviceInfo>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_INFO;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_DEVICE_INFO;
+    typedef MipCmd_Base_GetDeviceInfo_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceInfo& self)
+    {
+        return insert_MipCmd_Base_GetDeviceInfo(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceInfo& self)
+    {
+        return extract_MipCmd_Base_GetDeviceInfo(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceInfo_Response& self)
+    {
+        return insert_MipCmd_Base_GetDeviceInfo_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceInfo_Response& self)
+    {
+        return extract_MipCmd_Base_GetDeviceInfo_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_GetDeviceDescriptors>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_DEVICE_DESCRIPTORS;
+    typedef MipCmd_Base_GetDeviceDescriptors_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceDescriptors& self)
+    {
+        return insert_MipCmd_Base_GetDeviceDescriptors(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceDescriptors& self)
+    {
+        return extract_MipCmd_Base_GetDeviceDescriptors(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceDescriptors_Response& self)
+    {
+        return insert_MipCmd_Base_GetDeviceDescriptors_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceDescriptors_Response& self)
+    {
+        return extract_MipCmd_Base_GetDeviceDescriptors_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_BuiltInTest>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_BUILT_IN_TEST;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_BUILT_IN_TEST;
+    typedef MipCmd_Base_BuiltInTest_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_BuiltInTest& self)
+    {
+        return insert_MipCmd_Base_BuiltInTest(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_BuiltInTest& self)
+    {
+        return extract_MipCmd_Base_BuiltInTest(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_BuiltInTest_Response& self)
+    {
+        return insert_MipCmd_Base_BuiltInTest_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_BuiltInTest_Response& self)
+    {
+        return extract_MipCmd_Base_BuiltInTest_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_Resume>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_RESUME;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_Resume& self)
+    {
+        return insert_MipCmd_Base_Resume(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_Resume& self)
+    {
+        return extract_MipCmd_Base_Resume(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_GetExtendedDescriptors>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
+    typedef MipCmd_Base_GetExtendedDescriptors_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetExtendedDescriptors& self)
+    {
+        return insert_MipCmd_Base_GetExtendedDescriptors(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetExtendedDescriptors& self)
+    {
+        return extract_MipCmd_Base_GetExtendedDescriptors(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetExtendedDescriptors_Response& self)
+    {
+        return insert_MipCmd_Base_GetExtendedDescriptors_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetExtendedDescriptors_Response& self)
+    {
+        return extract_MipCmd_Base_GetExtendedDescriptors_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_ContinuousBit>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_CONTINUOUS_BIT;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_CONTINUOUS_BIT;
+    typedef MipCmd_Base_ContinuousBit_Response Response;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_ContinuousBit& self)
+    {
+        return insert_MipCmd_Base_ContinuousBit(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_ContinuousBit& self)
+    {
+        return extract_MipCmd_Base_ContinuousBit(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_ContinuousBit_Response& self)
+    {
+        return insert_MipCmd_Base_ContinuousBit_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_ContinuousBit_Response& self)
+    {
+        return extract_MipCmd_Base_ContinuousBit_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_CommSpeed>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_COMM_SPEED;
+    static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_COMM_SPEED;
+    typedef MipCmd_Base_CommSpeed_Response Response;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = true;
+    static const bool canSave = true;
+    static const bool canLoad = true;
+    static const bool canReset = true;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_CommSpeed& self)
+    {
+        return insert_MipCmd_Base_CommSpeed(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_CommSpeed& self)
+    {
+        return extract_MipCmd_Base_CommSpeed(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_CommSpeed_Response& self)
+    {
+        return insert_MipCmd_Base_CommSpeed_Response(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_CommSpeed_Response& self)
+    {
+        return extract_MipCmd_Base_CommSpeed_Response(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_GpsTimeUpdate>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = true;
+    static const bool canWrite = true;
+    static const bool canRead = false;
+    static const bool canSave = false;
+    static const bool canLoad = false;
+    static const bool canReset = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GpsTimeUpdate& self)
+    {
+        return insert_MipCmd_Base_GpsTimeUpdate(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GpsTimeUpdate& self)
+    {
+        return extract_MipCmd_Base_GpsTimeUpdate(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
+template<>
+struct MipFieldInfo<MipCmd_Base_SoftReset>
+{
+    static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
+    static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SOFT_RESET;
+    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    
+    static const bool hasFunctionSelector = false;
+    
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_SoftReset& self)
+    {
+        return insert_MipCmd_Base_SoftReset(buffer, bufferSize, offset, &self);
+    }
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_SoftReset& self)
+    {
+        return extract_MipCmd_Base_SoftReset(buffer, bufferSize, offset, &self);
+    }
+};
+
+
+
 } // namespace mscl
 #endif // __cplusplus
