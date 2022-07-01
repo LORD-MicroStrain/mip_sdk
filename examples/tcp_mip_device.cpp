@@ -1,8 +1,9 @@
 
-#include "serial_mip_device.hpp"
+#include "tcp_mip_device.hpp"
 
 #include <chrono>
 #include <cstdio>
+
 
 static mscl::Timestamp getCurrentTimestamp()
 {
@@ -11,13 +12,13 @@ static mscl::Timestamp getCurrentTimestamp()
 }
 
 
-SerialMipDevice::SerialMipDevice(const std::string& portName, uint32_t baudrate) :
-    MipDeviceInterface(mParseBuffer, sizeof(mParseBuffer), mscl::C::mipTimeoutFromBaudrate(baudrate), 500),
-    mPort(portName, baudrate, serial::Timeout::simpleTimeout(10))
+TcpMipDevice::TcpMipDevice(const std::string& hostname, uint16_t port) :
+    MipDeviceInterface(mParseBuffer, sizeof(mParseBuffer), 1000, 2000),
+    mSocket(hostname, port)
 {
 }
 
-bool SerialMipDevice::poll()
+bool TcpMipDevice::poll()
 {
     try
     {
@@ -26,7 +27,7 @@ bool SerialMipDevice::poll()
 
         return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mscl::Timestamp* timestamp_out)->bool
         {
-            *count_out = mPort.read(buffer, maxCount);
+            *count_out = mSocket.recv(buffer, maxCount);
             *timestamp_out = getCurrentTimestamp();
             return true;
         });
@@ -38,11 +39,11 @@ bool SerialMipDevice::poll()
     }
 }
 
-bool SerialMipDevice::sendToDevice(const uint8_t* data, size_t length)
+bool TcpMipDevice::sendToDevice(const uint8_t* data, size_t length)
 {
     try
     {
-        mPort.write(data, length);
+        mSocket.send(data, length);
         return true;
     }
     catch(const std::exception& e)

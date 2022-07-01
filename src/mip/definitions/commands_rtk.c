@@ -110,7 +110,7 @@ MipCmdResult get_rtk_device_status_flags(struct MipInterfaceState* device, enum 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_STATUS_FLAGS, NULL, 0, MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -165,7 +165,7 @@ MipCmdResult get_rtk_device_imei_international_mobile_equipment_identifier(struc
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMEI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMEI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -221,7 +221,7 @@ MipCmdResult get_rtk_device_imsi_international_mobile_subscriber_identifier(stru
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMSI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -277,7 +277,7 @@ MipCmdResult get_rtk_device_iccid_integrated_circuit_card_identification_sim_num
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ICCID, NULL, 0, MIP_REPLY_DESC_RTK_GET_ICCID, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -337,7 +337,7 @@ MipCmdResult read_configure_or_read_the_type_of_the_connected_device(struct MipI
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, NULL, 0, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -407,7 +407,7 @@ MipCmdResult get_rtk_device_activation_code(struct MipInterfaceState* device, ch
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ACT_CODE, NULL, 0, MIP_REPLY_DESC_RTK_GET_ACT_CODE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -463,7 +463,7 @@ MipCmdResult get_rtk_devices_cell_modem_firmware_version_number(struct MipInterf
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, NULL, 0, MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -529,7 +529,7 @@ MipCmdResult mip_cmd_rtk_get_rssi(struct MipInterfaceState* device, bool* valid,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_RSSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_RSSI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )

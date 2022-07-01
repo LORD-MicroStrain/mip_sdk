@@ -96,7 +96,7 @@ MipCmdResult mip_gnss_receiver_info(struct MipInterfaceState* device, uint8_t* n
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_LIST_RECEIVERS, NULL, 0, MIP_REPLY_DESC_GNSS_LIST_RECEIVERS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -205,7 +205,7 @@ MipCmdResult read_mip_gnss_signal_configuration(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -323,7 +323,7 @@ MipCmdResult read_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )

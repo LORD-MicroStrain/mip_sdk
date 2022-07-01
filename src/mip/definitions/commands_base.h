@@ -9,14 +9,15 @@
 
 #ifdef __cplusplus
 namespace mscl {
-namespace C {
-struct MipInterfaceState;
-}
+namespace C { struct MipInterfaceState; }
 using C::MipInterfaceState;
 extern "C" {
 #else
 struct MipInterfaceState;
 #endif // __cplusplus
+
+
+struct MipInterfaceState;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands

@@ -317,7 +317,7 @@ MipCmdResult read_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -446,7 +446,7 @@ MipCmdResult read_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -575,7 +575,7 @@ MipCmdResult read_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -674,7 +674,7 @@ MipCmdResult get_imu_data_base_rate(struct MipInterfaceState* device, uint16_t* 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GET_IMU_BASE_RATE, NULL, 0, MIP_REPLY_DESC_3DM_IMU_BASE_RATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -735,7 +735,7 @@ MipCmdResult get_gnss_data_base_rate(struct MipInterfaceState* device, uint16_t*
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GET_GNSS_BASE_RATE, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_BASE_RATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -796,7 +796,7 @@ MipCmdResult get_estimation_filter_data_base_rate(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GET_FILTER_BASE_RATE, NULL, 0, MIP_REPLY_DESC_3DM_FILTER_BASE_RATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1230,7 +1230,7 @@ MipCmdResult read_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, ui
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, NULL, 0, MIP_REPLY_DESC_3DM_UART_BAUDRATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1620,7 +1620,7 @@ MipCmdResult read_sbas_settings(struct MipInterfaceState* device, uint8_t* enabl
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1752,7 +1752,7 @@ MipCmdResult read_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2040,7 +2040,7 @@ MipCmdResult read_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, NULL, 0, MIP_REPLY_DESC_3DM_PPS_SOURCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2537,7 +2537,7 @@ MipCmdResult read_odometer_settings(struct MipInterfaceState* device, enum MipCm
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, NULL, 0, MIP_REPLY_DESC_3DM_ODOMETER_CONFIG, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3658,7 +3658,7 @@ MipCmdResult read_configure_accel_bias(struct MipInterfaceState* device, float* 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, NULL, 0, MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3770,7 +3770,7 @@ MipCmdResult read_configure_gyro_bias(struct MipInterfaceState* device, float* b
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, NULL, 0, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3956,7 +3956,7 @@ MipCmdResult read_magnetometer_hard_iron_offset(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, NULL, 0, MIP_REPLY_DESC_3DM_HARD_IRON_OFFSET_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -4096,7 +4096,7 @@ MipCmdResult read_magnetometer_soft_iron_matrix(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, NULL, 0, MIP_REPLY_DESC_3DM_SOFT_IRON_COMP_MATRIX, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -4285,7 +4285,7 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_euler(struct MipInterfa
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -4524,7 +4524,7 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_quaternion(struct MipIn
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -4782,7 +4782,7 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_direction_cosine_matrix
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -4998,7 +4998,7 @@ MipCmdResult read_complementary_filter_settings(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, NULL, 0, MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )

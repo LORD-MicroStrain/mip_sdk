@@ -5,6 +5,8 @@
 
 #include "definitions/descriptors.h"
 
+#include <assert.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper around MipInterface_receivePacket for use with MipParser.
@@ -247,6 +249,8 @@ MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* devic
     uint8_t descriptorSet, uint8_t cmdDescriptor, const uint8_t* cmdData, uint8_t cmdLength,
     uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t* responseLength_inout)
 {
+    assert(responseLength_inout != NULL);
+
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
     struct MipPacket packet;
@@ -259,8 +263,7 @@ MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* devic
 
     MipCmdResult result = MipInterface_runCommandPacket(device, &packet, &cmd);
 
-    if( responseLength_inout != NULL )
-        *responseLength_inout = MipPendingCmd_responseLength(&cmd);
+    *responseLength_inout = MipPendingCmd_responseLength(&cmd);
 
     return result;
 }

@@ -216,7 +216,7 @@ MipCmdResult read_estimation_control_flags(struct MipInterfaceState* device, enu
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, NULL, 0, MIP_REPLY_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -549,7 +549,7 @@ MipCmdResult read_tare_sensor_orientation(struct MipInterfaceState* device, enum
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, NULL, 0, MIP_REPLY_DESC_FILTER_TARE_ORIENTATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -715,7 +715,7 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceStat
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -940,7 +940,7 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState*
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1180,7 +1180,7 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfac
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1379,7 +1379,7 @@ MipCmdResult read_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1515,7 +1515,7 @@ MipCmdResult read_gnss_antenna_offset_control(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, NULL, 0, MIP_REPLY_DESC_FILTER_ANTENNA_OFFSET, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1647,7 +1647,7 @@ MipCmdResult read_gnss_aiding_source_control(struct MipInterfaceState* device, e
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1789,7 +1789,7 @@ MipCmdResult read_heading_aiding_source_control(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -1940,7 +1940,7 @@ MipCmdResult read_altitude_aiding_control(struct MipInterfaceState* device, uint
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2080,7 +2080,7 @@ MipCmdResult read_zero_velocity_update_control(struct MipInterfaceState* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2194,7 +2194,7 @@ MipCmdResult read_zero_angular_rate_update_control(struct MipInterfaceState* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2554,7 +2554,7 @@ MipCmdResult read_kinematic_constraint_control(struct MipInterfaceState* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, NULL, 0, MIP_REPLY_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2757,7 +2757,7 @@ MipCmdResult read_navigation_filter_initialization(struct MipInterfaceState* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -2884,7 +2884,7 @@ MipCmdResult read_adaptive_filter_control(struct MipInterfaceState* device, uint
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, NULL, 0, MIP_REPLY_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3147,7 +3147,7 @@ MipCmdResult read_relative_position_configuration(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_FILTER_REL_POS_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3283,7 +3283,7 @@ MipCmdResult read_reference_point_lever_arm(struct MipInterfaceState* device, en
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, NULL, 0, MIP_REPLY_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3615,7 +3615,7 @@ MipCmdResult read_wheeled_vehicle_constraint_control(struct MipInterfaceState* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, NULL, 0, MIP_REPLY_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3737,7 +3737,7 @@ MipCmdResult read_vertical_gyro_constraint_control(struct MipInterfaceState* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, NULL, 0, MIP_REPLY_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3856,7 +3856,7 @@ MipCmdResult read_gnss_antenna_offset_calibration_control(struct MipInterfaceSta
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, NULL, 0, MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -3968,7 +3968,7 @@ MipCmdResult read_magnetic_field_declination_source_control(struct MipInterfaceS
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, NULL, 0, MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )

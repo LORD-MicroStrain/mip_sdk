@@ -193,7 +193,7 @@ MipCmdResult get_device_information(struct MipInterfaceState* device, struct Mip
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, NULL, 0, MIP_REPLY_DESC_BASE_DEVICE_INFO, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -258,7 +258,7 @@ MipCmdResult get_device_descriptors(struct MipInterfaceState* device, uint8_t* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS, NULL, 0, MIP_REPLY_DESC_BASE_DEVICE_DESCRIPTORS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -323,7 +323,7 @@ MipCmdResult built_in_test(struct MipInterfaceState* device, uint32_t* result)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_BUILT_IN_TEST, NULL, 0, MIP_REPLY_DESC_BASE_BUILT_IN_TEST, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -419,7 +419,7 @@ MipCmdResult get_device_descriptors_extended(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS, NULL, 0, MIP_REPLY_DESC_BASE_GET_EXTENDED_DESCRIPTORS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
@@ -483,7 +483,7 @@ MipCmdResult continuous_built_in_test(struct MipInterfaceState* device, uint8_t*
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_CONTINUOUS_BIT, NULL, 0, MIP_REPLY_DESC_BASE_CONTINUOUS_BIT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )

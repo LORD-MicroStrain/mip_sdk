@@ -93,7 +93,7 @@ MipCmdResult read_mip_cmd_system_comm_mode(struct MipInterfaceState* device, uin
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, NULL, 0, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
