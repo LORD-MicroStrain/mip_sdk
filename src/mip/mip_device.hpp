@@ -37,6 +37,8 @@ public:
     template<class Function>
     bool parseFromSource(Function function, unsigned int maxPackets=MIPPARSER_UNLIMITED_PACKETS) { return parseMipDataFromSource(*parser(), function, maxPackets); }
 
+    bool sendToDevice(const mscl::C::MipPacket& packet) { return sendToDevice(mscl::C::MipPacket_pointer(&packet), mscl::C::MipPacket_totalLength(&packet)); }
+
 public:
     virtual bool poll() = 0;
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;

@@ -55,7 +55,7 @@ int main(int argc, const char* argv[])
 
     try
     {
-#define METHOD 6
+#define METHOD 8
 
 #if METHOD == 1 || METHOD == 2 || METHOD == 3
         serial::Serial port(argv[1], baud, serial::Timeout::simpleTimeout(10));
@@ -163,11 +163,17 @@ int main(int argc, const char* argv[])
     mscl::MipCmd_Base_GetDeviceInfo_Response response;
 
     #if METHOD == 5
-        mscl::MipCmdResult result = mipcmd_base_getDeviceInfo(&device, &cmd, &response);
+        mscl::MipCmdResult result = exec_MipCmd_Base_GetDeviceInfo(&device, &cmd, &response);
     #elif METHOD == 6
         mscl::MipCmdResult result = mipcmd_base_getDeviceInfo(&device, &response.device_info);
     #elif METHOD == 7
         mscl::MipCmdResult result = mscl::runCommand(&device, cmd, response);
+    #elif METHOD == 8
+        mscl::MipDeviceInterface* device2 = &device;
+        mscl::C::MipInterfaceState* device3 = device2;
+        mscl::MipInterfaceState* device4 = device3;
+        static_assert(std::is_same<mscl::MipInterfaceState, mscl::C::MipInterfaceState>::value, "Not the same");
+        mscl::MipCmdResult result = mscl::get_device_information(device4, &response.device_info);
     #endif
 
         if( result == mscl::MIP_ACK_OK )
@@ -208,73 +214,73 @@ int main(int argc, const char* argv[])
 
     return 0;
 }
-
-namespace mscl
-{
-namespace C
-{
-
-MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info)
-{
-    uint8_t payload[MIP_FIELD_LENGTH_MAX];
-
-    size_t payloadLength = insert_MipCmd_Base_GetDeviceInfo(payload, sizeof(payload), 0, NULL);
-    assert(payloadLength <= sizeof(payload));
-
-    uint8_t responseLength;
-    MipCmdResult result = C::MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, payload, payloadLength, MIP_REPLY_DESC_BASE_DEVICE_INFO, payload, &responseLength);
-    if( result == MIP_ACK_OK )
-    {
-        size_t used = extract_MipBaseDeviceInfo(payload, responseLength, 0, info);
-        if( used != responseLength )
-            result = MIP_STATUS_ERROR;
-    }
-
-    return result;
-}
-
-MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response)
-{
-    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
-
-    struct C::MipPacket packet;
-    MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);
-
-    uint8_t* payload;
-    RemainingCount available = MipPacket_allocField(&packet, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, 0, &payload);
-
-    size_t used = insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, cmd);
-    assert( used <= available );
-    MipPacket_reallocLastField(&packet, payload, used);
-
-    MipPacket_finalize(&packet);
-
-
-    struct C::MipPendingCmd pending;
-    C::MipPendingCmd_initWithResponse(&pending, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, MIP_REPLY_DESC_BASE_DEVICE_INFO, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX);
-
-    C::MipCmdQueue_enqueue( C::MipInterface_cmdQueue(device), &pending );
-
-    if( !C::MipInterface_sendToDevice(device, MipPacket_pointer(&packet), MipPacket_totalLength(&packet)) )
-    {
-        C::MipCmdQueue_dequeue(C::MipInterface_cmdQueue(device), &pending);
-        return MIP_STATUS_ERROR;
-    }
-
-    MipCmdResult result = C::MipInterface_waitForReply(device, &pending);
-
-    if( result == MIP_ACK_OK )
-    {
-        size_t responseLength = C::MipPendingCmd_responseLength(&pending);
-
-        used = extract_MipCmd_Base_GetDeviceInfo_Response( C::MipPendingCmd_response(&pending), responseLength, 0, response);
-
-        if( used!= responseLength )
-            return MIP_STATUS_ERROR;
-    }
-
-    return result;
-}
-
-}
-}
+//
+// namespace mscl
+// {
+// namespace C
+// {
+//
+// MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info)
+// {
+//     uint8_t payload[MIP_FIELD_LENGTH_MAX];
+//
+//     size_t payloadLength = insert_MipCmd_Base_GetDeviceInfo(payload, sizeof(payload), 0, NULL);
+//     assert(payloadLength <= sizeof(payload));
+//
+//     uint8_t responseLength;
+//     MipCmdResult result = C::MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, payload, payloadLength, MIP_REPLY_DESC_BASE_DEVICE_INFO, payload, &responseLength);
+//     if( result == MIP_ACK_OK )
+//     {
+//         size_t used = extract_MipBaseDeviceInfo(payload, responseLength, 0, info);
+//         if( used != responseLength )
+//             result = MIP_STATUS_ERROR;
+//     }
+//
+//     return result;
+// }
+//
+// MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response)
+// {
+//     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+//
+//     struct C::MipPacket packet;
+//     MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);
+//
+//     uint8_t* payload;
+//     RemainingCount available = MipPacket_allocField(&packet, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, 0, &payload);
+//
+//     size_t used = insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, cmd);
+//     assert( used <= available );
+//     MipPacket_reallocLastField(&packet, payload, used);
+//
+//     MipPacket_finalize(&packet);
+//
+//
+//     struct C::MipPendingCmd pending;
+//     C::MipPendingCmd_initWithResponse(&pending, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, MIP_REPLY_DESC_BASE_DEVICE_INFO, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX);
+//
+//     C::MipCmdQueue_enqueue( C::MipInterface_cmdQueue(device), &pending );
+//
+//     if( !C::MipInterface_sendToDevice(device, MipPacket_pointer(&packet), MipPacket_totalLength(&packet)) )
+//     {
+//         C::MipCmdQueue_dequeue(C::MipInterface_cmdQueue(device), &pending);
+//         return MIP_STATUS_ERROR;
+//     }
+//
+//     MipCmdResult result = C::MipInterface_waitForReply(device, &pending);
+//
+//     if( result == MIP_ACK_OK )
+//     {
+//         size_t responseLength = C::MipPendingCmd_responseLength(&pending);
+//
+//         used = extract_MipCmd_Base_GetDeviceInfo_Response( C::MipPendingCmd_response(&pending), responseLength, 0, response);
+//
+//         if( used!= responseLength )
+//             return MIP_STATUS_ERROR;
+//     }
+//
+//     return result;
+// }
+//
+// }
+// }

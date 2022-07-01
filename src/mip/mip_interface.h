@@ -88,8 +88,8 @@ void MipInterface_receivePacket(struct MipInterfaceState* device, const struct M
 //
 
 MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd);
-MipCmdResult MipInterface_runCommand(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* fieldData, uint8_t fieldLength);
-MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* fieldData, uint8_t fieldLength, uint8_t responseDescriptor, uint8_t* responseData, uint8_t* responseLength_inout);
+MipCmdResult MipInterface_runCommand(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
+MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength, uint8_t responseDescriptor, uint8_t* responseData, uint8_t* responseLength_inout);
 MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, const struct MipPacket* packet, struct MipPendingCmd* cmd);
 
 //

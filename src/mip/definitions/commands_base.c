@@ -2,6 +2,7 @@
 #include "commands_base.h"
 
 #include "utils/serialization.h"
+#include "../mip_interface.h"
 
 #include <assert.h>
 
@@ -101,6 +102,19 @@ size_t extract_MipCmd_Base_Ping(const uint8_t* buffer, size_t bufferSize, size_t
 }
 
 
+/// @brief Test Communications with a device.
+/// 
+/// The Device will respond with an ACK, if present and operating correctly.
+/// 
+/// If the device is not in a normal operating mode, it may NACK.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult ping(struct MipInterfaceState* device)
+{
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_PING, NULL, 0);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_SetIdle(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_SetIdle* self)
 {
@@ -120,6 +134,19 @@ size_t extract_MipCmd_Base_SetIdle(const uint8_t* buffer, size_t bufferSize, siz
     return offset;
 }
 
+
+/// @brief Turn off all device data streams.
+/// 
+/// The Device will respond with an ACK, if present and operating correctly.
+/// This command will suspend streaming (if enabled) or wake the device from sleep (if sleeping) to allow it to respond to status and setup commands.
+/// You may restore the device mode by issuing the Resume command.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult set_to_idle(struct MipInterfaceState* device)
+{
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_SET_TO_IDLE, NULL, 0);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_GetDeviceInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceInfo* self)
@@ -156,6 +183,30 @@ size_t extract_MipCmd_Base_GetDeviceInfo_Response(const uint8_t* buffer, size_t 
 }
 
 
+/// @brief Get the device ID strings and firmware version number.
+/// 
+/// @param[out] device_info 
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult get_device_information(struct MipInterfaceState* device, struct MipBaseDeviceInfo* device_info)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, NULL, 0, MIP_REPLY_DESC_BASE_DEVICE_INFO, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        responseUsed = extract_MipBaseDeviceInfo(buffer, sizeof(buffer), responseUsed, device_info);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_GetDeviceDescriptors(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceDescriptors* self)
 {
@@ -178,7 +229,7 @@ size_t extract_MipCmd_Base_GetDeviceDescriptors(const uint8_t* buffer, size_t bu
 
 size_t insert_MipCmd_Base_GetDeviceDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceDescriptors_Response* self)
 {
-    assert(self->descriptors_count <= 253);
+    assert(self->descriptors_count <= 0);
     for(unsigned int i=0; i < self->descriptors_count; i++)
         offset = insert_u16(buffer, bufferSize, offset, self->descriptors[i]);
     
@@ -187,13 +238,41 @@ size_t insert_MipCmd_Base_GetDeviceDescriptors_Response(uint8_t* buffer, size_t 
 
 size_t extract_MipCmd_Base_GetDeviceDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceDescriptors_Response* self)
 {
-    unsigned int max_descriptors = self->descriptors_count;
-    for(self->descriptors_count=0; (self->descriptors_count < max_descriptors) && (offset < bufferSize); self->descriptors_count++)
+    for(unsigned int max_descriptors=self->descriptors_count; (self->descriptors_count < max_descriptors) && (offset < bufferSize); (self->descriptors_count)++)
         offset = extract_u16(buffer, bufferSize, offset, &self->descriptors[self->descriptors_count]);
     
     return offset;
 }
 
+
+/// @brief Get the command and data descriptors supported by the device.
+/// 
+/// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
+/// The MSB specifies the descriptor set and the LSB specifies the descriptor.
+/// @param[out] descriptors_count 
+/// @param[out] descriptors 
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult get_device_descriptors(struct MipInterfaceState* device, uint8_t* descriptors_count, uint16_t* descriptors)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS, NULL, 0, MIP_REPLY_DESC_BASE_DEVICE_DESCRIPTORS, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        responseUsed = extract_u8(buffer, sizeof(buffer), responseUsed, descriptors_count);
+        for(unsigned int max_descriptors=*descriptors_count; (*descriptors_count < max_descriptors) && (responseUsed < sizeof(buffer)); (*descriptors_count)++)
+            responseUsed = extract_u16(buffer, sizeof(buffer), responseUsed, &descriptors[*descriptors_count]);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_BuiltInTest(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_BuiltInTest* self)
@@ -230,6 +309,34 @@ size_t extract_MipCmd_Base_BuiltInTest_Response(const uint8_t* buffer, size_t bu
 }
 
 
+/// @brief Run the device Built-In Test (BIT).
+/// 
+/// The Built-In Test command always returns a 32 bit value.
+/// A value of 0 means that all tests passed.
+/// A non-zero value indicates that not all tests passed.
+/// Reference the device user manual to decode the result.
+/// @param[out] result 
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult built_in_test(struct MipInterfaceState* device, uint32_t* result)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_BUILT_IN_TEST, NULL, 0, MIP_REPLY_DESC_BASE_BUILT_IN_TEST, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        responseUsed = extract_u32(buffer, sizeof(buffer), responseUsed, result);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_Resume(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_Resume* self)
 {
@@ -249,6 +356,17 @@ size_t extract_MipCmd_Base_Resume(const uint8_t* buffer, size_t bufferSize, size
     return offset;
 }
 
+
+/// @brief Take the device out of idle mode.
+/// 
+/// The device responds with ACK upon success.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult resume(struct MipInterfaceState* device)
+{
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_RESUME, NULL, 0);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_GetExtendedDescriptors(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetExtendedDescriptors* self)
@@ -272,7 +390,7 @@ size_t extract_MipCmd_Base_GetExtendedDescriptors(const uint8_t* buffer, size_t 
 
 size_t insert_MipCmd_Base_GetExtendedDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetExtendedDescriptors_Response* self)
 {
-    assert(self->descriptors_count <= 253);
+    assert(self->descriptors_count <= 0);
     for(unsigned int i=0; i < self->descriptors_count; i++)
         offset = insert_u16(buffer, bufferSize, offset, self->descriptors[i]);
     
@@ -281,13 +399,41 @@ size_t insert_MipCmd_Base_GetExtendedDescriptors_Response(uint8_t* buffer, size_
 
 size_t extract_MipCmd_Base_GetExtendedDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetExtendedDescriptors_Response* self)
 {
-    unsigned int max_descriptors = self->descriptors_count;
-    for(self->descriptors_count=0; (self->descriptors_count < max_descriptors) && (offset < bufferSize); self->descriptors_count++)
+    for(unsigned int max_descriptors=self->descriptors_count; (self->descriptors_count < max_descriptors) && (offset < bufferSize); (self->descriptors_count)++)
         offset = extract_u16(buffer, bufferSize, offset, &self->descriptors[self->descriptors_count]);
     
     return offset;
 }
 
+
+/// @brief Get the command and data descriptors supported by the device.
+/// 
+/// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
+/// The MSB specifies the descriptor set and the LSB specifies the descriptor.
+/// @param[out] descriptors_count 
+/// @param[out] descriptors 
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult get_device_descriptors_extended(struct MipInterfaceState* device, uint8_t* descriptors_count, uint16_t* descriptors)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS, NULL, 0, MIP_REPLY_DESC_BASE_GET_EXTENDED_DESCRIPTORS, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        responseUsed = extract_u8(buffer, sizeof(buffer), responseUsed, descriptors_count);
+        for(unsigned int max_descriptors=*descriptors_count; (*descriptors_count < max_descriptors) && (responseUsed < sizeof(buffer)); (*descriptors_count)++)
+            responseUsed = extract_u16(buffer, sizeof(buffer), responseUsed, &descriptors[*descriptors_count]);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_ContinuousBit(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_ContinuousBit* self)
@@ -326,6 +472,32 @@ size_t extract_MipCmd_Base_ContinuousBit_Response(const uint8_t* buffer, size_t 
 }
 
 
+/// @brief Report result of continous built-in test.
+/// 
+/// This test is non-disruptive but is not as thorough as the commanded BIT.
+/// @param[out] result Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult continuous_built_in_test(struct MipInterfaceState* device, uint8_t* result)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_CONTINUOUS_BIT, NULL, 0, MIP_REPLY_DESC_BASE_CONTINUOUS_BIT, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        for(unsigned int i=0; i < 16; i++)
+            responseUsed = extract_u8(buffer, sizeof(buffer), responseUsed, &result[i]);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_CommSpeed(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_CommSpeed* self)
 {
@@ -361,6 +533,162 @@ size_t extract_MipCmd_Base_CommSpeed_Response(const uint8_t* buffer, size_t buff
 }
 
 
+/// @brief Controls the baud rate of a specific port on the device.
+/// 
+/// Please see the device user manual for supported baud rates on each port.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
+/// @param port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// @param baud Port baud rate. Must be a supported rate.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult write_comm_port_speed(struct MipInterfaceState* device, uint8_t port, uint32_t baud)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
+    cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, baud);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, cmdUsed);
+}
+
+/// @brief Controls the baud rate of a specific port on the device.
+/// 
+/// Please see the device user manual for supported baud rates on each port.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
+/// @param port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// @param[out] port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// @param[out] baud Port baud rate. Must be a supported rate.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult read_comm_port_speed(struct MipInterfaceState* device, uint8_t port, uint32_t* baud)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, NULL, 0, MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
+    
+    if( result_local == MIP_ACK_OK )
+    {
+        size_t responseUsed = 0;
+        responseUsed = extract_u8(buffer, sizeof(buffer), responseUsed, &port);
+        responseUsed = extract_u32(buffer, sizeof(buffer), responseUsed, baud);
+        
+        if( responseUsed != responseLength )
+            result_local = MIP_STATUS_ERROR;
+    }
+    return result_local;
+}
+
+/// @brief Controls the baud rate of a specific port on the device.
+/// 
+/// Please see the device user manual for supported baud rates on each port.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
+/// @param port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult save_comm_port_speed(struct MipInterfaceState* device, uint8_t port)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, cmdUsed);
+}
+
+/// @brief Controls the baud rate of a specific port on the device.
+/// 
+/// Please see the device user manual for supported baud rates on each port.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
+/// @param port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult load_comm_port_speed(struct MipInterfaceState* device, uint8_t port)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, cmdUsed);
+}
+
+/// @brief Controls the baud rate of a specific port on the device.
+/// 
+/// Please see the device user manual for supported baud rates on each port.
+/// 
+/// The device will wait until all incoming and outgoing data has been sent, up
+/// to a maximum of 250 ms, before applying any change.
+/// 
+/// No guarantee is provided as to what happens to commands issued during this
+/// delay period; They may or may not be processed and any responses aren't
+/// guaranteed to be at one rate or the other. The same applies to data packets.
+/// 
+/// It is highly recommended that the device be idle before issuing this command
+/// and that it be issued in its own packet. Users should wait 250 ms after
+/// sending this command before further interaction.
+/// @param port Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult default_comm_port_speed(struct MipInterfaceState* device, uint8_t port)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, cmdUsed);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_GpsTimeUpdate_Fieldid(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Base_GpsTimeUpdate_Fieldid self)
 {
@@ -391,6 +719,25 @@ size_t extract_MipCmd_Base_GpsTimeUpdate(const uint8_t* buffer, size_t bufferSiz
 }
 
 
+/// @brief When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
+/// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
+/// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
+/// @param field_id Determines how to interpret value.
+/// @param value Week number or time of week, depending on the field_id.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult write_time_broadcast_command(struct MipInterfaceState* device, enum MipCmd_Base_GpsTimeUpdate_Fieldid field_id, uint32_t value)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipCmd_Base_GpsTimeUpdate_Fieldid(buffer, sizeof(buffer), cmdUsed, field_id);
+    cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, value);
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, cmdUsed);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 size_t insert_MipCmd_Base_SoftReset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_SoftReset* self)
 {
@@ -410,6 +757,17 @@ size_t extract_MipCmd_Base_SoftReset(const uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
+
+/// @brief Resets the device.
+/// 
+/// Device responds with ACK and immediately resets.
+/// 
+/// @returns MipCmdResult
+/// 
+MipCmdResult reset_device(struct MipInterfaceState* device)
+{
+    return MipInterface_runCommand(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_SOFT_RESET, NULL, 0);
+}
 
 
 #ifdef __cplusplus

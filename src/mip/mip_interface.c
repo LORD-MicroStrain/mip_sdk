@@ -271,7 +271,7 @@ MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, con
 
     if( !MipInterface_sendToDevice(device, MipPacket_pointer(packet), MipPacket_totalLength(packet)) )
     {
-        MipCmdQueue_dequeue(MipInterface_cmdQueue(device), &cmd);
+        MipCmdQueue_dequeue(MipInterface_cmdQueue(device), cmd);
         return MIP_STATUS_ERROR;
     }
 

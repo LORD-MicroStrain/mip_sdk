@@ -2,6 +2,7 @@
 #include "data_shared.h"
 
 #include "utils/serialization.h"
+#include "../mip_interface.h"
 
 #include <assert.h>
 

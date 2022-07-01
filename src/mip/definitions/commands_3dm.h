@@ -1,6 +1,7 @@
 #pragma once
 
 #include "descriptors.h"
+#include "../mip_result.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -10,6 +11,8 @@
 namespace mscl {
 extern "C" {
 #endif // __cplusplus
+
+struct MipInterfaceState;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -156,6 +159,7 @@ struct MipCmd_3dm_PollImuMessage
 size_t insert_MipCmd_3dm_PollImuMessage(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PollImuMessage* self);
 size_t extract_MipCmd_3dm_PollImuMessage(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PollImuMessage* self);
 
+MipCmdResult mip_cmd_3dm_poll_imu_message(struct MipInterfaceState* device, bool suppress_ack, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +184,7 @@ struct MipCmd_3dm_PollGnssMessage
 size_t insert_MipCmd_3dm_PollGnssMessage(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PollGnssMessage* self);
 size_t extract_MipCmd_3dm_PollGnssMessage(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PollGnssMessage* self);
 
+MipCmdResult mip_cmd_3dm_poll_gnss_message(struct MipInterfaceState* device, bool suppress_ack, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,6 +209,7 @@ struct MipCmd_3dm_PollFilterMessage
 size_t insert_MipCmd_3dm_PollFilterMessage(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PollFilterMessage* self);
 size_t extract_MipCmd_3dm_PollFilterMessage(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PollFilterMessage* self);
 
+MipCmdResult mip_cmd_3dm_poll_filter_message(struct MipInterfaceState* device, bool suppress_ack, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -220,6 +226,7 @@ struct MipCmd_3dm_PollNmeaMessage
 size_t insert_MipCmd_3dm_PollNmeaMessage(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PollNmeaMessage* self);
 size_t extract_MipCmd_3dm_PollNmeaMessage(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PollNmeaMessage* self);
 
+MipCmdResult mip_cmd_3dm_poll_nmea_message(struct MipInterfaceState* device, bool suppress_ack, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +254,11 @@ struct MipCmd_3dm_ImuMessageFormat_Response
 size_t insert_MipCmd_3dm_ImuMessageFormat_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_ImuMessageFormat_Response* self);
 size_t extract_MipCmd_3dm_ImuMessageFormat_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_ImuMessageFormat_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
+MipCmdResult read_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors);
+MipCmdResult save_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,6 +286,11 @@ struct MipCmd_3dm_GpsMessageFormat_Response
 size_t insert_MipCmd_3dm_GpsMessageFormat_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GpsMessageFormat_Response* self);
 size_t extract_MipCmd_3dm_GpsMessageFormat_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GpsMessageFormat_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
+MipCmdResult read_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors);
+MipCmdResult save_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -301,6 +318,11 @@ struct MipCmd_3dm_FilterMessageFormat_Response
 size_t insert_MipCmd_3dm_FilterMessageFormat_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_FilterMessageFormat_Response* self);
 size_t extract_MipCmd_3dm_FilterMessageFormat_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_FilterMessageFormat_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
+MipCmdResult read_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors);
+MipCmdResult save_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -325,6 +347,7 @@ struct MipCmd_3dm_ImuGetBaseRate_Response
 size_t insert_MipCmd_3dm_ImuGetBaseRate_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_ImuGetBaseRate_Response* self);
 size_t extract_MipCmd_3dm_ImuGetBaseRate_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_ImuGetBaseRate_Response* self);
 
+MipCmdResult get_imu_data_base_rate(struct MipInterfaceState* device, uint16_t* rate);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -349,6 +372,7 @@ struct MipCmd_3dm_GpsGetBaseRate_Response
 size_t insert_MipCmd_3dm_GpsGetBaseRate_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GpsGetBaseRate_Response* self);
 size_t extract_MipCmd_3dm_GpsGetBaseRate_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GpsGetBaseRate_Response* self);
 
+MipCmdResult get_gnss_data_base_rate(struct MipInterfaceState* device, uint16_t* rate);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -373,6 +397,7 @@ struct MipCmd_3dm_FilterGetBaseRate_Response
 size_t insert_MipCmd_3dm_FilterGetBaseRate_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_FilterGetBaseRate_Response* self);
 size_t extract_MipCmd_3dm_FilterGetBaseRate_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_FilterGetBaseRate_Response* self);
 
+MipCmdResult get_estimation_filter_data_base_rate(struct MipInterfaceState* device, uint16_t* rate);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -398,6 +423,7 @@ struct MipCmd_3dm_PollData
 size_t insert_MipCmd_3dm_PollData(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PollData* self);
 size_t extract_MipCmd_3dm_PollData(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PollData* self);
 
+MipCmdResult mip_cmd_3dm_poll_data(struct MipInterfaceState* device, uint8_t desc_set, bool suppress_ack, uint8_t num_descriptors, const uint8_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -421,6 +447,7 @@ struct MipCmd_3dm_GetBaseRate_Response
 size_t insert_MipCmd_3dm_GetBaseRate_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GetBaseRate_Response* self);
 size_t extract_MipCmd_3dm_GetBaseRate_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GetBaseRate_Response* self);
 
+MipCmdResult get_data_base_rate(struct MipInterfaceState* device, uint8_t desc_set, uint16_t* rate);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -450,6 +477,11 @@ struct MipCmd_3dm_MessageFormat_Response
 size_t insert_MipCmd_3dm_MessageFormat_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_MessageFormat_Response* self);
 size_t extract_MipCmd_3dm_MessageFormat_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_MessageFormat_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_message_format(struct MipInterfaceState* device, uint8_t desc_set, uint8_t num_descriptors, const struct MipDescriptorRate* descriptors);
+MipCmdResult read_mip_cmd_3dm_message_format(struct MipInterfaceState* device, uint8_t desc_set, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors);
+MipCmdResult save_mip_cmd_3dm_message_format(struct MipInterfaceState* device, uint8_t desc_set);
+MipCmdResult load_mip_cmd_3dm_message_format(struct MipInterfaceState* device, uint8_t desc_set);
+MipCmdResult default_mip_cmd_3dm_message_format(struct MipInterfaceState* device, uint8_t desc_set);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -469,6 +501,9 @@ struct MipCmd_3dm_DeviceSettings
 size_t insert_MipCmd_3dm_DeviceSettings(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_DeviceSettings* self);
 size_t extract_MipCmd_3dm_DeviceSettings(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_DeviceSettings* self);
 
+MipCmdResult save_mip_cmd_3dm_device_settings(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_device_settings(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_device_settings(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -506,6 +541,11 @@ struct MipCmd_3dm_UartBaudrate_Response
 size_t insert_MipCmd_3dm_UartBaudrate_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_UartBaudrate_Response* self);
 size_t extract_MipCmd_3dm_UartBaudrate_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_UartBaudrate_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, uint32_t baud);
+MipCmdResult read_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, uint32_t* baud);
+MipCmdResult save_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -534,6 +574,7 @@ struct MipCmd_3dm_FactoryStreaming
 size_t insert_MipCmd_3dm_FactoryStreaming(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_FactoryStreaming* self);
 size_t extract_MipCmd_3dm_FactoryStreaming(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_FactoryStreaming* self);
 
+MipCmdResult mip_cmd_3dm_factory_streaming(struct MipInterfaceState* device, enum MipCmd_3dm_FactoryStreaming_Action action, uint8_t reserved);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -564,6 +605,11 @@ struct MipCmd_3dm_DatastreamControl_Response
 size_t insert_MipCmd_3dm_DatastreamControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_DatastreamControl_Response* self);
 size_t extract_MipCmd_3dm_DatastreamControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_DatastreamControl_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_datastream_control(struct MipInterfaceState* device, uint8_t desc_set, bool enable);
+MipCmdResult read_mip_cmd_3dm_datastream_control(struct MipInterfaceState* device, uint8_t desc_set, bool* enabled);
+MipCmdResult save_mip_cmd_3dm_datastream_control(struct MipInterfaceState* device, uint8_t desc_set);
+MipCmdResult load_mip_cmd_3dm_datastream_control(struct MipInterfaceState* device, uint8_t desc_set);
+MipCmdResult default_mip_cmd_3dm_datastream_control(struct MipInterfaceState* device, uint8_t desc_set);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -605,6 +651,11 @@ struct MipCmd_3dm_GnssSbasSettings_Response
 size_t insert_MipCmd_3dm_GnssSbasSettings_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GnssSbasSettings_Response* self);
 size_t extract_MipCmd_3dm_GnssSbasSettings_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GnssSbasSettings_Response* self);
 
+MipCmdResult write_sbas_settings(struct MipInterfaceState* device, uint8_t enable_sbas, enum MipCmd_3dm_GnssSbasSettings_Sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns);
+MipCmdResult read_sbas_settings(struct MipInterfaceState* device, uint8_t* enable_sbas, enum MipCmd_3dm_GnssSbasSettings_Sbasoptions* sbas_options, uint8_t* num_included_prns, uint16_t* included_prns);
+MipCmdResult save_sbas_settings(struct MipInterfaceState* device);
+MipCmdResult load_sbas_settings(struct MipInterfaceState* device);
+MipCmdResult default_sbas_settings(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -635,6 +686,8 @@ struct MipCmd_3dm_GnssTimeAssistance_Response
 size_t insert_MipCmd_3dm_GnssTimeAssistance_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GnssTimeAssistance_Response* self);
 size_t extract_MipCmd_3dm_GnssTimeAssistance_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GnssTimeAssistance_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* device, double tow, uint16_t week_number, float accuracy);
+MipCmdResult read_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* device, double* tow, uint16_t* week_number, float* accuracy);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -679,6 +732,11 @@ struct MipCmd_3dm_AdvLowpassFilter_Response
 size_t insert_MipCmd_3dm_AdvLowpassFilter_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_AdvLowpassFilter_Response* self);
 size_t extract_MipCmd_3dm_AdvLowpassFilter_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_AdvLowpassFilter_Response* self);
 
+MipCmdResult write_advanced_low_pass_filter_settings(struct MipInterfaceState* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+MipCmdResult read_advanced_low_pass_filter_settings(struct MipInterfaceState* device, uint8_t target_descriptor, bool* enable, bool* manual, uint16_t* frequency, uint8_t* reserved);
+MipCmdResult save_advanced_low_pass_filter_settings(struct MipInterfaceState* device, uint8_t target_descriptor);
+MipCmdResult load_advanced_low_pass_filter_settings(struct MipInterfaceState* device, uint8_t target_descriptor);
+MipCmdResult default_advanced_low_pass_filter_settings(struct MipInterfaceState* device, uint8_t target_descriptor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -702,6 +760,11 @@ struct MipCmd_3dm_PpsSource_Response
 size_t insert_MipCmd_3dm_PpsSource_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_PpsSource_Response* self);
 size_t extract_MipCmd_3dm_PpsSource_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_PpsSource_Response* self);
 
+MipCmdResult write_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum MipPpsSource source);
+MipCmdResult read_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum MipPpsSource* source);
+MipCmdResult save_mip_cmd_3dm_pps_source(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_3dm_pps_source(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_3dm_pps_source(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -786,6 +849,11 @@ struct MipCmd_3dm_GpioConfig_Response
 size_t insert_MipCmd_3dm_GpioConfig_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GpioConfig_Response* self);
 size_t extract_MipCmd_3dm_GpioConfig_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GpioConfig_Response* self);
 
+MipCmdResult write_gpio_configuration(struct MipInterfaceState* device, uint8_t pin, enum MipCmd_3dm_GpioConfig_Feature feature, enum MipCmd_3dm_GpioConfig_Behavior behavior, enum MipCmd_3dm_GpioConfig_Pinmode pin_mode);
+MipCmdResult read_gpio_configuration(struct MipInterfaceState* device, uint8_t pin, enum MipCmd_3dm_GpioConfig_Feature* feature, enum MipCmd_3dm_GpioConfig_Behavior* behavior, enum MipCmd_3dm_GpioConfig_Pinmode* pin_mode);
+MipCmdResult save_gpio_configuration(struct MipInterfaceState* device, uint8_t pin);
+MipCmdResult load_gpio_configuration(struct MipInterfaceState* device, uint8_t pin);
+MipCmdResult default_gpio_configuration(struct MipInterfaceState* device, uint8_t pin);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -826,6 +894,8 @@ struct MipCmd_3dm_GpioState_Response
 size_t insert_MipCmd_3dm_GpioState_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GpioState_Response* self);
 size_t extract_MipCmd_3dm_GpioState_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GpioState_Response* self);
 
+MipCmdResult write_gpio_state(struct MipInterfaceState* device, uint8_t pin, bool state);
+MipCmdResult read_gpio_state(struct MipInterfaceState* device, uint8_t pin, bool* state);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -862,6 +932,11 @@ struct MipCmd_3dm_Odometer_Response
 size_t insert_MipCmd_3dm_Odometer_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_Odometer_Response* self);
 size_t extract_MipCmd_3dm_Odometer_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_Odometer_Response* self);
 
+MipCmdResult write_odometer_settings(struct MipInterfaceState* device, enum MipCmd_3dm_Odometer_Mode mode, float scaling, float uncertainty);
+MipCmdResult read_odometer_settings(struct MipInterfaceState* device, enum MipCmd_3dm_Odometer_Mode* mode, float* scaling, float* uncertainty);
+MipCmdResult save_odometer_settings(struct MipInterfaceState* device);
+MipCmdResult load_odometer_settings(struct MipInterfaceState* device);
+MipCmdResult default_odometer_settings(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -919,6 +994,7 @@ struct MipCmd_3dm_EventSupport_Response
 size_t insert_MipCmd_3dm_EventSupport_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventSupport_Response* self);
 size_t extract_MipCmd_3dm_EventSupport_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventSupport_Response* self);
 
+MipCmdResult get_supported_events(struct MipInterfaceState* device, enum MipCmd_3dm_EventSupport_Query query, uint8_t* max_instances, uint8_t* num_entries, struct MipCmd_3dm_EventSupport_Info* entries);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -963,6 +1039,11 @@ struct MipCmd_3dm_EventControl_Response
 size_t insert_MipCmd_3dm_EventControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventControl_Response* self);
 size_t extract_MipCmd_3dm_EventControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventControl_Response* self);
 
+MipCmdResult write_event_control(struct MipInterfaceState* device, uint8_t instance, enum MipCmd_3dm_EventControl_Mode mode);
+MipCmdResult read_event_control(struct MipInterfaceState* device, uint8_t instance, enum MipCmd_3dm_EventControl_Mode* mode);
+MipCmdResult save_event_control(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult load_event_control(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult default_event_control(struct MipInterfaceState* device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1003,6 +1084,7 @@ struct MipCmd_3dm_EventTriggerStatus_Response
 size_t insert_MipCmd_3dm_EventTriggerStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventTriggerStatus_Response* self);
 size_t extract_MipCmd_3dm_EventTriggerStatus_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventTriggerStatus_Response* self);
 
+MipCmdResult get_trigger_status(struct MipInterfaceState* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count, struct MipCmd_3dm_EventTriggerStatus_Entry* triggers);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1034,6 +1116,7 @@ struct MipCmd_3dm_EventActionStatus_Response
 size_t insert_MipCmd_3dm_EventActionStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventActionStatus_Response* self);
 size_t extract_MipCmd_3dm_EventActionStatus_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventActionStatus_Response* self);
 
+MipCmdResult get_action_status(struct MipInterfaceState* device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t* count, struct MipCmd_3dm_EventActionStatus_Entry* actions);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1135,6 +1218,11 @@ struct MipCmd_3dm_EventTrigger_Response
 size_t insert_MipCmd_3dm_EventTrigger_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventTrigger_Response* self);
 size_t extract_MipCmd_3dm_EventTrigger_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventTrigger_Response* self);
 
+MipCmdResult write_event_trigger_configuration(struct MipInterfaceState* device, uint8_t instance, enum MipCmd_3dm_EventTrigger_Type type, const void* gpio_threshold_combination);
+MipCmdResult read_event_trigger_configuration(struct MipInterfaceState* device, uint8_t instance, enum MipCmd_3dm_EventTrigger_Type* type, void* gpio_threshold_combination);
+MipCmdResult save_event_trigger_configuration(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult load_event_trigger_configuration(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult default_event_trigger_configuration(struct MipInterfaceState* device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1211,6 +1299,11 @@ struct MipCmd_3dm_EventAction_Response
 size_t insert_MipCmd_3dm_EventAction_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_EventAction_Response* self);
 size_t extract_MipCmd_3dm_EventAction_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_EventAction_Response* self);
 
+MipCmdResult write_event_action_configuration(struct MipInterfaceState* device, uint8_t instance, uint8_t trigger, enum MipCmd_3dm_EventAction_Type type, const void* gpio_message);
+MipCmdResult read_event_action_configuration(struct MipInterfaceState* device, uint8_t instance, uint8_t* trigger, enum MipCmd_3dm_EventAction_Type* type, void* gpio_message);
+MipCmdResult save_event_action_configuration(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult load_event_action_configuration(struct MipInterfaceState* device, uint8_t instance);
+MipCmdResult default_event_action_configuration(struct MipInterfaceState* device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1236,6 +1329,11 @@ struct MipCmd_3dm_AccelBias_Response
 size_t insert_MipCmd_3dm_AccelBias_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_AccelBias_Response* self);
 size_t extract_MipCmd_3dm_AccelBias_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_AccelBias_Response* self);
 
+MipCmdResult write_configure_accel_bias(struct MipInterfaceState* device, const float* bias);
+MipCmdResult read_configure_accel_bias(struct MipInterfaceState* device, float* bias);
+MipCmdResult save_configure_accel_bias(struct MipInterfaceState* device);
+MipCmdResult load_configure_accel_bias(struct MipInterfaceState* device);
+MipCmdResult default_configure_accel_bias(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1261,6 +1359,11 @@ struct MipCmd_3dm_GyroBias_Response
 size_t insert_MipCmd_3dm_GyroBias_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_GyroBias_Response* self);
 size_t extract_MipCmd_3dm_GyroBias_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_GyroBias_Response* self);
 
+MipCmdResult write_configure_gyro_bias(struct MipInterfaceState* device, const float* bias);
+MipCmdResult read_configure_gyro_bias(struct MipInterfaceState* device, float* bias);
+MipCmdResult save_configure_gyro_bias(struct MipInterfaceState* device);
+MipCmdResult load_configure_gyro_bias(struct MipInterfaceState* device);
+MipCmdResult default_configure_gyro_bias(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1288,6 +1391,7 @@ struct MipCmd_3dm_CaptureGyroBias_Response
 size_t insert_MipCmd_3dm_CaptureGyroBias_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_CaptureGyroBias_Response* self);
 size_t extract_MipCmd_3dm_CaptureGyroBias_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_CaptureGyroBias_Response* self);
 
+MipCmdResult capture_gyro_bias(struct MipInterfaceState* device, uint16_t averaging_time_ms, float* bias);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1317,6 +1421,11 @@ struct MipCmd_3dm_MagHardIronOffset_Response
 size_t insert_MipCmd_3dm_MagHardIronOffset_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_MagHardIronOffset_Response* self);
 size_t extract_MipCmd_3dm_MagHardIronOffset_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_MagHardIronOffset_Response* self);
 
+MipCmdResult write_magnetometer_hard_iron_offset(struct MipInterfaceState* device, const float* offset);
+MipCmdResult read_magnetometer_hard_iron_offset(struct MipInterfaceState* device, float* offset);
+MipCmdResult save_magnetometer_hard_iron_offset(struct MipInterfaceState* device);
+MipCmdResult load_magnetometer_hard_iron_offset(struct MipInterfaceState* device);
+MipCmdResult default_magnetometer_hard_iron_offset(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1350,6 +1459,11 @@ struct MipCmd_3dm_MagSoftIronMatrix_Response
 size_t insert_MipCmd_3dm_MagSoftIronMatrix_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_MagSoftIronMatrix_Response* self);
 size_t extract_MipCmd_3dm_MagSoftIronMatrix_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_MagSoftIronMatrix_Response* self);
 
+MipCmdResult write_magnetometer_soft_iron_matrix(struct MipInterfaceState* device, const float* offset);
+MipCmdResult read_magnetometer_soft_iron_matrix(struct MipInterfaceState* device, float* offset);
+MipCmdResult save_magnetometer_soft_iron_matrix(struct MipInterfaceState* device);
+MipCmdResult load_magnetometer_soft_iron_matrix(struct MipInterfaceState* device);
+MipCmdResult default_magnetometer_soft_iron_matrix(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1401,6 +1515,11 @@ struct MipCmd_3dm_Sensor2VehicleTransformEuler_Response
 size_t insert_MipCmd_3dm_Sensor2VehicleTransformEuler_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_Sensor2VehicleTransformEuler_Response* self);
 size_t extract_MipCmd_3dm_Sensor2VehicleTransformEuler_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_Sensor2VehicleTransformEuler_Response* self);
 
+MipCmdResult write_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device, float roll, float pitch, float yaw);
+MipCmdResult read_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device, float* roll, float* pitch, float* yaw);
+MipCmdResult save_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device);
+MipCmdResult load_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device);
+MipCmdResult default_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1456,6 +1575,11 @@ struct MipCmd_3dm_Sensor2VehicleTransformQuaternion_Response
 size_t insert_MipCmd_3dm_Sensor2VehicleTransformQuaternion_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_Sensor2VehicleTransformQuaternion_Response* self);
 size_t extract_MipCmd_3dm_Sensor2VehicleTransformQuaternion_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_Sensor2VehicleTransformQuaternion_Response* self);
 
+MipCmdResult write_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device, const float* q);
+MipCmdResult read_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device, float* q);
+MipCmdResult save_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device);
+MipCmdResult load_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device);
+MipCmdResult default_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1509,6 +1633,11 @@ struct MipCmd_3dm_Sensor2VehicleTransformDcm_Response
 size_t insert_MipCmd_3dm_Sensor2VehicleTransformDcm_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_Sensor2VehicleTransformDcm_Response* self);
 size_t extract_MipCmd_3dm_Sensor2VehicleTransformDcm_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_Sensor2VehicleTransformDcm_Response* self);
 
+MipCmdResult write_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device, const float* dcm);
+MipCmdResult read_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device, float* dcm);
+MipCmdResult save_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device);
+MipCmdResult load_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device);
+MipCmdResult default_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1542,6 +1671,11 @@ struct MipCmd_3dm_ComplementaryFilter_Response
 size_t insert_MipCmd_3dm_ComplementaryFilter_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_ComplementaryFilter_Response* self);
 size_t extract_MipCmd_3dm_ComplementaryFilter_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_ComplementaryFilter_Response* self);
 
+MipCmdResult write_complementary_filter_settings(struct MipInterfaceState* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant);
+MipCmdResult read_complementary_filter_settings(struct MipInterfaceState* device, bool* pitch_roll_enable, bool* heading_enable, float* pitch_roll_time_constant, float* heading_time_constant);
+MipCmdResult save_complementary_filter_settings(struct MipInterfaceState* device);
+MipCmdResult load_complementary_filter_settings(struct MipInterfaceState* device);
+MipCmdResult default_complementary_filter_settings(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1574,6 +1708,11 @@ struct MipCmd_3dm_SensorRange_Response
 size_t insert_MipCmd_3dm_SensorRange_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_SensorRange_Response* self);
 size_t extract_MipCmd_3dm_SensorRange_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_SensorRange_Response* self);
 
+MipCmdResult write_sensor_range(struct MipInterfaceState* device, enum MipSensorRangeType sensor, uint8_t setting);
+MipCmdResult read_sensor_range(struct MipInterfaceState* device, enum MipSensorRangeType sensor, uint8_t* setting);
+MipCmdResult save_sensor_range(struct MipInterfaceState* device, enum MipSensorRangeType sensor);
+MipCmdResult load_sensor_range(struct MipInterfaceState* device, enum MipSensorRangeType sensor);
+MipCmdResult default_sensor_range(struct MipInterfaceState* device, enum MipSensorRangeType sensor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1609,6 +1748,7 @@ struct MipCmd_3dm_CalibratedSensorRanges_Response
 size_t insert_MipCmd_3dm_CalibratedSensorRanges_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_3dm_CalibratedSensorRanges_Response* self);
 size_t extract_MipCmd_3dm_CalibratedSensorRanges_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_3dm_CalibratedSensorRanges_Response* self);
 
+MipCmdResult get_calibrated_sensor_ranges(struct MipInterfaceState* device, enum MipSensorRangeType sensor, uint8_t* num_ranges, struct MipCmd_3dm_CalibratedSensorRanges_Entry* ranges);
 ///@}
 ///
 

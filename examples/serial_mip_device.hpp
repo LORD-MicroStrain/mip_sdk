@@ -14,7 +14,6 @@ public:
 
     bool poll() final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
-    bool sendToDevice(const mscl::C::MipPacket& packet) { return sendToDevice(mscl::C::MipPacket_pointer(&packet), mscl::C::MipPacket_totalLength(&packet)); }
 
 private:
     serial::Serial mPort;

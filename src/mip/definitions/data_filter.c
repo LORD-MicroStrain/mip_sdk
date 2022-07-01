@@ -2,6 +2,7 @@
 #include "data_filter.h"
 
 #include "utils/serialization.h"
+#include "../mip_interface.h"
 
 #include <assert.h>
 

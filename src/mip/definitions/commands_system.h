@@ -1,6 +1,7 @@
 #pragma once
 
 #include "descriptors.h"
+#include "../mip_result.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -10,6 +11,8 @@
 namespace mscl {
 extern "C" {
 #endif // __cplusplus
+
+struct MipInterfaceState;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -73,6 +76,11 @@ struct MipCmd_System_CommMode_Response
 size_t insert_MipCmd_System_CommMode_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_System_CommMode_Response* self);
 size_t extract_MipCmd_System_CommMode_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_System_CommMode_Response* self);
 
+MipCmdResult write_mip_cmd_system_comm_mode(struct MipInterfaceState* device, uint8_t mode);
+MipCmdResult read_mip_cmd_system_comm_mode(struct MipInterfaceState* device, uint8_t* mode);
+MipCmdResult save_mip_cmd_system_comm_mode(struct MipInterfaceState* device);
+MipCmdResult load_mip_cmd_system_comm_mode(struct MipInterfaceState* device);
+MipCmdResult default_mip_cmd_system_comm_mode(struct MipInterfaceState* device);
 ///@}
 ///
 

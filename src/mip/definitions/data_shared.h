@@ -1,6 +1,7 @@
 #pragma once
 
 #include "descriptors.h"
+#include "../mip_result.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -10,6 +11,8 @@
 namespace mscl {
 extern "C" {
 #endif // __cplusplus
+
+struct MipInterfaceState;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData

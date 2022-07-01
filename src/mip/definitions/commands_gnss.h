@@ -1,6 +1,7 @@
 #pragma once
 
 #include "descriptors.h"
+#include "../mip_result.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -10,6 +11,8 @@
 namespace mscl {
 extern "C" {
 #endif // __cplusplus
+
+struct MipInterfaceState;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -83,6 +86,7 @@ struct MipCmd_Gnss_ReceiverInfo_Response
 size_t insert_MipCmd_Gnss_ReceiverInfo_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverInfo_Response* self);
 size_t extract_MipCmd_Gnss_ReceiverInfo_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo_Response* self);
 
+MipCmdResult mip_gnss_receiver_info(struct MipInterfaceState* device, uint8_t* num_receivers, struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* receiver_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +119,11 @@ struct MipCmd_Gnss_SignalConfiguration_Response
 size_t insert_MipCmd_Gnss_SignalConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_SignalConfiguration_Response* self);
 size_t extract_MipCmd_Gnss_SignalConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_SignalConfiguration_Response* self);
 
+MipCmdResult write_mip_gnss_signal_configuration(struct MipInterfaceState* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved);
+MipCmdResult read_mip_gnss_signal_configuration(struct MipInterfaceState* device, uint8_t* gps_enable, uint8_t* glonass_enable, uint8_t* galileo_enable, uint8_t* beidou_enable, uint8_t* reserved);
+MipCmdResult save_mip_gnss_signal_configuration(struct MipInterfaceState* device);
+MipCmdResult load_mip_gnss_signal_configuration(struct MipInterfaceState* device);
+MipCmdResult default_mip_gnss_signal_configuration(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,6 +150,11 @@ struct MipCmd_Gnss_RtkDongleConfiguration_Response
 size_t insert_MipCmd_Gnss_RtkDongleConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_RtkDongleConfiguration_Response* self);
 size_t extract_MipCmd_Gnss_RtkDongleConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_RtkDongleConfiguration_Response* self);
 
+MipCmdResult write_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device, uint8_t enable, const uint8_t* reserved);
+MipCmdResult read_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device, uint8_t* enable, uint8_t* reserved);
+MipCmdResult save_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device);
+MipCmdResult load_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device);
+MipCmdResult default_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +173,7 @@ struct MipCmd_Gnss_ReceiverSafeMode
 size_t insert_MipCmd_Gnss_ReceiverSafeMode(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverSafeMode* self);
 size_t extract_MipCmd_Gnss_ReceiverSafeMode(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverSafeMode* self);
 
+MipCmdResult gnss_receiver_safe_mode(struct MipInterfaceState* device, uint8_t receiver_id, uint8_t enable);
 ///@}
 ///
 
