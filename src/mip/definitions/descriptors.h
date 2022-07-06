@@ -9,6 +9,10 @@
 #include <type_traits>
 
 namespace mscl {
+
+namespace C { struct MipInterfaceState; }
+using C::MipInterfaceState;
+
 extern "C" {
 
 #endif // __cplusplus
