@@ -124,6 +124,8 @@ int TcpSocket::recv(uint8_t* buffer, size_t maxLength)
     {
         if(errno != EAGAIN && errno != EWOULDBLOCK)
             throw SocketError(errno);
+        else
+            return 0;
     }
     // Throw an error if the connection has been closed by the other side.
     else if( count == 0 )
