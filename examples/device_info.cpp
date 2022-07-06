@@ -33,6 +33,7 @@ int usage(const char* argv[])
 
 int main(int argc, const char* argv[])
 {
+#ifdef MSCL_USE_SERIAL
     if( argc == 1 )
     {
         printf("Available serial ports:\n");
@@ -45,16 +46,23 @@ int main(int argc, const char* argv[])
         return 0;
     }
     else if( argc != 3 )
+    {
+#else  // MSCL_USE_SERIAL
+    if( argc != 3 )
+    {
+#endif // MSCL_USE_SERIAL
         return usage(argv);
+    }
 
     std::unique_ptr<mscl::MipDeviceInterface> device;
 
     try
     {
-
         std::string port_or_hostname = argv[1];
+
         if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
         {
+#ifdef MSCL_USE_SOCKETS
             uint32_t port = std::strtoul(argv[2], nullptr, 10);
             if( port < 1024 || port > 65535 )
             {
@@ -63,9 +71,14 @@ int main(int argc, const char* argv[])
             }
 
             device.reset(new TcpMipDevice(port_or_hostname, port));
+#else  // MSCL_USE_SOCKETS
+            fprintf(stderr, "Error: this program was compiled without socket support. Recompile with -DMSCL_USE_SOCKETS=1.\n");
+            return 1;
+#endif // MSCL_USE_SOCKETS
         }
         else  // Serial port
         {
+#ifdef MSCL_USE_SERIAL
             uint32_t baud = std::strtoul(argv[2], nullptr, 10);
             if( baud == 0 )
             {
@@ -74,6 +87,10 @@ int main(int argc, const char* argv[])
             }
 
             device.reset(new SerialMipDevice(port_or_hostname, baud));
+#else  // MSCL_USE_SERIAL
+            fprintf(stderr, "Error: this program was compiled without serial support. Recompile with -DMSCL_USE_SERIAL=1.\n");
+            return 1;
+#endif // MSCL_USE_SERIAL
         }
 
         mscl::MipBaseDeviceInfo device_info;
