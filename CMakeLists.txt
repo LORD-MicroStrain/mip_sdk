@@ -109,6 +109,8 @@ endif()
 # EXAMPLES
 #
 
+option(BUILD_EXAMPLES "Builds the example programs." OFF)
+
 if(BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif()

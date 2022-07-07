@@ -2,7 +2,10 @@
 set(EXAMPLE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 
-set(DEVICE_SOURCES )
+set(DEVICE_SOURCES
+    "${EXAMPLE_DIR}/example_utils.cpp"
+    "${EXAMPLE_DIR}/example_utils.hpp"
+)
 
 if(WITH_SERIALPORT)
 
@@ -41,8 +44,12 @@ endif()
 
 if(WITH_SERIALPORT OR WITH_SOCKETS)
 
-    add_executable(DeviceInfo "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
+    add_executable(DeviceInfo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
     target_link_libraries(DeviceInfo mip "${SERIAL_LIB}" "${SOCKET_LIB}")
     target_compile_definitions(DeviceInfo PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+
+    add_executable(WatchImu "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/watch_imu.cpp" ${DEVICE_SOURCES})
+    target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+    target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
 endif()

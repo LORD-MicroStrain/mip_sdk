@@ -1,97 +1,20 @@
 
-#ifdef MSCL_USE_SERIAL
-    #include "serial_mip_device.hpp"
-#endif
-#ifdef MSCL_USE_SOCKETS
-    #include "tcp_mip_device.hpp"
-#endif
+#include "example_utils.hpp"
 
-#include <mip/mip_device.hpp>
 #include <mip/definitions/commands_base.h>
 
 
 #include <vector>
-#include <memory>
 #include <cstring>
 #include <stdio.h>
 
 
-#ifdef WIN32
-    #define PORT_KEY "COM"
-#else
-    #define PORT_KEY "/dev/"
-#endif
-
-
-
-int usage(const char* argv[])
-{
-    fprintf(stderr, "Usage: %s <portname> <baudrate>\nUsage: %s <hostname> <port>\n", argv[0], argv[0]);
-    return 1;
-}
-
 
 int main(int argc, const char* argv[])
 {
-#ifdef MSCL_USE_SERIAL
-    if( argc == 1 )
-    {
-        printf("Available serial ports:\n");
-        std::vector<serial::PortInfo> ports = serial::list_ports();
-
-        for(const serial::PortInfo& port : ports)
-        {
-            printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
-        }
-        return 0;
-    }
-    else if( argc != 3 )
-    {
-#else  // MSCL_USE_SERIAL
-    if( argc != 3 )
-    {
-#endif // MSCL_USE_SERIAL
-        return usage(argv);
-    }
-
-    std::unique_ptr<mscl::MipDeviceInterface> device;
-
     try
     {
-        std::string port_or_hostname = argv[1];
-
-        if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
-        {
-#ifdef MSCL_USE_SOCKETS
-            uint32_t port = std::strtoul(argv[2], nullptr, 10);
-            if( port < 1024 || port > 65535 )
-            {
-                fprintf(stderr, "Error: invalid port '%s'\n", argv[2]);
-                return 1;
-            }
-
-            device.reset(new TcpMipDevice(port_or_hostname, port));
-#else  // MSCL_USE_SOCKETS
-            fprintf(stderr, "Error: this program was compiled without socket support. Recompile with -DMSCL_USE_SOCKETS=1.\n");
-            return 1;
-#endif // MSCL_USE_SOCKETS
-        }
-        else  // Serial port
-        {
-#ifdef MSCL_USE_SERIAL
-            uint32_t baud = std::strtoul(argv[2], nullptr, 10);
-            if( baud == 0 )
-            {
-                fprintf(stderr, "Error: invalid baudrate '%s'\n", argv[2]);
-                return 1;
-            }
-
-            device.reset(new SerialMipDevice(port_or_hostname, baud));
-#else  // MSCL_USE_SERIAL
-            fprintf(stderr, "Error: this program was compiled without serial support. Recompile with -DMSCL_USE_SERIAL=1.\n");
-            return 1;
-#endif // MSCL_USE_SERIAL
-        }
+        std::unique_ptr<mscl::MipDeviceInterface> device = handleCommonArgs(argc, argv);
 
         mscl::MipBaseDeviceInfo device_info;
 
@@ -124,6 +47,10 @@ int main(int argc, const char* argv[])
         {
             printf("Error: command completed with NACK: %s (%d)\n", mscl::MipCmdResult_toString(result), result);
         }
+    }
+    catch(const std::underflow_error& ex)
+    {
+        return printCommonUsage(argv);
     }
     catch(const std::exception& ex)
     {
