@@ -297,6 +297,7 @@ MipCmdResult write_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, num_descriptors);
     for(unsigned int i=0; i < num_descriptors; i++)
         cmdUsed = insert_MipDescriptorRate(buffer, sizeof(buffer), cmdUsed, &descriptors[i]);
@@ -316,9 +317,12 @@ MipCmdResult write_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devi
 MipCmdResult read_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -344,7 +348,12 @@ MipCmdResult read_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult save_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the IMU data packet.
@@ -355,7 +364,12 @@ MipCmdResult save_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult load_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the IMU data packet.
@@ -366,7 +380,12 @@ MipCmdResult load_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult default_mip_cmd_3dm_imu_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -426,6 +445,7 @@ MipCmdResult write_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, num_descriptors);
     for(unsigned int i=0; i < num_descriptors; i++)
         cmdUsed = insert_MipDescriptorRate(buffer, sizeof(buffer), cmdUsed, &descriptors[i]);
@@ -445,9 +465,12 @@ MipCmdResult write_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devi
 MipCmdResult read_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -473,7 +496,12 @@ MipCmdResult read_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult save_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the GNSS data packet.
@@ -484,7 +512,12 @@ MipCmdResult save_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult load_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the GNSS data packet.
@@ -495,7 +528,12 @@ MipCmdResult load_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* devic
 /// 
 MipCmdResult default_mip_cmd_3dm_gps_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -555,6 +593,7 @@ MipCmdResult write_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, num_descriptors);
     for(unsigned int i=0; i < num_descriptors; i++)
         cmdUsed = insert_MipDescriptorRate(buffer, sizeof(buffer), cmdUsed, &descriptors[i]);
@@ -574,9 +613,12 @@ MipCmdResult write_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* d
 MipCmdResult read_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device, uint8_t* num_descriptors, struct MipDescriptorRate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -602,7 +644,12 @@ MipCmdResult read_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* de
 /// 
 MipCmdResult save_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the Estimation Filter data packet.
@@ -613,7 +660,12 @@ MipCmdResult save_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* de
 /// 
 MipCmdResult load_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 /// @brief Set, read, or save the format of the Estimation Filter data packet.
@@ -624,7 +676,12 @@ MipCmdResult load_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* de
 /// 
 MipCmdResult default_mip_cmd_3dm_filter_message_format(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -915,7 +972,7 @@ MipCmdResult get_data_base_rate(struct MipInterfaceState* device, uint8_t desc_s
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GET_BASE_RATE, NULL, 0, MIP_REPLY_DESC_3DM_BASE_RATE, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GET_BASE_RATE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_BASE_RATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -991,6 +1048,7 @@ MipCmdResult write_mip_cmd_3dm_message_format(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, num_descriptors);
     for(unsigned int i=0; i < num_descriptors; i++)
@@ -1014,11 +1072,12 @@ MipCmdResult read_mip_cmd_3dm_message_format(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, NULL, 0, MIP_REPLY_DESC_3DM_MESSAGE_FORMAT, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1048,6 +1107,7 @@ MipCmdResult save_mip_cmd_3dm_message_format(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1065,6 +1125,7 @@ MipCmdResult load_mip_cmd_3dm_message_format(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1082,6 +1143,7 @@ MipCmdResult default_mip_cmd_3dm_message_format(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1118,7 +1180,12 @@ size_t extract_MipCmd_3dm_DeviceSettings(const uint8_t* buffer, size_t bufferSiz
 /// 
 MipCmdResult save_mip_cmd_3dm_device_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, cmdUsed);
 }
 
 /// @brief Save, Load, or Reset to Default the values for all device settings.
@@ -1131,7 +1198,12 @@ MipCmdResult save_mip_cmd_3dm_device_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_mip_cmd_3dm_device_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, cmdUsed);
 }
 
 /// @brief Save, Load, or Reset to Default the values for all device settings.
@@ -1144,7 +1216,12 @@ MipCmdResult load_mip_cmd_3dm_device_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_mip_cmd_3dm_device_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1201,6 +1278,7 @@ MipCmdResult write_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, baud);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1229,9 +1307,12 @@ MipCmdResult write_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, u
 MipCmdResult read_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, uint32_t* baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, NULL, 0, MIP_REPLY_DESC_3DM_UART_BAUDRATE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_UART_BAUDRATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1264,7 +1345,12 @@ MipCmdResult read_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device, ui
 /// 
 MipCmdResult save_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, cmdUsed);
 }
 
 /// @brief Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
@@ -1287,7 +1373,12 @@ MipCmdResult save_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, cmdUsed);
 }
 
 /// @brief Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
@@ -1310,7 +1401,12 @@ MipCmdResult load_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_mip_cmd_3dm_uart_baudrate(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1413,6 +1509,7 @@ MipCmdResult write_mip_cmd_3dm_datastream_control(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
@@ -1436,11 +1533,12 @@ MipCmdResult read_mip_cmd_3dm_datastream_control(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, NULL, 0, MIP_REPLY_DESC_3DM_DATASTREAM_ENABLE, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, cmdUsed, MIP_REPLY_DESC_3DM_DATASTREAM_ENABLE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1468,6 +1566,7 @@ MipCmdResult save_mip_cmd_3dm_datastream_control(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1488,6 +1587,7 @@ MipCmdResult load_mip_cmd_3dm_datastream_control(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1508,6 +1608,7 @@ MipCmdResult default_mip_cmd_3dm_datastream_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, desc_set);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1595,6 +1696,7 @@ MipCmdResult write_sbas_settings(struct MipInterfaceState* device, uint8_t enabl
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable_sbas);
     cmdUsed = insert_MipCmd_3dm_GnssSbasSettings_Sbasoptions(buffer, sizeof(buffer), cmdUsed, sbas_options);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, num_included_prns);
@@ -1619,9 +1721,12 @@ MipCmdResult write_sbas_settings(struct MipInterfaceState* device, uint8_t enabl
 MipCmdResult read_sbas_settings(struct MipInterfaceState* device, uint8_t* enable_sbas, enum MipCmd_3dm_GnssSbasSettings_Sbasoptions* sbas_options, uint8_t* num_included_prns, uint16_t* included_prns)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1650,7 +1755,12 @@ MipCmdResult read_sbas_settings(struct MipInterfaceState* device, uint8_t* enabl
 /// 
 MipCmdResult save_sbas_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, cmdUsed);
 }
 
 /// @brief Configure the SBAS subsystem
@@ -1662,7 +1772,12 @@ MipCmdResult save_sbas_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_sbas_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, cmdUsed);
 }
 
 /// @brief Configure the SBAS subsystem
@@ -1674,7 +1789,12 @@ MipCmdResult load_sbas_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_sbas_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1730,6 +1850,7 @@ MipCmdResult write_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_double(buffer, sizeof(buffer), cmdUsed, tow);
     cmdUsed = insert_u16(buffer, sizeof(buffer), cmdUsed, week_number);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, accuracy);
@@ -1751,9 +1872,12 @@ MipCmdResult write_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* de
 MipCmdResult read_mip_cmd_3dm_gnss_time_assistance(struct MipInterfaceState* device, double* tow, uint16_t* week_number, float* accuracy)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, NULL, 0, MIP_REPLY_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1841,6 +1965,7 @@ MipCmdResult write_advanced_low_pass_filter_settings(struct MipInterfaceState* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, target_descriptor);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, enable);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, manual);
@@ -1878,11 +2003,12 @@ MipCmdResult read_advanced_low_pass_filter_settings(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, target_descriptor);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, NULL, 0, MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, cmdUsed, MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1921,6 +2047,7 @@ MipCmdResult save_advanced_low_pass_filter_settings(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, target_descriptor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1949,6 +2076,7 @@ MipCmdResult load_advanced_low_pass_filter_settings(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, target_descriptor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1977,6 +2105,7 @@ MipCmdResult default_advanced_low_pass_filter_settings(struct MipInterfaceState*
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, target_descriptor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2024,6 +2153,7 @@ MipCmdResult write_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipPpsSource(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2039,9 +2169,12 @@ MipCmdResult write_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum
 MipCmdResult read_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum MipPpsSource* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, NULL, 0, MIP_REPLY_DESC_3DM_PPS_SOURCE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_PPS_SOURCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2061,7 +2194,12 @@ MipCmdResult read_mip_cmd_3dm_pps_source(struct MipInterfaceState* device, enum 
 /// 
 MipCmdResult save_mip_cmd_3dm_pps_source(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, cmdUsed);
 }
 
 /// @brief Controls the Pulse Per Second (PPS) source.
@@ -2071,7 +2209,12 @@ MipCmdResult save_mip_cmd_3dm_pps_source(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_mip_cmd_3dm_pps_source(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, cmdUsed);
 }
 
 /// @brief Controls the Pulse Per Second (PPS) source.
@@ -2081,7 +2224,12 @@ MipCmdResult load_mip_cmd_3dm_pps_source(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_mip_cmd_3dm_pps_source(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2192,6 +2340,7 @@ MipCmdResult write_gpio_configuration(struct MipInterfaceState* device, uint8_t 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     cmdUsed = insert_MipCmd_3dm_GpioConfig_Feature(buffer, sizeof(buffer), cmdUsed, feature);
     cmdUsed = insert_MipCmd_3dm_GpioConfig_Behavior(buffer, sizeof(buffer), cmdUsed, behavior);
@@ -2230,11 +2379,12 @@ MipCmdResult read_gpio_configuration(struct MipInterfaceState* device, uint8_t p
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, NULL, 0, MIP_REPLY_DESC_3DM_GPIO_CONFIG, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GPIO_CONFIG, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2275,6 +2425,7 @@ MipCmdResult save_gpio_configuration(struct MipInterfaceState* device, uint8_t p
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2306,6 +2457,7 @@ MipCmdResult load_gpio_configuration(struct MipInterfaceState* device, uint8_t p
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2337,6 +2489,7 @@ MipCmdResult default_gpio_configuration(struct MipInterfaceState* device, uint8_
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2403,6 +2556,7 @@ MipCmdResult write_gpio_state(struct MipInterfaceState* device, uint8_t pin, boo
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, state);
     assert(cmdUsed <= sizeof(buffer));
@@ -2436,11 +2590,12 @@ MipCmdResult read_gpio_state(struct MipInterfaceState* device, uint8_t pin, bool
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, pin);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, NULL, 0, MIP_REPLY_DESC_3DM_GPIO_STATE, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GPIO_STATE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2517,6 +2672,7 @@ MipCmdResult write_odometer_settings(struct MipInterfaceState* device, enum MipC
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_3dm_Odometer_Mode(buffer, sizeof(buffer), cmdUsed, mode);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, scaling);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, uncertainty);
@@ -2536,9 +2692,12 @@ MipCmdResult write_odometer_settings(struct MipInterfaceState* device, enum MipC
 MipCmdResult read_odometer_settings(struct MipInterfaceState* device, enum MipCmd_3dm_Odometer_Mode* mode, float* scaling, float* uncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, NULL, 0, MIP_REPLY_DESC_3DM_ODOMETER_CONFIG, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, cmdUsed, MIP_REPLY_DESC_3DM_ODOMETER_CONFIG, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2560,7 +2719,12 @@ MipCmdResult read_odometer_settings(struct MipInterfaceState* device, enum MipCm
 /// 
 MipCmdResult save_odometer_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, cmdUsed);
 }
 
 /// @brief Configures the hardware odometer interface.
@@ -2570,7 +2734,12 @@ MipCmdResult save_odometer_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_odometer_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, cmdUsed);
 }
 
 /// @brief Configures the hardware odometer interface.
@@ -2580,7 +2749,12 @@ MipCmdResult load_odometer_settings(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_odometer_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2688,7 +2862,7 @@ MipCmdResult get_supported_events(struct MipInterfaceState* device, enum MipCmd_
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_SUPPORT, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_SUPPORT, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_SUPPORT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_SUPPORT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2774,6 +2948,7 @@ MipCmdResult write_event_control(struct MipInterfaceState* device, uint8_t insta
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     cmdUsed = insert_MipCmd_3dm_EventControl_Mode(buffer, sizeof(buffer), cmdUsed, mode);
     assert(cmdUsed <= sizeof(buffer));
@@ -2801,11 +2976,12 @@ MipCmdResult read_event_control(struct MipInterfaceState* device, uint8_t instan
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_CONTROL, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2837,6 +3013,7 @@ MipCmdResult save_event_control(struct MipInterfaceState* device, uint8_t instan
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2861,6 +3038,7 @@ MipCmdResult load_event_control(struct MipInterfaceState* device, uint8_t instan
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2885,6 +3063,7 @@ MipCmdResult default_event_control(struct MipInterfaceState* device, uint8_t ins
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2976,7 +3155,7 @@ MipCmdResult get_trigger_status(struct MipInterfaceState* device, uint8_t reques
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3066,7 +3245,7 @@ MipCmdResult get_action_status(struct MipInterfaceState* device, uint8_t request
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_ACTION_STATUS, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_ACTION_STATUS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3264,6 +3443,7 @@ MipCmdResult write_event_trigger_configuration(struct MipInterfaceState* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     cmdUsed = insert_MipCmd_3dm_EventTrigger_Type(buffer, sizeof(buffer), cmdUsed, type);
     if( type == MIPCMD_3DM_EVENTTRIGGER_TYPE_GPIO )
@@ -3290,11 +3470,12 @@ MipCmdResult read_event_trigger_configuration(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3324,6 +3505,7 @@ MipCmdResult save_event_trigger_configuration(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3340,6 +3522,7 @@ MipCmdResult load_event_trigger_configuration(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3356,6 +3539,7 @@ MipCmdResult default_event_trigger_configuration(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3497,6 +3681,7 @@ MipCmdResult write_event_action_configuration(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, trigger);
     cmdUsed = insert_MipCmd_3dm_EventAction_Type(buffer, sizeof(buffer), cmdUsed, type);
@@ -3523,11 +3708,12 @@ MipCmdResult read_event_action_configuration(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, NULL, 0, MIP_REPLY_DESC_3DM_EVENT_ACTION_CONFIG, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, cmdUsed, MIP_REPLY_DESC_3DM_EVENT_ACTION_CONFIG, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3556,6 +3742,7 @@ MipCmdResult save_event_action_configuration(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3572,6 +3759,7 @@ MipCmdResult load_event_action_configuration(struct MipInterfaceState* device, u
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3588,6 +3776,7 @@ MipCmdResult default_event_action_configuration(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, instance);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3640,6 +3829,7 @@ MipCmdResult write_configure_accel_bias(struct MipInterfaceState* device, const 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, bias[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -3657,9 +3847,12 @@ MipCmdResult write_configure_accel_bias(struct MipInterfaceState* device, const 
 MipCmdResult read_configure_accel_bias(struct MipInterfaceState* device, float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, NULL, 0, MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3681,7 +3874,12 @@ MipCmdResult read_configure_accel_bias(struct MipInterfaceState* device, float* 
 /// 
 MipCmdResult save_configure_accel_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, cmdUsed);
 }
 
 /// @brief Configures the user specified accelerometer bias
@@ -3692,7 +3890,12 @@ MipCmdResult save_configure_accel_bias(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_configure_accel_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, cmdUsed);
 }
 
 /// @brief Configures the user specified accelerometer bias
@@ -3703,7 +3906,12 @@ MipCmdResult load_configure_accel_bias(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_configure_accel_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3752,6 +3960,7 @@ MipCmdResult write_configure_gyro_bias(struct MipInterfaceState* device, const f
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, bias[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -3769,9 +3978,12 @@ MipCmdResult write_configure_gyro_bias(struct MipInterfaceState* device, const f
 MipCmdResult read_configure_gyro_bias(struct MipInterfaceState* device, float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, NULL, 0, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3793,7 +4005,12 @@ MipCmdResult read_configure_gyro_bias(struct MipInterfaceState* device, float* b
 /// 
 MipCmdResult save_configure_gyro_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, cmdUsed);
 }
 
 /// @brief Configures the user specified gyroscope bias
@@ -3804,7 +4021,12 @@ MipCmdResult save_configure_gyro_bias(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_configure_gyro_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, cmdUsed);
 }
 
 /// @brief Configures the user specified gyroscope bias
@@ -3815,7 +4037,12 @@ MipCmdResult load_configure_gyro_bias(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_configure_gyro_bias(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3870,7 +4097,7 @@ MipCmdResult capture_gyro_bias(struct MipInterfaceState* device, uint16_t averag
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS, NULL, 0, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS, buffer, cmdUsed, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3934,6 +4161,7 @@ MipCmdResult write_magnetometer_hard_iron_offset(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, offset[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -3955,9 +4183,12 @@ MipCmdResult write_magnetometer_hard_iron_offset(struct MipInterfaceState* devic
 MipCmdResult read_magnetometer_hard_iron_offset(struct MipInterfaceState* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, NULL, 0, MIP_REPLY_DESC_3DM_HARD_IRON_OFFSET_VECTOR, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, cmdUsed, MIP_REPLY_DESC_3DM_HARD_IRON_OFFSET_VECTOR, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3983,7 +4214,12 @@ MipCmdResult read_magnetometer_hard_iron_offset(struct MipInterfaceState* device
 /// 
 MipCmdResult save_magnetometer_hard_iron_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Configure the user specified magnetometer hard iron offset vector
@@ -3998,7 +4234,12 @@ MipCmdResult save_magnetometer_hard_iron_offset(struct MipInterfaceState* device
 /// 
 MipCmdResult load_magnetometer_hard_iron_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Configure the user specified magnetometer hard iron offset vector
@@ -4013,7 +4254,12 @@ MipCmdResult load_magnetometer_hard_iron_offset(struct MipInterfaceState* device
 /// 
 MipCmdResult default_magnetometer_hard_iron_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4070,6 +4316,7 @@ MipCmdResult write_magnetometer_soft_iron_matrix(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 9; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, offset[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -4095,9 +4342,12 @@ MipCmdResult write_magnetometer_soft_iron_matrix(struct MipInterfaceState* devic
 MipCmdResult read_magnetometer_soft_iron_matrix(struct MipInterfaceState* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, NULL, 0, MIP_REPLY_DESC_3DM_SOFT_IRON_COMP_MATRIX, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, cmdUsed, MIP_REPLY_DESC_3DM_SOFT_IRON_COMP_MATRIX, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -4127,7 +4377,12 @@ MipCmdResult read_magnetometer_soft_iron_matrix(struct MipInterfaceState* device
 /// 
 MipCmdResult save_magnetometer_soft_iron_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, cmdUsed);
 }
 
 /// @brief Configure the user specified magnetometer soft iron offset matrix
@@ -4146,7 +4401,12 @@ MipCmdResult save_magnetometer_soft_iron_matrix(struct MipInterfaceState* device
 /// 
 MipCmdResult load_magnetometer_soft_iron_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, cmdUsed);
 }
 
 /// @brief Configure the user specified magnetometer soft iron offset matrix
@@ -4165,7 +4425,12 @@ MipCmdResult load_magnetometer_soft_iron_matrix(struct MipInterfaceState* device
 /// 
 MipCmdResult default_magnetometer_soft_iron_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4242,6 +4507,7 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_euler(struct MipInterf
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, roll);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, pitch);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, yaw);
@@ -4284,9 +4550,12 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_euler(struct MipInterf
 MipCmdResult read_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device, float* roll, float* pitch, float* yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, cmdUsed, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -4331,7 +4600,12 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_euler(struct MipInterfa
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, cmdUsed);
 }
 
 /// @brief Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
@@ -4364,7 +4638,12 @@ MipCmdResult save_sensor_to_vehicle_frame_transformation_euler(struct MipInterfa
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, cmdUsed);
 }
 
 /// @brief Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
@@ -4397,7 +4676,12 @@ MipCmdResult load_sensor_to_vehicle_frame_transformation_euler(struct MipInterfa
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_transformation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4476,6 +4760,7 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_quaternion(struct MipI
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 4; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, q[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -4523,9 +4808,12 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_quaternion(struct MipI
 MipCmdResult read_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device, float* q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, cmdUsed, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -4577,7 +4865,12 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_quaternion(struct MipIn
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame transformation using unit length quaternion.
@@ -4618,7 +4911,12 @@ MipCmdResult save_sensor_to_vehicle_frame_transformation_quaternion(struct MipIn
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame transformation using unit length quaternion.
@@ -4659,7 +4957,12 @@ MipCmdResult load_sensor_to_vehicle_frame_transformation_quaternion(struct MipIn
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_transformation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4736,6 +5039,7 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_direction_cosine_matri
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 9; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, dcm[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -4781,9 +5085,12 @@ MipCmdResult write_sensor_to_vehicle_frame_transformation_direction_cosine_matri
 MipCmdResult read_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device, float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, cmdUsed, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -4833,7 +5140,12 @@ MipCmdResult read_sensor_to_vehicle_frame_transformation_direction_cosine_matrix
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
@@ -4872,7 +5184,12 @@ MipCmdResult save_sensor_to_vehicle_frame_transformation_direction_cosine_matrix
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
@@ -4911,7 +5228,12 @@ MipCmdResult load_sensor_to_vehicle_frame_transformation_direction_cosine_matrix
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_transformation_direction_cosine_matrix(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4973,6 +5295,7 @@ MipCmdResult write_complementary_filter_settings(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, pitch_roll_enable);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, heading_enable);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, pitch_roll_time_constant);
@@ -4997,9 +5320,12 @@ MipCmdResult write_complementary_filter_settings(struct MipInterfaceState* devic
 MipCmdResult read_complementary_filter_settings(struct MipInterfaceState* device, bool* pitch_roll_enable, bool* heading_enable, float* pitch_roll_time_constant, float* heading_time_constant)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, NULL, 0, MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, cmdUsed, MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -5025,7 +5351,12 @@ MipCmdResult read_complementary_filter_settings(struct MipInterfaceState* device
 /// 
 MipCmdResult save_complementary_filter_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, cmdUsed);
 }
 
 /// @brief Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
@@ -5038,7 +5369,12 @@ MipCmdResult save_complementary_filter_settings(struct MipInterfaceState* device
 /// 
 MipCmdResult load_complementary_filter_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, cmdUsed);
 }
 
 /// @brief Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
@@ -5051,7 +5387,12 @@ MipCmdResult load_complementary_filter_settings(struct MipInterfaceState* device
 /// 
 MipCmdResult default_complementary_filter_settings(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5106,6 +5447,7 @@ MipCmdResult write_sensor_range(struct MipInterfaceState* device, enum MipSensor
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipSensorRangeType(buffer, sizeof(buffer), cmdUsed, sensor);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, setting);
     assert(cmdUsed <= sizeof(buffer));
@@ -5131,11 +5473,12 @@ MipCmdResult read_sensor_range(struct MipInterfaceState* device, enum MipSensorR
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_MipSensorRangeType(buffer, sizeof(buffer), cmdUsed, sensor);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, NULL, 0, MIP_REPLY_DESC_3DM_SENSOR_RANGE, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, cmdUsed, MIP_REPLY_DESC_3DM_SENSOR_RANGE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -5165,6 +5508,7 @@ MipCmdResult save_sensor_range(struct MipInterfaceState* device, enum MipSensorR
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_MipSensorRangeType(buffer, sizeof(buffer), cmdUsed, sensor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -5187,6 +5531,7 @@ MipCmdResult load_sensor_range(struct MipInterfaceState* device, enum MipSensorR
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_MipSensorRangeType(buffer, sizeof(buffer), cmdUsed, sensor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -5209,6 +5554,7 @@ MipCmdResult default_sensor_range(struct MipInterfaceState* device, enum MipSens
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_MipSensorRangeType(buffer, sizeof(buffer), cmdUsed, sensor);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -5292,7 +5638,7 @@ MipCmdResult get_calibrated_sensor_ranges(struct MipInterfaceState* device, enum
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CALIBRATED_RANGES, NULL, 0, MIP_REPLY_DESC_3DM_CALIBRATED_RANGES, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_3DM_COMMAND_DESC_SET, MIP_CMD_DESC_3DM_CALIBRATED_RANGES, buffer, cmdUsed, MIP_REPLY_DESC_3DM_CALIBRATED_RANGES, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {

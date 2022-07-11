@@ -136,6 +136,15 @@ extern bool MipInterface_userPoll(struct MipInterfaceState* device);
 extern bool MipInterface_userSendToDevice(struct MipInterfaceState* device, const uint8_t* data, size_t length);
 
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Called when a valid data packet is received from the device.
+///
+///@param device
+///@param packet The MIP packet.
+///@param timestamp Approximate time the packet was received.
+///
+extern void MipInterface_userPacketCallback(struct MipInterfaceState* device, const struct MipPacket* packet, Timestamp timestamp);
+
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

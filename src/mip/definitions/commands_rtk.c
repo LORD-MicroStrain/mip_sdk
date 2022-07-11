@@ -327,6 +327,7 @@ MipCmdResult write_configure_or_read_the_type_of_the_connected_device(struct Mip
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipConnectedDeviceType(buffer, sizeof(buffer), cmdUsed, devType);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -336,9 +337,12 @@ MipCmdResult write_configure_or_read_the_type_of_the_connected_device(struct Mip
 MipCmdResult read_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device, enum MipConnectedDeviceType* devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, NULL, 0, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -353,17 +357,32 @@ MipCmdResult read_configure_or_read_the_type_of_the_connected_device(struct MipI
 
 MipCmdResult save_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
 MipCmdResult load_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
 MipCmdResult default_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -617,7 +636,7 @@ MipCmdResult mip_cmd_rtk_service_status(struct MipInterfaceState* device, uint32
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, NULL, 0, MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, cmdUsed, MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {

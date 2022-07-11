@@ -70,6 +70,7 @@ MipCmdResult write_mip_cmd_system_comm_mode(struct MipInterfaceState* device, ui
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, mode);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -92,9 +93,12 @@ MipCmdResult write_mip_cmd_system_comm_mode(struct MipInterfaceState* device, ui
 MipCmdResult read_mip_cmd_system_comm_mode(struct MipInterfaceState* device, uint8_t* mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, NULL, 0, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -121,7 +125,12 @@ MipCmdResult read_mip_cmd_system_comm_mode(struct MipInterfaceState* device, uin
 /// 
 MipCmdResult save_mip_cmd_system_comm_mode(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
 }
 
 /// @brief Advanced specialized communication modes.
@@ -138,7 +147,12 @@ MipCmdResult save_mip_cmd_system_comm_mode(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_mip_cmd_system_comm_mode(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
 }
 
 /// @brief Advanced specialized communication modes.
@@ -155,7 +169,12 @@ MipCmdResult load_mip_cmd_system_comm_mode(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_mip_cmd_system_comm_mode(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_SYSTEM_COMMAND_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
 }
 
 

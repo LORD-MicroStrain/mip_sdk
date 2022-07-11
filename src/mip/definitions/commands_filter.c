@@ -191,6 +191,7 @@ MipCmdResult write_estimation_control_flags(struct MipInterfaceState* device, en
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_EstimationControl_Enableflags(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -215,9 +216,12 @@ MipCmdResult write_estimation_control_flags(struct MipInterfaceState* device, en
 MipCmdResult read_estimation_control_flags(struct MipInterfaceState* device, enum MipCmd_Filter_EstimationControl_Enableflags* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, NULL, 0, MIP_REPLY_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -246,7 +250,12 @@ MipCmdResult read_estimation_control_flags(struct MipInterfaceState* device, enu
 /// 
 MipCmdResult save_estimation_control_flags(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, cmdUsed);
 }
 
 /// @brief Estimation Control Flags
@@ -265,7 +274,12 @@ MipCmdResult save_estimation_control_flags(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_estimation_control_flags(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, cmdUsed);
 }
 
 /// @brief Estimation Control Flags
@@ -284,7 +298,12 @@ MipCmdResult load_estimation_control_flags(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_estimation_control_flags(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -530,6 +549,7 @@ MipCmdResult write_tare_sensor_orientation(struct MipInterfaceState* device, enu
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_TareOrientation_Miptareaxes(buffer, sizeof(buffer), cmdUsed, axes);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -548,9 +568,12 @@ MipCmdResult write_tare_sensor_orientation(struct MipInterfaceState* device, enu
 MipCmdResult read_tare_sensor_orientation(struct MipInterfaceState* device, enum MipCmd_Filter_TareOrientation_Miptareaxes* axes)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, NULL, 0, MIP_REPLY_DESC_FILTER_TARE_ORIENTATION, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_TARE_ORIENTATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -573,7 +596,12 @@ MipCmdResult read_tare_sensor_orientation(struct MipInterfaceState* device, enum
 /// 
 MipCmdResult save_tare_sensor_orientation(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, buffer, cmdUsed);
 }
 
 /// @brief Tare the device orientation.
@@ -586,7 +614,12 @@ MipCmdResult save_tare_sensor_orientation(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_tare_sensor_orientation(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, buffer, cmdUsed);
 }
 
 /// @brief Tare the device orientation.
@@ -599,7 +632,12 @@ MipCmdResult load_tare_sensor_orientation(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_tare_sensor_orientation(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_TARE_ORIENTATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -674,6 +712,7 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceSta
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, roll);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, pitch);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, yaw);
@@ -714,9 +753,12 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceSta
 MipCmdResult read_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device, float* roll, float* pitch, float* yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -759,7 +801,12 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceStat
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
@@ -790,7 +837,12 @@ MipCmdResult save_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceStat
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
@@ -821,7 +873,12 @@ MipCmdResult load_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceStat
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -896,6 +953,7 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 9; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, dcm[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -939,9 +997,12 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState
 MipCmdResult read_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device, float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -989,7 +1050,12 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState*
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
@@ -1026,7 +1092,12 @@ MipCmdResult save_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState*
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
@@ -1063,7 +1134,12 @@ MipCmdResult load_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState*
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1137,6 +1213,7 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfa
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 4; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, quat[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -1179,9 +1256,12 @@ MipCmdResult write_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfa
 MipCmdResult read_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device, float* quat)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1228,7 +1308,12 @@ MipCmdResult read_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfac
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using a quaternion.
@@ -1264,7 +1349,12 @@ MipCmdResult save_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfac
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame rotation using a quaternion.
@@ -1300,7 +1390,12 @@ MipCmdResult load_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfac
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1355,6 +1450,7 @@ MipCmdResult write_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, offset[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -1378,9 +1474,12 @@ MipCmdResult write_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devi
 MipCmdResult read_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, NULL, 0, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1408,7 +1507,12 @@ MipCmdResult read_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devic
 /// 
 MipCmdResult save_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame offset, expressed in the sensor frame.
@@ -1425,7 +1529,12 @@ MipCmdResult save_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devic
 /// 
 MipCmdResult load_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to vehicle frame offset, expressed in the sensor frame.
@@ -1442,7 +1551,12 @@ MipCmdResult load_sensor_to_vehicle_frame_offset(struct MipInterfaceState* devic
 /// 
 MipCmdResult default_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1494,6 +1608,7 @@ MipCmdResult write_gnss_antenna_offset_control(struct MipInterfaceState* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, offset[i]);
     assert(cmdUsed <= sizeof(buffer));
@@ -1514,9 +1629,12 @@ MipCmdResult write_gnss_antenna_offset_control(struct MipInterfaceState* device,
 MipCmdResult read_gnss_antenna_offset_control(struct MipInterfaceState* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, NULL, 0, MIP_REPLY_DESC_FILTER_ANTENNA_OFFSET, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ANTENNA_OFFSET, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1541,7 +1659,12 @@ MipCmdResult read_gnss_antenna_offset_control(struct MipInterfaceState* device, 
 /// 
 MipCmdResult save_gnss_antenna_offset_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to GNSS antenna offset.
@@ -1555,7 +1678,12 @@ MipCmdResult save_gnss_antenna_offset_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_gnss_antenna_offset_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, buffer, cmdUsed);
 }
 
 /// @brief Set the sensor to GNSS antenna offset.
@@ -1569,7 +1697,12 @@ MipCmdResult load_gnss_antenna_offset_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_gnss_antenna_offset_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1628,6 +1761,7 @@ MipCmdResult write_gnss_aiding_source_control(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_GnssSource_Gnsssource(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1646,9 +1780,12 @@ MipCmdResult write_gnss_aiding_source_control(struct MipInterfaceState* device, 
 MipCmdResult read_gnss_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_GnssSource_Gnsssource* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1671,7 +1808,12 @@ MipCmdResult read_gnss_aiding_source_control(struct MipInterfaceState* device, e
 /// 
 MipCmdResult save_gnss_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Control the source of GNSS information used to update the Kalman Filter.
@@ -1684,7 +1826,12 @@ MipCmdResult save_gnss_aiding_source_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_gnss_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Control the source of GNSS information used to update the Kalman Filter.
@@ -1697,7 +1844,12 @@ MipCmdResult load_gnss_aiding_source_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_gnss_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1763,6 +1915,7 @@ MipCmdResult write_heading_aiding_source_control(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_HeadingSource_Headingsource(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1788,9 +1941,12 @@ MipCmdResult write_heading_aiding_source_control(struct MipInterfaceState* devic
 MipCmdResult read_heading_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_HeadingSource_Headingsource* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1820,7 +1976,12 @@ MipCmdResult read_heading_aiding_source_control(struct MipInterfaceState* device
 /// 
 MipCmdResult save_heading_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Control the source of heading information used to update the Kalman Filter.
@@ -1840,7 +2001,12 @@ MipCmdResult save_heading_aiding_source_control(struct MipInterfaceState* device
 /// 
 MipCmdResult load_heading_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Control the source of heading information used to update the Kalman Filter.
@@ -1860,7 +2026,12 @@ MipCmdResult load_heading_aiding_source_control(struct MipInterfaceState* device
 /// 
 MipCmdResult default_heading_aiding_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1914,6 +2085,7 @@ MipCmdResult write_altitude_aiding_control(struct MipInterfaceState* device, uin
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, aiding_selector);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -1939,9 +2111,12 @@ MipCmdResult write_altitude_aiding_control(struct MipInterfaceState* device, uin
 MipCmdResult read_altitude_aiding_control(struct MipInterfaceState* device, uint8_t* aiding_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -1971,7 +2146,12 @@ MipCmdResult read_altitude_aiding_control(struct MipInterfaceState* device, uint
 /// 
 MipCmdResult save_altitude_aiding_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Altitude Aiding Control
@@ -1991,7 +2171,12 @@ MipCmdResult save_altitude_aiding_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_altitude_aiding_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Altitude Aiding Control
@@ -2011,7 +2196,12 @@ MipCmdResult load_altitude_aiding_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_altitude_aiding_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2061,6 +2251,7 @@ MipCmdResult write_zero_velocity_update_control(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, threshold);
     assert(cmdUsed <= sizeof(buffer));
@@ -2079,9 +2270,12 @@ MipCmdResult write_zero_velocity_update_control(struct MipInterfaceState* device
 MipCmdResult read_zero_velocity_update_control(struct MipInterfaceState* device, uint8_t* enable, float* threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ZUPT_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2103,7 +2297,12 @@ MipCmdResult read_zero_velocity_update_control(struct MipInterfaceState* device,
 /// 
 MipCmdResult save_zero_velocity_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Zero Velocity Update
@@ -2114,7 +2313,12 @@ MipCmdResult save_zero_velocity_update_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_zero_velocity_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Zero Velocity Update
@@ -2125,7 +2329,12 @@ MipCmdResult load_zero_velocity_update_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_zero_velocity_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2175,6 +2384,7 @@ MipCmdResult write_zero_angular_rate_update_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, threshold);
     assert(cmdUsed <= sizeof(buffer));
@@ -2193,9 +2403,12 @@ MipCmdResult write_zero_angular_rate_update_control(struct MipInterfaceState* de
 MipCmdResult read_zero_angular_rate_update_control(struct MipInterfaceState* device, uint8_t* enable, float* threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, NULL, 0, MIP_REPLY_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2217,7 +2430,12 @@ MipCmdResult read_zero_angular_rate_update_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult save_zero_angular_rate_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Zero Angular Rate Update
@@ -2228,7 +2446,12 @@ MipCmdResult save_zero_angular_rate_update_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult load_zero_angular_rate_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Zero Angular Rate Update
@@ -2239,7 +2462,12 @@ MipCmdResult load_zero_angular_rate_update_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult default_zero_angular_rate_update_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2361,6 +2589,7 @@ MipCmdResult write_aiding_measurement_control(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(buffer, sizeof(buffer), cmdUsed, aiding_source);
     cmdUsed = insert_bool(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
@@ -2381,11 +2610,12 @@ MipCmdResult read_aiding_measurement_control(struct MipInterfaceState* device, e
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(buffer, sizeof(buffer), cmdUsed, aiding_source);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE, NULL, 0, MIP_REPLY_DESC_FILTER_AIDING_MEASUREMENT_ENABLE, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_AIDING_MEASUREMENT_ENABLE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2410,6 +2640,7 @@ MipCmdResult save_aiding_measurement_control(struct MipInterfaceState* device, e
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(buffer, sizeof(buffer), cmdUsed, aiding_source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2427,6 +2658,7 @@ MipCmdResult load_aiding_measurement_control(struct MipInterfaceState* device, e
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(buffer, sizeof(buffer), cmdUsed, aiding_source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2444,6 +2676,7 @@ MipCmdResult default_aiding_measurement_control(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(buffer, sizeof(buffer), cmdUsed, aiding_source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -2533,6 +2766,7 @@ MipCmdResult write_kinematic_constraint_control(struct MipInterfaceState* device
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, acceleration_constraint_selection);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, velocity_constraint_selection);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, angular_constraint_selection);
@@ -2553,9 +2787,12 @@ MipCmdResult write_kinematic_constraint_control(struct MipInterfaceState* device
 MipCmdResult read_kinematic_constraint_control(struct MipInterfaceState* device, uint8_t* acceleration_constraint_selection, uint8_t* velocity_constraint_selection, uint8_t* angular_constraint_selection)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, NULL, 0, MIP_REPLY_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2578,7 +2815,12 @@ MipCmdResult read_kinematic_constraint_control(struct MipInterfaceState* device,
 /// 
 MipCmdResult save_kinematic_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, cmdUsed);
 }
 
 /// @brief Controls kinematic constraint model selection for the navigation filter.
@@ -2589,7 +2831,12 @@ MipCmdResult save_kinematic_constraint_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_kinematic_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, cmdUsed);
 }
 
 /// @brief Controls kinematic constraint model selection for the navigation filter.
@@ -2600,7 +2847,12 @@ MipCmdResult load_kinematic_constraint_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_kinematic_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2720,6 +2972,7 @@ MipCmdResult write_navigation_filter_initialization(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, wait_for_run_command);
     cmdUsed = insert_MipCmd_Filter_InitializationConfiguration_Initialconditionsource(buffer, sizeof(buffer), cmdUsed, initial_cond_src);
     cmdUsed = insert_MipCmd_Filter_InitializationConfiguration_Alignmentselector(buffer, sizeof(buffer), cmdUsed, auto_heading_alignment_selector);
@@ -2756,9 +3009,12 @@ MipCmdResult write_navigation_filter_initialization(struct MipInterfaceState* de
 MipCmdResult read_navigation_filter_initialization(struct MipInterfaceState* device, uint8_t* wait_for_run_command, enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource* initial_cond_src, enum MipCmd_Filter_InitializationConfiguration_Alignmentselector* auto_heading_alignment_selector, float* initial_heading, float* initial_pitch, float* initial_roll, float* initial_position, float* initial_velocity, enum MipFilterReferenceFrame* reference_frame_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2791,7 +3047,12 @@ MipCmdResult read_navigation_filter_initialization(struct MipInterfaceState* dev
 /// 
 MipCmdResult save_navigation_filter_initialization(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Controls the source and values used for initial conditions of the navigation solution.
@@ -2804,7 +3065,12 @@ MipCmdResult save_navigation_filter_initialization(struct MipInterfaceState* dev
 /// 
 MipCmdResult load_navigation_filter_initialization(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Controls the source and values used for initial conditions of the navigation solution.
@@ -2817,7 +3083,12 @@ MipCmdResult load_navigation_filter_initialization(struct MipInterfaceState* dev
 /// 
 MipCmdResult default_navigation_filter_initialization(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2866,6 +3137,7 @@ MipCmdResult write_adaptive_filter_control(struct MipInterfaceState* device, uin
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, level);
     cmdUsed = insert_u16(buffer, sizeof(buffer), cmdUsed, time_limit);
     assert(cmdUsed <= sizeof(buffer));
@@ -2883,9 +3155,12 @@ MipCmdResult write_adaptive_filter_control(struct MipInterfaceState* device, uin
 MipCmdResult read_adaptive_filter_control(struct MipInterfaceState* device, uint8_t* level, uint16_t* time_limit)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, NULL, 0, MIP_REPLY_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -2906,7 +3181,12 @@ MipCmdResult read_adaptive_filter_control(struct MipInterfaceState* device, uint
 /// 
 MipCmdResult save_adaptive_filter_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, cmdUsed);
 }
 
 /// @brief Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
@@ -2916,7 +3196,12 @@ MipCmdResult save_adaptive_filter_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_adaptive_filter_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, cmdUsed);
 }
 
 /// @brief Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
@@ -2926,7 +3211,12 @@ MipCmdResult load_adaptive_filter_control(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_adaptive_filter_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2980,6 +3270,7 @@ MipCmdResult write_gnss_multi_antenna_offset_control(struct MipInterfaceState* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, receiver_id);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, antenna_offset[i]);
@@ -3001,11 +3292,12 @@ MipCmdResult read_gnss_multi_antenna_offset_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, receiver_id);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET, NULL, 0, MIP_REPLY_DESC_FILTER_MULTI_ANTENNA_OFFSET, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_MULTI_ANTENNA_OFFSET, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3031,6 +3323,7 @@ MipCmdResult save_gnss_multi_antenna_offset_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, receiver_id);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3048,6 +3341,7 @@ MipCmdResult load_gnss_multi_antenna_offset_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, receiver_id);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3065,6 +3359,7 @@ MipCmdResult default_gnss_multi_antenna_offset_control(struct MipInterfaceState*
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, receiver_id);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3126,6 +3421,7 @@ MipCmdResult write_relative_position_configuration(struct MipInterfaceState* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     cmdUsed = insert_MipFilterReferenceFrame(buffer, sizeof(buffer), cmdUsed, reference_frame_selector);
     for(unsigned int i=0; i < 3; i++)
@@ -3146,9 +3442,12 @@ MipCmdResult write_relative_position_configuration(struct MipInterfaceState* dev
 MipCmdResult read_relative_position_configuration(struct MipInterfaceState* device, uint8_t* source, enum MipFilterReferenceFrame* reference_frame_selector, double* reference_coordinates)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, NULL, 0, MIP_REPLY_DESC_FILTER_REL_POS_CONFIGURATION, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_REL_POS_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3171,7 +3470,12 @@ MipCmdResult read_relative_position_configuration(struct MipInterfaceState* devi
 /// 
 MipCmdResult save_relative_position_configuration(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the reference location for filter relative positioning outputs
@@ -3181,7 +3485,12 @@ MipCmdResult save_relative_position_configuration(struct MipInterfaceState* devi
 /// 
 MipCmdResult load_relative_position_configuration(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the reference location for filter relative positioning outputs
@@ -3191,7 +3500,12 @@ MipCmdResult load_relative_position_configuration(struct MipInterfaceState* devi
 /// 
 MipCmdResult default_relative_position_configuration(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3260,6 +3574,7 @@ MipCmdResult write_reference_point_lever_arm(struct MipInterfaceState* device, e
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Filter_RefPointLeverArm_Referencepointselector(buffer, sizeof(buffer), cmdUsed, ref_point_sel);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, lever_arm_offset[i]);
@@ -3282,9 +3597,12 @@ MipCmdResult write_reference_point_lever_arm(struct MipInterfaceState* device, e
 MipCmdResult read_reference_point_lever_arm(struct MipInterfaceState* device, enum MipCmd_Filter_RefPointLeverArm_Referencepointselector* ref_point_sel, float* lever_arm_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, NULL, 0, MIP_REPLY_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3310,7 +3628,12 @@ MipCmdResult read_reference_point_lever_arm(struct MipInterfaceState* device, en
 /// 
 MipCmdResult save_reference_point_lever_arm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, cmdUsed);
 }
 
 /// @brief Lever arm offset with respect to the sensor for the indicated point of reference.
@@ -3324,7 +3647,12 @@ MipCmdResult save_reference_point_lever_arm(struct MipInterfaceState* device)
 /// 
 MipCmdResult load_reference_point_lever_arm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, cmdUsed);
 }
 
 /// @brief Lever arm offset with respect to the sensor for the indicated point of reference.
@@ -3338,7 +3666,12 @@ MipCmdResult load_reference_point_lever_arm(struct MipInterfaceState* device)
 /// 
 MipCmdResult default_reference_point_lever_arm(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3441,6 +3774,7 @@ MipCmdResult write_measurement_speed_lever_arm(struct MipInterfaceState* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, lever_arm_offset[i]);
@@ -3466,11 +3800,12 @@ MipCmdResult read_measurement_speed_lever_arm(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM, NULL, 0, MIP_REPLY_DESC_FILTER_SPEED_LEVER_ARM, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_SPEED_LEVER_ARM, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3500,6 +3835,7 @@ MipCmdResult save_measurement_speed_lever_arm(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3521,6 +3857,7 @@ MipCmdResult load_measurement_speed_lever_arm(struct MipInterfaceState* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3542,6 +3879,7 @@ MipCmdResult default_measurement_speed_lever_arm(struct MipInterfaceState* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, source);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3594,6 +3932,7 @@ MipCmdResult write_wheeled_vehicle_constraint_control(struct MipInterfaceState* 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3614,9 +3953,12 @@ MipCmdResult write_wheeled_vehicle_constraint_control(struct MipInterfaceState* 
 MipCmdResult read_wheeled_vehicle_constraint_control(struct MipInterfaceState* device, uint8_t* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, NULL, 0, MIP_REPLY_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3641,7 +3983,12 @@ MipCmdResult read_wheeled_vehicle_constraint_control(struct MipInterfaceState* d
 /// 
 MipCmdResult save_wheeled_vehicle_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the wheeled vehicle kinematic constraint.
@@ -3656,7 +4003,12 @@ MipCmdResult save_wheeled_vehicle_constraint_control(struct MipInterfaceState* d
 /// 
 MipCmdResult load_wheeled_vehicle_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the wheeled vehicle kinematic constraint.
@@ -3671,7 +4023,12 @@ MipCmdResult load_wheeled_vehicle_constraint_control(struct MipInterfaceState* d
 /// 
 MipCmdResult default_wheeled_vehicle_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3718,6 +4075,7 @@ MipCmdResult write_vertical_gyro_constraint_control(struct MipInterfaceState* de
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -3736,9 +4094,12 @@ MipCmdResult write_vertical_gyro_constraint_control(struct MipInterfaceState* de
 MipCmdResult read_vertical_gyro_constraint_control(struct MipInterfaceState* device, uint8_t* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, NULL, 0, MIP_REPLY_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3761,7 +4122,12 @@ MipCmdResult read_vertical_gyro_constraint_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult save_vertical_gyro_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the vertical gyro kinematic constraint.
@@ -3774,7 +4140,12 @@ MipCmdResult save_vertical_gyro_constraint_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult load_vertical_gyro_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the vertical gyro kinematic constraint.
@@ -3787,7 +4158,12 @@ MipCmdResult load_vertical_gyro_constraint_control(struct MipInterfaceState* dev
 /// 
 MipCmdResult default_vertical_gyro_constraint_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3837,6 +4213,7 @@ MipCmdResult write_gnss_antenna_offset_calibration_control(struct MipInterfaceSt
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, max_offset);
     assert(cmdUsed <= sizeof(buffer));
@@ -3855,9 +4232,12 @@ MipCmdResult write_gnss_antenna_offset_calibration_control(struct MipInterfaceSt
 MipCmdResult read_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device, uint8_t* enable, float* max_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, NULL, 0, MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3879,7 +4259,12 @@ MipCmdResult read_gnss_antenna_offset_calibration_control(struct MipInterfaceSta
 /// 
 MipCmdResult save_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS antenna lever arm calibration.
@@ -3890,7 +4275,12 @@ MipCmdResult save_gnss_antenna_offset_calibration_control(struct MipInterfaceSta
 /// 
 MipCmdResult load_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS antenna lever arm calibration.
@@ -3901,7 +4291,12 @@ MipCmdResult load_gnss_antenna_offset_calibration_control(struct MipInterfaceSta
 /// 
 MipCmdResult default_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3950,6 +4345,7 @@ MipCmdResult write_magnetic_field_declination_source_control(struct MipInterface
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipFilterMagDeclinationSource(buffer, sizeof(buffer), cmdUsed, source);
     cmdUsed = insert_float(buffer, sizeof(buffer), cmdUsed, declination);
     assert(cmdUsed <= sizeof(buffer));
@@ -3967,9 +4363,12 @@ MipCmdResult write_magnetic_field_declination_source_control(struct MipInterface
 MipCmdResult read_magnetic_field_declination_source_control(struct MipInterfaceState* device, enum MipFilterMagDeclinationSource* source, float* declination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    assert(cmdUsed <= sizeof(buffer));
     
-    uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, NULL, 0, MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE, buffer, &responseLength);
+    uint8_t responseLength;
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, cmdUsed, MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -3990,7 +4389,12 @@ MipCmdResult read_magnetic_field_declination_source_control(struct MipInterfaceS
 /// 
 MipCmdResult save_magnetic_field_declination_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, cmdUsed);
 }
 
 /// @brief Source for magnetic declination angle, and user supplied value for manual selection.
@@ -4000,7 +4404,12 @@ MipCmdResult save_magnetic_field_declination_source_control(struct MipInterfaceS
 /// 
 MipCmdResult load_magnetic_field_declination_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, cmdUsed);
 }
 
 /// @brief Source for magnetic declination angle, and user supplied value for manual selection.
@@ -4010,7 +4419,12 @@ MipCmdResult load_magnetic_field_declination_source_control(struct MipInterfaceS
 /// 
 MipCmdResult default_magnetic_field_declination_source_control(struct MipInterfaceState* device)
 {
-    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, NULL, 0);
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    assert(cmdUsed <= sizeof(buffer));
+    
+    return MipInterface_runCommand(device, MIP_FILTER_COMMAND_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

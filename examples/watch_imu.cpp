@@ -6,6 +6,9 @@
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
+#include <mip/mip.hpp>
+
+#include <thread>
 
 
 int main(int argc, const char* argv[])
@@ -29,10 +32,10 @@ int main(int argc, const char* argv[])
         const uint16_t sample_rate = 100; // Hz
         const uint16_t decimation = base_rate / sample_rate;
 
-        std::array<mscl::MipDescriptorRate, 3> descriptors = {{
+        std::array<mscl::MipDescriptorRate, 2> descriptors = {{
             { mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED, decimation },
             { mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED,  decimation },
-            { mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
+            // { mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
         }};
 
         result = mscl::write_mip_cmd_3dm_message_format(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
@@ -45,6 +48,12 @@ int main(int argc, const char* argv[])
         result = mscl::resume(device.get());
         if( result != mscl::MIP_ACK_OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", mscl::MipCmdResult_toString(result), result), 1;
+
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+
+        result = mscl::set_to_idle(device.get());
+        if( result != mscl::MIP_ACK_OK )
+            return fprintf(stderr, "Failed to idle device: %s (%d)\n", mscl::MipCmdResult_toString(result), result), 1;
 
         return 0;
     }

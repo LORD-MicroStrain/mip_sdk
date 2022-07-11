@@ -556,6 +556,7 @@ MipCmdResult write_comm_port_speed(struct MipInterfaceState* device, uint8_t por
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
     cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, baud);
     assert(cmdUsed <= sizeof(buffer));
@@ -587,11 +588,12 @@ MipCmdResult read_comm_port_speed(struct MipInterfaceState* device, uint8_t port
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, NULL, 0, MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
+    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, cmdUsed, MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -627,6 +629,7 @@ MipCmdResult save_comm_port_speed(struct MipInterfaceState* device, uint8_t port
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -655,6 +658,7 @@ MipCmdResult load_comm_port_speed(struct MipInterfaceState* device, uint8_t port
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -683,6 +687,7 @@ MipCmdResult default_comm_port_speed(struct MipInterfaceState* device, uint8_t p
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, port);
     assert(cmdUsed <= sizeof(buffer));
     
@@ -731,6 +736,7 @@ MipCmdResult write_time_broadcast_command(struct MipInterfaceState* device, enum
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
+    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_MipCmd_Base_GpsTimeUpdate_Fieldid(buffer, sizeof(buffer), cmdUsed, field_id);
     cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, value);
     assert(cmdUsed <= sizeof(buffer));

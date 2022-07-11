@@ -249,7 +249,7 @@ MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* devic
     uint8_t descriptorSet, uint8_t cmdDescriptor, const uint8_t* cmdData, uint8_t cmdLength,
     uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t* responseLength_inout)
 {
-    assert(responseLength_inout != NULL);
+    assert((responseDescriptor == MIP_INVALID_FIELD_DESCRIPTOR) || ((responseBuffer != NULL) && (responseLength_inout != NULL)) );
 
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
@@ -259,11 +259,13 @@ MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* devic
     MipPacket_finalize(&packet);
 
     struct MipPendingCmd cmd;
-    MipPendingCmd_initWithResponse(&cmd, descriptorSet, cmdDescriptor, responseDescriptor, responseBuffer, *responseLength_inout);
+    const uint8_t responseLength = responseLength_inout ? *responseLength_inout : 0;
+    MipPendingCmd_initWithResponse(&cmd, descriptorSet, cmdDescriptor, responseDescriptor, responseBuffer, responseLength);
 
     MipCmdResult result = MipInterface_runCommandPacket(device, &packet, &cmd);
 
-    *responseLength_inout = MipPendingCmd_responseLength(&cmd);
+    if( responseLength_inout )
+        *responseLength_inout = MipPendingCmd_responseLength(&cmd);
 
     return result;
 }
