@@ -2,6 +2,8 @@
 #include "mip_packet.h"
 #include "mip_offsets.h"
 
+#include "definitions/descriptors.h"
+
 #include <string.h>
 #include <assert.h>
 
@@ -211,6 +213,18 @@ RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet)
     return MipPacket_bufferSize(packet) - MipPacket_totalLength(packet);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Returns true if the packet is from a data descriptor set.
+///
+///@see isDataDescriptorSet
+///
+///@returns true if the packet contains data.
+///@returns false if it contains commands or replies.
+///
+bool MipPacket_isData(const struct MipPacket* packet)
+{
+    return isDataDescriptorSet(MipPacket_descriptorSet(packet));
+}
 
 //
 // Packet Building

@@ -90,6 +90,8 @@ bool           MipPacket_isValid(const struct MipPacket* packet);
 PacketLength   MipPacket_bufferSize(const struct MipPacket* packet);
 RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet);
 
+bool           MipPacket_isData(const struct MipPacket* packet);
+
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

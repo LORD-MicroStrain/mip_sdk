@@ -9,6 +9,20 @@ extern "C" {
 #endif // __cplusplus
 
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Determines if the descriptor set represents some kind of data.
+///
+///@param descriptorSet
+///
+///@returns true if the descriptor set represents data.
+///@returns false otherwise.
+///
+bool isDataDescriptorSet(uint8_t descriptorSet)
+{
+    return (descriptorSet >= 0x80) && (descriptorSet < 0xF0);
+}
+
+
 size_t insert_MipFunctionSelector(uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFunctionSelector self)
 {
     return insert_u8(buffer, bufferSize, offset, self);

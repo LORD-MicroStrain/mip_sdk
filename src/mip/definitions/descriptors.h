@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 
@@ -21,6 +22,8 @@ enum {
     MIP_INVALID_DESCRIPTOR_SET   = 0x00,
     MIP_INVALID_FIELD_DESCRIPTOR = 0x00,
 };
+
+bool isDataDescriptorSet(uint8_t descriptorSet);
 
 enum MipFunctionSelector
 {
