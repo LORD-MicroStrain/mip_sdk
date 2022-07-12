@@ -2,6 +2,7 @@
 #include "example_utils.hpp"
 
 #include <mip/mip_result.h>
+#include <mip/mip_dispatch.h>
 
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
@@ -9,6 +10,82 @@
 #include <mip/mip.hpp>
 
 #include <thread>
+
+
+void handlePacket(void*, const mscl::C::MipPacket* packet_, mscl::Timestamp timestamp)
+{
+    mscl::MipPacket packet(*packet_);
+
+    // if(packet.descriptorSet() != mscl::MIP_SENSOR_DATA_DESC_SET)
+    //     return;
+
+    printf("\nGot packet with descriptor set 0x%02X:", packet.descriptorSet());
+
+    // for(mscl::C::MipField field = MipField_fromPacket(packet); MipField_isValid(&field); MipField_next(&field))
+    for(mscl::MipField field : packet)
+    {
+        printf(" %02X", field.fieldDescriptor());
+        // // switch(MipField_fieldDescriptor(&field))
+        // switch(field.fieldDescriptor())
+        // {
+        // case mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED:
+        // {
+        //     mscl::MipData_Sensor_ScaledAccel data;
+        //     size_t readBytes = extract_MipData_Sensor_ScaledAccel(field.payload(), field.payloadLength(), 0, &data);
+        //     if(readBytes != field.payloadLength())
+        //         break;
+        //     printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
+        //     break;
+        // }
+        // case mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED:
+        // {
+        //     mscl::MipData_Sensor_ScaledGyro data;
+        //     size_t readBytes = extract_MipData_Sensor_ScaledGyro(field.payload(), field.payloadLength(), 0, &data);
+        //     if(readBytes != field.payloadLength())
+        //         break;
+        //     printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
+        //     break;
+        // }
+        // case mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED:
+        // {
+        //     mscl::MipData_Sensor_ScaledMag data;
+        //     size_t readBytes = extract_MipData_Sensor_ScaledMag(field.payload(), field.payloadLength(), 0, &data);
+        //     if(readBytes != field.payloadLength())
+        //         break;
+        //     printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
+        //     break;
+        // }
+        // }
+    }
+    printf("\n");
+}
+
+void handleAccel(void*, const mscl::C::MipField* field_, mscl::Timestamp timestamp)
+{
+    mscl::MipField field(*field_);
+    mscl::MipData_Sensor_ScaledAccel data;
+    size_t readBytes = extract_MipData_Sensor_ScaledAccel(field.payload(), field.payloadLength(), 0, &data);
+    if(readBytes == field.payloadLength())
+        printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
+}
+
+void handleGyro(void*, const mscl::C::MipField* field_, mscl::Timestamp timestamp)
+{
+    mscl::MipField field(*field_);
+    mscl::MipData_Sensor_ScaledGyro data;
+    size_t readBytes = extract_MipData_Sensor_ScaledGyro(field.payload(), field.payloadLength(), 0, &data);
+    if(readBytes == field.payloadLength())
+        printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
+}
+
+void handleMag(void*, const mscl::C::MipField* field_, mscl::Timestamp timestamp)
+{
+    mscl::MipField field(*field_);
+    mscl::MipData_Sensor_ScaledMag data;
+    size_t readBytes = extract_MipData_Sensor_ScaledMag(field.payload(), field.payloadLength(), 0, &data);
+    if(readBytes == field.payloadLength())
+        printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
+}
 
 
 int main(int argc, const char* argv[])
@@ -43,13 +120,23 @@ int main(int argc, const char* argv[])
         if( result != mscl::MIP_ACK_OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", mscl::MipCmdResult_toString(result), result), 1;
 
+        // Register some callbacks.
+        mscl::C::MipDispatchHandler packetHandler;
+        mscl::C::MipDispatchHandler dataHandlers[3];
+        mscl::C::MipInterface_registerPacketCallback(device.get(), &packetHandler, mscl::C::MIP_DISPATCH_DESCSET_DATA, &handlePacket, NULL);
+        mscl::C::MipInterface_registerFieldCallback(device.get(), &dataHandlers[0], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
+        mscl::C::MipInterface_registerFieldCallback(device.get(), &dataHandlers[1], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
+        mscl::C::MipInterface_registerFieldCallback(device.get(), &dataHandlers[2], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
+
         // Resume the device to ensure it's streaming.
 
         result = mscl::resume(device.get());
         if( result != mscl::MIP_ACK_OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", mscl::MipCmdResult_toString(result), result), 1;
 
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+
+        // todo: poll while sleeping!
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
         result = mscl::set_to_idle(device.get());
         if( result != mscl::MIP_ACK_OK )

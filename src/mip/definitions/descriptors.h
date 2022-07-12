@@ -45,6 +45,20 @@ size_t insert_MipDescriptorRate(uint8_t* buffer, size_t bufferSize, size_t offse
 size_t extract_MipDescriptorRate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipDescriptorRate* self);
 
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Convenience struct holding both descriptor set and field descriptor.
+///
+struct MipCompositeDescriptor
+{
+#ifdef __cplusplus
+    bool operator==(const MipCompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
+    bool operator<(const MipCompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+#endif // __cplusplus
+
+    uint8_t descriptorSet;    ///< MIP descriptor set.
+    uint8_t fieldDescriptor;  ///< MIP field descriptor.
+};
+
 #ifdef __cplusplus
 
 } // extern "C"

@@ -176,6 +176,7 @@ void MipInterface_processUnparsedPackets(struct MipInterfaceState* device)
 void MipInterface_receivePacket(struct MipInterfaceState* device, const struct MipPacket* packet, Timestamp timestamp)
 {
     MipCmdQueue_processPacket(&device->queue, packet, timestamp);
+    MipDispatcher_dispatchPacket(&device->dispatcher, packet, timestamp);
 }
 
 
@@ -281,4 +282,56 @@ MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, con
     }
 
     return MipInterface_waitForReply(device, cmd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a callback for packets of the specified descriptor set.
+///
+///@param device
+///
+///@param handler
+///       An uninitialized MipDispatchHandler object. This call will initialize it.
+///@param descriptorSet
+///       The descriptor set of interest. Can also be MIP_DISPATCH_WILDCARD for
+///       all packets, or MIP_DISPATCH_DATA for only data packets.
+///@param callback
+///       A function to call with the packet.
+///@param userData
+///       A pointer which will be passed to the callback.
+///
+void MipInterface_registerPacketCallback(
+    struct MipInterfaceState* device, struct MipDispatchHandler* handler,
+    uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData)
+{
+    MipDispatchHandler_initPacketHandler(handler, descriptorSet, callback, userData);
+    MipDispatcher_addHandler(&device->dispatcher, handler);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a callback for packets of the specified descriptor set.
+///
+///@param device
+///
+///@param handler
+///       An uninitialized MipDispatchHandler object. This call will initialize it.
+///@param descriptorSet
+///       The descriptor set of interest. Can also be MIP_DISPATCH_WILDCARD for
+///       all packets, or MIP_DISPATCH_DATA_PACKETS for only data packets.
+///@param fieldDescriptor
+///       Field descriptor of interest. Can be MIP_DISPATCH_DESCRIPTOR_WILDCARD
+///       for any field descriptor. Cannot be MIP_DISPATCH_FIELDDESC_NONE (0x00).
+///@param callback
+///       A function to call with the field.
+///@param userData
+///       A pointer which will be passed to the callback.
+///
+void MipInterface_registerFieldCallback(
+    struct MipInterfaceState* device, struct MipDispatchHandler* handler,
+    uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData)
+{
+    assert(fieldDescriptor != MIP_DISPATCH_FIELDDESC_NONE);
+
+    MipDispatchHandler_initFieldHandler(handler, descriptorSet, fieldDescriptor, callback, userData);
+    MipDispatcher_addHandler(&device->dispatcher, handler);
 }

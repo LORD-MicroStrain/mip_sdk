@@ -5,6 +5,7 @@
 
 #include "mip_parser.h"
 #include "mip_cmdqueue.h"
+#include "mip_dispatch.h"
 
 #ifdef __cplusplus
 namespace mscl{
@@ -64,6 +65,7 @@ struct MipInterfaceState
 {
     struct MipParsingState parser;            ///<@private MIP Parser for incoming MIP packets.
     struct MipCmdQueue     queue;             ///<@private Queue for checking command replies.
+    struct MipDispatcher   dispatcher;        ///<@private Dispatcher for data callbacks.
     unsigned int           maxPacketsPerPoll; ///<@private Max number of MIP packets to parse at once.
 };
 
@@ -91,6 +93,13 @@ MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const s
 MipCmdResult MipInterface_runCommand(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
 MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength, uint8_t responseDescriptor, uint8_t* responseData, uint8_t* responseLength_inout);
 MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, const struct MipPacket* packet, struct MipPendingCmd* cmd);
+
+//
+// Data Callbacks
+//
+
+void MipInterface_registerPacketCallback(struct MipInterfaceState* device, struct MipDispatchHandler* handler, uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData);
+void MipInterface_registerFieldCallback(struct MipInterfaceState* device, struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData);
 
 //
 // Accessors

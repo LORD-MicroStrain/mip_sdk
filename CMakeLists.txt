@@ -40,6 +40,8 @@ set(MIP_DIR "${SRC_DIR}/mip")
 set(MIP_SOURCES
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
+    "${MIP_DIR}/mip_dispatch.c"
+    "${MIP_DIR}/mip_dispatch.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
     "${MIP_DIR}/mip_offsets.h"
