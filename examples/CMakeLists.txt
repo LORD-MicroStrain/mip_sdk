@@ -34,12 +34,12 @@ add_subdirectory("${EXAMPLE_DIR}/socket")
 
 
 
-if(WITH_SERIALPORT)
-
-    add_executable(PingTest "${EXAMPLE_DIR}/ping.cpp" ${DEVICE_SOURCES})
-    target_link_libraries(PingTest mip serial)
-
-endif()
+# if(WITH_SERIALPORT)
+#
+#     add_executable(PingTest "${EXAMPLE_DIR}/ping.cpp" ${DEVICE_SOURCES})
+#     target_link_libraries(PingTest mip serial)
+#
+# endif()
 
 
 if(WITH_SERIALPORT OR WITH_SOCKETS)

@@ -1,6 +1,6 @@
 
-#include <mip/mip_packet.h>
-#include <mip/mip_offsets.h>
+#include <mscl/mip/mip_packet.h>
+#include <mscl/mip/mip_offsets.h>
 
 #include <stdio.h>
 #include <stdarg.h>

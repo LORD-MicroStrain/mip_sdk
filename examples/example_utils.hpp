@@ -8,6 +8,8 @@
     #include "tcp_mip_device.hpp"
 #endif
 
+#include <mscl/mip/mip_device.hpp>
+
 #include <memory>
 #include <exception>
 

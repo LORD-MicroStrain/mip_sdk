@@ -1,13 +1,13 @@
 
 #include "example_utils.hpp"
 
-#include <mip/mip_result.h>
-#include <mip/mip_dispatch.h>
+#include <mscl/mip/mip_result.h>
+#include <mscl/mip/mip_dispatch.h>
 
-#include <mip/definitions/commands_base.h>
-#include <mip/definitions/commands_3dm.h>
-#include <mip/definitions/data_sensor.h>
-#include <mip/mip.hpp>
+#include <mscl/mip/definitions/commands_base.h>
+#include <mscl/mip/definitions/commands_3dm.h>
+#include <mscl/mip/definitions/data_sensor.h>
+#include <mscl/mip/mip.hpp>
 
 #include <thread>
 

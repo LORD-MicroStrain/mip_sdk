@@ -6,10 +6,10 @@
 
 #define SWAP(x,y) do { uint8_t tmp=(x); (x)=(y); (y)=tmp; } while(false)
 
-static void pack(uint8_t* buffer, const uint8_t* value, size_t size)
+static void pack(uint8_t* buffer, const void* value, size_t size)
 {
     for(size_t i=0; i<size; i++)
-        buffer[ size-1 - i ] = value[i];
+        buffer[ size-1 - i ] = ((uint8_t*)value)[i];
 }
 
 #define INSERT_MACRO(name, type) \

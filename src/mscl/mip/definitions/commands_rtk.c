@@ -1,7 +1,7 @@
 
 #include "commands_rtk.h"
 
-#include "utils/serialization.h"
+#include "../../utils/serialization.h"
 #include "../mip_interface.h"
 
 #include <assert.h>

@@ -2,8 +2,6 @@
 
 #include "example_utils.hpp"
 
-#include <mip/mip_device.hpp>
-
 
 #ifdef WIN32
     #define PORT_KEY "COM"

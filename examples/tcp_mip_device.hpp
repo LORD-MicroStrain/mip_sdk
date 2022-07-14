@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/mip_device.hpp>
+#include <mscl/mip/mip_device.hpp>
 
 #include <socket/tcp.hpp>
 

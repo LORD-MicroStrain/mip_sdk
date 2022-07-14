@@ -1,14 +1,14 @@
 
-#include <mip/mip_dispatch.h>
-#include <mip/mip_field.h>
-#include <mip/mip_interface.h>
-#include <mip/mip_result.h>
-#include <types.h>
+#include <mscl/mip/mip_dispatch.h>
+#include <mscl/mip/mip_field.h>
+#include <mscl/mip/mip_interface.h>
+#include <mscl/mip/mip_result.h>
+#include <mscl/types.h>
 
-#include <mip/definitions/descriptors.h>
-#include <mip/definitions/commands_base.h>
-#include <mip/definitions/commands_3dm.h>
-#include <mip/definitions/data_sensor.h>
+#include <mscl/mip/definitions/descriptors.h>
+#include <mscl/mip/definitions/commands_base.h>
+#include <mscl/mip/definitions/commands_3dm.h>
+#include <mscl/mip/definitions/data_sensor.h>
 
 
 #include <stdio.h>

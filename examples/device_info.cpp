@@ -1,7 +1,7 @@
 
 #include "example_utils.hpp"
 
-#include <mip/definitions/commands_base.h>
+#include <mscl/mip/definitions/commands_base.h>
 
 
 #include <vector>

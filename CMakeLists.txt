@@ -18,11 +18,14 @@ include_directories(
 
 add_subdirectory("${EXT_DIR}")
 
+
+set(MSCL_DIR "${SRC_DIR}/mscl")
+
 #
 # Utils
 #
 
-set(UTILS_DIR "${SRC_DIR}/utils")
+set(UTILS_DIR "${MSCL_DIR}/utils")
 
 set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.c"
@@ -35,7 +38,7 @@ set(UTILS_SOURCES
 # MIP Control
 #
 
-set(MIP_DIR "${SRC_DIR}/mip")
+set(MIP_DIR "${MSCL_DIR}/mip")
 
 set(MIP_SOURCES
     "${MIP_DIR}/mip_cmdqueue.c"
