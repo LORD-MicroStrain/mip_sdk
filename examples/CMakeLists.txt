@@ -52,4 +52,7 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
     target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
     target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
+    add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
+    target_link_libraries(WatchImuC mip)
+
 endif()
