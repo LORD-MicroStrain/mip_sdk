@@ -385,8 +385,9 @@ void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp now)
         {
             queue->firstPendingCmd = queue->firstPendingCmd->next;
 
+            // Clear response length and mark when it timed out.
             pending->responseLength = 0;
-            // pending->ackCode = MIP_NACK_COMMAND_TIMEOUT;
+            pending->replyTime = now;
 
             // This must be last!
             pending->status = MIP_STATUS_TIMEDOUT;
