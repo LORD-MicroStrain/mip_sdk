@@ -75,6 +75,9 @@ void MipCmdQueue_dequeue(struct MipCmdQueue* queue, struct MipPendingCmd* cmd);
 
 void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp timestamp);
 
+void MipCmdQueue_setBaseReplyTimeout(struct MipCmdQueue* queue, Timeout timeout);
+Timeout MipCmdQueue_baseReplyTimeout(const struct MipCmdQueue* queue);
+
 struct MipPacket;
 
 void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket* packet, Timestamp timestamp);

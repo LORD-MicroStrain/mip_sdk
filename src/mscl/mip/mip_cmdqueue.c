@@ -394,3 +394,20 @@ void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp now)
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the base reply timeout for all commands.
+///
+/// THe base reply timeout is the minimum time to wait for a reply.
+///
+///@param queue
+///@param timeout
+///
+void MipCmdQueue_setBaseReplyTimeout(struct MipCmdQueue* queue, Timeout timeout);
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the base reply timeout for all commands.
+///
+///@returns The minimum time to wait for a reply to any command.
+///
+Timeout MipCmdQueue_baseReplyTimeout(const struct MipCmdQueue* queue);

@@ -25,6 +25,9 @@ public:
     RemainingCount receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::MipInterface_receiveBytes(this, data, length, timestamp); }
     void processUnparsedPackets() { C::MipInterface_processUnparsedPackets(this); }
 
+    Timeout baseReplyTimeout() const { return C::MipCmdQueue_baseReplyTimeout(cmdQueue()); }
+    void setBaseReplyTimeout(Timeout timeout) { C::MipCmdQueue_setBaseReplyTimeout(cmdQueue(), timeout); }
+
     // bool sendToDevice(const uint8_t* data, size_t length) { return C::MipInterface_sendToDevice(this, data, length); }
 
     void receivePacket(const C::MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
@@ -33,6 +36,9 @@ public:
 
     C::MipParsingState* parser() { return C::MipInterface_parser(this); }
     C::MipCmdQueue* cmdQueue() { return C::MipInterface_cmdQueue(this); }
+
+    const C::MipParsingState* parser() const { return C::MipInterface_parser(const_cast<MipDeviceInterface*>(this)); }
+    const C::MipCmdQueue* cmdQueue() const { return C::MipInterface_cmdQueue(const_cast<MipDeviceInterface*>(this)); }
 
     template<class Function>
     bool parseFromSource(Function function, unsigned int maxPackets=MIPPARSER_UNLIMITED_PACKETS) { return parseMipDataFromSource(*parser(), function, maxPackets); }
