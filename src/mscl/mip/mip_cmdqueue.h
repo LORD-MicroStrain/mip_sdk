@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <stdint.h>
@@ -6,7 +7,7 @@
 #include "mip_result.h"
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mscl {
 namespace C {
 extern "C" {
 #endif
@@ -19,68 +20,68 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PendingCommand  MipPendingCmd functions
+///@defgroup PendingCommand  mip_pending_cmd functions
 ///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a command awaiting a reply from the device.
 ///
-struct MipPendingCmd
+struct mip_pending_cmd
 {
-    struct MipPendingCmd*      next;                ///<@private Next command in the queue.
-    uint8_t*                   responseBuffer;      ///<@private Buffer for response data if responseDescriptor != 0x00.
+    struct mip_pending_cmd*    next;                 ///<@private Next command in the queue.
+    uint8_t*                   response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
     union {
-        Timeout                extraTimeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
-        Timestamp              timeoutTime;         ///<@private If MIP_STATUS_WAITING:   Timestamp after which the command will be timed out.
-        Timestamp              replyTime;           ///<@private If MIP_STATUS_COMPLETED: Timestamp from the packet containing the ack/nack.
+        timeout_type           extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
+        timestamp_type         timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
+        timestamp_type         reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
     };
-    uint8_t                    descriptorSet;       ///<@private Command descriptor set.
-    uint8_t                    fieldDescriptor;     ///<@private Command field descriptor.
-    uint8_t                    responseDescriptor;  ///<@private Response field descriptor, or 0x00 if no response field expected.
+    uint8_t                    descriptor_set;       ///<@private Command descriptor set.
+    uint8_t                    field_descriptor;     ///<@private Command field descriptor.
+    uint8_t                    response_descriptor;  ///<@private Response field descriptor, or 0x00 if no response field expected.
     union {
-        uint8_t                responseBufferSize;  ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
-        uint8_t                responseLength;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
+        uint8_t                response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
+        uint8_t                response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
     };
-    volatile MipCmdResult      status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
+    volatile mip_cmd_result    status;               ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 };
 
-void MipPendingCmd_init(struct MipPendingCmd* cmd, uint8_t descriptorSet, uint8_t fieldDescriptor);
-void MipPendingCmd_initWithTimeout(struct MipPendingCmd* cmd, uint8_t descriptorSet, uint8_t fieldDescriptor, Timeout additionalTime);
-void MipPendingCmd_initWithResponse(struct MipPendingCmd* cmd, uint8_t descriptorSet, uint8_t fieldDescriptor, uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t responseBufferSize);
-void MipPendingCmd_initFull(struct MipPendingCmd* cmd, uint8_t descriptorSet, uint8_t fieldDescriptor, uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t responseSize, Timeout additionalTime);
+void mip_pending_cmd_init(struct mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor);
+void mip_pending_cmd_init_with_timeout(struct mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, timeout_type additional_time);
+void mip_pending_cmd_init_with_response(struct mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_buffer_size);
+void mip_pending_cmd_init_full(struct mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_size, timeout_type additional_time);
 
-MipCmdResult MipPendingCmd_status(const struct MipPendingCmd* cmd);
+mip_cmd_result mip_pending_cmd_status(const struct mip_pending_cmd* cmd);
 
-const uint8_t* MipPendingCmd_response(const struct MipPendingCmd* cmd);
-uint8_t MipPendingCmd_responseLength(const struct MipPendingCmd* cmd);
+const uint8_t* mip_pending_cmd_response(const struct mip_pending_cmd* cmd);
+uint8_t mip_pending_cmd_response_length(const struct mip_pending_cmd* cmd);
 
-bool MipPendingCmd_checkTimeout(const struct MipPendingCmd* cmd, Timestamp now);
+bool mip_pending_cmd_check_timeout(const struct mip_pending_cmd* cmd, timestamp_type now);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup CommandQueue  MipCmdQueue functions
+///@defgroup CommandQueue  mip_cmd_queue functions
 ///
 ///@{
 
-struct MipCmdQueue
+struct mip_cmd_queue
 {
-    struct MipPendingCmd* firstPendingCmd;
-    Timeout baseTimeout;
+    struct mip_pending_cmd* first_pending_cmd;
+    timeout_type            base_timeout;
 };
 
-void MipCmdQueue_init(struct MipCmdQueue* queue, Timeout baseReplyTimeout);
-void MipCmdQueue_enqueue(struct MipCmdQueue* queue, struct MipPendingCmd* cmd);
-void MipCmdQueue_dequeue(struct MipCmdQueue* queue, struct MipPendingCmd* cmd);
+void mip_cmd_queue_init(struct mip_cmd_queue* queue, timeout_type base_reply_timeout);
+void mip_cmd_queue_enqueue(struct mip_cmd_queue* queue, struct mip_pending_cmd* cmd);
+void mip_cmd_queue_dequeue(struct mip_cmd_queue* queue, struct mip_pending_cmd* cmd);
 
-void MipCmdQueue_update(struct MipCmdQueue* queue, Timestamp timestamp);
+void mip_cmd_queue_update(struct mip_cmd_queue* queue, timestamp_type timestamp);
 
-void MipCmdQueue_setBaseReplyTimeout(struct MipCmdQueue* queue, Timeout timeout);
-Timeout MipCmdQueue_baseReplyTimeout(const struct MipCmdQueue* queue);
+void mip_cmd_queue_set_base_reply_timeout(struct mip_cmd_queue* queue, timeout_type timeout);
+timeout_type mip_cmd_queue_base_reply_timeout(const struct mip_cmd_queue* queue);
 
-struct MipPacket;
+struct mip_packet;
 
-void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket* packet, Timestamp timestamp);
+void mip_cmd_queue_process_packet(struct mip_cmd_queue* queue, const struct mip_packet* packet, timestamp_type timestamp);
 
 
 ///@}
@@ -88,7 +89,7 @@ void MipCmdQueue_processPacket(struct MipCmdQueue* queue, const struct MipPacket
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mscl
 } // namespace C
+} // namespace mscl
 } // extern "C"
 #endif

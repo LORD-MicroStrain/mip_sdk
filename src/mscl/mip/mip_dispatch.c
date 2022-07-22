@@ -21,23 +21,23 @@ namespace C {
 ///
 ///@param handler
 ///
-///@param descriptorSet
+///@param descriptor_set
 ///       The callback will only be invoked for fields belonging to this
 ///       descriptor set. Can be MIP_DISPATCH_WILDCARD to match any packet,
 ///       or MIP_DISPATCH_DATA to match only data packets
 ///@param callback
 ///       The callback function.
-///@param userData
+///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void MipDispatchHandler_initPacketHandler(struct MipDispatchHandler* handler, uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData)
+void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* user_data)
 {
     handler->next            = NULL;
-    handler->packetCallback  = callback;
-    handler->userData        = userData;
+    handler->packet_callback  = callback;
+    handler->user_data        = user_data;
 
-    handler->descriptorSet   = descriptorSet;
-    handler->fieldDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    handler->descriptor_set   = descriptor_set;
+    handler->field_descriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     handler->enabled         = true;
 }
 
@@ -50,12 +50,12 @@ void MipDispatchHandler_initPacketHandler(struct MipDispatchHandler* handler, ui
 ///
 ///@param handler
 ///
-///@param descriptorSet
+///@param descriptor_set
 ///       The callback will only be invoked for fields belonging to this
 ///       descriptor set. Can be MIP_DISPATCH_DESCRIPTOR_WILDCARD to match any
 ///       packet, or MIP_DISPATCH_DESCSET_DATA to match only data packets.
 ///
-///@param fieldDescriptor
+///@param field_descriptor
 ///       The callback will only be invoked for fields of this field descriptor.
 ///       It can be MIP_DISPATCH_DESCRIPTOR_WILDCARD, but not
 ///       MIP_DISPATCH_FIELDDESC_NONE.
@@ -63,19 +63,19 @@ void MipDispatchHandler_initPacketHandler(struct MipDispatchHandler* handler, ui
 ///@param callback
 ///       The callback function.
 ///
-///@param userData
+///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void MipDispatchHandler_initFieldHandler(struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData)
+void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
 {
-    assert(fieldDescriptor != MIP_DISPATCH_FIELDDESC_NONE);
+    assert(field_descriptor != MIP_DISPATCH_FIELDDESC_NONE);
 
     handler->next            = NULL;
-    handler->fieldCallback   = callback;
-    handler->userData        = userData;
+    handler->field_callback   = callback;
+    handler->user_data        = user_data;
 
-    handler->descriptorSet   = descriptorSet;
-    handler->fieldDescriptor = fieldDescriptor;
+    handler->descriptor_set   = descriptor_set;
+    handler->field_descriptor = field_descriptor;
     handler->enabled         = true;
 }
 
@@ -86,7 +86,7 @@ void MipDispatchHandler_initFieldHandler(struct MipDispatchHandler* handler, uin
 ///@param handler
 ///@param enable If true, the callback is enabled. If false, it will not be called.
 ///
-void MipDispatchHandler_setEnabled(struct MipDispatchHandler* handler, bool enable)
+void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool enable)
 {
     handler->enabled = enable;
 }
@@ -96,7 +96,7 @@ void MipDispatchHandler_setEnabled(struct MipDispatchHandler* handler, bool enab
 ///
 ///@returns true if the handler is enabled, false otherwise.
 ///
-bool MipDispatchHandler_isEnabled(struct MipDispatchHandler* handler)
+bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler)
 {
     return handler->enabled;
 }
@@ -106,42 +106,42 @@ bool MipDispatchHandler_isEnabled(struct MipDispatchHandler* handler)
 ///@brief Determines if the handler matches the given descriptor pair.
 ///
 ///@param handler
-///@param descriptorSet
-///@param fieldDescriptor
+///@param descriptor_set
+///@param field_descriptor
 ///
 ///@returns true if matching, false otherwise.
 ///
-bool MipDispatchHandler_matches(struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor)
+bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor)
 {
     // First filter by descriptor set.
-    switch(handler->descriptorSet)
+    switch(handler->descriptor_set)
     {
     case MIP_DISPATCH_DESCRIPTOR_WILDCARD:
         break;
 
     case MIP_DISPATCH_DESCSET_DATA:
-        if( !isDataDescriptorSet(descriptorSet) )
+        if( !is_data_descriptor_set(descriptor_set) )
             return false;
         break;
 
     default:
-        if( descriptorSet != handler->descriptorSet )
+        if( descriptor_set != handler->descriptor_set )
             return false;
         break;
     }
 
     // Descriptor set check passed, now check field descriptor.
     // Packet callbacks must never be called for fields and vice versa!
-    if( fieldDescriptor == MIP_DISPATCH_FIELDDESC_NONE )
+    if( field_descriptor == MIP_DISPATCH_FIELDDESC_NONE )
     {
         // This is a packet callback check.
         // Match if and only if the handler is also a packet callback.
-        return handler->fieldDescriptor == MIP_DISPATCH_FIELDDESC_NONE;
+        return handler->field_descriptor == MIP_DISPATCH_FIELDDESC_NONE;
     }
     else
     {
         // Field callback - check for wildcard or exact match.
-        return (handler->fieldDescriptor == MIP_DISPATCH_DESCRIPTOR_WILDCARD) || (fieldDescriptor == handler->fieldDescriptor);
+        return (handler->field_descriptor == MIP_DISPATCH_DESCRIPTOR_WILDCARD) || (field_descriptor == handler->field_descriptor);
     }
 }
 
@@ -150,11 +150,11 @@ bool MipDispatchHandler_matches(struct MipDispatchHandler* handler, uint8_t desc
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Initializes the MipDispatcher object.
+///@brief Initializes the mip_dispatcher object.
 ///
-void MipDispatcher_init(struct MipDispatcher* self)
+void mip_dispatcher_init(struct mip_dispatcher* self)
 {
-    self->firstHandler = NULL;
+    self->first_handler = NULL;
 }
 
 
@@ -163,13 +163,13 @@ void MipDispatcher_init(struct MipDispatcher* self)
 ///
 /// This is necessary for the handler function to be executed.
 ///
-void MipDispatcher_addHandler(struct MipDispatcher* self, struct MipDispatchHandler* handler)
+void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
 {
-    if( self->firstHandler == NULL )
-        self->firstHandler = handler;
+    if( self->first_handler == NULL )
+        self->first_handler = handler;
     else
     {
-        struct MipDispatchHandler* last = self->firstHandler;
+        struct mip_dispatch_handler* last = self->first_handler;
 
         while(last->next != NULL)
             last = last->next;
@@ -184,16 +184,16 @@ void MipDispatcher_addHandler(struct MipDispatcher* self, struct MipDispatchHand
 ///
 /// This will prevent the handler from being executed.
 ///
-void MipDispatcher_removeHandler(struct MipDispatcher* self, struct MipDispatchHandler* handler)
+void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
 {
-    if( self->firstHandler == NULL )
+    if( self->first_handler == NULL )
         return;
 
-    struct MipDispatchHandler* query = self->firstHandler;
+    struct mip_dispatch_handler* query = self->first_handler;
 
     if( query == handler )
     {
-        self->firstHandler = handler->next;
+        self->first_handler = handler->next;
         handler->next = NULL;
         return;
     }
@@ -213,16 +213,16 @@ void MipDispatcher_removeHandler(struct MipDispatcher* self, struct MipDispatchH
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes all handlers from the dispatcher.
 ///
-void MipDispatcher_removeAllHandlers(struct MipDispatcher* self)
+void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self)
 {
-    struct MipDispatchHandler* query = self->firstHandler;
+    struct mip_dispatch_handler* query = self->first_handler;
 
-    self->firstHandler = NULL;
+    self->first_handler = NULL;
 
     // Break the chain (technically not necessary, but aids debugging)
     while(query)
     {
-        struct MipDispatchHandler* next = query->next;
+        struct mip_dispatch_handler* next = query->next;
         query->next = NULL;
         query = next;
     }
@@ -240,64 +240,34 @@ void MipDispatcher_removeAllHandlers(struct MipDispatcher* self)
 ///@param timestamp
 ///        The approximate parse time of the packet.
 ///
-void MipDispatcher_dispatchPacket(struct MipDispatcher* self, const struct MipPacket* packet, Timestamp timestamp)
+void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mip_packet* packet, timestamp_type timestamp)
 {
-    const uint8_t descriptorSet = MipPacket_descriptorSet(packet);
+    const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
 
-    struct MipDispatchHandler* handler;
+    struct mip_dispatch_handler* handler;
 
     // Iterate all packet handlers for this packet.
-    for(handler = self->firstHandler; handler != NULL; handler = handler->next)
+    for(handler = self->first_handler; handler != NULL; handler = handler->next)
     {
-        if( MipDispatchHandler_matches(handler, descriptorSet, MIP_INVALID_FIELD_DESCRIPTOR) )
-            handler->packetCallback(handler->userData, packet, timestamp);
+        if( mip_dispatch_handler_matches(handler, descriptor_set, MIP_INVALID_FIELD_DESCRIPTOR) )
+            handler->packet_callback(handler->user_data, packet, timestamp);
     }
 
-    for(struct MipField field = MipField_fromPacket(packet); MipField_isValid(&field); MipField_next(&field))
+    for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
     {
-        const uint8_t fieldDescriptor = MipField_fieldDescriptor(&field);
+        const uint8_t field_descriptor = mip_field_field_descriptor(&field);
 
         // Iterate all field handlers for this field.
-        for(handler = self->firstHandler; handler != NULL; handler = handler->next)
+        for(handler = self->first_handler; handler != NULL; handler = handler->next)
         {
-            if( MipDispatchHandler_matches(handler, descriptorSet, fieldDescriptor) )
+            if( mip_dispatch_handler_matches(handler, descriptor_set, field_descriptor) )
             {
-                handler->fieldCallback(handler->userData, &field, timestamp);
+                handler->field_callback(handler->user_data, &field, timestamp);
                 break;
             }
         };
     }
 }
-
-//
-// ////////////////////////////////////////////////////////////////////////////////
-// ///@brief Finds the next handler for the given descriptor pair.
-// ///
-// ///@param self
-// ///
-// ///@param descriptorSet
-// ///@param fieldDescriptor
-// ///
-// ///@param[in,out] iterator
-// ///       Iterator over handles. The search starts with *handle, if not NULL.
-// ///
-// ///@returns true if a handler was found. This is the same as *handler != NULL.
-// ///
-// struct MipDispatchHandler* MipDispatcher_nextHandler(struct MipDispatcher* self, uint8_t descriptorSet, uint8_t fieldDescriptor, struct MipDispatchHandler* start)
-// {
-//     if(start == NULL)
-//         start = self->firstHandler;
-//     else
-//         start = start->next;
-//
-//     while(start)
-//     {
-//         if( MipDispatchHandler_matches(start, descriptorSet, fieldDescriptor) )
-//             break;
-//     }
-//
-//     return start;
-// }
 
 #ifdef __cplusplus
 } // namespace C

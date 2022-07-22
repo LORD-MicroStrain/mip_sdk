@@ -18,12 +18,12 @@ TcpMipDevice::TcpMipDevice(const std::string& hostname, uint16_t port) :
 {
 }
 
-bool TcpMipDevice::poll()
+bool TcpMipDevice::update()
 {
     try
     {
         mscl::Timestamp now = getCurrentTimestamp();
-        mscl::C::MipCmdQueue_update(cmdQueue(), now);
+        mscl::C::mip_cmd_queue_update(&cmdQueue(), now);
 
         return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mscl::Timestamp* timestamp_out)->bool
         {

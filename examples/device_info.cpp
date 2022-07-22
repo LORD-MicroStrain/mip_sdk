@@ -16,11 +16,11 @@ int main(int argc, const char* argv[])
     {
         std::unique_ptr<mscl::MipDeviceInterface> device = handleCommonArgs(argc, argv);
 
-        mscl::MipBaseDeviceInfo device_info;
+        mscl::C::mip_base_device_info device_info;
 
-        mscl::MipCmdResult result = mscl::get_device_information(device.get(), &device_info);
+        mscl::MipCmdResult result = mscl::C::get_device_information(device.get(), &device_info);
 
-        if( result == mscl::MIP_ACK_OK )
+        if( result == mscl::C::MIP_ACK_OK )
         {
             printf("Success:\n");
 
@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
         }
         else
         {
-            printf("Error: command completed with NACK: %s (%d)\n", mscl::MipCmdResult_toString(result), result);
+            printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
     }
     catch(const std::underflow_error& ex)

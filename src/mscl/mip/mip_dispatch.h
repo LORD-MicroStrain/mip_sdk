@@ -11,8 +11,8 @@ namespace mscl {
 namespace C {
 #endif
 
-struct MipPacket;
-struct MipField;
+struct mip_packet;
+struct mip_field;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,20 +25,20 @@ struct MipField;
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for packet-level callbacks.
 ///
-///@param userData  User-supplied data pointer.
+///@param context   User-supplied data pointer.
 ///@param packet    The MIP packet triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*MipDispatchPacketCallback)(void* userData, const struct MipPacket* packet, Timestamp timestamp);
+typedef void (*mip_dispatch_packet_callback)(void* context, const struct mip_packet* packet, timestamp_type timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for field-level callbacks.
 ///
-///@param userData  User-supplied data pointer.
+///@param context   User-supplied data pointer.
 ///@param field     The MIP field triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*MipDispatchFieldCallback )(void* userData, const struct MipField* field,   Timestamp timestamp);
+typedef void (*mip_dispatch_field_callback )(void* context, const struct mip_field* field, timestamp_type timestamp);
 
 
 enum {
@@ -58,13 +58,13 @@ enum {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatchHandler MipDispatchHandler
+///@defgroup mip_dispatch_handler mip_dispatch_handler
 ///
 /// This represents a binding between a MIP descriptor pair and a callback
 /// function.
 ///
 /// This object must be valid for the duration of its registration in a
-/// MipDispatcher. It cannot be reinitialized while registered.
+/// mip_dispatcher. It cannot be reinitialized while registered.
 ///
 ///@note This should be considered an "opaque" structure; its members should be
 /// considered an internal implementation detail. Avoid accessing them directly
@@ -76,89 +76,55 @@ enum {
 
 ///@brief Handler information for MIP Packet or Field callbacks.
 ///
-struct MipDispatchHandler
+struct mip_dispatch_handler
 {
-    struct MipDispatchHandler* next;               ///<@private Pointer to the next handler in the list.
+    struct mip_dispatch_handler* next;                ///<@private Pointer to the next handler in the list.
     union
     {
-        MipDispatchPacketCallback packetCallback;  ///<@private User function for packets. Valid if fieldDescriptor == 0x00.
-        MipDispatchFieldCallback  fieldCallback;   ///<@private User callback for data fields. Valid if fieldDescriptor != 0x00.
+        mip_dispatch_packet_callback packet_callback;  ///<@private User function for packets. Valid if field_descriptor == 0x00.
+        mip_dispatch_field_callback  field_callback;   ///<@private User callback for data fields. Valid if field_descriptor != 0x00.
     };
-    void*   userData;                              ///<@private User-provided pointer which is passed directly to the callback.
-    uint8_t descriptorSet;                         ///<@private MIP descriptor set for this callback.
-    uint8_t fieldDescriptor;                       ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
-    bool    enabled;                               ///<@private If false, the handler will be ignored.
+    void*   user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
+    uint8_t descriptor_set;                            ///<@private MIP descriptor set for this callback.
+    uint8_t field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
+    bool    enabled;                                  ///<@private If false, the handler will be ignored.
 };
 
 
-void MipDispatchHandler_initPacketHandler(struct MipDispatchHandler* handler, uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData);
-void MipDispatchHandler_initFieldHandler(struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData);
+void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* context);
+void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* context);
 
-void MipDispatchHandler_setEnabled(struct MipDispatchHandler* handler, bool enable);
-bool MipDispatchHandler_isEnabled(struct MipDispatchHandler* handler);
+void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool enable);
+bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler);
 
-bool MipDispatchHandler_matches(struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor);
+bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor);
 
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatchHandler MipDispatchHandler - Represents a callback
+///@defgroup MipDispatchHandler mip_dispatch_handler - Represents a callback
 ///
 ///@{
 
 
 ///@brief Holds the state of the MIP dispatch system.
 ///
-struct MipDispatcher
+struct mip_dispatcher
 {
-    struct MipDispatchHandler* firstHandler;   ///<@private Pointer to the first dispatch handler. May be NULL.
+    struct mip_dispatch_handler* first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
 };
 
 
-void MipDispatcher_init(struct MipDispatcher* self);
-void MipDispatcher_addHandler(struct MipDispatcher* self, struct MipDispatchHandler* handler);
-void MipDispatcher_removeHandler(struct MipDispatcher* self, struct MipDispatchHandler* handler);
-void MipDispatcher_removeAllHandlers(struct MipDispatcher* self);
+void mip_dispatcher_init(struct mip_dispatcher* self);
+void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler);
+void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler);
+void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self);
 
-void MipDispatcher_dispatchPacket(struct MipDispatcher* self, const struct MipPacket* packet, Timestamp timestamp);
-
-// bool MipDispatcher_nextHandler(struct MipDispatcher* self, uint8_t descriptorSet, uint8_t fieldDescriptor, struct MipDispatchHandler** handler);
-
+void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mip_packet* packet, timestamp_type timestamp);
 
 ///@}
+///@}
 ////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-//
-// void MipDispatchState_registerPacketCallback(struct MipDispatchState* state, uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData);
-// void MipDispatchState_registerFieldCallback(struct MipDispatchState* state, uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData);
-//
-// void MipDispatchState_removeCallback(struct MipDispatchState* state, uint8_t descriptorSet, uint8_t fieldDescriptor);
-//
-// void MipDispatchState_dispatchPacket(struct MipDispatchState* state, const struct MipPacket* packet, Timestamp timestamp);
-//
-//
-// void MipDispatchState_registerPacketCallback(
-//     struct MipDispatchState* state, struct MipDispatchEntry*,
-//     uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData);
-
-
-// void MipDispatchHandler_setPacketCallback(struct MipDispatchHandler* handler, MipDispatchPacketCallback callback, void* userData);
-
-// void foo()
-// {
-//     // MipDispatchState_init(&state, &device);
-//     MipInterface_init(&device, ...);
-//     MipDispatchState_registerPacketCallback(&device, &handlers[0], 0x80, 0x04, &myCallback, NULL);
-//     MipDispatchState_registerPacketCallback(&device, &gyroHandler,  0x80, 0x05, &myCallback, NULL);
-//
-//     MipDispatchHandler_init(&handler[0], 0x80, 0x04, &myCallback, NULL);
-//     MipInterface_registerHandler(&device, &handler[0]);
-// }
-
-
 
 
 #ifdef __cplusplus

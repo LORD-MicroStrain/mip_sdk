@@ -23,7 +23,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_RawAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawAccel* self)
+size_t insert_mip_sensor_raw_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_accel[i]);
@@ -31,7 +31,7 @@ size_t insert_MipData_Sensor_RawAccel(uint8_t* buffer, size_t bufferSize, size_t
     return offset;
 }
 
-size_t extract_MipData_Sensor_RawAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawAccel* self)
+size_t extract_mip_sensor_raw_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_accel[i]);
@@ -41,7 +41,7 @@ size_t extract_MipData_Sensor_RawAccel(const uint8_t* buffer, size_t bufferSize,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_RawGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawGyro* self)
+size_t insert_mip_sensor_raw_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_gyro[i]);
@@ -49,7 +49,7 @@ size_t insert_MipData_Sensor_RawGyro(uint8_t* buffer, size_t bufferSize, size_t 
     return offset;
 }
 
-size_t extract_MipData_Sensor_RawGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawGyro* self)
+size_t extract_mip_sensor_raw_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_gyro[i]);
@@ -59,7 +59,7 @@ size_t extract_MipData_Sensor_RawGyro(const uint8_t* buffer, size_t bufferSize, 
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_RawMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawMag* self)
+size_t insert_mip_sensor_raw_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->raw_mag[i]);
@@ -67,7 +67,7 @@ size_t insert_MipData_Sensor_RawMag(uint8_t* buffer, size_t bufferSize, size_t o
     return offset;
 }
 
-size_t extract_MipData_Sensor_RawMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawMag* self)
+size_t extract_mip_sensor_raw_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->raw_mag[i]);
@@ -77,14 +77,14 @@ size_t extract_MipData_Sensor_RawMag(const uint8_t* buffer, size_t bufferSize, s
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_RawPressure(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawPressure* self)
+size_t insert_mip_sensor_raw_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_pressure_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->raw_pressure);
     
     return offset;
 }
 
-size_t extract_MipData_Sensor_RawPressure(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawPressure* self)
+size_t extract_mip_sensor_raw_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_pressure_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->raw_pressure);
     
@@ -93,7 +93,7 @@ size_t extract_MipData_Sensor_RawPressure(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_ScaledAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledAccel* self)
+size_t insert_mip_sensor_scaled_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_accel[i]);
@@ -101,7 +101,7 @@ size_t insert_MipData_Sensor_ScaledAccel(uint8_t* buffer, size_t bufferSize, siz
     return offset;
 }
 
-size_t extract_MipData_Sensor_ScaledAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledAccel* self)
+size_t extract_mip_sensor_scaled_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_accel[i]);
@@ -111,7 +111,7 @@ size_t extract_MipData_Sensor_ScaledAccel(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_ScaledGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledGyro* self)
+size_t insert_mip_sensor_scaled_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_gyro[i]);
@@ -119,7 +119,7 @@ size_t insert_MipData_Sensor_ScaledGyro(uint8_t* buffer, size_t bufferSize, size
     return offset;
 }
 
-size_t extract_MipData_Sensor_ScaledGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledGyro* self)
+size_t extract_mip_sensor_scaled_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_gyro[i]);
@@ -129,7 +129,7 @@ size_t extract_MipData_Sensor_ScaledGyro(const uint8_t* buffer, size_t bufferSiz
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_ScaledMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledMag* self)
+size_t insert_mip_sensor_scaled_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->scaled_mag[i]);
@@ -137,7 +137,7 @@ size_t insert_MipData_Sensor_ScaledMag(uint8_t* buffer, size_t bufferSize, size_
     return offset;
 }
 
-size_t extract_MipData_Sensor_ScaledMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledMag* self)
+size_t extract_mip_sensor_scaled_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->scaled_mag[i]);
@@ -147,14 +147,14 @@ size_t extract_MipData_Sensor_ScaledMag(const uint8_t* buffer, size_t bufferSize
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_ScaledPressure(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledPressure* self)
+size_t insert_mip_sensor_scaled_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_pressure_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->scaled_pressure);
     
     return offset;
 }
 
-size_t extract_MipData_Sensor_ScaledPressure(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledPressure* self)
+size_t extract_mip_sensor_scaled_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_pressure_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->scaled_pressure);
     
@@ -163,7 +163,7 @@ size_t extract_MipData_Sensor_ScaledPressure(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_DeltaTheta(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaTheta* self)
+size_t insert_mip_sensor_delta_theta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_theta_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->delta_theta[i]);
@@ -171,7 +171,7 @@ size_t insert_MipData_Sensor_DeltaTheta(uint8_t* buffer, size_t bufferSize, size
     return offset;
 }
 
-size_t extract_MipData_Sensor_DeltaTheta(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaTheta* self)
+size_t extract_mip_sensor_delta_theta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_theta_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->delta_theta[i]);
@@ -181,7 +181,7 @@ size_t extract_MipData_Sensor_DeltaTheta(const uint8_t* buffer, size_t bufferSiz
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_DeltaVelocity(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaVelocity* self)
+size_t insert_mip_sensor_delta_velocity_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_velocity_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->delta_velocity[i]);
@@ -189,7 +189,7 @@ size_t insert_MipData_Sensor_DeltaVelocity(uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
-size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaVelocity* self)
+size_t extract_mip_sensor_delta_velocity_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_velocity_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->delta_velocity[i]);
@@ -199,7 +199,7 @@ size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_CompOrientationMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationMatrix* self)
+size_t insert_mip_sensor_comp_orientation_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->m[i]);
@@ -207,7 +207,7 @@ size_t insert_MipData_Sensor_CompOrientationMatrix(uint8_t* buffer, size_t buffe
     return offset;
 }
 
-size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationMatrix* self)
+size_t extract_mip_sensor_comp_orientation_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
@@ -217,7 +217,7 @@ size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_CompQuaternion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompQuaternion* self)
+size_t insert_mip_sensor_comp_quaternion_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         offset = insert_float(buffer, bufferSize, offset, self->q[i]);
@@ -225,7 +225,7 @@ size_t insert_MipData_Sensor_CompQuaternion(uint8_t* buffer, size_t bufferSize, 
     return offset;
 }
 
-size_t extract_MipData_Sensor_CompQuaternion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompQuaternion* self)
+size_t extract_mip_sensor_comp_quaternion_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->q[i]);
@@ -235,7 +235,7 @@ size_t extract_MipData_Sensor_CompQuaternion(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_CompEulerAngles(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompEulerAngles* self)
+size_t insert_mip_sensor_comp_euler_angles_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_euler_angles_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->roll);
     offset = insert_float(buffer, bufferSize, offset, self->pitch);
@@ -244,7 +244,7 @@ size_t insert_MipData_Sensor_CompEulerAngles(uint8_t* buffer, size_t bufferSize,
     return offset;
 }
 
-size_t extract_MipData_Sensor_CompEulerAngles(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompEulerAngles* self)
+size_t extract_mip_sensor_comp_euler_angles_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_euler_angles_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->roll);
     offset = extract_float(buffer, bufferSize, offset, &self->pitch);
@@ -255,7 +255,7 @@ size_t extract_MipData_Sensor_CompEulerAngles(const uint8_t* buffer, size_t buff
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_CompOrientationUpdateMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationUpdateMatrix* self)
+size_t insert_mip_sensor_comp_orientation_update_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_update_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         offset = insert_float(buffer, bufferSize, offset, self->m[i]);
@@ -263,7 +263,7 @@ size_t insert_MipData_Sensor_CompOrientationUpdateMatrix(uint8_t* buffer, size_t
     return offset;
 }
 
-size_t extract_MipData_Sensor_CompOrientationUpdateMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationUpdateMatrix* self)
+size_t extract_mip_sensor_comp_orientation_update_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_update_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
@@ -273,7 +273,7 @@ size_t extract_MipData_Sensor_CompOrientationUpdateMatrix(const uint8_t* buffer,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_OrientationRawTemp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OrientationRawTemp* self)
+size_t insert_mip_sensor_orientation_raw_temp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_orientation_raw_temp_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         offset = insert_u16(buffer, bufferSize, offset, self->raw_temp[i]);
@@ -281,7 +281,7 @@ size_t insert_MipData_Sensor_OrientationRawTemp(uint8_t* buffer, size_t bufferSi
     return offset;
 }
 
-size_t extract_MipData_Sensor_OrientationRawTemp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OrientationRawTemp* self)
+size_t extract_mip_sensor_orientation_raw_temp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_orientation_raw_temp_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         offset = extract_u16(buffer, bufferSize, offset, &self->raw_temp[i]);
@@ -291,14 +291,14 @@ size_t extract_MipData_Sensor_OrientationRawTemp(const uint8_t* buffer, size_t b
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_InternalTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_InternalTimestamp* self)
+size_t insert_mip_sensor_internal_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_internal_timestamp_data* self)
 {
     offset = insert_u32(buffer, bufferSize, offset, self->counts);
     
     return offset;
 }
 
-size_t extract_MipData_Sensor_InternalTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_InternalTimestamp* self)
+size_t extract_mip_sensor_internal_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_internal_timestamp_data* self)
 {
     offset = extract_u32(buffer, bufferSize, offset, &self->counts);
     
@@ -307,7 +307,7 @@ size_t extract_MipData_Sensor_InternalTimestamp(const uint8_t* buffer, size_t bu
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_1ppsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_1ppsTimestamp* self)
+size_t insert_mip_sensor_1pps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_1pps_timestamp_data* self)
 {
     offset = insert_u32(buffer, bufferSize, offset, self->seconds);
     offset = insert_u32(buffer, bufferSize, offset, self->useconds);
@@ -315,7 +315,7 @@ size_t insert_MipData_Sensor_1ppsTimestamp(uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
-size_t extract_MipData_Sensor_1ppsTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_1ppsTimestamp* self)
+size_t extract_mip_sensor_1pps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_1pps_timestamp_data* self)
 {
     offset = extract_u32(buffer, bufferSize, offset, &self->seconds);
     offset = extract_u32(buffer, bufferSize, offset, &self->useconds);
@@ -325,11 +325,11 @@ size_t extract_MipData_Sensor_1ppsTimestamp(const uint8_t* buffer, size_t buffer
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_GpsTimestamp_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_GpsTimestamp_Validflags self)
+size_t insert_mip_sensor_gps_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_gps_timestamp_data_valid_flags self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_MipData_Sensor_GpsTimestamp_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_GpsTimestamp_Validflags* self)
+size_t extract_mip_sensor_gps_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_gps_timestamp_data_valid_flags* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -338,27 +338,27 @@ size_t extract_MipData_Sensor_GpsTimestamp_Validflags(const uint8_t* buffer, siz
 }
 
 
-size_t insert_MipData_Sensor_GpsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_GpsTimestamp* self)
+size_t insert_mip_sensor_gps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_gps_timestamp_data* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->tow);
     offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    offset = insert_MipData_Sensor_GpsTimestamp_Validflags(buffer, bufferSize, offset, self->valid_flags);
+    offset = insert_mip_sensor_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
     
     return offset;
 }
 
-size_t extract_MipData_Sensor_GpsTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_GpsTimestamp* self)
+size_t extract_mip_sensor_gps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_gps_timestamp_data* self)
 {
     offset = extract_double(buffer, bufferSize, offset, &self->tow);
     offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    offset = extract_MipData_Sensor_GpsTimestamp_Validflags(buffer, bufferSize, offset, &self->valid_flags);
+    offset = extract_mip_sensor_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
     
     return offset;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_TemperatureAbs(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_TemperatureAbs* self)
+size_t insert_mip_sensor_temperature_abs_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_temperature_abs_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->min_temp);
     offset = insert_float(buffer, bufferSize, offset, self->max_temp);
@@ -367,7 +367,7 @@ size_t insert_MipData_Sensor_TemperatureAbs(uint8_t* buffer, size_t bufferSize, 
     return offset;
 }
 
-size_t extract_MipData_Sensor_TemperatureAbs(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_TemperatureAbs* self)
+size_t extract_mip_sensor_temperature_abs_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_temperature_abs_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->min_temp);
     offset = extract_float(buffer, bufferSize, offset, &self->max_temp);
@@ -378,7 +378,7 @@ size_t extract_MipData_Sensor_TemperatureAbs(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_UpVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_UpVector* self)
+size_t insert_mip_sensor_up_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_up_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->up[i]);
@@ -386,7 +386,7 @@ size_t insert_MipData_Sensor_UpVector(uint8_t* buffer, size_t bufferSize, size_t
     return offset;
 }
 
-size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_UpVector* self)
+size_t extract_mip_sensor_up_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_up_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->up[i]);
@@ -396,7 +396,7 @@ size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_NorthVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_NorthVector* self)
+size_t insert_mip_sensor_north_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_north_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->north[i]);
@@ -404,7 +404,7 @@ size_t insert_MipData_Sensor_NorthVector(uint8_t* buffer, size_t bufferSize, siz
     return offset;
 }
 
-size_t extract_MipData_Sensor_NorthVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_NorthVector* self)
+size_t extract_mip_sensor_north_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_north_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->north[i]);
@@ -414,11 +414,11 @@ size_t extract_MipData_Sensor_NorthVector(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_OverrangeStatus_Status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_OverrangeStatus_Status self)
+size_t insert_mip_sensor_overrange_status_data_status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_overrange_status_data_status self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_MipData_Sensor_OverrangeStatus_Status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_OverrangeStatus_Status* self)
+size_t extract_mip_sensor_overrange_status_data_status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_overrange_status_data_status* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -427,23 +427,23 @@ size_t extract_MipData_Sensor_OverrangeStatus_Status(const uint8_t* buffer, size
 }
 
 
-size_t insert_MipData_Sensor_OverrangeStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OverrangeStatus* self)
+size_t insert_mip_sensor_overrange_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_overrange_status_data* self)
 {
-    offset = insert_MipData_Sensor_OverrangeStatus_Status(buffer, bufferSize, offset, self->status);
+    offset = insert_mip_sensor_overrange_status_data_status(buffer, bufferSize, offset, self->status);
     
     return offset;
 }
 
-size_t extract_MipData_Sensor_OverrangeStatus(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OverrangeStatus* self)
+size_t extract_mip_sensor_overrange_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_overrange_status_data* self)
 {
-    offset = extract_MipData_Sensor_OverrangeStatus_Status(buffer, bufferSize, offset, &self->status);
+    offset = extract_mip_sensor_overrange_status_data_status(buffer, bufferSize, offset, &self->status);
     
     return offset;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_Sensor_OdometerData(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OdometerData* self)
+size_t insert_mip_sensor_odometer_data_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_odometer_data_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->speed);
     offset = insert_float(buffer, bufferSize, offset, self->uncertainty);
@@ -452,7 +452,7 @@ size_t insert_MipData_Sensor_OdometerData(uint8_t* buffer, size_t bufferSize, si
     return offset;
 }
 
-size_t extract_MipData_Sensor_OdometerData(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OdometerData* self)
+size_t extract_mip_sensor_odometer_data_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_odometer_data_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->speed);
     offset = extract_float(buffer, bufferSize, offset, &self->uncertainty);

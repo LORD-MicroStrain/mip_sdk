@@ -12,7 +12,7 @@ class TcpMipDevice : public mscl::MipDeviceInterface
 public:
     TcpMipDevice(const std::string& hostname, uint16_t port);
 
-    bool poll() final;
+    bool update() final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
 private:

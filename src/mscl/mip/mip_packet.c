@@ -27,13 +27,13 @@
 ///       The length of the data pointed to by buffer.
 ///
 ///@note The data does not need to be a valid MIP packet, for instance to use
-///      the MipPacket_isSane() or MipPacket_isValid() functions. However, if
+///      the mip_packet_is_sane() or mip_packet_is_valid() functions. However, if
 ///      it is NOT a valid MIP packet, the result of calling any accessor
 ///      function is unpredictable. In particular, if length is less than
 ///      MIP_PACKET_LENGTH_MIN bytes, calling the accessor functions is undefined
 ///      behavior.
 ///
-void MipPacket_fromBuffer(struct MipPacket* packet, uint8_t* buffer, size_t length)
+void mip_packet_from_buffer(struct mip_packet* packet, uint8_t* buffer, size_t length)
 {
     assert(buffer != NULL);
 
@@ -42,7 +42,7 @@ void MipPacket_fromBuffer(struct MipPacket* packet, uint8_t* buffer, size_t leng
         length = MIP_PACKET_LENGTH_MAX;
 
     packet->buffer       = buffer;
-    packet->bufferLength = length;
+    packet->buffer_length = length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,16 +54,16 @@ void MipPacket_fromBuffer(struct MipPacket* packet, uint8_t* buffer, size_t leng
 ///@param buffer
 ///       This is where the packet bytes will be stored. Must be at least
 ///       MIP_PACKET_LENGTH_MIN bytes in size.
-///@param bufferSize
+///@param buffer_size
 ///       The size of buffer, in bytes.
-///@param descriptorSet
+///@param descriptor_set
 ///       The MIP descriptor set for the packet.
 ///
-void MipPacket_create(struct MipPacket* packet, uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet)
+void mip_packet_create(struct mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set)
 {
-    MipPacket_fromBuffer(packet, buffer, bufferSize);
+    mip_packet_from_buffer(packet, buffer, buffer_size);
 
-    if( bufferSize < MIP_PACKET_LENGTH_MIN )
+    if( buffer_size < MIP_PACKET_LENGTH_MIN )
     {
         assert(false); // Buffer too small!
         return;
@@ -71,7 +71,7 @@ void MipPacket_create(struct MipPacket* packet, uint8_t* buffer, size_t bufferSi
 
     packet->buffer[MIP_INDEX_SYNC1] = MIP_SYNC1;
     packet->buffer[MIP_INDEX_SYNC2] = MIP_SYNC2;
-    packet->buffer[MIP_INDEX_DESCSET] = descriptorSet;
+    packet->buffer[MIP_INDEX_DESCSET] = descriptor_set;
     packet->buffer[MIP_INDEX_LENGTH] = 0;
 }
 
@@ -84,7 +84,7 @@ void MipPacket_create(struct MipPacket* packet, uint8_t* buffer, size_t bufferSi
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the MIP descriptor set for this packet.
 ///
-uint8_t MipPacket_descriptorSet(const struct MipPacket* packet)
+uint8_t mip_packet_descriptor_set(const struct mip_packet* packet)
 {
     return packet->buffer[MIP_INDEX_DESCSET];
 }
@@ -92,7 +92,7 @@ uint8_t MipPacket_descriptorSet(const struct MipPacket* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the length of the payload (MIP fields).
 ///
-uint8_t MipPacket_payloadLength(const struct MipPacket* packet)
+uint8_t mip_packet_payload_length(const struct mip_packet* packet)
 {
     return packet->buffer[MIP_INDEX_LENGTH];
 }
@@ -102,15 +102,15 @@ uint8_t MipPacket_payloadLength(const struct MipPacket* packet)
 ///
 ///@returns The length of the packet. Always at least MIP_PACKET_LENGTH_MIN.
 ///
-PacketLength MipPacket_totalLength(const struct MipPacket* packet)
+packet_length mip_packet_total_length(const struct mip_packet* packet)
 {
-    return MipPacket_payloadLength(packet) + MIP_PACKET_LENGTH_MIN;
+    return mip_packet_payload_length(packet) + MIP_PACKET_LENGTH_MIN;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the data buffer containing the packet.
 ///
-const uint8_t* MipPacket_pointer(const struct MipPacket* packet)
+const uint8_t* mip_packet_pointer(const struct mip_packet* packet)
 {
     return packet->buffer;
 }
@@ -118,7 +118,7 @@ const uint8_t* MipPacket_pointer(const struct MipPacket* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the packet's payload (the first field).
 ///
-const uint8_t* MipPacket_payload(const struct MipPacket* packet)
+const uint8_t* mip_packet_payload(const struct mip_packet* packet)
 {
     return packet->buffer + MIP_INDEX_PAYLOAD;
 }
@@ -127,11 +127,11 @@ const uint8_t* MipPacket_payload(const struct MipPacket* packet)
 ///@brief Returns the value of the checksum as written in the packet.
 ///
 /// This function does not compute the checksum. To do so, use
-/// MipPacket_computeChecksum().
+/// mip_packet_compute_checksum().
 ///
-uint16_t MipPacket_checksumValue(const struct MipPacket* packet)
+uint16_t mip_packet_checksum_value(const struct mip_packet* packet)
 {
-    const PacketLength index = MipPacket_totalLength(packet) - MIP_CHECKSUM_LENGTH;
+    const packet_length index = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
     return ((uint16_t)(packet->buffer[index+0]) << 8) | (uint16_t)(packet->buffer[index+1]);
 }
@@ -141,16 +141,16 @@ uint16_t MipPacket_checksumValue(const struct MipPacket* packet)
 ///
 ///@returns The computed checksum value.
 ///
-uint16_t MipPacket_computeChecksum(const struct MipPacket* packet)
+uint16_t mip_packet_compute_checksum(const struct mip_packet* packet)
 {
     uint8_t a = 0;
     uint8_t b = 0;
 
-    // MipPacket_totalLength always returns at least MIP_PACKET_LENGTH_MIN so this
+    // mip_packet_total_length always returns at least MIP_PACKET_LENGTH_MIN so this
     // subtraction is guaranteed to be safe.
-    const PacketLength length = MipPacket_totalLength(packet) - MIP_CHECKSUM_LENGTH;
+    const packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
-    for(PacketLength i=0; i<length; i++)
+    for(packet_length i=0; i<length; i++)
     {
         a += packet->buffer[i];
         b += a;
@@ -164,32 +164,32 @@ uint16_t MipPacket_computeChecksum(const struct MipPacket* packet)
 ///@brief Returns true if the packet buffer is not NULL and is at least the
 ///       minimum size (MIP_PACKET_LENGTH_MIN).
 ///
-/// If the packet is not 'sane', then none of the MipPacket_* functions may be
+/// If the packet is not 'sane', then none of the mip_packet_* functions may be
 /// used to access it (to do so is undefined behavior). This should never occur
 /// in normal circumstances.
 ///
-bool MipPacket_isSane(const struct MipPacket* packet)
+bool mip_packet_is_sane(const struct mip_packet* packet)
 {
-    return packet->buffer && (MipPacket_bufferSize(packet) >= MIP_PACKET_LENGTH_MIN);
+    return packet->buffer && (mip_packet_buffer_size(packet) >= MIP_PACKET_LENGTH_MIN);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns true if the packet is valid.
 ///
 /// A packet is valid if:
-/// * MipPacket_isSane() returns true,
+/// * mip_packet_is_sane() returns true,
 /// * The descriptor set is not 0x00, and
 /// * The checksum is valid.
 ///
-bool MipPacket_isValid(const struct MipPacket* packet)
+bool mip_packet_is_valid(const struct mip_packet* packet)
 {
-    if( !MipPacket_isSane(packet) || (MipPacket_descriptorSet(packet) == 0x00) )
+    if( !mip_packet_is_sane(packet) || (mip_packet_descriptor_set(packet) == 0x00) )
         return false;
 
-    const uint16_t listedChecksum = MipPacket_checksumValue(packet);
-    const uint16_t computedChecksum = MipPacket_computeChecksum(packet);
+    const uint16_t listed_checksum = mip_packet_checksum_value(packet);
+    const uint16_t computed_checksum = mip_packet_compute_checksum(packet);
 
-    return listedChecksum == computedChecksum;
+    return listed_checksum == computed_checksum;
 }
 
 
@@ -198,9 +198,9 @@ bool MipPacket_isValid(const struct MipPacket* packet)
 ///
 ///@note This is the BUFFER SIZE and not the packet length.
 ///
-PacketLength MipPacket_bufferSize(const struct MipPacket* packet)
+packet_length mip_packet_buffer_size(const struct mip_packet* packet)
 {
-    return packet->bufferLength;
+    return packet->buffer_length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -208,22 +208,22 @@ PacketLength MipPacket_bufferSize(const struct MipPacket* packet)
 ///
 /// This is equal to the buffer size less the total packet length.
 ///
-RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet)
+remaining_count mip_packet_remaining_space(const struct mip_packet* packet)
 {
-    return MipPacket_bufferSize(packet) - MipPacket_totalLength(packet);
+    return mip_packet_buffer_size(packet) - mip_packet_total_length(packet);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns true if the packet is from a data descriptor set.
 ///
-///@see isDataDescriptorSet
+///@see is_data_descriptor_set
 ///
 ///@returns true if the packet contains data.
 ///@returns false if it contains commands or replies.
 ///
-bool MipPacket_isData(const struct MipPacket* packet)
+bool mip_packet_is_data(const struct mip_packet* packet)
 {
-    return isDataDescriptorSet(MipPacket_descriptorSet(packet));
+    return is_data_descriptor_set(mip_packet_descriptor_set(packet));
 }
 
 //
@@ -248,25 +248,25 @@ bool MipPacket_isData(const struct MipPacket* packet)
 ///
 ///
 ///@param packet
-///@param fieldDescriptor
+///@param field_descriptor
 ///       The MIP field descriptor (e.g. command or data descriptor).
 ///@param payload
 ///       A pointer to the field payload data (without the header).
-///       Can be NULL if payloadLength is 0.
-///@param payloadLength
+///       Can be NULL if payload_length is 0.
+///@param payload_length
 ///       The length of the payload data. Must be less than or equal to
 ///       MIP_FIELD_PAYLOAD_LENGTH_MAX. Does not include the header.
 ///
 ///@returns true if the field was added, or false if there was not enough space.
 ///
-bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength)
+bool mip_packet_add_field(struct mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
-    uint8_t* payloadBuffer;
-    RemainingCount remaining = MipPacket_allocField(packet, fieldDescriptor, payloadLength, &payloadBuffer);
+    uint8_t* payload_buffer;
+    remaining_count remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
     if( remaining < 0 )
         return false;
 
-    memcpy(payloadBuffer, payload, payloadLength);
+    memcpy(payload_buffer, payload, payload_length);
 
     return true;
 }
@@ -286,14 +286,14 @@ bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const
 ///~~~
 ///
 ///@param packet
-///@param fieldDescriptor
+///@param field_descriptor
 ///       The MIP field descriptor (e.g. command or data descriptor).
-///@param payloadLength
+///@param payload_length
 ///       The requested length of the field payload (not including the header).
 ///       If the size is not known ahead of time, pass 0 and inspect the return
 ///       value to see how much payload data can be written. Then call
-///       MipPacket_reallocField() with the used size and same payload pointer.
-///@param payloadPtr_out
+///       mip_packet_realloc_field() with the used size and same payload pointer.
+///@param payload_ptr_out
 ///       A pointer to a pointer to the field payload. This will receive the
 ///       payload pointer into which data should be written.
 ///
@@ -301,45 +301,45 @@ bool MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const
 ///         is negative, the field could not be allocated and the payload must
 ///         not be written.
 ///
-RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** const payloadPtr_out)
+remaining_count mip_packet_alloc_field(struct mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
 {
-    assert(payloadPtr_out != NULL);
-    // assert( payloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
+    assert(payload_ptr_out != NULL);
+    // assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
 
-    const RemainingCount remaining = MipPacket_remainingSpace(packet);
+    const remaining_count remaining = mip_packet_remaining_space(packet);
 
-    const PacketLength fieldLength = MIP_FIELD_HEADER_LENGTH + (PacketLength)payloadLength;
+    const packet_length field_length = MIP_FIELD_HEADER_LENGTH + (packet_length)payload_length;
 
-    *payloadPtr_out = NULL;
+    *payload_ptr_out = NULL;
 
-    if( fieldLength <= remaining )
+    if( field_length <= remaining )
     {
-        PacketLength fieldIndex = MIP_HEADER_LENGTH + MipPacket_payloadLength(packet);
+        packet_length field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
 
-        packet->buffer[MIP_INDEX_LENGTH] += fieldLength;
+        packet->buffer[MIP_INDEX_LENGTH] += field_length;
 
-        packet->buffer[fieldIndex+MIP_INDEX_FIELD_LEN]  = fieldLength;
-        packet->buffer[fieldIndex+MIP_INDEX_FIELD_DESC] = fieldDescriptor;
+        packet->buffer[field_index+MIP_INDEX_FIELD_LEN]  = field_length;
+        packet->buffer[field_index+MIP_INDEX_FIELD_DESC] = field_descriptor;
 
-        *payloadPtr_out = &packet->buffer[fieldIndex + MIP_INDEX_FIELD_PAYLOAD];
+        *payload_ptr_out = &packet->buffer[field_index + MIP_INDEX_FIELD_PAYLOAD];
     }
 
-    return remaining - fieldLength;
+    return remaining - field_length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Changes the size of the last field in the packet.
 ///
-/// Use this in conjunction with MipPacket_allocField() when the size of the
-/// field is not known in advance. Pass a payload size of 0 to allocField and
+/// Use this in conjunction with mip_packet_alloc_field() when the size of the
+/// field is not known in advance. Pass a payload size of 0 to alloc_field and
 /// check that the returned available space is sufficient, then write the
 /// payload and call this function with the actual space used.
 ///
 ///@param packet
-///@param payloadPtr
+///@param payload_ptr
 ///       Pointer to the field payload. This must be the same value returned
-///       from allocField and must point to the last field.
-///@param newPayloadLength
+///       from alloc_field and must point to the last field.
+///@param new_payload_length
 ///       Length of payload written. Generally it is an error for this to
 ///       exceed the actual amount of space available in the packet. In this
 ///       case, the packet is left with just the empty field and the return
@@ -348,23 +348,23 @@ RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescr
 ///@returns The space remaining in the packet after changing the field size.
 ///         This will be negative if the new length did not fit.
 ///
-RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* payloadPtr, uint8_t newPayloadLength)
+remaining_count mip_packet_realloc_last_field(struct mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
 {
-    assert(payloadPtr != NULL);
-    assert( newPayloadLength <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
+    assert(payload_ptr != NULL);
+    assert( new_payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
 
-    uint8_t* fieldPtr = payloadPtr - MIP_INDEX_FIELD_PAYLOAD;
-    const uint8_t oldFieldLength = fieldPtr[MIP_INDEX_FIELD_LEN];
-    const uint8_t newFieldLength = newPayloadLength + MIP_FIELD_HEADER_LENGTH;
+    uint8_t* field_ptr = payload_ptr - MIP_INDEX_FIELD_PAYLOAD;
+    const uint8_t old_field_length = field_ptr[MIP_INDEX_FIELD_LEN];
+    const uint8_t new_field_length = new_payload_length + MIP_FIELD_HEADER_LENGTH;
 
-    const RemainingCount deltaLength = newFieldLength - oldFieldLength;
+    const remaining_count delta_length = new_field_length - old_field_length;
 
-    RemainingCount remaining = MipPacket_remainingSpace(packet) + deltaLength;
+    remaining_count remaining = mip_packet_remaining_space(packet) + delta_length;
 
     if( remaining >= 0 )
     {
-        fieldPtr[MIP_INDEX_FIELD_LEN] = newFieldLength;
-        packet->buffer[MIP_INDEX_LENGTH] += deltaLength;
+        field_ptr[MIP_INDEX_FIELD_LEN] = new_field_length;
+        packet->buffer[MIP_INDEX_LENGTH] += delta_length;
     }
 
     return remaining;
@@ -373,27 +373,27 @@ RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* pay
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes the last field from the packet after having allocated it.
 ///
-/// Use only after allocating a field with MipPacket_allocField to cancel it.
+/// Use only after allocating a field with mip_packet_alloc_field to cancel it.
 /// E.g. if it turns out that there isn't enough buffer space to write the
 /// payload.
 ///
 ///@param packet
-///@param payloadPtr
+///@param payload_ptr
 ///       Pointer to the field payload. This must be the same value returned
-///       from allocField and must point to the last field.
+///       from alloc_field and must point to the last field.
 ///
 ///@returns The remaining space in the packet after removing the field.
 ///
-RemainingCount MipPacket_cancelLastField(struct MipPacket* packet, uint8_t* payloadPtr)
+remaining_count mip_packet_cancel_last_field(struct mip_packet* packet, uint8_t* payload_ptr)
 {
-    assert(payloadPtr != NULL);
+    assert(payload_ptr != NULL);
 
-    uint8_t* fieldPtr = payloadPtr - MIP_INDEX_FIELD_PAYLOAD;
-    const uint8_t oldPayloadLength = fieldPtr[MIP_INDEX_FIELD_LEN];
+    uint8_t* field_ptr = payload_ptr - MIP_INDEX_FIELD_PAYLOAD;
+    const uint8_t old_payload_length = field_ptr[MIP_INDEX_FIELD_LEN];
 
-    packet->buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + oldPayloadLength;
+    packet->buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + old_payload_length;
 
-    return MipPacket_remainingSpace(packet);
+    return mip_packet_remaining_space(packet);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -413,10 +413,10 @@ RemainingCount MipPacket_cancelLastField(struct MipPacket* packet, uint8_t* payl
 ///                                                               Total Length
 ///~~~
 ///
-void MipPacket_finalize(struct MipPacket* packet)
+void mip_packet_finalize(struct mip_packet* packet)
 {
-    uint16_t checksum = MipPacket_computeChecksum(packet);
-    PacketLength length = MipPacket_totalLength(packet) - MIP_CHECKSUM_LENGTH;
+    uint16_t checksum = mip_packet_compute_checksum(packet);
+    packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
     packet->buffer[length+0] = checksum >> 8;
     packet->buffer[length+1] = checksum & 0xFF;

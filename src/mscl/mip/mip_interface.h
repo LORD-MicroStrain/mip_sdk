@@ -15,34 +15,34 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipInterface  High-level functions for controlling a MIP device.
+///@defgroup mip_interface  High-level functions for controlling a MIP device.
 ///
 ///- Sending commands
 ///- Receiving Data
 ///
 /// There are two ways to handle input data:
-/// 1. Call MipInterface_receiveBytes (and/or MipInterface/processUnparsedPackets)
-///    from MipInterface_userPoll(), or
+/// 1. Call mip_interface_receive_bytes (and/or mip_interface/process_unparsed_packets)
+///    from mip_interface_user_update(), or
 /// 2. Run a separate thread which feeds data from the port into
-///    MipInterface_receiveBytes(). MipInterface_userPoll() would then just do
+///    mip_interface_receive_bytes(). mip_interface_user_update() would then just do
 ///    nothing or sleep/yield.
 ///
 /// Example of the first approach:
 ///@code{.c}
-/// bool MipInterface_userPoll(struct MipInterfaceState* device)
+/// bool mip_interface_user_update(struct mip_interface* device)
 /// {
 ///     size_t count;
 ///     uint8_t buffer[N];
-///     if( user_readPort(buffer, sizeof(buffer), &count) == ERROR )
+///     if( user_read_port(buffer, sizeof(buffer), &count) == ERROR )
 ///         return false;  // Abort further processing if the port is closed.
 ///
-///     MipInterface_receiveBytes(device, buffer, count, user_getTime(), MIPPARSER_UNLIMITED_PACKETS);
+///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
 /// }
 ///@endcode
 ///
 /// Example of the second approach:
 ///@code{.c}
-/// bool MipInterface_userPoll(struct MipInterfaceState* device)
+/// bool mip_interface_user_update(struct mip_interface* device)
 /// {
 ///     user_sleep();
 ///     return true;
@@ -51,8 +51,8 @@ extern "C" {
 /// // In another thread
 /// for(;;)
 /// {
-///     user_waitForData();
-///     MipInterface_receiveBytes(device, buffer, count, user_getTime(), MIPPARSER_UNLIMITED_PACKETS);
+///     user_wait_for_data();
+///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
 /// }
 ///@endcode
 ///
@@ -61,55 +61,55 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief State of the interface for communicating with a MIP device.
 ///
-struct MipInterfaceState
+struct mip_interface
 {
-    struct MipParsingState parser;            ///<@private MIP Parser for incoming MIP packets.
-    struct MipCmdQueue     queue;             ///<@private Queue for checking command replies.
-    struct MipDispatcher   dispatcher;        ///<@private Dispatcher for data callbacks.
-    unsigned int           maxPacketsPerPoll; ///<@private Max number of MIP packets to parse at once.
+    struct mip_parser     parser;         ///<@private MIP Parser for incoming MIP packets.
+    struct mip_cmd_queue  queue;          ///<@private Queue for checking command replies.
+    struct mip_dispatcher dispatcher;     ///<@private Dispatcher for data callbacks.
+    unsigned int          max_update_pkts;  ///<@private Max number of MIP packets to parse at once.
 };
 
 
-void MipInterface_init(struct MipInterfaceState* device, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout);
+void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout);
 
 //
 // Communications
 //
 
-RemainingCount MipInterface_receiveBytes(struct MipInterfaceState* device, const uint8_t* data, size_t length, Timestamp timestamp);
-void MipInterface_processUnparsedPackets(struct MipInterfaceState* device);
-bool MipInterface_poll(struct MipInterfaceState* device);
+remaining_count mip_interface_receive_bytes(struct mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp);
+void mip_interface_process_unparsed_packets(struct mip_interface* device);
+bool mip_interface_update(struct mip_interface* device);
 
-bool MipInterface_sendToDevice(struct MipInterfaceState* device, const uint8_t* data, size_t length);
+bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
 
-bool MipInterface_parseCallback(void* device, const struct MipPacket* packet, Timestamp timestamp);
-void MipInterface_receivePacket(struct MipInterfaceState* device, const struct MipPacket* packet, Timestamp timestamp);
+bool mip_interface_parse_callback(void* device, const struct mip_packet* packet, timestamp_type timestamp);
+void mip_interface_receive_packet(struct mip_interface* device, const struct mip_packet* packet, timestamp_type timestamp);
 
 //
 // Commands
 //
 
-MipCmdResult MipInterface_waitForReply(struct MipInterfaceState* device, const struct MipPendingCmd* cmd);
-MipCmdResult MipInterface_runCommand(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
-MipCmdResult MipInterface_runCommandWithResponse(struct MipInterfaceState* device, uint8_t descriptorSet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength, uint8_t responseDescriptor, uint8_t* responseData, uint8_t* responseLength_inout);
-MipCmdResult MipInterface_runCommandPacket(struct MipInterfaceState* device, const struct MipPacket* packet, struct MipPendingCmd* cmd);
+mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, const struct mip_pending_cmd* cmd);
+mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length, uint8_t response_descriptor, uint8_t* response_data, uint8_t* response_length_inout);
+mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd);
 
 //
 // Data Callbacks
 //
 
-void MipInterface_registerPacketCallback(struct MipInterfaceState* device, struct MipDispatchHandler* handler, uint8_t descriptorSet, MipDispatchPacketCallback callback, void* userData);
-void MipInterface_registerFieldCallback(struct MipInterfaceState* device, struct MipDispatchHandler* handler, uint8_t descriptorSet, uint8_t fieldDescriptor, MipDispatchFieldCallback callback, void* userData);
+void mip_interface_register_packet_callback(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* user_data);
+void mip_interface_register_field_callback(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data);
 
 //
 // Accessors
 //
 
-void MipInterface_setMaxPacketsPerPoll(struct MipInterfaceState* device, unsigned int maxPackets);
-unsigned int MipInterface_maxPacketsPerPoll(const struct MipInterfaceState* device);
+void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsigned int max_packets);
+unsigned int mip_interface_max_packets_per_update(const struct mip_interface* device);
 
-struct MipParsingState* MipInterface_parser(struct MipInterfaceState* device);
-struct MipCmdQueue*     MipInterface_cmdQueue(struct MipInterfaceState* device);
+struct mip_parser*    mip_interface_parser(struct mip_interface* device);
+struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 
 
 
@@ -119,11 +119,11 @@ struct MipCmdQueue*     MipInterface_cmdQueue(struct MipInterfaceState* device);
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copydoc MipInterface_poll
+///@copydoc mip_interface_update
 ///
 ///@note If a limit is placed on the max number of packets to parse at once,
-///      Make sure to call MipInterface_receiveBytes(), or at least
-///      MipParser_parseOnePacketFromRing() on the parser, even if no data is
+///      Make sure to call mip_interface_receive_bytes(), or at least
+///      pip_parser_parse_one_packet_from_ring() on the parser, even if no data is
 ///      available. Otherwise command replies and data may not get through the
 ///      system quickly enough.
 ///
@@ -131,18 +131,18 @@ struct MipCmdQueue*     MipInterface_cmdQueue(struct MipInterfaceState* device);
 ///         normal command timeout. Use a sensible timeout (i.e. 1/10th of the
 ///         base reply timeout) or only sleep for a minimal amount of time.
 ///
-extern bool MipInterface_userPoll(struct MipInterfaceState* device);
+extern bool mip_interface_user_update(struct mip_interface* device);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copydoc MipInterface_sendToDevice
+///@copydoc mip_interface_send_to_device
 ///
 ///@note This is a good place to put logging code for debugging device
 ///      communications at the byte level.
 ///
 ///@note There are cases where the data will not be a MIP packet.
 ///
-extern bool MipInterface_userSendToDevice(struct MipInterfaceState* device, const uint8_t* data, size_t length);
+extern bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ extern bool MipInterface_userSendToDevice(struct MipInterfaceState* device, cons
 ///@param packet The MIP packet.
 ///@param timestamp Approximate time the packet was received.
 ///
-extern void MipInterface_userPacketCallback(struct MipInterfaceState* device, const struct MipPacket* packet, Timestamp timestamp);
+extern void mip_interface_user_packet_callback(struct mip_interface* device, const struct mip_packet* packet, timestamp_type timestamp);
 
 ///@}
 ///@}

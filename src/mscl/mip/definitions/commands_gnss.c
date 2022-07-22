@@ -23,7 +23,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Gnss_ReceiverInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverInfo* self)
+size_t insert_mip_gnss_receiver_info_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_receiver_info_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -32,7 +32,7 @@ size_t insert_MipCmd_Gnss_ReceiverInfo(uint8_t* buffer, size_t bufferSize, size_
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_ReceiverInfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo* self)
+size_t extract_mip_gnss_receiver_info_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_receiver_info_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -42,7 +42,7 @@ size_t extract_MipCmd_Gnss_ReceiverInfo(const uint8_t* buffer, size_t bufferSize
 }
 
 
-size_t insert_MipCmd_Gnss_ReceiverInfo_Receiverinfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* self)
+size_t insert_mip_gnss_receiver_info_command_receiver_info(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_receiver_info_command_receiver_info* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
     offset = insert_u8(buffer, bufferSize, offset, self->mip_data_descriptor_set);
@@ -52,7 +52,7 @@ size_t insert_MipCmd_Gnss_ReceiverInfo_Receiverinfo(uint8_t* buffer, size_t buff
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_ReceiverInfo_Receiverinfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* self)
+size_t extract_mip_gnss_receiver_info_command_receiver_info(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_receiver_info_command_receiver_info* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
     offset = extract_u8(buffer, bufferSize, offset, &self->mip_data_descriptor_set);
@@ -63,23 +63,23 @@ size_t extract_MipCmd_Gnss_ReceiverInfo_Receiverinfo(const uint8_t* buffer, size
 }
 
 
-size_t insert_MipCmd_Gnss_ReceiverInfo_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverInfo_Response* self)
+size_t insert_mip_gnss_receiver_info_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_receiver_info_response* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->num_receivers);
     for(unsigned int i=0; i < self->num_receivers; i++)
-        offset = insert_MipCmd_Gnss_ReceiverInfo_Receiverinfo(buffer, bufferSize, offset, &self->receiver_info[i]);
+        offset = insert_mip_gnss_receiver_info_command_receiver_info(buffer, bufferSize, offset, &self->receiver_info[i]);
     
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_ReceiverInfo_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverInfo_Response* self)
+size_t extract_mip_gnss_receiver_info_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_receiver_info_response* self)
 {
     uint8_t num_receivers_local;
     offset = extract_u8(buffer, bufferSize, offset, &num_receivers_local);
     if( num_receivers_local < self->num_receivers )
         self->num_receivers = num_receivers_local;
     for(unsigned int i=0; i < self->num_receivers; i++)
-        offset = extract_MipCmd_Gnss_ReceiverInfo_Receiverinfo(buffer, bufferSize, offset, &self->receiver_info[i]);
+        offset = extract_mip_gnss_receiver_info_command_receiver_info(buffer, bufferSize, offset, &self->receiver_info[i]);
     
     return offset;
 }
@@ -90,14 +90,14 @@ size_t extract_MipCmd_Gnss_ReceiverInfo_Response(const uint8_t* buffer, size_t b
 /// @param[out] num_receivers Number of physical receivers in the device
 /// @param[out] receiver_info 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_gnss_receiver_info(struct MipInterfaceState* device, uint8_t* num_receivers, struct MipCmd_Gnss_ReceiverInfo_Receiverinfo* receiver_info)
+mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers, struct mip_gnss_receiver_info_command_receiver_info* receiver_info)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_LIST_RECEIVERS, NULL, 0, MIP_REPLY_DESC_GNSS_LIST_RECEIVERS, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_LIST_RECEIVERS, NULL, 0, MIP_REPLY_DESC_GNSS_LIST_RECEIVERS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -107,7 +107,7 @@ MipCmdResult mip_gnss_receiver_info(struct MipInterfaceState* device, uint8_t* n
         if( num_receivers_local < *num_receivers )
             *num_receivers = num_receivers_local;
         for(unsigned int i=0; i < *num_receivers; i++)
-            responseUsed = extract_MipCmd_Gnss_ReceiverInfo_Receiverinfo(buffer, sizeof(buffer), responseUsed, &receiver_info[i]);
+            responseUsed = extract_mip_gnss_receiver_info_command_receiver_info(buffer, sizeof(buffer), responseUsed, &receiver_info[i]);
         
         if( responseUsed != responseLength )
             result_local = MIP_STATUS_ERROR;
@@ -116,7 +116,7 @@ MipCmdResult mip_gnss_receiver_info(struct MipInterfaceState* device, uint8_t* n
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Gnss_SignalConfiguration(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_SignalConfiguration* self)
+size_t insert_mip_gnss_signal_configuration_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_signal_configuration_command* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->gps_enable);
     offset = insert_u8(buffer, bufferSize, offset, self->glonass_enable);
@@ -128,7 +128,7 @@ size_t insert_MipCmd_Gnss_SignalConfiguration(uint8_t* buffer, size_t bufferSize
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_SignalConfiguration(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_SignalConfiguration* self)
+size_t extract_mip_gnss_signal_configuration_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_signal_configuration_command* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->gps_enable);
     offset = extract_u8(buffer, bufferSize, offset, &self->glonass_enable);
@@ -141,7 +141,7 @@ size_t extract_MipCmd_Gnss_SignalConfiguration(const uint8_t* buffer, size_t buf
 }
 
 
-size_t insert_MipCmd_Gnss_SignalConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_SignalConfiguration_Response* self)
+size_t insert_mip_gnss_signal_configuration_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_signal_configuration_response* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->gps_enable);
     offset = insert_u8(buffer, bufferSize, offset, self->glonass_enable);
@@ -153,7 +153,7 @@ size_t insert_MipCmd_Gnss_SignalConfiguration_Response(uint8_t* buffer, size_t b
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_SignalConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_SignalConfiguration_Response* self)
+size_t extract_mip_gnss_signal_configuration_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_signal_configuration_response* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->gps_enable);
     offset = extract_u8(buffer, bufferSize, offset, &self->glonass_enable);
@@ -174,13 +174,13 @@ size_t extract_MipCmd_Gnss_SignalConfiguration_Response(const uint8_t* buffer, s
 /// @param beidou_enable Bitfield 0: Enable B1,   1: Enable B2
 /// @param reserved 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult write_mip_gnss_signal_configuration(struct MipInterfaceState* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
+mip_cmd_result write_mip_gnss_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, gps_enable);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, glonass_enable);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, galileo_enable);
@@ -189,7 +189,7 @@ MipCmdResult write_mip_gnss_signal_configuration(struct MipInterfaceState* devic
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, reserved[i]);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
@@ -200,17 +200,17 @@ MipCmdResult write_mip_gnss_signal_configuration(struct MipInterfaceState* devic
 /// @param[out] beidou_enable Bitfield 0: Enable B1,   1: Enable B2
 /// @param[out] reserved 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult read_mip_gnss_signal_configuration(struct MipInterfaceState* device, uint8_t* gps_enable, uint8_t* glonass_enable, uint8_t* galileo_enable, uint8_t* beidou_enable, uint8_t* reserved)
+mip_cmd_result read_mip_gnss_signal_configuration(struct mip_interface* device, uint8_t* gps_enable, uint8_t* glonass_enable, uint8_t* galileo_enable, uint8_t* beidou_enable, uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 2);;
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -231,50 +231,50 @@ MipCmdResult read_mip_gnss_signal_configuration(struct MipInterfaceState* device
 /// @brief Configure the GNSS signals used by the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult save_mip_gnss_signal_configuration(struct MipInterfaceState* device)
+mip_cmd_result save_mip_gnss_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 3);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult load_mip_gnss_signal_configuration(struct MipInterfaceState* device)
+mip_cmd_result load_mip_gnss_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 4);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult default_mip_gnss_signal_configuration(struct MipInterfaceState* device)
+mip_cmd_result default_mip_gnss_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 5);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Gnss_RtkDongleConfiguration(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_RtkDongleConfiguration* self)
+size_t insert_mip_gnss_rtk_dongle_configuration_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_rtk_dongle_configuration_command* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->enable);
     for(unsigned int i=0; i < 3; i++)
@@ -283,7 +283,7 @@ size_t insert_MipCmd_Gnss_RtkDongleConfiguration(uint8_t* buffer, size_t bufferS
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_RtkDongleConfiguration(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_RtkDongleConfiguration* self)
+size_t extract_mip_gnss_rtk_dongle_configuration_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_rtk_dongle_configuration_command* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->enable);
     for(unsigned int i=0; i < 3; i++)
@@ -293,7 +293,7 @@ size_t extract_MipCmd_Gnss_RtkDongleConfiguration(const uint8_t* buffer, size_t 
 }
 
 
-size_t insert_MipCmd_Gnss_RtkDongleConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_RtkDongleConfiguration_Response* self)
+size_t insert_mip_gnss_rtk_dongle_configuration_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_rtk_dongle_configuration_response* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->enable);
     for(unsigned int i=0; i < 3; i++)
@@ -302,7 +302,7 @@ size_t insert_MipCmd_Gnss_RtkDongleConfiguration_Response(uint8_t* buffer, size_
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_RtkDongleConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_RtkDongleConfiguration_Response* self)
+size_t extract_mip_gnss_rtk_dongle_configuration_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_rtk_dongle_configuration_response* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->enable);
     for(unsigned int i=0; i < 3; i++)
@@ -317,19 +317,19 @@ size_t extract_MipCmd_Gnss_RtkDongleConfiguration_Response(const uint8_t* buffer
 /// @param enable 0 - Disabled, 1- Enabled
 /// @param reserved 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult write_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device, uint8_t enable, const uint8_t* reserved)
+mip_cmd_result write_mip_gnss_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 1);;
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, reserved[i]);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
@@ -337,17 +337,17 @@ MipCmdResult write_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* d
 /// @param[out] enable 
 /// @param[out] reserved 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult read_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device, uint8_t* enable, uint8_t* reserved)
+mip_cmd_result read_mip_gnss_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable, uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 2);;
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -365,50 +365,50 @@ MipCmdResult read_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* de
 /// @brief Configure the communications with the RTK Dongle connected to the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult save_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device)
+mip_cmd_result save_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 3);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult load_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device)
+mip_cmd_result load_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 4);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult default_mip_gnss_rtk_dongle_configuration(struct MipInterfaceState* device)
+mip_cmd_result default_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 5);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Gnss_ReceiverSafeMode(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Gnss_ReceiverSafeMode* self)
+size_t insert_mip_gnss_receiver_safe_mode_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_receiver_safe_mode_command* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->receiver_id);
     offset = insert_u8(buffer, bufferSize, offset, self->enable);
@@ -416,7 +416,7 @@ size_t insert_MipCmd_Gnss_ReceiverSafeMode(uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
-size_t extract_MipCmd_Gnss_ReceiverSafeMode(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Gnss_ReceiverSafeMode* self)
+size_t extract_mip_gnss_receiver_safe_mode_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_receiver_safe_mode_command* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->receiver_id);
     offset = extract_u8(buffer, bufferSize, offset, &self->enable);
@@ -431,9 +431,9 @@ size_t extract_MipCmd_Gnss_ReceiverSafeMode(const uint8_t* buffer, size_t buffer
 /// @param receiver_id Receiver id: e.g. 1, 2, etc.
 /// @param enable 0 - Disabled, 1- Enabled
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult gnss_receiver_safe_mode(struct MipInterfaceState* device, uint8_t receiver_id, uint8_t enable)
+mip_cmd_result gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -441,7 +441,7 @@ MipCmdResult gnss_receiver_safe_mode(struct MipInterfaceState* device, uint8_t r
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, cmdUsed);
 }
 
 

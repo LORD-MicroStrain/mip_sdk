@@ -14,7 +14,7 @@ extern "C" {
 ///
 ///@returns A constant string.
 ///
-const char* MipCmdStatus_toString(enum MipCmdStatus status)
+const char* mip_cmd_status_to_string(enum mip_cmd_status status)
 {
     switch(status)
     {
@@ -35,7 +35,7 @@ const char* MipCmdStatus_toString(enum MipCmdStatus status)
 ///@param ack
 ///@returns A constant string.
 ///
-const char* MipAck_toString(enum MipAck ack)
+const char* mip_ack_to_string(enum mip_ack ack)
 {
     switch(ack)
     {
@@ -55,19 +55,19 @@ const char* MipAck_toString(enum MipAck ack)
 ///@param result Any value, generally from the MipCmdStatus or MipAck enum.
 ///@return A constant string.
 ///
-const char* MipCmdResult_toString(MipCmdResult result)
+const char* mip_cmd_result_to_string(mip_cmd_result result)
 {
     if( result >= 0 )
-        return MipAck_toString((enum MipAck)result);
+        return mip_ack_to_string((enum mip_ack)result);
     else
-        return MipCmdStatus_toString((enum MipCmdStatus)result);
+        return mip_cmd_status_to_string((enum mip_cmd_status)result);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Determines if the command has completed, timed out, been cancelled, or
 ///       otherwise is no longer waiting for a response.
 ///
-bool MipCmdResult_isFinished(enum MipCmdStatus status)
+bool mip_cmd_result_is_finished(enum mip_cmd_status status)
 {
     return (status >= 0) || (status <= MIP_STATUS_TIMEDOUT);
 }

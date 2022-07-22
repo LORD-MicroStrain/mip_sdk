@@ -12,42 +12,42 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Determines if the descriptor set represents some kind of data.
 ///
-///@param descriptorSet
+///@param descriptor_set
 ///
 ///@returns true if the descriptor set represents data.
 ///@returns false otherwise.
 ///
-bool isDataDescriptorSet(uint8_t descriptorSet)
+bool is_data_descriptor_set(uint8_t descriptor_set)
 {
-    return (descriptorSet >= 0x80) && (descriptorSet < 0xF0);
+    return (descriptor_set >= 0x80) && (descriptor_set < 0xF0);
 }
 
 
-size_t insert_MipFunctionSelector(uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFunctionSelector self)
+size_t insert_mip_function_selector(uint8_t* buffer, size_t buffer_size, size_t offset, enum mip_function_selector self)
 {
-    return insert_u8(buffer, bufferSize, offset, self);
+    return insert_u8(buffer, buffer_size, offset, self);
 }
 
-size_t extract_MipFunctionSelector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFunctionSelector* self)
+size_t extract_mip_function_selector(const uint8_t* buffer, size_t buffer_size, size_t offset, enum mip_function_selector* self)
 {
     uint8_t tmp;
-    offset = extract_u8(buffer, bufferSize, offset, &tmp);
+    offset = extract_u8(buffer, buffer_size, offset, &tmp);
     *self = tmp;
     return offset;
 }
 
 
-size_t insert_MipDescriptorRate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipDescriptorRate* self)
+size_t insert_mip_descriptor_rate(uint8_t* buffer, size_t buffer_size, size_t offset, const struct mip_descriptor_rate* self)
 {
-    offset = insert_u8(buffer, bufferSize, offset, self->descriptor);
-    offset = insert_u16(buffer, bufferSize, offset, self->decimation);
+    offset = insert_u8(buffer, buffer_size, offset, self->descriptor);
+    offset = insert_u16(buffer, buffer_size, offset, self->decimation);
     return offset;
 }
 
-size_t extract_MipDescriptorRate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipDescriptorRate* self)
+size_t extract_mip_descriptor_rate(const uint8_t* buffer, size_t buffer_size, size_t offset, struct mip_descriptor_rate* self)
 {
-    offset = extract_u8(buffer, bufferSize, offset, &self->descriptor);
-    offset = extract_u16(buffer, bufferSize, offset, &self->decimation);
+    offset = extract_u8(buffer, buffer_size, offset, &self->descriptor);
+    offset = extract_u16(buffer, buffer_size, offset, &self->decimation);
     return offset;
 }
 

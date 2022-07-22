@@ -23,7 +23,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_System_BuiltInTest(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_System_BuiltInTest* self)
+size_t insert_mip_system_built_in_test_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->result[i]);
@@ -31,7 +31,7 @@ size_t insert_MipData_System_BuiltInTest(uint8_t* buffer, size_t bufferSize, siz
     return offset;
 }
 
-size_t extract_MipData_System_BuiltInTest(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_System_BuiltInTest* self)
+size_t extract_mip_system_built_in_test_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->result[i]);
@@ -41,7 +41,7 @@ size_t extract_MipData_System_BuiltInTest(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_System_TimeSyncStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_System_TimeSyncStatus* self)
+size_t insert_mip_system_time_sync_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_time_sync_status_data* self)
 {
     offset = insert_bool(buffer, bufferSize, offset, self->time_sync);
     offset = insert_u8(buffer, bufferSize, offset, self->last_pps_rcvd);
@@ -49,7 +49,7 @@ size_t insert_MipData_System_TimeSyncStatus(uint8_t* buffer, size_t bufferSize, 
     return offset;
 }
 
-size_t extract_MipData_System_TimeSyncStatus(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_System_TimeSyncStatus* self)
+size_t extract_mip_system_time_sync_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_time_sync_status_data* self)
 {
     offset = extract_bool(buffer, bufferSize, offset, &self->time_sync);
     offset = extract_u8(buffer, bufferSize, offset, &self->last_pps_rcvd);
@@ -59,14 +59,14 @@ size_t extract_MipData_System_TimeSyncStatus(const uint8_t* buffer, size_t buffe
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_System_GpioState(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_System_GpioState* self)
+size_t insert_mip_system_gpio_state_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_state_data* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->states);
     
     return offset;
 }
 
-size_t extract_MipData_System_GpioState(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_System_GpioState* self)
+size_t extract_mip_system_gpio_state_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_state_data* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->states);
     
@@ -75,7 +75,7 @@ size_t extract_MipData_System_GpioState(const uint8_t* buffer, size_t bufferSize
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipData_System_GpioAnalogValue(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_System_GpioAnalogValue* self)
+size_t insert_mip_system_gpio_analog_value_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_analog_value_data* self)
 {
     offset = insert_u8(buffer, bufferSize, offset, self->gpio_id);
     offset = insert_float(buffer, bufferSize, offset, self->value);
@@ -83,7 +83,7 @@ size_t insert_MipData_System_GpioAnalogValue(uint8_t* buffer, size_t bufferSize,
     return offset;
 }
 
-size_t extract_MipData_System_GpioAnalogValue(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_System_GpioAnalogValue* self)
+size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_analog_value_data* self)
 {
     offset = extract_u8(buffer, bufferSize, offset, &self->gpio_id);
     offset = extract_float(buffer, bufferSize, offset, &self->value);

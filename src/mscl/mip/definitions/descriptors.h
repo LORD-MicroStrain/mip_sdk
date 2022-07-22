@@ -23,9 +23,9 @@ enum {
     MIP_INVALID_FIELD_DESCRIPTOR = 0x00,
 };
 
-bool isDataDescriptorSet(uint8_t descriptorSet);
+bool is_data_descriptor_set(uint8_t descriptorSet);
 
-enum MipFunctionSelector
+enum mip_function_selector
 {
     MIP_FUNCTION_WRITE = 0x01,
     MIP_FUNCTION_READ  = 0x02,
@@ -33,16 +33,16 @@ enum MipFunctionSelector
     MIP_FUNCTION_LOAD  = 0x04,
     MIP_FUNCTION_RESET = 0x05,
 };
-size_t insert_MipFunctionSelector(uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFunctionSelector self);
-size_t extract_MipFunctionSelector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFunctionSelector* self);
+size_t insert_mip_function_selector(uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_function_selector self);
+size_t extract_mip_function_selector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_function_selector* self);
 
-struct MipDescriptorRate
+struct mip_descriptor_rate
 {
     uint8_t  descriptor;
     uint16_t decimation;
 };
-size_t insert_MipDescriptorRate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipDescriptorRate* self);
-size_t extract_MipDescriptorRate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipDescriptorRate* self);
+size_t insert_mip_descriptor_rate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_descriptor_rate* self);
+size_t extract_mip_descriptor_rate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_descriptor_rate* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,6 +62,9 @@ struct MipCompositeDescriptor
 #ifdef __cplusplus
 
 } // extern "C"
+
+using MipFunctionSelector = mip_function_selector;
+using MipDescriptorRate   = mip_descriptor_rate;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Type traits struct for obtaining descriptors, etc. from field structs.

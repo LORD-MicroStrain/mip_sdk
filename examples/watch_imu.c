@@ -25,76 +25,76 @@
 #endif
 
 int port = -1;
-uint8_t parseBuffer[1024];
-struct MipInterfaceState device;
+uint8_t parse_buffer[1024];
+struct mip_interface device;
 
 
-void handlePacket(void* unused, const struct MipPacket* packet, Timestamp timestamp)
+void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type timestamp)
 {
     (void)unused;
 
-    printf("\nGot packet with descriptor set 0x%02X:", MipPacket_descriptorSet(packet));
+    printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
-    for(struct MipField field = MipField_fromPacket(packet); MipField_isValid(&field); MipField_next(&field))
+    for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
     {
-        printf(" %02X", MipField_fieldDescriptor(&field));
+        printf(" %02X", mip_field_field_descriptor(&field));
     }
     printf("\n");
 }
 
-void handleAccel(void* user, const struct MipField* field, Timestamp timestamp)
+void handleAccel(void* user, const struct mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct MipData_Sensor_ScaledAccel data;
+    struct mip_sensor_scaled_accel_data data;
 
-    size_t readBytes = extract_MipData_Sensor_ScaledAccel(MipField_payload(field), MipField_payloadLength(field), 0, &data);
+    size_t readBytes = extract_mip_sensor_scaled_accel_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
 
-    if(readBytes == MipField_payloadLength(field))
+    if(readBytes == mip_field_payload_length(field))
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 }
 
-void handleGyro(void* user, const struct MipField* field, Timestamp timestamp)
+void handleGyro(void* user, const struct mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct MipData_Sensor_ScaledGyro data;
+    struct mip_sensor_scaled_gyro_data data;
 
-    size_t readBytes = extract_MipData_Sensor_ScaledGyro(MipField_payload(field), MipField_payloadLength(field), 0, &data);
+    size_t readBytes = extract_mip_sensor_scaled_gyro_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
 
-    if(readBytes == MipField_payloadLength(field))
+    if(readBytes == mip_field_payload_length(field))
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void* user, const struct MipField* field, Timestamp timestamp)
+void handleMag(void* user, const struct mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct MipData_Sensor_ScaledMag data;
+    struct mip_sensor_scaled_mag_data data;
 
-    size_t readBytes = extract_MipData_Sensor_ScaledMag(MipField_payload(field), MipField_payloadLength(field), 0, &data);
+    size_t readBytes = extract_mip_sensor_scaled_mag_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
 
-    if(readBytes == MipField_payloadLength(field))
+    if(readBytes == mip_field_payload_length(field))
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 
 
 time_t startTime;
 
-Timestamp getCurrentTimestamp()
+timestamp_type get_current_timestamp()
 {
     time_t t;
     time(&t);
 
     double delta = difftime(t, startTime);
 
-    return (Timestamp)(delta * 1000);
+    return (timestamp_type)(delta * 1000);
 }
 
 
-bool MipInterface_userPoll(struct MipInterfaceState* device)
+bool mip_interface_user_update(struct mip_interface* device)
 {
-    Timestamp now = getCurrentTimestamp();
+    timestamp_type now = get_current_timestamp();
 
     // Ensure commands can time out even if no data is received.
-    MipCmdQueue_update(MipInterface_cmdQueue(device), now);
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), now);
 
     uint8_t buffer[256];
 
@@ -105,13 +105,13 @@ bool MipInterface_userPoll(struct MipInterfaceState* device)
         return false;
 #endif
 
-    MipInterface_receiveBytes(device, buffer, bytes_read, now);
+    mip_interface_receive_bytes(device, buffer, bytes_read, now);
 
     return true;
 }
 
 
-bool MipInterface_userSendToDevice(struct MipInterfaceState* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
 {
     (void)device;
 
@@ -195,12 +195,12 @@ int main(int argc, const char* argv[])
     if( !open_port(argv[1], baudrate) )
         return 1;
 
-    MipInterface_init(&device, parseBuffer, sizeof(parseBuffer), mipTimeoutFromBaudrate(baudrate), 1000);
+    mip_interface_init(&device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000);
 
     // Record program start time for use with difftime in getTimestamp().
     time(&startTime);
 
-    MipCmdResult result;
+    mip_cmd_result result;
 
     // Get the base rate.
     volatile uint32_t now = clock();
@@ -209,7 +209,7 @@ int main(int argc, const char* argv[])
 
     if( result != MIP_ACK_OK )
     {
-        fprintf(stderr, "Failed to get base rate: %s (%d)\n", MipCmdResult_toString(result), result);
+        fprintf(stderr, "Failed to get base rate: %s (%d)\n", mip_cmd_result_to_string(result), result);
         goto done;
     }
 
@@ -218,37 +218,37 @@ int main(int argc, const char* argv[])
     const uint16_t sample_rate = 100; // Hz
     const uint16_t decimation = base_rate / sample_rate;
 
-    const struct MipDescriptorRate descriptors[3] = {
+    const struct mip_descriptor_rate descriptors[3] = {
         { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, decimation },
         { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  decimation },
         { MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
     };
 
-    result = write_mip_cmd_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 3, descriptors);
+    result = write_mip_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 3, descriptors);
     if( result == MIP_NACK_INVALID_PARAM )
     {
         // Failed to set message format - maybe this device doesn't have a magnetometer.
         // Try again without the last descriptor (scaled mag).
-        result = write_mip_cmd_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 2, descriptors);
+        result = write_mip_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 2, descriptors);
     }
     if( result != MIP_ACK_OK )
     {
-        fprintf(stderr, "Failed to set message format: %s (%d)\n", MipCmdResult_toString(result), result);
+        fprintf(stderr, "Failed to set message format: %s (%d)\n", mip_cmd_result_to_string(result), result);
         goto done;
     }
 
     // Register some callbacks.
-    struct MipDispatchHandler packetHandler;
-    struct MipDispatchHandler dataHandlers[3];
-    MipInterface_registerPacketCallback(&device, &packetHandler, MIP_DISPATCH_DESCSET_DATA, &handlePacket, NULL);
-    MipInterface_registerFieldCallback(&device, &dataHandlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
-    MipInterface_registerFieldCallback(&device, &dataHandlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
-    MipInterface_registerFieldCallback(&device, &dataHandlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
+    struct mip_dispatch_handler packet_handler;
+    struct mip_dispatch_handler data_handlers[3];
+    mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_DESCSET_DATA, &handlePacket, NULL);
+    mip_interface_register_field_callback(&device, &data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
+    mip_interface_register_field_callback(&device, &data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
+    mip_interface_register_field_callback(&device, &data_handlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
 
     result = resume(&device);
     if( result != MIP_ACK_OK )
     {
-        fprintf(stderr, "Failed to resume device: %s (%d)\n", MipCmdResult_toString(result), result);
+        fprintf(stderr, "Failed to resume device: %s (%d)\n", mip_cmd_result_to_string(result), result);
         goto done;
     }
 
@@ -259,13 +259,13 @@ int main(int argc, const char* argv[])
 #else
         usleep(100000);
 #endif
-        MipInterface_poll(&device);
+        mip_interface_update(&device);
     }
 
     result = set_to_idle(&device);
     if( result != MIP_ACK_OK )
     {
-        fprintf(stderr, "Failed to idle device: %s (%d)\n", MipCmdResult_toString(result), result);
+        fprintf(stderr, "Failed to idle device: %s (%d)\n", mip_cmd_result_to_string(result), result);
         goto done;
     }
 

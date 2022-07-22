@@ -7,26 +7,26 @@
 #include <stdlib.h>
 
 
-uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
-struct MipPacket packet;
+uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX];
+struct mip_packet packet;
 
-struct MipField fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
-unsigned int numFields = 0;
+struct mip_field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+unsigned int num_fields = 0;
 
 
-bool addRandomField()
+bool add_random_field()
 {
     const uint8_t length = rand() % 10;
-    const uint8_t fieldDesc = (rand() % 255) + 1;
+    const uint8_t field_desc = (rand() % 255) + 1;
 
     uint8_t* payload;
-    if( !MipPacket_allocField(&packet, fieldDesc, length, &payload) )
+    if( !mip_packet_alloc_field(&packet, field_desc, length, &payload) )
         return false;
 
     for(unsigned int i=0; i<length; i++)
         payload[i] = rand() & 0xFF;
 
-    MipField_init(&fields[numFields++], MipPacket_descriptorSet(&packet), fieldDesc, payload, length);
+    mip_field_init(&fields[num_fields++], mip_packet_descriptor_set(&packet), field_desc, payload, length);
 
     return true;
 }
@@ -38,50 +38,50 @@ int main(int argc, const char* argv[])
 
     const unsigned int NUM_ITERATIONS = 100;
 
-    unsigned int numErrors = 0;
+    unsigned int num_errors = 0;
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
         // Create a packet with a random number of fields.
-        const uint8_t descSet = (rand() % 255) + 1;
+        const uint8_t desc_set = (rand() % 255) + 1;
 
-        MipPacket_create(&packet, packetBuffer, sizeof(packetBuffer), descSet);
+        mip_packet_create(&packet, packet_buffer, sizeof(packet_buffer), desc_set);
 
-        numFields = 0;
-        while( addRandomField() )
+        num_fields = 0;
+        while( add_random_field() )
         {
             // 20% chance of not adding any more fields.
             if( (rand() % 5) == 0 )
                 break;
         }
 
-        MipPacket_finalize(&packet);
+        mip_packet_finalize(&packet);
 
         bool error = false;
 
         // Now iterate the fields and verify they match.
-        unsigned int scannedFields = 0;
-        for(struct MipField field = MipField_fromPacket(&packet); MipField_isValid(&field); MipField_next(&field))
+        unsigned int scanned_fields = 0;
+        for(struct mip_field field = mip_field_from_packet(&packet); mip_field_is_valid(&field); mip_field_next(&field))
         {
-            const uint8_t test_fieldDesc      = MipField_fieldDescriptor(&field);
-            const uint8_t test_descSet        = MipField_descriptorSet(&field);
-            const uint8_t test_paylen         = MipField_payloadLength(&field);
-            const uint8_t* const test_payload = MipField_payload(&field);
+            const uint8_t test_field_desc      = mip_field_field_descriptor(&field);
+            const uint8_t test_desc_set        = mip_field_descriptor_set(&field);
+            const uint8_t test_paylen         = mip_field_payload_length(&field);
+            const uint8_t* const test_payload = mip_field_payload(&field);
 
-            const uint8_t ref_fieldDesc      = MipField_fieldDescriptor(&fields[scannedFields]);
-            const uint8_t ref_descSet        = MipField_descriptorSet(&fields[scannedFields]);
-            const uint8_t ref_paylen         = MipField_payloadLength(&fields[scannedFields]);
-            const uint8_t* const ref_payload = MipField_payload(&fields[scannedFields]);
+            const uint8_t ref_field_desc      = mip_field_field_descriptor(&fields[scanned_fields]);
+            const uint8_t ref_desc_set        = mip_field_descriptor_set(&fields[scanned_fields]);
+            const uint8_t ref_paylen         = mip_field_payload_length(&fields[scanned_fields]);
+            const uint8_t* const ref_payload = mip_field_payload(&fields[scanned_fields]);
 
-            if( test_fieldDesc != ref_fieldDesc )
+            if( test_field_desc != ref_field_desc )
             {
                 error = true;
-                fprintf(stderr, "Field descriptor %02X does not match reference %02X.\n", test_fieldDesc, ref_fieldDesc);
+                fprintf(stderr, "Field descriptor %02X does not match reference %02X.\n", test_field_desc, ref_field_desc);
             }
-            if( test_descSet != ref_descSet )
+            if( test_desc_set != ref_desc_set )
             {
                 error = true;
-                fprintf(stderr, "Descriptor set %02X does not match reference %02X.\n", test_descSet, ref_descSet);
+                fprintf(stderr, "Descriptor set %02X does not match reference %02X.\n", test_desc_set, ref_desc_set);
             }
             if( test_paylen != ref_paylen )
             {
@@ -94,32 +94,32 @@ int main(int argc, const char* argv[])
                 fprintf(stderr, "Payload %p does not match reference %p.\n", test_payload, ref_payload);
             }
 
-            scannedFields++;
+            scanned_fields++;
         }
 
-        if( scannedFields != numFields )
+        if( scanned_fields != num_fields )
         {
             error = true;
-            fprintf(stderr, "Found %d fields but expected %d.\n", scannedFields, numFields);
+            fprintf(stderr, "Found %d fields but expected %d.\n", scanned_fields, num_fields);
         }
 
         if( error )
         {
-            numErrors++;
+            num_errors++;
 
             fprintf(stderr, "Error(s) detected for field list (descriptor/length):");
-            for(unsigned int f=0; f<numFields; f++)
-                fprintf(stderr, " %02X/%d", MipField_fieldDescriptor(&fields[f]), MipField_payloadLength(&fields[f]));
+            for(unsigned int f=0; f<num_fields; f++)
+                fprintf(stderr, " %02X/%d", mip_field_field_descriptor(&fields[f]), mip_field_payload_length(&fields[f]));
             fputc('\n', stderr);
         }
 
         // Bail if too many errors.
-        if( numErrors > 10 )
+        if( num_errors > 10 )
         {
-            fprintf(stderr, "***\nToo many errors, aborting.\n");
+            fprintf(stderr, "***\n_too many errors, aborting.\n");
             break;
         }
     }
 
-    return numErrors;
+    return num_errors;
 }

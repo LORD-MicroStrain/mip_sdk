@@ -6,51 +6,51 @@
 #include <string.h>
 
 
-uint8_t parseBuffer[1024];
-uint8_t inputBuffer[1024];
-uint8_t checkBuffer[MIP_PACKET_LENGTH_MAX];
+uint8_t parse_buffer[1024];
+uint8_t input_buffer[1024];
+uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
-struct MipParsingState parser;
+struct mip_parser parser;
 
-unsigned int numErrors = 0;
+unsigned int num_errors = 0;
 size_t bytesRead = 0;
-size_t bytesParsed = 0;
+size_t bytes_parsed = 0;
 
-bool handle_packet(void* p, const struct MipPacket* packet, Timestamp t)
+bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
 {
     (void)t;
 
     FILE* infile2 = (FILE*)p;
 
-    size_t length = MipPacket_totalLength(packet);
+    size_t length = mip_packet_total_length(packet);
     if( length > MIP_PACKET_LENGTH_MAX )
     {
-        numErrors++;
+        num_errors++;
         fprintf(stderr, "Packet with length too long (%ld)\n", length);
         return false;
     }
-    // size_t written = fwrite(MipPacket_buffer(packet), 1, length, outfile);
+    // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
 
-    bytesParsed += length;
+    bytes_parsed += length;
 
-    size_t read = fread(checkBuffer, 1, length, infile2);
+    size_t read = fread(check_buffer, 1, length, infile2);
 
     if( read != length )
     {
-        numErrors++;
+        num_errors++;
         fprintf(stderr, "Failed to read from input file (2).\n");
         return false;
     }
 
-    const uint8_t* packetBuffer = MipPacket_pointer(packet);
+    const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
     // printf("Packet: ");
     // for(size_t i=0; i<length; i++)
-    //     printf(" %02X", packetBuffer[i]);
+    //     printf(" %02X", packet_buffer[i]);
     // fputc('\n', stdout);
 
-    bool good = memcmp(checkBuffer, packetBuffer, length) == 0;
+    bool good = memcmp(check_buffer, packet_buffer, length) == 0;
 
     if( !good )
     {
@@ -58,11 +58,11 @@ bool handle_packet(void* p, const struct MipPacket* packet, Timestamp t)
 
         fputs("Packet:    ", stderr);
         for(size_t i=0; i<length; i++)
-            fprintf(stderr, " %02X", packetBuffer[i]);
+            fprintf(stderr, " %02X", packet_buffer[i]);
 
         fputs("Reference: ", stderr);
         for(size_t i=0; i<length; i++)
-            fprintf(stderr, " %02X", checkBuffer[i]);
+            fprintf(stderr, " %02X", check_buffer[i]);
 
         fputc('\n', stderr);
     }
@@ -79,51 +79,51 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-    const char* inputFilename = argv[1];
+    const char* input_filename = argv[1];
 
-    FILE* infile = fopen(inputFilename, "rb");
+    FILE* infile = fopen(input_filename, "rb");
     if( !infile )
     {
-        fprintf(stderr, "Error: could not open input file '%s'.", inputFilename);
+        fprintf(stderr, "Error: could not open input file '%s'.", input_filename);
         return 1;
     }
 
-    FILE* infile2 = fopen(inputFilename, "rb");
+    FILE* infile2 = fopen(input_filename, "rb");
     if( !infile2 )
     {
         fclose(infile);
-        fprintf(stderr, "Error: could not open input file '%s' (2).", inputFilename);
+        fprintf(stderr, "Error: could not open input file '%s' (2).", input_filename);
         return 1;
     }
 
     srand(0);
 
-    MipParser_init(&parser, parseBuffer, sizeof(parseBuffer), &handle_packet, infile2, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, parse_buffer, sizeof(parse_buffer), &handle_packet, infile2, MIPPARSER_DEFAULT_TIMEOUT_MS);
 
     do
     {
-        const size_t numToRead = rand() % sizeof(inputBuffer);
+        const size_t numToRead = rand() % sizeof(input_buffer);
 
-        const size_t numRead = fread(inputBuffer, 1, numToRead, infile);
+        const size_t numRead = fread(input_buffer, 1, numToRead, infile);
         bytesRead += numRead;
 
-        MipParser_parse(&parser, inputBuffer, numRead, 0, MIPPARSER_UNLIMITED_PACKETS);
+        mip_parser_parse(&parser, input_buffer, numRead, 0, MIPPARSER_UNLIMITED_PACKETS);
 
         // End of file (or error)
         if( numRead != numToRead )
             break;
 
-    } while(numErrors == 0);
+    } while(num_errors == 0);
 
     fclose(infile);
 
-    if( bytesParsed != bytesRead )
+    if( bytes_parsed != bytesRead )
     {
-        numErrors++;
-        fprintf(stderr, "Read %ld bytes but only parsed %ld bytes (delta %ld).\n", bytesRead, bytesParsed, bytesRead-bytesParsed);
+        num_errors++;
+        fprintf(stderr, "Read %ld bytes but only parsed %ld bytes (delta %ld).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
     }
 
     fclose(infile2);
 
-    return numErrors;
+    return num_errors;
 }

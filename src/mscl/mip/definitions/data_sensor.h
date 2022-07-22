@@ -9,10 +9,9 @@
 
 #ifdef __cplusplus
 namespace mscl {
-extern "C" {
 #endif // __cplusplus
 
-struct MipInterfaceState;
+struct mip_interface;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
@@ -25,7 +24,7 @@ struct MipInterfaceState;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipSensorDataDescriptors
+enum mip_sensor_data_descriptors
 {
     MIP_SENSOR_DATA_DESC_SET                            = 0x80,
     
@@ -54,6 +53,11 @@ enum MipSensorDataDescriptors
     MIP_DATA_DESC_SENSOR_ODOMETER                       = 0x40,
     
 };
+#ifdef __cplusplus
+namespace C {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -65,166 +69,166 @@ enum MipSensorDataDescriptors
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_raw_accel  Sensor Raw Accel
+///@defgroup mip_sensor_raw_accel  None
 /// Three element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
 ///@{
 
-struct MipData_Sensor_RawAccel
+struct mip_sensor_raw_accel_data
 {
     float                                             raw_accel[3];
 };
-size_t insert_MipData_Sensor_RawAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawAccel* self);
-size_t extract_MipData_Sensor_RawAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawAccel* self);
+size_t insert_mip_sensor_raw_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_accel_data* self);
+size_t extract_mip_sensor_raw_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_accel_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_raw_gyro  Sensor Raw Gyro
+///@defgroup mip_sensor_raw_gyro  None
 /// Three element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
 ///@{
 
-struct MipData_Sensor_RawGyro
+struct mip_sensor_raw_gyro_data
 {
     float                                             raw_gyro[3];
 };
-size_t insert_MipData_Sensor_RawGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawGyro* self);
-size_t extract_MipData_Sensor_RawGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawGyro* self);
+size_t insert_mip_sensor_raw_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_gyro_data* self);
+size_t extract_mip_sensor_raw_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_gyro_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_raw_mag  Sensor Raw Mag
+///@defgroup mip_sensor_raw_mag  None
 /// Three element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_RawMag
+struct mip_sensor_raw_mag_data
 {
     float                                             raw_mag[3];
 };
-size_t insert_MipData_Sensor_RawMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawMag* self);
-size_t extract_MipData_Sensor_RawMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawMag* self);
+size_t insert_mip_sensor_raw_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_mag_data* self);
+size_t extract_mip_sensor_raw_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_mag_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_raw_pressure  Sensor Raw Pressure
+///@defgroup mip_sensor_raw_pressure  None
 /// Scalar value representing the sensed ambient pressure.
 /// This quantity is temperature compensated.
 ///
 ///@{
 
-struct MipData_Sensor_RawPressure
+struct mip_sensor_raw_pressure_data
 {
     float                                             raw_pressure;
 };
-size_t insert_MipData_Sensor_RawPressure(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_RawPressure* self);
-size_t extract_MipData_Sensor_RawPressure(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_RawPressure* self);
+size_t insert_mip_sensor_raw_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_pressure_data* self);
+size_t extract_mip_sensor_raw_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_pressure_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_scaled_accel  Sensor Scaled Accel
+///@defgroup mip_sensor_scaled_accel  None
 /// 3-element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_ScaledAccel
+struct mip_sensor_scaled_accel_data
 {
     float                                             scaled_accel[3];
 };
-size_t insert_MipData_Sensor_ScaledAccel(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledAccel* self);
-size_t extract_MipData_Sensor_ScaledAccel(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledAccel* self);
+size_t insert_mip_sensor_scaled_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_accel_data* self);
+size_t extract_mip_sensor_scaled_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_accel_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_scaled_gyro  Sensor Scaled Gyro
+///@defgroup mip_sensor_scaled_gyro  None
 /// 3-element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_ScaledGyro
+struct mip_sensor_scaled_gyro_data
 {
     float                                             scaled_gyro[3];
 };
-size_t insert_MipData_Sensor_ScaledGyro(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledGyro* self);
-size_t extract_MipData_Sensor_ScaledGyro(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledGyro* self);
+size_t insert_mip_sensor_scaled_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_gyro_data* self);
+size_t extract_mip_sensor_scaled_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_gyro_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_scaled_mag  Sensor Scaled Mag
+///@defgroup mip_sensor_scaled_mag  None
 /// 3-element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_ScaledMag
+struct mip_sensor_scaled_mag_data
 {
     float                                             scaled_mag[3];
 };
-size_t insert_MipData_Sensor_ScaledMag(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledMag* self);
-size_t extract_MipData_Sensor_ScaledMag(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledMag* self);
+size_t insert_mip_sensor_scaled_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_mag_data* self);
+size_t extract_mip_sensor_scaled_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_mag_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_scaled_pressure  Sensor Scaled Pressure
+///@defgroup mip_sensor_scaled_pressure  None
 /// Scalar value representing the sensed ambient pressure.
 ///
 ///@{
 
-struct MipData_Sensor_ScaledPressure
+struct mip_sensor_scaled_pressure_data
 {
     float                                             scaled_pressure;
 };
-size_t insert_MipData_Sensor_ScaledPressure(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_ScaledPressure* self);
-size_t extract_MipData_Sensor_ScaledPressure(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_ScaledPressure* self);
+size_t insert_mip_sensor_scaled_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_pressure_data* self);
+size_t extract_mip_sensor_scaled_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_pressure_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_delta_theta  Sensor Delta Theta
+///@defgroup mip_sensor_delta_theta  None
 /// 3-element vector representing the time integral of angular rate.
 /// This quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_DeltaTheta
+struct mip_sensor_delta_theta_data
 {
     float                                             delta_theta[3];
 };
-size_t insert_MipData_Sensor_DeltaTheta(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaTheta* self);
-size_t extract_MipData_Sensor_DeltaTheta(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaTheta* self);
+size_t insert_mip_sensor_delta_theta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_theta_data* self);
+size_t extract_mip_sensor_delta_theta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_theta_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_delta_velocity  Sensor Delta Velocity
+///@defgroup mip_sensor_delta_velocity  None
 /// 3-element vector representing the time integral of acceleration.
 /// This quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
 ///@{
 
-struct MipData_Sensor_DeltaVelocity
+struct mip_sensor_delta_velocity_data
 {
     float                                             delta_velocity[3];
 };
-size_t insert_MipData_Sensor_DeltaVelocity(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_DeltaVelocity* self);
-size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_DeltaVelocity* self);
+size_t insert_mip_sensor_delta_velocity_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_velocity_data* self);
+size_t extract_mip_sensor_delta_velocity_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_velocity_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_comp_orientation_matrix  Sensor Comp Orientation Matrix
+///@defgroup mip_sensor_comp_orientation_matrix  Complementary Filter Orientation Matrix
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -239,17 +243,17 @@ size_t extract_MipData_Sensor_DeltaVelocity(const uint8_t* buffer, size_t buffer
 ///
 ///@{
 
-struct MipData_Sensor_CompOrientationMatrix
+struct mip_sensor_comp_orientation_matrix_data
 {
     float                                             m[9];
 };
-size_t insert_MipData_Sensor_CompOrientationMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationMatrix* self);
-size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationMatrix* self);
+size_t insert_mip_sensor_comp_orientation_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_matrix_data* self);
+size_t extract_mip_sensor_comp_orientation_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_matrix_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_comp_quaternion  Sensor Comp Quaternion
+///@defgroup mip_sensor_comp_quaternion  Complementary Filter Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -262,96 +266,96 @@ size_t extract_MipData_Sensor_CompOrientationMatrix(const uint8_t* buffer, size_
 ///
 ///@{
 
-struct MipData_Sensor_CompQuaternion
+struct mip_sensor_comp_quaternion_data
 {
     float                                             q[4];
 };
-size_t insert_MipData_Sensor_CompQuaternion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompQuaternion* self);
-size_t extract_MipData_Sensor_CompQuaternion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompQuaternion* self);
+size_t insert_mip_sensor_comp_quaternion_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_quaternion_data* self);
+size_t extract_mip_sensor_comp_quaternion_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_quaternion_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_comp_euler_angles  Sensor Comp Euler Angles
+///@defgroup mip_sensor_comp_euler_angles  Complementary Filter Euler Angles
 /// Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
 ///@{
 
-struct MipData_Sensor_CompEulerAngles
+struct mip_sensor_comp_euler_angles_data
 {
     float                                             roll;
     float                                             pitch;
     float                                             yaw;
 };
-size_t insert_MipData_Sensor_CompEulerAngles(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompEulerAngles* self);
-size_t extract_MipData_Sensor_CompEulerAngles(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompEulerAngles* self);
+size_t insert_mip_sensor_comp_euler_angles_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_euler_angles_data* self);
+size_t extract_mip_sensor_comp_euler_angles_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_euler_angles_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_comp_orientation_update_matrix  Sensor Comp Orientation Update Matrix
+///@defgroup mip_sensor_comp_orientation_update_matrix  Complementary Filter Orientation Update Matrix
 /// DEPRECATED!
 ///
 ///@{
 
-struct MipData_Sensor_CompOrientationUpdateMatrix
+struct mip_sensor_comp_orientation_update_matrix_data
 {
     float                                             m[9];
 };
-size_t insert_MipData_Sensor_CompOrientationUpdateMatrix(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_CompOrientationUpdateMatrix* self);
-size_t extract_MipData_Sensor_CompOrientationUpdateMatrix(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_CompOrientationUpdateMatrix* self);
+size_t insert_mip_sensor_comp_orientation_update_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_update_matrix_data* self);
+size_t extract_mip_sensor_comp_orientation_update_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_update_matrix_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_orientation_raw_temp  Sensor Orientation Raw Temp
+///@defgroup mip_sensor_orientation_raw_temp  None
 /// DEPRECATED!
 ///
 ///@{
 
-struct MipData_Sensor_OrientationRawTemp
+struct mip_sensor_orientation_raw_temp_data
 {
     uint16_t                                          raw_temp[4];
 };
-size_t insert_MipData_Sensor_OrientationRawTemp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OrientationRawTemp* self);
-size_t extract_MipData_Sensor_OrientationRawTemp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OrientationRawTemp* self);
+size_t insert_mip_sensor_orientation_raw_temp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_orientation_raw_temp_data* self);
+size_t extract_mip_sensor_orientation_raw_temp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_orientation_raw_temp_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_internal_timestamp  Sensor Internal Timestamp
+///@defgroup mip_sensor_internal_timestamp  None
 /// DEPRECATED!
 ///
 ///@{
 
-struct MipData_Sensor_InternalTimestamp
+struct mip_sensor_internal_timestamp_data
 {
     uint32_t                                          counts;
 };
-size_t insert_MipData_Sensor_InternalTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_InternalTimestamp* self);
-size_t extract_MipData_Sensor_InternalTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_InternalTimestamp* self);
+size_t insert_mip_sensor_internal_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_internal_timestamp_data* self);
+size_t extract_mip_sensor_internal_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_internal_timestamp_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_1pps_timestamp  Sensor 1Pps Timestamp
+///@defgroup mip_sensor_1pps_timestamp  PPS Timestamp
 /// DEPRECATED!
 ///
 ///@{
 
-struct MipData_Sensor_1ppsTimestamp
+struct mip_sensor_1pps_timestamp_data
 {
     uint32_t                                          seconds;
     uint32_t                                          useconds;
 };
-size_t insert_MipData_Sensor_1ppsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_1ppsTimestamp* self);
-size_t extract_MipData_Sensor_1ppsTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_1ppsTimestamp* self);
+size_t insert_mip_sensor_1pps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_1pps_timestamp_data* self);
+size_t extract_mip_sensor_1pps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_1pps_timestamp_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_gps_timestamp  Sensor Gps Timestamp
+///@defgroup mip_sensor_gps_timestamp  None
 /// GPS timestamp of the SENSOR data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -362,30 +366,30 @@ size_t extract_MipData_Sensor_1ppsTimestamp(const uint8_t* buffer, size_t buffer
 ///
 ///@{
 
-enum MipData_Sensor_GpsTimestamp_Validflags
+enum mip_sensor_gps_timestamp_data_valid_flags
 {
-    MIPDATA_SENSOR_GPSTIMESTAMP_VALIDFLAGS_PPS_VALID         = 0x01,
-    MIPDATA_SENSOR_GPSTIMESTAMP_VALIDFLAGS_TIME_REFRESH      = 0x02,
-    MIPDATA_SENSOR_GPSTIMESTAMP_VALIDFLAGS_TIME_INITIALIZED  = 0x04,
-    MIPDATA_SENSOR_GPSTIMESTAMP_VALIDFLAGS_TOW_VALID         = 0x08,
-    MIPDATA_SENSOR_GPSTIMESTAMP_VALIDFLAGS_WEEK_NUMBER_VALID = 0x10,
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_PPS_VALID         = 0x01,
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_REFRESH      = 0x02,
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x04,
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x08,
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x10,
 };
-size_t insert_MipData_Sensor_GpsTimestamp_Validflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_GpsTimestamp_Validflags self);
-size_t extract_MipData_Sensor_GpsTimestamp_Validflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_GpsTimestamp_Validflags* self);
+size_t insert_mip_sensor_gps_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_gps_timestamp_data_valid_flags self);
+size_t extract_mip_sensor_gps_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_gps_timestamp_data_valid_flags* self);
 
-struct MipData_Sensor_GpsTimestamp
+struct mip_sensor_gps_timestamp_data
 {
     double                                            tow;
     uint16_t                                          week_number;
-    enum MipData_Sensor_GpsTimestamp_Validflags       valid_flags;
+    enum mip_sensor_gps_timestamp_data_valid_flags    valid_flags;
 };
-size_t insert_MipData_Sensor_GpsTimestamp(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_GpsTimestamp* self);
-size_t extract_MipData_Sensor_GpsTimestamp(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_GpsTimestamp* self);
+size_t insert_mip_sensor_gps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_gps_timestamp_data* self);
+size_t extract_mip_sensor_gps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_gps_timestamp_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_temperature_abs  Sensor Temperature Abs
+///@defgroup mip_sensor_temperature_abs  Temperature Statistics
 /// SENSOR reported temperature statistics
 /// 
 /// Temperature may originate from the MEMS sensors, or be calculated in combination with board temperature sensors.
@@ -394,19 +398,19 @@ size_t extract_MipData_Sensor_GpsTimestamp(const uint8_t* buffer, size_t bufferS
 ///
 ///@{
 
-struct MipData_Sensor_TemperatureAbs
+struct mip_sensor_temperature_abs_data
 {
     float                                             min_temp;
     float                                             max_temp;
     float                                             mean_temp;
 };
-size_t insert_MipData_Sensor_TemperatureAbs(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_TemperatureAbs* self);
-size_t extract_MipData_Sensor_TemperatureAbs(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_TemperatureAbs* self);
+size_t insert_mip_sensor_temperature_abs_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_temperature_abs_data* self);
+size_t extract_mip_sensor_temperature_abs_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_temperature_abs_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_up_vector  Sensor Up Vector
+///@defgroup mip_sensor_up_vector  None
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -417,17 +421,17 @@ size_t extract_MipData_Sensor_TemperatureAbs(const uint8_t* buffer, size_t buffe
 ///
 ///@{
 
-struct MipData_Sensor_UpVector
+struct mip_sensor_up_vector_data
 {
     float                                             up[3];
 };
-size_t insert_MipData_Sensor_UpVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_UpVector* self);
-size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_UpVector* self);
+size_t insert_mip_sensor_up_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_up_vector_data* self);
+size_t extract_mip_sensor_up_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_up_vector_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_north_vector  Sensor North Vector
+///@defgroup mip_sensor_north_vector  None
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -435,58 +439,58 @@ size_t extract_MipData_Sensor_UpVector(const uint8_t* buffer, size_t bufferSize,
 ///
 ///@{
 
-struct MipData_Sensor_NorthVector
+struct mip_sensor_north_vector_data
 {
     float                                             north[3];
 };
-size_t insert_MipData_Sensor_NorthVector(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_NorthVector* self);
-size_t extract_MipData_Sensor_NorthVector(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_NorthVector* self);
+size_t insert_mip_sensor_north_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_north_vector_data* self);
+size_t extract_mip_sensor_north_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_north_vector_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_overrange_status  Sensor Overrange Status
+///@defgroup mip_sensor_overrange_status  None
 ///
 ///@{
 
-enum MipData_Sensor_OverrangeStatus_Status
+enum mip_sensor_overrange_status_data_status
 {
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_ACCEL_X = 0x01,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_ACCEL_Y = 0x02,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_ACCEL_Z = 0x04,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_GYRO_X  = 0x10,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_GYRO_Y  = 0x20,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_GYRO_Z  = 0x40,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_MAG_X   = 0x100,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_MAG_Y   = 0x200,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_MAG_Z   = 0x400,
-    MIPDATA_SENSOR_OVERRANGESTATUS_STATUS_PRESS   = 0x1000,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_X = 0x01,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Y = 0x02,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Z = 0x04,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_X  = 0x10,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Y  = 0x20,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Z  = 0x40,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_X   = 0x100,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Y   = 0x200,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x400,
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000,
 };
-size_t insert_MipData_Sensor_OverrangeStatus_Status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipData_Sensor_OverrangeStatus_Status self);
-size_t extract_MipData_Sensor_OverrangeStatus_Status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipData_Sensor_OverrangeStatus_Status* self);
+size_t insert_mip_sensor_overrange_status_data_status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_overrange_status_data_status self);
+size_t extract_mip_sensor_overrange_status_data_status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_overrange_status_data_status* self);
 
-struct MipData_Sensor_OverrangeStatus
+struct mip_sensor_overrange_status_data
 {
-    enum MipData_Sensor_OverrangeStatus_Status        status;
+    enum mip_sensor_overrange_status_data_status      status;
 };
-size_t insert_MipData_Sensor_OverrangeStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OverrangeStatus* self);
-size_t extract_MipData_Sensor_OverrangeStatus(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OverrangeStatus* self);
+size_t insert_mip_sensor_overrange_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_overrange_status_data* self);
+size_t extract_mip_sensor_overrange_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_overrange_status_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field_sensor_odometer_data  Sensor Odometer Data
+///@defgroup mip_sensor_odometer_data  None
 ///
 ///@{
 
-struct MipData_Sensor_OdometerData
+struct mip_sensor_odometer_data_data
 {
     float                                             speed;
     float                                             uncertainty;
     uint16_t                                          valid_flags;
 };
-size_t insert_MipData_Sensor_OdometerData(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipData_Sensor_OdometerData* self);
-size_t extract_MipData_Sensor_OdometerData(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipData_Sensor_OdometerData* self);
+size_t insert_mip_sensor_odometer_data_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_odometer_data_data* self);
+size_t extract_mip_sensor_odometer_data_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_odometer_data_data* self);
 
 ///@}
 ///
@@ -498,10 +502,11 @@ size_t extract_MipData_Sensor_OdometerData(const uint8_t* buffer, size_t bufferS
 
 #ifdef __cplusplus
 } // extern "C"
+} // namespace C
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_RawAccel>
+struct MipFieldInfo<C::mip_sensor_raw_accel_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_RAW;
@@ -509,20 +514,20 @@ struct MipFieldInfo<MipData_Sensor_RawAccel>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_RawAccel& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_raw_accel_data& self)
     {
-        return insert_MipData_Sensor_RawAccel(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_raw_accel_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_RawAccel& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_raw_accel_data& self)
     {
-        return extract_MipData_Sensor_RawAccel(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_raw_accel_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_RawGyro>
+struct MipFieldInfo<C::mip_sensor_raw_gyro_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_RAW;
@@ -530,20 +535,20 @@ struct MipFieldInfo<MipData_Sensor_RawGyro>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_RawGyro& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_raw_gyro_data& self)
     {
-        return insert_MipData_Sensor_RawGyro(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_raw_gyro_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_RawGyro& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_raw_gyro_data& self)
     {
-        return extract_MipData_Sensor_RawGyro(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_raw_gyro_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_RawMag>
+struct MipFieldInfo<C::mip_sensor_raw_mag_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_RAW;
@@ -551,20 +556,20 @@ struct MipFieldInfo<MipData_Sensor_RawMag>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_RawMag& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_raw_mag_data& self)
     {
-        return insert_MipData_Sensor_RawMag(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_raw_mag_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_RawMag& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_raw_mag_data& self)
     {
-        return extract_MipData_Sensor_RawMag(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_raw_mag_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_RawPressure>
+struct MipFieldInfo<C::mip_sensor_raw_pressure_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_RAW;
@@ -572,20 +577,20 @@ struct MipFieldInfo<MipData_Sensor_RawPressure>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_RawPressure& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_raw_pressure_data& self)
     {
-        return insert_MipData_Sensor_RawPressure(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_raw_pressure_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_RawPressure& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_raw_pressure_data& self)
     {
-        return extract_MipData_Sensor_RawPressure(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_raw_pressure_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_ScaledAccel>
+struct MipFieldInfo<C::mip_sensor_scaled_accel_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_SCALED;
@@ -593,20 +598,20 @@ struct MipFieldInfo<MipData_Sensor_ScaledAccel>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_ScaledAccel& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_scaled_accel_data& self)
     {
-        return insert_MipData_Sensor_ScaledAccel(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_scaled_accel_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_ScaledAccel& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_scaled_accel_data& self)
     {
-        return extract_MipData_Sensor_ScaledAccel(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_scaled_accel_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_ScaledGyro>
+struct MipFieldInfo<C::mip_sensor_scaled_gyro_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_SCALED;
@@ -614,20 +619,20 @@ struct MipFieldInfo<MipData_Sensor_ScaledGyro>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_ScaledGyro& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_scaled_gyro_data& self)
     {
-        return insert_MipData_Sensor_ScaledGyro(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_scaled_gyro_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_ScaledGyro& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_scaled_gyro_data& self)
     {
-        return extract_MipData_Sensor_ScaledGyro(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_scaled_gyro_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_ScaledMag>
+struct MipFieldInfo<C::mip_sensor_scaled_mag_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_SCALED;
@@ -635,20 +640,20 @@ struct MipFieldInfo<MipData_Sensor_ScaledMag>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_ScaledMag& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_scaled_mag_data& self)
     {
-        return insert_MipData_Sensor_ScaledMag(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_scaled_mag_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_ScaledMag& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_scaled_mag_data& self)
     {
-        return extract_MipData_Sensor_ScaledMag(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_scaled_mag_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_ScaledPressure>
+struct MipFieldInfo<C::mip_sensor_scaled_pressure_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_SCALED;
@@ -656,20 +661,20 @@ struct MipFieldInfo<MipData_Sensor_ScaledPressure>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_ScaledPressure& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_scaled_pressure_data& self)
     {
-        return insert_MipData_Sensor_ScaledPressure(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_scaled_pressure_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_ScaledPressure& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_scaled_pressure_data& self)
     {
-        return extract_MipData_Sensor_ScaledPressure(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_scaled_pressure_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_DeltaTheta>
+struct MipFieldInfo<C::mip_sensor_delta_theta_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_THETA;
@@ -677,20 +682,20 @@ struct MipFieldInfo<MipData_Sensor_DeltaTheta>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_DeltaTheta& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_delta_theta_data& self)
     {
-        return insert_MipData_Sensor_DeltaTheta(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_delta_theta_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_DeltaTheta& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_delta_theta_data& self)
     {
-        return extract_MipData_Sensor_DeltaTheta(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_delta_theta_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_DeltaVelocity>
+struct MipFieldInfo<C::mip_sensor_delta_velocity_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_VELOCITY;
@@ -698,20 +703,20 @@ struct MipFieldInfo<MipData_Sensor_DeltaVelocity>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_DeltaVelocity& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_delta_velocity_data& self)
     {
-        return insert_MipData_Sensor_DeltaVelocity(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_delta_velocity_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_DeltaVelocity& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_delta_velocity_data& self)
     {
-        return extract_MipData_Sensor_DeltaVelocity(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_delta_velocity_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_CompOrientationMatrix>
+struct MipFieldInfo<C::mip_sensor_comp_orientation_matrix_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_MATRIX;
@@ -719,20 +724,20 @@ struct MipFieldInfo<MipData_Sensor_CompOrientationMatrix>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_CompOrientationMatrix& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_comp_orientation_matrix_data& self)
     {
-        return insert_MipData_Sensor_CompOrientationMatrix(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_comp_orientation_matrix_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_CompOrientationMatrix& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_comp_orientation_matrix_data& self)
     {
-        return extract_MipData_Sensor_CompOrientationMatrix(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_comp_orientation_matrix_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_CompQuaternion>
+struct MipFieldInfo<C::mip_sensor_comp_quaternion_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_QUATERNION;
@@ -740,20 +745,20 @@ struct MipFieldInfo<MipData_Sensor_CompQuaternion>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_CompQuaternion& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_comp_quaternion_data& self)
     {
-        return insert_MipData_Sensor_CompQuaternion(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_comp_quaternion_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_CompQuaternion& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_comp_quaternion_data& self)
     {
-        return extract_MipData_Sensor_CompQuaternion(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_comp_quaternion_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_CompEulerAngles>
+struct MipFieldInfo<C::mip_sensor_comp_euler_angles_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_EULER_ANGLES;
@@ -761,20 +766,20 @@ struct MipFieldInfo<MipData_Sensor_CompEulerAngles>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_CompEulerAngles& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_comp_euler_angles_data& self)
     {
-        return insert_MipData_Sensor_CompEulerAngles(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_comp_euler_angles_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_CompEulerAngles& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_comp_euler_angles_data& self)
     {
-        return extract_MipData_Sensor_CompEulerAngles(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_comp_euler_angles_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_CompOrientationUpdateMatrix>
+struct MipFieldInfo<C::mip_sensor_comp_orientation_update_matrix_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_UPDATE_MATRIX;
@@ -782,20 +787,20 @@ struct MipFieldInfo<MipData_Sensor_CompOrientationUpdateMatrix>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_CompOrientationUpdateMatrix& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_comp_orientation_update_matrix_data& self)
     {
-        return insert_MipData_Sensor_CompOrientationUpdateMatrix(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_comp_orientation_update_matrix_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_CompOrientationUpdateMatrix& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_comp_orientation_update_matrix_data& self)
     {
-        return extract_MipData_Sensor_CompOrientationUpdateMatrix(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_comp_orientation_update_matrix_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_OrientationRawTemp>
+struct MipFieldInfo<C::mip_sensor_orientation_raw_temp_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_RAW;
@@ -803,20 +808,20 @@ struct MipFieldInfo<MipData_Sensor_OrientationRawTemp>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_OrientationRawTemp& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_orientation_raw_temp_data& self)
     {
-        return insert_MipData_Sensor_OrientationRawTemp(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_orientation_raw_temp_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_OrientationRawTemp& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_orientation_raw_temp_data& self)
     {
-        return extract_MipData_Sensor_OrientationRawTemp(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_orientation_raw_temp_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_InternalTimestamp>
+struct MipFieldInfo<C::mip_sensor_internal_timestamp_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_INTERNAL;
@@ -824,20 +829,20 @@ struct MipFieldInfo<MipData_Sensor_InternalTimestamp>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_InternalTimestamp& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_internal_timestamp_data& self)
     {
-        return insert_MipData_Sensor_InternalTimestamp(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_internal_timestamp_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_InternalTimestamp& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_internal_timestamp_data& self)
     {
-        return extract_MipData_Sensor_InternalTimestamp(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_internal_timestamp_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_1ppsTimestamp>
+struct MipFieldInfo<C::mip_sensor_1pps_timestamp_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_PPS;
@@ -845,20 +850,20 @@ struct MipFieldInfo<MipData_Sensor_1ppsTimestamp>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_1ppsTimestamp& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_1pps_timestamp_data& self)
     {
-        return insert_MipData_Sensor_1ppsTimestamp(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_1pps_timestamp_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_1ppsTimestamp& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_1pps_timestamp_data& self)
     {
-        return extract_MipData_Sensor_1ppsTimestamp(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_1pps_timestamp_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_GpsTimestamp>
+struct MipFieldInfo<C::mip_sensor_gps_timestamp_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS;
@@ -866,20 +871,20 @@ struct MipFieldInfo<MipData_Sensor_GpsTimestamp>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_GpsTimestamp& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_gps_timestamp_data& self)
     {
-        return insert_MipData_Sensor_GpsTimestamp(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_gps_timestamp_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_GpsTimestamp& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_gps_timestamp_data& self)
     {
-        return extract_MipData_Sensor_GpsTimestamp(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_gps_timestamp_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_TemperatureAbs>
+struct MipFieldInfo<C::mip_sensor_temperature_abs_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_ABS;
@@ -887,20 +892,20 @@ struct MipFieldInfo<MipData_Sensor_TemperatureAbs>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_TemperatureAbs& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_temperature_abs_data& self)
     {
-        return insert_MipData_Sensor_TemperatureAbs(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_temperature_abs_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_TemperatureAbs& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_temperature_abs_data& self)
     {
-        return extract_MipData_Sensor_TemperatureAbs(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_temperature_abs_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_UpVector>
+struct MipFieldInfo<C::mip_sensor_up_vector_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_ACCEL;
@@ -908,20 +913,20 @@ struct MipFieldInfo<MipData_Sensor_UpVector>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_UpVector& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_up_vector_data& self)
     {
-        return insert_MipData_Sensor_UpVector(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_up_vector_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_UpVector& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_up_vector_data& self)
     {
-        return extract_MipData_Sensor_UpVector(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_up_vector_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_NorthVector>
+struct MipFieldInfo<C::mip_sensor_north_vector_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_MAG;
@@ -929,20 +934,20 @@ struct MipFieldInfo<MipData_Sensor_NorthVector>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_NorthVector& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_north_vector_data& self)
     {
-        return insert_MipData_Sensor_NorthVector(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_north_vector_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_NorthVector& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_north_vector_data& self)
     {
-        return extract_MipData_Sensor_NorthVector(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_north_vector_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_OverrangeStatus>
+struct MipFieldInfo<C::mip_sensor_overrange_status_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_OVERRANGE_STATUS;
@@ -950,20 +955,20 @@ struct MipFieldInfo<MipData_Sensor_OverrangeStatus>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_OverrangeStatus& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_overrange_status_data& self)
     {
-        return insert_MipData_Sensor_OverrangeStatus(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_overrange_status_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_OverrangeStatus& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_overrange_status_data& self)
     {
-        return extract_MipData_Sensor_OverrangeStatus(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_overrange_status_data(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipData_Sensor_OdometerData>
+struct MipFieldInfo<C::mip_sensor_odometer_data_data>
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ODOMETER;
@@ -971,13 +976,13 @@ struct MipFieldInfo<MipData_Sensor_OdometerData>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipData_Sensor_OdometerData& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_sensor_odometer_data_data& self)
     {
-        return insert_MipData_Sensor_OdometerData(buffer, bufferSize, offset, &self);
+        return C::insert_mip_sensor_odometer_data_data(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipData_Sensor_OdometerData& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_sensor_odometer_data_data& self)
     {
-        return extract_MipData_Sensor_OdometerData(buffer, bufferSize, offset, &self);
+        return C::extract_mip_sensor_odometer_data_data(buffer, bufferSize, offset, &self);
     }
 };
 

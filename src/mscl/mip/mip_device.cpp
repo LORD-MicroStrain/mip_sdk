@@ -5,11 +5,11 @@ namespace mscl {
 namespace C {
 extern "C" {
 
-bool MipInterface_userPoll(struct MipInterfaceState* device)
+bool mip_interface_user_update(struct mip_interface* device)
 {
-    return static_cast<MipDeviceInterface*>(device)->poll();
+    return static_cast<MipDeviceInterface*>(device)->update();
 }
-bool MipInterface_userSendToDevice(struct MipInterfaceState* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
 {
     return static_cast<MipDeviceInterface*>(device)->sendToDevice(data, length);
 }

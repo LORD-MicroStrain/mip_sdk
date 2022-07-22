@@ -17,11 +17,11 @@ extern "C" {
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-size_t insert_MipConnectedDeviceType(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipConnectedDeviceType self)
+size_t insert_mip_connected_device_type(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_connected_device_type self)
 {
     return insert_u8(buffer, bufferSize, offset, self);
 }
-size_t extract_MipConnectedDeviceType(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipConnectedDeviceType* self)
+size_t extract_mip_connected_device_type(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_connected_device_type* self)
 {
     uint8_t tmp;
     offset = extract_u8(buffer, bufferSize, offset, &tmp);
@@ -29,11 +29,11 @@ size_t extract_MipConnectedDeviceType(const uint8_t* buffer, size_t bufferSize, 
     return offset;
 }
 
-size_t insert_MipMediaSelector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipMediaSelector self)
+size_t insert_mip_media_selector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_media_selector self)
 {
     return insert_u8(buffer, bufferSize, offset, self);
 }
-size_t extract_MipMediaSelector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipMediaSelector* self)
+size_t extract_mip_media_selector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_media_selector* self)
 {
     uint8_t tmp;
     offset = extract_u8(buffer, bufferSize, offset, &tmp);
@@ -41,11 +41,11 @@ size_t extract_MipMediaSelector(const uint8_t* buffer, size_t bufferSize, size_t
     return offset;
 }
 
-size_t insert_MipLedAction(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipLedAction self)
+size_t insert_mip_led_action(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_led_action self)
 {
     return insert_u8(buffer, bufferSize, offset, self);
 }
-size_t extract_MipLedAction(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipLedAction* self)
+size_t extract_mip_led_action(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_led_action* self)
 {
     uint8_t tmp;
     offset = extract_u8(buffer, bufferSize, offset, &tmp);
@@ -59,7 +59,7 @@ size_t extract_MipLedAction(const uint8_t* buffer, size_t bufferSize, size_t off
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetStatusFlags(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetStatusFlags* self)
+size_t insert_mip_rtk_get_status_flags_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_status_flags_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -68,7 +68,7 @@ size_t insert_MipCmd_Rtk_GetStatusFlags(uint8_t* buffer, size_t bufferSize, size
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetStatusFlags(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetStatusFlags* self)
+size_t extract_mip_rtk_get_status_flags_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_status_flags_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -78,11 +78,11 @@ size_t extract_MipCmd_Rtk_GetStatusFlags(const uint8_t* buffer, size_t bufferSiz
 }
 
 
-size_t insert_MipCmd_Rtk_GetStatusFlags_Statusflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Rtk_GetStatusFlags_Statusflags self)
+size_t insert_mip_rtk_get_status_flags_command_status_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_rtk_get_status_flags_command_status_flags self)
 {
     return insert_u32(buffer, bufferSize, offset, self);
 }
-size_t extract_MipCmd_Rtk_GetStatusFlags_Statusflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Rtk_GetStatusFlags_Statusflags* self)
+size_t extract_mip_rtk_get_status_flags_command_status_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_rtk_get_status_flags_command_status_flags* self)
 {
     uint32_t tmp;
     offset = extract_u32(buffer, bufferSize, offset, &tmp);
@@ -91,32 +91,32 @@ size_t extract_MipCmd_Rtk_GetStatusFlags_Statusflags(const uint8_t* buffer, size
 }
 
 
-size_t insert_MipCmd_Rtk_GetStatusFlags_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetStatusFlags_Response* self)
+size_t insert_mip_rtk_get_status_flags_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_status_flags_response* self)
 {
-    offset = insert_MipCmd_Rtk_GetStatusFlags_Statusflags(buffer, bufferSize, offset, self->flags);
+    offset = insert_mip_rtk_get_status_flags_command_status_flags(buffer, bufferSize, offset, self->flags);
     
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetStatusFlags_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetStatusFlags_Response* self)
+size_t extract_mip_rtk_get_status_flags_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_status_flags_response* self)
 {
-    offset = extract_MipCmd_Rtk_GetStatusFlags_Statusflags(buffer, bufferSize, offset, &self->flags);
+    offset = extract_mip_rtk_get_status_flags_command_status_flags(buffer, bufferSize, offset, &self->flags);
     
     return offset;
 }
 
 
-MipCmdResult get_rtk_device_status_flags(struct MipInterfaceState* device, enum MipCmd_Rtk_GetStatusFlags_Statusflags* flags)
+mip_cmd_result get_rtk_device_status_flags(struct mip_interface* device, enum mip_rtk_get_status_flags_command_status_flags* flags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_STATUS_FLAGS, NULL, 0, MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_STATUS_FLAGS, NULL, 0, MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
         size_t responseUsed = 0;
-        responseUsed = extract_MipCmd_Rtk_GetStatusFlags_Statusflags(buffer, sizeof(buffer), responseUsed, flags);
+        responseUsed = extract_mip_rtk_get_status_flags_command_status_flags(buffer, sizeof(buffer), responseUsed, flags);
         
         if( responseUsed != responseLength )
             result_local = MIP_STATUS_ERROR;
@@ -125,7 +125,7 @@ MipCmdResult get_rtk_device_status_flags(struct MipInterfaceState* device, enum 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetImei(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImei* self)
+size_t insert_mip_rtk_get_imei_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_imei_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -134,7 +134,7 @@ size_t insert_MipCmd_Rtk_GetImei(uint8_t* buffer, size_t bufferSize, size_t offs
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetImei(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImei* self)
+size_t extract_mip_rtk_get_imei_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_imei_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -144,7 +144,7 @@ size_t extract_MipCmd_Rtk_GetImei(const uint8_t* buffer, size_t bufferSize, size
 }
 
 
-size_t insert_MipCmd_Rtk_GetImei_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImei_Response* self)
+size_t insert_mip_rtk_get_imei_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_imei_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->IMEI[i]);
@@ -152,7 +152,7 @@ size_t insert_MipCmd_Rtk_GetImei_Response(uint8_t* buffer, size_t bufferSize, si
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetImei_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImei_Response* self)
+size_t extract_mip_rtk_get_imei_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_imei_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->IMEI[i]);
@@ -161,12 +161,12 @@ size_t extract_MipCmd_Rtk_GetImei_Response(const uint8_t* buffer, size_t bufferS
 }
 
 
-MipCmdResult get_rtk_device_imei_international_mobile_equipment_identifier(struct MipInterfaceState* device, char* IMEI)
+mip_cmd_result get_rtk_device_imei_international_mobile_equipment_identifier(struct mip_interface* device, char* IMEI)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMEI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMEI, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMEI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMEI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -181,7 +181,7 @@ MipCmdResult get_rtk_device_imei_international_mobile_equipment_identifier(struc
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetImsi(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImsi* self)
+size_t insert_mip_rtk_get_imsi_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_imsi_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -190,7 +190,7 @@ size_t insert_MipCmd_Rtk_GetImsi(uint8_t* buffer, size_t bufferSize, size_t offs
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetImsi(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImsi* self)
+size_t extract_mip_rtk_get_imsi_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_imsi_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -200,7 +200,7 @@ size_t extract_MipCmd_Rtk_GetImsi(const uint8_t* buffer, size_t bufferSize, size
 }
 
 
-size_t insert_MipCmd_Rtk_GetImsi_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetImsi_Response* self)
+size_t insert_mip_rtk_get_imsi_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_imsi_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->IMSI[i]);
@@ -208,7 +208,7 @@ size_t insert_MipCmd_Rtk_GetImsi_Response(uint8_t* buffer, size_t bufferSize, si
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetImsi_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetImsi_Response* self)
+size_t extract_mip_rtk_get_imsi_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_imsi_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->IMSI[i]);
@@ -217,12 +217,12 @@ size_t extract_MipCmd_Rtk_GetImsi_Response(const uint8_t* buffer, size_t bufferS
 }
 
 
-MipCmdResult get_rtk_device_imsi_international_mobile_subscriber_identifier(struct MipInterfaceState* device, char* IMSI)
+mip_cmd_result get_rtk_device_imsi_international_mobile_subscriber_identifier(struct mip_interface* device, char* IMSI)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMSI, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_IMSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMSI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -237,7 +237,7 @@ MipCmdResult get_rtk_device_imsi_international_mobile_subscriber_identifier(stru
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetIccid(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetIccid* self)
+size_t insert_mip_rtk_get_iccid_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_iccid_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -246,7 +246,7 @@ size_t insert_MipCmd_Rtk_GetIccid(uint8_t* buffer, size_t bufferSize, size_t off
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetIccid(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetIccid* self)
+size_t extract_mip_rtk_get_iccid_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_iccid_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -256,7 +256,7 @@ size_t extract_MipCmd_Rtk_GetIccid(const uint8_t* buffer, size_t bufferSize, siz
 }
 
 
-size_t insert_MipCmd_Rtk_GetIccid_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetIccid_Response* self)
+size_t insert_mip_rtk_get_iccid_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_iccid_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ICCID[i]);
@@ -264,7 +264,7 @@ size_t insert_MipCmd_Rtk_GetIccid_Response(uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetIccid_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetIccid_Response* self)
+size_t extract_mip_rtk_get_iccid_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_iccid_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ICCID[i]);
@@ -273,12 +273,12 @@ size_t extract_MipCmd_Rtk_GetIccid_Response(const uint8_t* buffer, size_t buffer
 }
 
 
-MipCmdResult get_rtk_device_iccid_integrated_circuit_card_identification_sim_number(struct MipInterfaceState* device, char* ICCID)
+mip_cmd_result get_rtk_device_iccid_integrated_circuit_card_identification_sim_number(struct mip_interface* device, char* ICCID)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ICCID, NULL, 0, MIP_REPLY_DESC_RTK_GET_ICCID, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ICCID, NULL, 0, MIP_REPLY_DESC_RTK_GET_ICCID, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -293,61 +293,61 @@ MipCmdResult get_rtk_device_iccid_integrated_circuit_card_identification_sim_num
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_ConnectedDeviceType(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ConnectedDeviceType* self)
+size_t insert_mip_rtk_connected_device_type_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_connected_device_type_command* self)
 {
-    offset = insert_MipConnectedDeviceType(buffer, bufferSize, offset, self->devType);
+    offset = insert_mip_connected_device_type(buffer, bufferSize, offset, self->devType);
     
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_ConnectedDeviceType(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ConnectedDeviceType* self)
+size_t extract_mip_rtk_connected_device_type_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_connected_device_type_command* self)
 {
-    offset = extract_MipConnectedDeviceType(buffer, bufferSize, offset, &self->devType);
-    
-    return offset;
-}
-
-
-size_t insert_MipCmd_Rtk_ConnectedDeviceType_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ConnectedDeviceType_Response* self)
-{
-    offset = insert_MipConnectedDeviceType(buffer, bufferSize, offset, self->devType);
-    
-    return offset;
-}
-
-size_t extract_MipCmd_Rtk_ConnectedDeviceType_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ConnectedDeviceType_Response* self)
-{
-    offset = extract_MipConnectedDeviceType(buffer, bufferSize, offset, &self->devType);
+    offset = extract_mip_connected_device_type(buffer, bufferSize, offset, &self->devType);
     
     return offset;
 }
 
 
-MipCmdResult write_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device, enum MipConnectedDeviceType devType)
+size_t insert_mip_rtk_connected_device_type_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_connected_device_type_response* self)
+{
+    offset = insert_mip_connected_device_type(buffer, bufferSize, offset, self->devType);
+    
+    return offset;
+}
+
+size_t extract_mip_rtk_connected_device_type_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_connected_device_type_response* self)
+{
+    offset = extract_mip_connected_device_type(buffer, bufferSize, offset, &self->devType);
+    
+    return offset;
+}
+
+
+mip_cmd_result write_configure_or_read_the_type_of_the_connected_device(struct mip_interface* device, enum mip_connected_device_type devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 1);;
-    cmdUsed = insert_MipConnectedDeviceType(buffer, sizeof(buffer), cmdUsed, devType);
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 1);;
+    cmdUsed = insert_mip_connected_device_type(buffer, sizeof(buffer), cmdUsed, devType);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-MipCmdResult read_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device, enum MipConnectedDeviceType* devType)
+mip_cmd_result read_configure_or_read_the_type_of_the_connected_device(struct mip_interface* device, enum mip_connected_device_type* devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 2);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 2);;
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
         size_t responseUsed = 0;
-        responseUsed = extract_MipConnectedDeviceType(buffer, sizeof(buffer), responseUsed, devType);
+        responseUsed = extract_mip_connected_device_type(buffer, sizeof(buffer), responseUsed, devType);
         
         if( responseUsed != responseLength )
             result_local = MIP_STATUS_ERROR;
@@ -355,38 +355,38 @@ MipCmdResult read_configure_or_read_the_type_of_the_connected_device(struct MipI
     return result_local;
 }
 
-MipCmdResult save_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
+mip_cmd_result save_configure_or_read_the_type_of_the_connected_device(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 3);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 3);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-MipCmdResult load_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
+mip_cmd_result load_configure_or_read_the_type_of_the_connected_device(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 4);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 4);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-MipCmdResult default_configure_or_read_the_type_of_the_connected_device(struct MipInterfaceState* device)
+mip_cmd_result default_configure_or_read_the_type_of_the_connected_device(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipFunctionSelector(buffer, sizeof(buffer), cmdUsed, 5);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 5);;
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetActCode(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetActCode* self)
+size_t insert_mip_rtk_get_act_code_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_act_code_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -395,7 +395,7 @@ size_t insert_MipCmd_Rtk_GetActCode(uint8_t* buffer, size_t bufferSize, size_t o
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetActCode(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetActCode* self)
+size_t extract_mip_rtk_get_act_code_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_act_code_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -405,7 +405,7 @@ size_t extract_MipCmd_Rtk_GetActCode(const uint8_t* buffer, size_t bufferSize, s
 }
 
 
-size_t insert_MipCmd_Rtk_GetActCode_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetActCode_Response* self)
+size_t insert_mip_rtk_get_act_code_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_act_code_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ActivationCode[i]);
@@ -413,7 +413,7 @@ size_t insert_MipCmd_Rtk_GetActCode_Response(uint8_t* buffer, size_t bufferSize,
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetActCode_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetActCode_Response* self)
+size_t extract_mip_rtk_get_act_code_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_act_code_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ActivationCode[i]);
@@ -422,12 +422,12 @@ size_t extract_MipCmd_Rtk_GetActCode_Response(const uint8_t* buffer, size_t buff
 }
 
 
-MipCmdResult get_rtk_device_activation_code(struct MipInterfaceState* device, char* ActivationCode)
+mip_cmd_result get_rtk_device_activation_code(struct mip_interface* device, char* ActivationCode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ACT_CODE, NULL, 0, MIP_REPLY_DESC_RTK_GET_ACT_CODE, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_ACT_CODE, NULL, 0, MIP_REPLY_DESC_RTK_GET_ACT_CODE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -442,7 +442,7 @@ MipCmdResult get_rtk_device_activation_code(struct MipInterfaceState* device, ch
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetModemFirmwareVersion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetModemFirmwareVersion* self)
+size_t insert_mip_rtk_get_modem_firmware_version_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_modem_firmware_version_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -451,7 +451,7 @@ size_t insert_MipCmd_Rtk_GetModemFirmwareVersion(uint8_t* buffer, size_t bufferS
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetModemFirmwareVersion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetModemFirmwareVersion* self)
+size_t extract_mip_rtk_get_modem_firmware_version_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_modem_firmware_version_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -461,7 +461,7 @@ size_t extract_MipCmd_Rtk_GetModemFirmwareVersion(const uint8_t* buffer, size_t 
 }
 
 
-size_t insert_MipCmd_Rtk_GetModemFirmwareVersion_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetModemFirmwareVersion_Response* self)
+size_t insert_mip_rtk_get_modem_firmware_version_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_modem_firmware_version_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = insert_char(buffer, bufferSize, offset, self->ModemFirmwareVersion[i]);
@@ -469,7 +469,7 @@ size_t insert_MipCmd_Rtk_GetModemFirmwareVersion_Response(uint8_t* buffer, size_
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetModemFirmwareVersion_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetModemFirmwareVersion_Response* self)
+size_t extract_mip_rtk_get_modem_firmware_version_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_modem_firmware_version_response* self)
 {
     for(unsigned int i=0; i < 32; i++)
         offset = extract_char(buffer, bufferSize, offset, &self->ModemFirmwareVersion[i]);
@@ -478,12 +478,12 @@ size_t extract_MipCmd_Rtk_GetModemFirmwareVersion_Response(const uint8_t* buffer
 }
 
 
-MipCmdResult get_rtk_devices_cell_modem_firmware_version_number(struct MipInterfaceState* device, char* ModemFirmwareVersion)
+mip_cmd_result get_rtk_devices_cell_modem_firmware_version_number(struct mip_interface* device, char* ModemFirmwareVersion)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, NULL, 0, MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, NULL, 0, MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -498,7 +498,7 @@ MipCmdResult get_rtk_devices_cell_modem_firmware_version_number(struct MipInterf
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_GetRssi(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetRssi* self)
+size_t insert_mip_rtk_get_rssi_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_rssi_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -507,7 +507,7 @@ size_t insert_MipCmd_Rtk_GetRssi(uint8_t* buffer, size_t bufferSize, size_t offs
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetRssi(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetRssi* self)
+size_t extract_mip_rtk_get_rssi_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_rssi_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -517,7 +517,7 @@ size_t extract_MipCmd_Rtk_GetRssi(const uint8_t* buffer, size_t bufferSize, size
 }
 
 
-size_t insert_MipCmd_Rtk_GetRssi_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_GetRssi_Response* self)
+size_t insert_mip_rtk_get_rssi_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_get_rssi_response* self)
 {
     offset = insert_bool(buffer, bufferSize, offset, self->valid);
     offset = insert_s32(buffer, bufferSize, offset, self->rssi);
@@ -526,7 +526,7 @@ size_t insert_MipCmd_Rtk_GetRssi_Response(uint8_t* buffer, size_t bufferSize, si
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_GetRssi_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_GetRssi_Response* self)
+size_t extract_mip_rtk_get_rssi_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_get_rssi_response* self)
 {
     offset = extract_bool(buffer, bufferSize, offset, &self->valid);
     offset = extract_s32(buffer, bufferSize, offset, &self->rssi);
@@ -542,14 +542,14 @@ size_t extract_MipCmd_Rtk_GetRssi_Response(const uint8_t* buffer, size_t bufferS
 /// @param[out] rssi 
 /// @param[out] signalQuality 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_cmd_rtk_get_rssi(struct MipInterfaceState* device, bool* valid, int32_t* rssi, int32_t* signalQuality)
+mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid, int32_t* rssi, int32_t* signalQuality)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_RSSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_RSSI, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_GET_RSSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_RSSI, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -565,7 +565,7 @@ MipCmdResult mip_cmd_rtk_get_rssi(struct MipInterfaceState* device, bool* valid,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_ServiceStatus(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ServiceStatus* self)
+size_t insert_mip_rtk_service_status_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_service_status_command* self)
 {
     offset = insert_u32(buffer, bufferSize, offset, self->reserved1);
     offset = insert_u32(buffer, bufferSize, offset, self->reserved2);
@@ -573,7 +573,7 @@ size_t insert_MipCmd_Rtk_ServiceStatus(uint8_t* buffer, size_t bufferSize, size_
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_ServiceStatus(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ServiceStatus* self)
+size_t extract_mip_rtk_service_status_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_service_status_command* self)
 {
     offset = extract_u32(buffer, bufferSize, offset, &self->reserved1);
     offset = extract_u32(buffer, bufferSize, offset, &self->reserved2);
@@ -582,11 +582,11 @@ size_t extract_MipCmd_Rtk_ServiceStatus(const uint8_t* buffer, size_t bufferSize
 }
 
 
-size_t insert_MipCmd_Rtk_ServiceStatus_Serviceflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Rtk_ServiceStatus_Serviceflags self)
+size_t insert_mip_rtk_service_status_command_service_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_rtk_service_status_command_service_flags self)
 {
     return insert_u8(buffer, bufferSize, offset, self);
 }
-size_t extract_MipCmd_Rtk_ServiceStatus_Serviceflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Rtk_ServiceStatus_Serviceflags* self)
+size_t extract_mip_rtk_service_status_command_service_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_rtk_service_status_command_service_flags* self)
 {
     uint8_t tmp;
     offset = extract_u8(buffer, bufferSize, offset, &tmp);
@@ -595,9 +595,9 @@ size_t extract_MipCmd_Rtk_ServiceStatus_Serviceflags(const uint8_t* buffer, size
 }
 
 
-size_t insert_MipCmd_Rtk_ServiceStatus_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ServiceStatus_Response* self)
+size_t insert_mip_rtk_service_status_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_service_status_response* self)
 {
-    offset = insert_MipCmd_Rtk_ServiceStatus_Serviceflags(buffer, bufferSize, offset, self->flags);
+    offset = insert_mip_rtk_service_status_command_service_flags(buffer, bufferSize, offset, self->flags);
     offset = insert_u32(buffer, bufferSize, offset, self->recievedBytes);
     offset = insert_u32(buffer, bufferSize, offset, self->lastBytes);
     offset = insert_u64(buffer, bufferSize, offset, self->lastBytesTime);
@@ -605,9 +605,9 @@ size_t insert_MipCmd_Rtk_ServiceStatus_Response(uint8_t* buffer, size_t bufferSi
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_ServiceStatus_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ServiceStatus_Response* self)
+size_t extract_mip_rtk_service_status_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_service_status_response* self)
 {
-    offset = extract_MipCmd_Rtk_ServiceStatus_Serviceflags(buffer, bufferSize, offset, &self->flags);
+    offset = extract_mip_rtk_service_status_command_service_flags(buffer, bufferSize, offset, &self->flags);
     offset = extract_u32(buffer, bufferSize, offset, &self->recievedBytes);
     offset = extract_u32(buffer, bufferSize, offset, &self->lastBytes);
     offset = extract_u64(buffer, bufferSize, offset, &self->lastBytesTime);
@@ -625,9 +625,9 @@ size_t extract_MipCmd_Rtk_ServiceStatus_Response(const uint8_t* buffer, size_t b
 /// @param[out] lastBytes 
 /// @param[out] lastBytesTime 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_cmd_rtk_service_status(struct MipInterfaceState* device, uint32_t reserved1, uint32_t reserved2, enum MipCmd_Rtk_ServiceStatus_Serviceflags* flags, uint32_t* recievedBytes, uint32_t* lastBytes, uint64_t* lastBytesTime)
+mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, enum mip_rtk_service_status_command_service_flags* flags, uint32_t* recievedBytes, uint32_t* lastBytes, uint64_t* lastBytesTime)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -636,12 +636,12 @@ MipCmdResult mip_cmd_rtk_service_status(struct MipInterfaceState* device, uint32
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    MipCmdResult result_local = MipInterface_runCommandWithResponse(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, cmdUsed, MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, cmdUsed, MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
         size_t responseUsed = 0;
-        responseUsed = extract_MipCmd_Rtk_ServiceStatus_Serviceflags(buffer, sizeof(buffer), responseUsed, flags);
+        responseUsed = extract_mip_rtk_service_status_command_service_flags(buffer, sizeof(buffer), responseUsed, flags);
         responseUsed = extract_u32(buffer, sizeof(buffer), responseUsed, recievedBytes);
         responseUsed = extract_u32(buffer, sizeof(buffer), responseUsed, lastBytes);
         responseUsed = extract_u64(buffer, sizeof(buffer), responseUsed, lastBytesTime);
@@ -653,16 +653,16 @@ MipCmdResult mip_cmd_rtk_service_status(struct MipInterfaceState* device, uint32
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_ProdEraseStorage(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ProdEraseStorage* self)
+size_t insert_mip_rtk_prod_erase_storage_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_prod_erase_storage_command* self)
 {
-    offset = insert_MipMediaSelector(buffer, bufferSize, offset, self->media);
+    offset = insert_mip_media_selector(buffer, bufferSize, offset, self->media);
     
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_ProdEraseStorage(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ProdEraseStorage* self)
+size_t extract_mip_rtk_prod_erase_storage_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_prod_erase_storage_command* self)
 {
-    offset = extract_MipMediaSelector(buffer, bufferSize, offset, &self->media);
+    offset = extract_mip_media_selector(buffer, bufferSize, offset, &self->media);
     
     return offset;
 }
@@ -672,38 +672,38 @@ size_t extract_MipCmd_Rtk_ProdEraseStorage(const uint8_t* buffer, size_t bufferS
 /// This command is only available in calibration mode.
 /// @param media 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_cmd_rtk_prod_erase_storage(struct MipInterfaceState* device, enum MipMediaSelector media)
+mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, enum mip_media_selector media)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_MipMediaSelector(buffer, sizeof(buffer), cmdUsed, media);
+    cmdUsed = insert_mip_media_selector(buffer, sizeof(buffer), cmdUsed, media);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_PROD_ERASE_STORAGE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_PROD_ERASE_STORAGE, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_LedControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_LedControl* self)
+size_t insert_mip_rtk_led_control_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_led_control_command* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->primaryColor[i]);
     for(unsigned int i=0; i < 3; i++)
         offset = insert_u8(buffer, bufferSize, offset, self->altColor[i]);
-    offset = insert_MipLedAction(buffer, bufferSize, offset, self->act);
+    offset = insert_mip_led_action(buffer, bufferSize, offset, self->act);
     offset = insert_u32(buffer, bufferSize, offset, self->period);
     
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_LedControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_LedControl* self)
+size_t extract_mip_rtk_led_control_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_led_control_command* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->primaryColor[i]);
     for(unsigned int i=0; i < 3; i++)
         offset = extract_u8(buffer, bufferSize, offset, &self->altColor[i]);
-    offset = extract_MipLedAction(buffer, bufferSize, offset, &self->act);
+    offset = extract_mip_led_action(buffer, bufferSize, offset, &self->act);
     offset = extract_u32(buffer, bufferSize, offset, &self->period);
     
     return offset;
@@ -717,9 +717,9 @@ size_t extract_MipCmd_Rtk_LedControl(const uint8_t* buffer, size_t bufferSize, s
 /// @param act 
 /// @param period 
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_cmd_rtk_led_control(struct MipInterfaceState* device, const uint8_t* primaryColor, const uint8_t* altColor, enum MipLedAction act, uint32_t period)
+mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint8_t* primaryColor, const uint8_t* altColor, enum mip_led_action act, uint32_t period)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -727,15 +727,15 @@ MipCmdResult mip_cmd_rtk_led_control(struct MipInterfaceState* device, const uin
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, primaryColor[i]);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, altColor[i]);
-    cmdUsed = insert_MipLedAction(buffer, sizeof(buffer), cmdUsed, act);
+    cmdUsed = insert_mip_led_action(buffer, sizeof(buffer), cmdUsed, act);
     cmdUsed = insert_u32(buffer, sizeof(buffer), cmdUsed, period);
     assert(cmdUsed <= sizeof(buffer));
     
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_LED_CONTROL, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_LED_CONTROL, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_MipCmd_Rtk_ModemHardReset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Rtk_ModemHardReset* self)
+size_t insert_mip_rtk_modem_hard_reset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_rtk_modem_hard_reset_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -744,7 +744,7 @@ size_t insert_MipCmd_Rtk_ModemHardReset(uint8_t* buffer, size_t bufferSize, size
     return offset;
 }
 
-size_t extract_MipCmd_Rtk_ModemHardReset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Rtk_ModemHardReset* self)
+size_t extract_mip_rtk_modem_hard_reset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_rtk_modem_hard_reset_command* self)
 {
     (void)buffer;
     (void)bufferSize;
@@ -757,11 +757,11 @@ size_t extract_MipCmd_Rtk_ModemHardReset(const uint8_t* buffer, size_t bufferSiz
 /// @brief This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!
 /// This command is only available in calibration mode.
 /// 
-/// @returns MipCmdResult
+/// @returns mip_cmd_result
 /// 
-MipCmdResult mip_cmd_rtk_modem_hard_reset(struct MipInterfaceState* device)
+mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device)
 {
-    return MipInterface_runCommand(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_MODEM_HARD_RESET, NULL, 0);
+    return mip_interface_run_command(device, MIP_RTK_COMMAND_DESC_SET, MIP_CMD_DESC_RTK_MODEM_HARD_RESET, NULL, 0);
 }
 
 

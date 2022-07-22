@@ -12,7 +12,7 @@ class SerialMipDevice : public mscl::MipDeviceInterface
 public:
     SerialMipDevice(const std::string& portName, uint32_t baudrate);
 
-    bool poll() final;
+    bool update() final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
 private:

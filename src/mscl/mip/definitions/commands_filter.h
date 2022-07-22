@@ -9,10 +9,9 @@
 
 #ifdef __cplusplus
 namespace mscl {
-extern "C" {
 #endif // __cplusplus
 
-struct MipInterfaceState;
+struct mip_interface;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -25,7 +24,7 @@ struct MipInterfaceState;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipFilterCommandDescriptors
+enum mip_filter_command_descriptors
 {
     MIP_FILTER_COMMAND_DESC_SET                              = 0x0D,
     
@@ -89,27 +88,32 @@ enum MipFilterCommandDescriptors
     MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL          = 0xE4,
     MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE                 = 0xB2,
 };
+#ifdef __cplusplus
+namespace C {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipFilterReferenceFrame
+enum mip_filter_reference_frame
 {
-    MIPFILTERREFERENCEFRAME_ECEF = 1,  ///<  WGS84 Earth-fixed, earth centered coordinates
-    MIPFILTERREFERENCEFRAME_LLH  = 2,  ///<  WGS84 Latitude, longitude, and height above ellipsoid
+    MIP_FILTER_REFERENCE_FRAME_ECEF = 1,  ///<  WGS84 Earth-fixed, earth centered coordinates
+    MIP_FILTER_REFERENCE_FRAME_LLH  = 2,  ///<  WGS84 Latitude, longitude, and height above ellipsoid
 };
-size_t insert_MipFilterReferenceFrame(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterReferenceFrame self);
-size_t extract_MipFilterReferenceFrame(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterReferenceFrame* self);
+size_t insert_mip_filter_reference_frame(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_reference_frame self);
+size_t extract_mip_filter_reference_frame(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_reference_frame* self);
 
-enum MipFilterMagDeclinationSource
+enum mip_filter_mag_declination_source
 {
-    MIPFILTERMAGDECLINATIONSOURCE_NONE   = 1,  ///<  Magnetic field is assumed to have an declination angle equal to zero.
-    MIPFILTERMAGDECLINATIONSOURCE_WMM    = 2,  ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
-    MIPFILTERMAGDECLINATIONSOURCE_MANUAL = 3,  ///<  Magnetic field is assumed to have the declination angle specified by the user.
+    MIP_FILTER_MAG_DECLINATION_SOURCE_NONE   = 1,  ///<  Magnetic field is assumed to have an declination angle equal to zero.
+    MIP_FILTER_MAG_DECLINATION_SOURCE_WMM    = 2,  ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
+    MIP_FILTER_MAG_DECLINATION_SOURCE_MANUAL = 3,  ///<  Magnetic field is assumed to have the declination angle specified by the user.
 };
-size_t insert_MipFilterMagDeclinationSource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipFilterMagDeclinationSource self);
-size_t extract_MipFilterMagDeclinationSource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipFilterMagDeclinationSource* self);
+size_t insert_mip_filter_mag_declination_source(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_mag_declination_source self);
+size_t extract_mip_filter_mag_declination_source(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_mag_declination_source* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +121,7 @@ size_t extract_MipFilterMagDeclinationSource(const uint8_t* buffer, size_t buffe
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_reset_filter  Reset Filter
+///@defgroup mip_filter_reset  Reset Navigation Filter
 /// Resets the filter to the initialization state.
 /// 
 /// If the auto-initialization feature is disabled, the initial attitude or heading must be set in
@@ -125,13 +129,13 @@ size_t extract_MipFilterMagDeclinationSource(const uint8_t* buffer, size_t buffe
 ///
 ///@{
 
-struct MipCmd_Filter_ResetFilter
+struct mip_filter_reset_command
 {
 };
-size_t insert_MipCmd_Filter_ResetFilter(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_ResetFilter* self);
-size_t extract_MipCmd_Filter_ResetFilter(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_ResetFilter* self);
+size_t insert_mip_filter_reset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_reset_command* self);
+size_t extract_mip_filter_reset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_reset_command* self);
 
-MipCmdResult reset_navigation_filter(struct MipInterfaceState* device);
+mip_cmd_result reset_navigation_filter(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,20 +155,20 @@ MipCmdResult reset_navigation_filter(struct MipInterfaceState* device);
 ///
 ///@{
 
-struct MipCmd_Filter_SetInitialAttitude
+struct mip_filter_set_initial_attitude_command
 {
     float                                             roll;
     float                                             pitch;
     float                                             heading;
 };
-size_t insert_MipCmd_Filter_SetInitialAttitude(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_SetInitialAttitude* self);
-size_t extract_MipCmd_Filter_SetInitialAttitude(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_SetInitialAttitude* self);
+size_t insert_mip_filter_set_initial_attitude_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_set_initial_attitude_command* self);
+size_t extract_mip_filter_set_initial_attitude_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_set_initial_attitude_command* self);
 
-MipCmdResult set_initial_attitude(struct MipInterfaceState* device, float roll, float pitch, float heading);
+mip_cmd_result set_initial_attitude(struct mip_interface* device, float roll, float pitch, float heading);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_estimation_control  Estimation Control
+///@defgroup mip_filter_estimation_control  Estimation Control Flags
 /// Estimation Control Flags
 /// 
 /// Controls which parameters are estimated by the Kalman Filter.
@@ -179,43 +183,43 @@ MipCmdResult set_initial_attitude(struct MipInterfaceState* device, float roll, 
 ///
 ///@{
 
-enum MipCmd_Filter_EstimationControl_Enableflags
+enum mip_filter_estimation_control_command_enable_flags
 {
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_GYRO_BIAS          = 0x01,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_ACCEL_BIAS         = 0x02,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_GYRO_SCALE_FACTOR  = 0x04,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_ACCEL_SCALE_FACTOR = 0x08,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_ANTENNA_OFFSET     = 0x10,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_AUTO_MAG_HARD_IRON = 0x20,
-    MIPCMD_FILTER_ESTIMATIONCONTROL_ENABLEFLAGS_AUTO_MAG_SOFT_IRON = 0x40,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_BIAS          = 0x01,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_BIAS         = 0x02,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_SCALE_FACTOR  = 0x04,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_SCALE_FACTOR = 0x08,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ANTENNA_OFFSET     = 0x10,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x20,
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x40,
 };
-size_t insert_MipCmd_Filter_EstimationControl_Enableflags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_EstimationControl_Enableflags self);
-size_t extract_MipCmd_Filter_EstimationControl_Enableflags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_EstimationControl_Enableflags* self);
+size_t insert_mip_filter_estimation_control_command_enable_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_estimation_control_command_enable_flags self);
+size_t extract_mip_filter_estimation_control_command_enable_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_estimation_control_command_enable_flags* self);
 
-struct MipCmd_Filter_EstimationControl
+struct mip_filter_estimation_control_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_EstimationControl_Enableflags  enable;
+    enum mip_function_selector                        function;
+    enum mip_filter_estimation_control_command_enable_flags enable;
 };
-size_t insert_MipCmd_Filter_EstimationControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_EstimationControl* self);
-size_t extract_MipCmd_Filter_EstimationControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_EstimationControl* self);
+size_t insert_mip_filter_estimation_control_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_estimation_control_command* self);
+size_t extract_mip_filter_estimation_control_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_estimation_control_command* self);
 
-struct MipCmd_Filter_EstimationControl_Response
+struct mip_filter_estimation_control_response
 {
-    enum MipCmd_Filter_EstimationControl_Enableflags  enable;
+    enum mip_filter_estimation_control_command_enable_flags enable;
 };
-size_t insert_MipCmd_Filter_EstimationControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_EstimationControl_Response* self);
-size_t extract_MipCmd_Filter_EstimationControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_EstimationControl_Response* self);
+size_t insert_mip_filter_estimation_control_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_estimation_control_response* self);
+size_t extract_mip_filter_estimation_control_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_estimation_control_response* self);
 
-MipCmdResult write_estimation_control_flags(struct MipInterfaceState* device, enum MipCmd_Filter_EstimationControl_Enableflags enable);
-MipCmdResult read_estimation_control_flags(struct MipInterfaceState* device, enum MipCmd_Filter_EstimationControl_Enableflags* enable);
-MipCmdResult save_estimation_control_flags(struct MipInterfaceState* device);
-MipCmdResult load_estimation_control_flags(struct MipInterfaceState* device);
-MipCmdResult default_estimation_control_flags(struct MipInterfaceState* device);
+mip_cmd_result write_estimation_control_flags(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags enable);
+mip_cmd_result read_estimation_control_flags(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags* enable);
+mip_cmd_result save_estimation_control_flags(struct mip_interface* device);
+mip_cmd_result load_estimation_control_flags(struct mip_interface* device);
+mip_cmd_result default_estimation_control_flags(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_external_gnss_update  External Gnss Update
+///@defgroup mip_filter_external_gnss_update  External GNSS Update
 /// Provide a filter measurement from an external GNSS
 /// 
 /// The GNSS source control must be set to "external" for this command to succeed, otherwise it will be NACK'd.
@@ -224,7 +228,7 @@ MipCmdResult default_estimation_control_flags(struct MipInterfaceState* device);
 ///
 ///@{
 
-struct MipCmd_Filter_ExternalGnssUpdate
+struct mip_filter_external_gnss_update_command
 {
     double                                            gps_time;
     uint16_t                                          gps_week;
@@ -235,10 +239,10 @@ struct MipCmd_Filter_ExternalGnssUpdate
     float                                             pos_uncertainty[3];
     float                                             vel_uncertainty[3];
 };
-size_t insert_MipCmd_Filter_ExternalGnssUpdate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_ExternalGnssUpdate* self);
-size_t extract_MipCmd_Filter_ExternalGnssUpdate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_ExternalGnssUpdate* self);
+size_t insert_mip_filter_external_gnss_update_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_external_gnss_update_command* self);
+size_t extract_mip_filter_external_gnss_update_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_external_gnss_update_command* self);
 
-MipCmdResult external_gnss_update(struct MipInterfaceState* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty);
+mip_cmd_result external_gnss_update(struct mip_interface* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -259,16 +263,16 @@ MipCmdResult external_gnss_update(struct MipInterfaceState* device, double gps_t
 ///
 ///@{
 
-struct MipCmd_Filter_ExternalHeadingUpdate
+struct mip_filter_external_heading_update_command
 {
     float                                             heading;
     float                                             heading_uncertainty;
     uint8_t                                           type;
 };
-size_t insert_MipCmd_Filter_ExternalHeadingUpdate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_ExternalHeadingUpdate* self);
-size_t extract_MipCmd_Filter_ExternalHeadingUpdate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_ExternalHeadingUpdate* self);
+size_t insert_mip_filter_external_heading_update_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_external_heading_update_command* self);
+size_t extract_mip_filter_external_heading_update_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_external_heading_update_command* self);
 
-MipCmdResult external_heading_update(struct MipInterfaceState* device, float heading, float heading_uncertainty, uint8_t type);
+mip_cmd_result external_heading_update(struct mip_interface* device, float heading, float heading_uncertainty, uint8_t type);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +297,7 @@ MipCmdResult external_heading_update(struct MipInterfaceState* device, float hea
 ///
 ///@{
 
-struct MipCmd_Filter_ExternalHeadingUpdateWithTime
+struct mip_filter_external_heading_update_with_time_command
 {
     double                                            gps_time;
     uint16_t                                          gps_week;
@@ -301,14 +305,14 @@ struct MipCmd_Filter_ExternalHeadingUpdateWithTime
     float                                             heading_uncertainty;
     uint8_t                                           type;
 };
-size_t insert_MipCmd_Filter_ExternalHeadingUpdateWithTime(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_ExternalHeadingUpdateWithTime* self);
-size_t extract_MipCmd_Filter_ExternalHeadingUpdateWithTime(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_ExternalHeadingUpdateWithTime* self);
+size_t insert_mip_filter_external_heading_update_with_time_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_external_heading_update_with_time_command* self);
+size_t extract_mip_filter_external_heading_update_with_time_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_external_heading_update_with_time_command* self);
 
-MipCmdResult external_heading_update_with_time(struct MipInterfaceState* device, double gps_time, uint16_t gps_week, float heading, float heading_uncertainty, uint8_t type);
+mip_cmd_result external_heading_update_with_time(struct mip_interface* device, double gps_time, uint16_t gps_week, float heading, float heading_uncertainty, uint8_t type);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_tare_orientation  Tare Orientation
+///@defgroup mip_filter_tare_orientation  Tare Sensor Orientation
 /// Tare the device orientation.
 /// 
 /// This function uses the current device orientation relative to the NED frame as the current sensor to vehicle transformation.
@@ -317,39 +321,39 @@ MipCmdResult external_heading_update_with_time(struct MipInterfaceState* device,
 ///
 ///@{
 
-enum MipCmd_Filter_TareOrientation_Miptareaxes
+enum mip_filter_tare_orientation_command_mip_tare_axes
 {
-    MIPCMD_FILTER_TAREORIENTATION_MIPTAREAXES_ROLL  = 0x01,
-    MIPCMD_FILTER_TAREORIENTATION_MIPTAREAXES_PITCH = 0x02,
-    MIPCMD_FILTER_TAREORIENTATION_MIPTAREAXES_YAW   = 0x04,
+    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x01,
+    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x02,
+    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x04,
 };
-size_t insert_MipCmd_Filter_TareOrientation_Miptareaxes(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_TareOrientation_Miptareaxes self);
-size_t extract_MipCmd_Filter_TareOrientation_Miptareaxes(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_TareOrientation_Miptareaxes* self);
+size_t insert_mip_filter_tare_orientation_command_mip_tare_axes(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_tare_orientation_command_mip_tare_axes self);
+size_t extract_mip_filter_tare_orientation_command_mip_tare_axes(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_tare_orientation_command_mip_tare_axes* self);
 
-struct MipCmd_Filter_TareOrientation
+struct mip_filter_tare_orientation_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_TareOrientation_Miptareaxes    axes;
+    enum mip_function_selector                        function;
+    enum mip_filter_tare_orientation_command_mip_tare_axes axes;
 };
-size_t insert_MipCmd_Filter_TareOrientation(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_TareOrientation* self);
-size_t extract_MipCmd_Filter_TareOrientation(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_TareOrientation* self);
+size_t insert_mip_filter_tare_orientation_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_tare_orientation_command* self);
+size_t extract_mip_filter_tare_orientation_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_tare_orientation_command* self);
 
-struct MipCmd_Filter_TareOrientation_Response
+struct mip_filter_tare_orientation_response
 {
-    enum MipCmd_Filter_TareOrientation_Miptareaxes    axes;
+    enum mip_filter_tare_orientation_command_mip_tare_axes axes;
 };
-size_t insert_MipCmd_Filter_TareOrientation_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_TareOrientation_Response* self);
-size_t extract_MipCmd_Filter_TareOrientation_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_TareOrientation_Response* self);
+size_t insert_mip_filter_tare_orientation_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_tare_orientation_response* self);
+size_t extract_mip_filter_tare_orientation_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_tare_orientation_response* self);
 
-MipCmdResult write_tare_sensor_orientation(struct MipInterfaceState* device, enum MipCmd_Filter_TareOrientation_Miptareaxes axes);
-MipCmdResult read_tare_sensor_orientation(struct MipInterfaceState* device, enum MipCmd_Filter_TareOrientation_Miptareaxes* axes);
-MipCmdResult save_tare_sensor_orientation(struct MipInterfaceState* device);
-MipCmdResult load_tare_sensor_orientation(struct MipInterfaceState* device);
-MipCmdResult default_tare_sensor_orientation(struct MipInterfaceState* device);
+mip_cmd_result write_tare_sensor_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes axes);
+mip_cmd_result read_tare_sensor_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes* axes);
+mip_cmd_result save_tare_sensor_orientation(struct mip_interface* device);
+mip_cmd_result load_tare_sensor_orientation(struct mip_interface* device);
+mip_cmd_result default_tare_sensor_orientation(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_sensor_2_vehicle_rotation_euler  Sensor 2 Vehicle Rotation Euler
+///@defgroup mip_filter_sensor_to_vehicle_rotation_euler  Sensor to Vehicle Frame Rotation Euler
 /// Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -376,34 +380,34 @@ MipCmdResult default_tare_sensor_orientation(struct MipInterfaceState* device);
 ///
 ///@{
 
-struct MipCmd_Filter_Sensor2VehicleRotationEuler
+struct mip_filter_sensor_to_vehicle_rotation_euler_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     float                                             roll;
     float                                             pitch;
     float                                             yaw;
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationEuler(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationEuler* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationEuler(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationEuler* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_euler_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_euler_command* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_euler_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_euler_command* self);
 
-struct MipCmd_Filter_Sensor2VehicleRotationEuler_Response
+struct mip_filter_sensor_to_vehicle_rotation_euler_response
 {
     float                                             roll;
     float                                             pitch;
     float                                             yaw;
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationEuler_Response* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationEuler_Response* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_euler_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_euler_response* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_euler_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_euler_response* self);
 
-MipCmdResult write_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device, float roll, float pitch, float yaw);
-MipCmdResult read_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device, float* roll, float* pitch, float* yaw);
-MipCmdResult save_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device);
-MipCmdResult load_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device);
-MipCmdResult default_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceState* device);
+mip_cmd_result write_sensor_to_vehicle_frame_rotation_euler(struct mip_interface* device, float roll, float pitch, float yaw);
+mip_cmd_result read_sensor_to_vehicle_frame_rotation_euler(struct mip_interface* device, float* roll, float* pitch, float* yaw);
+mip_cmd_result save_sensor_to_vehicle_frame_rotation_euler(struct mip_interface* device);
+mip_cmd_result load_sensor_to_vehicle_frame_rotation_euler(struct mip_interface* device);
+mip_cmd_result default_sensor_to_vehicle_frame_rotation_euler(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_sensor_2_vehicle_rotation_dcm  Sensor 2 Vehicle Rotation Dcm
+///@defgroup mip_filter_sensor_to_vehicle_rotation_dcm  Sensor to Vehicle Frame Rotation DCM
 /// Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -436,30 +440,30 @@ MipCmdResult default_sensor_to_vehicle_frame_rotation_euler(struct MipInterfaceS
 ///
 ///@{
 
-struct MipCmd_Filter_Sensor2VehicleRotationDcm
+struct mip_filter_sensor_to_vehicle_rotation_dcm_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     float                                             dcm[9];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationDcm(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationDcm* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationDcm(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationDcm* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
 
-struct MipCmd_Filter_Sensor2VehicleRotationDcm_Response
+struct mip_filter_sensor_to_vehicle_rotation_dcm_response
 {
     float                                             dcm[9];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationDcm_Response* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationDcm_Response* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
 
-MipCmdResult write_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device, const float* dcm);
-MipCmdResult read_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device, float* dcm);
-MipCmdResult save_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device);
-MipCmdResult load_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device);
-MipCmdResult default_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceState* device);
+mip_cmd_result write_sensor_to_vehicle_frame_rotation_dcm(struct mip_interface* device, const float* dcm);
+mip_cmd_result read_sensor_to_vehicle_frame_rotation_dcm(struct mip_interface* device, float* dcm);
+mip_cmd_result save_sensor_to_vehicle_frame_rotation_dcm(struct mip_interface* device);
+mip_cmd_result load_sensor_to_vehicle_frame_rotation_dcm(struct mip_interface* device);
+mip_cmd_result default_sensor_to_vehicle_frame_rotation_dcm(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_sensor_2_vehicle_rotation_quaternion  Sensor 2 Vehicle Rotation Quaternion
+///@defgroup mip_filter_sensor_to_vehicle_rotation_quaternion  Sensor to Vehicle Frame Rotation Quaternion
 /// Set the sensor to vehicle frame rotation using a quaternion.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -491,30 +495,30 @@ MipCmdResult default_sensor_to_vehicle_frame_rotation_dcm(struct MipInterfaceSta
 ///
 ///@{
 
-struct MipCmd_Filter_Sensor2VehicleRotationQuaternion
+struct mip_filter_sensor_to_vehicle_rotation_quaternion_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     float                                             quat[4];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationQuaternion* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationQuaternion* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
 
-struct MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response
+struct mip_filter_sensor_to_vehicle_rotation_quaternion_response
 {
     float                                             quat[4];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response* self);
+size_t insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
+size_t extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
 
-MipCmdResult write_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device, const float* quat);
-MipCmdResult read_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device, float* quat);
-MipCmdResult save_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device);
-MipCmdResult load_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device);
-MipCmdResult default_sensor_to_vehicle_frame_rotation_quaternion(struct MipInterfaceState* device);
+mip_cmd_result write_sensor_to_vehicle_frame_rotation_quaternion(struct mip_interface* device, const float* quat);
+mip_cmd_result read_sensor_to_vehicle_frame_rotation_quaternion(struct mip_interface* device, float* quat);
+mip_cmd_result save_sensor_to_vehicle_frame_rotation_quaternion(struct mip_interface* device);
+mip_cmd_result load_sensor_to_vehicle_frame_rotation_quaternion(struct mip_interface* device);
+mip_cmd_result default_sensor_to_vehicle_frame_rotation_quaternion(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_sensor_2_vehicle_offset  Sensor 2 Vehicle Offset
+///@defgroup mip_filter_sensor_to_vehicle_offset  Sensor to Vehicle Frame Offset
 /// Set the sensor to vehicle frame offset, expressed in the sensor frame.
 /// 
 /// This is a simple offset, not a lever arm.  It does not compensate for inertial effects experienced from being offset from the center of gravity/rotation of the vehicle.
@@ -527,30 +531,30 @@ MipCmdResult default_sensor_to_vehicle_frame_rotation_quaternion(struct MipInter
 ///
 ///@{
 
-struct MipCmd_Filter_Sensor2VehicleOffset
+struct mip_filter_sensor_to_vehicle_offset_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     float                                             offset[3];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleOffset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleOffset* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleOffset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleOffset* self);
+size_t insert_mip_filter_sensor_to_vehicle_offset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_offset_command* self);
+size_t extract_mip_filter_sensor_to_vehicle_offset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_offset_command* self);
 
-struct MipCmd_Filter_Sensor2VehicleOffset_Response
+struct mip_filter_sensor_to_vehicle_offset_response
 {
     float                                             offset[3];
 };
-size_t insert_MipCmd_Filter_Sensor2VehicleOffset_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Sensor2VehicleOffset_Response* self);
-size_t extract_MipCmd_Filter_Sensor2VehicleOffset_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Sensor2VehicleOffset_Response* self);
+size_t insert_mip_filter_sensor_to_vehicle_offset_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_sensor_to_vehicle_offset_response* self);
+size_t extract_mip_filter_sensor_to_vehicle_offset_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_sensor_to_vehicle_offset_response* self);
 
-MipCmdResult write_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device, const float* offset);
-MipCmdResult read_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device, float* offset);
-MipCmdResult save_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device);
-MipCmdResult load_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device);
-MipCmdResult default_sensor_to_vehicle_frame_offset(struct MipInterfaceState* device);
+mip_cmd_result write_sensor_to_vehicle_frame_offset(struct mip_interface* device, const float* offset);
+mip_cmd_result read_sensor_to_vehicle_frame_offset(struct mip_interface* device, float* offset);
+mip_cmd_result save_sensor_to_vehicle_frame_offset(struct mip_interface* device);
+mip_cmd_result load_sensor_to_vehicle_frame_offset(struct mip_interface* device);
+mip_cmd_result default_sensor_to_vehicle_frame_offset(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_antenna_offset  Antenna Offset
+///@defgroup mip_filter_antenna_offset  GNSS Antenna Offset Control
 /// Set the sensor to GNSS antenna offset.
 /// 
 /// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
@@ -560,30 +564,30 @@ MipCmdResult default_sensor_to_vehicle_frame_offset(struct MipInterfaceState* de
 ///
 ///@{
 
-struct MipCmd_Filter_AntennaOffset
+struct mip_filter_antenna_offset_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     float                                             offset[3];
 };
-size_t insert_MipCmd_Filter_AntennaOffset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AntennaOffset* self);
-size_t extract_MipCmd_Filter_AntennaOffset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AntennaOffset* self);
+size_t insert_mip_filter_antenna_offset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_antenna_offset_command* self);
+size_t extract_mip_filter_antenna_offset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_antenna_offset_command* self);
 
-struct MipCmd_Filter_AntennaOffset_Response
+struct mip_filter_antenna_offset_response
 {
     float                                             offset[3];
 };
-size_t insert_MipCmd_Filter_AntennaOffset_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AntennaOffset_Response* self);
-size_t extract_MipCmd_Filter_AntennaOffset_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AntennaOffset_Response* self);
+size_t insert_mip_filter_antenna_offset_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_antenna_offset_response* self);
+size_t extract_mip_filter_antenna_offset_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_antenna_offset_response* self);
 
-MipCmdResult write_gnss_antenna_offset_control(struct MipInterfaceState* device, const float* offset);
-MipCmdResult read_gnss_antenna_offset_control(struct MipInterfaceState* device, float* offset);
-MipCmdResult save_gnss_antenna_offset_control(struct MipInterfaceState* device);
-MipCmdResult load_gnss_antenna_offset_control(struct MipInterfaceState* device);
-MipCmdResult default_gnss_antenna_offset_control(struct MipInterfaceState* device);
+mip_cmd_result write_gnss_antenna_offset_control(struct mip_interface* device, const float* offset);
+mip_cmd_result read_gnss_antenna_offset_control(struct mip_interface* device, float* offset);
+mip_cmd_result save_gnss_antenna_offset_control(struct mip_interface* device);
+mip_cmd_result load_gnss_antenna_offset_control(struct mip_interface* device);
+mip_cmd_result default_gnss_antenna_offset_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gnss_source  Gnss Source
+///@defgroup mip_filter_gnss_source  GNSS Aiding Source Control
 /// Control the source of GNSS information used to update the Kalman Filter.
 /// 
 /// Changing the GNSS source while the sensor is in the "running" state may temporarily place
@@ -592,40 +596,40 @@ MipCmdResult default_gnss_antenna_offset_control(struct MipInterfaceState* devic
 ///
 ///@{
 
-enum MipCmd_Filter_GnssSource_Gnsssource
+enum mip_filter_gnss_source_command_gnss_source
 {
-    MIPCMD_FILTER_GNSSSOURCE_GNSSSOURCE_ALL_INT = 1,  ///<  All internal receivers
-    MIPCMD_FILTER_GNSSSOURCE_GNSSSOURCE_EXT     = 2,  ///<  External GNSS messages provided by user
-    MIPCMD_FILTER_GNSSSOURCE_GNSSSOURCE_INT_1   = 3,  ///<  Internal GNSS Receiver 1 only
-    MIPCMD_FILTER_GNSSSOURCE_GNSSSOURCE_INT_2   = 4,  ///<  Internal GNSS Receiver 2 only
+    MIP_FILTER_GNSS_SOURCE_COMMAND_GNSS_SOURCE_ALL_INT = 1,  ///<  All internal receivers
+    MIP_FILTER_GNSS_SOURCE_COMMAND_GNSS_SOURCE_EXT     = 2,  ///<  External GNSS messages provided by user
+    MIP_FILTER_GNSS_SOURCE_COMMAND_GNSS_SOURCE_INT_1   = 3,  ///<  Internal GNSS Receiver 1 only
+    MIP_FILTER_GNSS_SOURCE_COMMAND_GNSS_SOURCE_INT_2   = 4,  ///<  Internal GNSS Receiver 2 only
 };
-size_t insert_MipCmd_Filter_GnssSource_Gnsssource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_GnssSource_Gnsssource self);
-size_t extract_MipCmd_Filter_GnssSource_Gnsssource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_GnssSource_Gnsssource* self);
+size_t insert_mip_filter_gnss_source_command_gnss_source(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_gnss_source_command_gnss_source self);
+size_t extract_mip_filter_gnss_source_command_gnss_source(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_gnss_source_command_gnss_source* self);
 
-struct MipCmd_Filter_GnssSource
+struct mip_filter_gnss_source_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_GnssSource_Gnsssource          source;
+    enum mip_function_selector                        function;
+    enum mip_filter_gnss_source_command_gnss_source   source;
 };
-size_t insert_MipCmd_Filter_GnssSource(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_GnssSource* self);
-size_t extract_MipCmd_Filter_GnssSource(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_GnssSource* self);
+size_t insert_mip_filter_gnss_source_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_gnss_source_command* self);
+size_t extract_mip_filter_gnss_source_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_gnss_source_command* self);
 
-struct MipCmd_Filter_GnssSource_Response
+struct mip_filter_gnss_source_response
 {
-    enum MipCmd_Filter_GnssSource_Gnsssource          source;
+    enum mip_filter_gnss_source_command_gnss_source   source;
 };
-size_t insert_MipCmd_Filter_GnssSource_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_GnssSource_Response* self);
-size_t extract_MipCmd_Filter_GnssSource_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_GnssSource_Response* self);
+size_t insert_mip_filter_gnss_source_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_gnss_source_response* self);
+size_t extract_mip_filter_gnss_source_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_gnss_source_response* self);
 
-MipCmdResult write_gnss_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_GnssSource_Gnsssource source);
-MipCmdResult read_gnss_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_GnssSource_Gnsssource* source);
-MipCmdResult save_gnss_aiding_source_control(struct MipInterfaceState* device);
-MipCmdResult load_gnss_aiding_source_control(struct MipInterfaceState* device);
-MipCmdResult default_gnss_aiding_source_control(struct MipInterfaceState* device);
+mip_cmd_result write_gnss_aiding_source_control(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source source);
+mip_cmd_result read_gnss_aiding_source_control(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source* source);
+mip_cmd_result save_gnss_aiding_source_control(struct mip_interface* device);
+mip_cmd_result load_gnss_aiding_source_control(struct mip_interface* device);
+mip_cmd_result default_gnss_aiding_source_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_heading_source  Heading Source
+///@defgroup mip_filter_heading_source  Heading Aiding Source Control
 /// Control the source of heading information used to update the Kalman Filter.
 /// 
 /// 1. To use internal GNSS velocity vector for heading updates, the target application
@@ -641,44 +645,44 @@ MipCmdResult default_gnss_aiding_source_control(struct MipInterfaceState* device
 ///
 ///@{
 
-enum MipCmd_Filter_HeadingSource_Headingsource
+enum mip_filter_heading_source_command_heading_source
 {
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_NONE                          = 0,  ///<  See note 3
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_MAG                           = 1,  ///<  
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_GNSS_VEL                      = 2,  ///<  Seen notes 1,2
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_EXTERNAL                      = 3,  ///<  
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_GNSS_VEL_AND_MAG              = 4,  ///<  
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_GNSS_VEL_AND_EXTERNAL         = 5,  ///<  
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_MAG_AND_EXTERNAL              = 6,  ///<  
-    MIPCMD_FILTER_HEADINGSOURCE_HEADINGSOURCE_GNSS_VEL_AND_MAG_AND_EXTERNAL = 7,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_NONE                          = 0,  ///<  See note 3
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_MAG                           = 1,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_GNSS_VEL                      = 2,  ///<  Seen notes 1,2
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_EXTERNAL                      = 3,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_GNSS_VEL_AND_MAG              = 4,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_GNSS_VEL_AND_EXTERNAL         = 5,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_MAG_AND_EXTERNAL              = 6,  ///<  
+    MIP_FILTER_HEADING_SOURCE_COMMAND_HEADING_SOURCE_GNSS_VEL_AND_MAG_AND_EXTERNAL = 7,  ///<  
 };
-size_t insert_MipCmd_Filter_HeadingSource_Headingsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_HeadingSource_Headingsource self);
-size_t extract_MipCmd_Filter_HeadingSource_Headingsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_HeadingSource_Headingsource* self);
+size_t insert_mip_filter_heading_source_command_heading_source(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_heading_source_command_heading_source self);
+size_t extract_mip_filter_heading_source_command_heading_source(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_heading_source_command_heading_source* self);
 
-struct MipCmd_Filter_HeadingSource
+struct mip_filter_heading_source_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_HeadingSource_Headingsource    source;
+    enum mip_function_selector                        function;
+    enum mip_filter_heading_source_command_heading_source source;
 };
-size_t insert_MipCmd_Filter_HeadingSource(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_HeadingSource* self);
-size_t extract_MipCmd_Filter_HeadingSource(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_HeadingSource* self);
+size_t insert_mip_filter_heading_source_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_heading_source_command* self);
+size_t extract_mip_filter_heading_source_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_heading_source_command* self);
 
-struct MipCmd_Filter_HeadingSource_Response
+struct mip_filter_heading_source_response
 {
-    enum MipCmd_Filter_HeadingSource_Headingsource    source;
+    enum mip_filter_heading_source_command_heading_source source;
 };
-size_t insert_MipCmd_Filter_HeadingSource_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_HeadingSource_Response* self);
-size_t extract_MipCmd_Filter_HeadingSource_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_HeadingSource_Response* self);
+size_t insert_mip_filter_heading_source_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_heading_source_response* self);
+size_t extract_mip_filter_heading_source_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_heading_source_response* self);
 
-MipCmdResult write_heading_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_HeadingSource_Headingsource source);
-MipCmdResult read_heading_aiding_source_control(struct MipInterfaceState* device, enum MipCmd_Filter_HeadingSource_Headingsource* source);
-MipCmdResult save_heading_aiding_source_control(struct MipInterfaceState* device);
-MipCmdResult load_heading_aiding_source_control(struct MipInterfaceState* device);
-MipCmdResult default_heading_aiding_source_control(struct MipInterfaceState* device);
+mip_cmd_result write_heading_aiding_source_control(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source source);
+mip_cmd_result read_heading_aiding_source_control(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source* source);
+mip_cmd_result save_heading_aiding_source_control(struct mip_interface* device);
+mip_cmd_result load_heading_aiding_source_control(struct mip_interface* device);
+mip_cmd_result default_heading_aiding_source_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_altitude_aiding  Altitude Aiding
+///@defgroup mip_filter_altitude_aiding  Altitude Aiding Control
 /// Altitude Aiding Control
 /// 
 /// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
@@ -694,222 +698,222 @@ MipCmdResult default_heading_aiding_source_control(struct MipInterfaceState* dev
 ///
 ///@{
 
-struct MipCmd_Filter_AltitudeAiding
+struct mip_filter_altitude_aiding_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           aiding_selector;
 };
-size_t insert_MipCmd_Filter_AltitudeAiding(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AltitudeAiding* self);
-size_t extract_MipCmd_Filter_AltitudeAiding(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AltitudeAiding* self);
+size_t insert_mip_filter_altitude_aiding_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_altitude_aiding_command* self);
+size_t extract_mip_filter_altitude_aiding_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_altitude_aiding_command* self);
 
-struct MipCmd_Filter_AltitudeAiding_Response
+struct mip_filter_altitude_aiding_response
 {
     uint8_t                                           aiding_selector;
 };
-size_t insert_MipCmd_Filter_AltitudeAiding_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AltitudeAiding_Response* self);
-size_t extract_MipCmd_Filter_AltitudeAiding_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AltitudeAiding_Response* self);
+size_t insert_mip_filter_altitude_aiding_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_altitude_aiding_response* self);
+size_t extract_mip_filter_altitude_aiding_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_altitude_aiding_response* self);
 
-MipCmdResult write_altitude_aiding_control(struct MipInterfaceState* device, uint8_t aiding_selector);
-MipCmdResult read_altitude_aiding_control(struct MipInterfaceState* device, uint8_t* aiding_selector);
-MipCmdResult save_altitude_aiding_control(struct MipInterfaceState* device);
-MipCmdResult load_altitude_aiding_control(struct MipInterfaceState* device);
-MipCmdResult default_altitude_aiding_control(struct MipInterfaceState* device);
+mip_cmd_result write_altitude_aiding_control(struct mip_interface* device, uint8_t aiding_selector);
+mip_cmd_result read_altitude_aiding_control(struct mip_interface* device, uint8_t* aiding_selector);
+mip_cmd_result save_altitude_aiding_control(struct mip_interface* device);
+mip_cmd_result load_altitude_aiding_control(struct mip_interface* device);
+mip_cmd_result default_altitude_aiding_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_auto_zupt  Auto Zupt
+///@defgroup mip_filter_auto_zupt  Zero Velocity Update Control
 /// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
 ///
 ///@{
 
-struct MipCmd_Filter_AutoZupt
+struct mip_filter_auto_zupt_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           enable;
     float                                             threshold;
 };
-size_t insert_MipCmd_Filter_AutoZupt(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AutoZupt* self);
-size_t extract_MipCmd_Filter_AutoZupt(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AutoZupt* self);
+size_t insert_mip_filter_auto_zupt_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_auto_zupt_command* self);
+size_t extract_mip_filter_auto_zupt_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_auto_zupt_command* self);
 
-struct MipCmd_Filter_AutoZupt_Response
+struct mip_filter_auto_zupt_response
 {
     uint8_t                                           enable;
     float                                             threshold;
 };
-size_t insert_MipCmd_Filter_AutoZupt_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AutoZupt_Response* self);
-size_t extract_MipCmd_Filter_AutoZupt_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AutoZupt_Response* self);
+size_t insert_mip_filter_auto_zupt_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_auto_zupt_response* self);
+size_t extract_mip_filter_auto_zupt_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_auto_zupt_response* self);
 
-MipCmdResult write_zero_velocity_update_control(struct MipInterfaceState* device, uint8_t enable, float threshold);
-MipCmdResult read_zero_velocity_update_control(struct MipInterfaceState* device, uint8_t* enable, float* threshold);
-MipCmdResult save_zero_velocity_update_control(struct MipInterfaceState* device);
-MipCmdResult load_zero_velocity_update_control(struct MipInterfaceState* device);
-MipCmdResult default_zero_velocity_update_control(struct MipInterfaceState* device);
+mip_cmd_result write_zero_velocity_update_control(struct mip_interface* device, uint8_t enable, float threshold);
+mip_cmd_result read_zero_velocity_update_control(struct mip_interface* device, uint8_t* enable, float* threshold);
+mip_cmd_result save_zero_velocity_update_control(struct mip_interface* device);
+mip_cmd_result load_zero_velocity_update_control(struct mip_interface* device);
+mip_cmd_result default_zero_velocity_update_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_auto_angular_zupt  Auto Angular Zupt
+///@defgroup mip_filter_auto_angular_zupt  Zero Angular Rate Update Control
 /// Zero Angular Rate Update
 /// The ZUPT is triggered when the scalar magnitude of the angular rate vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
 ///
 ///@{
 
-struct MipCmd_Filter_AutoAngularZupt
+struct mip_filter_auto_angular_zupt_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           enable;
     float                                             threshold;
 };
-size_t insert_MipCmd_Filter_AutoAngularZupt(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AutoAngularZupt* self);
-size_t extract_MipCmd_Filter_AutoAngularZupt(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AutoAngularZupt* self);
+size_t insert_mip_filter_auto_angular_zupt_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_auto_angular_zupt_command* self);
+size_t extract_mip_filter_auto_angular_zupt_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_auto_angular_zupt_command* self);
 
-struct MipCmd_Filter_AutoAngularZupt_Response
+struct mip_filter_auto_angular_zupt_response
 {
     uint8_t                                           enable;
     float                                             threshold;
 };
-size_t insert_MipCmd_Filter_AutoAngularZupt_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AutoAngularZupt_Response* self);
-size_t extract_MipCmd_Filter_AutoAngularZupt_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AutoAngularZupt_Response* self);
+size_t insert_mip_filter_auto_angular_zupt_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_auto_angular_zupt_response* self);
+size_t extract_mip_filter_auto_angular_zupt_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_auto_angular_zupt_response* self);
 
-MipCmdResult write_zero_angular_rate_update_control(struct MipInterfaceState* device, uint8_t enable, float threshold);
-MipCmdResult read_zero_angular_rate_update_control(struct MipInterfaceState* device, uint8_t* enable, float* threshold);
-MipCmdResult save_zero_angular_rate_update_control(struct MipInterfaceState* device);
-MipCmdResult load_zero_angular_rate_update_control(struct MipInterfaceState* device);
-MipCmdResult default_zero_angular_rate_update_control(struct MipInterfaceState* device);
+mip_cmd_result write_zero_angular_rate_update_control(struct mip_interface* device, uint8_t enable, float threshold);
+mip_cmd_result read_zero_angular_rate_update_control(struct mip_interface* device, uint8_t* enable, float* threshold);
+mip_cmd_result save_zero_angular_rate_update_control(struct mip_interface* device);
+mip_cmd_result load_zero_angular_rate_update_control(struct mip_interface* device);
+mip_cmd_result default_zero_angular_rate_update_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_commanded_zupt  Commanded Zupt
+///@defgroup mip_filter_commanded_zupt  Commanded Zero Veloicty Update
 /// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
 ///@{
 
-struct MipCmd_Filter_CommandedZupt
+struct mip_filter_commanded_zupt_command
 {
 };
-size_t insert_MipCmd_Filter_CommandedZupt(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_CommandedZupt* self);
-size_t extract_MipCmd_Filter_CommandedZupt(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_CommandedZupt* self);
+size_t insert_mip_filter_commanded_zupt_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_commanded_zupt_command* self);
+size_t extract_mip_filter_commanded_zupt_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_commanded_zupt_command* self);
 
-MipCmdResult commanded_zero_veloicty_update(struct MipInterfaceState* device);
+mip_cmd_result commanded_zero_veloicty_update(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_commanded_angular_zupt  Commanded Angular Zupt
+///@defgroup mip_filter_commanded_angular_zupt  Commanded Zero Angular Rate Update
 /// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
 ///@{
 
-struct MipCmd_Filter_CommandedAngularZupt
+struct mip_filter_commanded_angular_zupt_command
 {
 };
-size_t insert_MipCmd_Filter_CommandedAngularZupt(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_CommandedAngularZupt* self);
-size_t extract_MipCmd_Filter_CommandedAngularZupt(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_CommandedAngularZupt* self);
+size_t insert_mip_filter_commanded_angular_zupt_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_commanded_angular_zupt_command* self);
+size_t extract_mip_filter_commanded_angular_zupt_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_commanded_angular_zupt_command* self);
 
-MipCmdResult commanded_zero_angular_rate_update(struct MipInterfaceState* device);
+mip_cmd_result commanded_zero_angular_rate_update(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_aiding_measurement_enable  Aiding Measurement Enable
+///@defgroup mip_filter_aiding_measurement_enable  Aiding Measurement Control
 /// Enables / disables the specified aiding measurement source.
 /// 
 /// 
 ///
 ///@{
 
-enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource
+enum mip_filter_aiding_measurement_enable_command_aiding_source
 {
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_GNSS_POS_VEL     = 0,  ///<  GNSS Position and Velocity
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_GNSS_HEADING     = 1,  ///<  GNSS Heading (dual antenna)
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_ALTIMETER        = 2,  ///<  Altimeter
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_SPEED            = 3,  ///<  Speed sensor / Odometer
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_MAGNETOMETER     = 4,  ///<  Magnetometer
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_EXTERNAL_HEADING = 5,  ///<  External heading input
-    MIPCMD_FILTER_AIDINGMEASUREMENTENABLE_AIDINGSOURCE_ALL              = 65535,  ///<  Save/load/reset all options
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL     = 0,  ///<  GNSS Position and Velocity
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_HEADING     = 1,  ///<  GNSS Heading (dual antenna)
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALTIMETER        = 2,  ///<  Altimeter
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_SPEED            = 3,  ///<  Speed sensor / Odometer
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER     = 4,  ///<  Magnetometer
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING = 5,  ///<  External heading input
+    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL              = 65535,  ///<  Save/load/reset all options
 };
-size_t insert_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource self);
-size_t extract_MipCmd_Filter_AidingMeasurementEnable_Aidingsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource* self);
+size_t insert_mip_filter_aiding_measurement_enable_command_aiding_source(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_aiding_measurement_enable_command_aiding_source self);
+size_t extract_mip_filter_aiding_measurement_enable_command_aiding_source(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_aiding_measurement_enable_command_aiding_source* self);
 
-struct MipCmd_Filter_AidingMeasurementEnable
+struct mip_filter_aiding_measurement_enable_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source;
+    enum mip_function_selector                        function;
+    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source;
     bool                                              enable;
 };
-size_t insert_MipCmd_Filter_AidingMeasurementEnable(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AidingMeasurementEnable* self);
-size_t extract_MipCmd_Filter_AidingMeasurementEnable(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AidingMeasurementEnable* self);
+size_t insert_mip_filter_aiding_measurement_enable_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_aiding_measurement_enable_command* self);
+size_t extract_mip_filter_aiding_measurement_enable_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_aiding_measurement_enable_command* self);
 
-struct MipCmd_Filter_AidingMeasurementEnable_Response
+struct mip_filter_aiding_measurement_enable_response
 {
-    enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source;
+    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source;
     bool                                              enable;
 };
-size_t insert_MipCmd_Filter_AidingMeasurementEnable_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AidingMeasurementEnable_Response* self);
-size_t extract_MipCmd_Filter_AidingMeasurementEnable_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AidingMeasurementEnable_Response* self);
+size_t insert_mip_filter_aiding_measurement_enable_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_aiding_measurement_enable_response* self);
+size_t extract_mip_filter_aiding_measurement_enable_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_aiding_measurement_enable_response* self);
 
-MipCmdResult write_aiding_measurement_control(struct MipInterfaceState* device, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source, bool enable);
-MipCmdResult read_aiding_measurement_control(struct MipInterfaceState* device, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source, bool* enable);
-MipCmdResult save_aiding_measurement_control(struct MipInterfaceState* device, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source);
-MipCmdResult load_aiding_measurement_control(struct MipInterfaceState* device, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source);
-MipCmdResult default_aiding_measurement_control(struct MipInterfaceState* device, enum MipCmd_Filter_AidingMeasurementEnable_Aidingsource aiding_source);
+mip_cmd_result write_aiding_measurement_control(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable);
+mip_cmd_result read_aiding_measurement_control(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool* enable);
+mip_cmd_result save_aiding_measurement_control(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
+mip_cmd_result load_aiding_measurement_control(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
+mip_cmd_result default_aiding_measurement_control(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_run  Run
+///@defgroup mip_filter_run  Run Navigation Filter
 /// Manual run command.
 /// 
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
 ///
 ///@{
 
-struct MipCmd_Filter_Run
+struct mip_filter_run_command
 {
 };
-size_t insert_MipCmd_Filter_Run(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_Run* self);
-size_t extract_MipCmd_Filter_Run(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_Run* self);
+size_t insert_mip_filter_run_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_run_command* self);
+size_t extract_mip_filter_run_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_run_command* self);
 
-MipCmdResult run_navigation_filter(struct MipInterfaceState* device);
+mip_cmd_result run_navigation_filter(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_kinematic_constraint  Kinematic Constraint
+///@defgroup mip_filter_kinematic_constraint  Kinematic Constraint Control
 /// Controls kinematic constraint model selection for the navigation filter.
 /// 
 /// See manual for explanation of how the kinematic constraints are applied.
 ///
 ///@{
 
-struct MipCmd_Filter_KinematicConstraint
+struct mip_filter_kinematic_constraint_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           acceleration_constraint_selection;
     uint8_t                                           velocity_constraint_selection;
     uint8_t                                           angular_constraint_selection;
 };
-size_t insert_MipCmd_Filter_KinematicConstraint(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_KinematicConstraint* self);
-size_t extract_MipCmd_Filter_KinematicConstraint(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_KinematicConstraint* self);
+size_t insert_mip_filter_kinematic_constraint_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_kinematic_constraint_command* self);
+size_t extract_mip_filter_kinematic_constraint_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_kinematic_constraint_command* self);
 
-struct MipCmd_Filter_KinematicConstraint_Response
+struct mip_filter_kinematic_constraint_response
 {
     uint8_t                                           acceleration_constraint_selection;
     uint8_t                                           velocity_constraint_selection;
     uint8_t                                           angular_constraint_selection;
 };
-size_t insert_MipCmd_Filter_KinematicConstraint_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_KinematicConstraint_Response* self);
-size_t extract_MipCmd_Filter_KinematicConstraint_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_KinematicConstraint_Response* self);
+size_t insert_mip_filter_kinematic_constraint_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_kinematic_constraint_response* self);
+size_t extract_mip_filter_kinematic_constraint_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_kinematic_constraint_response* self);
 
-MipCmdResult write_kinematic_constraint_control(struct MipInterfaceState* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection);
-MipCmdResult read_kinematic_constraint_control(struct MipInterfaceState* device, uint8_t* acceleration_constraint_selection, uint8_t* velocity_constraint_selection, uint8_t* angular_constraint_selection);
-MipCmdResult save_kinematic_constraint_control(struct MipInterfaceState* device);
-MipCmdResult load_kinematic_constraint_control(struct MipInterfaceState* device);
-MipCmdResult default_kinematic_constraint_control(struct MipInterfaceState* device);
+mip_cmd_result write_kinematic_constraint_control(struct mip_interface* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection);
+mip_cmd_result read_kinematic_constraint_control(struct mip_interface* device, uint8_t* acceleration_constraint_selection, uint8_t* velocity_constraint_selection, uint8_t* angular_constraint_selection);
+mip_cmd_result save_kinematic_constraint_control(struct mip_interface* device);
+mip_cmd_result load_kinematic_constraint_control(struct mip_interface* device);
+mip_cmd_result default_kinematic_constraint_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_initialization_configuration  Initialization Configuration
+///@defgroup mip_filter_initialization_configuration  Navigation Filter Initialization
 /// Controls the source and values used for initial conditions of the navigation solution.
 /// 
 /// Notes: Initial conditions are the position, velocity, and attitude of the platform used when the filter starts running or is reset.
@@ -918,159 +922,159 @@ MipCmdResult default_kinematic_constraint_control(struct MipInterfaceState* devi
 ///
 ///@{
 
-enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource
+enum mip_filter_initialization_configuration_command_initial_condition_source
 {
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_INITIALCONDITIONSOURCE_AUTO_POS_VEL_ATT        = 0,  ///<  Automatic position, velocity and attitude
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_INITIALCONDITIONSOURCE_AUTO_POS_VEL_PITCH_ROLL = 1,  ///<  Automatic position and velocity, automatic pitch and roll, and user-specified heading
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_INITIALCONDITIONSOURCE_AUTO_POS_VEL            = 2,  ///<  Automatic position and velocity, with fully user-specified attitude
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_INITIALCONDITIONSOURCE_MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT        = 0,  ///<  Automatic position, velocity and attitude
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_PITCH_ROLL = 1,  ///<  Automatic position and velocity, automatic pitch and roll, and user-specified heading
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL            = 2,  ///<  Automatic position and velocity, with fully user-specified attitude
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
 };
-size_t insert_MipCmd_Filter_InitializationConfiguration_Initialconditionsource(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource self);
-size_t extract_MipCmd_Filter_InitializationConfiguration_Initialconditionsource(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource* self);
+size_t insert_mip_filter_initialization_configuration_command_initial_condition_source(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_initialization_configuration_command_initial_condition_source self);
+size_t extract_mip_filter_initialization_configuration_command_initial_condition_source(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_initialization_configuration_command_initial_condition_source* self);
 
-enum MipCmd_Filter_InitializationConfiguration_Alignmentselector
+enum mip_filter_initialization_configuration_command_alignment_selector
 {
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_ALIGNMENTSELECTOR_DUAL_ANTENNA = 0x01,
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_ALIGNMENTSELECTOR_KINEMATIC    = 0x02,
-    MIPCMD_FILTER_INITIALIZATIONCONFIGURATION_ALIGNMENTSELECTOR_MAGNETOMETER = 0x04,
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01,
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02,
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04,
 };
-size_t insert_MipCmd_Filter_InitializationConfiguration_Alignmentselector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_InitializationConfiguration_Alignmentselector self);
-size_t extract_MipCmd_Filter_InitializationConfiguration_Alignmentselector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_InitializationConfiguration_Alignmentselector* self);
+size_t insert_mip_filter_initialization_configuration_command_alignment_selector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_initialization_configuration_command_alignment_selector self);
+size_t extract_mip_filter_initialization_configuration_command_alignment_selector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_initialization_configuration_command_alignment_selector* self);
 
-struct MipCmd_Filter_InitializationConfiguration
+struct mip_filter_initialization_configuration_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           wait_for_run_command;
-    enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource initial_cond_src;
-    enum MipCmd_Filter_InitializationConfiguration_Alignmentselector auto_heading_alignment_selector;
+    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src;
+    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector;
     float                                             initial_heading;
     float                                             initial_pitch;
     float                                             initial_roll;
     float                                             initial_position[3];
     float                                             initial_velocity[3];
-    enum MipFilterReferenceFrame                      reference_frame_selector;
+    enum mip_filter_reference_frame                   reference_frame_selector;
 };
-size_t insert_MipCmd_Filter_InitializationConfiguration(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_InitializationConfiguration* self);
-size_t extract_MipCmd_Filter_InitializationConfiguration(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_InitializationConfiguration* self);
+size_t insert_mip_filter_initialization_configuration_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_initialization_configuration_command* self);
+size_t extract_mip_filter_initialization_configuration_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_initialization_configuration_command* self);
 
-struct MipCmd_Filter_InitializationConfiguration_Response
+struct mip_filter_initialization_configuration_response
 {
     uint8_t                                           wait_for_run_command;
-    enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource initial_cond_src;
-    enum MipCmd_Filter_InitializationConfiguration_Alignmentselector auto_heading_alignment_selector;
+    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src;
+    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector;
     float                                             initial_heading;
     float                                             initial_pitch;
     float                                             initial_roll;
     float                                             initial_position[3];
     float                                             initial_velocity[3];
-    enum MipFilterReferenceFrame                      reference_frame_selector;
+    enum mip_filter_reference_frame                   reference_frame_selector;
 };
-size_t insert_MipCmd_Filter_InitializationConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_InitializationConfiguration_Response* self);
-size_t extract_MipCmd_Filter_InitializationConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_InitializationConfiguration_Response* self);
+size_t insert_mip_filter_initialization_configuration_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_initialization_configuration_response* self);
+size_t extract_mip_filter_initialization_configuration_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_initialization_configuration_response* self);
 
-MipCmdResult write_navigation_filter_initialization(struct MipInterfaceState* device, uint8_t wait_for_run_command, enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource initial_cond_src, enum MipCmd_Filter_InitializationConfiguration_Alignmentselector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, enum MipFilterReferenceFrame reference_frame_selector);
-MipCmdResult read_navigation_filter_initialization(struct MipInterfaceState* device, uint8_t* wait_for_run_command, enum MipCmd_Filter_InitializationConfiguration_Initialconditionsource* initial_cond_src, enum MipCmd_Filter_InitializationConfiguration_Alignmentselector* auto_heading_alignment_selector, float* initial_heading, float* initial_pitch, float* initial_roll, float* initial_position, float* initial_velocity, enum MipFilterReferenceFrame* reference_frame_selector);
-MipCmdResult save_navigation_filter_initialization(struct MipInterfaceState* device);
-MipCmdResult load_navigation_filter_initialization(struct MipInterfaceState* device);
-MipCmdResult default_navigation_filter_initialization(struct MipInterfaceState* device);
+mip_cmd_result write_navigation_filter_initialization(struct mip_interface* device, uint8_t wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, enum mip_filter_reference_frame reference_frame_selector);
+mip_cmd_result read_navigation_filter_initialization(struct mip_interface* device, uint8_t* wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector, float* initial_heading, float* initial_pitch, float* initial_roll, float* initial_position, float* initial_velocity, enum mip_filter_reference_frame* reference_frame_selector);
+mip_cmd_result save_navigation_filter_initialization(struct mip_interface* device);
+mip_cmd_result load_navigation_filter_initialization(struct mip_interface* device);
+mip_cmd_result default_navigation_filter_initialization(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_adaptive_filter_options  Adaptive Filter Options
+///@defgroup mip_filter_adaptive_filter_options  Adaptive Filter Control
 /// Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
 ///
 ///@{
 
-struct MipCmd_Filter_AdaptiveFilterOptions
+struct mip_filter_adaptive_filter_options_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           level;
     uint16_t                                          time_limit;
 };
-size_t insert_MipCmd_Filter_AdaptiveFilterOptions(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AdaptiveFilterOptions* self);
-size_t extract_MipCmd_Filter_AdaptiveFilterOptions(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AdaptiveFilterOptions* self);
+size_t insert_mip_filter_adaptive_filter_options_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_adaptive_filter_options_command* self);
+size_t extract_mip_filter_adaptive_filter_options_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_adaptive_filter_options_command* self);
 
-struct MipCmd_Filter_AdaptiveFilterOptions_Response
+struct mip_filter_adaptive_filter_options_response
 {
     uint8_t                                           level;
     uint16_t                                          time_limit;
 };
-size_t insert_MipCmd_Filter_AdaptiveFilterOptions_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_AdaptiveFilterOptions_Response* self);
-size_t extract_MipCmd_Filter_AdaptiveFilterOptions_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_AdaptiveFilterOptions_Response* self);
+size_t insert_mip_filter_adaptive_filter_options_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_adaptive_filter_options_response* self);
+size_t extract_mip_filter_adaptive_filter_options_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_adaptive_filter_options_response* self);
 
-MipCmdResult write_adaptive_filter_control(struct MipInterfaceState* device, uint8_t level, uint16_t time_limit);
-MipCmdResult read_adaptive_filter_control(struct MipInterfaceState* device, uint8_t* level, uint16_t* time_limit);
-MipCmdResult save_adaptive_filter_control(struct MipInterfaceState* device);
-MipCmdResult load_adaptive_filter_control(struct MipInterfaceState* device);
-MipCmdResult default_adaptive_filter_control(struct MipInterfaceState* device);
+mip_cmd_result write_adaptive_filter_control(struct mip_interface* device, uint8_t level, uint16_t time_limit);
+mip_cmd_result read_adaptive_filter_control(struct mip_interface* device, uint8_t* level, uint16_t* time_limit);
+mip_cmd_result save_adaptive_filter_control(struct mip_interface* device);
+mip_cmd_result load_adaptive_filter_control(struct mip_interface* device);
+mip_cmd_result default_adaptive_filter_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_multi_antenna_offset  Multi Antenna Offset
+///@defgroup mip_filter_multi_antenna_offset  GNSS Multi-Antenna Offset Control
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
 ///
 ///@{
 
-struct MipCmd_Filter_MultiAntennaOffset
+struct mip_filter_multi_antenna_offset_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           receiver_id;
     float                                             antenna_offset[3];
 };
-size_t insert_MipCmd_Filter_MultiAntennaOffset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_MultiAntennaOffset* self);
-size_t extract_MipCmd_Filter_MultiAntennaOffset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_MultiAntennaOffset* self);
+size_t insert_mip_filter_multi_antenna_offset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_multi_antenna_offset_command* self);
+size_t extract_mip_filter_multi_antenna_offset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_multi_antenna_offset_command* self);
 
-struct MipCmd_Filter_MultiAntennaOffset_Response
+struct mip_filter_multi_antenna_offset_response
 {
     uint8_t                                           receiver_id;
     float                                             antenna_offset[3];
 };
-size_t insert_MipCmd_Filter_MultiAntennaOffset_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_MultiAntennaOffset_Response* self);
-size_t extract_MipCmd_Filter_MultiAntennaOffset_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_MultiAntennaOffset_Response* self);
+size_t insert_mip_filter_multi_antenna_offset_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_multi_antenna_offset_response* self);
+size_t extract_mip_filter_multi_antenna_offset_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_multi_antenna_offset_response* self);
 
-MipCmdResult write_gnss_multi_antenna_offset_control(struct MipInterfaceState* device, uint8_t receiver_id, const float* antenna_offset);
-MipCmdResult read_gnss_multi_antenna_offset_control(struct MipInterfaceState* device, uint8_t receiver_id, float* antenna_offset);
-MipCmdResult save_gnss_multi_antenna_offset_control(struct MipInterfaceState* device, uint8_t receiver_id);
-MipCmdResult load_gnss_multi_antenna_offset_control(struct MipInterfaceState* device, uint8_t receiver_id);
-MipCmdResult default_gnss_multi_antenna_offset_control(struct MipInterfaceState* device, uint8_t receiver_id);
+mip_cmd_result write_gnss_multi_antenna_offset_control(struct mip_interface* device, uint8_t receiver_id, const float* antenna_offset);
+mip_cmd_result read_gnss_multi_antenna_offset_control(struct mip_interface* device, uint8_t receiver_id, float* antenna_offset);
+mip_cmd_result save_gnss_multi_antenna_offset_control(struct mip_interface* device, uint8_t receiver_id);
+mip_cmd_result load_gnss_multi_antenna_offset_control(struct mip_interface* device, uint8_t receiver_id);
+mip_cmd_result default_gnss_multi_antenna_offset_control(struct mip_interface* device, uint8_t receiver_id);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_rel_pos_configuration  Rel Pos Configuration
+///@defgroup mip_filter_rel_pos_configuration  Relative Position Configuration
 /// Configure the reference location for filter relative positioning outputs
 ///
 ///@{
 
-struct MipCmd_Filter_RelPosConfiguration
+struct mip_filter_rel_pos_configuration_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           source;
-    enum MipFilterReferenceFrame                      reference_frame_selector;
+    enum mip_filter_reference_frame                   reference_frame_selector;
     double                                            reference_coordinates[3];
 };
-size_t insert_MipCmd_Filter_RelPosConfiguration(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_RelPosConfiguration* self);
-size_t extract_MipCmd_Filter_RelPosConfiguration(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_RelPosConfiguration* self);
+size_t insert_mip_filter_rel_pos_configuration_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_rel_pos_configuration_command* self);
+size_t extract_mip_filter_rel_pos_configuration_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_rel_pos_configuration_command* self);
 
-struct MipCmd_Filter_RelPosConfiguration_Response
+struct mip_filter_rel_pos_configuration_response
 {
     uint8_t                                           source;
-    enum MipFilterReferenceFrame                      reference_frame_selector;
+    enum mip_filter_reference_frame                   reference_frame_selector;
     double                                            reference_coordinates[3];
 };
-size_t insert_MipCmd_Filter_RelPosConfiguration_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_RelPosConfiguration_Response* self);
-size_t extract_MipCmd_Filter_RelPosConfiguration_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_RelPosConfiguration_Response* self);
+size_t insert_mip_filter_rel_pos_configuration_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_rel_pos_configuration_response* self);
+size_t extract_mip_filter_rel_pos_configuration_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_rel_pos_configuration_response* self);
 
-MipCmdResult write_relative_position_configuration(struct MipInterfaceState* device, uint8_t source, enum MipFilterReferenceFrame reference_frame_selector, const double* reference_coordinates);
-MipCmdResult read_relative_position_configuration(struct MipInterfaceState* device, uint8_t* source, enum MipFilterReferenceFrame* reference_frame_selector, double* reference_coordinates);
-MipCmdResult save_relative_position_configuration(struct MipInterfaceState* device);
-MipCmdResult load_relative_position_configuration(struct MipInterfaceState* device);
-MipCmdResult default_relative_position_configuration(struct MipInterfaceState* device);
+mip_cmd_result write_relative_position_configuration(struct mip_interface* device, uint8_t source, enum mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates);
+mip_cmd_result read_relative_position_configuration(struct mip_interface* device, uint8_t* source, enum mip_filter_reference_frame* reference_frame_selector, double* reference_coordinates);
+mip_cmd_result save_relative_position_configuration(struct mip_interface* device);
+mip_cmd_result load_relative_position_configuration(struct mip_interface* device);
+mip_cmd_result default_relative_position_configuration(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ref_point_lever_arm  Ref Point Lever Arm
+///@defgroup mip_filter_ref_point_lever_arm  Reference point lever arm
 /// Lever arm offset with respect to the sensor for the indicated point of reference.
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
@@ -1080,60 +1084,60 @@ MipCmdResult default_relative_position_configuration(struct MipInterfaceState* d
 ///
 ///@{
 
-enum MipCmd_Filter_RefPointLeverArm_Referencepointselector
+enum mip_filter_ref_point_lever_arm_command_reference_point_selector
 {
-    MIPCMD_FILTER_REFPOINTLEVERARM_REFERENCEPOINTSELECTOR_VEH = 1,  ///<  Defines the origin of the vehicle
+    MIP_FILTER_REF_POINT_LEVER_ARM_COMMAND_REFERENCE_POINT_SELECTOR_VEH = 1,  ///<  Defines the origin of the vehicle
 };
-size_t insert_MipCmd_Filter_RefPointLeverArm_Referencepointselector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Filter_RefPointLeverArm_Referencepointselector self);
-size_t extract_MipCmd_Filter_RefPointLeverArm_Referencepointselector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Filter_RefPointLeverArm_Referencepointselector* self);
+size_t insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_filter_ref_point_lever_arm_command_reference_point_selector self);
+size_t extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_filter_ref_point_lever_arm_command_reference_point_selector* self);
 
-struct MipCmd_Filter_RefPointLeverArm
+struct mip_filter_ref_point_lever_arm_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Filter_RefPointLeverArm_Referencepointselector ref_point_sel;
+    enum mip_function_selector                        function;
+    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel;
     float                                             lever_arm_offset[3];
 };
-size_t insert_MipCmd_Filter_RefPointLeverArm(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_RefPointLeverArm* self);
-size_t extract_MipCmd_Filter_RefPointLeverArm(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_RefPointLeverArm* self);
+size_t insert_mip_filter_ref_point_lever_arm_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ref_point_lever_arm_command* self);
+size_t extract_mip_filter_ref_point_lever_arm_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ref_point_lever_arm_command* self);
 
-struct MipCmd_Filter_RefPointLeverArm_Response
+struct mip_filter_ref_point_lever_arm_response
 {
-    enum MipCmd_Filter_RefPointLeverArm_Referencepointselector ref_point_sel;
+    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel;
     float                                             lever_arm_offset[3];
 };
-size_t insert_MipCmd_Filter_RefPointLeverArm_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_RefPointLeverArm_Response* self);
-size_t extract_MipCmd_Filter_RefPointLeverArm_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_RefPointLeverArm_Response* self);
+size_t insert_mip_filter_ref_point_lever_arm_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ref_point_lever_arm_response* self);
+size_t extract_mip_filter_ref_point_lever_arm_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ref_point_lever_arm_response* self);
 
-MipCmdResult write_reference_point_lever_arm(struct MipInterfaceState* device, enum MipCmd_Filter_RefPointLeverArm_Referencepointselector ref_point_sel, const float* lever_arm_offset);
-MipCmdResult read_reference_point_lever_arm(struct MipInterfaceState* device, enum MipCmd_Filter_RefPointLeverArm_Referencepointselector* ref_point_sel, float* lever_arm_offset);
-MipCmdResult save_reference_point_lever_arm(struct MipInterfaceState* device);
-MipCmdResult load_reference_point_lever_arm(struct MipInterfaceState* device);
-MipCmdResult default_reference_point_lever_arm(struct MipInterfaceState* device);
+mip_cmd_result write_reference_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset);
+mip_cmd_result read_reference_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel, float* lever_arm_offset);
+mip_cmd_result save_reference_point_lever_arm(struct mip_interface* device);
+mip_cmd_result load_reference_point_lever_arm(struct mip_interface* device);
+mip_cmd_result default_reference_point_lever_arm(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_speed_measurement  Speed Measurement
+///@defgroup mip_filter_speed_measurement  Input speed measurement
 /// Speed aiding measurement, where speed is defined as rate of motion along the vehicle's x-axis direction.
 /// Can be used by an external odometer/speedometer, for example.
 /// This command cannot be used if the internal odometer is configured.
 ///
 ///@{
 
-struct MipCmd_Filter_SpeedMeasurement
+struct mip_filter_speed_measurement_command
 {
     uint8_t                                           source;
     float                                             time_of_week;
     float                                             speed;
     float                                             speed_uncertainty;
 };
-size_t insert_MipCmd_Filter_SpeedMeasurement(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_SpeedMeasurement* self);
-size_t extract_MipCmd_Filter_SpeedMeasurement(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_SpeedMeasurement* self);
+size_t insert_mip_filter_speed_measurement_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_speed_measurement_command* self);
+size_t extract_mip_filter_speed_measurement_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_speed_measurement_command* self);
 
-MipCmdResult input_speed_measurement(struct MipInterfaceState* device, uint8_t source, float time_of_week, float speed, float speed_uncertainty);
+mip_cmd_result input_speed_measurement(struct mip_interface* device, uint8_t source, float time_of_week, float speed, float speed_uncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_speed_lever_arm  Speed Lever Arm
+///@defgroup mip_filter_speed_lever_arm  Measurement speed lever arm
 /// Lever arm offset for speed measurements.
 /// This is used to compensate for an off-center measurement point
 /// having a different speed due to rotation of the vehicle.
@@ -1144,28 +1148,28 @@ MipCmdResult input_speed_measurement(struct MipInterfaceState* device, uint8_t s
 ///
 ///@{
 
-struct MipCmd_Filter_SpeedLeverArm
+struct mip_filter_speed_lever_arm_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           source;
     float                                             lever_arm_offset[3];
 };
-size_t insert_MipCmd_Filter_SpeedLeverArm(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_SpeedLeverArm* self);
-size_t extract_MipCmd_Filter_SpeedLeverArm(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_SpeedLeverArm* self);
+size_t insert_mip_filter_speed_lever_arm_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_speed_lever_arm_command* self);
+size_t extract_mip_filter_speed_lever_arm_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_speed_lever_arm_command* self);
 
-struct MipCmd_Filter_SpeedLeverArm_Response
+struct mip_filter_speed_lever_arm_response
 {
     uint8_t                                           source;
     float                                             lever_arm_offset[3];
 };
-size_t insert_MipCmd_Filter_SpeedLeverArm_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_SpeedLeverArm_Response* self);
-size_t extract_MipCmd_Filter_SpeedLeverArm_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_SpeedLeverArm_Response* self);
+size_t insert_mip_filter_speed_lever_arm_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_speed_lever_arm_response* self);
+size_t extract_mip_filter_speed_lever_arm_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_speed_lever_arm_response* self);
 
-MipCmdResult write_measurement_speed_lever_arm(struct MipInterfaceState* device, uint8_t source, const float* lever_arm_offset);
-MipCmdResult read_measurement_speed_lever_arm(struct MipInterfaceState* device, uint8_t source, float* lever_arm_offset);
-MipCmdResult save_measurement_speed_lever_arm(struct MipInterfaceState* device, uint8_t source);
-MipCmdResult load_measurement_speed_lever_arm(struct MipInterfaceState* device, uint8_t source);
-MipCmdResult default_measurement_speed_lever_arm(struct MipInterfaceState* device, uint8_t source);
+mip_cmd_result write_measurement_speed_lever_arm(struct mip_interface* device, uint8_t source, const float* lever_arm_offset);
+mip_cmd_result read_measurement_speed_lever_arm(struct mip_interface* device, uint8_t source, float* lever_arm_offset);
+mip_cmd_result save_measurement_speed_lever_arm(struct mip_interface* device, uint8_t source);
+mip_cmd_result load_measurement_speed_lever_arm(struct mip_interface* device, uint8_t source);
+mip_cmd_result default_measurement_speed_lever_arm(struct mip_interface* device, uint8_t source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1180,26 +1184,26 @@ MipCmdResult default_measurement_speed_lever_arm(struct MipInterfaceState* devic
 ///
 ///@{
 
-struct MipCmd_Filter_WheeledVehicleConstraintControl
+struct mip_filter_wheeled_vehicle_constraint_control_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           enable;
 };
-size_t insert_MipCmd_Filter_WheeledVehicleConstraintControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_WheeledVehicleConstraintControl* self);
-size_t extract_MipCmd_Filter_WheeledVehicleConstraintControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_WheeledVehicleConstraintControl* self);
+size_t insert_mip_filter_wheeled_vehicle_constraint_control_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_wheeled_vehicle_constraint_control_command* self);
+size_t extract_mip_filter_wheeled_vehicle_constraint_control_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_wheeled_vehicle_constraint_control_command* self);
 
-struct MipCmd_Filter_WheeledVehicleConstraintControl_Response
+struct mip_filter_wheeled_vehicle_constraint_control_response
 {
     uint8_t                                           enable;
 };
-size_t insert_MipCmd_Filter_WheeledVehicleConstraintControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_WheeledVehicleConstraintControl_Response* self);
-size_t extract_MipCmd_Filter_WheeledVehicleConstraintControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_WheeledVehicleConstraintControl_Response* self);
+size_t insert_mip_filter_wheeled_vehicle_constraint_control_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_wheeled_vehicle_constraint_control_response* self);
+size_t extract_mip_filter_wheeled_vehicle_constraint_control_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_wheeled_vehicle_constraint_control_response* self);
 
-MipCmdResult write_wheeled_vehicle_constraint_control(struct MipInterfaceState* device, uint8_t enable);
-MipCmdResult read_wheeled_vehicle_constraint_control(struct MipInterfaceState* device, uint8_t* enable);
-MipCmdResult save_wheeled_vehicle_constraint_control(struct MipInterfaceState* device);
-MipCmdResult load_wheeled_vehicle_constraint_control(struct MipInterfaceState* device);
-MipCmdResult default_wheeled_vehicle_constraint_control(struct MipInterfaceState* device);
+mip_cmd_result write_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t enable);
+mip_cmd_result read_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t* enable);
+mip_cmd_result save_wheeled_vehicle_constraint_control(struct mip_interface* device);
+mip_cmd_result load_wheeled_vehicle_constraint_control(struct mip_interface* device);
+mip_cmd_result default_wheeled_vehicle_constraint_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1212,92 +1216,92 @@ MipCmdResult default_wheeled_vehicle_constraint_control(struct MipInterfaceState
 ///
 ///@{
 
-struct MipCmd_Filter_VerticalGyroConstraintControl
+struct mip_filter_vertical_gyro_constraint_control_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           enable;
 };
-size_t insert_MipCmd_Filter_VerticalGyroConstraintControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_VerticalGyroConstraintControl* self);
-size_t extract_MipCmd_Filter_VerticalGyroConstraintControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_VerticalGyroConstraintControl* self);
+size_t insert_mip_filter_vertical_gyro_constraint_control_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_vertical_gyro_constraint_control_command* self);
+size_t extract_mip_filter_vertical_gyro_constraint_control_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_vertical_gyro_constraint_control_command* self);
 
-struct MipCmd_Filter_VerticalGyroConstraintControl_Response
+struct mip_filter_vertical_gyro_constraint_control_response
 {
     uint8_t                                           enable;
 };
-size_t insert_MipCmd_Filter_VerticalGyroConstraintControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_VerticalGyroConstraintControl_Response* self);
-size_t extract_MipCmd_Filter_VerticalGyroConstraintControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_VerticalGyroConstraintControl_Response* self);
+size_t insert_mip_filter_vertical_gyro_constraint_control_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_vertical_gyro_constraint_control_response* self);
+size_t extract_mip_filter_vertical_gyro_constraint_control_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_vertical_gyro_constraint_control_response* self);
 
-MipCmdResult write_vertical_gyro_constraint_control(struct MipInterfaceState* device, uint8_t enable);
-MipCmdResult read_vertical_gyro_constraint_control(struct MipInterfaceState* device, uint8_t* enable);
-MipCmdResult save_vertical_gyro_constraint_control(struct MipInterfaceState* device);
-MipCmdResult load_vertical_gyro_constraint_control(struct MipInterfaceState* device);
-MipCmdResult default_vertical_gyro_constraint_control(struct MipInterfaceState* device);
+mip_cmd_result write_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t enable);
+mip_cmd_result read_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t* enable);
+mip_cmd_result save_vertical_gyro_constraint_control(struct mip_interface* device);
+mip_cmd_result load_vertical_gyro_constraint_control(struct mip_interface* device);
+mip_cmd_result default_vertical_gyro_constraint_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gnss_antenna_cal_control  Gnss Antenna Cal Control
+///@defgroup mip_filter_gnss_antenna_cal_control  GNSS Antenna Offset Calibration Control
 /// Configure the GNSS antenna lever arm calibration.
 /// 
 /// When enabled, the filter will enable lever arm error tracking, up to the maximum offset specified.
 ///
 ///@{
 
-struct MipCmd_Filter_GnssAntennaCalControl
+struct mip_filter_gnss_antenna_cal_control_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           enable;
     float                                             max_offset;
 };
-size_t insert_MipCmd_Filter_GnssAntennaCalControl(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_GnssAntennaCalControl* self);
-size_t extract_MipCmd_Filter_GnssAntennaCalControl(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_GnssAntennaCalControl* self);
+size_t insert_mip_filter_gnss_antenna_cal_control_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_gnss_antenna_cal_control_command* self);
+size_t extract_mip_filter_gnss_antenna_cal_control_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_gnss_antenna_cal_control_command* self);
 
-struct MipCmd_Filter_GnssAntennaCalControl_Response
+struct mip_filter_gnss_antenna_cal_control_response
 {
     uint8_t                                           enable;
     float                                             max_offset;
 };
-size_t insert_MipCmd_Filter_GnssAntennaCalControl_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_GnssAntennaCalControl_Response* self);
-size_t extract_MipCmd_Filter_GnssAntennaCalControl_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_GnssAntennaCalControl_Response* self);
+size_t insert_mip_filter_gnss_antenna_cal_control_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_gnss_antenna_cal_control_response* self);
+size_t extract_mip_filter_gnss_antenna_cal_control_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_gnss_antenna_cal_control_response* self);
 
-MipCmdResult write_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device, uint8_t enable, float max_offset);
-MipCmdResult read_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device, uint8_t* enable, float* max_offset);
-MipCmdResult save_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device);
-MipCmdResult load_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device);
-MipCmdResult default_gnss_antenna_offset_calibration_control(struct MipInterfaceState* device);
+mip_cmd_result write_gnss_antenna_offset_calibration_control(struct mip_interface* device, uint8_t enable, float max_offset);
+mip_cmd_result read_gnss_antenna_offset_calibration_control(struct mip_interface* device, uint8_t* enable, float* max_offset);
+mip_cmd_result save_gnss_antenna_offset_calibration_control(struct mip_interface* device);
+mip_cmd_result load_gnss_antenna_offset_calibration_control(struct mip_interface* device);
+mip_cmd_result default_gnss_antenna_offset_calibration_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetic_declination_source  Magnetic Declination Source
+///@defgroup mip_filter_magnetic_declination_source  Magnetic Field Declination Source Control
 /// Source for magnetic declination angle, and user supplied value for manual selection.
 ///
 ///@{
 
-struct MipCmd_Filter_MagneticDeclinationSource
+struct mip_filter_magnetic_declination_source_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipFilterMagDeclinationSource                source;
+    enum mip_function_selector                        function;
+    enum mip_filter_mag_declination_source            source;
     float                                             declination;
 };
-size_t insert_MipCmd_Filter_MagneticDeclinationSource(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_MagneticDeclinationSource* self);
-size_t extract_MipCmd_Filter_MagneticDeclinationSource(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_MagneticDeclinationSource* self);
+size_t insert_mip_filter_magnetic_declination_source_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_magnetic_declination_source_command* self);
+size_t extract_mip_filter_magnetic_declination_source_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_magnetic_declination_source_command* self);
 
-struct MipCmd_Filter_MagneticDeclinationSource_Response
+struct mip_filter_magnetic_declination_source_response
 {
-    enum MipFilterMagDeclinationSource                source;
+    enum mip_filter_mag_declination_source            source;
     float                                             declination;
 };
-size_t insert_MipCmd_Filter_MagneticDeclinationSource_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_MagneticDeclinationSource_Response* self);
-size_t extract_MipCmd_Filter_MagneticDeclinationSource_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_MagneticDeclinationSource_Response* self);
+size_t insert_mip_filter_magnetic_declination_source_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_magnetic_declination_source_response* self);
+size_t extract_mip_filter_magnetic_declination_source_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_magnetic_declination_source_response* self);
 
-MipCmdResult write_magnetic_field_declination_source_control(struct MipInterfaceState* device, enum MipFilterMagDeclinationSource source, float declination);
-MipCmdResult read_magnetic_field_declination_source_control(struct MipInterfaceState* device, enum MipFilterMagDeclinationSource* source, float* declination);
-MipCmdResult save_magnetic_field_declination_source_control(struct MipInterfaceState* device);
-MipCmdResult load_magnetic_field_declination_source_control(struct MipInterfaceState* device);
-MipCmdResult default_magnetic_field_declination_source_control(struct MipInterfaceState* device);
+mip_cmd_result write_magnetic_field_declination_source_control(struct mip_interface* device, enum mip_filter_mag_declination_source source, float declination);
+mip_cmd_result read_magnetic_field_declination_source_control(struct mip_interface* device, enum mip_filter_mag_declination_source* source, float* declination);
+mip_cmd_result save_magnetic_field_declination_source_control(struct mip_interface* device);
+mip_cmd_result load_magnetic_field_declination_source_control(struct mip_interface* device);
+mip_cmd_result default_magnetic_field_declination_source_control(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_set_initial_heading  Set Initial Heading
+///@defgroup mip_filter_set_initial_heading  Set Initial Heading Control
 /// Set the initial heading angle.
 /// 
 /// The estimation filter will reset the heading estimate to provided value. If the product supports magnetometer aiding and this feature has been enabled, the heading
@@ -1305,14 +1309,14 @@ MipCmdResult default_magnetic_field_declination_source_control(struct MipInterfa
 ///
 ///@{
 
-struct MipCmd_Filter_SetInitialHeading
+struct mip_filter_set_initial_heading_command
 {
     float                                             heading;
 };
-size_t insert_MipCmd_Filter_SetInitialHeading(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Filter_SetInitialHeading* self);
-size_t extract_MipCmd_Filter_SetInitialHeading(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Filter_SetInitialHeading* self);
+size_t insert_mip_filter_set_initial_heading_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_set_initial_heading_command* self);
+size_t extract_mip_filter_set_initial_heading_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_set_initial_heading_command* self);
 
-MipCmdResult set_initial_heading_control(struct MipInterfaceState* device, float heading);
+mip_cmd_result set_initial_heading_control(struct mip_interface* device, float heading);
 ///@}
 ///
 
@@ -1323,10 +1327,11 @@ MipCmdResult set_initial_heading_control(struct MipInterfaceState* device, float
 
 #ifdef __cplusplus
 } // extern "C"
+} // namespace C
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_ResetFilter>
+struct MipFieldInfo<C::mip_filter_reset_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RESET_FILTER;
@@ -1334,20 +1339,20 @@ struct MipFieldInfo<MipCmd_Filter_ResetFilter>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ResetFilter& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_reset_command& self)
     {
-        return insert_MipCmd_Filter_ResetFilter(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_reset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ResetFilter& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_reset_command& self)
     {
-        return extract_MipCmd_Filter_ResetFilter(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_reset_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_SetInitialAttitude>
+struct MipFieldInfo<C::mip_filter_set_initial_attitude_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_ATTITUDE;
@@ -1355,25 +1360,25 @@ struct MipFieldInfo<MipCmd_Filter_SetInitialAttitude>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SetInitialAttitude& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_set_initial_attitude_command& self)
     {
-        return insert_MipCmd_Filter_SetInitialAttitude(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_set_initial_attitude_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SetInitialAttitude& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_set_initial_attitude_command& self)
     {
-        return extract_MipCmd_Filter_SetInitialAttitude(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_set_initial_attitude_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_EstimationControl>
+struct MipFieldInfo<C::mip_filter_estimation_control_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
-    typedef MipCmd_Filter_EstimationControl_Response Response;
+    typedef C::mip_filter_estimation_control_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1382,28 +1387,28 @@ struct MipFieldInfo<MipCmd_Filter_EstimationControl>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_EstimationControl& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_estimation_control_command& self)
     {
-        return insert_MipCmd_Filter_EstimationControl(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_estimation_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_EstimationControl& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_estimation_control_command& self)
     {
-        return extract_MipCmd_Filter_EstimationControl(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_estimation_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_EstimationControl_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_estimation_control_response& self)
     {
-        return insert_MipCmd_Filter_EstimationControl_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_estimation_control_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_EstimationControl_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_estimation_control_response& self)
     {
-        return extract_MipCmd_Filter_EstimationControl_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_estimation_control_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_ExternalGnssUpdate>
+struct MipFieldInfo<C::mip_filter_external_gnss_update_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_GNSS_UPDATE;
@@ -1411,20 +1416,20 @@ struct MipFieldInfo<MipCmd_Filter_ExternalGnssUpdate>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalGnssUpdate& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_external_gnss_update_command& self)
     {
-        return insert_MipCmd_Filter_ExternalGnssUpdate(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_external_gnss_update_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalGnssUpdate& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_external_gnss_update_command& self)
     {
-        return extract_MipCmd_Filter_ExternalGnssUpdate(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_external_gnss_update_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdate>
+struct MipFieldInfo<C::mip_filter_external_heading_update_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE;
@@ -1432,20 +1437,20 @@ struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdate>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalHeadingUpdate& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_external_heading_update_command& self)
     {
-        return insert_MipCmd_Filter_ExternalHeadingUpdate(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_external_heading_update_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalHeadingUpdate& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_external_heading_update_command& self)
     {
-        return extract_MipCmd_Filter_ExternalHeadingUpdate(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_external_heading_update_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdateWithTime>
+struct MipFieldInfo<C::mip_filter_external_heading_update_with_time_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE_WITH_TIME;
@@ -1453,25 +1458,25 @@ struct MipFieldInfo<MipCmd_Filter_ExternalHeadingUpdateWithTime>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_ExternalHeadingUpdateWithTime& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_external_heading_update_with_time_command& self)
     {
-        return insert_MipCmd_Filter_ExternalHeadingUpdateWithTime(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_external_heading_update_with_time_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_ExternalHeadingUpdateWithTime& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_external_heading_update_with_time_command& self)
     {
-        return extract_MipCmd_Filter_ExternalHeadingUpdateWithTime(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_external_heading_update_with_time_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_TareOrientation>
+struct MipFieldInfo<C::mip_filter_tare_orientation_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_TARE_ORIENTATION;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_TARE_ORIENTATION;
-    typedef MipCmd_Filter_TareOrientation_Response Response;
+    typedef C::mip_filter_tare_orientation_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1480,33 +1485,33 @@ struct MipFieldInfo<MipCmd_Filter_TareOrientation>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_TareOrientation& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_tare_orientation_command& self)
     {
-        return insert_MipCmd_Filter_TareOrientation(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_tare_orientation_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_TareOrientation& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_tare_orientation_command& self)
     {
-        return extract_MipCmd_Filter_TareOrientation(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_tare_orientation_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_TareOrientation_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_tare_orientation_response& self)
     {
-        return insert_MipCmd_Filter_TareOrientation_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_tare_orientation_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_TareOrientation_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_tare_orientation_response& self)
     {
-        return extract_MipCmd_Filter_TareOrientation_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_tare_orientation_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationEuler>
+struct MipFieldInfo<C::mip_filter_sensor_to_vehicle_rotation_euler_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
-    typedef MipCmd_Filter_Sensor2VehicleRotationEuler_Response Response;
+    typedef C::mip_filter_sensor_to_vehicle_rotation_euler_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1515,33 +1520,33 @@ struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationEuler>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationEuler& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_euler_command& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationEuler(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_euler_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationEuler& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_euler_command& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationEuler(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_euler_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationEuler_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_euler_response& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_euler_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationEuler_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_euler_response& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationEuler_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_euler_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationDcm>
+struct MipFieldInfo<C::mip_filter_sensor_to_vehicle_rotation_dcm_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
-    typedef MipCmd_Filter_Sensor2VehicleRotationDcm_Response Response;
+    typedef C::mip_filter_sensor_to_vehicle_rotation_dcm_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1550,33 +1555,33 @@ struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationDcm>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationDcm& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_dcm_command& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationDcm(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationDcm& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_dcm_command& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationDcm(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationDcm_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_dcm_response& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationDcm_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_dcm_response& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationDcm_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationQuaternion>
+struct MipFieldInfo<C::mip_filter_sensor_to_vehicle_rotation_quaternion_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
-    typedef MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response Response;
+    typedef C::mip_filter_sensor_to_vehicle_rotation_quaternion_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1585,33 +1590,33 @@ struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleRotationQuaternion>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationQuaternion& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_quaternion_command& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationQuaternion& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_quaternion_command& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_rotation_quaternion_response& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_rotation_quaternion_response& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleRotationQuaternion_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleOffset>
+struct MipFieldInfo<C::mip_filter_sensor_to_vehicle_offset_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
-    typedef MipCmd_Filter_Sensor2VehicleOffset_Response Response;
+    typedef C::mip_filter_sensor_to_vehicle_offset_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1620,33 +1625,33 @@ struct MipFieldInfo<MipCmd_Filter_Sensor2VehicleOffset>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleOffset& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_offset_command& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleOffset(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleOffset& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_offset_command& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleOffset(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Sensor2VehicleOffset_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_sensor_to_vehicle_offset_response& self)
     {
-        return insert_MipCmd_Filter_Sensor2VehicleOffset_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_sensor_to_vehicle_offset_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Sensor2VehicleOffset_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_sensor_to_vehicle_offset_response& self)
     {
-        return extract_MipCmd_Filter_Sensor2VehicleOffset_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_sensor_to_vehicle_offset_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AntennaOffset>
+struct MipFieldInfo<C::mip_filter_antenna_offset_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANTENNA_OFFSET;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ANTENNA_OFFSET;
-    typedef MipCmd_Filter_AntennaOffset_Response Response;
+    typedef C::mip_filter_antenna_offset_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1655,33 +1660,33 @@ struct MipFieldInfo<MipCmd_Filter_AntennaOffset>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AntennaOffset& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_antenna_offset_command& self)
     {
-        return insert_MipCmd_Filter_AntennaOffset(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_antenna_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AntennaOffset& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_antenna_offset_command& self)
     {
-        return extract_MipCmd_Filter_AntennaOffset(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_antenna_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AntennaOffset_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_antenna_offset_response& self)
     {
-        return insert_MipCmd_Filter_AntennaOffset_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_antenna_offset_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AntennaOffset_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_antenna_offset_response& self)
     {
-        return extract_MipCmd_Filter_AntennaOffset_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_antenna_offset_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_GnssSource>
+struct MipFieldInfo<C::mip_filter_gnss_source_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_GNSS_SOURCE_CONTROL;
-    typedef MipCmd_Filter_GnssSource_Response Response;
+    typedef C::mip_filter_gnss_source_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1690,33 +1695,33 @@ struct MipFieldInfo<MipCmd_Filter_GnssSource>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssSource& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_source_command& self)
     {
-        return insert_MipCmd_Filter_GnssSource(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssSource& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_source_command& self)
     {
-        return extract_MipCmd_Filter_GnssSource(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssSource_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_source_response& self)
     {
-        return insert_MipCmd_Filter_GnssSource_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_source_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssSource_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_source_response& self)
     {
-        return extract_MipCmd_Filter_GnssSource_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_source_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_HeadingSource>
+struct MipFieldInfo<C::mip_filter_heading_source_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_HEADING_UPDATE_CONTROL;
-    typedef MipCmd_Filter_HeadingSource_Response Response;
+    typedef C::mip_filter_heading_source_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1725,33 +1730,33 @@ struct MipFieldInfo<MipCmd_Filter_HeadingSource>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_HeadingSource& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_heading_source_command& self)
     {
-        return insert_MipCmd_Filter_HeadingSource(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_heading_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_HeadingSource& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_heading_source_command& self)
     {
-        return extract_MipCmd_Filter_HeadingSource(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_heading_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_HeadingSource_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_heading_source_response& self)
     {
-        return insert_MipCmd_Filter_HeadingSource_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_heading_source_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_HeadingSource_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_heading_source_response& self)
     {
-        return extract_MipCmd_Filter_HeadingSource_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_heading_source_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AltitudeAiding>
+struct MipFieldInfo<C::mip_filter_altitude_aiding_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
-    typedef MipCmd_Filter_AltitudeAiding_Response Response;
+    typedef C::mip_filter_altitude_aiding_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1760,33 +1765,33 @@ struct MipFieldInfo<MipCmd_Filter_AltitudeAiding>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AltitudeAiding& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_altitude_aiding_command& self)
     {
-        return insert_MipCmd_Filter_AltitudeAiding(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_altitude_aiding_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AltitudeAiding& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_altitude_aiding_command& self)
     {
-        return extract_MipCmd_Filter_AltitudeAiding(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_altitude_aiding_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AltitudeAiding_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_altitude_aiding_response& self)
     {
-        return insert_MipCmd_Filter_AltitudeAiding_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_altitude_aiding_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AltitudeAiding_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_altitude_aiding_response& self)
     {
-        return extract_MipCmd_Filter_AltitudeAiding_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_altitude_aiding_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AutoZupt>
+struct MipFieldInfo<C::mip_filter_auto_zupt_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ZUPT_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ZUPT_CONTROL;
-    typedef MipCmd_Filter_AutoZupt_Response Response;
+    typedef C::mip_filter_auto_zupt_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1795,33 +1800,33 @@ struct MipFieldInfo<MipCmd_Filter_AutoZupt>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoZupt& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_auto_zupt_command& self)
     {
-        return insert_MipCmd_Filter_AutoZupt(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_auto_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoZupt& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_auto_zupt_command& self)
     {
-        return extract_MipCmd_Filter_AutoZupt(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_auto_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoZupt_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_auto_zupt_response& self)
     {
-        return insert_MipCmd_Filter_AutoZupt_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_auto_zupt_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoZupt_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_auto_zupt_response& self)
     {
-        return extract_MipCmd_Filter_AutoZupt_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_auto_zupt_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AutoAngularZupt>
+struct MipFieldInfo<C::mip_filter_auto_angular_zupt_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
-    typedef MipCmd_Filter_AutoAngularZupt_Response Response;
+    typedef C::mip_filter_auto_angular_zupt_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1830,28 +1835,28 @@ struct MipFieldInfo<MipCmd_Filter_AutoAngularZupt>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoAngularZupt& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_auto_angular_zupt_command& self)
     {
-        return insert_MipCmd_Filter_AutoAngularZupt(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_auto_angular_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoAngularZupt& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_auto_angular_zupt_command& self)
     {
-        return extract_MipCmd_Filter_AutoAngularZupt(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_auto_angular_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AutoAngularZupt_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_auto_angular_zupt_response& self)
     {
-        return insert_MipCmd_Filter_AutoAngularZupt_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_auto_angular_zupt_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AutoAngularZupt_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_auto_angular_zupt_response& self)
     {
-        return extract_MipCmd_Filter_AutoAngularZupt_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_auto_angular_zupt_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_CommandedZupt>
+struct MipFieldInfo<C::mip_filter_commanded_zupt_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ZUPT;
@@ -1859,20 +1864,20 @@ struct MipFieldInfo<MipCmd_Filter_CommandedZupt>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_CommandedZupt& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_commanded_zupt_command& self)
     {
-        return insert_MipCmd_Filter_CommandedZupt(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_commanded_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_CommandedZupt& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_commanded_zupt_command& self)
     {
-        return extract_MipCmd_Filter_CommandedZupt(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_commanded_zupt_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_CommandedAngularZupt>
+struct MipFieldInfo<C::mip_filter_commanded_angular_zupt_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ANGULAR_ZUPT;
@@ -1880,25 +1885,25 @@ struct MipFieldInfo<MipCmd_Filter_CommandedAngularZupt>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_CommandedAngularZupt& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_commanded_angular_zupt_command& self)
     {
-        return insert_MipCmd_Filter_CommandedAngularZupt(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_commanded_angular_zupt_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_CommandedAngularZupt& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_commanded_angular_zupt_command& self)
     {
-        return extract_MipCmd_Filter_CommandedAngularZupt(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_commanded_angular_zupt_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AidingMeasurementEnable>
+struct MipFieldInfo<C::mip_filter_aiding_measurement_enable_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
-    typedef MipCmd_Filter_AidingMeasurementEnable_Response Response;
+    typedef C::mip_filter_aiding_measurement_enable_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1907,28 +1912,28 @@ struct MipFieldInfo<MipCmd_Filter_AidingMeasurementEnable>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AidingMeasurementEnable& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_aiding_measurement_enable_command& self)
     {
-        return insert_MipCmd_Filter_AidingMeasurementEnable(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_aiding_measurement_enable_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AidingMeasurementEnable& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_aiding_measurement_enable_command& self)
     {
-        return extract_MipCmd_Filter_AidingMeasurementEnable(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_aiding_measurement_enable_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AidingMeasurementEnable_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_aiding_measurement_enable_response& self)
     {
-        return insert_MipCmd_Filter_AidingMeasurementEnable_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_aiding_measurement_enable_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AidingMeasurementEnable_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_aiding_measurement_enable_response& self)
     {
-        return extract_MipCmd_Filter_AidingMeasurementEnable_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_aiding_measurement_enable_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_Run>
+struct MipFieldInfo<C::mip_filter_run_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RUN;
@@ -1936,25 +1941,25 @@ struct MipFieldInfo<MipCmd_Filter_Run>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_Run& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_run_command& self)
     {
-        return insert_MipCmd_Filter_Run(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_run_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_Run& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_run_command& self)
     {
-        return extract_MipCmd_Filter_Run(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_run_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_KinematicConstraint>
+struct MipFieldInfo<C::mip_filter_kinematic_constraint_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_KINEMATIC_CONSTRAINT;
-    typedef MipCmd_Filter_KinematicConstraint_Response Response;
+    typedef C::mip_filter_kinematic_constraint_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1963,33 +1968,33 @@ struct MipFieldInfo<MipCmd_Filter_KinematicConstraint>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_KinematicConstraint& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_kinematic_constraint_command& self)
     {
-        return insert_MipCmd_Filter_KinematicConstraint(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_kinematic_constraint_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_KinematicConstraint& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_kinematic_constraint_command& self)
     {
-        return extract_MipCmd_Filter_KinematicConstraint(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_kinematic_constraint_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_KinematicConstraint_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_kinematic_constraint_response& self)
     {
-        return insert_MipCmd_Filter_KinematicConstraint_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_kinematic_constraint_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_KinematicConstraint_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_kinematic_constraint_response& self)
     {
-        return extract_MipCmd_Filter_KinematicConstraint_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_kinematic_constraint_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_InitializationConfiguration>
+struct MipFieldInfo<C::mip_filter_initialization_configuration_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_INITIALIZATION_CONFIGURATION;
-    typedef MipCmd_Filter_InitializationConfiguration_Response Response;
+    typedef C::mip_filter_initialization_configuration_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -1998,33 +2003,33 @@ struct MipFieldInfo<MipCmd_Filter_InitializationConfiguration>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_InitializationConfiguration& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_initialization_configuration_command& self)
     {
-        return insert_MipCmd_Filter_InitializationConfiguration(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_initialization_configuration_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_InitializationConfiguration& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_initialization_configuration_command& self)
     {
-        return extract_MipCmd_Filter_InitializationConfiguration(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_initialization_configuration_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_InitializationConfiguration_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_initialization_configuration_response& self)
     {
-        return insert_MipCmd_Filter_InitializationConfiguration_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_initialization_configuration_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_InitializationConfiguration_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_initialization_configuration_response& self)
     {
-        return extract_MipCmd_Filter_InitializationConfiguration_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_initialization_configuration_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_AdaptiveFilterOptions>
+struct MipFieldInfo<C::mip_filter_adaptive_filter_options_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
-    typedef MipCmd_Filter_AdaptiveFilterOptions_Response Response;
+    typedef C::mip_filter_adaptive_filter_options_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2033,33 +2038,33 @@ struct MipFieldInfo<MipCmd_Filter_AdaptiveFilterOptions>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AdaptiveFilterOptions& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_adaptive_filter_options_command& self)
     {
-        return insert_MipCmd_Filter_AdaptiveFilterOptions(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_adaptive_filter_options_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AdaptiveFilterOptions& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_adaptive_filter_options_command& self)
     {
-        return extract_MipCmd_Filter_AdaptiveFilterOptions(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_adaptive_filter_options_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_AdaptiveFilterOptions_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_adaptive_filter_options_response& self)
     {
-        return insert_MipCmd_Filter_AdaptiveFilterOptions_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_adaptive_filter_options_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_AdaptiveFilterOptions_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_adaptive_filter_options_response& self)
     {
-        return extract_MipCmd_Filter_AdaptiveFilterOptions_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_adaptive_filter_options_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_MultiAntennaOffset>
+struct MipFieldInfo<C::mip_filter_multi_antenna_offset_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_MULTI_ANTENNA_OFFSET;
-    typedef MipCmd_Filter_MultiAntennaOffset_Response Response;
+    typedef C::mip_filter_multi_antenna_offset_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2068,33 +2073,33 @@ struct MipFieldInfo<MipCmd_Filter_MultiAntennaOffset>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MultiAntennaOffset& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_multi_antenna_offset_command& self)
     {
-        return insert_MipCmd_Filter_MultiAntennaOffset(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_multi_antenna_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MultiAntennaOffset& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_multi_antenna_offset_command& self)
     {
-        return extract_MipCmd_Filter_MultiAntennaOffset(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_multi_antenna_offset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MultiAntennaOffset_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_multi_antenna_offset_response& self)
     {
-        return insert_MipCmd_Filter_MultiAntennaOffset_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_multi_antenna_offset_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MultiAntennaOffset_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_multi_antenna_offset_response& self)
     {
-        return extract_MipCmd_Filter_MultiAntennaOffset_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_multi_antenna_offset_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_RelPosConfiguration>
+struct MipFieldInfo<C::mip_filter_rel_pos_configuration_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_REL_POS_CONFIGURATION;
-    typedef MipCmd_Filter_RelPosConfiguration_Response Response;
+    typedef C::mip_filter_rel_pos_configuration_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2103,33 +2108,33 @@ struct MipFieldInfo<MipCmd_Filter_RelPosConfiguration>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RelPosConfiguration& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_rel_pos_configuration_command& self)
     {
-        return insert_MipCmd_Filter_RelPosConfiguration(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_rel_pos_configuration_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RelPosConfiguration& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_rel_pos_configuration_command& self)
     {
-        return extract_MipCmd_Filter_RelPosConfiguration(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_rel_pos_configuration_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RelPosConfiguration_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_rel_pos_configuration_response& self)
     {
-        return insert_MipCmd_Filter_RelPosConfiguration_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_rel_pos_configuration_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RelPosConfiguration_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_rel_pos_configuration_response& self)
     {
-        return extract_MipCmd_Filter_RelPosConfiguration_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_rel_pos_configuration_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_RefPointLeverArm>
+struct MipFieldInfo<C::mip_filter_ref_point_lever_arm_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_REF_POINT_LEVER_ARM;
-    typedef MipCmd_Filter_RefPointLeverArm_Response Response;
+    typedef C::mip_filter_ref_point_lever_arm_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2138,28 +2143,28 @@ struct MipFieldInfo<MipCmd_Filter_RefPointLeverArm>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RefPointLeverArm& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ref_point_lever_arm_command& self)
     {
-        return insert_MipCmd_Filter_RefPointLeverArm(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ref_point_lever_arm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RefPointLeverArm& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ref_point_lever_arm_command& self)
     {
-        return extract_MipCmd_Filter_RefPointLeverArm(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ref_point_lever_arm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_RefPointLeverArm_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ref_point_lever_arm_response& self)
     {
-        return insert_MipCmd_Filter_RefPointLeverArm_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ref_point_lever_arm_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_RefPointLeverArm_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ref_point_lever_arm_response& self)
     {
-        return extract_MipCmd_Filter_RefPointLeverArm_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ref_point_lever_arm_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_SpeedMeasurement>
+struct MipFieldInfo<C::mip_filter_speed_measurement_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_MEASUREMENT;
@@ -2167,25 +2172,25 @@ struct MipFieldInfo<MipCmd_Filter_SpeedMeasurement>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedMeasurement& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_speed_measurement_command& self)
     {
-        return insert_MipCmd_Filter_SpeedMeasurement(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_speed_measurement_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedMeasurement& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_speed_measurement_command& self)
     {
-        return extract_MipCmd_Filter_SpeedMeasurement(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_speed_measurement_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_SpeedLeverArm>
+struct MipFieldInfo<C::mip_filter_speed_lever_arm_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_SPEED_LEVER_ARM;
-    typedef MipCmd_Filter_SpeedLeverArm_Response Response;
+    typedef C::mip_filter_speed_lever_arm_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2194,33 +2199,33 @@ struct MipFieldInfo<MipCmd_Filter_SpeedLeverArm>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedLeverArm& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_speed_lever_arm_command& self)
     {
-        return insert_MipCmd_Filter_SpeedLeverArm(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_speed_lever_arm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedLeverArm& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_speed_lever_arm_command& self)
     {
-        return extract_MipCmd_Filter_SpeedLeverArm(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_speed_lever_arm_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SpeedLeverArm_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_speed_lever_arm_response& self)
     {
-        return insert_MipCmd_Filter_SpeedLeverArm_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_speed_lever_arm_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SpeedLeverArm_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_speed_lever_arm_response& self)
     {
-        return extract_MipCmd_Filter_SpeedLeverArm_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_speed_lever_arm_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_WheeledVehicleConstraintControl>
+struct MipFieldInfo<C::mip_filter_wheeled_vehicle_constraint_control_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
-    typedef MipCmd_Filter_WheeledVehicleConstraintControl_Response Response;
+    typedef C::mip_filter_wheeled_vehicle_constraint_control_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2229,33 +2234,33 @@ struct MipFieldInfo<MipCmd_Filter_WheeledVehicleConstraintControl>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_WheeledVehicleConstraintControl& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_wheeled_vehicle_constraint_control_command& self)
     {
-        return insert_MipCmd_Filter_WheeledVehicleConstraintControl(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_wheeled_vehicle_constraint_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_WheeledVehicleConstraintControl& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_wheeled_vehicle_constraint_control_command& self)
     {
-        return extract_MipCmd_Filter_WheeledVehicleConstraintControl(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_wheeled_vehicle_constraint_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_WheeledVehicleConstraintControl_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_wheeled_vehicle_constraint_control_response& self)
     {
-        return insert_MipCmd_Filter_WheeledVehicleConstraintControl_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_wheeled_vehicle_constraint_control_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_WheeledVehicleConstraintControl_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_wheeled_vehicle_constraint_control_response& self)
     {
-        return extract_MipCmd_Filter_WheeledVehicleConstraintControl_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_wheeled_vehicle_constraint_control_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_VerticalGyroConstraintControl>
+struct MipFieldInfo<C::mip_filter_vertical_gyro_constraint_control_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
-    typedef MipCmd_Filter_VerticalGyroConstraintControl_Response Response;
+    typedef C::mip_filter_vertical_gyro_constraint_control_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2264,33 +2269,33 @@ struct MipFieldInfo<MipCmd_Filter_VerticalGyroConstraintControl>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_VerticalGyroConstraintControl& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_vertical_gyro_constraint_control_command& self)
     {
-        return insert_MipCmd_Filter_VerticalGyroConstraintControl(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_vertical_gyro_constraint_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_VerticalGyroConstraintControl& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_vertical_gyro_constraint_control_command& self)
     {
-        return extract_MipCmd_Filter_VerticalGyroConstraintControl(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_vertical_gyro_constraint_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_VerticalGyroConstraintControl_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_vertical_gyro_constraint_control_response& self)
     {
-        return insert_MipCmd_Filter_VerticalGyroConstraintControl_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_vertical_gyro_constraint_control_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_VerticalGyroConstraintControl_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_vertical_gyro_constraint_control_response& self)
     {
-        return extract_MipCmd_Filter_VerticalGyroConstraintControl_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_vertical_gyro_constraint_control_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_GnssAntennaCalControl>
+struct MipFieldInfo<C::mip_filter_gnss_antenna_cal_control_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
-    typedef MipCmd_Filter_GnssAntennaCalControl_Response Response;
+    typedef C::mip_filter_gnss_antenna_cal_control_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2299,33 +2304,33 @@ struct MipFieldInfo<MipCmd_Filter_GnssAntennaCalControl>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssAntennaCalControl& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_antenna_cal_control_command& self)
     {
-        return insert_MipCmd_Filter_GnssAntennaCalControl(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_antenna_cal_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssAntennaCalControl& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_antenna_cal_control_command& self)
     {
-        return extract_MipCmd_Filter_GnssAntennaCalControl(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_antenna_cal_control_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_GnssAntennaCalControl_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_antenna_cal_control_response& self)
     {
-        return insert_MipCmd_Filter_GnssAntennaCalControl_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_antenna_cal_control_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_GnssAntennaCalControl_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_antenna_cal_control_response& self)
     {
-        return extract_MipCmd_Filter_GnssAntennaCalControl_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_antenna_cal_control_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_MagneticDeclinationSource>
+struct MipFieldInfo<C::mip_filter_magnetic_declination_source_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_DECLINATION_SOURCE;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE;
-    typedef MipCmd_Filter_MagneticDeclinationSource_Response Response;
+    typedef C::mip_filter_magnetic_declination_source_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -2334,28 +2339,28 @@ struct MipFieldInfo<MipCmd_Filter_MagneticDeclinationSource>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MagneticDeclinationSource& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetic_declination_source_command& self)
     {
-        return insert_MipCmd_Filter_MagneticDeclinationSource(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetic_declination_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MagneticDeclinationSource& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetic_declination_source_command& self)
     {
-        return extract_MipCmd_Filter_MagneticDeclinationSource(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetic_declination_source_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_MagneticDeclinationSource_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetic_declination_source_response& self)
     {
-        return insert_MipCmd_Filter_MagneticDeclinationSource_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetic_declination_source_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_MagneticDeclinationSource_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetic_declination_source_response& self)
     {
-        return extract_MipCmd_Filter_MagneticDeclinationSource_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetic_declination_source_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Filter_SetInitialHeading>
+struct MipFieldInfo<C::mip_filter_set_initial_heading_command>
 {
     static const uint8_t descriptorSet = MIP_FILTER_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_HEADING;
@@ -2363,13 +2368,13 @@ struct MipFieldInfo<MipCmd_Filter_SetInitialHeading>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Filter_SetInitialHeading& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_set_initial_heading_command& self)
     {
-        return insert_MipCmd_Filter_SetInitialHeading(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_set_initial_heading_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Filter_SetInitialHeading& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_set_initial_heading_command& self)
     {
-        return extract_MipCmd_Filter_SetInitialHeading(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_set_initial_heading_command(buffer, bufferSize, offset, &self);
     }
 };
 

@@ -9,10 +9,9 @@
 
 #ifdef __cplusplus
 namespace mscl {
-extern "C" {
 #endif // __cplusplus
 
-struct MipInterfaceState;
+struct mip_interface;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -25,7 +24,7 @@ struct MipInterfaceState;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum MipBaseCommandDescriptors
+enum mip_base_command_descriptors
 {
     MIP_BASE_COMMAND_DESC_SET                    = 0x01,
     
@@ -48,12 +47,17 @@ enum MipBaseCommandDescriptors
     MIP_REPLY_DESC_BASE_CONTINUOUS_BIT           = 0x88,
     MIP_REPLY_DESC_BASE_COMM_SPEED               = 0x89,
 };
+#ifdef __cplusplus
+namespace C {
+extern "C" {
+#endif // __cplusplus
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-struct MipBaseDeviceInfo
+struct mip_base_device_info
 {
     uint16_t                                          firmware_version;
     char                                              model_name[16];
@@ -62,48 +66,48 @@ struct MipBaseDeviceInfo
     char                                              lot_number[16];
     char                                              device_options[16];
 };
-size_t insert_MipBaseDeviceInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipBaseDeviceInfo* self);
-size_t extract_MipBaseDeviceInfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipBaseDeviceInfo* self);
+size_t insert_mip_base_device_info(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_device_info* self);
+size_t extract_mip_base_device_info(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_device_info* self);
 
-enum MipTimeFormat
+enum mip_time_format
 {
-    MIPTIMEFORMAT_GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
+    MIP_TIME_FORMAT_GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
 };
-size_t insert_MipTimeFormat(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipTimeFormat self);
-size_t extract_MipTimeFormat(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipTimeFormat* self);
+size_t insert_mip_time_format(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_time_format self);
+size_t extract_mip_time_format(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_time_format* self);
 
-enum MipCommandedTestBitsGq7
+enum mip_commanded_test_bits_gq7
 {
-    MIPCOMMANDEDTESTBITSGQ7_GENERAL_HARDWARE_FAULT = 0x01,
-    MIPCOMMANDEDTESTBITSGQ7_GENERAL_FIRMWARE_FAULT = 0x02,
-    MIPCOMMANDEDTESTBITSGQ7_TIMING_OVERLOAD        = 0x04,
-    MIPCOMMANDEDTESTBITSGQ7_BUFFER_OVERRUN         = 0x08,
-    MIPCOMMANDEDTESTBITSGQ7_RESERVED               = 0xF0,
-    MIPCOMMANDEDTESTBITSGQ7_IPC_IMU_FAULT          = 0x100,
-    MIPCOMMANDEDTESTBITSGQ7_IPC_NAV_FAULT          = 0x200,
-    MIPCOMMANDEDTESTBITSGQ7_IPC_GNSS_FAULT         = 0x400,
-    MIPCOMMANDEDTESTBITSGQ7_COMMS_FAULT            = 0x800,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_ACCEL_FAULT        = 0x1000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_GYRO_FAULT         = 0x2000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_MAG_FAULT          = 0x4000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_PRESS_FAULT        = 0x8000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_RESERVED           = 0x30000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_CAL_ERROR          = 0x40000,
-    MIPCOMMANDEDTESTBITSGQ7_IMU_GENERAL_FAULT      = 0x80000,
-    MIPCOMMANDEDTESTBITSGQ7_FILT_RESERVED          = 0x300000,
-    MIPCOMMANDEDTESTBITSGQ7_FILT_SOLUTION_FAULT    = 0x400000,
-    MIPCOMMANDEDTESTBITSGQ7_FILT_GENERAL_FAULT     = 0x800000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_RECEIVER1_FAULT   = 0x1000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_ANTENNA1_FAULT    = 0x2000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_RECEIVER2_FAULT   = 0x4000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_ANTENNA2_FAULT    = 0x8000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_RTCM_FAILURE      = 0x10000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_RTK_FAULT         = 0x20000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_SOLUTION_FAULT    = 0x40000000,
-    MIPCOMMANDEDTESTBITSGQ7_GNSS_GENERAL_FAULT     = 0x80000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_HARDWARE_FAULT = 0x01,
+    MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_FIRMWARE_FAULT = 0x02,
+    MIP_COMMANDED_TEST_BITS_GQ7_TIMING_OVERLOAD        = 0x04,
+    MIP_COMMANDED_TEST_BITS_GQ7_BUFFER_OVERRUN         = 0x08,
+    MIP_COMMANDED_TEST_BITS_GQ7_RESERVED               = 0xF0,
+    MIP_COMMANDED_TEST_BITS_GQ7_IPC_IMU_FAULT          = 0x100,
+    MIP_COMMANDED_TEST_BITS_GQ7_IPC_NAV_FAULT          = 0x200,
+    MIP_COMMANDED_TEST_BITS_GQ7_IPC_GNSS_FAULT         = 0x400,
+    MIP_COMMANDED_TEST_BITS_GQ7_COMMS_FAULT            = 0x800,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_ACCEL_FAULT        = 0x1000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_GYRO_FAULT         = 0x2000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_MAG_FAULT          = 0x4000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_PRESS_FAULT        = 0x8000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_RESERVED           = 0x30000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_CAL_ERROR          = 0x40000,
+    MIP_COMMANDED_TEST_BITS_GQ7_IMU_GENERAL_FAULT      = 0x80000,
+    MIP_COMMANDED_TEST_BITS_GQ7_FILT_RESERVED          = 0x300000,
+    MIP_COMMANDED_TEST_BITS_GQ7_FILT_SOLUTION_FAULT    = 0x400000,
+    MIP_COMMANDED_TEST_BITS_GQ7_FILT_GENERAL_FAULT     = 0x800000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER1_FAULT   = 0x1000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA1_FAULT    = 0x2000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER2_FAULT   = 0x4000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA2_FAULT    = 0x8000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTCM_FAILURE      = 0x10000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FAULT         = 0x20000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000,
+    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000,
 };
-size_t insert_MipCommandedTestBitsGq7(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCommandedTestBitsGq7 self);
-size_t extract_MipCommandedTestBitsGq7(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCommandedTestBitsGq7* self);
+size_t insert_mip_commanded_test_bits_gq7(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_commanded_test_bits_gq7 self);
+size_t extract_mip_commanded_test_bits_gq7(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_commanded_test_bits_gq7* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +115,7 @@ size_t extract_MipCommandedTestBitsGq7(const uint8_t* buffer, size_t bufferSize,
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_ping  Base Ping
+///@defgroup mip_base_ping  Ping
 /// Test Communications with a device.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -120,17 +124,17 @@ size_t extract_MipCommandedTestBitsGq7(const uint8_t* buffer, size_t bufferSize,
 ///
 ///@{
 
-struct MipCmd_Base_Ping
+struct mip_base_ping_command
 {
 };
-size_t insert_MipCmd_Base_Ping(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_Ping* self);
-size_t extract_MipCmd_Base_Ping(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_Ping* self);
+size_t insert_mip_base_ping_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_ping_command* self);
+size_t extract_mip_base_ping_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_ping_command* self);
 
-MipCmdResult ping(struct MipInterfaceState* device);
+mip_cmd_result ping(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_set_idle  Base Set Idle
+///@defgroup mip_base_set_idle  Set to idle
 /// Turn off all device data streams.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -139,39 +143,39 @@ MipCmdResult ping(struct MipInterfaceState* device);
 ///
 ///@{
 
-struct MipCmd_Base_SetIdle
+struct mip_base_set_idle_command
 {
 };
-size_t insert_MipCmd_Base_SetIdle(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_SetIdle* self);
-size_t extract_MipCmd_Base_SetIdle(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_SetIdle* self);
+size_t insert_mip_base_set_idle_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_set_idle_command* self);
+size_t extract_mip_base_set_idle_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_set_idle_command* self);
 
-MipCmdResult set_to_idle(struct MipInterfaceState* device);
+mip_cmd_result set_to_idle(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_get_device_info  Base Get Device Info
+///@defgroup mip_base_get_device_info  Get device information
 /// Get the device ID strings and firmware version number.
 ///
 ///@{
 
-struct MipCmd_Base_GetDeviceInfo
+struct mip_base_get_device_info_command
 {
 };
-size_t insert_MipCmd_Base_GetDeviceInfo(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceInfo* self);
-size_t extract_MipCmd_Base_GetDeviceInfo(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceInfo* self);
+size_t insert_mip_base_get_device_info_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_device_info_command* self);
+size_t extract_mip_base_get_device_info_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_device_info_command* self);
 
-struct MipCmd_Base_GetDeviceInfo_Response
+struct mip_base_get_device_info_response
 {
-    struct MipBaseDeviceInfo                          device_info;
+    struct mip_base_device_info                       device_info;
 };
-size_t insert_MipCmd_Base_GetDeviceInfo_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceInfo_Response* self);
-size_t extract_MipCmd_Base_GetDeviceInfo_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceInfo_Response* self);
+size_t insert_mip_base_get_device_info_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_device_info_response* self);
+size_t extract_mip_base_get_device_info_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_device_info_response* self);
 
-MipCmdResult get_device_information(struct MipInterfaceState* device, struct MipBaseDeviceInfo* device_info);
+mip_cmd_result get_device_information(struct mip_interface* device, struct mip_base_device_info* device_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_get_device_descriptors  Base Get Device Descriptors
+///@defgroup mip_base_get_device_descriptors  Get device descriptors
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -179,25 +183,25 @@ MipCmdResult get_device_information(struct MipInterfaceState* device, struct Mip
 ///
 ///@{
 
-struct MipCmd_Base_GetDeviceDescriptors
+struct mip_base_get_device_descriptors_command
 {
 };
-size_t insert_MipCmd_Base_GetDeviceDescriptors(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceDescriptors* self);
-size_t extract_MipCmd_Base_GetDeviceDescriptors(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceDescriptors* self);
+size_t insert_mip_base_get_device_descriptors_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_device_descriptors_command* self);
+size_t extract_mip_base_get_device_descriptors_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_device_descriptors_command* self);
 
-struct MipCmd_Base_GetDeviceDescriptors_Response
+struct mip_base_get_device_descriptors_response
 {
     uint8_t                                           descriptors_count;
     uint16_t*                                         descriptors;
 };
-size_t insert_MipCmd_Base_GetDeviceDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetDeviceDescriptors_Response* self);
-size_t extract_MipCmd_Base_GetDeviceDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetDeviceDescriptors_Response* self);
+size_t insert_mip_base_get_device_descriptors_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_device_descriptors_response* self);
+size_t extract_mip_base_get_device_descriptors_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_device_descriptors_response* self);
 
-MipCmdResult get_device_descriptors(struct MipInterfaceState* device, uint8_t* descriptors_count, uint16_t* descriptors);
+mip_cmd_result get_device_descriptors(struct mip_interface* device, uint8_t* descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_built_in_test  Base Built In Test
+///@defgroup mip_base_built_in_test  Built in test
 /// Run the device Built-In Test (BIT).
 /// 
 /// The Built-In Test command always returns a 32 bit value.
@@ -207,41 +211,41 @@ MipCmdResult get_device_descriptors(struct MipInterfaceState* device, uint8_t* d
 ///
 ///@{
 
-struct MipCmd_Base_BuiltInTest
+struct mip_base_built_in_test_command
 {
 };
-size_t insert_MipCmd_Base_BuiltInTest(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_BuiltInTest* self);
-size_t extract_MipCmd_Base_BuiltInTest(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_BuiltInTest* self);
+size_t insert_mip_base_built_in_test_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_built_in_test_command* self);
+size_t extract_mip_base_built_in_test_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_built_in_test_command* self);
 
-struct MipCmd_Base_BuiltInTest_Response
+struct mip_base_built_in_test_response
 {
     uint32_t                                          result;
 };
-size_t insert_MipCmd_Base_BuiltInTest_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_BuiltInTest_Response* self);
-size_t extract_MipCmd_Base_BuiltInTest_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_BuiltInTest_Response* self);
+size_t insert_mip_base_built_in_test_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_built_in_test_response* self);
+size_t extract_mip_base_built_in_test_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_built_in_test_response* self);
 
-MipCmdResult built_in_test(struct MipInterfaceState* device, uint32_t* result);
+mip_cmd_result built_in_test(struct mip_interface* device, uint32_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_resume  Base Resume
+///@defgroup mip_base_resume  Resume
 /// Take the device out of idle mode.
 /// 
 /// The device responds with ACK upon success.
 ///
 ///@{
 
-struct MipCmd_Base_Resume
+struct mip_base_resume_command
 {
 };
-size_t insert_MipCmd_Base_Resume(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_Resume* self);
-size_t extract_MipCmd_Base_Resume(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_Resume* self);
+size_t insert_mip_base_resume_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_resume_command* self);
+size_t extract_mip_base_resume_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_resume_command* self);
 
-MipCmdResult resume(struct MipInterfaceState* device);
+mip_cmd_result resume(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_get_extended_descriptors  Base Get Extended Descriptors
+///@defgroup mip_base_get_extended_descriptors  Get device descriptors (extended)
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -249,49 +253,49 @@ MipCmdResult resume(struct MipInterfaceState* device);
 ///
 ///@{
 
-struct MipCmd_Base_GetExtendedDescriptors
+struct mip_base_get_extended_descriptors_command
 {
 };
-size_t insert_MipCmd_Base_GetExtendedDescriptors(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetExtendedDescriptors* self);
-size_t extract_MipCmd_Base_GetExtendedDescriptors(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetExtendedDescriptors* self);
+size_t insert_mip_base_get_extended_descriptors_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_extended_descriptors_command* self);
+size_t extract_mip_base_get_extended_descriptors_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_extended_descriptors_command* self);
 
-struct MipCmd_Base_GetExtendedDescriptors_Response
+struct mip_base_get_extended_descriptors_response
 {
     uint8_t                                           descriptors_count;
     uint16_t*                                         descriptors;
 };
-size_t insert_MipCmd_Base_GetExtendedDescriptors_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GetExtendedDescriptors_Response* self);
-size_t extract_MipCmd_Base_GetExtendedDescriptors_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GetExtendedDescriptors_Response* self);
+size_t insert_mip_base_get_extended_descriptors_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_get_extended_descriptors_response* self);
+size_t extract_mip_base_get_extended_descriptors_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_get_extended_descriptors_response* self);
 
-MipCmdResult get_device_descriptors_extended(struct MipInterfaceState* device, uint8_t* descriptors_count, uint16_t* descriptors);
+mip_cmd_result get_device_descriptors_extended(struct mip_interface* device, uint8_t* descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_continuous_bit  Base Continuous Bit
+///@defgroup mip_base_continuous_bit  Continuous built-in test
 /// Report result of continous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
 ///
 ///@{
 
-struct MipCmd_Base_ContinuousBit
+struct mip_base_continuous_bit_command
 {
 };
-size_t insert_MipCmd_Base_ContinuousBit(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_ContinuousBit* self);
-size_t extract_MipCmd_Base_ContinuousBit(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_ContinuousBit* self);
+size_t insert_mip_base_continuous_bit_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_continuous_bit_command* self);
+size_t extract_mip_base_continuous_bit_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_continuous_bit_command* self);
 
-struct MipCmd_Base_ContinuousBit_Response
+struct mip_base_continuous_bit_response
 {
     uint8_t                                           result[16];
 };
-size_t insert_MipCmd_Base_ContinuousBit_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_ContinuousBit_Response* self);
-size_t extract_MipCmd_Base_ContinuousBit_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_ContinuousBit_Response* self);
+size_t insert_mip_base_continuous_bit_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_continuous_bit_response* self);
+size_t extract_mip_base_continuous_bit_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_continuous_bit_response* self);
 
-MipCmdResult continuous_built_in_test(struct MipInterfaceState* device, uint8_t* result);
+mip_cmd_result continuous_built_in_test(struct mip_interface* device, uint8_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_comm_speed  Base Comm Speed
+///@defgroup mip_base_comm_speed  Comm Port Speed
 /// Controls the baud rate of a specific port on the device.
 /// 
 /// Please see the device user manual for supported baud rates on each port.
@@ -309,73 +313,73 @@ MipCmdResult continuous_built_in_test(struct MipInterfaceState* device, uint8_t*
 ///
 ///@{
 
-struct MipCmd_Base_CommSpeed
+struct mip_base_comm_speed_command
 {
-    enum MipFunctionSelector                          function;
+    enum mip_function_selector                        function;
     uint8_t                                           port;
     uint32_t                                          baud;
 };
-size_t insert_MipCmd_Base_CommSpeed(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_CommSpeed* self);
-size_t extract_MipCmd_Base_CommSpeed(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_CommSpeed* self);
+size_t insert_mip_base_comm_speed_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_comm_speed_command* self);
+size_t extract_mip_base_comm_speed_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_comm_speed_command* self);
 
-struct MipCmd_Base_CommSpeed_Response
+struct mip_base_comm_speed_response
 {
     uint8_t                                           port;
     uint32_t                                          baud;
 };
-size_t insert_MipCmd_Base_CommSpeed_Response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_CommSpeed_Response* self);
-size_t extract_MipCmd_Base_CommSpeed_Response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_CommSpeed_Response* self);
+size_t insert_mip_base_comm_speed_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_comm_speed_response* self);
+size_t extract_mip_base_comm_speed_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_comm_speed_response* self);
 
-MipCmdResult write_comm_port_speed(struct MipInterfaceState* device, uint8_t port, uint32_t baud);
-MipCmdResult read_comm_port_speed(struct MipInterfaceState* device, uint8_t port, uint32_t* baud);
-MipCmdResult save_comm_port_speed(struct MipInterfaceState* device, uint8_t port);
-MipCmdResult load_comm_port_speed(struct MipInterfaceState* device, uint8_t port);
-MipCmdResult default_comm_port_speed(struct MipInterfaceState* device, uint8_t port);
+mip_cmd_result write_comm_port_speed(struct mip_interface* device, uint8_t port, uint32_t baud);
+mip_cmd_result read_comm_port_speed(struct mip_interface* device, uint8_t port, uint32_t* baud);
+mip_cmd_result save_comm_port_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result load_comm_port_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result default_comm_port_speed(struct mip_interface* device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_gps_time_update  Base Gps Time Update
+///@defgroup mip_base_gps_time_update  Time Broadcast Command
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
 ///
 ///@{
 
-enum MipCmd_Base_GpsTimeUpdate_Fieldid
+enum mip_base_gps_time_update_command_field_id
 {
-    MIPCMD_BASE_GPSTIMEUPDATE_FIELDID_WEEK_NUMBER  = 1,  ///<  Week number.
-    MIPCMD_BASE_GPSTIMEUPDATE_FIELDID_TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
+    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_WEEK_NUMBER  = 1,  ///<  Week number.
+    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
 };
-size_t insert_MipCmd_Base_GpsTimeUpdate_Fieldid(uint8_t* buffer, size_t bufferSize, size_t offset, const enum MipCmd_Base_GpsTimeUpdate_Fieldid self);
-size_t extract_MipCmd_Base_GpsTimeUpdate_Fieldid(const uint8_t* buffer, size_t bufferSize, size_t offset, enum MipCmd_Base_GpsTimeUpdate_Fieldid* self);
+size_t insert_mip_base_gps_time_update_command_field_id(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_base_gps_time_update_command_field_id self);
+size_t extract_mip_base_gps_time_update_command_field_id(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_base_gps_time_update_command_field_id* self);
 
-struct MipCmd_Base_GpsTimeUpdate
+struct mip_base_gps_time_update_command
 {
-    enum MipFunctionSelector                          function;
-    enum MipCmd_Base_GpsTimeUpdate_Fieldid            field_id;
+    enum mip_function_selector                        function;
+    enum mip_base_gps_time_update_command_field_id    field_id;
     uint32_t                                          value;
 };
-size_t insert_MipCmd_Base_GpsTimeUpdate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_GpsTimeUpdate* self);
-size_t extract_MipCmd_Base_GpsTimeUpdate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_GpsTimeUpdate* self);
+size_t insert_mip_base_gps_time_update_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_gps_time_update_command* self);
+size_t extract_mip_base_gps_time_update_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_gps_time_update_command* self);
 
-MipCmdResult write_time_broadcast_command(struct MipInterfaceState* device, enum MipCmd_Base_GpsTimeUpdate_Fieldid field_id, uint32_t value);
+mip_cmd_result write_time_broadcast_command(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_cmd_base_soft_reset  Base Soft Reset
+///@defgroup mip_base_soft_reset  Reset device
 /// Resets the device.
 /// 
 /// Device responds with ACK and immediately resets.
 ///
 ///@{
 
-struct MipCmd_Base_SoftReset
+struct mip_base_soft_reset_command
 {
 };
-size_t insert_MipCmd_Base_SoftReset(uint8_t* buffer, size_t bufferSize, size_t offset, const struct MipCmd_Base_SoftReset* self);
-size_t extract_MipCmd_Base_SoftReset(const uint8_t* buffer, size_t bufferSize, size_t offset, struct MipCmd_Base_SoftReset* self);
+size_t insert_mip_base_soft_reset_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_soft_reset_command* self);
+size_t extract_mip_base_soft_reset_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_soft_reset_command* self);
 
-MipCmdResult reset_device(struct MipInterfaceState* device);
+mip_cmd_result reset_device(struct mip_interface* device);
 ///@}
 ///
 
@@ -386,10 +390,11 @@ MipCmdResult reset_device(struct MipInterfaceState* device);
 
 #ifdef __cplusplus
 } // extern "C"
+} // namespace C
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_Ping>
+struct MipFieldInfo<C::mip_base_ping_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_PING;
@@ -397,20 +402,20 @@ struct MipFieldInfo<MipCmd_Base_Ping>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_Ping& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_ping_command& self)
     {
-        return insert_MipCmd_Base_Ping(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_ping_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_Ping& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_ping_command& self)
     {
-        return extract_MipCmd_Base_Ping(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_ping_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_SetIdle>
+struct MipFieldInfo<C::mip_base_set_idle_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SET_TO_IDLE;
@@ -418,110 +423,110 @@ struct MipFieldInfo<MipCmd_Base_SetIdle>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_SetIdle& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_set_idle_command& self)
     {
-        return insert_MipCmd_Base_SetIdle(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_set_idle_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_SetIdle& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_set_idle_command& self)
     {
-        return extract_MipCmd_Base_SetIdle(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_set_idle_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_GetDeviceInfo>
+struct MipFieldInfo<C::mip_base_get_device_info_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_INFO;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_DEVICE_INFO;
-    typedef MipCmd_Base_GetDeviceInfo_Response Response;
+    typedef C::mip_base_get_device_info_response Response;
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceInfo& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_device_info_command& self)
     {
-        return insert_MipCmd_Base_GetDeviceInfo(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_device_info_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceInfo& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_device_info_command& self)
     {
-        return extract_MipCmd_Base_GetDeviceInfo(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_device_info_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceInfo_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_device_info_response& self)
     {
-        return insert_MipCmd_Base_GetDeviceInfo_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_device_info_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceInfo_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_device_info_response& self)
     {
-        return extract_MipCmd_Base_GetDeviceInfo_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_device_info_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_GetDeviceDescriptors>
+struct MipFieldInfo<C::mip_base_get_device_descriptors_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_DEVICE_DESCRIPTORS;
-    typedef MipCmd_Base_GetDeviceDescriptors_Response Response;
+    typedef C::mip_base_get_device_descriptors_response Response;
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceDescriptors& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_device_descriptors_command& self)
     {
-        return insert_MipCmd_Base_GetDeviceDescriptors(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_device_descriptors_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceDescriptors& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_device_descriptors_command& self)
     {
-        return extract_MipCmd_Base_GetDeviceDescriptors(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_device_descriptors_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetDeviceDescriptors_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_device_descriptors_response& self)
     {
-        return insert_MipCmd_Base_GetDeviceDescriptors_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_device_descriptors_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetDeviceDescriptors_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_device_descriptors_response& self)
     {
-        return extract_MipCmd_Base_GetDeviceDescriptors_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_device_descriptors_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_BuiltInTest>
+struct MipFieldInfo<C::mip_base_built_in_test_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_BUILT_IN_TEST;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_BUILT_IN_TEST;
-    typedef MipCmd_Base_BuiltInTest_Response Response;
+    typedef C::mip_base_built_in_test_response Response;
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_BuiltInTest& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_built_in_test_command& self)
     {
-        return insert_MipCmd_Base_BuiltInTest(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_built_in_test_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_BuiltInTest& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_built_in_test_command& self)
     {
-        return extract_MipCmd_Base_BuiltInTest(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_built_in_test_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_BuiltInTest_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_built_in_test_response& self)
     {
-        return insert_MipCmd_Base_BuiltInTest_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_built_in_test_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_BuiltInTest_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_built_in_test_response& self)
     {
-        return extract_MipCmd_Base_BuiltInTest_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_built_in_test_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_Resume>
+struct MipFieldInfo<C::mip_base_resume_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_RESUME;
@@ -529,85 +534,85 @@ struct MipFieldInfo<MipCmd_Base_Resume>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_Resume& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_resume_command& self)
     {
-        return insert_MipCmd_Base_Resume(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_resume_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_Resume& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_resume_command& self)
     {
-        return extract_MipCmd_Base_Resume(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_resume_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_GetExtendedDescriptors>
+struct MipFieldInfo<C::mip_base_get_extended_descriptors_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
-    typedef MipCmd_Base_GetExtendedDescriptors_Response Response;
+    typedef C::mip_base_get_extended_descriptors_response Response;
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetExtendedDescriptors& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_extended_descriptors_command& self)
     {
-        return insert_MipCmd_Base_GetExtendedDescriptors(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_extended_descriptors_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetExtendedDescriptors& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_extended_descriptors_command& self)
     {
-        return extract_MipCmd_Base_GetExtendedDescriptors(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_extended_descriptors_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GetExtendedDescriptors_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_get_extended_descriptors_response& self)
     {
-        return insert_MipCmd_Base_GetExtendedDescriptors_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_get_extended_descriptors_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GetExtendedDescriptors_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_get_extended_descriptors_response& self)
     {
-        return extract_MipCmd_Base_GetExtendedDescriptors_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_get_extended_descriptors_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_ContinuousBit>
+struct MipFieldInfo<C::mip_base_continuous_bit_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_CONTINUOUS_BIT;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_CONTINUOUS_BIT;
-    typedef MipCmd_Base_ContinuousBit_Response Response;
+    typedef C::mip_base_continuous_bit_response Response;
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_ContinuousBit& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_continuous_bit_command& self)
     {
-        return insert_MipCmd_Base_ContinuousBit(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_continuous_bit_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_ContinuousBit& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_continuous_bit_command& self)
     {
-        return extract_MipCmd_Base_ContinuousBit(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_continuous_bit_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_ContinuousBit_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_continuous_bit_response& self)
     {
-        return insert_MipCmd_Base_ContinuousBit_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_continuous_bit_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_ContinuousBit_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_continuous_bit_response& self)
     {
-        return extract_MipCmd_Base_ContinuousBit_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_continuous_bit_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_CommSpeed>
+struct MipFieldInfo<C::mip_base_comm_speed_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_COMM_SPEED;
     static const uint8_t responseDescriptor = MIP_REPLY_DESC_BASE_COMM_SPEED;
-    typedef MipCmd_Base_CommSpeed_Response Response;
+    typedef C::mip_base_comm_speed_response Response;
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -616,28 +621,28 @@ struct MipFieldInfo<MipCmd_Base_CommSpeed>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_CommSpeed& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_comm_speed_command& self)
     {
-        return insert_MipCmd_Base_CommSpeed(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_comm_speed_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_CommSpeed& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_comm_speed_command& self)
     {
-        return extract_MipCmd_Base_CommSpeed(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_comm_speed_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_CommSpeed_Response& self)
+    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_comm_speed_response& self)
     {
-        return insert_MipCmd_Base_CommSpeed_Response(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_comm_speed_response(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_CommSpeed_Response& self)
+    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_comm_speed_response& self)
     {
-        return extract_MipCmd_Base_CommSpeed_Response(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_comm_speed_response(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_GpsTimeUpdate>
+struct MipFieldInfo<C::mip_base_gps_time_update_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW;
@@ -650,20 +655,20 @@ struct MipFieldInfo<MipCmd_Base_GpsTimeUpdate>
     static const bool canLoad = false;
     static const bool canReset = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_GpsTimeUpdate& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_gps_time_update_command& self)
     {
-        return insert_MipCmd_Base_GpsTimeUpdate(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_gps_time_update_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_GpsTimeUpdate& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_gps_time_update_command& self)
     {
-        return extract_MipCmd_Base_GpsTimeUpdate(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_gps_time_update_command(buffer, bufferSize, offset, &self);
     }
 };
 
 
 
 template<>
-struct MipFieldInfo<MipCmd_Base_SoftReset>
+struct MipFieldInfo<C::mip_base_soft_reset_command>
 {
     static const uint8_t descriptorSet = MIP_BASE_COMMAND_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SOFT_RESET;
@@ -671,13 +676,13 @@ struct MipFieldInfo<MipCmd_Base_SoftReset>
     
     static const bool hasFunctionSelector = false;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const MipCmd_Base_SoftReset& self)
+    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_base_soft_reset_command& self)
     {
-        return insert_MipCmd_Base_SoftReset(buffer, bufferSize, offset, &self);
+        return C::insert_mip_base_soft_reset_command(buffer, bufferSize, offset, &self);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, MipCmd_Base_SoftReset& self)
+    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_base_soft_reset_command& self)
     {
-        return extract_MipCmd_Base_SoftReset(buffer, bufferSize, offset, &self);
+        return C::extract_mip_base_soft_reset_command(buffer, bufferSize, offset, &self);
     }
 };
 

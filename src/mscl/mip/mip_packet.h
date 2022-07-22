@@ -11,9 +11,9 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipPacket MipPacket - Functions for handling MIP packets.
+///@defgroup mip_packet mip_packet - Functions for handling MIP packets.
 ///
-/// A MIP Packet is represented by the MipPacket struct.
+/// A MIP Packet is represented by the mip_packet struct.
 ///
 ///~~~
 /// +-------+-------+------+------+------------+-----/ /----+------------+----
@@ -24,7 +24,7 @@ extern "C" {
 ///@{
 
 
-typedef uint_least16_t PacketLength;  ///< Type used for the length of a MIP packet.
+typedef uint_least16_t packet_length;  ///< Type used for the length of a MIP packet.
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Structure representing a MIP Packet.
@@ -35,10 +35,10 @@ typedef uint_least16_t PacketLength;  ///< Type used for the length of a MIP pac
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-struct MipPacket
+struct mip_packet
 {
     uint8_t*       buffer;        ///<@private Pointer to the packet data.
-    uint_least16_t bufferLength;  ///<@private Length of the buffer (NOT the packet length!).
+    uint_least16_t buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
 };
 
 
@@ -50,14 +50,14 @@ struct MipPacket
 ///
 ///@{
 
-void MipPacket_create(struct MipPacket* packet, uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet);
+void mip_packet_create(struct mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
 
-bool           MipPacket_addField(struct MipPacket* packet, uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength);
-RemainingCount MipPacket_allocField(struct MipPacket* packet, uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out);
-RemainingCount MipPacket_reallocLastField(struct MipPacket* packet, uint8_t* payloadPtr, uint8_t newPayloadLength);
-RemainingCount MipPacket_cancelLastField(struct MipPacket* packet, uint8_t* payloadPtr);
+bool            mip_packet_add_field(struct mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+remaining_count mip_packet_alloc_field(struct mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
+remaining_count mip_packet_realloc_last_field(struct mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
+remaining_count mip_packet_cancel_last_field(struct mip_packet* packet, uint8_t* payload_ptr);
 
-void MipPacket_finalize(struct MipPacket* packet);
+void mip_packet_finalize(struct mip_packet* packet);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,30 +67,30 @@ void MipPacket_finalize(struct MipPacket* packet);
 /// parsed. Generally, first the descriptor set would be inspected followed by
 /// iterating the fields using the MipFieldIteration functions.
 ///
-/// With the exception of MipPacket_checksumValue() (and any function which
-/// calls it, e.g. MipPacket_isValid()), these functions may also be used on
+/// With the exception of mip_packet_checksum_value() (and any function which
+/// calls it, e.g. mip_packet_is_valid()), these functions may also be used on
 /// packets which are under construction via the PacketBuilding functions.
 ///
 ///@{
 
-void MipPacket_fromBuffer(struct MipPacket* packet, uint8_t* buffer, size_t length);
+void mip_packet_from_buffer(struct mip_packet* packet, uint8_t* buffer, size_t length);
 
-uint8_t        MipPacket_descriptorSet(const struct MipPacket* packet);
-PacketLength   MipPacket_totalLength(const struct MipPacket* packet);
-uint8_t        MipPacket_payloadLength(const struct MipPacket* packet);
-const uint8_t* MipPacket_pointer(const struct MipPacket* packet);
-const uint8_t* MipPacket_payload(const struct MipPacket* packet);
-uint16_t       MipPacket_checksumValue(const struct MipPacket* packet);
-uint16_t       MipPacket_computeChecksum(const struct MipPacket* packet);
+uint8_t         mip_packet_descriptor_set(const struct mip_packet* packet);
+packet_length   mip_packet_total_length(const struct mip_packet* packet);
+uint8_t         mip_packet_payload_length(const struct mip_packet* packet);
+const uint8_t*  mip_packet_pointer(const struct mip_packet* packet);
+const uint8_t*  mip_packet_payload(const struct mip_packet* packet);
+uint16_t        mip_packet_checksum_value(const struct mip_packet* packet);
+uint16_t        mip_packet_compute_checksum(const struct mip_packet* packet);
 
 
-bool           MipPacket_isSane(const struct MipPacket* packet);
-bool           MipPacket_isValid(const struct MipPacket* packet);
+bool            mip_packet_is_sane(const struct mip_packet* packet);
+bool            mip_packet_is_valid(const struct mip_packet* packet);
 
-PacketLength   MipPacket_bufferSize(const struct MipPacket* packet);
-RemainingCount MipPacket_remainingSpace(const struct MipPacket* packet);
+packet_length   mip_packet_buffer_size(const struct mip_packet* packet);
+remaining_count mip_packet_remaining_space(const struct mip_packet* packet);
 
-bool           MipPacket_isData(const struct MipPacket* packet);
+bool            mip_packet_is_data(const struct mip_packet* packet);
 
 ///@}
 ///@}
