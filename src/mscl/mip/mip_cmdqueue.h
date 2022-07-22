@@ -29,21 +29,21 @@ extern "C" {
 ///
 struct mip_pending_cmd
 {
-    struct mip_pending_cmd*    next;                 ///<@private Next command in the queue.
-    uint8_t*                   response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
+    struct mip_pending_cmd*    _next;                 ///<@private Next command in the queue.
+    uint8_t*                   _response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
     union {
-        timeout_type           extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
-        timestamp_type         timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
-        timestamp_type         reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
+        timeout_type           _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
+        timestamp_type         _timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
+        timestamp_type         _reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
     };
-    uint8_t                    descriptor_set;       ///<@private Command descriptor set.
-    uint8_t                    field_descriptor;     ///<@private Command field descriptor.
-    uint8_t                    response_descriptor;  ///<@private Response field descriptor, or 0x00 if no response field expected.
+    uint8_t                    _descriptor_set;       ///<@private Command descriptor set.
+    uint8_t                    _field_descriptor;     ///<@private Command field descriptor.
+    uint8_t                    _response_descriptor;  ///<@private Response field descriptor, or 0x00 if no response field expected.
     union {
-        uint8_t                response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
-        uint8_t                response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
+        uint8_t                _response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
+        uint8_t                _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
     };
-    volatile mip_cmd_result    status;               ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
+    volatile mip_cmd_result    _status;               ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 };
 
 void mip_pending_cmd_init(struct mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor);
@@ -66,8 +66,8 @@ bool mip_pending_cmd_check_timeout(const struct mip_pending_cmd* cmd, timestamp_
 
 struct mip_cmd_queue
 {
-    struct mip_pending_cmd* first_pending_cmd;
-    timeout_type            base_timeout;
+    struct mip_pending_cmd* _first_pending_cmd;
+    timeout_type            _base_timeout;
 };
 
 void mip_cmd_queue_init(struct mip_cmd_queue* queue, timeout_type base_reply_timeout);

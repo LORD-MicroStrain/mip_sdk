@@ -65,7 +65,7 @@ void test_init()
     struct mip_packet packet;
     mip_packet_from_buffer(&packet, buffer, sizeof(buffer));
 
-    check(packet.buffer == buffer && packet.buffer_length == sizeof(buffer)-EXTRA, "mip_packet_init is broken");
+    check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_init is broken");
 }
 
 void test_create()
@@ -78,8 +78,8 @@ void test_create()
     {
         mip_packet_create(&packet, buffer, sizeof(buffer), descriptors[i]);
 
-        check(packet.buffer == buffer && packet.buffer_length == sizeof(buffer)-EXTRA, "mip_packet_create sets wrong buffer info");
-        check(packet.buffer[MIP_INDEX_DESCSET] == descriptors[i], "mip_packet_create sets wrong descriptor set (%02X != %02X)", packet.buffer[MIP_INDEX_DESCSET], descriptors[i]);
+        check(packet._buffer == buffer && packet._buffer_length == sizeof(buffer)-EXTRA, "mip_packet_create sets wrong buffer info");
+        check(packet._buffer[MIP_INDEX_DESCSET] == descriptors[i], "mip_packet_create sets wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], descriptors[i]);
     }
 }
 
@@ -89,7 +89,7 @@ void test_add_fields()
 
     mip_packet_create(&packet, buffer, sizeof(buffer), 0x80);
 
-    check(packet.buffer[MIP_INDEX_DESCSET] == 0x80, "Packet has wrong descriptor set (%02X != %02X)", packet.buffer[MIP_INDEX_DESCSET], 0x80);
+    check(packet._buffer[MIP_INDEX_DESCSET] == 0x80, "Packet has wrong descriptor set (%02X != %02X)", packet._buffer[MIP_INDEX_DESCSET], 0x80);
     check_equal( mip_packet_total_length(&packet), MIP_PACKET_LENGTH_MIN, "Empty packet has wrong size" );
     check_equal( mip_packet_payload_length(&packet), 0, "Packet has nonzero empty payload");
     check(mip_packet_is_sane(&packet), "Packet is not sane");

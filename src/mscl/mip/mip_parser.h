@@ -35,13 +35,13 @@ typedef bool (*mip_packet_callback)(void* user, const struct mip_packet* packet,
 ///
 struct mip_parser
 {
-    timestamp_type       start_time;                           ///<@private The timestamp when the first byte was observed by the parser.
-    timestamp_type       timeout;                              ///<@private Duration to wait for the rest of the data in a packet.
-    uint8_t              result_buffer[MIP_PACKET_LENGTH_MAX]; ///<@private Buffer used to output MIP packets to the callback.
-    packet_length        expected_length;                      ///<@private Expected length of the packet currently being parsed. Keeps track of parser state. Always 1, MIP_HEADER_LENGTH, or at least MIP_PACKET_LENGTH_MAX.
-    struct ByteRingState ring;                                 ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
-    mip_packet_callback  callback;                             ///<@private Callback called when a valid packet is parsed.
-    void*                callback_object;                      ///<@private User-specified pointer passed to the callback function.
+    timestamp_type       _start_time;                           ///<@private The timestamp when the first byte was observed by the parser.
+    timestamp_type       _timeout;                              ///<@private Duration to wait for the rest of the data in a packet.
+    uint8_t              _result_buffer[MIP_PACKET_LENGTH_MAX]; ///<@private Buffer used to output MIP packets to the callback.
+    packet_length        _expected_length;                      ///<@private Expected length of the packet currently being parsed. Keeps track of parser state. Always 1, MIP_HEADER_LENGTH, or at least MIP_PACKET_LENGTH_MAX.
+    struct ByteRingState _ring;                                 ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
+    mip_packet_callback  _callback;                             ///<@private Callback called when a valid packet is parsed.
+    void*                _callback_object;                      ///<@private User-specified pointer passed to the callback function.
 };
 
 

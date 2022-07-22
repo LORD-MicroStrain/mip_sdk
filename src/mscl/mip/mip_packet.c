@@ -41,8 +41,8 @@ void mip_packet_from_buffer(struct mip_packet* packet, uint8_t* buffer, size_t l
     if( length > MIP_PACKET_LENGTH_MAX )
         length = MIP_PACKET_LENGTH_MAX;
 
-    packet->buffer       = buffer;
-    packet->buffer_length = length;
+    packet->_buffer       = buffer;
+    packet->_buffer_length = length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,10 +69,10 @@ void mip_packet_create(struct mip_packet* packet, uint8_t* buffer, size_t buffer
         return;
     }
 
-    packet->buffer[MIP_INDEX_SYNC1] = MIP_SYNC1;
-    packet->buffer[MIP_INDEX_SYNC2] = MIP_SYNC2;
-    packet->buffer[MIP_INDEX_DESCSET] = descriptor_set;
-    packet->buffer[MIP_INDEX_LENGTH] = 0;
+    packet->_buffer[MIP_INDEX_SYNC1] = MIP_SYNC1;
+    packet->_buffer[MIP_INDEX_SYNC2] = MIP_SYNC2;
+    packet->_buffer[MIP_INDEX_DESCSET] = descriptor_set;
+    packet->_buffer[MIP_INDEX_LENGTH] = 0;
 }
 
 
@@ -86,7 +86,7 @@ void mip_packet_create(struct mip_packet* packet, uint8_t* buffer, size_t buffer
 ///
 uint8_t mip_packet_descriptor_set(const struct mip_packet* packet)
 {
-    return packet->buffer[MIP_INDEX_DESCSET];
+    return packet->_buffer[MIP_INDEX_DESCSET];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ uint8_t mip_packet_descriptor_set(const struct mip_packet* packet)
 ///
 uint8_t mip_packet_payload_length(const struct mip_packet* packet)
 {
-    return packet->buffer[MIP_INDEX_LENGTH];
+    return packet->_buffer[MIP_INDEX_LENGTH];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ packet_length mip_packet_total_length(const struct mip_packet* packet)
 ///
 const uint8_t* mip_packet_pointer(const struct mip_packet* packet)
 {
-    return packet->buffer;
+    return packet->_buffer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ const uint8_t* mip_packet_pointer(const struct mip_packet* packet)
 ///
 const uint8_t* mip_packet_payload(const struct mip_packet* packet)
 {
-    return packet->buffer + MIP_INDEX_PAYLOAD;
+    return packet->_buffer + MIP_INDEX_PAYLOAD;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ uint16_t mip_packet_checksum_value(const struct mip_packet* packet)
 {
     const packet_length index = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
-    return ((uint16_t)(packet->buffer[index+0]) << 8) | (uint16_t)(packet->buffer[index+1]);
+    return ((uint16_t)(packet->_buffer[index+0]) << 8) | (uint16_t)(packet->_buffer[index+1]);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ uint16_t mip_packet_compute_checksum(const struct mip_packet* packet)
 
     for(packet_length i=0; i<length; i++)
     {
-        a += packet->buffer[i];
+        a += packet->_buffer[i];
         b += a;
     }
 
@@ -170,7 +170,7 @@ uint16_t mip_packet_compute_checksum(const struct mip_packet* packet)
 ///
 bool mip_packet_is_sane(const struct mip_packet* packet)
 {
-    return packet->buffer && (mip_packet_buffer_size(packet) >= MIP_PACKET_LENGTH_MIN);
+    return packet->_buffer && (mip_packet_buffer_size(packet) >= MIP_PACKET_LENGTH_MIN);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ bool mip_packet_is_valid(const struct mip_packet* packet)
 ///
 packet_length mip_packet_buffer_size(const struct mip_packet* packet)
 {
-    return packet->buffer_length;
+    return packet->_buffer_length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,12 +316,12 @@ remaining_count mip_packet_alloc_field(struct mip_packet* packet, uint8_t field_
     {
         packet_length field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
 
-        packet->buffer[MIP_INDEX_LENGTH] += field_length;
+        packet->_buffer[MIP_INDEX_LENGTH] += field_length;
 
-        packet->buffer[field_index+MIP_INDEX_FIELD_LEN]  = field_length;
-        packet->buffer[field_index+MIP_INDEX_FIELD_DESC] = field_descriptor;
+        packet->_buffer[field_index+MIP_INDEX_FIELD_LEN]  = field_length;
+        packet->_buffer[field_index+MIP_INDEX_FIELD_DESC] = field_descriptor;
 
-        *payload_ptr_out = &packet->buffer[field_index + MIP_INDEX_FIELD_PAYLOAD];
+        *payload_ptr_out = &packet->_buffer[field_index + MIP_INDEX_FIELD_PAYLOAD];
     }
 
     return remaining - field_length;
@@ -364,7 +364,7 @@ remaining_count mip_packet_realloc_last_field(struct mip_packet* packet, uint8_t
     if( remaining >= 0 )
     {
         field_ptr[MIP_INDEX_FIELD_LEN] = new_field_length;
-        packet->buffer[MIP_INDEX_LENGTH] += delta_length;
+        packet->_buffer[MIP_INDEX_LENGTH] += delta_length;
     }
 
     return remaining;
@@ -391,7 +391,7 @@ remaining_count mip_packet_cancel_last_field(struct mip_packet* packet, uint8_t*
     uint8_t* field_ptr = payload_ptr - MIP_INDEX_FIELD_PAYLOAD;
     const uint8_t old_payload_length = field_ptr[MIP_INDEX_FIELD_LEN];
 
-    packet->buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + old_payload_length;
+    packet->_buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + old_payload_length;
 
     return mip_packet_remaining_space(packet);
 }
@@ -418,6 +418,6 @@ void mip_packet_finalize(struct mip_packet* packet)
     uint16_t checksum = mip_packet_compute_checksum(packet);
     packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
-    packet->buffer[length+0] = checksum >> 8;
-    packet->buffer[length+1] = checksum & 0xFF;
+    packet->_buffer[length+0] = checksum >> 8;
+    packet->_buffer[length+1] = checksum & 0xFF;
 }

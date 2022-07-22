@@ -38,7 +38,7 @@ class MipField : public C::mip_field
 {
 public:
     /// Construct an empty MIP field.
-    MipField() { C::mip_field::payload=nullptr; C::mip_field::payload_length=0; C::mip_field::field_descriptor=0x00; C::mip_field::descriptor_set=0x00; C::mip_field::remaining_length=0; }
+    MipField() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
     ///@copydoc mip_field_init()
     MipField(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
     ///@copydoc mip_field_from_header_ptr()
@@ -179,7 +179,7 @@ class MipParser : public C::mip_parser
 {
 public:
     ///@copydoc mip_parser_init
-    MipParser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+    MipParser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip_parser_init
     MipParser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const MipPacket*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 

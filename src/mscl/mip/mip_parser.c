@@ -31,18 +31,18 @@
 ///
 void mip_parser_init(struct mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, timestamp_type timeout)
 {
-    parser->start_time = 0;
-    parser->timeout = timeout;
+    parser->_start_time = 0;
+    parser->_timeout = timeout;
 
-    parser->result_buffer[0] = 0;
+    parser->_result_buffer[0] = 0;
 
-    ByteRing_init(&parser->ring, buffer, buffer_size);
+    ByteRing_init(&parser->_ring, buffer, buffer_size);
 
-    parser->expected_length = MIPPARSER_RESET_LENGTH;
+    parser->_expected_length = MIPPARSER_RESET_LENGTH;
 
     assert(callback != NULL);
-    parser->callback = callback;
-    parser->callback_object = callback_object;
+    parser->_callback = callback;
+    parser->_callback_object = callback_object;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,10 +56,10 @@ void mip_parser_init(struct mip_parser* parser, uint8_t* buffer, size_t buffer_s
 ///
 void mip_parser_reset(struct mip_parser* parser)
 {
-    parser->expected_length = MIPPARSER_RESET_LENGTH;
-    parser->result_buffer[0] = 0;
-    parser->start_time = 0;
-    ByteRing_clear(&parser->ring);
+    parser->_expected_length = MIPPARSER_RESET_LENGTH;
+    parser->_result_buffer[0] = 0;
+    parser->_start_time = 0;
+    ByteRing_clear(&parser->_ring);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,18 +112,18 @@ void mip_parser_reset(struct mip_parser* parser)
 remaining_count mip_parser_parse(struct mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
-    if( parser->expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->start_time) > parser->timeout )
+    if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
     {
-        if( ByteRing_count(&parser->ring) > 0 )
-            ByteRing_pop(&parser->ring, 1);
-        parser->expected_length = MIPPARSER_RESET_LENGTH;
+        if( ByteRing_count(&parser->_ring) > 0 )
+            ByteRing_pop(&parser->_ring, 1);
+        parser->_expected_length = MIPPARSER_RESET_LENGTH;
     }
 
     unsigned int num_packets = 0;
     do
     {
         // Copy as much data as will fit in the ring buffer.
-        ByteRing_copyFromAndUpdate(&parser->ring, &input_buffer, &input_count);
+        ByteRing_copyFromAndUpdate(&parser->_ring, &input_buffer, &input_count);
 
         struct mip_packet packet;
         while( mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp) )
@@ -131,13 +131,13 @@ remaining_count mip_parser_parse(struct mip_parser* parser, const uint8_t* input
             num_packets++;
             bool stop = (max_packets > 0) && (num_packets >= max_packets);
 
-            if( parser->callback )
-                stop |= !parser->callback(parser->callback_object, &packet, parser->start_time);
+            if( parser->_callback )
+                stop |= !parser->_callback(parser->_callback_object, &packet, parser->_start_time);
 
             if( stop )
             {
                 // Pull more data from the input buffer if possible.
-                ByteRing_copyFromAndUpdate(&parser->ring, &input_buffer, &input_count);
+                ByteRing_copyFromAndUpdate(&parser->_ring, &input_buffer, &input_count);
 
                 return -input_count;
             }
@@ -169,51 +169,51 @@ remaining_count mip_parser_parse(struct mip_parser* parser, const uint8_t* input
 bool mip_parser_parse_one_packet_from_ring(struct mip_parser* parser, struct mip_packet* packet_out, timestamp_type timestamp)
 {
     // Parse packets while there is sufficient data in the ring buffer.
-    while( ByteRing_count(&parser->ring) >= parser->expected_length )
+    while( ByteRing_count(&parser->_ring) >= parser->_expected_length )
     {
-        if( parser->expected_length == MIPPARSER_RESET_LENGTH )
+        if( parser->_expected_length == MIPPARSER_RESET_LENGTH )
         {
-            if( ByteRing_at(&parser->ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
-                ByteRing_pop(&parser->ring, 1);
+            if( ByteRing_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
+                ByteRing_pop(&parser->_ring, 1);
             else
             {
                 // Synchronized - set the start time and expect more data.
-                parser->start_time = timestamp;
-                parser->expected_length = MIP_HEADER_LENGTH;
+                parser->_start_time = timestamp;
+                parser->_expected_length = MIP_HEADER_LENGTH;
             }
         }
-        else if( parser->expected_length == MIP_HEADER_LENGTH )
+        else if( parser->_expected_length == MIP_HEADER_LENGTH )
         {
             // Check the sync bytes and drop a single byte if not sync'd.
-            if( ByteRing_at(&parser->ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
+            if( ByteRing_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
             {
-                ByteRing_pop(&parser->ring, 1);
-                parser->expected_length = MIPPARSER_RESET_LENGTH;
+                ByteRing_pop(&parser->_ring, 1);
+                parser->_expected_length = MIPPARSER_RESET_LENGTH;
             }
             else
             {
                 // Read the payload length and add it and the checksum size to the complete packet size.
-                parser->expected_length += ByteRing_at(&parser->ring, MIP_INDEX_LENGTH) + MIP_CHECKSUM_LENGTH;
+                parser->_expected_length += ByteRing_at(&parser->_ring, MIP_INDEX_LENGTH) + MIP_CHECKSUM_LENGTH;
             }
         }
         else // Just waiting on enough data
         {
-            uint_least16_t packet_length = parser->expected_length;
-            parser->expected_length = MIPPARSER_RESET_LENGTH;  // Reset parsing state
+            uint_least16_t packet_length = parser->_expected_length;
+            parser->_expected_length = MIPPARSER_RESET_LENGTH;  // Reset parsing state
 
-            ByteRing_copyTo(&parser->ring, parser->result_buffer, packet_length);
+            ByteRing_copyTo(&parser->_ring, parser->_result_buffer, packet_length);
 
-            mip_packet_from_buffer(packet_out, parser->result_buffer, packet_length);
+            mip_packet_from_buffer(packet_out, parser->_result_buffer, packet_length);
 
             if( !mip_packet_is_valid(packet_out) )
             {
                 // Invalid packet, drop just the first sync byte and restart.
-                ByteRing_pop(&parser->ring, 1);
+                ByteRing_pop(&parser->_ring, 1);
             }
             else // Checksum is valid
             {
                 // Discard the packet bytes from the ring buffer since a copy was made.
-                ByteRing_pop(&parser->ring, packet_length);
+                ByteRing_pop(&parser->_ring, packet_length);
 
                 // Successfully parsed a packet.
                 return true;
@@ -233,7 +233,7 @@ bool mip_parser_parse_one_packet_from_ring(struct mip_parser* parser, struct mip
 ///
 timestamp_type mip_parser_timeout(const struct mip_parser* parser)
 {
-    return parser->timeout;
+    return parser->_timeout;
 }
 
 
@@ -243,7 +243,7 @@ timestamp_type mip_parser_timeout(const struct mip_parser* parser)
 ///
 void mip_parser_set_timeout(struct mip_parser* parser, timestamp_type timeout)
 {
-    parser->timeout = timeout;
+    parser->_timeout = timeout;
 }
 
 
@@ -266,7 +266,7 @@ void mip_parser_set_timeout(struct mip_parser* parser, timestamp_type timeout)
 ///
 timestamp_type mip_parser_last_packet_timestamp(const struct mip_parser* parser)
 {
-    return parser->start_time;
+    return parser->_start_time;
 }
 
 
@@ -300,7 +300,7 @@ size_t mip_parser_get_write_ptr(struct mip_parser* parser, uint8_t** const ptr_o
 {
     assert(ptr_out != NULL);
 
-    return ByteRing_getWritePtr(&parser->ring, ptr_out);
+    return ByteRing_getWritePtr(&parser->_ring, ptr_out);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ size_t mip_parser_get_write_ptr(struct mip_parser* parser, uint8_t** const ptr_o
 ///
 void mip_parser_process_written(struct mip_parser* parser, size_t count, timestamp_type timestamp, unsigned int max_packets)
 {
-    ByteRing_notifyWritten(&parser->ring, count);
+    ByteRing_notifyWritten(&parser->_ring, count);
     mip_parser_parse(parser, NULL, 0, timestamp, max_packets);
 }
 

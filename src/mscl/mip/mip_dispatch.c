@@ -32,13 +32,13 @@ namespace C {
 ///
 void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* user_data)
 {
-    handler->next            = NULL;
-    handler->packet_callback  = callback;
-    handler->user_data        = user_data;
+    handler->_next            = NULL;
+    handler->_packet_callback  = callback;
+    handler->_user_data        = user_data;
 
-    handler->descriptor_set   = descriptor_set;
-    handler->field_descriptor = MIP_INVALID_FIELD_DESCRIPTOR;
-    handler->enabled         = true;
+    handler->_descriptor_set   = descriptor_set;
+    handler->_field_descriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+    handler->_enabled         = true;
 }
 
 
@@ -70,13 +70,13 @@ void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handle
 {
     assert(field_descriptor != MIP_DISPATCH_FIELDDESC_NONE);
 
-    handler->next            = NULL;
-    handler->field_callback   = callback;
-    handler->user_data        = user_data;
+    handler->_next            = NULL;
+    handler->_field_callback   = callback;
+    handler->_user_data        = user_data;
 
-    handler->descriptor_set   = descriptor_set;
-    handler->field_descriptor = field_descriptor;
-    handler->enabled         = true;
+    handler->_descriptor_set   = descriptor_set;
+    handler->_field_descriptor = field_descriptor;
+    handler->_enabled         = true;
 }
 
 
@@ -88,7 +88,7 @@ void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handle
 ///
 void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool enable)
 {
-    handler->enabled = enable;
+    handler->_enabled = enable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool
 ///
 bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler)
 {
-    return handler->enabled;
+    return handler->_enabled;
 }
 
 
@@ -114,7 +114,7 @@ bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler)
 bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor)
 {
     // First filter by descriptor set.
-    switch(handler->descriptor_set)
+    switch(handler->_descriptor_set)
     {
     case MIP_DISPATCH_DESCRIPTOR_WILDCARD:
         break;
@@ -125,7 +125,7 @@ bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t 
         break;
 
     default:
-        if( descriptor_set != handler->descriptor_set )
+        if( descriptor_set != handler->_descriptor_set )
             return false;
         break;
     }
@@ -136,12 +136,12 @@ bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t 
     {
         // This is a packet callback check.
         // Match if and only if the handler is also a packet callback.
-        return handler->field_descriptor == MIP_DISPATCH_FIELDDESC_NONE;
+        return handler->_field_descriptor == MIP_DISPATCH_FIELDDESC_NONE;
     }
     else
     {
         // Field callback - check for wildcard or exact match.
-        return (handler->field_descriptor == MIP_DISPATCH_DESCRIPTOR_WILDCARD) || (field_descriptor == handler->field_descriptor);
+        return (handler->_field_descriptor == MIP_DISPATCH_DESCRIPTOR_WILDCARD) || (field_descriptor == handler->_field_descriptor);
     }
 }
 
@@ -154,7 +154,7 @@ bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t 
 ///
 void mip_dispatcher_init(struct mip_dispatcher* self)
 {
-    self->first_handler = NULL;
+    self->_first_handler = NULL;
 }
 
 
@@ -165,16 +165,16 @@ void mip_dispatcher_init(struct mip_dispatcher* self)
 ///
 void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
 {
-    if( self->first_handler == NULL )
-        self->first_handler = handler;
+    if( self->_first_handler == NULL )
+        self->_first_handler = handler;
     else
     {
-        struct mip_dispatch_handler* last = self->first_handler;
+        struct mip_dispatch_handler* last = self->_first_handler;
 
-        while(last->next != NULL)
-            last = last->next;
+        while(last->_next != NULL)
+            last = last->_next;
 
-        last->next = handler;
+        last->_next = handler;
     }
 }
 
@@ -186,24 +186,24 @@ void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch
 ///
 void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
 {
-    if( self->first_handler == NULL )
+    if( self->_first_handler == NULL )
         return;
 
-    struct mip_dispatch_handler* query = self->first_handler;
+    struct mip_dispatch_handler* query = self->_first_handler;
 
     if( query == handler )
     {
-        self->first_handler = handler->next;
-        handler->next = NULL;
+        self->_first_handler = handler->_next;
+        handler->_next = NULL;
         return;
     }
 
-    while(query->next != NULL)
+    while(query->_next != NULL)
     {
-        if( query->next == handler )
+        if( query->_next == handler )
         {
-            query->next = handler->next;
-            handler->next = NULL;
+            query->_next = handler->_next;
+            handler->_next = NULL;
             return;
         }
     }
@@ -215,15 +215,15 @@ void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispa
 ///
 void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self)
 {
-    struct mip_dispatch_handler* query = self->first_handler;
+    struct mip_dispatch_handler* query = self->_first_handler;
 
-    self->first_handler = NULL;
+    self->_first_handler = NULL;
 
     // Break the chain (technically not necessary, but aids debugging)
     while(query)
     {
-        struct mip_dispatch_handler* next = query->next;
-        query->next = NULL;
+        struct mip_dispatch_handler* next = query->_next;
+        query->_next = NULL;
         query = next;
     }
 }
@@ -247,10 +247,10 @@ void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mi
     struct mip_dispatch_handler* handler;
 
     // Iterate all packet handlers for this packet.
-    for(handler = self->first_handler; handler != NULL; handler = handler->next)
+    for(handler = self->_first_handler; handler != NULL; handler = handler->_next)
     {
         if( mip_dispatch_handler_matches(handler, descriptor_set, MIP_INVALID_FIELD_DESCRIPTOR) )
-            handler->packet_callback(handler->user_data, packet, timestamp);
+            handler->_packet_callback(handler->_user_data, packet, timestamp);
     }
 
     for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
@@ -258,11 +258,11 @@ void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mi
         const uint8_t field_descriptor = mip_field_field_descriptor(&field);
 
         // Iterate all field handlers for this field.
-        for(handler = self->first_handler; handler != NULL; handler = handler->next)
+        for(handler = self->_first_handler; handler != NULL; handler = handler->_next)
         {
             if( mip_dispatch_handler_matches(handler, descriptor_set, field_descriptor) )
             {
-                handler->field_callback(handler->user_data, &field, timestamp);
+                handler->_field_callback(handler->_user_data, &field, timestamp);
                 break;
             }
         };

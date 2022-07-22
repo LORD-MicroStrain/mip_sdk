@@ -40,11 +40,11 @@ bool mip_interface_parse_callback(void* device, const struct mip_packet* packet,
 ///
 void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
 {
-    mip_parser_init(&device->parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
+    mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
-    device->max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
+    device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
 
-    mip_cmd_queue_init(&device->queue, base_reply_timeout);
+    mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
 ///
 unsigned int mip_interface_max_packets_per_update(const struct mip_interface* device)
 {
-    return device->max_update_pkts;
+    return device->_max_update_pkts;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ unsigned int mip_interface_max_packets_per_update(const struct mip_interface* de
 ///
 void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsigned int max_packets)
 {
-    device->max_update_pkts = max_packets;
+    device->_max_update_pkts = max_packets;
 }
 
 
@@ -142,7 +142,7 @@ bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* d
 ///
 remaining_count mip_interface_receive_bytes(struct mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
 {
-    return mip_parser_parse(&device->parser, data, length, timestamp, device->max_update_pkts);
+    return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
 }
 
 
@@ -160,7 +160,7 @@ remaining_count mip_interface_receive_bytes(struct mip_interface* device, const 
 ///
 void mip_interface_process_unparsed_packets(struct mip_interface* device)
 {
-    mip_parser_parse(&device->parser, NULL, 0, device->max_update_pkts, mip_parser_last_packet_timestamp(&device->parser));
+    mip_parser_parse(&device->_parser, NULL, 0, device->_max_update_pkts, mip_parser_last_packet_timestamp(&device->_parser));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -175,8 +175,8 @@ void mip_interface_process_unparsed_packets(struct mip_interface* device)
 ///
 void mip_interface_receive_packet(struct mip_interface* device, const struct mip_packet* packet, timestamp_type timestamp)
 {
-    mip_cmd_queue_process_packet(&device->queue, packet, timestamp);
-    mip_dispatcher_dispatch_packet(&device->dispatcher, packet, timestamp);
+    mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
+    mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
 }
 
 
@@ -185,7 +185,7 @@ void mip_interface_receive_packet(struct mip_interface* device, const struct mip
 ///
 struct mip_parser* mip_interface_parser(struct mip_interface* device)
 {
-    return &device->parser;
+    return &device->_parser;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ struct mip_parser* mip_interface_parser(struct mip_interface* device)
 ///
 struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device)
 {
-    return &device->queue;
+    return &device->_queue;
 }
 
 
@@ -304,7 +304,7 @@ void mip_interface_register_packet_callback(
     uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* user_data)
 {
     mip_dispatch_handler_init_packet_handler(handler, descriptor_set, callback, user_data);
-    mip_dispatcher_add_handler(&device->dispatcher, handler);
+    mip_dispatcher_add_handler(&device->_dispatcher, handler);
 }
 
 
@@ -333,5 +333,5 @@ void mip_interface_register_field_callback(
     assert(field_descriptor != MIP_DISPATCH_FIELDDESC_NONE);
 
     mip_dispatch_handler_init_field_handler(handler, descriptor_set, field_descriptor, callback, user_data);
-    mip_dispatcher_add_handler(&device->dispatcher, handler);
+    mip_dispatcher_add_handler(&device->_dispatcher, handler);
 }

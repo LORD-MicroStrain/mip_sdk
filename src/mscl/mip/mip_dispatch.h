@@ -78,16 +78,16 @@ enum {
 ///
 struct mip_dispatch_handler
 {
-    struct mip_dispatch_handler* next;                ///<@private Pointer to the next handler in the list.
+    struct mip_dispatch_handler* _next;                ///<@private Pointer to the next handler in the list.
     union
     {
-        mip_dispatch_packet_callback packet_callback;  ///<@private User function for packets. Valid if field_descriptor == 0x00.
-        mip_dispatch_field_callback  field_callback;   ///<@private User callback for data fields. Valid if field_descriptor != 0x00.
+        mip_dispatch_packet_callback _packet_callback;  ///<@private User function for packets. Valid if field_descriptor == 0x00.
+        mip_dispatch_field_callback  _field_callback;   ///<@private User callback for data fields. Valid if field_descriptor != 0x00.
     };
-    void*   user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
-    uint8_t descriptor_set;                            ///<@private MIP descriptor set for this callback.
-    uint8_t field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
-    bool    enabled;                                  ///<@private If false, the handler will be ignored.
+    void*   _user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
+    uint8_t _descriptor_set;                            ///<@private MIP descriptor set for this callback.
+    uint8_t _field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
+    bool    _enabled;                                  ///<@private If false, the handler will be ignored.
 };
 
 
@@ -111,7 +111,7 @@ bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t 
 ///
 struct mip_dispatcher
 {
-    struct mip_dispatch_handler* first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
+    struct mip_dispatch_handler* _first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
 };
 
 

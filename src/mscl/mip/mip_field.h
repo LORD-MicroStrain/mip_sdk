@@ -47,11 +47,11 @@ struct mip_packet;
 ///
 struct mip_field
 {
-    const uint8_t* payload;    ///<@private The field payload, excluding the header.
-    uint8_t payload_length;    ///<@private The length of the payload, excluding the header.
-    uint8_t field_descriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
-    uint8_t descriptor_set;    ///<@private MIP descriptor set (from the packet)
-    uint8_t remaining_length;  ///<@private Remaining space after this field.
+    const uint8_t* _payload;    ///<@private The field payload, excluding the header.
+    uint8_t _payload_length;    ///<@private The length of the payload, excluding the header.
+    uint8_t _field_descriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
+    uint8_t _descriptor_set;    ///<@private MIP descriptor set (from the packet)
+    uint8_t _remaining_length;  ///<@private Remaining space after this field.
 };
 
 

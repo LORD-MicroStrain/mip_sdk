@@ -30,19 +30,19 @@ void mip_field_init(struct mip_field* field, uint8_t descriptor_set, uint8_t fie
     if( payload_length > MIP_FIELD_PAYLOAD_LENGTH_MAX )
         payload_length = MIP_FIELD_PAYLOAD_LENGTH_MAX;
 
-    field->payload          = payload;
-    field->payload_length   = payload_length;
-    field->field_descriptor = field_descriptor;
-    field->descriptor_set   = descriptor_set;
-    field->remaining_length = 0;
+    field->_payload          = payload;
+    field->_payload_length   = payload_length;
+    field->_field_descriptor = field_descriptor;
+    field->_descriptor_set   = descriptor_set;
+    field->_remaining_length = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the descriptor set of the packet containing this field.
+///@brief Returns the descriptor set of the packet containing this field._
 ///
 uint8_t mip_field_descriptor_set(const struct mip_field* field)
 {
-    return field->descriptor_set;
+    return field->_descriptor_set;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ uint8_t mip_field_descriptor_set(const struct mip_field* field)
 ///
 uint8_t mip_field_field_descriptor(const struct mip_field* field)
 {
-    return field->field_descriptor;
+    return field->_field_descriptor;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -58,9 +58,9 @@ uint8_t mip_field_field_descriptor(const struct mip_field* field)
 ///
 uint8_t mip_field_payload_length(const struct mip_field* field)
 {
-    assert(field->payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX);
+    assert(field->_payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX);
 
-    return field->payload_length;
+    return field->_payload_length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ uint8_t mip_field_payload_length(const struct mip_field* field)
 ///
 const uint8_t* mip_field_payload(const struct mip_field* field)
 {
-    return field->payload;
+    return field->_payload;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ const uint8_t* mip_field_payload(const struct mip_field* field)
 ///
 bool mip_field_is_valid(const struct mip_field* field)
 {
-    return field->field_descriptor != 0x00;
+    return field->_field_descriptor != 0x00;
 }
 
 
@@ -94,8 +94,8 @@ bool mip_field_is_valid(const struct mip_field* field)
 ///       than the field (i.e. if it's the packet payload length) then
 ///       mip_field_next() may be used to iterate fields.
 ///@param descriptor_set
-///       The descriptor set for the packet containing this field. May be 0x00
-///       if not used by any function handling the field.
+///       The descriptor set for the packet containing this field._ May be 0x00
+///       if not used by any function handling the field._
 ///
 ///@returns a mip_field struct with the field data.
 ///
@@ -103,13 +103,13 @@ struct mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_
 {
     struct mip_field field;
 
-    field.payload         = header + MIP_INDEX_FIELD_PAYLOAD;
-    field.descriptor_set   = descriptor_set;
+    field._payload         = header + MIP_INDEX_FIELD_PAYLOAD;
+    field._descriptor_set   = descriptor_set;
 
     // Default invalid values.
-    field.payload_length   = 0;
-    field.field_descriptor = 0x00;  // This makes the field invalid.
-    field.remaining_length = 0;
+    field._payload_length   = 0;
+    field._field_descriptor = 0x00;  // This makes the field invalid.
+    field._remaining_length = 0;
 
     if( total_length >= MIP_FIELD_HEADER_LENGTH )
     {
@@ -123,9 +123,9 @@ struct mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_
         // Check for invalid field length.
         if( field_length >= MIP_FIELD_HEADER_LENGTH )
         {
-            field.field_descriptor = header[MIP_INDEX_FIELD_DESC];
-            field.payload_length   = field_length - MIP_FIELD_HEADER_LENGTH;
-            field.remaining_length = total_length - field_length;
+            field._field_descriptor = header[MIP_INDEX_FIELD_DESC];
+            field._payload_length   = field_length - MIP_FIELD_HEADER_LENGTH;
+            field._remaining_length = total_length - field_length;
         }
     }
 
@@ -153,27 +153,27 @@ struct mip_field mip_field_from_packet(const struct mip_packet* packet)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Gets the next field after the specified field.
+///@brief Gets the next field after the specified field._
 ///
 ///@param field
 ///       An existing MIP field in a packet. Can be invalid, in which case the
 ///       result will also be invalid.
 ///
 ///@returns A mip_field struct referencing the next field after the input
-///         field. Check mip_field_is_valid() to see if the field exists.
+///         field._ Check mip_field_is_valid() to see if the field exists.
 ///
 struct mip_field mip_field_next_after(const struct mip_field* field)
 {
-    const uint8_t* next_header = field->payload + field->payload_length;
+    const uint8_t* next_header = field->_payload + field->_payload_length;
 
-    return mip_field_from_header_ptr(next_header, field->remaining_length, field->descriptor_set);
+    return mip_field_from_header_ptr(next_header, field->_remaining_length, field->_descriptor_set);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Updates the %mip_field to refer to the next field in a packet.
 ///
 ///@param field
-///       This %mip_field struct will be updated to the next field. Can be an
+///       This %mip_field struct will be updated to the next field._ Can be an
 ///       invalid field, in which case the result will be invalid as well.
 ///
 ///@returns true if the field exists and is valid.
