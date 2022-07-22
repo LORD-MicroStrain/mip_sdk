@@ -12,10 +12,8 @@
 #include <thread>
 
 
-void handlePacket(void*, const mscl::C::mip_packet* packet_, mscl::Timestamp timestamp)
+void handlePacket(void*, const mscl::MipPacket& packet, mscl::Timestamp timestamp)
 {
-    mscl::MipPacket packet(*packet_);
-
     // if(packet.descriptorSet() != mscl::MIP_SENSOR_DATA_DESC_SET)
     //     return;
 
@@ -27,9 +25,8 @@ void handlePacket(void*, const mscl::C::mip_packet* packet_, mscl::Timestamp tim
     printf("\n");
 }
 
-void handleAccel(void*, const mscl::C::mip_field* field_, mscl::Timestamp timestamp)
+void handleAccel(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::MipField field(*field_);
     mscl::C::mip_sensor_scaled_accel_data data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_accel_data(field.payload(), field.payloadLength(), 0, &data);
@@ -38,9 +35,8 @@ void handleAccel(void*, const mscl::C::mip_field* field_, mscl::Timestamp timest
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 }
 
-void handleGyro(void*, const mscl::C::mip_field* field_, mscl::Timestamp timestamp)
+void handleGyro(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::MipField field(*field_);
     mscl::C::mip_sensor_scaled_gyro_data data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_gyro_data(field.payload(), field.payloadLength(), 0, &data);
@@ -49,9 +45,8 @@ void handleGyro(void*, const mscl::C::mip_field* field_, mscl::Timestamp timesta
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void*, const mscl::C::mip_field* field_, mscl::Timestamp timestamp)
+void handleMag(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::MipField field(*field_);
     mscl::C::mip_sensor_scaled_mag_data data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_mag_data(field.payload(), field.payloadLength(), 0, &data);
@@ -100,12 +95,14 @@ int main(int argc, const char* argv[])
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
 
         // Register some callbacks.
+
         mscl::C::mip_dispatch_handler packetHandler;
+        device->registerPacketCallback<&handlePacket>(packetHandler, mscl::C::MIP_DISPATCH_DESCSET_DATA);
+
         mscl::C::mip_dispatch_handler dataHandlers[3];
-        mscl::C::mip_interface_register_packet_callback(device.get(), &packetHandler, mscl::C::MIP_DISPATCH_DESCSET_DATA, &handlePacket, NULL);
-        mscl::C::mip_interface_register_field_callback(device.get(), &dataHandlers[0], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
-        mscl::C::mip_interface_register_field_callback(device.get(), &dataHandlers[1], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
-        mscl::C::mip_interface_register_field_callback(device.get(), &dataHandlers[2], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
+        device->registerFieldCallback<&handleAccel>(dataHandlers[0], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED);
+        device->registerFieldCallback<&handleGyro >(dataHandlers[1], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED );
+        device->registerFieldCallback<&handleMag  >(dataHandlers[2], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED  );
 
         // Resume the device to ensure it's streaming.
 
