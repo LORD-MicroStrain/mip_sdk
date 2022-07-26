@@ -268,23 +268,23 @@ struct SignalConfiguration : C::mip_gnss_signal_configuration_command
     };
     
 };
-MipCmdResult writeSignalconfiguration(C::mip_interface& device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
+MipCmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
 {
     return C::write_mip_gnss_signal_configuration(&device, gps_enable, glonass_enable, galileo_enable, beidou_enable, reserved);
 }
-MipCmdResult readSignalconfiguration(C::mip_interface& device, uint8_t& gps_enable, uint8_t& glonass_enable, uint8_t& galileo_enable, uint8_t& beidou_enable, uint8_t* reserved)
+MipCmdResult readSignalConfiguration(C::mip_interface& device, uint8_t& gps_enable, uint8_t& glonass_enable, uint8_t& galileo_enable, uint8_t& beidou_enable, uint8_t* reserved)
 {
     return C::read_mip_gnss_signal_configuration(&device, &gps_enable, &glonass_enable, &galileo_enable, &beidou_enable, reserved);
 }
-MipCmdResult saveSignalconfiguration(C::mip_interface& device)
+MipCmdResult saveSignalConfiguration(C::mip_interface& device)
 {
     return C::save_mip_gnss_signal_configuration(&device);
 }
-MipCmdResult loadSignalconfiguration(C::mip_interface& device)
+MipCmdResult loadSignalConfiguration(C::mip_interface& device)
 {
     return C::load_mip_gnss_signal_configuration(&device);
 }
-MipCmdResult defaultSignalconfiguration(C::mip_interface& device)
+MipCmdResult defaultSignalConfiguration(C::mip_interface& device)
 {
     return C::default_mip_gnss_signal_configuration(&device);
 }
@@ -328,23 +328,23 @@ struct RtkDongleConfiguration : C::mip_gnss_rtk_dongle_configuration_command
     };
     
 };
-MipCmdResult writeRtkdongleconfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
+MipCmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
 {
     return C::write_mip_gnss_rtk_dongle_configuration(&device, enable, reserved);
 }
-MipCmdResult readRtkdongleconfiguration(C::mip_interface& device, uint8_t& enable, uint8_t* reserved)
+MipCmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t& enable, uint8_t* reserved)
 {
     return C::read_mip_gnss_rtk_dongle_configuration(&device, &enable, reserved);
 }
-MipCmdResult saveRtkdongleconfiguration(C::mip_interface& device)
+MipCmdResult saveRtkDongleConfiguration(C::mip_interface& device)
 {
     return C::save_mip_gnss_rtk_dongle_configuration(&device);
 }
-MipCmdResult loadRtkdongleconfiguration(C::mip_interface& device)
+MipCmdResult loadRtkDongleConfiguration(C::mip_interface& device)
 {
     return C::load_mip_gnss_rtk_dongle_configuration(&device);
 }
-MipCmdResult defaultRtkdongleconfiguration(C::mip_interface& device)
+MipCmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
 {
     return C::default_mip_gnss_rtk_dongle_configuration(&device);
 }

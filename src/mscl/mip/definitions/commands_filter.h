@@ -1416,23 +1416,23 @@ struct EstimationControl : C::mip_filter_estimation_control_command
     };
     
 };
-MipCmdResult writeEstimationcontrol(C::mip_interface& device, C::mip_filter_estimation_control_command_enable_flags enable)
+MipCmdResult writeEstimationControl(C::mip_interface& device, C::mip_filter_estimation_control_command_enable_flags enable)
 {
     return C::write_mip_filter_estimation_control(&device, enable);
 }
-MipCmdResult readEstimationcontrol(C::mip_interface& device, enum C::mip_filter_estimation_control_command_enable_flags& enable)
+MipCmdResult readEstimationControl(C::mip_interface& device, enum C::mip_filter_estimation_control_command_enable_flags& enable)
 {
     return C::read_mip_filter_estimation_control(&device, &enable);
 }
-MipCmdResult saveEstimationcontrol(C::mip_interface& device)
+MipCmdResult saveEstimationControl(C::mip_interface& device)
 {
     return C::save_mip_filter_estimation_control(&device);
 }
-MipCmdResult loadEstimationcontrol(C::mip_interface& device)
+MipCmdResult loadEstimationControl(C::mip_interface& device)
 {
     return C::load_mip_filter_estimation_control(&device);
 }
-MipCmdResult defaultEstimationcontrol(C::mip_interface& device)
+MipCmdResult defaultEstimationControl(C::mip_interface& device)
 {
     return C::default_mip_filter_estimation_control(&device);
 }
@@ -1548,23 +1548,23 @@ struct TareOrientation : C::mip_filter_tare_orientation_command
     };
     
 };
-MipCmdResult writeTareorientation(C::mip_interface& device, C::mip_filter_tare_orientation_command_mip_tare_axes axes)
+MipCmdResult writeTareOrientation(C::mip_interface& device, C::mip_filter_tare_orientation_command_mip_tare_axes axes)
 {
     return C::write_mip_filter_tare_orientation(&device, axes);
 }
-MipCmdResult readTareorientation(C::mip_interface& device, enum C::mip_filter_tare_orientation_command_mip_tare_axes& axes)
+MipCmdResult readTareOrientation(C::mip_interface& device, enum C::mip_filter_tare_orientation_command_mip_tare_axes& axes)
 {
     return C::read_mip_filter_tare_orientation(&device, &axes);
 }
-MipCmdResult saveTareorientation(C::mip_interface& device)
+MipCmdResult saveTareOrientation(C::mip_interface& device)
 {
     return C::save_mip_filter_tare_orientation(&device);
 }
-MipCmdResult loadTareorientation(C::mip_interface& device)
+MipCmdResult loadTareOrientation(C::mip_interface& device)
 {
     return C::load_mip_filter_tare_orientation(&device);
 }
-MipCmdResult defaultTareorientation(C::mip_interface& device)
+MipCmdResult defaultTareOrientation(C::mip_interface& device)
 {
     return C::default_mip_filter_tare_orientation(&device);
 }
@@ -1608,23 +1608,23 @@ struct SensorToVehicleRotationEuler : C::mip_filter_sensor_to_vehicle_rotation_e
     };
     
 };
-MipCmdResult writeSensortovehiclerotationeuler(C::mip_interface& device, float roll, float pitch, float yaw)
+MipCmdResult writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw)
 {
     return C::write_mip_filter_sensor_to_vehicle_rotation_euler(&device, roll, pitch, yaw);
 }
-MipCmdResult readSensortovehiclerotationeuler(C::mip_interface& device, float& roll, float& pitch, float& yaw)
+MipCmdResult readSensorToVehicleRotationEuler(C::mip_interface& device, float& roll, float& pitch, float& yaw)
 {
     return C::read_mip_filter_sensor_to_vehicle_rotation_euler(&device, &roll, &pitch, &yaw);
 }
-MipCmdResult saveSensortovehiclerotationeuler(C::mip_interface& device)
+MipCmdResult saveSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     return C::save_mip_filter_sensor_to_vehicle_rotation_euler(&device);
 }
-MipCmdResult loadSensortovehiclerotationeuler(C::mip_interface& device)
+MipCmdResult loadSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     return C::load_mip_filter_sensor_to_vehicle_rotation_euler(&device);
 }
-MipCmdResult defaultSensortovehiclerotationeuler(C::mip_interface& device)
+MipCmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     return C::default_mip_filter_sensor_to_vehicle_rotation_euler(&device);
 }
@@ -1668,23 +1668,23 @@ struct SensorToVehicleRotationDcm : C::mip_filter_sensor_to_vehicle_rotation_dcm
     };
     
 };
-MipCmdResult writeSensortovehiclerotationdcm(C::mip_interface& device, const float* dcm)
+MipCmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm)
 {
     return C::write_mip_filter_sensor_to_vehicle_rotation_dcm(&device, dcm);
 }
-MipCmdResult readSensortovehiclerotationdcm(C::mip_interface& device, float* dcm)
+MipCmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcm)
 {
     return C::read_mip_filter_sensor_to_vehicle_rotation_dcm(&device, dcm);
 }
-MipCmdResult saveSensortovehiclerotationdcm(C::mip_interface& device)
+MipCmdResult saveSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     return C::save_mip_filter_sensor_to_vehicle_rotation_dcm(&device);
 }
-MipCmdResult loadSensortovehiclerotationdcm(C::mip_interface& device)
+MipCmdResult loadSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     return C::load_mip_filter_sensor_to_vehicle_rotation_dcm(&device);
 }
-MipCmdResult defaultSensortovehiclerotationdcm(C::mip_interface& device)
+MipCmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     return C::default_mip_filter_sensor_to_vehicle_rotation_dcm(&device);
 }
@@ -1728,23 +1728,23 @@ struct SensorToVehicleRotationQuaternion : C::mip_filter_sensor_to_vehicle_rotat
     };
     
 };
-MipCmdResult writeSensortovehiclerotationquaternion(C::mip_interface& device, const float* quat)
+MipCmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat)
 {
     return C::write_mip_filter_sensor_to_vehicle_rotation_quaternion(&device, quat);
 }
-MipCmdResult readSensortovehiclerotationquaternion(C::mip_interface& device, float* quat)
+MipCmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quat)
 {
     return C::read_mip_filter_sensor_to_vehicle_rotation_quaternion(&device, quat);
 }
-MipCmdResult saveSensortovehiclerotationquaternion(C::mip_interface& device)
+MipCmdResult saveSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     return C::save_mip_filter_sensor_to_vehicle_rotation_quaternion(&device);
 }
-MipCmdResult loadSensortovehiclerotationquaternion(C::mip_interface& device)
+MipCmdResult loadSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     return C::load_mip_filter_sensor_to_vehicle_rotation_quaternion(&device);
 }
-MipCmdResult defaultSensortovehiclerotationquaternion(C::mip_interface& device)
+MipCmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     return C::default_mip_filter_sensor_to_vehicle_rotation_quaternion(&device);
 }
@@ -1788,23 +1788,23 @@ struct SensorToVehicleOffset : C::mip_filter_sensor_to_vehicle_offset_command
     };
     
 };
-MipCmdResult writeSensortovehicleoffset(C::mip_interface& device, const float* offset)
+MipCmdResult writeSensorToVehicleOffset(C::mip_interface& device, const float* offset)
 {
     return C::write_mip_filter_sensor_to_vehicle_offset(&device, offset);
 }
-MipCmdResult readSensortovehicleoffset(C::mip_interface& device, float* offset)
+MipCmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offset)
 {
     return C::read_mip_filter_sensor_to_vehicle_offset(&device, offset);
 }
-MipCmdResult saveSensortovehicleoffset(C::mip_interface& device)
+MipCmdResult saveSensorToVehicleOffset(C::mip_interface& device)
 {
     return C::save_mip_filter_sensor_to_vehicle_offset(&device);
 }
-MipCmdResult loadSensortovehicleoffset(C::mip_interface& device)
+MipCmdResult loadSensorToVehicleOffset(C::mip_interface& device)
 {
     return C::load_mip_filter_sensor_to_vehicle_offset(&device);
 }
-MipCmdResult defaultSensortovehicleoffset(C::mip_interface& device)
+MipCmdResult defaultSensorToVehicleOffset(C::mip_interface& device)
 {
     return C::default_mip_filter_sensor_to_vehicle_offset(&device);
 }
@@ -1848,23 +1848,23 @@ struct AntennaOffset : C::mip_filter_antenna_offset_command
     };
     
 };
-MipCmdResult writeAntennaoffset(C::mip_interface& device, const float* offset)
+MipCmdResult writeAntennaOffset(C::mip_interface& device, const float* offset)
 {
     return C::write_mip_filter_antenna_offset(&device, offset);
 }
-MipCmdResult readAntennaoffset(C::mip_interface& device, float* offset)
+MipCmdResult readAntennaOffset(C::mip_interface& device, float* offset)
 {
     return C::read_mip_filter_antenna_offset(&device, offset);
 }
-MipCmdResult saveAntennaoffset(C::mip_interface& device)
+MipCmdResult saveAntennaOffset(C::mip_interface& device)
 {
     return C::save_mip_filter_antenna_offset(&device);
 }
-MipCmdResult loadAntennaoffset(C::mip_interface& device)
+MipCmdResult loadAntennaOffset(C::mip_interface& device)
 {
     return C::load_mip_filter_antenna_offset(&device);
 }
-MipCmdResult defaultAntennaoffset(C::mip_interface& device)
+MipCmdResult defaultAntennaOffset(C::mip_interface& device)
 {
     return C::default_mip_filter_antenna_offset(&device);
 }
@@ -1908,23 +1908,23 @@ struct GnssSource : C::mip_filter_gnss_source_command
     };
     
 };
-MipCmdResult writeGnsssource(C::mip_interface& device, C::mip_filter_gnss_source_command_gnss_source source)
+MipCmdResult writeGnssSource(C::mip_interface& device, C::mip_filter_gnss_source_command_gnss_source source)
 {
     return C::write_mip_filter_gnss_source(&device, source);
 }
-MipCmdResult readGnsssource(C::mip_interface& device, enum C::mip_filter_gnss_source_command_gnss_source& source)
+MipCmdResult readGnssSource(C::mip_interface& device, enum C::mip_filter_gnss_source_command_gnss_source& source)
 {
     return C::read_mip_filter_gnss_source(&device, &source);
 }
-MipCmdResult saveGnsssource(C::mip_interface& device)
+MipCmdResult saveGnssSource(C::mip_interface& device)
 {
     return C::save_mip_filter_gnss_source(&device);
 }
-MipCmdResult loadGnsssource(C::mip_interface& device)
+MipCmdResult loadGnssSource(C::mip_interface& device)
 {
     return C::load_mip_filter_gnss_source(&device);
 }
-MipCmdResult defaultGnsssource(C::mip_interface& device)
+MipCmdResult defaultGnssSource(C::mip_interface& device)
 {
     return C::default_mip_filter_gnss_source(&device);
 }
@@ -1968,23 +1968,23 @@ struct HeadingSource : C::mip_filter_heading_source_command
     };
     
 };
-MipCmdResult writeHeadingsource(C::mip_interface& device, C::mip_filter_heading_source_command_heading_source source)
+MipCmdResult writeHeadingSource(C::mip_interface& device, C::mip_filter_heading_source_command_heading_source source)
 {
     return C::write_mip_filter_heading_source(&device, source);
 }
-MipCmdResult readHeadingsource(C::mip_interface& device, enum C::mip_filter_heading_source_command_heading_source& source)
+MipCmdResult readHeadingSource(C::mip_interface& device, enum C::mip_filter_heading_source_command_heading_source& source)
 {
     return C::read_mip_filter_heading_source(&device, &source);
 }
-MipCmdResult saveHeadingsource(C::mip_interface& device)
+MipCmdResult saveHeadingSource(C::mip_interface& device)
 {
     return C::save_mip_filter_heading_source(&device);
 }
-MipCmdResult loadHeadingsource(C::mip_interface& device)
+MipCmdResult loadHeadingSource(C::mip_interface& device)
 {
     return C::load_mip_filter_heading_source(&device);
 }
-MipCmdResult defaultHeadingsource(C::mip_interface& device)
+MipCmdResult defaultHeadingSource(C::mip_interface& device)
 {
     return C::default_mip_filter_heading_source(&device);
 }
@@ -2028,23 +2028,23 @@ struct AltitudeAiding : C::mip_filter_altitude_aiding_command
     };
     
 };
-MipCmdResult writeAltitudeaiding(C::mip_interface& device, uint8_t aiding_selector)
+MipCmdResult writeAltitudeAiding(C::mip_interface& device, uint8_t aiding_selector)
 {
     return C::write_mip_filter_altitude_aiding(&device, aiding_selector);
 }
-MipCmdResult readAltitudeaiding(C::mip_interface& device, uint8_t& aiding_selector)
+MipCmdResult readAltitudeAiding(C::mip_interface& device, uint8_t& aiding_selector)
 {
     return C::read_mip_filter_altitude_aiding(&device, &aiding_selector);
 }
-MipCmdResult saveAltitudeaiding(C::mip_interface& device)
+MipCmdResult saveAltitudeAiding(C::mip_interface& device)
 {
     return C::save_mip_filter_altitude_aiding(&device);
 }
-MipCmdResult loadAltitudeaiding(C::mip_interface& device)
+MipCmdResult loadAltitudeAiding(C::mip_interface& device)
 {
     return C::load_mip_filter_altitude_aiding(&device);
 }
-MipCmdResult defaultAltitudeaiding(C::mip_interface& device)
+MipCmdResult defaultAltitudeAiding(C::mip_interface& device)
 {
     return C::default_mip_filter_altitude_aiding(&device);
 }
@@ -2088,23 +2088,23 @@ struct AutoZupt : C::mip_filter_auto_zupt_command
     };
     
 };
-MipCmdResult writeAutozupt(C::mip_interface& device, uint8_t enable, float threshold)
+MipCmdResult writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold)
 {
     return C::write_mip_filter_auto_zupt(&device, enable, threshold);
 }
-MipCmdResult readAutozupt(C::mip_interface& device, uint8_t& enable, float& threshold)
+MipCmdResult readAutoZupt(C::mip_interface& device, uint8_t& enable, float& threshold)
 {
     return C::read_mip_filter_auto_zupt(&device, &enable, &threshold);
 }
-MipCmdResult saveAutozupt(C::mip_interface& device)
+MipCmdResult saveAutoZupt(C::mip_interface& device)
 {
     return C::save_mip_filter_auto_zupt(&device);
 }
-MipCmdResult loadAutozupt(C::mip_interface& device)
+MipCmdResult loadAutoZupt(C::mip_interface& device)
 {
     return C::load_mip_filter_auto_zupt(&device);
 }
-MipCmdResult defaultAutozupt(C::mip_interface& device)
+MipCmdResult defaultAutoZupt(C::mip_interface& device)
 {
     return C::default_mip_filter_auto_zupt(&device);
 }
@@ -2148,23 +2148,23 @@ struct AutoAngularZupt : C::mip_filter_auto_angular_zupt_command
     };
     
 };
-MipCmdResult writeAutoangularzupt(C::mip_interface& device, uint8_t enable, float threshold)
+MipCmdResult writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold)
 {
     return C::write_mip_filter_auto_angular_zupt(&device, enable, threshold);
 }
-MipCmdResult readAutoangularzupt(C::mip_interface& device, uint8_t& enable, float& threshold)
+MipCmdResult readAutoAngularZupt(C::mip_interface& device, uint8_t& enable, float& threshold)
 {
     return C::read_mip_filter_auto_angular_zupt(&device, &enable, &threshold);
 }
-MipCmdResult saveAutoangularzupt(C::mip_interface& device)
+MipCmdResult saveAutoAngularZupt(C::mip_interface& device)
 {
     return C::save_mip_filter_auto_angular_zupt(&device);
 }
-MipCmdResult loadAutoangularzupt(C::mip_interface& device)
+MipCmdResult loadAutoAngularZupt(C::mip_interface& device)
 {
     return C::load_mip_filter_auto_angular_zupt(&device);
 }
-MipCmdResult defaultAutoangularzupt(C::mip_interface& device)
+MipCmdResult defaultAutoAngularZupt(C::mip_interface& device)
 {
     return C::default_mip_filter_auto_angular_zupt(&device);
 }
@@ -2256,23 +2256,23 @@ struct AidingMeasurementEnable : C::mip_filter_aiding_measurement_enable_command
     };
     
 };
-MipCmdResult writeAidingmeasurementenable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable)
+MipCmdResult writeAidingMeasurementEnable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable)
 {
     return C::write_mip_filter_aiding_measurement_enable(&device, aiding_source, enable);
 }
-MipCmdResult readAidingmeasurementenable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool& enable)
+MipCmdResult readAidingMeasurementEnable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool& enable)
 {
     return C::read_mip_filter_aiding_measurement_enable(&device, aiding_source, &enable);
 }
-MipCmdResult saveAidingmeasurementenable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+MipCmdResult saveAidingMeasurementEnable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     return C::save_mip_filter_aiding_measurement_enable(&device, aiding_source);
 }
-MipCmdResult loadAidingmeasurementenable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+MipCmdResult loadAidingMeasurementEnable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     return C::load_mip_filter_aiding_measurement_enable(&device, aiding_source);
 }
-MipCmdResult defaultAidingmeasurementenable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+MipCmdResult defaultAidingMeasurementEnable(C::mip_interface& device, C::mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     return C::default_mip_filter_aiding_measurement_enable(&device, aiding_source);
 }
@@ -2340,23 +2340,23 @@ struct KinematicConstraint : C::mip_filter_kinematic_constraint_command
     };
     
 };
-MipCmdResult writeKinematicconstraint(C::mip_interface& device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection)
+MipCmdResult writeKinematicConstraint(C::mip_interface& device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection)
 {
     return C::write_mip_filter_kinematic_constraint(&device, acceleration_constraint_selection, velocity_constraint_selection, angular_constraint_selection);
 }
-MipCmdResult readKinematicconstraint(C::mip_interface& device, uint8_t& acceleration_constraint_selection, uint8_t& velocity_constraint_selection, uint8_t& angular_constraint_selection)
+MipCmdResult readKinematicConstraint(C::mip_interface& device, uint8_t& acceleration_constraint_selection, uint8_t& velocity_constraint_selection, uint8_t& angular_constraint_selection)
 {
     return C::read_mip_filter_kinematic_constraint(&device, &acceleration_constraint_selection, &velocity_constraint_selection, &angular_constraint_selection);
 }
-MipCmdResult saveKinematicconstraint(C::mip_interface& device)
+MipCmdResult saveKinematicConstraint(C::mip_interface& device)
 {
     return C::save_mip_filter_kinematic_constraint(&device);
 }
-MipCmdResult loadKinematicconstraint(C::mip_interface& device)
+MipCmdResult loadKinematicConstraint(C::mip_interface& device)
 {
     return C::load_mip_filter_kinematic_constraint(&device);
 }
-MipCmdResult defaultKinematicconstraint(C::mip_interface& device)
+MipCmdResult defaultKinematicConstraint(C::mip_interface& device)
 {
     return C::default_mip_filter_kinematic_constraint(&device);
 }
@@ -2400,23 +2400,23 @@ struct InitializationConfiguration : C::mip_filter_initialization_configuration_
     };
     
 };
-MipCmdResult writeInitializationconfiguration(C::mip_interface& device, uint8_t wait_for_run_command, C::mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, C::mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, C::mip_filter_reference_frame reference_frame_selector)
+MipCmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t wait_for_run_command, C::mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, C::mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, C::mip_filter_reference_frame reference_frame_selector)
 {
     return C::write_mip_filter_initialization_configuration(&device, wait_for_run_command, initial_cond_src, auto_heading_alignment_selector, initial_heading, initial_pitch, initial_roll, initial_position, initial_velocity, reference_frame_selector);
 }
-MipCmdResult readInitializationconfiguration(C::mip_interface& device, uint8_t& wait_for_run_command, enum C::mip_filter_initialization_configuration_command_initial_condition_source& initial_cond_src, enum C::mip_filter_initialization_configuration_command_alignment_selector& auto_heading_alignment_selector, float& initial_heading, float& initial_pitch, float& initial_roll, float* initial_position, float* initial_velocity, enum C::mip_filter_reference_frame& reference_frame_selector)
+MipCmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t& wait_for_run_command, enum C::mip_filter_initialization_configuration_command_initial_condition_source& initial_cond_src, enum C::mip_filter_initialization_configuration_command_alignment_selector& auto_heading_alignment_selector, float& initial_heading, float& initial_pitch, float& initial_roll, float* initial_position, float* initial_velocity, enum C::mip_filter_reference_frame& reference_frame_selector)
 {
     return C::read_mip_filter_initialization_configuration(&device, &wait_for_run_command, &initial_cond_src, &auto_heading_alignment_selector, &initial_heading, &initial_pitch, &initial_roll, initial_position, initial_velocity, &reference_frame_selector);
 }
-MipCmdResult saveInitializationconfiguration(C::mip_interface& device)
+MipCmdResult saveInitializationConfiguration(C::mip_interface& device)
 {
     return C::save_mip_filter_initialization_configuration(&device);
 }
-MipCmdResult loadInitializationconfiguration(C::mip_interface& device)
+MipCmdResult loadInitializationConfiguration(C::mip_interface& device)
 {
     return C::load_mip_filter_initialization_configuration(&device);
 }
-MipCmdResult defaultInitializationconfiguration(C::mip_interface& device)
+MipCmdResult defaultInitializationConfiguration(C::mip_interface& device)
 {
     return C::default_mip_filter_initialization_configuration(&device);
 }
@@ -2460,23 +2460,23 @@ struct AdaptiveFilterOptions : C::mip_filter_adaptive_filter_options_command
     };
     
 };
-MipCmdResult writeAdaptivefilteroptions(C::mip_interface& device, uint8_t level, uint16_t time_limit)
+MipCmdResult writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t time_limit)
 {
     return C::write_mip_filter_adaptive_filter_options(&device, level, time_limit);
 }
-MipCmdResult readAdaptivefilteroptions(C::mip_interface& device, uint8_t& level, uint16_t& time_limit)
+MipCmdResult readAdaptiveFilterOptions(C::mip_interface& device, uint8_t& level, uint16_t& time_limit)
 {
     return C::read_mip_filter_adaptive_filter_options(&device, &level, &time_limit);
 }
-MipCmdResult saveAdaptivefilteroptions(C::mip_interface& device)
+MipCmdResult saveAdaptiveFilterOptions(C::mip_interface& device)
 {
     return C::save_mip_filter_adaptive_filter_options(&device);
 }
-MipCmdResult loadAdaptivefilteroptions(C::mip_interface& device)
+MipCmdResult loadAdaptiveFilterOptions(C::mip_interface& device)
 {
     return C::load_mip_filter_adaptive_filter_options(&device);
 }
-MipCmdResult defaultAdaptivefilteroptions(C::mip_interface& device)
+MipCmdResult defaultAdaptiveFilterOptions(C::mip_interface& device)
 {
     return C::default_mip_filter_adaptive_filter_options(&device);
 }
@@ -2520,23 +2520,23 @@ struct MultiAntennaOffset : C::mip_filter_multi_antenna_offset_command
     };
     
 };
-MipCmdResult writeMultiantennaoffset(C::mip_interface& device, uint8_t receiver_id, const float* antenna_offset)
+MipCmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, const float* antenna_offset)
 {
     return C::write_mip_filter_multi_antenna_offset(&device, receiver_id, antenna_offset);
 }
-MipCmdResult readMultiantennaoffset(C::mip_interface& device, uint8_t receiver_id, float* antenna_offset)
+MipCmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, float* antenna_offset)
 {
     return C::read_mip_filter_multi_antenna_offset(&device, receiver_id, antenna_offset);
 }
-MipCmdResult saveMultiantennaoffset(C::mip_interface& device, uint8_t receiver_id)
+MipCmdResult saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id)
 {
     return C::save_mip_filter_multi_antenna_offset(&device, receiver_id);
 }
-MipCmdResult loadMultiantennaoffset(C::mip_interface& device, uint8_t receiver_id)
+MipCmdResult loadMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id)
 {
     return C::load_mip_filter_multi_antenna_offset(&device, receiver_id);
 }
-MipCmdResult defaultMultiantennaoffset(C::mip_interface& device, uint8_t receiver_id)
+MipCmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id)
 {
     return C::default_mip_filter_multi_antenna_offset(&device, receiver_id);
 }
@@ -2580,23 +2580,23 @@ struct RelPosConfiguration : C::mip_filter_rel_pos_configuration_command
     };
     
 };
-MipCmdResult writeRelposconfiguration(C::mip_interface& device, uint8_t source, C::mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
+MipCmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, C::mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
 {
     return C::write_mip_filter_rel_pos_configuration(&device, source, reference_frame_selector, reference_coordinates);
 }
-MipCmdResult readRelposconfiguration(C::mip_interface& device, uint8_t& source, enum C::mip_filter_reference_frame& reference_frame_selector, double* reference_coordinates)
+MipCmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t& source, enum C::mip_filter_reference_frame& reference_frame_selector, double* reference_coordinates)
 {
     return C::read_mip_filter_rel_pos_configuration(&device, &source, &reference_frame_selector, reference_coordinates);
 }
-MipCmdResult saveRelposconfiguration(C::mip_interface& device)
+MipCmdResult saveRelPosConfiguration(C::mip_interface& device)
 {
     return C::save_mip_filter_rel_pos_configuration(&device);
 }
-MipCmdResult loadRelposconfiguration(C::mip_interface& device)
+MipCmdResult loadRelPosConfiguration(C::mip_interface& device)
 {
     return C::load_mip_filter_rel_pos_configuration(&device);
 }
-MipCmdResult defaultRelposconfiguration(C::mip_interface& device)
+MipCmdResult defaultRelPosConfiguration(C::mip_interface& device)
 {
     return C::default_mip_filter_rel_pos_configuration(&device);
 }
@@ -2640,23 +2640,23 @@ struct RefPointLeverArm : C::mip_filter_ref_point_lever_arm_command
     };
     
 };
-MipCmdResult writeRefpointleverarm(C::mip_interface& device, C::mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
+MipCmdResult writeRefPointLeverArm(C::mip_interface& device, C::mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
 {
     return C::write_mip_filter_ref_point_lever_arm(&device, ref_point_sel, lever_arm_offset);
 }
-MipCmdResult readRefpointleverarm(C::mip_interface& device, enum C::mip_filter_ref_point_lever_arm_command_reference_point_selector& ref_point_sel, float* lever_arm_offset)
+MipCmdResult readRefPointLeverArm(C::mip_interface& device, enum C::mip_filter_ref_point_lever_arm_command_reference_point_selector& ref_point_sel, float* lever_arm_offset)
 {
     return C::read_mip_filter_ref_point_lever_arm(&device, &ref_point_sel, lever_arm_offset);
 }
-MipCmdResult saveRefpointleverarm(C::mip_interface& device)
+MipCmdResult saveRefPointLeverArm(C::mip_interface& device)
 {
     return C::save_mip_filter_ref_point_lever_arm(&device);
 }
-MipCmdResult loadRefpointleverarm(C::mip_interface& device)
+MipCmdResult loadRefPointLeverArm(C::mip_interface& device)
 {
     return C::load_mip_filter_ref_point_lever_arm(&device);
 }
-MipCmdResult defaultRefpointleverarm(C::mip_interface& device)
+MipCmdResult defaultRefPointLeverArm(C::mip_interface& device)
 {
     return C::default_mip_filter_ref_point_lever_arm(&device);
 }
@@ -2724,23 +2724,23 @@ struct SpeedLeverArm : C::mip_filter_speed_lever_arm_command
     };
     
 };
-MipCmdResult writeSpeedleverarm(C::mip_interface& device, uint8_t source, const float* lever_arm_offset)
+MipCmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* lever_arm_offset)
 {
     return C::write_mip_filter_speed_lever_arm(&device, source, lever_arm_offset);
 }
-MipCmdResult readSpeedleverarm(C::mip_interface& device, uint8_t source, float* lever_arm_offset)
+MipCmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lever_arm_offset)
 {
     return C::read_mip_filter_speed_lever_arm(&device, source, lever_arm_offset);
 }
-MipCmdResult saveSpeedleverarm(C::mip_interface& device, uint8_t source)
+MipCmdResult saveSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     return C::save_mip_filter_speed_lever_arm(&device, source);
 }
-MipCmdResult loadSpeedleverarm(C::mip_interface& device, uint8_t source)
+MipCmdResult loadSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     return C::load_mip_filter_speed_lever_arm(&device, source);
 }
-MipCmdResult defaultSpeedleverarm(C::mip_interface& device, uint8_t source)
+MipCmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     return C::default_mip_filter_speed_lever_arm(&device, source);
 }
@@ -2784,23 +2784,23 @@ struct WheeledVehicleConstraintControl : C::mip_filter_wheeled_vehicle_constrain
     };
     
 };
-MipCmdResult writeWheeledvehicleconstraintcontrol(C::mip_interface& device, uint8_t enable)
+MipCmdResult writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable)
 {
     return C::write_mip_filter_wheeled_vehicle_constraint_control(&device, enable);
 }
-MipCmdResult readWheeledvehicleconstraintcontrol(C::mip_interface& device, uint8_t& enable)
+MipCmdResult readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t& enable)
 {
     return C::read_mip_filter_wheeled_vehicle_constraint_control(&device, &enable);
 }
-MipCmdResult saveWheeledvehicleconstraintcontrol(C::mip_interface& device)
+MipCmdResult saveWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     return C::save_mip_filter_wheeled_vehicle_constraint_control(&device);
 }
-MipCmdResult loadWheeledvehicleconstraintcontrol(C::mip_interface& device)
+MipCmdResult loadWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     return C::load_mip_filter_wheeled_vehicle_constraint_control(&device);
 }
-MipCmdResult defaultWheeledvehicleconstraintcontrol(C::mip_interface& device)
+MipCmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     return C::default_mip_filter_wheeled_vehicle_constraint_control(&device);
 }
@@ -2844,23 +2844,23 @@ struct VerticalGyroConstraintControl : C::mip_filter_vertical_gyro_constraint_co
     };
     
 };
-MipCmdResult writeVerticalgyroconstraintcontrol(C::mip_interface& device, uint8_t enable)
+MipCmdResult writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable)
 {
     return C::write_mip_filter_vertical_gyro_constraint_control(&device, enable);
 }
-MipCmdResult readVerticalgyroconstraintcontrol(C::mip_interface& device, uint8_t& enable)
+MipCmdResult readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t& enable)
 {
     return C::read_mip_filter_vertical_gyro_constraint_control(&device, &enable);
 }
-MipCmdResult saveVerticalgyroconstraintcontrol(C::mip_interface& device)
+MipCmdResult saveVerticalGyroConstraintControl(C::mip_interface& device)
 {
     return C::save_mip_filter_vertical_gyro_constraint_control(&device);
 }
-MipCmdResult loadVerticalgyroconstraintcontrol(C::mip_interface& device)
+MipCmdResult loadVerticalGyroConstraintControl(C::mip_interface& device)
 {
     return C::load_mip_filter_vertical_gyro_constraint_control(&device);
 }
-MipCmdResult defaultVerticalgyroconstraintcontrol(C::mip_interface& device)
+MipCmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device)
 {
     return C::default_mip_filter_vertical_gyro_constraint_control(&device);
 }
@@ -2904,23 +2904,23 @@ struct GnssAntennaCalControl : C::mip_filter_gnss_antenna_cal_control_command
     };
     
 };
-MipCmdResult writeGnssantennacalcontrol(C::mip_interface& device, uint8_t enable, float max_offset)
+MipCmdResult writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float max_offset)
 {
     return C::write_mip_filter_gnss_antenna_cal_control(&device, enable, max_offset);
 }
-MipCmdResult readGnssantennacalcontrol(C::mip_interface& device, uint8_t& enable, float& max_offset)
+MipCmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t& enable, float& max_offset)
 {
     return C::read_mip_filter_gnss_antenna_cal_control(&device, &enable, &max_offset);
 }
-MipCmdResult saveGnssantennacalcontrol(C::mip_interface& device)
+MipCmdResult saveGnssAntennaCalControl(C::mip_interface& device)
 {
     return C::save_mip_filter_gnss_antenna_cal_control(&device);
 }
-MipCmdResult loadGnssantennacalcontrol(C::mip_interface& device)
+MipCmdResult loadGnssAntennaCalControl(C::mip_interface& device)
 {
     return C::load_mip_filter_gnss_antenna_cal_control(&device);
 }
-MipCmdResult defaultGnssantennacalcontrol(C::mip_interface& device)
+MipCmdResult defaultGnssAntennaCalControl(C::mip_interface& device)
 {
     return C::default_mip_filter_gnss_antenna_cal_control(&device);
 }
@@ -2964,23 +2964,23 @@ struct MagneticDeclinationSource : C::mip_filter_magnetic_declination_source_com
     };
     
 };
-MipCmdResult writeMagneticdeclinationsource(C::mip_interface& device, C::mip_filter_mag_declination_source source, float declination)
+MipCmdResult writeMagneticDeclinationSource(C::mip_interface& device, C::mip_filter_mag_declination_source source, float declination)
 {
     return C::write_mip_filter_magnetic_declination_source(&device, source, declination);
 }
-MipCmdResult readMagneticdeclinationsource(C::mip_interface& device, enum C::mip_filter_mag_declination_source& source, float& declination)
+MipCmdResult readMagneticDeclinationSource(C::mip_interface& device, enum C::mip_filter_mag_declination_source& source, float& declination)
 {
     return C::read_mip_filter_magnetic_declination_source(&device, &source, &declination);
 }
-MipCmdResult saveMagneticdeclinationsource(C::mip_interface& device)
+MipCmdResult saveMagneticDeclinationSource(C::mip_interface& device)
 {
     return C::save_mip_filter_magnetic_declination_source(&device);
 }
-MipCmdResult loadMagneticdeclinationsource(C::mip_interface& device)
+MipCmdResult loadMagneticDeclinationSource(C::mip_interface& device)
 {
     return C::load_mip_filter_magnetic_declination_source(&device);
 }
-MipCmdResult defaultMagneticdeclinationsource(C::mip_interface& device)
+MipCmdResult defaultMagneticDeclinationSource(C::mip_interface& device)
 {
     return C::default_mip_filter_magnetic_declination_source(&device);
 }

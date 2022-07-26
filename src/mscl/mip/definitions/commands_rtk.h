@@ -579,23 +579,23 @@ struct ConnectedDeviceType : C::mip_rtk_connected_device_type_command
     };
     
 };
-MipCmdResult writeConnecteddevicetype(C::mip_interface& device, C::mip_connected_device_type devType)
+MipCmdResult writeConnectedDeviceType(C::mip_interface& device, C::mip_connected_device_type devType)
 {
     return C::write_mip_rtk_connected_device_type(&device, devType);
 }
-MipCmdResult readConnecteddevicetype(C::mip_interface& device, enum C::mip_connected_device_type& devType)
+MipCmdResult readConnectedDeviceType(C::mip_interface& device, enum C::mip_connected_device_type& devType)
 {
     return C::read_mip_rtk_connected_device_type(&device, &devType);
 }
-MipCmdResult saveConnecteddevicetype(C::mip_interface& device)
+MipCmdResult saveConnectedDeviceType(C::mip_interface& device)
 {
     return C::save_mip_rtk_connected_device_type(&device);
 }
-MipCmdResult loadConnecteddevicetype(C::mip_interface& device)
+MipCmdResult loadConnectedDeviceType(C::mip_interface& device)
 {
     return C::load_mip_rtk_connected_device_type(&device);
 }
-MipCmdResult defaultConnecteddevicetype(C::mip_interface& device)
+MipCmdResult defaultConnectedDeviceType(C::mip_interface& device)
 {
     return C::default_mip_rtk_connected_device_type(&device);
 }

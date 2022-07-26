@@ -29,7 +29,7 @@ void handleAccel(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledAccel data;
 
-    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0);
 
     if(readBytes == field.payloadLength())
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
@@ -39,7 +39,7 @@ void handleGyro(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledGyro data;
 
-    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0);
 
     if(readBytes == field.payloadLength())
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
@@ -49,7 +49,7 @@ void handleMag(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledMag data;
 
-    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0);
 
     if(readBytes == field.payloadLength())
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
@@ -83,13 +83,13 @@ int main(int argc, const char* argv[])
             { mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
         }};
 
-        result = mscl::TdmCommands::writeMessageFormat(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
+        result = mscl::TdmCommands::writeMessageFormat(*device, mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
 
         if( result == mscl::MipCmdResult::COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
-            result = mscl::TdmCommands::writeMessageFormat(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
+            result = mscl::TdmCommands::writeMessageFormat(*device, mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
         }
         if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
@@ -106,7 +106,7 @@ int main(int argc, const char* argv[])
 
         // Enable the data stream and resume the device.
 
-        result = mscl::TdmCommands::writeDatastreamcontrol(*device, mscl::MIP_SENSOR_DATA_DESC_SET, true);
+        result = mscl::TdmCommands::writeDatastreamControl(*device, mscl::MIP_SENSOR_DATA_DESC_SET, true);
         if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to enable datastream: %s (%d)\n", result.name(), result.value), 1;
 

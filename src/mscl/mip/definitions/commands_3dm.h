@@ -1960,23 +1960,23 @@ struct ImuMessageFormat : C::mip_3dm_imu_message_format_command
     };
     
 };
-MipCmdResult writeImumessageformat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
+MipCmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
 {
     return C::write_mip_3dm_imu_message_format(&device, num_descriptors, descriptors);
 }
-MipCmdResult readImumessageformat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
+MipCmdResult readImuMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
 {
     return C::read_mip_3dm_imu_message_format(&device, &num_descriptors, descriptors);
 }
-MipCmdResult saveImumessageformat(C::mip_interface& device)
+MipCmdResult saveImuMessageFormat(C::mip_interface& device)
 {
     return C::save_mip_3dm_imu_message_format(&device);
 }
-MipCmdResult loadImumessageformat(C::mip_interface& device)
+MipCmdResult loadImuMessageFormat(C::mip_interface& device)
 {
     return C::load_mip_3dm_imu_message_format(&device);
 }
-MipCmdResult defaultImumessageformat(C::mip_interface& device)
+MipCmdResult defaultImuMessageFormat(C::mip_interface& device)
 {
     return C::default_mip_3dm_imu_message_format(&device);
 }
@@ -2020,23 +2020,23 @@ struct GpsMessageFormat : C::mip_3dm_gps_message_format_command
     };
     
 };
-MipCmdResult writeGpsmessageformat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
+MipCmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
 {
     return C::write_mip_3dm_gps_message_format(&device, num_descriptors, descriptors);
 }
-MipCmdResult readGpsmessageformat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
+MipCmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
 {
     return C::read_mip_3dm_gps_message_format(&device, &num_descriptors, descriptors);
 }
-MipCmdResult saveGpsmessageformat(C::mip_interface& device)
+MipCmdResult saveGpsMessageFormat(C::mip_interface& device)
 {
     return C::save_mip_3dm_gps_message_format(&device);
 }
-MipCmdResult loadGpsmessageformat(C::mip_interface& device)
+MipCmdResult loadGpsMessageFormat(C::mip_interface& device)
 {
     return C::load_mip_3dm_gps_message_format(&device);
 }
-MipCmdResult defaultGpsmessageformat(C::mip_interface& device)
+MipCmdResult defaultGpsMessageFormat(C::mip_interface& device)
 {
     return C::default_mip_3dm_gps_message_format(&device);
 }
@@ -2080,23 +2080,23 @@ struct FilterMessageFormat : C::mip_3dm_filter_message_format_command
     };
     
 };
-MipCmdResult writeFiltermessageformat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
+MipCmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
 {
     return C::write_mip_3dm_filter_message_format(&device, num_descriptors, descriptors);
 }
-MipCmdResult readFiltermessageformat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
+MipCmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
 {
     return C::read_mip_3dm_filter_message_format(&device, &num_descriptors, descriptors);
 }
-MipCmdResult saveFiltermessageformat(C::mip_interface& device)
+MipCmdResult saveFilterMessageFormat(C::mip_interface& device)
 {
     return C::save_mip_3dm_filter_message_format(&device);
 }
-MipCmdResult loadFiltermessageformat(C::mip_interface& device)
+MipCmdResult loadFilterMessageFormat(C::mip_interface& device)
 {
     return C::load_mip_3dm_filter_message_format(&device);
 }
-MipCmdResult defaultFiltermessageformat(C::mip_interface& device)
+MipCmdResult defaultFilterMessageFormat(C::mip_interface& device)
 {
     return C::default_mip_3dm_filter_message_format(&device);
 }
@@ -2320,23 +2320,23 @@ struct MessageFormat : C::mip_3dm_message_format_command
     };
     
 };
-MipCmdResult writeMessageformat(C::mip_interface& device, uint8_t desc_set, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
+MipCmdResult writeMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t num_descriptors, const C::mip_descriptor_rate* descriptors)
 {
     return C::write_mip_3dm_message_format(&device, desc_set, num_descriptors, descriptors);
 }
-MipCmdResult readMessageformat(C::mip_interface& device, uint8_t desc_set, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
+MipCmdResult readMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t& num_descriptors, struct C::mip_descriptor_rate* descriptors)
 {
     return C::read_mip_3dm_message_format(&device, desc_set, &num_descriptors, descriptors);
 }
-MipCmdResult saveMessageformat(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult saveMessageFormat(C::mip_interface& device, uint8_t desc_set)
 {
     return C::save_mip_3dm_message_format(&device, desc_set);
 }
-MipCmdResult loadMessageformat(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult loadMessageFormat(C::mip_interface& device, uint8_t desc_set)
 {
     return C::load_mip_3dm_message_format(&device, desc_set);
 }
-MipCmdResult defaultMessageformat(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult defaultMessageFormat(C::mip_interface& device, uint8_t desc_set)
 {
     return C::default_mip_3dm_message_format(&device, desc_set);
 }
@@ -2404,23 +2404,23 @@ struct NmeaMessageFormat : C::mip_3dm_nmea_message_format_command
     };
     
 };
-MipCmdResult writeNmeamessageformat(C::mip_interface& device, uint8_t count, const C::mip_nmeamessage_format* format_entries)
+MipCmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const C::mip_nmeamessage_format* format_entries)
 {
     return C::write_mip_3dm_nmea_message_format(&device, count, format_entries);
 }
-MipCmdResult readNmeamessageformat(C::mip_interface& device, uint8_t& count, struct C::mip_nmeamessage_format* format_entries)
+MipCmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t& count, struct C::mip_nmeamessage_format* format_entries)
 {
     return C::read_mip_3dm_nmea_message_format(&device, &count, format_entries);
 }
-MipCmdResult saveNmeamessageformat(C::mip_interface& device)
+MipCmdResult saveNmeaMessageFormat(C::mip_interface& device)
 {
     return C::save_mip_3dm_nmea_message_format(&device);
 }
-MipCmdResult loadNmeamessageformat(C::mip_interface& device)
+MipCmdResult loadNmeaMessageFormat(C::mip_interface& device)
 {
     return C::load_mip_3dm_nmea_message_format(&device);
 }
-MipCmdResult defaultNmeamessageformat(C::mip_interface& device)
+MipCmdResult defaultNmeaMessageFormat(C::mip_interface& device)
 {
     return C::default_mip_3dm_nmea_message_format(&device);
 }
@@ -2449,15 +2449,15 @@ struct DeviceSettings : C::mip_3dm_device_settings_command
     static const bool canReset = true;
     
 };
-MipCmdResult saveDevicesettings(C::mip_interface& device)
+MipCmdResult saveDeviceSettings(C::mip_interface& device)
 {
     return C::save_mip_3dm_device_settings(&device);
 }
-MipCmdResult loadDevicesettings(C::mip_interface& device)
+MipCmdResult loadDeviceSettings(C::mip_interface& device)
 {
     return C::load_mip_3dm_device_settings(&device);
 }
-MipCmdResult defaultDevicesettings(C::mip_interface& device)
+MipCmdResult defaultDeviceSettings(C::mip_interface& device)
 {
     return C::default_mip_3dm_device_settings(&device);
 }
@@ -2501,23 +2501,23 @@ struct UartBaudrate : C::mip_3dm_uart_baudrate_command
     };
     
 };
-MipCmdResult writeUartbaudrate(C::mip_interface& device, uint32_t baud)
+MipCmdResult writeUartBaudrate(C::mip_interface& device, uint32_t baud)
 {
     return C::write_mip_3dm_uart_baudrate(&device, baud);
 }
-MipCmdResult readUartbaudrate(C::mip_interface& device, uint32_t& baud)
+MipCmdResult readUartBaudrate(C::mip_interface& device, uint32_t& baud)
 {
     return C::read_mip_3dm_uart_baudrate(&device, &baud);
 }
-MipCmdResult saveUartbaudrate(C::mip_interface& device)
+MipCmdResult saveUartBaudrate(C::mip_interface& device)
 {
     return C::save_mip_3dm_uart_baudrate(&device);
 }
-MipCmdResult loadUartbaudrate(C::mip_interface& device)
+MipCmdResult loadUartBaudrate(C::mip_interface& device)
 {
     return C::load_mip_3dm_uart_baudrate(&device);
 }
-MipCmdResult defaultUartbaudrate(C::mip_interface& device)
+MipCmdResult defaultUartBaudrate(C::mip_interface& device)
 {
     return C::default_mip_3dm_uart_baudrate(&device);
 }
@@ -2585,23 +2585,23 @@ struct DatastreamControl : C::mip_3dm_datastream_control_command
     };
     
 };
-MipCmdResult writeDatastreamcontrol(C::mip_interface& device, uint8_t desc_set, bool enable)
+MipCmdResult writeDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool enable)
 {
     return C::write_mip_3dm_datastream_control(&device, desc_set, enable);
 }
-MipCmdResult readDatastreamcontrol(C::mip_interface& device, uint8_t desc_set, bool& enabled)
+MipCmdResult readDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool& enabled)
 {
     return C::read_mip_3dm_datastream_control(&device, desc_set, &enabled);
 }
-MipCmdResult saveDatastreamcontrol(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult saveDatastreamControl(C::mip_interface& device, uint8_t desc_set)
 {
     return C::save_mip_3dm_datastream_control(&device, desc_set);
 }
-MipCmdResult loadDatastreamcontrol(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult loadDatastreamControl(C::mip_interface& device, uint8_t desc_set)
 {
     return C::load_mip_3dm_datastream_control(&device, desc_set);
 }
-MipCmdResult defaultDatastreamcontrol(C::mip_interface& device, uint8_t desc_set)
+MipCmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t desc_set)
 {
     return C::default_mip_3dm_datastream_control(&device, desc_set);
 }
@@ -2645,23 +2645,23 @@ struct GnssSbasSettings : C::mip_3dm_gnss_sbas_settings_command
     };
     
 };
-MipCmdResult writeGnsssbassettings(C::mip_interface& device, uint8_t enable_sbas, C::mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns)
+MipCmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enable_sbas, C::mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns)
 {
     return C::write_mip_3dm_gnss_sbas_settings(&device, enable_sbas, sbas_options, num_included_prns, included_prns);
 }
-MipCmdResult readGnsssbassettings(C::mip_interface& device, uint8_t& enable_sbas, enum C::mip_3dm_gnss_sbas_settings_command_sbasoptions& sbas_options, uint8_t& num_included_prns, uint16_t* included_prns)
+MipCmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t& enable_sbas, enum C::mip_3dm_gnss_sbas_settings_command_sbasoptions& sbas_options, uint8_t& num_included_prns, uint16_t* included_prns)
 {
     return C::read_mip_3dm_gnss_sbas_settings(&device, &enable_sbas, &sbas_options, &num_included_prns, included_prns);
 }
-MipCmdResult saveGnsssbassettings(C::mip_interface& device)
+MipCmdResult saveGnssSbasSettings(C::mip_interface& device)
 {
     return C::save_mip_3dm_gnss_sbas_settings(&device);
 }
-MipCmdResult loadGnsssbassettings(C::mip_interface& device)
+MipCmdResult loadGnssSbasSettings(C::mip_interface& device)
 {
     return C::load_mip_3dm_gnss_sbas_settings(&device);
 }
-MipCmdResult defaultGnsssbassettings(C::mip_interface& device)
+MipCmdResult defaultGnssSbasSettings(C::mip_interface& device)
 {
     return C::default_mip_3dm_gnss_sbas_settings(&device);
 }
@@ -2705,11 +2705,11 @@ struct GnssTimeAssistance : C::mip_3dm_gnss_time_assistance_command
     };
     
 };
-MipCmdResult writeGnsstimeassistance(C::mip_interface& device, double tow, uint16_t week_number, float accuracy)
+MipCmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t week_number, float accuracy)
 {
     return C::write_mip_3dm_gnss_time_assistance(&device, tow, week_number, accuracy);
 }
-MipCmdResult readGnsstimeassistance(C::mip_interface& device, double& tow, uint16_t& week_number, float& accuracy)
+MipCmdResult readGnssTimeAssistance(C::mip_interface& device, double& tow, uint16_t& week_number, float& accuracy)
 {
     return C::read_mip_3dm_gnss_time_assistance(&device, &tow, &week_number, &accuracy);
 }
@@ -2753,23 +2753,23 @@ struct AdvLowpassFilter : C::mip_3dm_adv_lowpass_filter_command
     };
     
 };
-MipCmdResult writeAdvlowpassfilter(C::mip_interface& device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
+MipCmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
 {
     return C::write_mip_3dm_adv_lowpass_filter(&device, target_descriptor, enable, manual, frequency, reserved);
 }
-MipCmdResult readAdvlowpassfilter(C::mip_interface& device, uint8_t target_descriptor, bool& enable, bool& manual, uint16_t& frequency, uint8_t& reserved)
+MipCmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool& enable, bool& manual, uint16_t& frequency, uint8_t& reserved)
 {
     return C::read_mip_3dm_adv_lowpass_filter(&device, target_descriptor, &enable, &manual, &frequency, &reserved);
 }
-MipCmdResult saveAdvlowpassfilter(C::mip_interface& device, uint8_t target_descriptor)
+MipCmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor)
 {
     return C::save_mip_3dm_adv_lowpass_filter(&device, target_descriptor);
 }
-MipCmdResult loadAdvlowpassfilter(C::mip_interface& device, uint8_t target_descriptor)
+MipCmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor)
 {
     return C::load_mip_3dm_adv_lowpass_filter(&device, target_descriptor);
 }
-MipCmdResult defaultAdvlowpassfilter(C::mip_interface& device, uint8_t target_descriptor)
+MipCmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor)
 {
     return C::default_mip_3dm_adv_lowpass_filter(&device, target_descriptor);
 }
@@ -2813,23 +2813,23 @@ struct PpsSource : C::mip_3dm_pps_source_command
     };
     
 };
-MipCmdResult writePpssource(C::mip_interface& device, C::mip_pps_source source)
+MipCmdResult writePpsSource(C::mip_interface& device, C::mip_pps_source source)
 {
     return C::write_mip_3dm_pps_source(&device, source);
 }
-MipCmdResult readPpssource(C::mip_interface& device, enum C::mip_pps_source& source)
+MipCmdResult readPpsSource(C::mip_interface& device, enum C::mip_pps_source& source)
 {
     return C::read_mip_3dm_pps_source(&device, &source);
 }
-MipCmdResult savePpssource(C::mip_interface& device)
+MipCmdResult savePpsSource(C::mip_interface& device)
 {
     return C::save_mip_3dm_pps_source(&device);
 }
-MipCmdResult loadPpssource(C::mip_interface& device)
+MipCmdResult loadPpsSource(C::mip_interface& device)
 {
     return C::load_mip_3dm_pps_source(&device);
 }
-MipCmdResult defaultPpssource(C::mip_interface& device)
+MipCmdResult defaultPpsSource(C::mip_interface& device)
 {
     return C::default_mip_3dm_pps_source(&device);
 }
@@ -2873,23 +2873,23 @@ struct GpioConfig : C::mip_3dm_gpio_config_command
     };
     
 };
-MipCmdResult writeGpioconfig(C::mip_interface& device, uint8_t pin, C::mip_3dm_gpio_config_command_feature feature, C::mip_3dm_gpio_config_command_behavior behavior, C::mip_3dm_gpio_config_command_pin_mode pin_mode)
+MipCmdResult writeGpioConfig(C::mip_interface& device, uint8_t pin, C::mip_3dm_gpio_config_command_feature feature, C::mip_3dm_gpio_config_command_behavior behavior, C::mip_3dm_gpio_config_command_pin_mode pin_mode)
 {
     return C::write_mip_3dm_gpio_config(&device, pin, feature, behavior, pin_mode);
 }
-MipCmdResult readGpioconfig(C::mip_interface& device, uint8_t pin, enum C::mip_3dm_gpio_config_command_feature& feature, enum C::mip_3dm_gpio_config_command_behavior& behavior, enum C::mip_3dm_gpio_config_command_pin_mode& pin_mode)
+MipCmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, enum C::mip_3dm_gpio_config_command_feature& feature, enum C::mip_3dm_gpio_config_command_behavior& behavior, enum C::mip_3dm_gpio_config_command_pin_mode& pin_mode)
 {
     return C::read_mip_3dm_gpio_config(&device, pin, &feature, &behavior, &pin_mode);
 }
-MipCmdResult saveGpioconfig(C::mip_interface& device, uint8_t pin)
+MipCmdResult saveGpioConfig(C::mip_interface& device, uint8_t pin)
 {
     return C::save_mip_3dm_gpio_config(&device, pin);
 }
-MipCmdResult loadGpioconfig(C::mip_interface& device, uint8_t pin)
+MipCmdResult loadGpioConfig(C::mip_interface& device, uint8_t pin)
 {
     return C::load_mip_3dm_gpio_config(&device, pin);
 }
-MipCmdResult defaultGpioconfig(C::mip_interface& device, uint8_t pin)
+MipCmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin)
 {
     return C::default_mip_3dm_gpio_config(&device, pin);
 }
@@ -2933,11 +2933,11 @@ struct GpioState : C::mip_3dm_gpio_state_command
     };
     
 };
-MipCmdResult writeGpiostate(C::mip_interface& device, uint8_t pin, bool state)
+MipCmdResult writeGpioState(C::mip_interface& device, uint8_t pin, bool state)
 {
     return C::write_mip_3dm_gpio_state(&device, pin, state);
 }
-MipCmdResult readGpiostate(C::mip_interface& device, uint8_t pin, bool& state)
+MipCmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool& state)
 {
     return C::read_mip_3dm_gpio_state(&device, pin, &state);
 }
@@ -3080,23 +3080,23 @@ struct EventControl : C::mip_3dm_event_control_command
     };
     
 };
-MipCmdResult writeEventcontrol(C::mip_interface& device, uint8_t instance, C::mip_3dm_event_control_command_mode mode)
+MipCmdResult writeEventControl(C::mip_interface& device, uint8_t instance, C::mip_3dm_event_control_command_mode mode)
 {
     return C::write_mip_3dm_event_control(&device, instance, mode);
 }
-MipCmdResult readEventcontrol(C::mip_interface& device, uint8_t instance, enum C::mip_3dm_event_control_command_mode& mode)
+MipCmdResult readEventControl(C::mip_interface& device, uint8_t instance, enum C::mip_3dm_event_control_command_mode& mode)
 {
     return C::read_mip_3dm_event_control(&device, instance, &mode);
 }
-MipCmdResult saveEventcontrol(C::mip_interface& device, uint8_t instance)
+MipCmdResult saveEventControl(C::mip_interface& device, uint8_t instance)
 {
     return C::save_mip_3dm_event_control(&device, instance);
 }
-MipCmdResult loadEventcontrol(C::mip_interface& device, uint8_t instance)
+MipCmdResult loadEventControl(C::mip_interface& device, uint8_t instance)
 {
     return C::load_mip_3dm_event_control(&device, instance);
 }
-MipCmdResult defaultEventcontrol(C::mip_interface& device, uint8_t instance)
+MipCmdResult defaultEventControl(C::mip_interface& device, uint8_t instance)
 {
     return C::default_mip_3dm_event_control(&device, instance);
 }
@@ -3218,23 +3218,23 @@ struct EventTrigger : C::mip_3dm_event_trigger_command
     };
     
 };
-MipCmdResult writeEventtrigger(C::mip_interface& device, uint8_t instance, C::mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination)
+MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, C::mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination)
 {
     return C::write_mip_3dm_event_trigger(&device, instance, type, gpio_threshold_combination);
 }
-MipCmdResult readEventtrigger(C::mip_interface& device, uint8_t instance, enum C::mip_3dm_event_trigger_command_type& type, void* gpio_threshold_combination)
+MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, enum C::mip_3dm_event_trigger_command_type& type, void* gpio_threshold_combination)
 {
     return C::read_mip_3dm_event_trigger(&device, instance, &type, gpio_threshold_combination);
 }
-MipCmdResult saveEventtrigger(C::mip_interface& device, uint8_t instance)
+MipCmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance)
 {
     return C::save_mip_3dm_event_trigger(&device, instance);
 }
-MipCmdResult loadEventtrigger(C::mip_interface& device, uint8_t instance)
+MipCmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance)
 {
     return C::load_mip_3dm_event_trigger(&device, instance);
 }
-MipCmdResult defaultEventtrigger(C::mip_interface& device, uint8_t instance)
+MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance)
 {
     return C::default_mip_3dm_event_trigger(&device, instance);
 }
@@ -3278,23 +3278,23 @@ struct EventAction : C::mip_3dm_event_action_command
     };
     
 };
-MipCmdResult writeEventaction(C::mip_interface& device, uint8_t instance, uint8_t trigger, C::mip_3dm_event_action_command_type type, const void* gpio_message)
+MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, C::mip_3dm_event_action_command_type type, const void* gpio_message)
 {
     return C::write_mip_3dm_event_action(&device, instance, trigger, type, gpio_message);
 }
-MipCmdResult readEventaction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, enum C::mip_3dm_event_action_command_type& type, void* gpio_message)
+MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, enum C::mip_3dm_event_action_command_type& type, void* gpio_message)
 {
     return C::read_mip_3dm_event_action(&device, instance, &trigger, &type, gpio_message);
 }
-MipCmdResult saveEventaction(C::mip_interface& device, uint8_t instance)
+MipCmdResult saveEventAction(C::mip_interface& device, uint8_t instance)
 {
     return C::save_mip_3dm_event_action(&device, instance);
 }
-MipCmdResult loadEventaction(C::mip_interface& device, uint8_t instance)
+MipCmdResult loadEventAction(C::mip_interface& device, uint8_t instance)
 {
     return C::load_mip_3dm_event_action(&device, instance);
 }
-MipCmdResult defaultEventaction(C::mip_interface& device, uint8_t instance)
+MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance)
 {
     return C::default_mip_3dm_event_action(&device, instance);
 }
@@ -3338,23 +3338,23 @@ struct AccelBias : C::mip_3dm_accel_bias_command
     };
     
 };
-MipCmdResult writeAccelbias(C::mip_interface& device, const float* bias)
+MipCmdResult writeAccelBias(C::mip_interface& device, const float* bias)
 {
     return C::write_mip_3dm_accel_bias(&device, bias);
 }
-MipCmdResult readAccelbias(C::mip_interface& device, float* bias)
+MipCmdResult readAccelBias(C::mip_interface& device, float* bias)
 {
     return C::read_mip_3dm_accel_bias(&device, bias);
 }
-MipCmdResult saveAccelbias(C::mip_interface& device)
+MipCmdResult saveAccelBias(C::mip_interface& device)
 {
     return C::save_mip_3dm_accel_bias(&device);
 }
-MipCmdResult loadAccelbias(C::mip_interface& device)
+MipCmdResult loadAccelBias(C::mip_interface& device)
 {
     return C::load_mip_3dm_accel_bias(&device);
 }
-MipCmdResult defaultAccelbias(C::mip_interface& device)
+MipCmdResult defaultAccelBias(C::mip_interface& device)
 {
     return C::default_mip_3dm_accel_bias(&device);
 }
@@ -3398,23 +3398,23 @@ struct GyroBias : C::mip_3dm_gyro_bias_command
     };
     
 };
-MipCmdResult writeGyrobias(C::mip_interface& device, const float* bias)
+MipCmdResult writeGyroBias(C::mip_interface& device, const float* bias)
 {
     return C::write_mip_3dm_gyro_bias(&device, bias);
 }
-MipCmdResult readGyrobias(C::mip_interface& device, float* bias)
+MipCmdResult readGyroBias(C::mip_interface& device, float* bias)
 {
     return C::read_mip_3dm_gyro_bias(&device, bias);
 }
-MipCmdResult saveGyrobias(C::mip_interface& device)
+MipCmdResult saveGyroBias(C::mip_interface& device)
 {
     return C::save_mip_3dm_gyro_bias(&device);
 }
-MipCmdResult loadGyrobias(C::mip_interface& device)
+MipCmdResult loadGyroBias(C::mip_interface& device)
 {
     return C::load_mip_3dm_gyro_bias(&device);
 }
-MipCmdResult defaultGyrobias(C::mip_interface& device)
+MipCmdResult defaultGyroBias(C::mip_interface& device)
 {
     return C::default_mip_3dm_gyro_bias(&device);
 }
@@ -3497,23 +3497,23 @@ struct MagHardIronOffset : C::mip_3dm_mag_hard_iron_offset_command
     };
     
 };
-MipCmdResult writeMaghardironoffset(C::mip_interface& device, const float* offset)
+MipCmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
 {
     return C::write_mip_3dm_mag_hard_iron_offset(&device, offset);
 }
-MipCmdResult readMaghardironoffset(C::mip_interface& device, float* offset)
+MipCmdResult readMagHardIronOffset(C::mip_interface& device, float* offset)
 {
     return C::read_mip_3dm_mag_hard_iron_offset(&device, offset);
 }
-MipCmdResult saveMaghardironoffset(C::mip_interface& device)
+MipCmdResult saveMagHardIronOffset(C::mip_interface& device)
 {
     return C::save_mip_3dm_mag_hard_iron_offset(&device);
 }
-MipCmdResult loadMaghardironoffset(C::mip_interface& device)
+MipCmdResult loadMagHardIronOffset(C::mip_interface& device)
 {
     return C::load_mip_3dm_mag_hard_iron_offset(&device);
 }
-MipCmdResult defaultMaghardironoffset(C::mip_interface& device)
+MipCmdResult defaultMagHardIronOffset(C::mip_interface& device)
 {
     return C::default_mip_3dm_mag_hard_iron_offset(&device);
 }
@@ -3557,23 +3557,23 @@ struct MagSoftIronMatrix : C::mip_3dm_mag_soft_iron_matrix_command
     };
     
 };
-MipCmdResult writeMagsoftironmatrix(C::mip_interface& device, const float* offset)
+MipCmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
 {
     return C::write_mip_3dm_mag_soft_iron_matrix(&device, offset);
 }
-MipCmdResult readMagsoftironmatrix(C::mip_interface& device, float* offset)
+MipCmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offset)
 {
     return C::read_mip_3dm_mag_soft_iron_matrix(&device, offset);
 }
-MipCmdResult saveMagsoftironmatrix(C::mip_interface& device)
+MipCmdResult saveMagSoftIronMatrix(C::mip_interface& device)
 {
     return C::save_mip_3dm_mag_soft_iron_matrix(&device);
 }
-MipCmdResult loadMagsoftironmatrix(C::mip_interface& device)
+MipCmdResult loadMagSoftIronMatrix(C::mip_interface& device)
 {
     return C::load_mip_3dm_mag_soft_iron_matrix(&device);
 }
-MipCmdResult defaultMagsoftironmatrix(C::mip_interface& device)
+MipCmdResult defaultMagSoftIronMatrix(C::mip_interface& device)
 {
     return C::default_mip_3dm_mag_soft_iron_matrix(&device);
 }
@@ -3617,23 +3617,23 @@ struct Sensor2VehicleTransformEuler : C::mip_3dm_sensor_2_vehicle_transform_eule
     };
     
 };
-MipCmdResult writeSensor2Vehicletransformeuler(C::mip_interface& device, float roll, float pitch, float yaw)
+MipCmdResult writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw)
 {
     return C::write_mip_3dm_sensor_2_vehicle_transform_euler(&device, roll, pitch, yaw);
 }
-MipCmdResult readSensor2Vehicletransformeuler(C::mip_interface& device, float& roll, float& pitch, float& yaw)
+MipCmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float& roll, float& pitch, float& yaw)
 {
     return C::read_mip_3dm_sensor_2_vehicle_transform_euler(&device, &roll, &pitch, &yaw);
 }
-MipCmdResult saveSensor2Vehicletransformeuler(C::mip_interface& device)
+MipCmdResult saveSensor2VehicleTransformEuler(C::mip_interface& device)
 {
     return C::save_mip_3dm_sensor_2_vehicle_transform_euler(&device);
 }
-MipCmdResult loadSensor2Vehicletransformeuler(C::mip_interface& device)
+MipCmdResult loadSensor2VehicleTransformEuler(C::mip_interface& device)
 {
     return C::load_mip_3dm_sensor_2_vehicle_transform_euler(&device);
 }
-MipCmdResult defaultSensor2Vehicletransformeuler(C::mip_interface& device)
+MipCmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device)
 {
     return C::default_mip_3dm_sensor_2_vehicle_transform_euler(&device);
 }
@@ -3677,23 +3677,23 @@ struct Sensor2VehicleTransformQuaternion : C::mip_3dm_sensor_2_vehicle_transform
     };
     
 };
-MipCmdResult writeSensor2Vehicletransformquaternion(C::mip_interface& device, const float* q)
+MipCmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q)
 {
     return C::write_mip_3dm_sensor_2_vehicle_transform_quaternion(&device, q);
 }
-MipCmdResult readSensor2Vehicletransformquaternion(C::mip_interface& device, float* q)
+MipCmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* q)
 {
     return C::read_mip_3dm_sensor_2_vehicle_transform_quaternion(&device, q);
 }
-MipCmdResult saveSensor2Vehicletransformquaternion(C::mip_interface& device)
+MipCmdResult saveSensor2VehicleTransformQuaternion(C::mip_interface& device)
 {
     return C::save_mip_3dm_sensor_2_vehicle_transform_quaternion(&device);
 }
-MipCmdResult loadSensor2Vehicletransformquaternion(C::mip_interface& device)
+MipCmdResult loadSensor2VehicleTransformQuaternion(C::mip_interface& device)
 {
     return C::load_mip_3dm_sensor_2_vehicle_transform_quaternion(&device);
 }
-MipCmdResult defaultSensor2Vehicletransformquaternion(C::mip_interface& device)
+MipCmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device)
 {
     return C::default_mip_3dm_sensor_2_vehicle_transform_quaternion(&device);
 }
@@ -3737,23 +3737,23 @@ struct Sensor2VehicleTransformDcm : C::mip_3dm_sensor_2_vehicle_transform_dcm_co
     };
     
 };
-MipCmdResult writeSensor2Vehicletransformdcm(C::mip_interface& device, const float* dcm)
+MipCmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm)
 {
     return C::write_mip_3dm_sensor_2_vehicle_transform_dcm(&device, dcm);
 }
-MipCmdResult readSensor2Vehicletransformdcm(C::mip_interface& device, float* dcm)
+MipCmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcm)
 {
     return C::read_mip_3dm_sensor_2_vehicle_transform_dcm(&device, dcm);
 }
-MipCmdResult saveSensor2Vehicletransformdcm(C::mip_interface& device)
+MipCmdResult saveSensor2VehicleTransformDcm(C::mip_interface& device)
 {
     return C::save_mip_3dm_sensor_2_vehicle_transform_dcm(&device);
 }
-MipCmdResult loadSensor2Vehicletransformdcm(C::mip_interface& device)
+MipCmdResult loadSensor2VehicleTransformDcm(C::mip_interface& device)
 {
     return C::load_mip_3dm_sensor_2_vehicle_transform_dcm(&device);
 }
-MipCmdResult defaultSensor2Vehicletransformdcm(C::mip_interface& device)
+MipCmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device)
 {
     return C::default_mip_3dm_sensor_2_vehicle_transform_dcm(&device);
 }
@@ -3797,23 +3797,23 @@ struct ComplementaryFilter : C::mip_3dm_complementary_filter_command
     };
     
 };
-MipCmdResult writeComplementaryfilter(C::mip_interface& device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant)
+MipCmdResult writeComplementaryFilter(C::mip_interface& device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant)
 {
     return C::write_mip_3dm_complementary_filter(&device, pitch_roll_enable, heading_enable, pitch_roll_time_constant, heading_time_constant);
 }
-MipCmdResult readComplementaryfilter(C::mip_interface& device, bool& pitch_roll_enable, bool& heading_enable, float& pitch_roll_time_constant, float& heading_time_constant)
+MipCmdResult readComplementaryFilter(C::mip_interface& device, bool& pitch_roll_enable, bool& heading_enable, float& pitch_roll_time_constant, float& heading_time_constant)
 {
     return C::read_mip_3dm_complementary_filter(&device, &pitch_roll_enable, &heading_enable, &pitch_roll_time_constant, &heading_time_constant);
 }
-MipCmdResult saveComplementaryfilter(C::mip_interface& device)
+MipCmdResult saveComplementaryFilter(C::mip_interface& device)
 {
     return C::save_mip_3dm_complementary_filter(&device);
 }
-MipCmdResult loadComplementaryfilter(C::mip_interface& device)
+MipCmdResult loadComplementaryFilter(C::mip_interface& device)
 {
     return C::load_mip_3dm_complementary_filter(&device);
 }
-MipCmdResult defaultComplementaryfilter(C::mip_interface& device)
+MipCmdResult defaultComplementaryFilter(C::mip_interface& device)
 {
     return C::default_mip_3dm_complementary_filter(&device);
 }
@@ -3857,23 +3857,23 @@ struct SensorRange : C::mip_3dm_sensor_range_command
     };
     
 };
-MipCmdResult writeSensorrange(C::mip_interface& device, C::mip_sensor_range_type sensor, uint8_t setting)
+MipCmdResult writeSensorRange(C::mip_interface& device, C::mip_sensor_range_type sensor, uint8_t setting)
 {
     return C::write_mip_3dm_sensor_range(&device, sensor, setting);
 }
-MipCmdResult readSensorrange(C::mip_interface& device, C::mip_sensor_range_type sensor, uint8_t& setting)
+MipCmdResult readSensorRange(C::mip_interface& device, C::mip_sensor_range_type sensor, uint8_t& setting)
 {
     return C::read_mip_3dm_sensor_range(&device, sensor, &setting);
 }
-MipCmdResult saveSensorrange(C::mip_interface& device, C::mip_sensor_range_type sensor)
+MipCmdResult saveSensorRange(C::mip_interface& device, C::mip_sensor_range_type sensor)
 {
     return C::save_mip_3dm_sensor_range(&device, sensor);
 }
-MipCmdResult loadSensorrange(C::mip_interface& device, C::mip_sensor_range_type sensor)
+MipCmdResult loadSensorRange(C::mip_interface& device, C::mip_sensor_range_type sensor)
 {
     return C::load_mip_3dm_sensor_range(&device, sensor);
 }
-MipCmdResult defaultSensorrange(C::mip_interface& device, C::mip_sensor_range_type sensor)
+MipCmdResult defaultSensorRange(C::mip_interface& device, C::mip_sensor_range_type sensor)
 {
     return C::default_mip_3dm_sensor_range(&device, sensor);
 }

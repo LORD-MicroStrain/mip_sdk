@@ -136,23 +136,23 @@ struct CommMode : C::mip_system_comm_mode_command
     };
     
 };
-MipCmdResult writeCommmode(C::mip_interface& device, uint8_t mode)
+MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     return C::write_mip_system_comm_mode(&device, mode);
 }
-MipCmdResult readCommmode(C::mip_interface& device, uint8_t& mode)
+MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
 {
     return C::read_mip_system_comm_mode(&device, &mode);
 }
-MipCmdResult saveCommmode(C::mip_interface& device)
+MipCmdResult saveCommMode(C::mip_interface& device)
 {
     return C::save_mip_system_comm_mode(&device);
 }
-MipCmdResult loadCommmode(C::mip_interface& device)
+MipCmdResult loadCommMode(C::mip_interface& device)
 {
     return C::load_mip_system_comm_mode(&device);
 }
-MipCmdResult defaultCommmode(C::mip_interface& device)
+MipCmdResult defaultCommMode(C::mip_interface& device)
 {
     return C::default_mip_system_comm_mode(&device);
 }

@@ -698,23 +698,23 @@ struct CommSpeed : C::mip_base_comm_speed_command
     };
     
 };
-MipCmdResult writeCommspeed(C::mip_interface& device, uint8_t port, uint32_t baud)
+MipCmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
 {
     return C::write_mip_base_comm_speed(&device, port, baud);
 }
-MipCmdResult readCommspeed(C::mip_interface& device, uint8_t port, uint32_t& baud)
+MipCmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud)
 {
     return C::read_mip_base_comm_speed(&device, port, &baud);
 }
-MipCmdResult saveCommspeed(C::mip_interface& device, uint8_t port)
+MipCmdResult saveCommSpeed(C::mip_interface& device, uint8_t port)
 {
     return C::save_mip_base_comm_speed(&device, port);
 }
-MipCmdResult loadCommspeed(C::mip_interface& device, uint8_t port)
+MipCmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
     return C::load_mip_base_comm_speed(&device, port);
 }
-MipCmdResult defaultCommspeed(C::mip_interface& device, uint8_t port)
+MipCmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
     return C::default_mip_base_comm_speed(&device, port);
 }
@@ -743,7 +743,7 @@ struct GpsTimeUpdate : C::mip_base_gps_time_update_command
     static const bool canReset = false;
     
 };
-MipCmdResult writeGpstimeupdate(C::mip_interface& device, C::mip_base_gps_time_update_command_field_id field_id, uint32_t value)
+MipCmdResult writeGpsTimeUpdate(C::mip_interface& device, C::mip_base_gps_time_update_command_field_id field_id, uint32_t value)
 {
     return C::write_mip_base_gps_time_update(&device, field_id, value);
 }
