@@ -506,7 +506,7 @@ size_t extract_mip_sensor_odometer_data_data(const uint8_t* buffer, size_t buffe
 namespace SensorData {
 
 
-struct rawAccel : C::mip_sensor_raw_accel_data
+struct RawAccel : C::mip_sensor_raw_accel_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_RAW;
@@ -523,7 +523,7 @@ struct rawAccel : C::mip_sensor_raw_accel_data
 
 
 
-struct rawGyro : C::mip_sensor_raw_gyro_data
+struct RawGyro : C::mip_sensor_raw_gyro_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_RAW;
@@ -540,7 +540,7 @@ struct rawGyro : C::mip_sensor_raw_gyro_data
 
 
 
-struct rawMag : C::mip_sensor_raw_mag_data
+struct RawMag : C::mip_sensor_raw_mag_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_RAW;
@@ -557,7 +557,7 @@ struct rawMag : C::mip_sensor_raw_mag_data
 
 
 
-struct rawPressure : C::mip_sensor_raw_pressure_data
+struct RawPressure : C::mip_sensor_raw_pressure_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_RAW;
@@ -574,7 +574,7 @@ struct rawPressure : C::mip_sensor_raw_pressure_data
 
 
 
-struct scaledAccel : C::mip_sensor_scaled_accel_data
+struct ScaledAccel : C::mip_sensor_scaled_accel_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_SCALED;
@@ -591,7 +591,7 @@ struct scaledAccel : C::mip_sensor_scaled_accel_data
 
 
 
-struct scaledGyro : C::mip_sensor_scaled_gyro_data
+struct ScaledGyro : C::mip_sensor_scaled_gyro_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_SCALED;
@@ -608,7 +608,7 @@ struct scaledGyro : C::mip_sensor_scaled_gyro_data
 
 
 
-struct scaledMag : C::mip_sensor_scaled_mag_data
+struct ScaledMag : C::mip_sensor_scaled_mag_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_SCALED;
@@ -625,7 +625,7 @@ struct scaledMag : C::mip_sensor_scaled_mag_data
 
 
 
-struct scaledPressure : C::mip_sensor_scaled_pressure_data
+struct ScaledPressure : C::mip_sensor_scaled_pressure_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_SCALED;
@@ -642,7 +642,7 @@ struct scaledPressure : C::mip_sensor_scaled_pressure_data
 
 
 
-struct deltaTheta : C::mip_sensor_delta_theta_data
+struct DeltaTheta : C::mip_sensor_delta_theta_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_THETA;
@@ -659,7 +659,7 @@ struct deltaTheta : C::mip_sensor_delta_theta_data
 
 
 
-struct deltaVelocity : C::mip_sensor_delta_velocity_data
+struct DeltaVelocity : C::mip_sensor_delta_velocity_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_VELOCITY;
@@ -676,7 +676,7 @@ struct deltaVelocity : C::mip_sensor_delta_velocity_data
 
 
 
-struct compOrientationMatrix : C::mip_sensor_comp_orientation_matrix_data
+struct CompOrientationMatrix : C::mip_sensor_comp_orientation_matrix_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_MATRIX;
@@ -693,7 +693,7 @@ struct compOrientationMatrix : C::mip_sensor_comp_orientation_matrix_data
 
 
 
-struct compQuaternion : C::mip_sensor_comp_quaternion_data
+struct CompQuaternion : C::mip_sensor_comp_quaternion_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_QUATERNION;
@@ -710,7 +710,7 @@ struct compQuaternion : C::mip_sensor_comp_quaternion_data
 
 
 
-struct compEulerAngles : C::mip_sensor_comp_euler_angles_data
+struct CompEulerAngles : C::mip_sensor_comp_euler_angles_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_EULER_ANGLES;
@@ -727,7 +727,7 @@ struct compEulerAngles : C::mip_sensor_comp_euler_angles_data
 
 
 
-struct compOrientationUpdateMatrix : C::mip_sensor_comp_orientation_update_matrix_data
+struct CompOrientationUpdateMatrix : C::mip_sensor_comp_orientation_update_matrix_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_UPDATE_MATRIX;
@@ -744,7 +744,7 @@ struct compOrientationUpdateMatrix : C::mip_sensor_comp_orientation_update_matri
 
 
 
-struct orientationRawTemp : C::mip_sensor_orientation_raw_temp_data
+struct OrientationRawTemp : C::mip_sensor_orientation_raw_temp_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_RAW;
@@ -761,7 +761,7 @@ struct orientationRawTemp : C::mip_sensor_orientation_raw_temp_data
 
 
 
-struct internalTimestamp : C::mip_sensor_internal_timestamp_data
+struct InternalTimestamp : C::mip_sensor_internal_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_INTERNAL;
@@ -778,7 +778,7 @@ struct internalTimestamp : C::mip_sensor_internal_timestamp_data
 
 
 
-struct ppsTimestamp : C::mip_sensor_pps_timestamp_data
+struct PpsTimestamp : C::mip_sensor_pps_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_PPS;
@@ -795,7 +795,7 @@ struct ppsTimestamp : C::mip_sensor_pps_timestamp_data
 
 
 
-struct gpsTimestamp : C::mip_sensor_gps_timestamp_data
+struct GpsTimestamp : C::mip_sensor_gps_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS;
@@ -812,7 +812,7 @@ struct gpsTimestamp : C::mip_sensor_gps_timestamp_data
 
 
 
-struct temperatureAbs : C::mip_sensor_temperature_abs_data
+struct TemperatureAbs : C::mip_sensor_temperature_abs_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_ABS;
@@ -829,7 +829,7 @@ struct temperatureAbs : C::mip_sensor_temperature_abs_data
 
 
 
-struct upVector : C::mip_sensor_up_vector_data
+struct UpVector : C::mip_sensor_up_vector_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_ACCEL;
@@ -846,7 +846,7 @@ struct upVector : C::mip_sensor_up_vector_data
 
 
 
-struct northVector : C::mip_sensor_north_vector_data
+struct NorthVector : C::mip_sensor_north_vector_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_MAG;
@@ -863,7 +863,7 @@ struct northVector : C::mip_sensor_north_vector_data
 
 
 
-struct overrangeStatus : C::mip_sensor_overrange_status_data
+struct OverrangeStatus : C::mip_sensor_overrange_status_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_OVERRANGE_STATUS;
@@ -880,7 +880,7 @@ struct overrangeStatus : C::mip_sensor_overrange_status_data
 
 
 
-struct odometerData : C::mip_sensor_odometer_data_data
+struct OdometerData : C::mip_sensor_odometer_data_data
 {
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ODOMETER;

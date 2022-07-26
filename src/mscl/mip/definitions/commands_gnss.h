@@ -192,7 +192,7 @@ mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t
 namespace GnssCommands {
 
 
-struct receiverInfo : C::mip_gnss_receiver_info_command
+struct ReceiverInfo : C::mip_gnss_receiver_info_command
 {
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_LIST_RECEIVERS;
@@ -231,7 +231,7 @@ MipCmdResult receiverInfo(C::mip_interface& device, uint8_t& num_receivers, stru
 
 
 
-struct signalConfiguration : C::mip_gnss_signal_configuration_command
+struct SignalConfiguration : C::mip_gnss_signal_configuration_command
 {
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION;
@@ -291,7 +291,7 @@ MipCmdResult defaultSignalconfiguration(C::mip_interface& device)
 
 
 
-struct rtkDongleConfiguration : C::mip_gnss_rtk_dongle_configuration_command
+struct RtkDongleConfiguration : C::mip_gnss_rtk_dongle_configuration_command
 {
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION;
@@ -351,7 +351,7 @@ MipCmdResult defaultRtkdongleconfiguration(C::mip_interface& device)
 
 
 
-struct receiverSafeMode : C::mip_gnss_receiver_safe_mode_command
+struct ReceiverSafeMode : C::mip_gnss_receiver_safe_mode_command
 {
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE;

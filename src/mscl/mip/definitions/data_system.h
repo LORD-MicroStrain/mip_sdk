@@ -160,7 +160,7 @@ size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t b
 namespace SystemData {
 
 
-struct builtInTest : C::mip_system_built_in_test_data
+struct BuiltInTest : C::mip_system_built_in_test_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST;
@@ -177,7 +177,7 @@ struct builtInTest : C::mip_system_built_in_test_data
 
 
 
-struct timeSyncStatus : C::mip_system_time_sync_status_data
+struct TimeSyncStatus : C::mip_system_time_sync_status_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS;
@@ -194,7 +194,7 @@ struct timeSyncStatus : C::mip_system_time_sync_status_data
 
 
 
-struct gpioState : C::mip_system_gpio_state_data
+struct GpioState : C::mip_system_gpio_state_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_STATE;
@@ -211,7 +211,7 @@ struct gpioState : C::mip_system_gpio_state_data
 
 
 
-struct gpioAnalogValue : C::mip_system_gpio_analog_value_data
+struct GpioAnalogValue : C::mip_system_gpio_analog_value_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE;

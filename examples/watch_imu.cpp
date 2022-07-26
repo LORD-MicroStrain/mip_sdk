@@ -27,7 +27,7 @@ void handlePacket(void*, const mscl::MipPacket& packet, mscl::Timestamp timestam
 
 void handleAccel(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::C::mip_sensor_scaled_accel_data data;
+    mscl::SensorData::ScaledAccel data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_accel_data(field.payload(), field.payloadLength(), 0, &data);
 
@@ -37,7 +37,7 @@ void handleAccel(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 
 void handleGyro(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::C::mip_sensor_scaled_gyro_data data;
+    mscl::SensorData::ScaledGyro data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_gyro_data(field.payload(), field.payloadLength(), 0, &data);
 
@@ -47,7 +47,7 @@ void handleGyro(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 
 void handleMag(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
-    mscl::C::mip_sensor_scaled_mag_data data;
+    mscl::SensorData::ScaledMag data;
 
     size_t readBytes = mscl::C::extract_mip_sensor_scaled_mag_data(field.payload(), field.payloadLength(), 0, &data);
 
@@ -83,23 +83,23 @@ int main(int argc, const char* argv[])
             { mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
         }};
 
-        result = mscl::C::write_mip_3dm_message_format(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
+        result = mscl::TdmCommands::writeMessageFormat(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
 
         if( result == mscl::MipCmdResult::COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
-            result = mscl::C::write_mip_3dm_message_format(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
+            result = mscl::TdmCommands::writeMessageFormat(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
         }
         if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
 
         // Register some callbacks.
 
-        mscl::C::mip_dispatch_handler packetHandler;
+        mscl::MipDispatchHandler packetHandler;
         device->registerPacketCallback<&handlePacket>(packetHandler, mscl::C::MIP_DISPATCH_DESCSET_DATA);
 
-        mscl::C::mip_dispatch_handler dataHandlers[3];
+        mscl::MipDispatchHandler dataHandlers[3];
         device->registerFieldCallback<&handleAccel>(dataHandlers[0], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_ACCEL_SCALED);
         device->registerFieldCallback<&handleGyro >(dataHandlers[1], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED );
         device->registerFieldCallback<&handleMag  >(dataHandlers[2], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED  );
@@ -107,13 +107,13 @@ int main(int argc, const char* argv[])
         // Enable the data stream and resume the device.
 
         result = mscl::TdmCommands::writeDatastreamcontrol(*device, mscl::MIP_SENSOR_DATA_DESC_SET, true);
-        if( result != mscl::C::MIP_ACK_OK )
+        if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to enable datastream: %s (%d)\n", result.name(), result.value), 1;
 
         // Resume the device to ensure it's streaming.
 
         result = mscl::BaseCommands::resume(*device);
-        if( result != mscl::C::MIP_ACK_OK )
+        if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", result.name(), result.value), 1;
 
         // Process data for 3 seconds.
@@ -126,7 +126,7 @@ int main(int argc, const char* argv[])
         } while( getCurrentTimestamp() - start_time < 3000 );
 
         result = mscl::BaseCommands::setIdle(*device);
-        if( result != mscl::C::MIP_ACK_OK )
+        if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to idle device: %s (%d)\n", result.name(), result.value), 1;
 
         return 0;

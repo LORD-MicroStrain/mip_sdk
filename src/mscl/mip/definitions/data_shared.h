@@ -287,7 +287,7 @@ size_t extract_mip_shared_external_time_delta_data(const uint8_t* buffer, size_t
 namespace SharedData {
 
 
-struct eventSource : C::mip_shared_event_source_data
+struct EventSource : C::mip_shared_event_source_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
@@ -304,7 +304,7 @@ struct eventSource : C::mip_shared_event_source_data
 
 
 
-struct ticks : C::mip_shared_ticks_data
+struct Ticks : C::mip_shared_ticks_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_TICKS;
@@ -321,7 +321,7 @@ struct ticks : C::mip_shared_ticks_data
 
 
 
-struct deltaTicks : C::mip_shared_delta_ticks_data
+struct DeltaTicks : C::mip_shared_delta_ticks_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TICKS;
@@ -338,7 +338,7 @@ struct deltaTicks : C::mip_shared_delta_ticks_data
 
 
 
-struct gpsTimestamp : C::mip_shared_gps_timestamp_data
+struct GpsTimestamp : C::mip_shared_gps_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_GPS_TIME;
@@ -355,7 +355,7 @@ struct gpsTimestamp : C::mip_shared_gps_timestamp_data
 
 
 
-struct deltaTime : C::mip_shared_delta_time_data
+struct DeltaTime : C::mip_shared_delta_time_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TIME;
@@ -372,7 +372,7 @@ struct deltaTime : C::mip_shared_delta_time_data
 
 
 
-struct referenceTimestamp : C::mip_shared_reference_timestamp_data
+struct ReferenceTimestamp : C::mip_shared_reference_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REFERENCE_TIME;
@@ -389,7 +389,7 @@ struct referenceTimestamp : C::mip_shared_reference_timestamp_data
 
 
 
-struct referenceTimeDelta : C::mip_shared_reference_time_delta_data
+struct ReferenceTimeDelta : C::mip_shared_reference_time_delta_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REF_TIME_DELTA;
@@ -406,7 +406,7 @@ struct referenceTimeDelta : C::mip_shared_reference_time_delta_data
 
 
 
-struct externalTimestamp : C::mip_shared_external_timestamp_data
+struct ExternalTimestamp : C::mip_shared_external_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EXTERNAL_TIME;
@@ -423,7 +423,7 @@ struct externalTimestamp : C::mip_shared_external_timestamp_data
 
 
 
-struct externalTimeDelta : C::mip_shared_external_time_delta_data
+struct ExternalTimeDelta : C::mip_shared_external_time_delta_data
 {
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_SYS_TIME_DELTA;

@@ -1216,7 +1216,7 @@ size_t extract_mip_filter_gnss_dual_antenna_status_data(const uint8_t* buffer, s
 namespace FilterData {
 
 
-struct llhPos : C::mip_filter_llh_pos_data
+struct LlhPos : C::mip_filter_llh_pos_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LLH_POS;
@@ -1233,7 +1233,7 @@ struct llhPos : C::mip_filter_llh_pos_data
 
 
 
-struct nedVelocity : C::mip_filter_ned_velocity_data
+struct NedVelocity : C::mip_filter_ned_velocity_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_NED_VEL;
@@ -1250,7 +1250,7 @@ struct nedVelocity : C::mip_filter_ned_velocity_data
 
 
 
-struct attitudeQuaternion : C::mip_filter_attitude_quaternion_data
+struct AttitudeQuaternion : C::mip_filter_attitude_quaternion_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_QUATERNION;
@@ -1267,7 +1267,7 @@ struct attitudeQuaternion : C::mip_filter_attitude_quaternion_data
 
 
 
-struct attitudeDcm : C::mip_filter_attitude_dcm_data
+struct AttitudeDcm : C::mip_filter_attitude_dcm_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_MATRIX;
@@ -1284,7 +1284,7 @@ struct attitudeDcm : C::mip_filter_attitude_dcm_data
 
 
 
-struct eulerAngles : C::mip_filter_euler_angles_data
+struct EulerAngles : C::mip_filter_euler_angles_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
@@ -1301,7 +1301,7 @@ struct eulerAngles : C::mip_filter_euler_angles_data
 
 
 
-struct gyroBias : C::mip_filter_gyro_bias_data
+struct GyroBias : C::mip_filter_gyro_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS;
@@ -1318,7 +1318,7 @@ struct gyroBias : C::mip_filter_gyro_bias_data
 
 
 
-struct accelBias : C::mip_filter_accel_bias_data
+struct AccelBias : C::mip_filter_accel_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS;
@@ -1335,7 +1335,7 @@ struct accelBias : C::mip_filter_accel_bias_data
 
 
 
-struct llhPosUncertainty : C::mip_filter_llh_pos_uncertainty_data
+struct LlhPosUncertainty : C::mip_filter_llh_pos_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_POS_UNCERTAINTY;
@@ -1352,7 +1352,7 @@ struct llhPosUncertainty : C::mip_filter_llh_pos_uncertainty_data
 
 
 
-struct nedVelUncertainty : C::mip_filter_ned_vel_uncertainty_data
+struct NedVelUncertainty : C::mip_filter_ned_vel_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_VEL_UNCERTAINTY;
@@ -1369,7 +1369,7 @@ struct nedVelUncertainty : C::mip_filter_ned_vel_uncertainty_data
 
 
 
-struct eulerAnglesUncertainty : C::mip_filter_euler_angles_uncertainty_data
+struct EulerAnglesUncertainty : C::mip_filter_euler_angles_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_EULER;
@@ -1386,7 +1386,7 @@ struct eulerAnglesUncertainty : C::mip_filter_euler_angles_uncertainty_data
 
 
 
-struct gyroBiasUncertainty : C::mip_filter_gyro_bias_uncertainty_data
+struct GyroBiasUncertainty : C::mip_filter_gyro_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS_UNCERTAINTY;
@@ -1403,7 +1403,7 @@ struct gyroBiasUncertainty : C::mip_filter_gyro_bias_uncertainty_data
 
 
 
-struct accelBiasUncertainty : C::mip_filter_accel_bias_uncertainty_data
+struct AccelBiasUncertainty : C::mip_filter_accel_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS_UNCERTAINTY;
@@ -1420,7 +1420,7 @@ struct accelBiasUncertainty : C::mip_filter_accel_bias_uncertainty_data
 
 
 
-struct timestamp : C::mip_filter_timestamp_data
+struct Timestamp : C::mip_filter_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP;
@@ -1437,7 +1437,7 @@ struct timestamp : C::mip_filter_timestamp_data
 
 
 
-struct status : C::mip_filter_status_data
+struct Status : C::mip_filter_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_STATUS;
@@ -1454,7 +1454,7 @@ struct status : C::mip_filter_status_data
 
 
 
-struct linearAccel : C::mip_filter_linear_accel_data
+struct LinearAccel : C::mip_filter_linear_accel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LINEAR_ACCELERATION;
@@ -1471,7 +1471,7 @@ struct linearAccel : C::mip_filter_linear_accel_data
 
 
 
-struct gravityVector : C::mip_filter_gravity_vector_data
+struct GravityVector : C::mip_filter_gravity_vector_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GRAVITY_VECTOR;
@@ -1488,7 +1488,7 @@ struct gravityVector : C::mip_filter_gravity_vector_data
 
 
 
-struct compAccel : C::mip_filter_comp_accel_data
+struct CompAccel : C::mip_filter_comp_accel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ACCELERATION;
@@ -1505,7 +1505,7 @@ struct compAccel : C::mip_filter_comp_accel_data
 
 
 
-struct compAngularRate : C::mip_filter_comp_angular_rate_data
+struct CompAngularRate : C::mip_filter_comp_angular_rate_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ANGULAR_RATE;
@@ -1522,7 +1522,7 @@ struct compAngularRate : C::mip_filter_comp_angular_rate_data
 
 
 
-struct quaternionAttitudeUncertainty : C::mip_filter_quaternion_attitude_uncertainty_data
+struct QuaternionAttitudeUncertainty : C::mip_filter_quaternion_attitude_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_QUATERNION;
@@ -1539,7 +1539,7 @@ struct quaternionAttitudeUncertainty : C::mip_filter_quaternion_attitude_uncerta
 
 
 
-struct wgs84GravityMag : C::mip_filter_wgs84_gravity_mag_data
+struct Wgs84GravityMag : C::mip_filter_wgs84_gravity_mag_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_WGS84_GRAVITY;
@@ -1556,7 +1556,7 @@ struct wgs84GravityMag : C::mip_filter_wgs84_gravity_mag_data
 
 
 
-struct headingUpdateState : C::mip_filter_heading_update_state_data
+struct HeadingUpdateState : C::mip_filter_heading_update_state_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEADING_UPDATE_STATE;
@@ -1573,7 +1573,7 @@ struct headingUpdateState : C::mip_filter_heading_update_state_data
 
 
 
-struct magneticModel : C::mip_filter_magnetic_model_data
+struct MagneticModel : C::mip_filter_magnetic_model_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAGNETIC_MODEL;
@@ -1590,7 +1590,7 @@ struct magneticModel : C::mip_filter_magnetic_model_data
 
 
 
-struct accelScaleFactor : C::mip_filter_accel_scale_factor_data
+struct AccelScaleFactor : C::mip_filter_accel_scale_factor_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR;
@@ -1607,7 +1607,7 @@ struct accelScaleFactor : C::mip_filter_accel_scale_factor_data
 
 
 
-struct accelScaleFactorUncertainty : C::mip_filter_accel_scale_factor_uncertainty_data
+struct AccelScaleFactorUncertainty : C::mip_filter_accel_scale_factor_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR_UNCERTAINTY;
@@ -1624,7 +1624,7 @@ struct accelScaleFactorUncertainty : C::mip_filter_accel_scale_factor_uncertaint
 
 
 
-struct gyroScaleFactor : C::mip_filter_gyro_scale_factor_data
+struct GyroScaleFactor : C::mip_filter_gyro_scale_factor_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR;
@@ -1641,7 +1641,7 @@ struct gyroScaleFactor : C::mip_filter_gyro_scale_factor_data
 
 
 
-struct gyroScaleFactorUncertainty : C::mip_filter_gyro_scale_factor_uncertainty_data
+struct GyroScaleFactorUncertainty : C::mip_filter_gyro_scale_factor_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR_UNCERTAINTY;
@@ -1658,7 +1658,7 @@ struct gyroScaleFactorUncertainty : C::mip_filter_gyro_scale_factor_uncertainty_
 
 
 
-struct magBias : C::mip_filter_mag_bias_data
+struct MagBias : C::mip_filter_mag_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS;
@@ -1675,7 +1675,7 @@ struct magBias : C::mip_filter_mag_bias_data
 
 
 
-struct magBiasUncertainty : C::mip_filter_mag_bias_uncertainty_data
+struct MagBiasUncertainty : C::mip_filter_mag_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS_UNCERTAINTY;
@@ -1692,7 +1692,7 @@ struct magBiasUncertainty : C::mip_filter_mag_bias_uncertainty_data
 
 
 
-struct standardAtmosphere : C::mip_filter_standard_atmosphere_data
+struct StandardAtmosphere : C::mip_filter_standard_atmosphere_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_STANDARD_ATMOSPHERE_DATA;
@@ -1709,7 +1709,7 @@ struct standardAtmosphere : C::mip_filter_standard_atmosphere_data
 
 
 
-struct pressureAltitude : C::mip_filter_pressure_altitude_data
+struct PressureAltitude : C::mip_filter_pressure_altitude_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_PRESSURE_ALTITUDE_DATA;
@@ -1726,7 +1726,7 @@ struct pressureAltitude : C::mip_filter_pressure_altitude_data
 
 
 
-struct densityAltitude : C::mip_filter_density_altitude_data
+struct DensityAltitude : C::mip_filter_density_altitude_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_DENSITY_ALTITUDE_DATA;
@@ -1743,7 +1743,7 @@ struct densityAltitude : C::mip_filter_density_altitude_data
 
 
 
-struct antennaOffsetCorrection : C::mip_filter_antenna_offset_correction_data
+struct AntennaOffsetCorrection : C::mip_filter_antenna_offset_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION;
@@ -1760,7 +1760,7 @@ struct antennaOffsetCorrection : C::mip_filter_antenna_offset_correction_data
 
 
 
-struct antennaOffsetCorrectionUncertainty : C::mip_filter_antenna_offset_correction_uncertainty_data
+struct AntennaOffsetCorrectionUncertainty : C::mip_filter_antenna_offset_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
@@ -1777,7 +1777,7 @@ struct antennaOffsetCorrectionUncertainty : C::mip_filter_antenna_offset_correct
 
 
 
-struct multiAntennaOffsetCorrection : C::mip_filter_multi_antenna_offset_correction_data
+struct MultiAntennaOffsetCorrection : C::mip_filter_multi_antenna_offset_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION;
@@ -1794,7 +1794,7 @@ struct multiAntennaOffsetCorrection : C::mip_filter_multi_antenna_offset_correct
 
 
 
-struct multiAntennaOffsetCorrectionUncertainty : C::mip_filter_multi_antenna_offset_correction_uncertainty_data
+struct MultiAntennaOffsetCorrectionUncertainty : C::mip_filter_multi_antenna_offset_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
@@ -1811,7 +1811,7 @@ struct multiAntennaOffsetCorrectionUncertainty : C::mip_filter_multi_antenna_off
 
 
 
-struct magnetometerOffset : C::mip_filter_magnetometer_offset_data
+struct MagnetometerOffset : C::mip_filter_magnetometer_offset_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET;
@@ -1828,7 +1828,7 @@ struct magnetometerOffset : C::mip_filter_magnetometer_offset_data
 
 
 
-struct magnetometerMatrix : C::mip_filter_magnetometer_matrix_data
+struct MagnetometerMatrix : C::mip_filter_magnetometer_matrix_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX;
@@ -1845,7 +1845,7 @@ struct magnetometerMatrix : C::mip_filter_magnetometer_matrix_data
 
 
 
-struct magnetometerOffsetUncertainty : C::mip_filter_magnetometer_offset_uncertainty_data
+struct MagnetometerOffsetUncertainty : C::mip_filter_magnetometer_offset_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
@@ -1862,7 +1862,7 @@ struct magnetometerOffsetUncertainty : C::mip_filter_magnetometer_offset_uncerta
 
 
 
-struct magnetometerMatrixUncertainty : C::mip_filter_magnetometer_matrix_uncertainty_data
+struct MagnetometerMatrixUncertainty : C::mip_filter_magnetometer_matrix_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
@@ -1879,7 +1879,7 @@ struct magnetometerMatrixUncertainty : C::mip_filter_magnetometer_matrix_uncerta
 
 
 
-struct magnetometerCovarianceMatrix : C::mip_filter_magnetometer_covariance_matrix_data
+struct MagnetometerCovarianceMatrix : C::mip_filter_magnetometer_covariance_matrix_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COVARIANCE;
@@ -1896,7 +1896,7 @@ struct magnetometerCovarianceMatrix : C::mip_filter_magnetometer_covariance_matr
 
 
 
-struct magnetometerResidualVector : C::mip_filter_magnetometer_residual_vector_data
+struct MagnetometerResidualVector : C::mip_filter_magnetometer_residual_vector_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_RESIDUAL;
@@ -1913,7 +1913,7 @@ struct magnetometerResidualVector : C::mip_filter_magnetometer_residual_vector_d
 
 
 
-struct clockCorrection : C::mip_filter_clock_correction_data
+struct ClockCorrection : C::mip_filter_clock_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION;
@@ -1930,7 +1930,7 @@ struct clockCorrection : C::mip_filter_clock_correction_data
 
 
 
-struct clockCorrectionUncertainty : C::mip_filter_clock_correction_uncertainty_data
+struct ClockCorrectionUncertainty : C::mip_filter_clock_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION_UNCERTAINTY;
@@ -1947,7 +1947,7 @@ struct clockCorrectionUncertainty : C::mip_filter_clock_correction_uncertainty_d
 
 
 
-struct gnssPosAidStatus : C::mip_filter_gnss_pos_aid_status_data
+struct GnssPosAidStatus : C::mip_filter_gnss_pos_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_POS_AID_STATUS;
@@ -1964,7 +1964,7 @@ struct gnssPosAidStatus : C::mip_filter_gnss_pos_aid_status_data
 
 
 
-struct gnssAttAidStatus : C::mip_filter_gnss_att_aid_status_data
+struct GnssAttAidStatus : C::mip_filter_gnss_att_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_ATT_AID_STATUS;
@@ -1981,7 +1981,7 @@ struct gnssAttAidStatus : C::mip_filter_gnss_att_aid_status_data
 
 
 
-struct headAidStatus : C::mip_filter_head_aid_status_data
+struct HeadAidStatus : C::mip_filter_head_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEAD_AID_STATUS;
@@ -1998,7 +1998,7 @@ struct headAidStatus : C::mip_filter_head_aid_status_data
 
 
 
-struct relPosNed : C::mip_filter_rel_pos_ned_data
+struct RelPosNed : C::mip_filter_rel_pos_ned_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_REL_POS_NED;
@@ -2015,7 +2015,7 @@ struct relPosNed : C::mip_filter_rel_pos_ned_data
 
 
 
-struct ecefPos : C::mip_filter_ecef_pos_data
+struct EcefPos : C::mip_filter_ecef_pos_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS;
@@ -2032,7 +2032,7 @@ struct ecefPos : C::mip_filter_ecef_pos_data
 
 
 
-struct ecefVel : C::mip_filter_ecef_vel_data
+struct EcefVel : C::mip_filter_ecef_vel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL;
@@ -2049,7 +2049,7 @@ struct ecefVel : C::mip_filter_ecef_vel_data
 
 
 
-struct ecefPosUncertainty : C::mip_filter_ecef_pos_uncertainty_data
+struct EcefPosUncertainty : C::mip_filter_ecef_pos_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS_UNCERTAINTY;
@@ -2066,7 +2066,7 @@ struct ecefPosUncertainty : C::mip_filter_ecef_pos_uncertainty_data
 
 
 
-struct ecefVelUncertainty : C::mip_filter_ecef_vel_uncertainty_data
+struct EcefVelUncertainty : C::mip_filter_ecef_vel_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL_UNCERTAINTY;
@@ -2083,7 +2083,7 @@ struct ecefVelUncertainty : C::mip_filter_ecef_vel_uncertainty_data
 
 
 
-struct aidingMeasurementSummary : C::mip_filter_aiding_measurement_summary_data
+struct AidingMeasurementSummary : C::mip_filter_aiding_measurement_summary_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_AID_MEAS_SUMMARY;
@@ -2100,7 +2100,7 @@ struct aidingMeasurementSummary : C::mip_filter_aiding_measurement_summary_data
 
 
 
-struct odometerScaleFactorError : C::mip_filter_odometer_scale_factor_error_data
+struct OdometerScaleFactorError : C::mip_filter_odometer_scale_factor_error_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR;
@@ -2117,7 +2117,7 @@ struct odometerScaleFactorError : C::mip_filter_odometer_scale_factor_error_data
 
 
 
-struct odometerScaleFactorErrorUncertainty : C::mip_filter_odometer_scale_factor_error_uncertainty_data
+struct OdometerScaleFactorErrorUncertainty : C::mip_filter_odometer_scale_factor_error_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
@@ -2134,7 +2134,7 @@ struct odometerScaleFactorErrorUncertainty : C::mip_filter_odometer_scale_factor
 
 
 
-struct gnssDualAntennaStatus : C::mip_filter_gnss_dual_antenna_status_data
+struct GnssDualAntennaStatus : C::mip_filter_gnss_dual_antenna_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS;

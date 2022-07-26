@@ -386,7 +386,7 @@ mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device);
 namespace RtkCommands {
 
 
-struct getStatusFlags : C::mip_rtk_get_status_flags_command
+struct GetStatusFlags : C::mip_rtk_get_status_flags_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_STATUS_FLAGS;
@@ -425,7 +425,7 @@ MipCmdResult getStatusFlags(C::mip_interface& device, enum C::mip_rtk_get_status
 
 
 
-struct getImei : C::mip_rtk_get_imei_command
+struct GetImei : C::mip_rtk_get_imei_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_IMEI;
@@ -464,7 +464,7 @@ MipCmdResult getImei(C::mip_interface& device, char* IMEI)
 
 
 
-struct getImsi : C::mip_rtk_get_imsi_command
+struct GetImsi : C::mip_rtk_get_imsi_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_IMSI;
@@ -503,7 +503,7 @@ MipCmdResult getImsi(C::mip_interface& device, char* IMSI)
 
 
 
-struct getIccid : C::mip_rtk_get_iccid_command
+struct GetIccid : C::mip_rtk_get_iccid_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_ICCID;
@@ -542,7 +542,7 @@ MipCmdResult getIccid(C::mip_interface& device, char* ICCID)
 
 
 
-struct connectedDeviceType : C::mip_rtk_connected_device_type_command
+struct ConnectedDeviceType : C::mip_rtk_connected_device_type_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE;
@@ -602,7 +602,7 @@ MipCmdResult defaultConnecteddevicetype(C::mip_interface& device)
 
 
 
-struct getActCode : C::mip_rtk_get_act_code_command
+struct GetActCode : C::mip_rtk_get_act_code_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_ACT_CODE;
@@ -641,7 +641,7 @@ MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode)
 
 
 
-struct getModemFirmwareVersion : C::mip_rtk_get_modem_firmware_version_command
+struct GetModemFirmwareVersion : C::mip_rtk_get_modem_firmware_version_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION;
@@ -680,7 +680,7 @@ MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwa
 
 
 
-struct getRssi : C::mip_rtk_get_rssi_command
+struct GetRssi : C::mip_rtk_get_rssi_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_GET_RSSI;
@@ -719,7 +719,7 @@ MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32
 
 
 
-struct serviceStatus : C::mip_rtk_service_status_command
+struct ServiceStatus : C::mip_rtk_service_status_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_SERVICE_STATUS;
@@ -758,7 +758,7 @@ MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_
 
 
 
-struct prodEraseStorage : C::mip_rtk_prod_erase_storage_command
+struct ProdEraseStorage : C::mip_rtk_prod_erase_storage_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_PROD_ERASE_STORAGE;
@@ -782,7 +782,7 @@ MipCmdResult prodEraseStorage(C::mip_interface& device, C::mip_media_selector me
 
 
 
-struct ledControl : C::mip_rtk_led_control_command
+struct LedControl : C::mip_rtk_led_control_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_LED_CONTROL;
@@ -806,7 +806,7 @@ MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, c
 
 
 
-struct modemHardReset : C::mip_rtk_modem_hard_reset_command
+struct ModemHardReset : C::mip_rtk_modem_hard_reset_command
 {
     static const uint8_t descriptorSet = MIP_RTK_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_RTK_MODEM_HARD_RESET;

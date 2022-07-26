@@ -394,7 +394,7 @@ mip_cmd_result mip_base_soft_reset(struct mip_interface* device);
 namespace BaseCommands {
 
 
-struct ping : C::mip_base_ping_command
+struct Ping : C::mip_base_ping_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_PING;
@@ -418,7 +418,7 @@ MipCmdResult ping(C::mip_interface& device)
 
 
 
-struct setIdle : C::mip_base_set_idle_command
+struct SetIdle : C::mip_base_set_idle_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SET_TO_IDLE;
@@ -442,7 +442,7 @@ MipCmdResult setIdle(C::mip_interface& device)
 
 
 
-struct getDeviceInfo : C::mip_base_get_device_info_command
+struct GetDeviceInfo : C::mip_base_get_device_info_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_INFO;
@@ -481,7 +481,7 @@ MipCmdResult getDeviceInfo(C::mip_interface& device, struct C::mip_base_device_i
 
 
 
-struct getDeviceDescriptors : C::mip_base_get_device_descriptors_command
+struct GetDeviceDescriptors : C::mip_base_get_device_descriptors_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS;
@@ -520,7 +520,7 @@ MipCmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors
 
 
 
-struct builtInTest : C::mip_base_built_in_test_command
+struct BuiltInTest : C::mip_base_built_in_test_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_BUILT_IN_TEST;
@@ -559,7 +559,7 @@ MipCmdResult builtInTest(C::mip_interface& device, uint32_t& result)
 
 
 
-struct resume : C::mip_base_resume_command
+struct Resume : C::mip_base_resume_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_RESUME;
@@ -583,7 +583,7 @@ MipCmdResult resume(C::mip_interface& device)
 
 
 
-struct getExtendedDescriptors : C::mip_base_get_extended_descriptors_command
+struct GetExtendedDescriptors : C::mip_base_get_extended_descriptors_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
@@ -622,7 +622,7 @@ MipCmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descripto
 
 
 
-struct continuousBit : C::mip_base_continuous_bit_command
+struct ContinuousBit : C::mip_base_continuous_bit_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_CONTINUOUS_BIT;
@@ -661,7 +661,7 @@ MipCmdResult continuousBit(C::mip_interface& device, uint8_t* result)
 
 
 
-struct commSpeed : C::mip_base_comm_speed_command
+struct CommSpeed : C::mip_base_comm_speed_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_COMM_SPEED;
@@ -721,7 +721,7 @@ MipCmdResult defaultCommspeed(C::mip_interface& device, uint8_t port)
 
 
 
-struct gpsTimeUpdate : C::mip_base_gps_time_update_command
+struct GpsTimeUpdate : C::mip_base_gps_time_update_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW;
@@ -750,7 +750,7 @@ MipCmdResult writeGpstimeupdate(C::mip_interface& device, C::mip_base_gps_time_u
 
 
 
-struct softReset : C::mip_base_soft_reset_command
+struct SoftReset : C::mip_base_soft_reset_command
 {
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SOFT_RESET;

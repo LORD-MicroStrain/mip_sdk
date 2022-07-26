@@ -1236,7 +1236,7 @@ size_t extract_mip_gnss_galileo_iono_corr_data(const uint8_t* buffer, size_t buf
 namespace GnssData {
 
 
-struct llhPos : C::mip_gnss_llh_pos_data
+struct LlhPos : C::mip_gnss_llh_pos_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_LLH;
@@ -1253,7 +1253,7 @@ struct llhPos : C::mip_gnss_llh_pos_data
 
 
 
-struct ecefPos : C::mip_gnss_ecef_pos_data
+struct EcefPos : C::mip_gnss_ecef_pos_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_ECEF;
@@ -1270,7 +1270,7 @@ struct ecefPos : C::mip_gnss_ecef_pos_data
 
 
 
-struct nedVel : C::mip_gnss_ned_vel_data
+struct NedVel : C::mip_gnss_ned_vel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_NED;
@@ -1287,7 +1287,7 @@ struct nedVel : C::mip_gnss_ned_vel_data
 
 
 
-struct ecefVel : C::mip_gnss_ecef_vel_data
+struct EcefVel : C::mip_gnss_ecef_vel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_ECEF;
@@ -1304,7 +1304,7 @@ struct ecefVel : C::mip_gnss_ecef_vel_data
 
 
 
-struct dop : C::mip_gnss_dop_data
+struct Dop : C::mip_gnss_dop_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DOP;
@@ -1321,7 +1321,7 @@ struct dop : C::mip_gnss_dop_data
 
 
 
-struct utcTime : C::mip_gnss_utc_time_data
+struct UtcTime : C::mip_gnss_utc_time_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_UTC_TIME;
@@ -1338,7 +1338,7 @@ struct utcTime : C::mip_gnss_utc_time_data
 
 
 
-struct gpsTime : C::mip_gnss_gps_time_data
+struct GpsTime : C::mip_gnss_gps_time_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_TIME;
@@ -1355,7 +1355,7 @@ struct gpsTime : C::mip_gnss_gps_time_data
 
 
 
-struct clockInfo : C::mip_gnss_clock_info_data
+struct ClockInfo : C::mip_gnss_clock_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO;
@@ -1372,7 +1372,7 @@ struct clockInfo : C::mip_gnss_clock_info_data
 
 
 
-struct fixInfo : C::mip_gnss_fix_info_data
+struct FixInfo : C::mip_gnss_fix_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_FIX_INFO;
@@ -1389,7 +1389,7 @@ struct fixInfo : C::mip_gnss_fix_info_data
 
 
 
-struct svInfo : C::mip_gnss_sv_info_data
+struct SvInfo : C::mip_gnss_sv_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SV_INFO;
@@ -1406,7 +1406,7 @@ struct svInfo : C::mip_gnss_sv_info_data
 
 
 
-struct hwStatus : C::mip_gnss_hw_status_data
+struct HwStatus : C::mip_gnss_hw_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_HW_STATUS;
@@ -1423,7 +1423,7 @@ struct hwStatus : C::mip_gnss_hw_status_data
 
 
 
-struct dgpsInfo : C::mip_gnss_dgps_info_data
+struct DgpsInfo : C::mip_gnss_dgps_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_INFO;
@@ -1440,7 +1440,7 @@ struct dgpsInfo : C::mip_gnss_dgps_info_data
 
 
 
-struct dgpsChannel : C::mip_gnss_dgps_channel_data
+struct DgpsChannel : C::mip_gnss_dgps_channel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_CHANNEL_STATUS;
@@ -1457,7 +1457,7 @@ struct dgpsChannel : C::mip_gnss_dgps_channel_data
 
 
 
-struct clockInfo2 : C::mip_gnss_clock_info_2_data
+struct ClockInfo2 : C::mip_gnss_clock_info_2_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO_2;
@@ -1474,7 +1474,7 @@ struct clockInfo2 : C::mip_gnss_clock_info_2_data
 
 
 
-struct gpsLeapSeconds : C::mip_gnss_gps_leap_seconds_data
+struct GpsLeapSeconds : C::mip_gnss_gps_leap_seconds_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_LEAP_SECONDS;
@@ -1491,7 +1491,7 @@ struct gpsLeapSeconds : C::mip_gnss_gps_leap_seconds_data
 
 
 
-struct sbasInfo : C::mip_gnss_sbas_info_data
+struct SbasInfo : C::mip_gnss_sbas_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_INFO;
@@ -1508,7 +1508,7 @@ struct sbasInfo : C::mip_gnss_sbas_info_data
 
 
 
-struct sbasCorrection : C::mip_gnss_sbas_correction_data
+struct SbasCorrection : C::mip_gnss_sbas_correction_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_CORRECTION;
@@ -1525,7 +1525,7 @@ struct sbasCorrection : C::mip_gnss_sbas_correction_data
 
 
 
-struct rfErrorDetection : C::mip_gnss_rf_error_detection_data
+struct RfErrorDetection : C::mip_gnss_rf_error_detection_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RF_ERROR_DETECTION;
@@ -1542,7 +1542,7 @@ struct rfErrorDetection : C::mip_gnss_rf_error_detection_data
 
 
 
-struct baseStationInfo : C::mip_gnss_base_station_info_data
+struct BaseStationInfo : C::mip_gnss_base_station_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_BASE_STATION_INFO;
@@ -1559,7 +1559,7 @@ struct baseStationInfo : C::mip_gnss_base_station_info_data
 
 
 
-struct rtkCorrectionsStatus : C::mip_gnss_rtk_corrections_status_data
+struct RtkCorrectionsStatus : C::mip_gnss_rtk_corrections_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RTK_CORRECTIONS_STATUS;
@@ -1576,7 +1576,7 @@ struct rtkCorrectionsStatus : C::mip_gnss_rtk_corrections_status_data
 
 
 
-struct satelliteStatus : C::mip_gnss_satellite_status_data
+struct SatelliteStatus : C::mip_gnss_satellite_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SATELLITE_STATUS;
@@ -1593,7 +1593,7 @@ struct satelliteStatus : C::mip_gnss_satellite_status_data
 
 
 
-struct raw : C::mip_gnss_raw_data
+struct Raw : C::mip_gnss_raw_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RAW;
@@ -1610,7 +1610,7 @@ struct raw : C::mip_gnss_raw_data
 
 
 
-struct gpsEphemeris : C::mip_gnss_gps_ephemeris_data
+struct GpsEphemeris : C::mip_gnss_gps_ephemeris_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_EPHEMERIS;
@@ -1627,7 +1627,7 @@ struct gpsEphemeris : C::mip_gnss_gps_ephemeris_data
 
 
 
-struct gloEphemeris : C::mip_gnss_glo_ephemeris_data
+struct GloEphemeris : C::mip_gnss_glo_ephemeris_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS;
@@ -1644,7 +1644,7 @@ struct gloEphemeris : C::mip_gnss_glo_ephemeris_data
 
 
 
-struct gpsIonoCorr : C::mip_gnss_gps_iono_corr_data
+struct GpsIonoCorr : C::mip_gnss_gps_iono_corr_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_IONO_CORR;
@@ -1661,7 +1661,7 @@ struct gpsIonoCorr : C::mip_gnss_gps_iono_corr_data
 
 
 
-struct galileoIonoCorr : C::mip_gnss_galileo_iono_corr_data
+struct GalileoIonoCorr : C::mip_gnss_galileo_iono_corr_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR;

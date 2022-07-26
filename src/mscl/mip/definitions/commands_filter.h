@@ -1331,7 +1331,7 @@ mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, floa
 namespace FilterCommands {
 
 
-struct reset : C::mip_filter_reset_command
+struct Reset : C::mip_filter_reset_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RESET_FILTER;
@@ -1355,7 +1355,7 @@ MipCmdResult reset(C::mip_interface& device)
 
 
 
-struct setInitialAttitude : C::mip_filter_set_initial_attitude_command
+struct SetInitialAttitude : C::mip_filter_set_initial_attitude_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_ATTITUDE;
@@ -1379,7 +1379,7 @@ MipCmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitc
 
 
 
-struct estimationControl : C::mip_filter_estimation_control_command
+struct EstimationControl : C::mip_filter_estimation_control_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
@@ -1439,7 +1439,7 @@ MipCmdResult defaultEstimationcontrol(C::mip_interface& device)
 
 
 
-struct externalGnssUpdate : C::mip_filter_external_gnss_update_command
+struct ExternalGnssUpdate : C::mip_filter_external_gnss_update_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_GNSS_UPDATE;
@@ -1463,7 +1463,7 @@ MipCmdResult externalGnssUpdate(C::mip_interface& device, double gps_time, uint1
 
 
 
-struct externalHeadingUpdate : C::mip_filter_external_heading_update_command
+struct ExternalHeadingUpdate : C::mip_filter_external_heading_update_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE;
@@ -1487,7 +1487,7 @@ MipCmdResult externalHeadingUpdate(C::mip_interface& device, float heading, floa
 
 
 
-struct externalHeadingUpdateWithTime : C::mip_filter_external_heading_update_with_time_command
+struct ExternalHeadingUpdateWithTime : C::mip_filter_external_heading_update_with_time_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE_WITH_TIME;
@@ -1511,7 +1511,7 @@ MipCmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gps_
 
 
 
-struct tareOrientation : C::mip_filter_tare_orientation_command
+struct TareOrientation : C::mip_filter_tare_orientation_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_TARE_ORIENTATION;
@@ -1571,7 +1571,7 @@ MipCmdResult defaultTareorientation(C::mip_interface& device)
 
 
 
-struct sensorToVehicleRotationEuler : C::mip_filter_sensor_to_vehicle_rotation_euler_command
+struct SensorToVehicleRotationEuler : C::mip_filter_sensor_to_vehicle_rotation_euler_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
@@ -1631,7 +1631,7 @@ MipCmdResult defaultSensortovehiclerotationeuler(C::mip_interface& device)
 
 
 
-struct sensorToVehicleRotationDcm : C::mip_filter_sensor_to_vehicle_rotation_dcm_command
+struct SensorToVehicleRotationDcm : C::mip_filter_sensor_to_vehicle_rotation_dcm_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
@@ -1691,7 +1691,7 @@ MipCmdResult defaultSensortovehiclerotationdcm(C::mip_interface& device)
 
 
 
-struct sensorToVehicleRotationQuaternion : C::mip_filter_sensor_to_vehicle_rotation_quaternion_command
+struct SensorToVehicleRotationQuaternion : C::mip_filter_sensor_to_vehicle_rotation_quaternion_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
@@ -1751,7 +1751,7 @@ MipCmdResult defaultSensortovehiclerotationquaternion(C::mip_interface& device)
 
 
 
-struct sensorToVehicleOffset : C::mip_filter_sensor_to_vehicle_offset_command
+struct SensorToVehicleOffset : C::mip_filter_sensor_to_vehicle_offset_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
@@ -1811,7 +1811,7 @@ MipCmdResult defaultSensortovehicleoffset(C::mip_interface& device)
 
 
 
-struct antennaOffset : C::mip_filter_antenna_offset_command
+struct AntennaOffset : C::mip_filter_antenna_offset_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANTENNA_OFFSET;
@@ -1871,7 +1871,7 @@ MipCmdResult defaultAntennaoffset(C::mip_interface& device)
 
 
 
-struct gnssSource : C::mip_filter_gnss_source_command
+struct GnssSource : C::mip_filter_gnss_source_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL;
@@ -1931,7 +1931,7 @@ MipCmdResult defaultGnsssource(C::mip_interface& device)
 
 
 
-struct headingSource : C::mip_filter_heading_source_command
+struct HeadingSource : C::mip_filter_heading_source_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL;
@@ -1991,7 +1991,7 @@ MipCmdResult defaultHeadingsource(C::mip_interface& device)
 
 
 
-struct altitudeAiding : C::mip_filter_altitude_aiding_command
+struct AltitudeAiding : C::mip_filter_altitude_aiding_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
@@ -2051,7 +2051,7 @@ MipCmdResult defaultAltitudeaiding(C::mip_interface& device)
 
 
 
-struct autoZupt : C::mip_filter_auto_zupt_command
+struct AutoZupt : C::mip_filter_auto_zupt_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ZUPT_CONTROL;
@@ -2111,7 +2111,7 @@ MipCmdResult defaultAutozupt(C::mip_interface& device)
 
 
 
-struct autoAngularZupt : C::mip_filter_auto_angular_zupt_command
+struct AutoAngularZupt : C::mip_filter_auto_angular_zupt_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
@@ -2171,7 +2171,7 @@ MipCmdResult defaultAutoangularzupt(C::mip_interface& device)
 
 
 
-struct commandedZupt : C::mip_filter_commanded_zupt_command
+struct CommandedZupt : C::mip_filter_commanded_zupt_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ZUPT;
@@ -2195,7 +2195,7 @@ MipCmdResult commandedZupt(C::mip_interface& device)
 
 
 
-struct commandedAngularZupt : C::mip_filter_commanded_angular_zupt_command
+struct CommandedAngularZupt : C::mip_filter_commanded_angular_zupt_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ANGULAR_ZUPT;
@@ -2219,7 +2219,7 @@ MipCmdResult commandedAngularZupt(C::mip_interface& device)
 
 
 
-struct aidingMeasurementEnable : C::mip_filter_aiding_measurement_enable_command
+struct AidingMeasurementEnable : C::mip_filter_aiding_measurement_enable_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
@@ -2279,7 +2279,7 @@ MipCmdResult defaultAidingmeasurementenable(C::mip_interface& device, C::mip_fil
 
 
 
-struct run : C::mip_filter_run_command
+struct Run : C::mip_filter_run_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RUN;
@@ -2303,7 +2303,7 @@ MipCmdResult run(C::mip_interface& device)
 
 
 
-struct kinematicConstraint : C::mip_filter_kinematic_constraint_command
+struct KinematicConstraint : C::mip_filter_kinematic_constraint_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT;
@@ -2363,7 +2363,7 @@ MipCmdResult defaultKinematicconstraint(C::mip_interface& device)
 
 
 
-struct initializationConfiguration : C::mip_filter_initialization_configuration_command
+struct InitializationConfiguration : C::mip_filter_initialization_configuration_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION;
@@ -2423,7 +2423,7 @@ MipCmdResult defaultInitializationconfiguration(C::mip_interface& device)
 
 
 
-struct adaptiveFilterOptions : C::mip_filter_adaptive_filter_options_command
+struct AdaptiveFilterOptions : C::mip_filter_adaptive_filter_options_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
@@ -2483,7 +2483,7 @@ MipCmdResult defaultAdaptivefilteroptions(C::mip_interface& device)
 
 
 
-struct multiAntennaOffset : C::mip_filter_multi_antenna_offset_command
+struct MultiAntennaOffset : C::mip_filter_multi_antenna_offset_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET;
@@ -2543,7 +2543,7 @@ MipCmdResult defaultMultiantennaoffset(C::mip_interface& device, uint8_t receive
 
 
 
-struct relPosConfiguration : C::mip_filter_rel_pos_configuration_command
+struct RelPosConfiguration : C::mip_filter_rel_pos_configuration_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION;
@@ -2603,7 +2603,7 @@ MipCmdResult defaultRelposconfiguration(C::mip_interface& device)
 
 
 
-struct refPointLeverArm : C::mip_filter_ref_point_lever_arm_command
+struct RefPointLeverArm : C::mip_filter_ref_point_lever_arm_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM;
@@ -2663,7 +2663,7 @@ MipCmdResult defaultRefpointleverarm(C::mip_interface& device)
 
 
 
-struct speedMeasurement : C::mip_filter_speed_measurement_command
+struct SpeedMeasurement : C::mip_filter_speed_measurement_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_MEASUREMENT;
@@ -2687,7 +2687,7 @@ MipCmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float ti
 
 
 
-struct speedLeverArm : C::mip_filter_speed_lever_arm_command
+struct SpeedLeverArm : C::mip_filter_speed_lever_arm_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM;
@@ -2747,7 +2747,7 @@ MipCmdResult defaultSpeedleverarm(C::mip_interface& device, uint8_t source)
 
 
 
-struct wheeledVehicleConstraintControl : C::mip_filter_wheeled_vehicle_constraint_control_command
+struct WheeledVehicleConstraintControl : C::mip_filter_wheeled_vehicle_constraint_control_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
@@ -2807,7 +2807,7 @@ MipCmdResult defaultWheeledvehicleconstraintcontrol(C::mip_interface& device)
 
 
 
-struct verticalGyroConstraintControl : C::mip_filter_vertical_gyro_constraint_control_command
+struct VerticalGyroConstraintControl : C::mip_filter_vertical_gyro_constraint_control_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
@@ -2867,7 +2867,7 @@ MipCmdResult defaultVerticalgyroconstraintcontrol(C::mip_interface& device)
 
 
 
-struct gnssAntennaCalControl : C::mip_filter_gnss_antenna_cal_control_command
+struct GnssAntennaCalControl : C::mip_filter_gnss_antenna_cal_control_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
@@ -2927,7 +2927,7 @@ MipCmdResult defaultGnssantennacalcontrol(C::mip_interface& device)
 
 
 
-struct magneticDeclinationSource : C::mip_filter_magnetic_declination_source_command
+struct MagneticDeclinationSource : C::mip_filter_magnetic_declination_source_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_DECLINATION_SOURCE;
@@ -2987,7 +2987,7 @@ MipCmdResult defaultMagneticdeclinationsource(C::mip_interface& device)
 
 
 
-struct setInitialHeading : C::mip_filter_set_initial_heading_command
+struct SetInitialHeading : C::mip_filter_set_initial_heading_command
 {
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_HEADING;

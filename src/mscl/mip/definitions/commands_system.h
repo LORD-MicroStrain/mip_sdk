@@ -99,7 +99,7 @@ mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device);
 namespace SystemCommands {
 
 
-struct commMode : C::mip_system_comm_mode_command
+struct CommMode : C::mip_system_comm_mode_command
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_SYSTEM_COM_MODE;

@@ -1851,7 +1851,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, en
 namespace TdmCommands {
 
 
-struct pollImuMessage : C::mip_3dm_poll_imu_message_command
+struct PollImuMessage : C::mip_3dm_poll_imu_message_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_IMU_MESSAGE;
@@ -1875,7 +1875,7 @@ MipCmdResult pollImuMessage(C::mip_interface& device, bool suppress_ack, uint8_t
 
 
 
-struct pollGnssMessage : C::mip_3dm_poll_gnss_message_command
+struct PollGnssMessage : C::mip_3dm_poll_gnss_message_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_GNSS_MESSAGE;
@@ -1899,7 +1899,7 @@ MipCmdResult pollGnssMessage(C::mip_interface& device, bool suppress_ack, uint8_
 
 
 
-struct pollFilterMessage : C::mip_3dm_poll_filter_message_command
+struct PollFilterMessage : C::mip_3dm_poll_filter_message_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_FILTER_MESSAGE;
@@ -1923,7 +1923,7 @@ MipCmdResult pollFilterMessage(C::mip_interface& device, bool suppress_ack, uint
 
 
 
-struct imuMessageFormat : C::mip_3dm_imu_message_format_command
+struct ImuMessageFormat : C::mip_3dm_imu_message_format_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT;
@@ -1983,7 +1983,7 @@ MipCmdResult defaultImumessageformat(C::mip_interface& device)
 
 
 
-struct gpsMessageFormat : C::mip_3dm_gps_message_format_command
+struct GpsMessageFormat : C::mip_3dm_gps_message_format_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT;
@@ -2043,7 +2043,7 @@ MipCmdResult defaultGpsmessageformat(C::mip_interface& device)
 
 
 
-struct filterMessageFormat : C::mip_3dm_filter_message_format_command
+struct FilterMessageFormat : C::mip_3dm_filter_message_format_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT;
@@ -2103,7 +2103,7 @@ MipCmdResult defaultFiltermessageformat(C::mip_interface& device)
 
 
 
-struct imuGetBaseRate : C::mip_3dm_imu_get_base_rate_command
+struct ImuGetBaseRate : C::mip_3dm_imu_get_base_rate_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_IMU_BASE_RATE;
@@ -2142,7 +2142,7 @@ MipCmdResult imuGetBaseRate(C::mip_interface& device, uint16_t& rate)
 
 
 
-struct gpsGetBaseRate : C::mip_3dm_gps_get_base_rate_command
+struct GpsGetBaseRate : C::mip_3dm_gps_get_base_rate_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_GNSS_BASE_RATE;
@@ -2181,7 +2181,7 @@ MipCmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t& rate)
 
 
 
-struct filterGetBaseRate : C::mip_3dm_filter_get_base_rate_command
+struct FilterGetBaseRate : C::mip_3dm_filter_get_base_rate_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_FILTER_BASE_RATE;
@@ -2220,7 +2220,7 @@ MipCmdResult filterGetBaseRate(C::mip_interface& device, uint16_t& rate)
 
 
 
-struct pollData : C::mip_3dm_poll_data_command
+struct PollData : C::mip_3dm_poll_data_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_DATA;
@@ -2244,7 +2244,7 @@ MipCmdResult pollData(C::mip_interface& device, uint8_t desc_set, bool suppress_
 
 
 
-struct getBaseRate : C::mip_3dm_get_base_rate_command
+struct GetBaseRate : C::mip_3dm_get_base_rate_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_BASE_RATE;
@@ -2283,7 +2283,7 @@ MipCmdResult getBaseRate(C::mip_interface& device, uint8_t desc_set, uint16_t& r
 
 
 
-struct messageFormat : C::mip_3dm_message_format_command
+struct MessageFormat : C::mip_3dm_message_format_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_MESSAGE_FORMAT;
@@ -2343,7 +2343,7 @@ MipCmdResult defaultMessageformat(C::mip_interface& device, uint8_t desc_set)
 
 
 
-struct nmeaPollData : C::mip_3dm_nmea_poll_data_command
+struct NmeaPollData : C::mip_3dm_nmea_poll_data_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_NMEA_MESSAGE;
@@ -2367,7 +2367,7 @@ MipCmdResult nmeaPollData(C::mip_interface& device, bool suppress_ack, uint8_t c
 
 
 
-struct nmeaMessageFormat : C::mip_3dm_nmea_message_format_command
+struct NmeaMessageFormat : C::mip_3dm_nmea_message_format_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT;
@@ -2427,7 +2427,7 @@ MipCmdResult defaultNmeamessageformat(C::mip_interface& device)
 
 
 
-struct deviceSettings : C::mip_3dm_device_settings_command
+struct DeviceSettings : C::mip_3dm_device_settings_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS;
@@ -2464,7 +2464,7 @@ MipCmdResult defaultDevicesettings(C::mip_interface& device)
 
 
 
-struct uartBaudrate : C::mip_3dm_uart_baudrate_command
+struct UartBaudrate : C::mip_3dm_uart_baudrate_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_UART_BAUDRATE;
@@ -2524,7 +2524,7 @@ MipCmdResult defaultUartbaudrate(C::mip_interface& device)
 
 
 
-struct factoryStreaming : C::mip_3dm_factory_streaming_command
+struct FactoryStreaming : C::mip_3dm_factory_streaming_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CONFIGURE_FACTORY_STREAMING;
@@ -2548,7 +2548,7 @@ MipCmdResult factoryStreaming(C::mip_interface& device, C::mip_3dm_factory_strea
 
 
 
-struct datastreamControl : C::mip_3dm_datastream_control_command
+struct DatastreamControl : C::mip_3dm_datastream_control_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM;
@@ -2608,7 +2608,7 @@ MipCmdResult defaultDatastreamcontrol(C::mip_interface& device, uint8_t desc_set
 
 
 
-struct gnssSbasSettings : C::mip_3dm_gnss_sbas_settings_command
+struct GnssSbasSettings : C::mip_3dm_gnss_sbas_settings_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS;
@@ -2668,7 +2668,7 @@ MipCmdResult defaultGnsssbassettings(C::mip_interface& device)
 
 
 
-struct gnssTimeAssistance : C::mip_3dm_gnss_time_assistance_command
+struct GnssTimeAssistance : C::mip_3dm_gnss_time_assistance_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE;
@@ -2716,7 +2716,7 @@ MipCmdResult readGnsstimeassistance(C::mip_interface& device, double& tow, uint1
 
 
 
-struct advLowpassFilter : C::mip_3dm_adv_lowpass_filter_command
+struct AdvLowpassFilter : C::mip_3dm_adv_lowpass_filter_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER;
@@ -2776,7 +2776,7 @@ MipCmdResult defaultAdvlowpassfilter(C::mip_interface& device, uint8_t target_de
 
 
 
-struct ppsSource : C::mip_3dm_pps_source_command
+struct PpsSource : C::mip_3dm_pps_source_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_PPS_SOURCE;
@@ -2836,7 +2836,7 @@ MipCmdResult defaultPpssource(C::mip_interface& device)
 
 
 
-struct gpioConfig : C::mip_3dm_gpio_config_command
+struct GpioConfig : C::mip_3dm_gpio_config_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GPIO_CONFIG;
@@ -2896,7 +2896,7 @@ MipCmdResult defaultGpioconfig(C::mip_interface& device, uint8_t pin)
 
 
 
-struct gpioState : C::mip_3dm_gpio_state_command
+struct GpioState : C::mip_3dm_gpio_state_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GPIO_STATE;
@@ -2944,7 +2944,7 @@ MipCmdResult readGpiostate(C::mip_interface& device, uint8_t pin, bool& state)
 
 
 
-struct odometer : C::mip_3dm_odometer_command
+struct Odometer : C::mip_3dm_odometer_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ODOMETER_CONFIG;
@@ -3004,7 +3004,7 @@ MipCmdResult defaultOdometer(C::mip_interface& device)
 
 
 
-struct getEventSupport : C::mip_3dm_get_event_support_command
+struct GetEventSupport : C::mip_3dm_get_event_support_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_SUPPORT;
@@ -3043,7 +3043,7 @@ MipCmdResult getEventSupport(C::mip_interface& device, C::mip_3dm_get_event_supp
 
 
 
-struct eventControl : C::mip_3dm_event_control_command
+struct EventControl : C::mip_3dm_event_control_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_CONTROL;
@@ -3103,7 +3103,7 @@ MipCmdResult defaultEventcontrol(C::mip_interface& device, uint8_t instance)
 
 
 
-struct getEventTriggerStatus : C::mip_3dm_get_event_trigger_status_command
+struct GetEventTriggerStatus : C::mip_3dm_get_event_trigger_status_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS;
@@ -3142,7 +3142,7 @@ MipCmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_c
 
 
 
-struct getEventActionStatus : C::mip_3dm_get_event_action_status_command
+struct GetEventActionStatus : C::mip_3dm_get_event_action_status_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS;
@@ -3181,7 +3181,7 @@ MipCmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_co
 
 
 
-struct eventTrigger : C::mip_3dm_event_trigger_command
+struct EventTrigger : C::mip_3dm_event_trigger_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG;
@@ -3241,7 +3241,7 @@ MipCmdResult defaultEventtrigger(C::mip_interface& device, uint8_t instance)
 
 
 
-struct eventAction : C::mip_3dm_event_action_command
+struct EventAction : C::mip_3dm_event_action_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG;
@@ -3301,7 +3301,7 @@ MipCmdResult defaultEventaction(C::mip_interface& device, uint8_t instance)
 
 
 
-struct accelBias : C::mip_3dm_accel_bias_command
+struct AccelBias : C::mip_3dm_accel_bias_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ACCEL_BIAS;
@@ -3361,7 +3361,7 @@ MipCmdResult defaultAccelbias(C::mip_interface& device)
 
 
 
-struct gyroBias : C::mip_3dm_gyro_bias_command
+struct GyroBias : C::mip_3dm_gyro_bias_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GYRO_BIAS;
@@ -3421,7 +3421,7 @@ MipCmdResult defaultGyrobias(C::mip_interface& device)
 
 
 
-struct captureGyroBias : C::mip_3dm_capture_gyro_bias_command
+struct CaptureGyroBias : C::mip_3dm_capture_gyro_bias_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS;
@@ -3460,7 +3460,7 @@ MipCmdResult captureGyroBias(C::mip_interface& device, uint16_t averaging_time_m
 
 
 
-struct magHardIronOffset : C::mip_3dm_mag_hard_iron_offset_command
+struct MagHardIronOffset : C::mip_3dm_mag_hard_iron_offset_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_HARD_IRON_OFFSET;
@@ -3520,7 +3520,7 @@ MipCmdResult defaultMaghardironoffset(C::mip_interface& device)
 
 
 
-struct magSoftIronMatrix : C::mip_3dm_mag_soft_iron_matrix_command
+struct MagSoftIronMatrix : C::mip_3dm_mag_soft_iron_matrix_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX;
@@ -3580,7 +3580,7 @@ MipCmdResult defaultMagsoftironmatrix(C::mip_interface& device)
 
 
 
-struct sensor2VehicleTransformEuler : C::mip_3dm_sensor_2_vehicle_transform_euler_command
+struct Sensor2VehicleTransformEuler : C::mip_3dm_sensor_2_vehicle_transform_euler_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL;
@@ -3640,7 +3640,7 @@ MipCmdResult defaultSensor2Vehicletransformeuler(C::mip_interface& device)
 
 
 
-struct sensor2VehicleTransformQuaternion : C::mip_3dm_sensor_2_vehicle_transform_quaternion_command
+struct Sensor2VehicleTransformQuaternion : C::mip_3dm_sensor_2_vehicle_transform_quaternion_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT;
@@ -3700,7 +3700,7 @@ MipCmdResult defaultSensor2Vehicletransformquaternion(C::mip_interface& device)
 
 
 
-struct sensor2VehicleTransformDcm : C::mip_3dm_sensor_2_vehicle_transform_dcm_command
+struct Sensor2VehicleTransformDcm : C::mip_3dm_sensor_2_vehicle_transform_dcm_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM;
@@ -3760,7 +3760,7 @@ MipCmdResult defaultSensor2Vehicletransformdcm(C::mip_interface& device)
 
 
 
-struct complementaryFilter : C::mip_3dm_complementary_filter_command
+struct ComplementaryFilter : C::mip_3dm_complementary_filter_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER;
@@ -3820,7 +3820,7 @@ MipCmdResult defaultComplementaryfilter(C::mip_interface& device)
 
 
 
-struct sensorRange : C::mip_3dm_sensor_range_command
+struct SensorRange : C::mip_3dm_sensor_range_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR_RANGE;
@@ -3880,7 +3880,7 @@ MipCmdResult defaultSensorrange(C::mip_interface& device, C::mip_sensor_range_ty
 
 
 
-struct calibratedSensorRanges : C::mip_3dm_calibrated_sensor_ranges_command
+struct CalibratedSensorRanges : C::mip_3dm_calibrated_sensor_ranges_command
 {
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CALIBRATED_RANGES;
