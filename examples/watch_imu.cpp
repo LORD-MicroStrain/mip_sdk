@@ -29,7 +29,7 @@ void handleAccel(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledAccel data;
 
-    size_t readBytes = mscl::C::extract_mip_sensor_scaled_accel_data(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
 
     if(readBytes == field.payloadLength())
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
@@ -39,7 +39,7 @@ void handleGyro(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledGyro data;
 
-    size_t readBytes = mscl::C::extract_mip_sensor_scaled_gyro_data(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
 
     if(readBytes == field.payloadLength())
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
@@ -49,7 +49,7 @@ void handleMag(void*, const mscl::MipField& field, mscl::Timestamp timestamp)
 {
     mscl::SensorData::ScaledMag data;
 
-    size_t readBytes = mscl::C::extract_mip_sensor_scaled_mag_data(field.payload(), field.payloadLength(), 0, &data);
+    size_t readBytes = data.extract(field.payload(), field.payloadLength(), 0, &data);
 
     if(readBytes == field.payloadLength())
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
