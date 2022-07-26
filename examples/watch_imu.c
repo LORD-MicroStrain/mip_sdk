@@ -205,7 +205,7 @@ int main(int argc, const char* argv[])
     // Get the base rate.
     volatile uint32_t now = clock();
     uint16_t base_rate;
-    result = get_data_base_rate(&device, MIP_SENSOR_DATA_DESC_SET, &base_rate);
+    result = mip_3dm_get_base_rate(&device, MIP_SENSOR_DATA_DESC_SET, &base_rate);
 
     if( result != MIP_ACK_OK )
     {
@@ -245,7 +245,7 @@ int main(int argc, const char* argv[])
     mip_interface_register_field_callback(&device, &data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
     mip_interface_register_field_callback(&device, &data_handlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
 
-    result = resume(&device);
+    result = mip_base_resume(&device);
     if( result != MIP_ACK_OK )
     {
         fprintf(stderr, "Failed to resume device: %s (%d)\n", mip_cmd_result_to_string(result), result);
@@ -262,7 +262,7 @@ int main(int argc, const char* argv[])
         mip_interface_update(&device);
     }
 
-    result = set_to_idle(&device);
+    result = mip_base_set_idle(&device);
     if( result != MIP_ACK_OK )
     {
         fprintf(stderr, "Failed to idle device: %s (%d)\n", mip_cmd_result_to_string(result), result);

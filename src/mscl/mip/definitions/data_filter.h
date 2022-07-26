@@ -16,7 +16,7 @@ struct mip_interface;
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup FILTER_DATA  FILTER DATA
+///@defgroup FILTERData  FILTER
 ///
 ///@{
 
@@ -205,7 +205,7 @@ size_t extract_mip_gnss_aid_status_flags(const uint8_t* buffer, size_t bufferSiz
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_llh_pos  LLH Position
+///@defgroup llh_pos  LLH Position
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
@@ -223,7 +223,7 @@ size_t extract_mip_filter_llh_pos_data(const uint8_t* buffer, size_t bufferSize,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ned_velocity  None
+///@defgroup ned_velocity  None
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
@@ -241,7 +241,7 @@ size_t extract_mip_filter_ned_velocity_data(const uint8_t* buffer, size_t buffer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_attitude_quaternion  None
+///@defgroup attitude_quaternion  None
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -265,7 +265,7 @@ size_t extract_mip_filter_attitude_quaternion_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_attitude_dcm  None
+///@defgroup attitude_dcm  None
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -291,7 +291,7 @@ size_t extract_mip_filter_attitude_dcm_data(const uint8_t* buffer, size_t buffer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_euler_angles  None
+///@defgroup euler_angles  None
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -310,7 +310,7 @@ size_t extract_mip_filter_euler_angles_data(const uint8_t* buffer, size_t buffer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gyro_bias  None
+///@defgroup gyro_bias  None
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
@@ -326,7 +326,7 @@ size_t extract_mip_filter_gyro_bias_data(const uint8_t* buffer, size_t bufferSiz
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_accel_bias  None
+///@defgroup accel_bias  None
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -342,7 +342,7 @@ size_t extract_mip_filter_accel_bias_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_llh_pos_uncertainty  LLH Position Uncertainty
+///@defgroup llh_pos_uncertainty  LLH Position Uncertainty
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
@@ -360,7 +360,7 @@ size_t extract_mip_filter_llh_pos_uncertainty_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ned_vel_uncertainty  NED Velocity Uncertainty
+///@defgroup ned_vel_uncertainty  NED Velocity Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
@@ -378,7 +378,7 @@ size_t extract_mip_filter_ned_vel_uncertainty_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_euler_angles_uncertainty  None
+///@defgroup euler_angles_uncertainty  None
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -397,7 +397,7 @@ size_t extract_mip_filter_euler_angles_uncertainty_data(const uint8_t* buffer, s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gyro_bias_uncertainty  None
+///@defgroup gyro_bias_uncertainty  None
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -413,7 +413,7 @@ size_t extract_mip_filter_gyro_bias_uncertainty_data(const uint8_t* buffer, size
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_accel_bias_uncertainty  None
+///@defgroup accel_bias_uncertainty  None
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -429,7 +429,7 @@ size_t extract_mip_filter_accel_bias_uncertainty_data(const uint8_t* buffer, siz
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_timestamp  None
+///@defgroup timestamp  None
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -452,7 +452,7 @@ size_t extract_mip_filter_timestamp_data(const uint8_t* buffer, size_t bufferSiz
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_status  None
+///@defgroup status  None
 /// Device-specific filter status indicators.
 ///
 ///@{
@@ -469,7 +469,7 @@ size_t extract_mip_filter_status_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_linear_accel  None
+///@defgroup linear_accel  None
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -486,7 +486,7 @@ size_t extract_mip_filter_linear_accel_data(const uint8_t* buffer, size_t buffer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gravity_vector  None
+///@defgroup gravity_vector  None
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
@@ -502,7 +502,7 @@ size_t extract_mip_filter_gravity_vector_data(const uint8_t* buffer, size_t buff
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_comp_accel  Compensated Acceleration
+///@defgroup comp_accel  Compensated Acceleration
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
@@ -518,7 +518,7 @@ size_t extract_mip_filter_comp_accel_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_comp_angular_rate  None
+///@defgroup comp_angular_rate  None
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
@@ -534,7 +534,7 @@ size_t extract_mip_filter_comp_angular_rate_data(const uint8_t* buffer, size_t b
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_quaternion_attitude_uncertainty  None
+///@defgroup quaternion_attitude_uncertainty  None
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
@@ -550,7 +550,7 @@ size_t extract_mip_filter_quaternion_attitude_uncertainty_data(const uint8_t* bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_wgs84_gravity_mag  None
+///@defgroup wgs84_gravity_mag  None
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
@@ -566,7 +566,7 @@ size_t extract_mip_filter_wgs84_gravity_mag_data(const uint8_t* buffer, size_t b
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_heading_update_state  None
+///@defgroup heading_update_state  None
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -598,7 +598,7 @@ size_t extract_mip_filter_heading_update_state_data(const uint8_t* buffer, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetic_model  None
+///@defgroup magnetic_model  None
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -619,7 +619,7 @@ size_t extract_mip_filter_magnetic_model_data(const uint8_t* buffer, size_t buff
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_accel_scale_factor  None
+///@defgroup accel_scale_factor  None
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -635,7 +635,7 @@ size_t extract_mip_filter_accel_scale_factor_data(const uint8_t* buffer, size_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_accel_scale_factor_uncertainty  None
+///@defgroup accel_scale_factor_uncertainty  None
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -651,7 +651,7 @@ size_t extract_mip_filter_accel_scale_factor_uncertainty_data(const uint8_t* buf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gyro_scale_factor  None
+///@defgroup gyro_scale_factor  None
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -667,7 +667,7 @@ size_t extract_mip_filter_gyro_scale_factor_data(const uint8_t* buffer, size_t b
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gyro_scale_factor_uncertainty  None
+///@defgroup gyro_scale_factor_uncertainty  None
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -683,7 +683,7 @@ size_t extract_mip_filter_gyro_scale_factor_uncertainty_data(const uint8_t* buff
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_mag_bias  None
+///@defgroup mag_bias  None
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -699,7 +699,7 @@ size_t extract_mip_filter_mag_bias_data(const uint8_t* buffer, size_t bufferSize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_mag_bias_uncertainty  None
+///@defgroup mag_bias_uncertainty  None
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -715,7 +715,7 @@ size_t extract_mip_filter_mag_bias_uncertainty_data(const uint8_t* buffer, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_standard_atmosphere  None
+///@defgroup standard_atmosphere  None
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -737,7 +737,7 @@ size_t extract_mip_filter_standard_atmosphere_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_pressure_altitude  None
+///@defgroup pressure_altitude  None
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -757,7 +757,7 @@ size_t extract_mip_filter_pressure_altitude_data(const uint8_t* buffer, size_t b
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_density_altitude  None
+///@defgroup density_altitude  None
 ///
 ///@{
 
@@ -772,7 +772,7 @@ size_t extract_mip_filter_density_altitude_data(const uint8_t* buffer, size_t bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_antenna_offset_correction  None
+///@defgroup antenna_offset_correction  None
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -790,7 +790,7 @@ size_t extract_mip_filter_antenna_offset_correction_data(const uint8_t* buffer, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_antenna_offset_correction_uncertainty  None
+///@defgroup antenna_offset_correction_uncertainty  None
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -806,7 +806,7 @@ size_t extract_mip_filter_antenna_offset_correction_uncertainty_data(const uint8
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_multi_antenna_offset_correction  None
+///@defgroup multi_antenna_offset_correction  None
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -825,7 +825,7 @@ size_t extract_mip_filter_multi_antenna_offset_correction_data(const uint8_t* bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_multi_antenna_offset_correction_uncertainty  None
+///@defgroup multi_antenna_offset_correction_uncertainty  None
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -842,7 +842,7 @@ size_t extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(const
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_offset  None
+///@defgroup magnetometer_offset  None
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -860,7 +860,7 @@ size_t extract_mip_filter_magnetometer_offset_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_matrix  None
+///@defgroup magnetometer_matrix  None
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -878,7 +878,7 @@ size_t extract_mip_filter_magnetometer_matrix_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_offset_uncertainty  None
+///@defgroup magnetometer_offset_uncertainty  None
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
@@ -894,7 +894,7 @@ size_t extract_mip_filter_magnetometer_offset_uncertainty_data(const uint8_t* bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_matrix_uncertainty  None
+///@defgroup magnetometer_matrix_uncertainty  None
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
@@ -910,7 +910,7 @@ size_t extract_mip_filter_magnetometer_matrix_uncertainty_data(const uint8_t* bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_covariance_matrix  None
+///@defgroup magnetometer_covariance_matrix  None
 ///
 ///@{
 
@@ -925,7 +925,7 @@ size_t extract_mip_filter_magnetometer_covariance_matrix_data(const uint8_t* buf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_magnetometer_residual_vector  None
+///@defgroup magnetometer_residual_vector  None
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
@@ -941,7 +941,7 @@ size_t extract_mip_filter_magnetometer_residual_vector_data(const uint8_t* buffe
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_clock_correction  None
+///@defgroup clock_correction  None
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
@@ -959,7 +959,7 @@ size_t extract_mip_filter_clock_correction_data(const uint8_t* buffer, size_t bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_clock_correction_uncertainty  None
+///@defgroup clock_correction_uncertainty  None
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
@@ -977,7 +977,7 @@ size_t extract_mip_filter_clock_correction_uncertainty_data(const uint8_t* buffe
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gnss_pos_aid_status  GNSS Position Aiding Status
+///@defgroup gnss_pos_aid_status  GNSS Position Aiding Status
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -995,7 +995,7 @@ size_t extract_mip_filter_gnss_pos_aid_status_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gnss_att_aid_status  GNSS Attitude Aiding Status
+///@defgroup gnss_att_aid_status  GNSS Attitude Aiding Status
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
@@ -1012,7 +1012,7 @@ size_t extract_mip_filter_gnss_att_aid_status_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_head_aid_status  None
+///@defgroup head_aid_status  None
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -1037,7 +1037,7 @@ size_t extract_mip_filter_head_aid_status_data(const uint8_t* buffer, size_t buf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_rel_pos_ned  NED Relative Position
+///@defgroup rel_pos_ned  NED Relative Position
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
@@ -1053,7 +1053,7 @@ size_t extract_mip_filter_rel_pos_ned_data(const uint8_t* buffer, size_t bufferS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ecef_pos  ECEF Position
+///@defgroup ecef_pos  ECEF Position
 /// Filter reported ECEF position
 ///
 ///@{
@@ -1069,7 +1069,7 @@ size_t extract_mip_filter_ecef_pos_data(const uint8_t* buffer, size_t bufferSize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ecef_vel  ECEF Velocity
+///@defgroup ecef_vel  ECEF Velocity
 /// Filter reported ECEF velocity
 ///
 ///@{
@@ -1085,7 +1085,7 @@ size_t extract_mip_filter_ecef_vel_data(const uint8_t* buffer, size_t bufferSize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ecef_pos_uncertainty  ECEF Position Uncertainty
+///@defgroup ecef_pos_uncertainty  ECEF Position Uncertainty
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
@@ -1101,7 +1101,7 @@ size_t extract_mip_filter_ecef_pos_uncertainty_data(const uint8_t* buffer, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_ecef_vel_uncertainty  ECEF Velocity Uncertainty
+///@defgroup ecef_vel_uncertainty  ECEF Velocity Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
@@ -1117,7 +1117,7 @@ size_t extract_mip_filter_ecef_vel_uncertainty_data(const uint8_t* buffer, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_aiding_measurement_summary  None
+///@defgroup aiding_measurement_summary  None
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
@@ -1135,7 +1135,7 @@ size_t extract_mip_filter_aiding_measurement_summary_data(const uint8_t* buffer,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_odometer_scale_factor_error  Odometer Scale Factor Error
+///@defgroup odometer_scale_factor_error  Odometer Scale Factor Error
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
@@ -1151,7 +1151,7 @@ size_t extract_mip_filter_odometer_scale_factor_error_data(const uint8_t* buffer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
+///@defgroup odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
@@ -1167,7 +1167,7 @@ size_t extract_mip_filter_odometer_scale_factor_error_uncertainty_data(const uin
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_filter_gnss_dual_antenna_status  GNSS Dual Antenna Status
+///@defgroup gnss_dual_antenna_status  GNSS Dual Antenna Status
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{
@@ -1213,1162 +1213,944 @@ size_t extract_mip_filter_gnss_dual_antenna_status_data(const uint8_t* buffer, s
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
+namespace FilterData {
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_llh_pos_data>
+struct llhPos : C::mip_filter_llh_pos_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LLH_POS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_llh_pos_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_llh_pos_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_llh_pos_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_llh_pos_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_llh_pos_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_llh_pos_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ned_velocity_data>
+struct nedVelocity : C::mip_filter_ned_velocity_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_NED_VEL;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ned_velocity_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ned_velocity_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ned_velocity_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ned_velocity_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ned_velocity_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ned_velocity_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_attitude_quaternion_data>
+struct attitudeQuaternion : C::mip_filter_attitude_quaternion_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_QUATERNION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_attitude_quaternion_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_attitude_quaternion_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_attitude_quaternion_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_attitude_quaternion_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_attitude_quaternion_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_attitude_quaternion_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_attitude_dcm_data>
+struct attitudeDcm : C::mip_filter_attitude_dcm_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_MATRIX;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_attitude_dcm_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_attitude_dcm_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_attitude_dcm_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_attitude_dcm_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_attitude_dcm_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_attitude_dcm_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_euler_angles_data>
+struct eulerAngles : C::mip_filter_euler_angles_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_euler_angles_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_euler_angles_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_euler_angles_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_euler_angles_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_euler_angles_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_euler_angles_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gyro_bias_data>
+struct gyroBias : C::mip_filter_gyro_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gyro_bias_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gyro_bias_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gyro_bias_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gyro_bias_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gyro_bias_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gyro_bias_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_accel_bias_data>
+struct accelBias : C::mip_filter_accel_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_accel_bias_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_accel_bias_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_accel_bias_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_accel_bias_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_accel_bias_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_accel_bias_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_llh_pos_uncertainty_data>
+struct llhPosUncertainty : C::mip_filter_llh_pos_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_POS_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_llh_pos_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_llh_pos_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ned_vel_uncertainty_data>
+struct nedVelUncertainty : C::mip_filter_ned_vel_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_VEL_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ned_vel_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ned_vel_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_euler_angles_uncertainty_data>
+struct eulerAnglesUncertainty : C::mip_filter_euler_angles_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_EULER;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_euler_angles_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_euler_angles_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_euler_angles_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_euler_angles_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_euler_angles_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_euler_angles_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gyro_bias_uncertainty_data>
+struct gyroBiasUncertainty : C::mip_filter_gyro_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_BIAS_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gyro_bias_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gyro_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gyro_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gyro_bias_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gyro_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gyro_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_accel_bias_uncertainty_data>
+struct accelBiasUncertainty : C::mip_filter_accel_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_BIAS_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_accel_bias_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_accel_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_accel_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_accel_bias_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_accel_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_accel_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_timestamp_data>
+struct timestamp : C::mip_filter_timestamp_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_timestamp_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_timestamp_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_timestamp_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_timestamp_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_timestamp_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_timestamp_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_status_data>
+struct status : C::mip_filter_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_FILTER_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_linear_accel_data>
+struct linearAccel : C::mip_filter_linear_accel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LINEAR_ACCELERATION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_linear_accel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_linear_accel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_linear_accel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_linear_accel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_linear_accel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_linear_accel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gravity_vector_data>
+struct gravityVector : C::mip_filter_gravity_vector_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GRAVITY_VECTOR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gravity_vector_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gravity_vector_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gravity_vector_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gravity_vector_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gravity_vector_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gravity_vector_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_comp_accel_data>
+struct compAccel : C::mip_filter_comp_accel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ACCELERATION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_comp_accel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_comp_accel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_comp_accel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_comp_accel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_comp_accel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_comp_accel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_comp_angular_rate_data>
+struct compAngularRate : C::mip_filter_comp_angular_rate_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_COMPENSATED_ANGULAR_RATE;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_comp_angular_rate_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_comp_angular_rate_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_comp_angular_rate_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_comp_angular_rate_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_comp_angular_rate_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_comp_angular_rate_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_quaternion_attitude_uncertainty_data>
+struct quaternionAttitudeUncertainty : C::mip_filter_quaternion_attitude_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ATT_UNCERTAINTY_QUATERNION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_quaternion_attitude_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_quaternion_attitude_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_quaternion_attitude_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_quaternion_attitude_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_quaternion_attitude_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_quaternion_attitude_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_wgs84_gravity_mag_data>
+struct wgs84GravityMag : C::mip_filter_wgs84_gravity_mag_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_WGS84_GRAVITY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_wgs84_gravity_mag_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_wgs84_gravity_mag_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_wgs84_gravity_mag_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_wgs84_gravity_mag_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_wgs84_gravity_mag_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_wgs84_gravity_mag_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_heading_update_state_data>
+struct headingUpdateState : C::mip_filter_heading_update_state_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEADING_UPDATE_STATE;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_heading_update_state_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_heading_update_state_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_heading_update_state_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_heading_update_state_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_heading_update_state_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_heading_update_state_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetic_model_data>
+struct magneticModel : C::mip_filter_magnetic_model_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAGNETIC_MODEL;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetic_model_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetic_model_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetic_model_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetic_model_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetic_model_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetic_model_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_accel_scale_factor_data>
+struct accelScaleFactor : C::mip_filter_accel_scale_factor_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_accel_scale_factor_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_accel_scale_factor_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_accel_scale_factor_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_accel_scale_factor_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_accel_scale_factor_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_accel_scale_factor_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_accel_scale_factor_uncertainty_data>
+struct accelScaleFactorUncertainty : C::mip_filter_accel_scale_factor_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ACCEL_SCALE_FACTOR_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_accel_scale_factor_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_accel_scale_factor_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_accel_scale_factor_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_accel_scale_factor_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_accel_scale_factor_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_accel_scale_factor_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gyro_scale_factor_data>
+struct gyroScaleFactor : C::mip_filter_gyro_scale_factor_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gyro_scale_factor_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gyro_scale_factor_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gyro_scale_factor_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gyro_scale_factor_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gyro_scale_factor_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gyro_scale_factor_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gyro_scale_factor_uncertainty_data>
+struct gyroScaleFactorUncertainty : C::mip_filter_gyro_scale_factor_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GYRO_SCALE_FACTOR_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gyro_scale_factor_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gyro_scale_factor_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gyro_scale_factor_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gyro_scale_factor_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gyro_scale_factor_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gyro_scale_factor_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_mag_bias_data>
+struct magBias : C::mip_filter_mag_bias_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_mag_bias_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_mag_bias_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_mag_bias_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_mag_bias_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_mag_bias_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_mag_bias_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_mag_bias_uncertainty_data>
+struct magBiasUncertainty : C::mip_filter_mag_bias_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_BIAS_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_mag_bias_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_mag_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_mag_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_mag_bias_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_mag_bias_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_mag_bias_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_standard_atmosphere_data>
+struct standardAtmosphere : C::mip_filter_standard_atmosphere_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_STANDARD_ATMOSPHERE_DATA;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_standard_atmosphere_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_standard_atmosphere_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_standard_atmosphere_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_standard_atmosphere_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_standard_atmosphere_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_standard_atmosphere_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_pressure_altitude_data>
+struct pressureAltitude : C::mip_filter_pressure_altitude_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_PRESSURE_ALTITUDE_DATA;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_pressure_altitude_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_pressure_altitude_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_pressure_altitude_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_pressure_altitude_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_pressure_altitude_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_pressure_altitude_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_density_altitude_data>
+struct densityAltitude : C::mip_filter_density_altitude_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_DENSITY_ALTITUDE_DATA;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_density_altitude_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_density_altitude_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_density_altitude_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_density_altitude_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_density_altitude_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_density_altitude_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_antenna_offset_correction_data>
+struct antennaOffsetCorrection : C::mip_filter_antenna_offset_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_antenna_offset_correction_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_antenna_offset_correction_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_antenna_offset_correction_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_antenna_offset_correction_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_antenna_offset_correction_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_antenna_offset_correction_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_antenna_offset_correction_uncertainty_data>
+struct antennaOffsetCorrectionUncertainty : C::mip_filter_antenna_offset_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_antenna_offset_correction_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_antenna_offset_correction_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_multi_antenna_offset_correction_data>
+struct multiAntennaOffsetCorrection : C::mip_filter_multi_antenna_offset_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_multi_antenna_offset_correction_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_multi_antenna_offset_correction_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_multi_antenna_offset_correction_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_multi_antenna_offset_correction_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_multi_antenna_offset_correction_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_multi_antenna_offset_correction_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_multi_antenna_offset_correction_uncertainty_data>
+struct multiAntennaOffsetCorrectionUncertainty : C::mip_filter_multi_antenna_offset_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_multi_antenna_offset_correction_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_multi_antenna_offset_correction_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_offset_data>
+struct magnetometerOffset : C::mip_filter_magnetometer_offset_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_offset_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_offset_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_offset_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_offset_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_offset_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_offset_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_matrix_data>
+struct magnetometerMatrix : C::mip_filter_magnetometer_matrix_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_matrix_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_matrix_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_matrix_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_matrix_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_matrix_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_matrix_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_offset_uncertainty_data>
+struct magnetometerOffsetUncertainty : C::mip_filter_magnetometer_offset_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_offset_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_offset_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_offset_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_offset_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_offset_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_offset_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_matrix_uncertainty_data>
+struct magnetometerMatrixUncertainty : C::mip_filter_magnetometer_matrix_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_matrix_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_matrix_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_matrix_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_matrix_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_matrix_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_matrix_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_covariance_matrix_data>
+struct magnetometerCovarianceMatrix : C::mip_filter_magnetometer_covariance_matrix_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_COVARIANCE;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_covariance_matrix_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_covariance_matrix_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_covariance_matrix_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_covariance_matrix_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_covariance_matrix_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_covariance_matrix_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_magnetometer_residual_vector_data>
+struct magnetometerResidualVector : C::mip_filter_magnetometer_residual_vector_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_MAG_RESIDUAL;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_magnetometer_residual_vector_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_magnetometer_residual_vector_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_magnetometer_residual_vector_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_magnetometer_residual_vector_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_magnetometer_residual_vector_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_magnetometer_residual_vector_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_clock_correction_data>
+struct clockCorrection : C::mip_filter_clock_correction_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_clock_correction_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_clock_correction_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_clock_correction_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_clock_correction_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_clock_correction_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_clock_correction_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_clock_correction_uncertainty_data>
+struct clockCorrectionUncertainty : C::mip_filter_clock_correction_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_CLOCK_CORRECTION_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_clock_correction_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_clock_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_clock_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_clock_correction_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_clock_correction_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_clock_correction_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gnss_pos_aid_status_data>
+struct gnssPosAidStatus : C::mip_filter_gnss_pos_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_POS_AID_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_pos_aid_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gnss_pos_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_pos_aid_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_pos_aid_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gnss_pos_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_pos_aid_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gnss_att_aid_status_data>
+struct gnssAttAidStatus : C::mip_filter_gnss_att_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_ATT_AID_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_att_aid_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gnss_att_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_att_aid_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_att_aid_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gnss_att_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_att_aid_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_head_aid_status_data>
+struct headAidStatus : C::mip_filter_head_aid_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_HEAD_AID_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_head_aid_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_head_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_head_aid_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_head_aid_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_head_aid_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_head_aid_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_rel_pos_ned_data>
+struct relPosNed : C::mip_filter_rel_pos_ned_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_REL_POS_NED;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_rel_pos_ned_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_rel_pos_ned_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_rel_pos_ned_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_rel_pos_ned_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_rel_pos_ned_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_rel_pos_ned_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ecef_pos_data>
+struct ecefPos : C::mip_filter_ecef_pos_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ecef_pos_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ecef_pos_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ecef_pos_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ecef_pos_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ecef_pos_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ecef_pos_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ecef_vel_data>
+struct ecefVel : C::mip_filter_ecef_vel_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ecef_vel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ecef_vel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ecef_vel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ecef_vel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ecef_vel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ecef_vel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ecef_pos_uncertainty_data>
+struct ecefPosUncertainty : C::mip_filter_ecef_pos_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_POS_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ecef_pos_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ecef_pos_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ecef_pos_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ecef_pos_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ecef_pos_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ecef_pos_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_ecef_vel_uncertainty_data>
+struct ecefVelUncertainty : C::mip_filter_ecef_vel_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ECEF_VEL_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_ecef_vel_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_ecef_vel_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_ecef_vel_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_ecef_vel_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ecef_vel_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_ecef_vel_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_aiding_measurement_summary_data>
+struct aidingMeasurementSummary : C::mip_filter_aiding_measurement_summary_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_AID_MEAS_SUMMARY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_aiding_measurement_summary_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_aiding_measurement_summary_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_aiding_measurement_summary_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_aiding_measurement_summary_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_aiding_measurement_summary_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_aiding_measurement_summary_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_odometer_scale_factor_error_data>
+struct odometerScaleFactorError : C::mip_filter_odometer_scale_factor_error_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_odometer_scale_factor_error_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_odometer_scale_factor_error_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_odometer_scale_factor_error_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_odometer_scale_factor_error_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_odometer_scale_factor_error_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_odometer_scale_factor_error_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_odometer_scale_factor_error_uncertainty_data>
+struct odometerScaleFactorErrorUncertainty : C::mip_filter_odometer_scale_factor_error_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_odometer_scale_factor_error_uncertainty_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_odometer_scale_factor_error_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_odometer_scale_factor_error_uncertainty_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_odometer_scale_factor_error_uncertainty_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_odometer_scale_factor_error_uncertainty_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_odometer_scale_factor_error_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_filter_gnss_dual_antenna_status_data>
+struct gnssDualAntennaStatus : C::mip_filter_gnss_dual_antenna_status_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_filter_gnss_dual_antenna_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_filter_gnss_dual_antenna_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_filter_gnss_dual_antenna_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_filter_gnss_dual_antenna_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_gnss_dual_antenna_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_filter_gnss_dual_antenna_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
+} // namespace FilterData
 } // namespace mscl
 #endif // __cplusplus

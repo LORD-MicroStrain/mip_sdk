@@ -4,12 +4,6 @@
 #include <chrono>
 #include <cstdio>
 
-static mscl::Timestamp getCurrentTimestamp()
-{
-    using namespace std::chrono;
-    duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
-}
-
 
 SerialMipDevice::SerialMipDevice(const std::string& portName, uint32_t baudrate) :
     MipDeviceInterface(mParseBuffer, sizeof(mParseBuffer), mscl::C::mip_timeout_from_baudrate(baudrate), 500),

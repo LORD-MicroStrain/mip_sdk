@@ -97,7 +97,7 @@ mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     
     uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_LIST_RECEIVERS, NULL, 0, MIP_REPLY_DESC_GNSS_LIST_RECEIVERS, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_LIST_RECEIVERS, NULL, 0, MIP_REPLY_DESC_GNSS_LIST_RECEIVERS, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -180,7 +180,7 @@ mip_cmd_result write_mip_gnss_signal_configuration(struct mip_interface* device,
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 1);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_WRITE);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, gps_enable);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, glonass_enable);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, galileo_enable);
@@ -189,7 +189,7 @@ mip_cmd_result write_mip_gnss_signal_configuration(struct mip_interface* device,
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, reserved[i]);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
@@ -206,11 +206,11 @@ mip_cmd_result read_mip_gnss_signal_configuration(struct mip_interface* device, 
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 2);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_READ);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -237,10 +237,10 @@ mip_cmd_result save_mip_gnss_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 3);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_SAVE);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
@@ -252,10 +252,10 @@ mip_cmd_result load_mip_gnss_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 4);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_LOAD);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the GNSS signals used by the device.
@@ -267,10 +267,10 @@ mip_cmd_result default_mip_gnss_signal_configuration(struct mip_interface* devic
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 5);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_RESET);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -323,13 +323,13 @@ mip_cmd_result write_mip_gnss_rtk_dongle_configuration(struct mip_interface* dev
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 1);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_WRITE);
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     for(unsigned int i=0; i < 3; i++)
         cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, reserved[i]);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
@@ -343,11 +343,11 @@ mip_cmd_result read_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 2);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_READ);
     assert(cmdUsed <= sizeof(buffer));
     
     uint8_t responseLength;
-    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
@@ -371,10 +371,10 @@ mip_cmd_result save_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 3);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_SAVE);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
@@ -386,10 +386,10 @@ mip_cmd_result load_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 4);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_LOAD);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 /// @brief Configure the communications with the RTK Dongle connected to the device.
@@ -401,10 +401,10 @@ mip_cmd_result default_mip_gnss_rtk_dongle_configuration(struct mip_interface* d
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, 5);;
+    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_RESET);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, cmdUsed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -433,7 +433,7 @@ size_t extract_mip_gnss_receiver_safe_mode_command(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable)
+mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -441,7 +441,7 @@ mip_cmd_result gnss_receiver_safe_mode(struct mip_interface* device, uint8_t rec
     cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, enable);
     assert(cmdUsed <= sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_GNSS_COMMAND_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, cmdUsed);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, cmdUsed);
 }
 
 

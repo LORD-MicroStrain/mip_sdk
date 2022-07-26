@@ -5,13 +5,6 @@
 #include <cstdio>
 
 
-static mscl::Timestamp getCurrentTimestamp()
-{
-    using namespace std::chrono;
-    duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
-}
-
-
 TcpMipDevice::TcpMipDevice(const std::string& hostname, uint16_t port) :
     MipDeviceInterface(mParseBuffer, sizeof(mParseBuffer), 1000, 2000),
     mSocket(hostname, port)

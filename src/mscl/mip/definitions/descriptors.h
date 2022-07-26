@@ -10,12 +10,8 @@
 #include <type_traits>
 
 namespace mscl {
-
-namespace C { struct MipInterfaceState; }
-using C::MipInterfaceState;
-
+namespace C {
 extern "C" {
-
 #endif // __cplusplus
 
 enum {
@@ -62,28 +58,29 @@ struct MipCompositeDescriptor
 #ifdef __cplusplus
 
 } // extern "C"
+} // namespace "C"
 
-using MipFunctionSelector = mip_function_selector;
-using MipDescriptorRate   = mip_descriptor_rate;
+using MipFunctionSelector = C::mip_function_selector;
+using MipDescriptorRate   = C::mip_descriptor_rate;
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Type traits struct for obtaining descriptors, etc. from field structs.
-///
-/// This struct is specialized for each defined MIP field.
-///
-template<class Field>
-struct MipFieldInfo
-{
-    static const uint8_t descriptorSet   = MIP_INVALID_DESCRIPTOR_SET;
-    static const uint8_t fieldDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
-
-    static_assert(!std::is_same<Field,Field>::value, "Missing specialization - did you forget to include the definition header?");
-
-    using Tuple = std::tuple<>;
-
-    static const bool responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;  // No response by default
-    using Response = void;
-};
+// ////////////////////////////////////////////////////////////////////////////////
+// ///@brief Type traits struct for obtaining descriptors, etc. from field structs.
+// ///
+// /// This struct is specialized for each defined MIP field.
+// ///
+// template<class Field>
+// struct MipFieldInfo
+// {
+//     static const uint8_t descriptorSet   = MIP_INVALID_DESCRIPTOR_SET;
+//     static const uint8_t fieldDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
+//
+//     static_assert(!std::is_same<Field,Field>::value, "Missing specialization - did you forget to include the definition header?");
+//
+//     using Tuple = std::tuple<>;
+//
+//     static const bool responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;  // No response by default
+//     using Response = void;
+// };
 
 } // namespace mscl
 

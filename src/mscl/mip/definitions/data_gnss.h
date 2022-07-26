@@ -16,7 +16,7 @@ struct mip_interface;
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup GNSS_DATA  GNSS DATA
+///@defgroup GNSSData  GNSS
 ///
 ///@{
 
@@ -173,7 +173,7 @@ size_t extract_mip_sbas_system(const uint8_t* buffer, size_t bufferSize, size_t 
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_llh_pos  GNSS LLH Position
+///@defgroup llh_pos  GNSS LLH Position
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -206,7 +206,7 @@ size_t extract_mip_gnss_llh_pos_data(const uint8_t* buffer, size_t bufferSize, s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_ecef_pos  GNSS ECEF Position
+///@defgroup ecef_pos  GNSS ECEF Position
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -232,7 +232,7 @@ size_t extract_mip_gnss_ecef_pos_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_ned_vel  NED Velocity
+///@defgroup ned_vel  NED Velocity
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -266,7 +266,7 @@ size_t extract_mip_gnss_ned_vel_data(const uint8_t* buffer, size_t bufferSize, s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_ecef_vel  GNSS ECEF Velocity
+///@defgroup ecef_vel  GNSS ECEF Velocity
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -292,7 +292,7 @@ size_t extract_mip_gnss_ecef_vel_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_dop  None
+///@defgroup dop  None
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -328,7 +328,7 @@ size_t extract_mip_gnss_dop_data(const uint8_t* buffer, size_t bufferSize, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_utc_time  None
+///@defgroup utc_time  None
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -359,7 +359,7 @@ size_t extract_mip_gnss_utc_time_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_gps_time  None
+///@defgroup gps_time  None
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -385,7 +385,7 @@ size_t extract_mip_gnss_gps_time_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_clock_info  None
+///@defgroup clock_info  None
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -413,7 +413,7 @@ size_t extract_mip_gnss_clock_info_data(const uint8_t* buffer, size_t bufferSize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_fix_info  None
+///@defgroup fix_info  None
 /// GNSS reported position fix type
 ///
 ///@{
@@ -462,7 +462,7 @@ size_t extract_mip_gnss_fix_info_data(const uint8_t* buffer, size_t bufferSize, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_sv_info  None
+///@defgroup sv_info  None
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -506,7 +506,7 @@ size_t extract_mip_gnss_sv_info_data(const uint8_t* buffer, size_t bufferSize, s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_hw_status  GNSS Hardware Status
+///@defgroup hw_status  GNSS Hardware Status
 /// GNSS reported hardware status
 ///
 ///@{
@@ -563,7 +563,7 @@ size_t extract_mip_gnss_hw_status_data(const uint8_t* buffer, size_t bufferSize,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_dgps_info  None
+///@defgroup dgps_info  None
 /// GNSS reported DGNSS status
 /// 
 /// Possible Base Station Status Values:
@@ -605,7 +605,7 @@ size_t extract_mip_gnss_dgps_info_data(const uint8_t* buffer, size_t bufferSize,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_dgps_channel  None
+///@defgroup dgps_channel  None
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -637,7 +637,7 @@ size_t extract_mip_gnss_dgps_channel_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_clock_info_2  None
+///@defgroup clock_info_2  None
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -669,7 +669,7 @@ size_t extract_mip_gnss_clock_info_2_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_gps_leap_seconds  None
+///@defgroup gps_leap_seconds  None
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -692,7 +692,7 @@ size_t extract_mip_gnss_gps_leap_seconds_data(const uint8_t* buffer, size_t buff
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_sbas_info  None
+///@defgroup sbas_info  None
 /// GNSS SBAS status
 ///
 ///@{
@@ -736,7 +736,7 @@ size_t extract_mip_gnss_sbas_info_data(const uint8_t* buffer, size_t bufferSize,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_sbas_correction  None
+///@defgroup sbas_correction  None
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -792,7 +792,7 @@ size_t extract_mip_gnss_sbas_correction_data(const uint8_t* buffer, size_t buffe
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_rf_error_detection  None
+///@defgroup rf_error_detection  None
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -851,7 +851,7 @@ size_t extract_mip_gnss_rf_error_detection_data(const uint8_t* buffer, size_t bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_base_station_info  None
+///@defgroup base_station_info  None
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -902,7 +902,7 @@ size_t extract_mip_gnss_base_station_info_data(const uint8_t* buffer, size_t buf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_rtk_corrections_status  None
+///@defgroup rtk_corrections_status  None
 ///
 ///@{
 
@@ -955,7 +955,7 @@ size_t extract_mip_gnss_rtk_corrections_status_data(const uint8_t* buffer, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_satellite_status  None
+///@defgroup satellite_status  None
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -993,7 +993,7 @@ size_t extract_mip_gnss_satellite_status_data(const uint8_t* buffer, size_t buff
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_raw  None
+///@defgroup raw  None
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1061,7 +1061,7 @@ size_t extract_mip_gnss_raw_data(const uint8_t* buffer, size_t bufferSize, size_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_gps_ephemeris  None
+///@defgroup gps_ephemeris  None
 /// GPS/Galileo Ephemeris Data
 ///
 ///@{
@@ -1118,7 +1118,7 @@ size_t extract_mip_gnss_gps_ephemeris_data(const uint8_t* buffer, size_t bufferS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_glo_ephemeris  Glonass Ephemeris
+///@defgroup glo_ephemeris  Glonass Ephemeris
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1165,7 +1165,7 @@ size_t extract_mip_gnss_glo_ephemeris_data(const uint8_t* buffer, size_t bufferS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_gps_iono_corr  GPS Ionospheric Correction
+///@defgroup gps_iono_corr  GPS Ionospheric Correction
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1195,7 +1195,7 @@ size_t extract_mip_gnss_gps_iono_corr_data(const uint8_t* buffer, size_t bufferS
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_gnss_galileo_iono_corr  Galileo Ionospheric Correction
+///@defgroup galileo_iono_corr  Galileo Ionospheric Correction
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{
@@ -1233,553 +1233,451 @@ size_t extract_mip_gnss_galileo_iono_corr_data(const uint8_t* buffer, size_t buf
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
+namespace GnssData {
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_llh_pos_data>
+struct llhPos : C::mip_gnss_llh_pos_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_LLH;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_llh_pos_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_llh_pos_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_llh_pos_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_llh_pos_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_llh_pos_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_llh_pos_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_ecef_pos_data>
+struct ecefPos : C::mip_gnss_ecef_pos_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_ECEF;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_ecef_pos_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_ecef_pos_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_ned_vel_data>
+struct nedVel : C::mip_gnss_ned_vel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_NED;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_ned_vel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_ned_vel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_ned_vel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_ned_vel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ned_vel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_ned_vel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_ecef_vel_data>
+struct ecefVel : C::mip_gnss_ecef_vel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_ECEF;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_ecef_vel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_ecef_vel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_dop_data>
+struct dop : C::mip_gnss_dop_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DOP;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_dop_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_dop_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_dop_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_dop_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_dop_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_dop_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_utc_time_data>
+struct utcTime : C::mip_gnss_utc_time_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_UTC_TIME;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_utc_time_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_utc_time_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_utc_time_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_utc_time_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_utc_time_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_utc_time_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_gps_time_data>
+struct gpsTime : C::mip_gnss_gps_time_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_TIME;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_gps_time_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_gps_time_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_gps_time_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_gps_time_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_gps_time_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_gps_time_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_clock_info_data>
+struct clockInfo : C::mip_gnss_clock_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_clock_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_clock_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_clock_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_clock_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_clock_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_clock_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_fix_info_data>
+struct fixInfo : C::mip_gnss_fix_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_FIX_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_fix_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_fix_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_fix_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_fix_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_fix_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_fix_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_sv_info_data>
+struct svInfo : C::mip_gnss_sv_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SV_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_sv_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_sv_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_sv_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_sv_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_sv_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_sv_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_hw_status_data>
+struct hwStatus : C::mip_gnss_hw_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_HW_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_hw_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_hw_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_hw_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_hw_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_hw_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_hw_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_dgps_info_data>
+struct dgpsInfo : C::mip_gnss_dgps_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_dgps_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_dgps_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_dgps_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_dgps_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_dgps_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_dgps_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_dgps_channel_data>
+struct dgpsChannel : C::mip_gnss_dgps_channel_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_CHANNEL_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_dgps_channel_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_dgps_channel_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_dgps_channel_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_dgps_channel_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_dgps_channel_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_dgps_channel_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_clock_info_2_data>
+struct clockInfo2 : C::mip_gnss_clock_info_2_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO_2;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_clock_info_2_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_clock_info_2_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_clock_info_2_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_clock_info_2_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_clock_info_2_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_clock_info_2_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_gps_leap_seconds_data>
+struct gpsLeapSeconds : C::mip_gnss_gps_leap_seconds_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_LEAP_SECONDS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_gps_leap_seconds_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_gps_leap_seconds_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_gps_leap_seconds_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_gps_leap_seconds_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_gps_leap_seconds_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_gps_leap_seconds_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_sbas_info_data>
+struct sbasInfo : C::mip_gnss_sbas_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_sbas_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_sbas_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_sbas_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_sbas_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_sbas_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_sbas_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_sbas_correction_data>
+struct sbasCorrection : C::mip_gnss_sbas_correction_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_CORRECTION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_sbas_correction_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_sbas_correction_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_sbas_correction_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_sbas_correction_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_sbas_correction_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_sbas_correction_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_rf_error_detection_data>
+struct rfErrorDetection : C::mip_gnss_rf_error_detection_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RF_ERROR_DETECTION;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_rf_error_detection_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_rf_error_detection_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_rf_error_detection_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_rf_error_detection_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_rf_error_detection_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_rf_error_detection_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_base_station_info_data>
+struct baseStationInfo : C::mip_gnss_base_station_info_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_BASE_STATION_INFO;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_base_station_info_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_base_station_info_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_base_station_info_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_base_station_info_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_base_station_info_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_base_station_info_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_rtk_corrections_status_data>
+struct rtkCorrectionsStatus : C::mip_gnss_rtk_corrections_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RTK_CORRECTIONS_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_rtk_corrections_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_rtk_corrections_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_rtk_corrections_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_rtk_corrections_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_rtk_corrections_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_rtk_corrections_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_satellite_status_data>
+struct satelliteStatus : C::mip_gnss_satellite_status_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SATELLITE_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_satellite_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_satellite_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_satellite_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_satellite_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_satellite_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_satellite_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_raw_data>
+struct raw : C::mip_gnss_raw_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RAW;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_raw_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_raw_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_raw_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_raw_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_raw_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_raw_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_gps_ephemeris_data>
+struct gpsEphemeris : C::mip_gnss_gps_ephemeris_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_EPHEMERIS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_gps_ephemeris_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_gps_ephemeris_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_gps_ephemeris_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_gps_ephemeris_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_gps_ephemeris_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_gps_ephemeris_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_glo_ephemeris_data>
+struct gloEphemeris : C::mip_gnss_glo_ephemeris_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_glo_ephemeris_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_glo_ephemeris_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_glo_ephemeris_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_glo_ephemeris_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_glo_ephemeris_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_glo_ephemeris_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_gps_iono_corr_data>
+struct gpsIonoCorr : C::mip_gnss_gps_iono_corr_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_IONO_CORR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_gps_iono_corr_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_gps_iono_corr_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_gps_iono_corr_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_gps_iono_corr_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_gps_iono_corr_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_gps_iono_corr_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_gnss_galileo_iono_corr_data>
+struct galileoIonoCorr : C::mip_gnss_galileo_iono_corr_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_gnss_galileo_iono_corr_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_gnss_galileo_iono_corr_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_gnss_galileo_iono_corr_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_gnss_galileo_iono_corr_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_galileo_iono_corr_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_gnss_galileo_iono_corr_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
+} // namespace GnssData
 } // namespace mscl
 #endif // __cplusplus

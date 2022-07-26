@@ -307,7 +307,7 @@ size_t extract_mip_sensor_internal_timestamp_data(const uint8_t* buffer, size_t 
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_1pps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_1pps_timestamp_data* self)
+size_t insert_mip_sensor_pps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_pps_timestamp_data* self)
 {
     offset = insert_u32(buffer, bufferSize, offset, self->seconds);
     offset = insert_u32(buffer, bufferSize, offset, self->useconds);
@@ -315,7 +315,7 @@ size_t insert_mip_sensor_1pps_timestamp_data(uint8_t* buffer, size_t bufferSize,
     return offset;
 }
 
-size_t extract_mip_sensor_1pps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_1pps_timestamp_data* self)
+size_t extract_mip_sensor_pps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_pps_timestamp_data* self)
 {
     offset = extract_u32(buffer, bufferSize, offset, &self->seconds);
     offset = extract_u32(buffer, bufferSize, offset, &self->useconds);

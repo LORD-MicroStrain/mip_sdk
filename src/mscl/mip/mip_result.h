@@ -58,17 +58,38 @@ bool mip_cmd_result_is_finished(mip_cmd_result result);
 
 struct MipCmdResult
 {
-    C::mip_cmd_result value;
+    enum
+    {
+        ERROR            = C::MIP_STATUS_ERROR,
+        CANCELLED        = C::MIP_STATUS_CANCELLED,
+        TIMEDOUT         = C::MIP_STATUS_TIMEDOUT,
+        WAITING          = C::MIP_STATUS_WAITING,
+        PENDING          = C::MIP_STATUS_PENDING,
+        NONE             = C::MIP_STATUS_NONE,
+        OK               = C::MIP_ACK_OK,
+        UNKNOWN_CMD      = C::MIP_NACK_UNKNOWN_CMD,
+        INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM,
+        INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM,
+        COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED,
+        COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT,
+    };
+
+    C::mip_cmd_result value = NONE;
 
     MipCmdResult() : value(C::MIP_ACK_OK) {}
     MipCmdResult(C::mip_cmd_result result) : value(result) {}
     MipCmdResult(C::mip_ack ack)           : value(ack)    {}
     MipCmdResult(C::mip_cmd_status status) : value(status) {}
 
-    operator bool() const { return value == C::MIP_ACK_OK; }
+    // operator bool() const { return value == C::MIP_ACK_OK; }
+    // operator void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
+    bool operator!() const { return value == C::MIP_ACK_OK; }
 
     bool operator==(MipCmdResult other) const { return value == other.value; }
+    bool operator!=(MipCmdResult other) const { return value != other.value; }
+
     bool operator==(C::mip_cmd_result other) const { return value == other; }
+    bool operator!=(C::mip_cmd_result other) const { return value != other; }
 
     const char* name() const { return C::mip_cmd_result_to_string(value); }
 

@@ -7,6 +7,9 @@
 #include <string>
 
 
+extern mscl::Timestamp getCurrentTimestamp();
+
+
 class SerialMipDevice : public mscl::MipDeviceInterface
 {
 public:

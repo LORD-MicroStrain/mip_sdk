@@ -16,7 +16,7 @@ struct mip_interface;
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
 ///@{
-///@defgroup SYSTEM_COMMAND  SYSTEM COMMAND
+///@defgroup SYSTEMCommands  SYSTEM
 ///
 ///@{
 
@@ -24,9 +24,9 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_system_command_descriptors
+enum mip_system_commands_descriptors
 {
-    MIP_SYSTEM_COMMAND_DESC_SET    = 0x7F,
+    MIP_SYSTEM_CMD_DESC_SET        = 0x7F,
     
     MIP_CMD_DESC_SYSTEM_COM_MODE   = 0x10,
     
@@ -52,7 +52,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_system_comm_mode  None
+///@defgroup comm_mode  None
 /// Advanced specialized communication modes.
 /// 
 /// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
@@ -96,15 +96,22 @@ mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device);
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
+namespace SystemCommands {
 
 
-template<>
-struct MipFieldInfo<C::mip_system_comm_mode_command>
+struct commMode : C::mip_system_comm_mode_command
 {
-    static const uint8_t descriptorSet = MIP_SYSTEM_COMMAND_DESC_SET;
+    static const uint8_t descriptorSet = MIP_SYSTEM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_SYSTEM_COM_MODE;
-    static const uint8_t responseDescriptor = MIP_REPLY_DESC_SYSTEM_COM_MODE;
-    typedef C::mip_system_comm_mode_response Response;
+    
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    {
+        return C::insert_mip_system_comm_mode_command(buffer, bufferSize, offset, this);
+    }
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    {
+        return C::extract_mip_system_comm_mode_command(buffer, bufferSize, offset, this);
+    }
     
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
@@ -113,25 +120,45 @@ struct MipFieldInfo<C::mip_system_comm_mode_command>
     static const bool canLoad = true;
     static const bool canReset = true;
     
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_comm_mode_command& self)
+    struct Response : C::mip_system_comm_mode_response
     {
-        return C::insert_mip_system_comm_mode_command(buffer, bufferSize, offset, &self);
-    }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_comm_mode_command& self)
-    {
-        return C::extract_mip_system_comm_mode_command(buffer, bufferSize, offset, &self);
-    }
-    static inline size_t insert_response(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_comm_mode_response& self)
-    {
-        return C::insert_mip_system_comm_mode_response(buffer, bufferSize, offset, &self);
-    }
-    static inline size_t extract_response(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_comm_mode_response& self)
-    {
-        return C::extract_mip_system_comm_mode_response(buffer, bufferSize, offset, &self);
-    }
+        static const uint8_t descriptorSet = MIP_SYSTEM_CMD_DESC_SET;
+        static const uint8_t fieldDescriptor = MIP_REPLY_DESC_SYSTEM_COM_MODE;
+        
+        size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+        {
+            return C::insert_mip_system_comm_mode_response(buffer, bufferSize, offset, this);
+        }
+        size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
+        {
+            return C::extract_mip_system_comm_mode_response(buffer, bufferSize, offset, this);
+        }
+    };
+    
 };
+MipCmdResult writeCommmode(C::mip_interface& device, uint8_t mode)
+{
+    return C::write_mip_system_comm_mode(&device, mode);
+}
+MipCmdResult readCommmode(C::mip_interface& device, uint8_t& mode)
+{
+    return C::read_mip_system_comm_mode(&device, &mode);
+}
+MipCmdResult saveCommmode(C::mip_interface& device)
+{
+    return C::save_mip_system_comm_mode(&device);
+}
+MipCmdResult loadCommmode(C::mip_interface& device)
+{
+    return C::load_mip_system_comm_mode(&device);
+}
+MipCmdResult defaultCommmode(C::mip_interface& device)
+{
+    return C::default_mip_system_comm_mode(&device);
+}
 
 
 
+} // namespace SystemCommands
 } // namespace mscl
 #endif // __cplusplus

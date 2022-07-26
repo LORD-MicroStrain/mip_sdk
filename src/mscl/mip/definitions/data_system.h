@@ -16,7 +16,7 @@ struct mip_interface;
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup SYSTEM_DATA  SYSTEM DATA
+///@defgroup SYSTEMData  SYSTEM
 ///
 ///@{
 
@@ -50,7 +50,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_system_built_in_test  None
+///@defgroup built_in_test  None
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -83,7 +83,7 @@ size_t extract_mip_system_built_in_test_data(const uint8_t* buffer, size_t buffe
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_system_time_sync_status  None
+///@defgroup time_sync_status  None
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
@@ -99,7 +99,7 @@ size_t extract_mip_system_time_sync_status_data(const uint8_t* buffer, size_t bu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_system_gpio_state  None
+///@defgroup gpio_state  None
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -132,7 +132,7 @@ size_t extract_mip_system_gpio_state_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_system_gpio_analog_value  None
+///@defgroup gpio_analog_value  None
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///
@@ -157,91 +157,77 @@ size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t b
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
+namespace SystemData {
 
 
-template<>
-struct MipFieldInfo<C::mip_system_built_in_test_data>
+struct builtInTest : C::mip_system_built_in_test_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_built_in_test_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_system_built_in_test_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_system_built_in_test_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_built_in_test_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_system_built_in_test_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_system_built_in_test_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_system_time_sync_status_data>
+struct timeSyncStatus : C::mip_system_time_sync_status_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_time_sync_status_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_system_time_sync_status_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_system_time_sync_status_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_time_sync_status_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_system_time_sync_status_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_system_time_sync_status_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_system_gpio_state_data>
+struct gpioState : C::mip_system_gpio_state_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_STATE;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_gpio_state_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_system_gpio_state_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_system_gpio_state_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_gpio_state_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_system_gpio_state_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_system_gpio_state_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-template<>
-struct MipFieldInfo<C::mip_system_gpio_analog_value_data>
+struct gpioAnalogValue : C::mip_system_gpio_analog_value_data
 {
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE;
-    static const uint8_t responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
     
-    static const bool hasFunctionSelector = false;
-    
-    static inline size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, const C::mip_system_gpio_analog_value_data& self)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::insert_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, &self);
+        return C::insert_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, this);
     }
-    static inline size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, C::mip_system_gpio_analog_value_data& self)
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, &self);
+        return C::extract_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
+} // namespace SystemData
 } // namespace mscl
 #endif // __cplusplus

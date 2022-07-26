@@ -67,9 +67,9 @@ int main(int argc, const char* argv[])
         // Get the base rate.
 
         uint16_t base_rate;
-        result = mscl::C::get_data_base_rate(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, &base_rate);
+        result = mscl::TdmCommands::getBaseRate(*device, mscl::MIP_SENSOR_DATA_DESC_SET, base_rate);
 
-        if( result != mscl::C::MIP_ACK_OK )
+        if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to get base rate: %s (%d)\n", result.name(), result.value), 1;
 
         // Set the message format to stream at 100 Hz.
@@ -85,13 +85,13 @@ int main(int argc, const char* argv[])
 
         result = mscl::C::write_mip_3dm_message_format(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
 
-        if( result == mscl::C::MIP_NACK_INVALID_PARAM )
+        if( result == mscl::MipCmdResult::COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
             result = mscl::C::write_mip_3dm_message_format(device.get(), mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
         }
-        if( result != mscl::C::MIP_ACK_OK )
+        if( result != mscl::MipCmdResult::OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
 
         // Register some callbacks.
@@ -104,20 +104,28 @@ int main(int argc, const char* argv[])
         device->registerFieldCallback<&handleGyro >(dataHandlers[1], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_GYRO_SCALED );
         device->registerFieldCallback<&handleMag  >(dataHandlers[2], mscl::MIP_SENSOR_DATA_DESC_SET, mscl::MIP_DATA_DESC_SENSOR_MAG_SCALED  );
 
+        // Enable the data stream and resume the device.
+
+        result = mscl::TdmCommands::writeDatastreamcontrol(*device, mscl::MIP_SENSOR_DATA_DESC_SET, true);
+        if( result != mscl::C::MIP_ACK_OK )
+            return fprintf(stderr, "Failed to enable datastream: %s (%d)\n", result.name(), result.value), 1;
+
         // Resume the device to ensure it's streaming.
 
-        result = mscl::C::resume(device.get());
+        result = mscl::BaseCommands::resume(*device);
         if( result != mscl::C::MIP_ACK_OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", result.name(), result.value), 1;
 
         // Process data for 3 seconds.
-        for(unsigned int i=0; i<30; i++)
+        const mscl::Timestamp start_time = getCurrentTimestamp();
+        do
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             device->update();
-        }
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        result = mscl::C::set_to_idle(device.get());
+        } while( getCurrentTimestamp() - start_time < 3000 );
+
+        result = mscl::BaseCommands::setIdle(*device);
         if( result != mscl::C::MIP_ACK_OK )
             return fprintf(stderr, "Failed to idle device: %s (%d)\n", result.name(), result.value), 1;
 
