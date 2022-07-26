@@ -37,6 +37,7 @@ public:
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
 
+    void receivePacket(const C::MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
 
     MipParser&              parser()   { return *static_cast<MipParser*>(C::mip_interface_parser(this)); }
     C::mip_cmd_queue&       cmdQueue() { return *C::mip_interface_cmd_queue(this); }
@@ -72,6 +73,8 @@ public:
     // virtual bool update() = 0;
     // virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
 
+    template<class Cmd, class... Args>
+    MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return runCommand(this, std::forward<Args>(args)..., additionalTime); }
 
     //
     // Data Callbacks
@@ -100,6 +103,15 @@ public:
 
     template<class Field, class Object, void (Object::*Callback)(const Field&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=Field::descriptorSet);
+
+    template<class Cmd>
+    MipCmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return runCommand(this, cmd, additionalTime); }
+
+    template<class Cmd, class... Args>
+    MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return runCommand(this, std::forward<Args>(args)..., additionalTime); }
+
+    template<class Cmd>
+    MipCmdResult runCommand(const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response, Timeout additionalTime=0) { return runCommand(this, cmd, response, additionalTime); }
 };
 
 
