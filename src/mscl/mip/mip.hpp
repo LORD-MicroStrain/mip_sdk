@@ -10,6 +10,7 @@
 #include "mip_parser.h"
 #include "mip_offsets.h"
 
+#include "definitions/descriptors.h"
 #include "../types.h"
 
 #include <assert.h>
