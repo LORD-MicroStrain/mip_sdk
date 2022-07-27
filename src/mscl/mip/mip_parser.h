@@ -40,7 +40,7 @@ struct mip_parser
     uint8_t              _result_buffer[MIP_PACKET_LENGTH_MAX]; ///<@private Buffer used to output MIP packets to the callback.
     packet_length        _expected_length;                      ///<@private Expected length of the packet currently being parsed. Keeps track of parser state. Always 1, MIP_HEADER_LENGTH, or at least MIP_PACKET_LENGTH_MAX.
     struct ByteRingState _ring;                                 ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
-    mip_packet_callback  _callback;                             ///<@private Callback called when a valid packet is parsed.
+    mip_packet_callback  _callback;                             ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*                _callback_object;                      ///<@private User-specified pointer passed to the callback function.
 };
 
@@ -65,6 +65,10 @@ void mip_parser_process_written(struct mip_parser* parser, size_t count, timesta
 
 timeout_type mip_parser_timeout(const struct mip_parser* parser);
 void mip_parser_set_timeout(struct mip_parser* parser, timeout_type timeout);
+
+void mip_parser_set_callback(struct mip_parser* parser, mip_packet_callback callback, void* callback_object);
+mip_packet_callback mip_parser_callback(const struct mip_parser* parser);
+void* mip_parser_callback_object(const struct mip_parser* parser);
 
 timestamp_type mip_parser_last_packet_timestamp(const struct mip_parser* parser);
 

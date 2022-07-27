@@ -240,10 +240,50 @@ timestamp_type mip_parser_timeout(const struct mip_parser* parser)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Changes the timeout of the MIP parser.
 ///
+///@param parser
+///@param timeout
 ///
 void mip_parser_set_timeout(struct mip_parser* parser, timestamp_type timeout)
 {
     parser->_timeout = timeout;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief mip_parser_set_callback
+///
+///@param parser
+///@param callback
+///@param callback_object
+///
+void mip_parser_set_callback(struct mip_parser* parser, mip_packet_callback callback, void* callback_object)
+{
+    parser->_callback_object = callback_object;
+    parser->_callback        = callback;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief mip_parser_callback
+///
+///@param parser
+///
+///@returns the packet callback function.
+///
+mip_packet_callback mip_parser_callback(const struct mip_parser* parser)
+{
+    return parser->_callback;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief mip_parser_callback
+///
+///@param parser
+///
+///@returns the packet callback user data pointer.
+///
+void* mip_parser_callback_object(const struct mip_parser* parser)
+{
+    return parser->_callback_object;
 }
 
 

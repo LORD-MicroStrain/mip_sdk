@@ -62,6 +62,14 @@ public:
     MipField nextAfter() const { return C::mip_field_next_after(this); }
     ///@copydoc mip_field_next
     bool next() { return C::mip_field_next(this); }
+
+    ///@brief Determines if the field contains a data field.
+    bool isData() const { return C::is_data_descriptor_set(descriptorSet()); }
+
+    ///@brief Determines if the field holds a command.
+    bool isCommand() const { return !isData() && fieldDescriptor() < 0x70; }
+    ///@brief Determines if the field holds command response data.
+    bool isResponse() const { return !isData() && fieldDescriptor() >= 0x80 && fieldDescriptor() < 0xF0; }
 };
 
 
@@ -84,11 +92,16 @@ public:
     ///@copydoc mip_packet_from_buffer
     MipPacket(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
     /// Constructs a C++ %MipPacket class from the base C object.
+    MipPacket(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
+    /// Constructs a C++ %MipPacket class from the base C object.
     MipPacket(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
 
     uint8_t      descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip_packet_descriptor_set
     PacketLength totalLength()   const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip_packet_total_length
     uint8_t      payloadLength() const { return C::mip_packet_payload_length(this); }  ///<@copydoc mip_packet_payload_length
+
+    bool isData() const { return C::mip_packet_is_data(this); }
+    bool isCommand() const { return !C::mip_packet_is_data(this); }
 
     const uint8_t* pointer() const { return C::mip_packet_pointer(this); }  ///<@copydoc mip_packet_pointer
     const uint8_t* payload() const { return C::mip_packet_payload(this); }  ///<@copydoc mip_packet_payload
@@ -125,18 +138,18 @@ public:
 #endif
 
     template<class Field>
-    bool addField(const Field& field, uint8_t fieldDescriptor = MipFieldInfo<Field>::fieldDescriptor)
+    bool addField(const Field& field, uint8_t fieldDescriptor = Field::fieldDescriptor)
     {
         uint8_t* payload;
         size_t available = allocField(fieldDescriptor, 0, &payload);
-        size_t used = MipFieldInfo<Field>::insert(payload, available, 0, field);
+        size_t used = field.insert(payload, available, 0);
         return reallocLastField(payload, used) >= 0;
     }
 
     template<class Field>
-    static MipPacket createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=MipFieldInfo<Field>::fieldDescriptor)
+    static MipPacket createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::fieldDescriptor)
     {
-        MipPacket packet(buffer, bufferSize, MipFieldInfo<Field>::descriptorSet);
+        MipPacket packet(buffer, bufferSize, Field::descriptorSet);
         packet.addField<Field>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -183,8 +196,10 @@ public:
     ///@copydoc mip_parser_init
     MipParser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const MipPacket*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
+    MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
+
     template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
-    MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout, T& object);
+    void setCallback(T& object);
 
     ///@copydoc mip_parser_reset
     void reset() { C::mip_parser_reset(this); }
@@ -228,14 +243,14 @@ public:
 ///       and is typically 100 milliseconds.
 ///
 template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
-MipParser::MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout, T& object)
+void MipParser::setCallback(T& object)
 {
-    C::PacketCallback callback = [](void* obj, const C::MipPacket* pkt, Timestamp timestamp)
+    C::mip_packet_callback callback = [](void* obj, const C::mip_packet* pkt, Timestamp timestamp)->bool
     {
-        static_cast<T*>(obj)->*Callback(MipPacket(pkt), timestamp);
+        return (static_cast<T*>(obj)->*Callback)(MipPacket(pkt), timestamp);
     };
 
-    C::MipParser_init(this, buffer, bufferSize, callback, &object, timeout);
+    C::mip_parser_set_callback(this, callback, &object);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

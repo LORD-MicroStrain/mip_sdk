@@ -12,6 +12,11 @@ namespace mscl
 using MipDispatchHandler = C::mip_dispatch_handler;
 
 
+template<class Cmd> MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime=0);
+template<class Cmd> MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0);
+template<class Cmd, class... Args> MipCmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
+
+
 class MipDeviceInterface : public C::mip_interface
 {
 public:
@@ -36,8 +41,6 @@ public:
 
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
-
-    void receivePacket(const C::MipPacket& packet, Timestamp timestamp) { C::MipInterface_receivePacket(this, &packet, timestamp); }
 
     MipParser&              parser()   { return *static_cast<MipParser*>(C::mip_interface_parser(this)); }
     C::mip_cmd_queue&       cmdQueue() { return *C::mip_interface_cmd_queue(this); }
@@ -73,9 +76,6 @@ public:
     // virtual bool update() = 0;
     // virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
 
-    template<class Cmd, class... Args>
-    MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return runCommand(this, std::forward<Args>(args)..., additionalTime); }
-
     //
     // Data Callbacks
     //
@@ -105,13 +105,13 @@ public:
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=Field::descriptorSet);
 
     template<class Cmd>
-    MipCmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return runCommand(this, cmd, additionalTime); }
+    MipCmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return mscl::runCommand(*this, cmd, additionalTime); }
 
     template<class Cmd, class... Args>
-    MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return runCommand(this, std::forward<Args>(args)..., additionalTime); }
+    MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return mscl::runCommand(*this, std::forward<Args>(args)..., additionalTime); }
 
     template<class Cmd>
-    MipCmdResult runCommand(const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response, Timeout additionalTime=0) { return runCommand(this, cmd, response, additionalTime); }
+    MipCmdResult runCommand(const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response, Timeout additionalTime=0) { return runCommand(*this, cmd, response, additionalTime); }
 };
 
 
@@ -405,25 +405,32 @@ void MipDeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, 
 
 
 template<class Cmd>
-MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd)
+MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
 {
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
     MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init(&pending, MipFieldInfo<Cmd>::descriptorSet, MipFieldInfo<Cmd>::fieldDescriptor);
+    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, additionalTime);
 
     return C::mip_interface_run_command_packet(&device, &packet, &pending);
 }
 
+template<class Cmd, class... Args>
+MipCmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime)
+{
+    Cmd cmd{std::forward<Args>(args)...};
+    return runCommand(device, cmd, additionalTime);
+}
+
 template<class Cmd>
-MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response)
+MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
 {
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
     MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_with_response(&pending, MipFieldInfo<Cmd>::descriptorSet, MipFieldInfo<Cmd>::fieldDescriptor, MipFieldInfo<Cmd>::responseDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX);
+    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::responseDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     MipCmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
