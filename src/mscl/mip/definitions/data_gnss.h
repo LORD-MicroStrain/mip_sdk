@@ -1241,7 +1241,7 @@ struct LlhPos : C::mip_gnss_llh_pos_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_LLH;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_llh_pos_data(buffer, bufferSize, offset, this);
     }
@@ -1258,7 +1258,7 @@ struct EcefPos : C::mip_gnss_ecef_pos_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_ECEF;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, this);
     }
@@ -1275,7 +1275,7 @@ struct NedVel : C::mip_gnss_ned_vel_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_NED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_ned_vel_data(buffer, bufferSize, offset, this);
     }
@@ -1292,7 +1292,7 @@ struct EcefVel : C::mip_gnss_ecef_vel_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_ECEF;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, this);
     }
@@ -1309,7 +1309,7 @@ struct Dop : C::mip_gnss_dop_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DOP;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_dop_data(buffer, bufferSize, offset, this);
     }
@@ -1326,7 +1326,7 @@ struct UtcTime : C::mip_gnss_utc_time_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_UTC_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_utc_time_data(buffer, bufferSize, offset, this);
     }
@@ -1343,7 +1343,7 @@ struct GpsTime : C::mip_gnss_gps_time_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_gps_time_data(buffer, bufferSize, offset, this);
     }
@@ -1360,7 +1360,7 @@ struct ClockInfo : C::mip_gnss_clock_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_clock_info_data(buffer, bufferSize, offset, this);
     }
@@ -1377,7 +1377,7 @@ struct FixInfo : C::mip_gnss_fix_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_FIX_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_fix_info_data(buffer, bufferSize, offset, this);
     }
@@ -1394,7 +1394,7 @@ struct SvInfo : C::mip_gnss_sv_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SV_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_sv_info_data(buffer, bufferSize, offset, this);
     }
@@ -1411,7 +1411,7 @@ struct HwStatus : C::mip_gnss_hw_status_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_HW_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_hw_status_data(buffer, bufferSize, offset, this);
     }
@@ -1428,7 +1428,7 @@ struct DgpsInfo : C::mip_gnss_dgps_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_dgps_info_data(buffer, bufferSize, offset, this);
     }
@@ -1445,7 +1445,7 @@ struct DgpsChannel : C::mip_gnss_dgps_channel_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_DGPS_CHANNEL_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_dgps_channel_data(buffer, bufferSize, offset, this);
     }
@@ -1462,7 +1462,7 @@ struct ClockInfo2 : C::mip_gnss_clock_info_2_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_CLOCK_INFO_2;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_clock_info_2_data(buffer, bufferSize, offset, this);
     }
@@ -1479,7 +1479,7 @@ struct GpsLeapSeconds : C::mip_gnss_gps_leap_seconds_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_LEAP_SECONDS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_gps_leap_seconds_data(buffer, bufferSize, offset, this);
     }
@@ -1496,7 +1496,7 @@ struct SbasInfo : C::mip_gnss_sbas_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_sbas_info_data(buffer, bufferSize, offset, this);
     }
@@ -1513,7 +1513,7 @@ struct SbasCorrection : C::mip_gnss_sbas_correction_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SBAS_CORRECTION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_sbas_correction_data(buffer, bufferSize, offset, this);
     }
@@ -1530,7 +1530,7 @@ struct RfErrorDetection : C::mip_gnss_rf_error_detection_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RF_ERROR_DETECTION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_rf_error_detection_data(buffer, bufferSize, offset, this);
     }
@@ -1547,7 +1547,7 @@ struct BaseStationInfo : C::mip_gnss_base_station_info_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_BASE_STATION_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_base_station_info_data(buffer, bufferSize, offset, this);
     }
@@ -1564,7 +1564,7 @@ struct RtkCorrectionsStatus : C::mip_gnss_rtk_corrections_status_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RTK_CORRECTIONS_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_rtk_corrections_status_data(buffer, bufferSize, offset, this);
     }
@@ -1581,7 +1581,7 @@ struct SatelliteStatus : C::mip_gnss_satellite_status_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_SATELLITE_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_satellite_status_data(buffer, bufferSize, offset, this);
     }
@@ -1598,7 +1598,7 @@ struct Raw : C::mip_gnss_raw_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_raw_data(buffer, bufferSize, offset, this);
     }
@@ -1615,7 +1615,7 @@ struct GpsEphemeris : C::mip_gnss_gps_ephemeris_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_EPHEMERIS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_gps_ephemeris_data(buffer, bufferSize, offset, this);
     }
@@ -1632,7 +1632,7 @@ struct GloEphemeris : C::mip_gnss_glo_ephemeris_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_glo_ephemeris_data(buffer, bufferSize, offset, this);
     }
@@ -1649,7 +1649,7 @@ struct GpsIonoCorr : C::mip_gnss_gps_iono_corr_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GPS_IONO_CORR;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_gps_iono_corr_data(buffer, bufferSize, offset, this);
     }
@@ -1666,7 +1666,7 @@ struct GalileoIonoCorr : C::mip_gnss_galileo_iono_corr_data
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_galileo_iono_corr_data(buffer, bufferSize, offset, this);
     }

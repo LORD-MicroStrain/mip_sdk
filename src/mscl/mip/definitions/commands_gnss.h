@@ -197,7 +197,7 @@ struct ReceiverInfo : C::mip_gnss_receiver_info_command
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_LIST_RECEIVERS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_receiver_info_command(buffer, bufferSize, offset, this);
     }
@@ -236,7 +236,7 @@ struct SignalConfiguration : C::mip_gnss_signal_configuration_command
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_signal_configuration_command(buffer, bufferSize, offset, this);
     }
@@ -296,7 +296,7 @@ struct RtkDongleConfiguration : C::mip_gnss_rtk_dongle_configuration_command
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_rtk_dongle_configuration_command(buffer, bufferSize, offset, this);
     }
@@ -356,7 +356,7 @@ struct ReceiverSafeMode : C::mip_gnss_receiver_safe_mode_command
     static const uint8_t descriptorSet = MIP_GNSS_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_gnss_receiver_safe_mode_command(buffer, bufferSize, offset, this);
     }

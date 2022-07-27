@@ -165,7 +165,7 @@ struct BuiltInTest : C::mip_system_built_in_test_data
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_system_built_in_test_data(buffer, bufferSize, offset, this);
     }
@@ -182,7 +182,7 @@ struct TimeSyncStatus : C::mip_system_time_sync_status_data
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_system_time_sync_status_data(buffer, bufferSize, offset, this);
     }
@@ -199,7 +199,7 @@ struct GpioState : C::mip_system_gpio_state_data
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_STATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_system_gpio_state_data(buffer, bufferSize, offset, this);
     }
@@ -216,7 +216,7 @@ struct GpioAnalogValue : C::mip_system_gpio_analog_value_data
     static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, this);
     }

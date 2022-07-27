@@ -104,7 +104,7 @@ struct CommMode : C::mip_system_comm_mode_command
     static const uint8_t descriptorSet = MIP_SYSTEM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_SYSTEM_COM_MODE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_system_comm_mode_command(buffer, bufferSize, offset, this);
     }

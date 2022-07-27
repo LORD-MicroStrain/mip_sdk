@@ -399,7 +399,7 @@ struct Ping : C::mip_base_ping_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_PING;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_ping_command(buffer, bufferSize, offset, this);
     }
@@ -423,7 +423,7 @@ struct SetIdle : C::mip_base_set_idle_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SET_TO_IDLE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_set_idle_command(buffer, bufferSize, offset, this);
     }
@@ -447,7 +447,7 @@ struct GetDeviceInfo : C::mip_base_get_device_info_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_INFO;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_get_device_info_command(buffer, bufferSize, offset, this);
     }
@@ -486,7 +486,7 @@ struct GetDeviceDescriptors : C::mip_base_get_device_descriptors_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_DEVICE_DESCRIPTORS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_get_device_descriptors_command(buffer, bufferSize, offset, this);
     }
@@ -525,7 +525,7 @@ struct BuiltInTest : C::mip_base_built_in_test_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_BUILT_IN_TEST;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_built_in_test_command(buffer, bufferSize, offset, this);
     }
@@ -564,7 +564,7 @@ struct Resume : C::mip_base_resume_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_RESUME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_resume_command(buffer, bufferSize, offset, this);
     }
@@ -588,7 +588,7 @@ struct GetExtendedDescriptors : C::mip_base_get_extended_descriptors_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_get_extended_descriptors_command(buffer, bufferSize, offset, this);
     }
@@ -627,7 +627,7 @@ struct ContinuousBit : C::mip_base_continuous_bit_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_CONTINUOUS_BIT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_continuous_bit_command(buffer, bufferSize, offset, this);
     }
@@ -666,7 +666,7 @@ struct CommSpeed : C::mip_base_comm_speed_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_COMM_SPEED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_comm_speed_command(buffer, bufferSize, offset, this);
     }
@@ -726,7 +726,7 @@ struct GpsTimeUpdate : C::mip_base_gps_time_update_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_gps_time_update_command(buffer, bufferSize, offset, this);
     }
@@ -755,7 +755,7 @@ struct SoftReset : C::mip_base_soft_reset_command
     static const uint8_t descriptorSet = MIP_BASE_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_BASE_SOFT_RESET;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_base_soft_reset_command(buffer, bufferSize, offset, this);
     }

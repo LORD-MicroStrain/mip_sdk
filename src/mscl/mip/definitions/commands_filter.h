@@ -1336,7 +1336,7 @@ struct Reset : C::mip_filter_reset_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RESET_FILTER;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_reset_command(buffer, bufferSize, offset, this);
     }
@@ -1360,7 +1360,7 @@ struct SetInitialAttitude : C::mip_filter_set_initial_attitude_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_ATTITUDE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_set_initial_attitude_command(buffer, bufferSize, offset, this);
     }
@@ -1384,7 +1384,7 @@ struct EstimationControl : C::mip_filter_estimation_control_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ESTIMATION_CONTROL_FLAGS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_estimation_control_command(buffer, bufferSize, offset, this);
     }
@@ -1444,7 +1444,7 @@ struct ExternalGnssUpdate : C::mip_filter_external_gnss_update_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_GNSS_UPDATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_external_gnss_update_command(buffer, bufferSize, offset, this);
     }
@@ -1468,7 +1468,7 @@ struct ExternalHeadingUpdate : C::mip_filter_external_heading_update_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_external_heading_update_command(buffer, bufferSize, offset, this);
     }
@@ -1492,7 +1492,7 @@ struct ExternalHeadingUpdateWithTime : C::mip_filter_external_heading_update_wit
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_EXTERNAL_HEADING_UPDATE_WITH_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_external_heading_update_with_time_command(buffer, bufferSize, offset, this);
     }
@@ -1516,7 +1516,7 @@ struct TareOrientation : C::mip_filter_tare_orientation_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_TARE_ORIENTATION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_tare_orientation_command(buffer, bufferSize, offset, this);
     }
@@ -1576,7 +1576,7 @@ struct SensorToVehicleRotationEuler : C::mip_filter_sensor_to_vehicle_rotation_e
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_sensor_to_vehicle_rotation_euler_command(buffer, bufferSize, offset, this);
     }
@@ -1636,7 +1636,7 @@ struct SensorToVehicleRotationDcm : C::mip_filter_sensor_to_vehicle_rotation_dcm
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(buffer, bufferSize, offset, this);
     }
@@ -1696,7 +1696,7 @@ struct SensorToVehicleRotationQuaternion : C::mip_filter_sensor_to_vehicle_rotat
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(buffer, bufferSize, offset, this);
     }
@@ -1756,7 +1756,7 @@ struct SensorToVehicleOffset : C::mip_filter_sensor_to_vehicle_offset_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_sensor_to_vehicle_offset_command(buffer, bufferSize, offset, this);
     }
@@ -1816,7 +1816,7 @@ struct AntennaOffset : C::mip_filter_antenna_offset_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANTENNA_OFFSET;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_antenna_offset_command(buffer, bufferSize, offset, this);
     }
@@ -1876,7 +1876,7 @@ struct GnssSource : C::mip_filter_gnss_source_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_GNSS_SOURCE_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_gnss_source_command(buffer, bufferSize, offset, this);
     }
@@ -1936,7 +1936,7 @@ struct HeadingSource : C::mip_filter_heading_source_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_heading_source_command(buffer, bufferSize, offset, this);
     }
@@ -1996,7 +1996,7 @@ struct AltitudeAiding : C::mip_filter_altitude_aiding_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_altitude_aiding_command(buffer, bufferSize, offset, this);
     }
@@ -2056,7 +2056,7 @@ struct AutoZupt : C::mip_filter_auto_zupt_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ZUPT_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_auto_zupt_command(buffer, bufferSize, offset, this);
     }
@@ -2116,7 +2116,7 @@ struct AutoAngularZupt : C::mip_filter_auto_angular_zupt_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ANGULAR_ZUPT_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_auto_angular_zupt_command(buffer, bufferSize, offset, this);
     }
@@ -2176,7 +2176,7 @@ struct CommandedZupt : C::mip_filter_commanded_zupt_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ZUPT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_commanded_zupt_command(buffer, bufferSize, offset, this);
     }
@@ -2200,7 +2200,7 @@ struct CommandedAngularZupt : C::mip_filter_commanded_angular_zupt_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_COMMANDED_ANGULAR_ZUPT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_commanded_angular_zupt_command(buffer, bufferSize, offset, this);
     }
@@ -2224,7 +2224,7 @@ struct AidingMeasurementEnable : C::mip_filter_aiding_measurement_enable_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_AIDING_MEASUREMENT_ENABLE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_aiding_measurement_enable_command(buffer, bufferSize, offset, this);
     }
@@ -2284,7 +2284,7 @@ struct Run : C::mip_filter_run_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_RUN;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_run_command(buffer, bufferSize, offset, this);
     }
@@ -2308,7 +2308,7 @@ struct KinematicConstraint : C::mip_filter_kinematic_constraint_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_KINEMATIC_CONSTRAINT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_kinematic_constraint_command(buffer, bufferSize, offset, this);
     }
@@ -2368,7 +2368,7 @@ struct InitializationConfiguration : C::mip_filter_initialization_configuration_
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_initialization_configuration_command(buffer, bufferSize, offset, this);
     }
@@ -2428,7 +2428,7 @@ struct AdaptiveFilterOptions : C::mip_filter_adaptive_filter_options_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_ADAPTIVE_FILTER_OPTIONS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_adaptive_filter_options_command(buffer, bufferSize, offset, this);
     }
@@ -2488,7 +2488,7 @@ struct MultiAntennaOffset : C::mip_filter_multi_antenna_offset_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_multi_antenna_offset_command(buffer, bufferSize, offset, this);
     }
@@ -2548,7 +2548,7 @@ struct RelPosConfiguration : C::mip_filter_rel_pos_configuration_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_rel_pos_configuration_command(buffer, bufferSize, offset, this);
     }
@@ -2608,7 +2608,7 @@ struct RefPointLeverArm : C::mip_filter_ref_point_lever_arm_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_ref_point_lever_arm_command(buffer, bufferSize, offset, this);
     }
@@ -2668,7 +2668,7 @@ struct SpeedMeasurement : C::mip_filter_speed_measurement_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_MEASUREMENT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_speed_measurement_command(buffer, bufferSize, offset, this);
     }
@@ -2692,7 +2692,7 @@ struct SpeedLeverArm : C::mip_filter_speed_lever_arm_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_speed_lever_arm_command(buffer, bufferSize, offset, this);
     }
@@ -2752,7 +2752,7 @@ struct WheeledVehicleConstraintControl : C::mip_filter_wheeled_vehicle_constrain
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_wheeled_vehicle_constraint_control_command(buffer, bufferSize, offset, this);
     }
@@ -2812,7 +2812,7 @@ struct VerticalGyroConstraintControl : C::mip_filter_vertical_gyro_constraint_co
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_VERTICAL_GYRO_CONSTRAINT_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_vertical_gyro_constraint_control_command(buffer, bufferSize, offset, this);
     }
@@ -2872,7 +2872,7 @@ struct GnssAntennaCalControl : C::mip_filter_gnss_antenna_cal_control_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_gnss_antenna_cal_control_command(buffer, bufferSize, offset, this);
     }
@@ -2932,7 +2932,7 @@ struct MagneticDeclinationSource : C::mip_filter_magnetic_declination_source_com
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_DECLINATION_SOURCE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_magnetic_declination_source_command(buffer, bufferSize, offset, this);
     }
@@ -2992,7 +2992,7 @@ struct SetInitialHeading : C::mip_filter_set_initial_heading_command
     static const uint8_t descriptorSet = MIP_FILTER_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_FILTER_SET_INITIAL_HEADING;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_filter_set_initial_heading_command(buffer, bufferSize, offset, this);
     }

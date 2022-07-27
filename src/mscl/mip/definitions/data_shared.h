@@ -292,7 +292,7 @@ struct EventSource : C::mip_shared_event_source_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_event_source_data(buffer, bufferSize, offset, this);
     }
@@ -309,7 +309,7 @@ struct Ticks : C::mip_shared_ticks_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_TICKS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_ticks_data(buffer, bufferSize, offset, this);
     }
@@ -326,7 +326,7 @@ struct DeltaTicks : C::mip_shared_delta_ticks_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TICKS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_delta_ticks_data(buffer, bufferSize, offset, this);
     }
@@ -343,7 +343,7 @@ struct GpsTimestamp : C::mip_shared_gps_timestamp_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_GPS_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_gps_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -360,7 +360,7 @@ struct DeltaTime : C::mip_shared_delta_time_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_delta_time_data(buffer, bufferSize, offset, this);
     }
@@ -377,7 +377,7 @@ struct ReferenceTimestamp : C::mip_shared_reference_timestamp_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REFERENCE_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_reference_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -394,7 +394,7 @@ struct ReferenceTimeDelta : C::mip_shared_reference_time_delta_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REF_TIME_DELTA;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_reference_time_delta_data(buffer, bufferSize, offset, this);
     }
@@ -411,7 +411,7 @@ struct ExternalTimestamp : C::mip_shared_external_timestamp_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EXTERNAL_TIME;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_external_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -428,7 +428,7 @@ struct ExternalTimeDelta : C::mip_shared_external_time_delta_data
     static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_SYS_TIME_DELTA;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_shared_external_time_delta_data(buffer, bufferSize, offset, this);
     }

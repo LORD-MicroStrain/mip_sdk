@@ -1856,7 +1856,7 @@ struct PollImuMessage : C::mip_3dm_poll_imu_message_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_IMU_MESSAGE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_poll_imu_message_command(buffer, bufferSize, offset, this);
     }
@@ -1880,7 +1880,7 @@ struct PollGnssMessage : C::mip_3dm_poll_gnss_message_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_GNSS_MESSAGE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_poll_gnss_message_command(buffer, bufferSize, offset, this);
     }
@@ -1904,7 +1904,7 @@ struct PollFilterMessage : C::mip_3dm_poll_filter_message_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_FILTER_MESSAGE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_poll_filter_message_command(buffer, bufferSize, offset, this);
     }
@@ -1928,7 +1928,7 @@ struct ImuMessageFormat : C::mip_3dm_imu_message_format_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_imu_message_format_command(buffer, bufferSize, offset, this);
     }
@@ -1988,7 +1988,7 @@ struct GpsMessageFormat : C::mip_3dm_gps_message_format_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gps_message_format_command(buffer, bufferSize, offset, this);
     }
@@ -2048,7 +2048,7 @@ struct FilterMessageFormat : C::mip_3dm_filter_message_format_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_filter_message_format_command(buffer, bufferSize, offset, this);
     }
@@ -2108,7 +2108,7 @@ struct ImuGetBaseRate : C::mip_3dm_imu_get_base_rate_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_IMU_BASE_RATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_imu_get_base_rate_command(buffer, bufferSize, offset, this);
     }
@@ -2147,7 +2147,7 @@ struct GpsGetBaseRate : C::mip_3dm_gps_get_base_rate_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_GNSS_BASE_RATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gps_get_base_rate_command(buffer, bufferSize, offset, this);
     }
@@ -2186,7 +2186,7 @@ struct FilterGetBaseRate : C::mip_3dm_filter_get_base_rate_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_FILTER_BASE_RATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_filter_get_base_rate_command(buffer, bufferSize, offset, this);
     }
@@ -2225,7 +2225,7 @@ struct PollData : C::mip_3dm_poll_data_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_DATA;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_poll_data_command(buffer, bufferSize, offset, this);
     }
@@ -2249,7 +2249,7 @@ struct GetBaseRate : C::mip_3dm_get_base_rate_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GET_BASE_RATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_get_base_rate_command(buffer, bufferSize, offset, this);
     }
@@ -2288,7 +2288,7 @@ struct MessageFormat : C::mip_3dm_message_format_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_MESSAGE_FORMAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_message_format_command(buffer, bufferSize, offset, this);
     }
@@ -2348,7 +2348,7 @@ struct NmeaPollData : C::mip_3dm_nmea_poll_data_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_POLL_NMEA_MESSAGE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_nmea_poll_data_command(buffer, bufferSize, offset, this);
     }
@@ -2372,7 +2372,7 @@ struct NmeaMessageFormat : C::mip_3dm_nmea_message_format_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_nmea_message_format_command(buffer, bufferSize, offset, this);
     }
@@ -2432,7 +2432,7 @@ struct DeviceSettings : C::mip_3dm_device_settings_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_device_settings_command(buffer, bufferSize, offset, this);
     }
@@ -2469,7 +2469,7 @@ struct UartBaudrate : C::mip_3dm_uart_baudrate_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_UART_BAUDRATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_uart_baudrate_command(buffer, bufferSize, offset, this);
     }
@@ -2529,7 +2529,7 @@ struct FactoryStreaming : C::mip_3dm_factory_streaming_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CONFIGURE_FACTORY_STREAMING;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_factory_streaming_command(buffer, bufferSize, offset, this);
     }
@@ -2553,7 +2553,7 @@ struct DatastreamControl : C::mip_3dm_datastream_control_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_datastream_control_command(buffer, bufferSize, offset, this);
     }
@@ -2613,7 +2613,7 @@ struct GnssSbasSettings : C::mip_3dm_gnss_sbas_settings_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gnss_sbas_settings_command(buffer, bufferSize, offset, this);
     }
@@ -2673,7 +2673,7 @@ struct GnssTimeAssistance : C::mip_3dm_gnss_time_assistance_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gnss_time_assistance_command(buffer, bufferSize, offset, this);
     }
@@ -2721,7 +2721,7 @@ struct AdvLowpassFilter : C::mip_3dm_adv_lowpass_filter_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_adv_lowpass_filter_command(buffer, bufferSize, offset, this);
     }
@@ -2781,7 +2781,7 @@ struct PpsSource : C::mip_3dm_pps_source_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_PPS_SOURCE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_pps_source_command(buffer, bufferSize, offset, this);
     }
@@ -2841,7 +2841,7 @@ struct GpioConfig : C::mip_3dm_gpio_config_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GPIO_CONFIG;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gpio_config_command(buffer, bufferSize, offset, this);
     }
@@ -2901,7 +2901,7 @@ struct GpioState : C::mip_3dm_gpio_state_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GPIO_STATE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gpio_state_command(buffer, bufferSize, offset, this);
     }
@@ -2949,7 +2949,7 @@ struct Odometer : C::mip_3dm_odometer_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ODOMETER_CONFIG;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_odometer_command(buffer, bufferSize, offset, this);
     }
@@ -3009,7 +3009,7 @@ struct GetEventSupport : C::mip_3dm_get_event_support_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_SUPPORT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_get_event_support_command(buffer, bufferSize, offset, this);
     }
@@ -3048,7 +3048,7 @@ struct EventControl : C::mip_3dm_event_control_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_CONTROL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_event_control_command(buffer, bufferSize, offset, this);
     }
@@ -3108,7 +3108,7 @@ struct GetEventTriggerStatus : C::mip_3dm_get_event_trigger_status_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_get_event_trigger_status_command(buffer, bufferSize, offset, this);
     }
@@ -3147,7 +3147,7 @@ struct GetEventActionStatus : C::mip_3dm_get_event_action_status_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_get_event_action_status_command(buffer, bufferSize, offset, this);
     }
@@ -3186,7 +3186,7 @@ struct EventTrigger : C::mip_3dm_event_trigger_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_event_trigger_command(buffer, bufferSize, offset, this);
     }
@@ -3246,7 +3246,7 @@ struct EventAction : C::mip_3dm_event_action_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_event_action_command(buffer, bufferSize, offset, this);
     }
@@ -3306,7 +3306,7 @@ struct AccelBias : C::mip_3dm_accel_bias_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_ACCEL_BIAS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_accel_bias_command(buffer, bufferSize, offset, this);
     }
@@ -3366,7 +3366,7 @@ struct GyroBias : C::mip_3dm_gyro_bias_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_GYRO_BIAS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_gyro_bias_command(buffer, bufferSize, offset, this);
     }
@@ -3426,7 +3426,7 @@ struct CaptureGyroBias : C::mip_3dm_capture_gyro_bias_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_capture_gyro_bias_command(buffer, bufferSize, offset, this);
     }
@@ -3465,7 +3465,7 @@ struct MagHardIronOffset : C::mip_3dm_mag_hard_iron_offset_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_HARD_IRON_OFFSET;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_mag_hard_iron_offset_command(buffer, bufferSize, offset, this);
     }
@@ -3525,7 +3525,7 @@ struct MagSoftIronMatrix : C::mip_3dm_mag_soft_iron_matrix_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_mag_soft_iron_matrix_command(buffer, bufferSize, offset, this);
     }
@@ -3585,7 +3585,7 @@ struct Sensor2VehicleTransformEuler : C::mip_3dm_sensor_2_vehicle_transform_eule
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_sensor_2_vehicle_transform_euler_command(buffer, bufferSize, offset, this);
     }
@@ -3645,7 +3645,7 @@ struct Sensor2VehicleTransformQuaternion : C::mip_3dm_sensor_2_vehicle_transform
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(buffer, bufferSize, offset, this);
     }
@@ -3705,7 +3705,7 @@ struct Sensor2VehicleTransformDcm : C::mip_3dm_sensor_2_vehicle_transform_dcm_co
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(buffer, bufferSize, offset, this);
     }
@@ -3765,7 +3765,7 @@ struct ComplementaryFilter : C::mip_3dm_complementary_filter_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_complementary_filter_command(buffer, bufferSize, offset, this);
     }
@@ -3825,7 +3825,7 @@ struct SensorRange : C::mip_3dm_sensor_range_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_SENSOR_RANGE;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_sensor_range_command(buffer, bufferSize, offset, this);
     }
@@ -3885,7 +3885,7 @@ struct CalibratedSensorRanges : C::mip_3dm_calibrated_sensor_ranges_command
     static const uint8_t descriptorSet = MIP_3DM_CMD_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_CMD_DESC_3DM_CALIBRATED_RANGES;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_3dm_calibrated_sensor_ranges_command(buffer, bufferSize, offset, this);
     }

@@ -511,7 +511,7 @@ struct RawAccel : C::mip_sensor_raw_accel_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_raw_accel_data(buffer, bufferSize, offset, this);
     }
@@ -528,7 +528,7 @@ struct RawGyro : C::mip_sensor_raw_gyro_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_raw_gyro_data(buffer, bufferSize, offset, this);
     }
@@ -545,7 +545,7 @@ struct RawMag : C::mip_sensor_raw_mag_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_raw_mag_data(buffer, bufferSize, offset, this);
     }
@@ -562,7 +562,7 @@ struct RawPressure : C::mip_sensor_raw_pressure_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_raw_pressure_data(buffer, bufferSize, offset, this);
     }
@@ -579,7 +579,7 @@ struct ScaledAccel : C::mip_sensor_scaled_accel_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ACCEL_SCALED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_scaled_accel_data(buffer, bufferSize, offset, this);
     }
@@ -596,7 +596,7 @@ struct ScaledGyro : C::mip_sensor_scaled_gyro_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_GYRO_SCALED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_scaled_gyro_data(buffer, bufferSize, offset, this);
     }
@@ -613,7 +613,7 @@ struct ScaledMag : C::mip_sensor_scaled_mag_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_MAG_SCALED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_scaled_mag_data(buffer, bufferSize, offset, this);
     }
@@ -630,7 +630,7 @@ struct ScaledPressure : C::mip_sensor_scaled_pressure_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_PRESSURE_SCALED;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_scaled_pressure_data(buffer, bufferSize, offset, this);
     }
@@ -647,7 +647,7 @@ struct DeltaTheta : C::mip_sensor_delta_theta_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_THETA;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_delta_theta_data(buffer, bufferSize, offset, this);
     }
@@ -664,7 +664,7 @@ struct DeltaVelocity : C::mip_sensor_delta_velocity_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_DELTA_VELOCITY;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_delta_velocity_data(buffer, bufferSize, offset, this);
     }
@@ -681,7 +681,7 @@ struct CompOrientationMatrix : C::mip_sensor_comp_orientation_matrix_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_MATRIX;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_comp_orientation_matrix_data(buffer, bufferSize, offset, this);
     }
@@ -698,7 +698,7 @@ struct CompQuaternion : C::mip_sensor_comp_quaternion_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_QUATERNION;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_comp_quaternion_data(buffer, bufferSize, offset, this);
     }
@@ -715,7 +715,7 @@ struct CompEulerAngles : C::mip_sensor_comp_euler_angles_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_EULER_ANGLES;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_comp_euler_angles_data(buffer, bufferSize, offset, this);
     }
@@ -732,7 +732,7 @@ struct CompOrientationUpdateMatrix : C::mip_sensor_comp_orientation_update_matri
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_COMP_ORIENTATION_UPDATE_MATRIX;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_comp_orientation_update_matrix_data(buffer, bufferSize, offset, this);
     }
@@ -749,7 +749,7 @@ struct OrientationRawTemp : C::mip_sensor_orientation_raw_temp_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_RAW;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_orientation_raw_temp_data(buffer, bufferSize, offset, this);
     }
@@ -766,7 +766,7 @@ struct InternalTimestamp : C::mip_sensor_internal_timestamp_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_INTERNAL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_internal_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -783,7 +783,7 @@ struct PpsTimestamp : C::mip_sensor_pps_timestamp_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_PPS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_pps_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -800,7 +800,7 @@ struct GpsTimestamp : C::mip_sensor_gps_timestamp_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_gps_timestamp_data(buffer, bufferSize, offset, this);
     }
@@ -817,7 +817,7 @@ struct TemperatureAbs : C::mip_sensor_temperature_abs_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_TEMPERATURE_ABS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_temperature_abs_data(buffer, bufferSize, offset, this);
     }
@@ -834,7 +834,7 @@ struct UpVector : C::mip_sensor_up_vector_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_ACCEL;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_up_vector_data(buffer, bufferSize, offset, this);
     }
@@ -851,7 +851,7 @@ struct NorthVector : C::mip_sensor_north_vector_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_STAB_MAG;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_north_vector_data(buffer, bufferSize, offset, this);
     }
@@ -868,7 +868,7 @@ struct OverrangeStatus : C::mip_sensor_overrange_status_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_OVERRANGE_STATUS;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_overrange_status_data(buffer, bufferSize, offset, this);
     }
@@ -885,7 +885,7 @@ struct OdometerData : C::mip_sensor_odometer_data_data
     static const uint8_t descriptorSet = MIP_SENSOR_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_SENSOR_ODOMETER;
     
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0)
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
         return C::insert_mip_sensor_odometer_data_data(buffer, bufferSize, offset, this);
     }
