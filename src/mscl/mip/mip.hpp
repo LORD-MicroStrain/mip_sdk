@@ -183,6 +183,9 @@ public:
     ///@copydoc mip_parser_init
     MipParser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const MipPacket*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
+    template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
+    MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout, T& object);
+
     ///@copydoc mip_parser_reset
     void reset() { C::mip_parser_reset(this); }
 
@@ -195,6 +198,45 @@ public:
     void setTimeout(Timeout timeout) { return C::mip_parser_set_timeout(this, timeout); }
 };
 
+
+///@brief Initializes the MIP Parser
+///
+/// This version allows binding a member function instead of a C-style callback.
+/// Example:
+///@code{.cpp}
+/// struct MyClass
+/// {
+///     void handlePacket(const MipPacket& packet, Timeout timeout);
+/// };
+///
+/// MipParser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
+///@endcode
+///
+///@tparam T Class type containing the member function to be called.
+///@tparam Callback A pointer to a member function on a T to be called when a
+///        packet is parsed.
+///
+///@param buffer
+///       Scratch space for the parser to use internally; input data is consumed
+///       and fed to this buffer. Cannot be NULL.
+///@param bufferSize
+///       Size of buffer, in bytes.
+///@param object
+///       Instance of T to call the callback.
+///@param timeout
+///       The timeout for receiving one packet. Depends on the serial baud rate
+///       and is typically 100 milliseconds.
+///
+template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
+MipParser::MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout, T& object)
+{
+    C::PacketCallback callback = [](void* obj, const C::MipPacket* pkt, Timestamp timestamp)
+    {
+        static_cast<T*>(obj)->*Callback(MipPacket(pkt), timestamp);
+    };
+
+    C::MipParser_init(this, buffer, bufferSize, callback, &object, timeout);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Read data from a source into the internal parsing buffer.
