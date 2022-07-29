@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_gnss_commands_descriptors
+enum 
 {
     MIP_GNSS_CMD_DESC_SET                        = 0x0E,
     

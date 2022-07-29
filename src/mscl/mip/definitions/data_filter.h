@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_filter_data_descriptors
+enum 
 {
     MIP_FILTER_DATA_DESC_SET                                         = 0x82,
     

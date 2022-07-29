@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_system_commands_descriptors
+enum 
 {
     MIP_SYSTEM_CMD_DESC_SET        = 0x7F,
     
@@ -82,8 +82,6 @@ size_t extract_mip_system_comm_mode_response(const uint8_t* buffer, size_t buffe
 
 mip_cmd_result write_mip_system_comm_mode(struct mip_interface* device, uint8_t mode);
 mip_cmd_result read_mip_system_comm_mode(struct mip_interface* device, uint8_t* mode);
-mip_cmd_result save_mip_system_comm_mode(struct mip_interface* device);
-mip_cmd_result load_mip_system_comm_mode(struct mip_interface* device);
 mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device);
 ///@}
 ///
@@ -116,8 +114,8 @@ struct CommMode : C::mip_system_comm_mode_command
     static const bool hasFunctionSelector = true;
     static const bool canWrite = true;
     static const bool canRead = true;
-    static const bool canSave = true;
-    static const bool canLoad = true;
+    static const bool canSave = false;
+    static const bool canLoad = false;
     static const bool canReset = true;
     
     struct Response : C::mip_system_comm_mode_response
@@ -143,14 +141,6 @@ MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
 {
     return C::read_mip_system_comm_mode(&device, &mode);
-}
-MipCmdResult saveCommMode(C::mip_interface& device)
-{
-    return C::save_mip_system_comm_mode(&device);
-}
-MipCmdResult loadCommMode(C::mip_interface& device)
-{
-    return C::load_mip_system_comm_mode(&device);
 }
 MipCmdResult defaultCommMode(C::mip_interface& device)
 {

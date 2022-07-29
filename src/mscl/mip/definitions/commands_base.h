@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_base_commands_descriptors
+enum 
 {
     MIP_BASE_CMD_DESC_SET                        = 0x01,
     

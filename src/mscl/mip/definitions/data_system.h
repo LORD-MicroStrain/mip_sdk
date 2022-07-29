@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_system_data_descriptors
+enum 
 {
     MIP_SYSTEM_DATA_DESC_SET               = 0xA0,
     

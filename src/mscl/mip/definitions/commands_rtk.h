@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_rtk_commands_descriptors
+enum 
 {
     MIP_RTK_CMD_DESC_SET                          = 0x0F,
     

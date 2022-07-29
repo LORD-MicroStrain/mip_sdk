@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_filter_commands_descriptors
+enum 
 {
     MIP_FILTER_CMD_DESC_SET                                  = 0x0D,
     

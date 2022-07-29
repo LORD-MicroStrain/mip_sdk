@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_shared_data_descriptors
+enum 
 {
     MIP_SHARED_DATA_DESC_SET            = 0xFF,
     
