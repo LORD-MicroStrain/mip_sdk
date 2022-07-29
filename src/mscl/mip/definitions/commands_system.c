@@ -123,50 +123,6 @@ mip_cmd_result read_mip_system_comm_mode(struct mip_interface* device, uint8_t* 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_system_comm_mode(struct mip_interface* device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_SAVE);
-    assert(cmdUsed <= sizeof(buffer));
-    
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
-}
-
-/// @brief Advanced specialized communication modes.
-/// 
-/// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
-/// Please see the specific device's user manual for possible modes.
-/// 
-/// This command responds with an ACK/NACK just prior to switching to the new protocol.
-/// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
-/// 
-/// @returns mip_cmd_result
-/// 
-mip_cmd_result load_mip_system_comm_mode(struct mip_interface* device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_LOAD);
-    assert(cmdUsed <= sizeof(buffer));
-    
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
-}
-
-/// @brief Advanced specialized communication modes.
-/// 
-/// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
-/// Please see the specific device's user manual for possible modes.
-/// 
-/// This command responds with an ACK/NACK just prior to switching to the new protocol.
-/// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
-/// 
-/// @returns mip_cmd_result
-/// 
 mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];

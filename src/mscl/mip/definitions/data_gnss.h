@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_gnss_data_descriptors
+enum 
 {
     MIP_GNSS_DATA_DESC_SET                    = 0x81,
     
@@ -566,15 +566,15 @@ size_t extract_mip_gnss_hw_status_data(const uint8_t* buffer, size_t bufferSize,
 ///@defgroup dgps_info  None
 /// GNSS reported DGNSS status
 /// 
-/// Possible Base Station Status Values:
-/// 0 – UDRE Scale Factor = 1.0
-/// 1 – UDRE Scale Factor = 0.75
-/// 2 – UDRE Scale Factor = 0.5
-/// 3 – UDRE Scale Factor = 0.3
-/// 4 – UDRE Scale Factor = 0.2
-/// 5 – UDRE Scale Factor = 0.1
-/// 6 – Reference Station Transmission Not Monitored
-/// 7 – Reference Station Not Working
+/// <pre>Possible Base Station Status Values:</pre>
+/// <pre>  0 – UDRE Scale Factor = 1.0</pre>
+/// <pre>  1 – UDRE Scale Factor = 0.75</pre>
+/// <pre>  2 – UDRE Scale Factor = 0.5</pre>
+/// <pre>  3 – UDRE Scale Factor = 0.3</pre>
+/// <pre>  4 – UDRE Scale Factor = 0.2</pre>
+/// <pre>  5 – UDRE Scale Factor = 0.1</pre>
+/// <pre>  6 – Reference Station Transmission Not Monitored</pre>
+/// <pre>  7 – Reference Station Not Working</pre>
 /// 
 /// (UDRE = User Differential Range Error)
 ///
@@ -742,24 +742,24 @@ size_t extract_mip_gnss_sbas_info_data(const uint8_t* buffer, size_t bufferSize,
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
 /// satellite after application of fast and long-term corrections, excluding atmospheric effects
 /// 
-/// UDREI  Variance
-/// -----------------------
-/// 0      0.0520 m^2
-/// 1      0.0924 m^2
-/// 2      0.1444 m^2
-/// 3      0.2830 m^2
-/// 4      0.4678 m^2
-/// 5      0.8315 m^2
-/// 6      1.2992 m^2
-/// 7      1.8709 m^2
-/// 8      2.5465 m^2
-/// 9      3.3260 m^2
-/// 10     5.1968 m^2
-/// 11     20.7870 m^2
-/// 12     230.9661 m^2
-/// 13     2078.695 m^2
-/// 14     "Not Monitored"
-/// 15     "Do Not Use"
+/// <pre>UDREI  Variance</pre>
+/// <pre>-----------------------</pre>
+/// <pre>0      0.0520 m^2</pre>
+/// <pre>1      0.0924 m^2</pre>
+/// <pre>2      0.1444 m^2</pre>
+/// <pre>3      0.2830 m^2</pre>
+/// <pre>4      0.4678 m^2</pre>
+/// <pre>5      0.8315 m^2</pre>
+/// <pre>6      1.2992 m^2</pre>
+/// <pre>7      1.8709 m^2</pre>
+/// <pre>8      2.5465 m^2</pre>
+/// <pre>9      3.3260 m^2</pre>
+/// <pre>10     5.1968 m^2</pre>
+/// <pre>11     20.7870 m^2</pre>
+/// <pre>12     230.9661 m^2</pre>
+/// <pre>13     2078.695 m^2</pre>
+/// <pre>14     "Not Monitored"</pre>
+/// <pre>15     "Do Not Use"</pre>
 ///
 ///@{
 

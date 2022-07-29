@@ -24,7 +24,7 @@ struct mip_interface;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_sensor_data_descriptors
+enum 
 {
     MIP_SENSOR_DATA_DESC_SET                            = 0x80,
     
