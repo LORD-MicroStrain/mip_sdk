@@ -80,6 +80,7 @@ void mip_packet_from_buffer(struct mip_packet* packet, uint8_t* buffer, size_t l
 uint8_t         mip_packet_descriptor_set(const struct mip_packet* packet);
 packet_length   mip_packet_total_length(const struct mip_packet* packet);
 uint8_t         mip_packet_payload_length(const struct mip_packet* packet);
+uint8_t*        mip_packet_buffer(struct mip_packet* packet);
 const uint8_t*  mip_packet_pointer(const struct mip_packet* packet);
 const uint8_t*  mip_packet_payload(const struct mip_packet* packet);
 uint16_t        mip_packet_checksum_value(const struct mip_packet* packet);

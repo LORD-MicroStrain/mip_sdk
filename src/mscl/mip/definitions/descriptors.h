@@ -79,14 +79,14 @@ struct MipCompositeDescriptor
 using MipFunctionSelector = C::mip_function_selector;
 using MipDescriptorRate   = C::mip_descriptor_rate;
 
-bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
-bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
-bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::is_reserved_descriptor_set(descriptorSet); }
+inline bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
+inline bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
+inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::is_reserved_descriptor_set(descriptorSet); }
 
-bool isCommandDescriptor(uint8_t fieldDescriptor)  { return C::is_command_descriptor(fieldDescriptor); }
-bool isReplyDescriptor(uint8_t fieldDescriptor)    { return C::is_reply_descriptor(fieldDescriptor); }
-bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_response_descriptor(fieldDescriptor); }
-bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
+inline bool isCommandDescriptor(uint8_t fieldDescriptor)  { return C::is_command_descriptor(fieldDescriptor); }
+inline bool isReplyDescriptor(uint8_t fieldDescriptor)    { return C::is_reply_descriptor(fieldDescriptor); }
+inline bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_response_descriptor(fieldDescriptor); }
+inline bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
 
 // ////////////////////////////////////////////////////////////////////////////////
 // ///@brief Type traits struct for obtaining descriptors, etc. from field structs.

@@ -108,6 +108,14 @@ packet_length mip_packet_total_length(const struct mip_packet* packet)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Returns a writable pointer to the data buffer.
+///
+uint8_t* mip_packet_buffer(struct mip_packet* packet)
+{
+    return packet->_buffer;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the data buffer containing the packet.
 ///
 const uint8_t* mip_packet_pointer(const struct mip_packet* packet)
@@ -448,6 +456,6 @@ void mip_packet_finalize(struct mip_packet* packet)
 ///
 void mip_packet_reset(struct mip_packet* packet, uint8_t descriptor_set)
 {
-    mip_packet_create(packet, mip_packet_pointer(packet), mip_packet_buffer_size(packet), descriptor_set);
+    mip_packet_create(packet, mip_packet_buffer(packet), mip_packet_buffer_size(packet), descriptor_set);
 }
 

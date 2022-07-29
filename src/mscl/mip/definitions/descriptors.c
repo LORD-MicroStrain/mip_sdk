@@ -107,7 +107,7 @@ bool is_reply_descriptor(uint8_t field_descriptor)
 ///
 bool is_response_descriptor(uint8_t field_descriptor)
 {
-    return field_descriptor >= MIP_RESPONSE_DESCRIPTOR_START && !is_reserved_field_descriptor(field_descriptor);
+    return field_descriptor >= MIP_RESPONSE_DESCRIPTOR_START && !is_reserved_descriptor(field_descriptor);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
