@@ -11,6 +11,7 @@
 #include "mip_offsets.h"
 #include "definitions/descriptors.h"
 
+#include "definitions/descriptors.h"
 #include "../types.h"
 
 #include <assert.h>
