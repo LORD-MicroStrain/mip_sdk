@@ -192,6 +192,21 @@ bool mip_packet_is_valid(const struct mip_packet* packet)
     return listed_checksum == computed_checksum;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Returns true if the mip packet contains no payload.
+///
+///@param packet
+///
+///@returns true if the packet has a payload length of 0.
+///
+bool mip_packet_is_empty(const struct mip_packet* packet)
+{
+    if( !mip_packet_is_sane(packet) )
+        return true;
+
+    return mip_packet_payload_length(packet) == 0;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the size of the buffer backing the MIP packet.
@@ -421,3 +436,18 @@ void mip_packet_finalize(struct mip_packet* packet)
     packet->_buffer[length+0] = checksum >> 8;
     packet->_buffer[length+1] = checksum & 0xFF;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Reinitialize the packet with the given descriptor set.
+///
+/// This clears out all of the fields but keeps the same buffer.
+///
+///@param packet
+///@param descriptor_set New descriptor set.
+///
+void mip_packet_reset(struct mip_packet* packet, uint8_t descriptor_set)
+{
+    mip_packet_create(packet, mip_packet_pointer(packet), mip_packet_buffer_size(packet), descriptor_set);
+}
+

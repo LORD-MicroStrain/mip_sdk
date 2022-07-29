@@ -15,11 +15,27 @@ extern "C" {
 #endif // __cplusplus
 
 enum {
-    MIP_INVALID_DESCRIPTOR_SET   = 0x00,
-    MIP_INVALID_FIELD_DESCRIPTOR = 0x00,
+    MIP_INVALID_DESCRIPTOR_SET        = 0x00,
+    MIP_DATA_DESCRIPTOR_SET_START     = 0x80,
+    MIP_RESERVED_DESCRIPTOR_SET_START = 0xF0,
+
+    MIP_INVALID_FIELD_DESCRIPTOR  = 0x00,
+    MIP_REPLY_DESCRIPTOR          = 0xF1,
+    MIP_RESERVED_DESCRIPTOR_START = 0xF0,
+    MIP_RESPONSE_DESCRIPTOR_START = 0x80,
 };
 
-bool is_data_descriptor_set(uint8_t descriptorSet);
+bool is_valid_descriptor_set(uint8_t descriptor_set);
+bool is_data_descriptor_set(uint8_t descriptor_set);
+bool is_cmd_descriptor_set(uint8_t descriptor_set);
+bool is_reserved_descriptor_set(uint8_t descriptor_set);
+
+bool is_valid_descriptor(uint8_t field_descriptor);
+bool is_command_descriptor(uint8_t field_descriptor);
+bool is_reply_descriptor(uint8_t field_descriptor);
+bool is_response_descriptor(uint8_t field_descriptor);
+bool is_reserved_descriptor(uint8_t field_descriptor);
+
 
 enum mip_function_selector
 {
@@ -62,6 +78,15 @@ struct MipCompositeDescriptor
 
 using MipFunctionSelector = C::mip_function_selector;
 using MipDescriptorRate   = C::mip_descriptor_rate;
+
+bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
+bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
+bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::is_reserved_descriptor_set(descriptorSet); }
+
+bool isCommandDescriptor(uint8_t fieldDescriptor)  { return C::is_command_descriptor(fieldDescriptor); }
+bool isReplyDescriptor(uint8_t fieldDescriptor)    { return C::is_reply_descriptor(fieldDescriptor); }
+bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_response_descriptor(fieldDescriptor); }
+bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
 
 // ////////////////////////////////////////////////////////////////////////////////
 // ///@brief Type traits struct for obtaining descriptors, etc. from field structs.

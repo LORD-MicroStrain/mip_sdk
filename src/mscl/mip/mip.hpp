@@ -9,6 +9,7 @@
 #include "mip_field.h"
 #include "mip_parser.h"
 #include "mip_offsets.h"
+#include "definitions/descriptors.h"
 
 #include "definitions/descriptors.h"
 #include "../types.h"
@@ -56,6 +57,11 @@ public:
     ///@copydoc mip_field_payload
     const uint8_t* payload() const { return C::mip_field_payload(this); }
 
+    ///@brief Index the payload at the given location.
+    ///@param index
+    ///@returns payload byte
+    uint8_t payload(unsigned int index) const { return payload()[index]; }
+
     ///@copydoc mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
 
@@ -64,13 +70,21 @@ public:
     ///@copydoc mip_field_next
     bool next() { return C::mip_field_next(this); }
 
+
+    ///@brief Determines if the field is from a command descriptor set (a command, reply, or response field).
+    bool isCommandSet() const { return isCommandDescriptorSet(descriptorSet()); }
+
     ///@brief Determines if the field contains a data field.
-    bool isData() const { return C::is_data_descriptor_set(descriptorSet()); }
+    bool isData() const { return isDataDescriptorSet(descriptorSet()); }
 
     ///@brief Determines if the field holds a command.
-    bool isCommand() const { return !isData() && fieldDescriptor() < 0x70; }
+    bool isCommand() const { return isCommandSet() && isCommandDescriptor(fieldDescriptor()); }
+
     ///@brief Determines if the field holds command response data.
-    bool isResponse() const { return !isData() && fieldDescriptor() >= 0x80 && fieldDescriptor() < 0xF0; }
+    bool isResponse() const { return isCommandSet() && isResponseDescriptor(fieldDescriptor()); }
+
+    ///@brief Determines if the field holds an ack/nack reply code.
+    bool isReply() const { return isCommandSet() && isReplyDescriptor(fieldDescriptor()) && payloadLength()==2; }
 };
 
 
@@ -112,6 +126,7 @@ public:
 
     bool isSane() const { return C::mip_packet_is_sane(this); }    ///<@copydoc mip_packet_is_sane
     bool isValid() const { return C::mip_packet_is_valid(this); }  ///<@copydoc mip_packet_is_valid
+    bool isEmpty() const { return C::mip_packet_is_empty(this); }  ///<@copydoc mip_packet_is_empty
 
     PacketLength bufferSize() const { return C::mip_packet_buffer_size(this); }            ///<@copydoc mip_packet_buffer_size
     RemainingCount remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip_packet_remaining_space
@@ -122,6 +137,9 @@ public:
     RemainingCount cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip_packet_cancel_last_field
 
     void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip_packet_finalize
+
+    void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); }  ///<@copydoc mip_packet_reset
+    void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
     /// Returns the first field in the packet.
     MipField firstField() const { return MipField(C::mip_field_from_packet(this)); }

@@ -59,6 +59,8 @@ remaining_count mip_packet_cancel_last_field(struct mip_packet* packet, uint8_t*
 
 void mip_packet_finalize(struct mip_packet* packet);
 
+void mip_packet_reset(struct mip_packet* packet, uint8_t descriptor_set);
+
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup Accessors  Accessors - Functions for accessing information about an existing MIP packet.
@@ -86,6 +88,7 @@ uint16_t        mip_packet_compute_checksum(const struct mip_packet* packet);
 
 bool            mip_packet_is_sane(const struct mip_packet* packet);
 bool            mip_packet_is_valid(const struct mip_packet* packet);
+bool            mip_packet_is_empty(const struct mip_packet* packet);
 
 packet_length   mip_packet_buffer_size(const struct mip_packet* packet);
 remaining_count mip_packet_remaining_space(const struct mip_packet* packet);
