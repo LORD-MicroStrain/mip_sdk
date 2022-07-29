@@ -103,9 +103,11 @@ endif()
 # TESTING
 #
 
+# CTest defines this option to ON by default, so override it to OFF here.
+option(BUILD_TESTING "Build the testing tree." OFF)
+
 include(CTest)
 
-# CTest adds a BUILD_TESTING option.
 if(BUILD_TESTING)
     add_subdirectory("test")
 endif()
