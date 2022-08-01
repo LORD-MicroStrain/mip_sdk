@@ -1330,6 +1330,8 @@ mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, floa
 } // namespace C
 namespace FilterCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_FILTER_CMD_DESC_SET;
+
 
 struct Reset : C::mip_filter_reset_command
 {

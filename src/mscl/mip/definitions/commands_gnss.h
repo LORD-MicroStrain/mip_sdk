@@ -191,6 +191,8 @@ mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t
 } // namespace C
 namespace GnssCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_GNSS_CMD_DESC_SET;
+
 
 struct ReceiverInfo : C::mip_gnss_receiver_info_command
 {
