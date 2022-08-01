@@ -279,7 +279,7 @@ void MipDeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler,
         (obj->*Callback)(MipField(*field), timestamp);
     };
 
-    registerFieldCallback(handler, descriptorSet, fieldDescriptor, &callback, object);
+    registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
 }
 
 
@@ -338,7 +338,7 @@ void MipDeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, 
         Callback(context, data, timestamp);
     };
 
-    registerFieldCallback(handler, descriptorSet, Field::fieldDescriptor, userData);
+    registerFieldCallback(handler, descriptorSet, Field::fieldDescriptor, callback, userData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
