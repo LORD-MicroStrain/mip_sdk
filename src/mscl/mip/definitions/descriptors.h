@@ -76,7 +76,23 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-using C::mip_function_selector;
+struct MipFunctionSelector
+{
+    static const C::mip_function_selector WRITE = C::MIP_FUNCTION_WRITE;
+    static const C::mip_function_selector READ  = C::MIP_FUNCTION_READ;
+    static const C::mip_function_selector SAVE  = C::MIP_FUNCTION_SAVE;
+    static const C::mip_function_selector LOAD  = C::MIP_FUNCTION_LOAD;
+    static const C::mip_function_selector RESET = C::MIP_FUNCTION_RESET;
+
+    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &value); }
+
+    operator C::mip_function_selector() const { return value; }
+    operator C::mip_function_selector&() { return value; }
+
+    C::mip_function_selector value;
+};
+
 using MipDescriptorRate = C::mip_descriptor_rate;
 
 inline bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
