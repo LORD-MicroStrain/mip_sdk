@@ -76,7 +76,15 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-using MipFunctionSelector = C::mip_function_selector;
+enum MipFunctionSelector : uint8_t
+{
+    WRITE = C::MIP_FUNCTION_WRITE,
+    READ  = C::MIP_FUNCTION_READ,
+    SAVE  = C::MIP_FUNCTION_SAVE,
+    LOAD  = C::MIP_FUNCTION_LOAD,
+    RESET = C::MIP_FUNCTION_RESET,
+};
+
 using MipDescriptorRate   = C::mip_descriptor_rate;
 
 inline bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
