@@ -1850,6 +1850,8 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, en
 } // namespace C
 namespace TdmCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_3DM_CMD_DESC_SET;
+
 
 struct PollImuMessage : C::mip_3dm_poll_imu_message_command
 {

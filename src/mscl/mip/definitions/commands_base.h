@@ -393,6 +393,8 @@ mip_cmd_result mip_base_soft_reset(struct mip_interface* device);
 } // namespace C
 namespace BaseCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_BASE_CMD_DESC_SET;
+
 
 struct Ping : C::mip_base_ping_command
 {

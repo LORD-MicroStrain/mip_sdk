@@ -1235,6 +1235,8 @@ size_t extract_mip_gnss_galileo_iono_corr_data(const uint8_t* buffer, size_t buf
 } // namespace C
 namespace GnssData {
 
+static const uint8_t DESCRIPTOR_SET = MIP_GNSS_DATA_DESC_SET;
+
 
 struct LlhPos : C::mip_gnss_llh_pos_data
 {

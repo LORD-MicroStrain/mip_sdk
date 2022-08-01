@@ -286,6 +286,8 @@ size_t extract_mip_shared_external_time_delta_data(const uint8_t* buffer, size_t
 } // namespace C
 namespace SharedData {
 
+static const uint8_t DESCRIPTOR_SET = MIP_SHARED_DATA_DESC_SET;
+
 
 struct EventSource : C::mip_shared_event_source_data
 {
