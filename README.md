@@ -8,23 +8,30 @@ Features
 --------
 
 * Send commands using a single function
-* MIP packet creation
-* MIP packet parsing and field iteration
-* Data field deserialization
 * Suitable for bare-metal microcontrollers
-  * Small code size and memory footprint
+  * Minimal code size and memory footprint
   * No dynamic memory allocation
   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
+  * FindMsclEmbedded.cmake is included for CMake-based projects
 * Can be used to parse offline binary files
-* C and C++ interfaces
+* C API for those who can't use C++
+* C++ API for safety, flexibility, and convenience.
 
+* Advanced Features
+  * MIP packet creation
+  * MIP packet parsing and field iteration
+  * Data field deserialization
 
 Examples
 --------
 
-* Get device information - queries the device strings and prints them to stdout.
-* Watch IMU - Configures the IMU for streaming and prints the data to stdout.
+* Get device information [C++] - queries the device strings and prints them to stdout.
+* Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
+* Product-specific examples:
+  * GQ7 setup [] - Configures the device for typical usage.
+  * CV7 setup [] - Configures the device for typical usage.
+  * CV7 event [] - Configures a data trigger to output a message.
 
 You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
 
@@ -88,3 +95,67 @@ Todo
 ### Compilation for Embedded MCU
 
 Todo
+
+
+Implementation Notes
+--------------------
+
+### User-Implemented Functions
+
+There are two C functions which the user must implement to use this library.
+
+The first, `mip_interface_user_update()`, must fetch raw data bytes from the connected MIP device. Typically this means reading from
+a serial port or TCP socket. Once the data is read, it should be passed to `mip_interface_receive_bytes()` along with the associated
+timestamp.
+
+The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
+
+If compiling your application for C++, declare them as `extern "C"` to avoid linking problems.
+
+If using the `MipDeviceInterface` class, you should instead subclass it and override the pure virtual `update` and `sendToDevice`
+methods. The `MipDeviceInterface` class implements the C functions itself.
+
+### Command Results (mip_cmd_result / MipCmdResult)
+
+Command results are divided into two categories:
+* Reply codes are returned by the device, e.g.:
+  * ACK / OK
+  * Invalid parameter
+  * Unknown command
+* Status codes are set by this library, e.g.:
+  * General ERROR
+  * TIMEDOUT
+  * Other statuses are used while the command is still in process
+
+### Timestamps and Timeouts
+
+Timestamps (`timestamp_type` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
+are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not intended to be
+a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the connected MIP device.
+In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
+
+Because different applications may keep track of time differently (especially on embedded platforms), it is up to the user to provide
+the current time whenever data is received from the device. On a PC, this might come from the poxis `time()` function or from the
+`std::chrono` library. On ARM systems, it is often derived from the Systick timer.
+
+By default, timestamps are `typedef`'d to `uint32_t` and are typically in milliseconds. The value is allowed to wrap around as long
+as the time between wraparounds is longer than twice the longest timeout needed. If higher precision is needed or wraparound can't
+be tolerated by your application, define it to `uint64_t` instead.
+
+Timeouts for commands are broken down into two parts.
+* A "base reply timeout" applies to all commands. This is useful to compensate for communication latency, such as over a TCP socket.
+* "Additional time" which applies per command, because some commands may take longer to complete.
+
+Currently, only the C++ api offers a way to set the additional time parameter.
+
+### C and C++ APIs
+
+The C++ API is implemented on top of the C API to provide additional features:
+* Object-oriented interfaces
+* Improved type safety and sanity checking
+* Better clarity / reduced verbosity (e.g. with `using namespace mscl`)
+
+The C++ API uses `TitleCase` for typenames and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
+everything. This makes it easy to tell which is being used when looking at the examples.
+
+The C API can be accessed directly from C++ via the `mscl::C` namesace.
