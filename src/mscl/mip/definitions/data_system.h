@@ -159,6 +159,8 @@ size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t b
 } // namespace C
 namespace SystemData {
 
+static const uint8_t DESCRIPTOR_SET = MIP_SYSTEM_DATA_DESC_SET;
+
 
 struct BuiltInTest : C::mip_system_built_in_test_data
 {

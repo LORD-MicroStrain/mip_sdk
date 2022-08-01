@@ -505,6 +505,8 @@ size_t extract_mip_sensor_odometer_data_data(const uint8_t* buffer, size_t buffe
 } // namespace C
 namespace SensorData {
 
+static const uint8_t DESCRIPTOR_SET = MIP_SENSOR_DATA_DESC_SET;
+
 
 struct RawAccel : C::mip_sensor_raw_accel_data
 {

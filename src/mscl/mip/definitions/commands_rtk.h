@@ -385,6 +385,8 @@ mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device);
 } // namespace C
 namespace RtkCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_RTK_CMD_DESC_SET;
+
 
 struct GetStatusFlags : C::mip_rtk_get_status_flags_command
 {

@@ -1215,6 +1215,8 @@ size_t extract_mip_filter_gnss_dual_antenna_status_data(const uint8_t* buffer, s
 } // namespace C
 namespace FilterData {
 
+static const uint8_t DESCRIPTOR_SET = MIP_FILTER_DATA_DESC_SET;
+
 
 struct LlhPos : C::mip_filter_llh_pos_data
 {

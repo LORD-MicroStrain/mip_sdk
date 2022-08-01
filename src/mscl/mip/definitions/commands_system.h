@@ -96,6 +96,8 @@ mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device);
 } // namespace C
 namespace SystemCommands {
 
+static const uint8_t DESCRIPTOR_SET = MIP_SYSTEM_CMD_DESC_SET;
+
 
 struct CommMode : C::mip_system_comm_mode_command
 {
