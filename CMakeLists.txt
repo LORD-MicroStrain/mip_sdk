@@ -1,6 +1,10 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     MSCL-Embedded
@@ -17,6 +21,13 @@ include_directories(
 )
 
 add_subdirectory("${EXT_DIR}")
+
+
+#
+# Build options
+#
+
+option(MSCL_TIMESTAMP_TYPE, "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 
 set(MSCL_DIR "${SRC_DIR}/mscl")
@@ -91,7 +102,21 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_system.h"
 )
 
-add_library(mip ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
+set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
+
+
+option(MSCL_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+if(MSCL_DISABLE_CPP)
+    list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
+endif()
+
+
+add_library(mip ${ALL_MIP_SOURCES})
+
+
+if(${MSCL_TIMESTAMP_TYPE})
+    add_compile_definitions("MSCL_TIMESTAMP_TYPE=${MSCL_TIMESTAMP_TYPE}")
+endif()
 
 if(MSVC)
   target_compile_options(mip PRIVATE /W4)
@@ -156,3 +181,44 @@ if(BUILD_DOCUMENTATION)
     )
 
 endif(BUILD_DOCUMENTATION)
+
+#
+# Packaging
+#
+
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mscl")
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-embedded-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
+    INSTALL_DESTINATION "${CONFIG_EXPORT_DIR}"
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CONFIG_EXPORT_DIR
+)
+unset(EXPORT_TARGETS)
+
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    COMPATIBILITY AnyNewerVersion
+)
+
+#
+# Installation
+#
+
+install(DIRECTORY "${SRC_DIR}/mscl" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
+install(TARGETS mip EXPORT mscl-embedded-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
+
+install(EXPORT
+    mscl-embedded-targets
+    DESTINATION "${CONFIG_EXPORT_DIR}"
+)
+
+install(FILES
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    DESTINATION "${CONFIG_EXPORT_DIR}"
+)
+

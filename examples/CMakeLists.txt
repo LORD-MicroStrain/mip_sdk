@@ -33,24 +33,21 @@ add_subdirectory("${EXAMPLE_DIR}/socket")
 
 
 
-
-# if(WITH_SERIALPORT)
-#
-#     add_executable(PingTest "${EXAMPLE_DIR}/ping.cpp" ${DEVICE_SOURCES})
-#     target_link_libraries(PingTest mip serial)
-#
-# endif()
-
-
 if(WITH_SERIALPORT OR WITH_SOCKETS)
 
-    add_executable(DeviceInfo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
-    target_link_libraries(DeviceInfo mip "${SERIAL_LIB}" "${SOCKET_LIB}")
-    target_compile_definitions(DeviceInfo PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+    if(NOT MSCL_DISABLE_CPP)
 
-    add_executable(WatchImu "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/watch_imu.cpp" ${DEVICE_SOURCES})
-    target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
-    target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+        message("Not building C++ examples because MSCL_DISABLE_CPP is set.")
+
+        add_executable(DeviceInfo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(DeviceInfo mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(DeviceInfo PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+
+        add_executable(WatchImu "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/watch_imu.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+
+    endif()
 
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
     target_link_libraries(WatchImuC mip)
