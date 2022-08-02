@@ -323,7 +323,7 @@ size_t extract_mip_rtk_connected_device_type_response(const uint8_t* buffer, siz
 }
 
 
-mip_cmd_result write_mip_rtk_connected_device_type(struct mip_interface* device, enum mip_connected_device_type devType)
+mip_cmd_result mip_rtk_write_connected_device_type(struct mip_interface* device, enum mip_connected_device_type devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -334,7 +334,7 @@ mip_cmd_result write_mip_rtk_connected_device_type(struct mip_interface* device,
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-mip_cmd_result read_mip_rtk_connected_device_type(struct mip_interface* device, enum mip_connected_device_type* devType)
+mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* device, enum mip_connected_device_type* devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -355,7 +355,7 @@ mip_cmd_result read_mip_rtk_connected_device_type(struct mip_interface* device, 
     return result_local;
 }
 
-mip_cmd_result save_mip_rtk_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_save_connected_device_type(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -365,7 +365,7 @@ mip_cmd_result save_mip_rtk_connected_device_type(struct mip_interface* device)
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-mip_cmd_result load_mip_rtk_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_load_connected_device_type(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -375,7 +375,7 @@ mip_cmd_result load_mip_rtk_connected_device_type(struct mip_interface* device)
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, cmdUsed);
 }
 
-mip_cmd_result default_mip_rtk_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;

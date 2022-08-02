@@ -26,11 +26,16 @@ struct mip_interface;
 
 enum 
 {
-    MIP_SYSTEM_CMD_DESC_SET        = 0x7F,
+    MIP_SYSTEM_CMD_DESC_SET                  = 0x7F,
     
-    MIP_CMD_DESC_SYSTEM_COM_MODE   = 0x10,
+    MIP_CMD_DESC_MIPNET_ENUMERATE            = 0x01,
+    MIP_CMD_DESC_SYSTEM_COM_MODE             = 0x10,
+    MIP_CMD_DESC_SYSTEM_HARDWARE_CONTROL     = 0x11,
+    MIP_CMD_DESC_SYSTEM_HARDWARE_CONTROL_2   = 0x12,
     
-    MIP_REPLY_DESC_SYSTEM_COM_MODE = 0x90,
+    MIP_REPLY_DESC_SYSTEM_COM_MODE           = 0x90,
+    MIP_REPLY_DESC_SYSTEM_HARDWARE_CONTROL   = 0x91,
+    MIP_REPLY_DESC_SYSTEM_HARDWARE_CONTROL_2 = 0x92,
 };
 #ifdef __cplusplus
 namespace C {
@@ -42,10 +47,10 @@ extern "C" {
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIP_SYSTEM_COMMAND_COMM_MODE_PASSTHRU_MIP_SYSTEM_COMMAND_COMM_MODE_PASSTHRU 0x00
-#define MIP_SYSTEM_COMMAND_COMM_MODE_NORMAL_MIP_SYSTEM_COMMAND_COMM_MODE_NORMAL 0x01
-#define MIP_SYSTEM_COMMAND_COMM_MODE_IMU_MIP_SYSTEM_COMMAND_COMM_MODE_IMU 0x02
-#define MIP_SYSTEM_COMMAND_COMM_MODE_GPS_MIP_SYSTEM_COMMAND_COMM_MODE_GPS 0x03
+#define MIP_SYSTEM_COMMAND_COMM_MODE_PASSTHRU 0x00
+#define MIP_SYSTEM_COMMAND_COMM_MODE_NORMAL 0x01
+#define MIP_SYSTEM_COMMAND_COMM_MODE_IMU 0x02
+#define MIP_SYSTEM_COMMAND_COMM_MODE_GPS 0x03
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -80,9 +85,9 @@ struct mip_system_comm_mode_response
 size_t insert_mip_system_comm_mode_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_comm_mode_response* self);
 size_t extract_mip_system_comm_mode_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_comm_mode_response* self);
 
-mip_cmd_result write_mip_system_comm_mode(struct mip_interface* device, uint8_t mode);
-mip_cmd_result read_mip_system_comm_mode(struct mip_interface* device, uint8_t* mode);
-mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device);
+mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
+mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode);
+mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
 ///@}
 ///
 
@@ -138,15 +143,15 @@ struct CommMode : C::mip_system_comm_mode_command
 };
 MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 {
-    return C::write_mip_system_comm_mode(&device, mode);
+    return C::mip_system_write_comm_mode(&device, mode);
 }
 MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
 {
-    return C::read_mip_system_comm_mode(&device, &mode);
+    return C::mip_system_read_comm_mode(&device, &mode);
 }
 MipCmdResult defaultCommMode(C::mip_interface& device)
 {
-    return C::default_mip_system_comm_mode(&device);
+    return C::mip_system_default_comm_mode(&device);
 }
 
 

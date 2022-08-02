@@ -187,7 +187,7 @@ size_t extract_mip_filter_estimation_control_response(const uint8_t* buffer, siz
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_estimation_control(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags enable)
+mip_cmd_result mip_filter_write_estimation_control(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -213,7 +213,7 @@ mip_cmd_result write_mip_filter_estimation_control(struct mip_interface* device,
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_estimation_control(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags* enable)
+mip_cmd_result mip_filter_read_estimation_control(struct mip_interface* device, enum mip_filter_estimation_control_command_enable_flags* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -248,7 +248,7 @@ mip_cmd_result read_mip_filter_estimation_control(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_estimation_control(struct mip_interface* device)
+mip_cmd_result mip_filter_save_estimation_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -272,7 +272,7 @@ mip_cmd_result save_mip_filter_estimation_control(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_estimation_control(struct mip_interface* device)
+mip_cmd_result mip_filter_load_estimation_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -296,7 +296,7 @@ mip_cmd_result load_mip_filter_estimation_control(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_estimation_control(struct mip_interface* device)
+mip_cmd_result mip_filter_default_estimation_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -545,7 +545,7 @@ size_t extract_mip_filter_tare_orientation_response(const uint8_t* buffer, size_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_tare_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes axes)
+mip_cmd_result mip_filter_write_tare_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes axes)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -565,7 +565,7 @@ mip_cmd_result write_mip_filter_tare_orientation(struct mip_interface* device, e
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_tare_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes* axes)
+mip_cmd_result mip_filter_read_tare_orientation(struct mip_interface* device, enum mip_filter_tare_orientation_command_mip_tare_axes* axes)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -594,7 +594,7 @@ mip_cmd_result read_mip_filter_tare_orientation(struct mip_interface* device, en
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_tare_orientation(struct mip_interface* device)
+mip_cmd_result mip_filter_save_tare_orientation(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -612,7 +612,7 @@ mip_cmd_result save_mip_filter_tare_orientation(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_tare_orientation(struct mip_interface* device)
+mip_cmd_result mip_filter_load_tare_orientation(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -630,7 +630,7 @@ mip_cmd_result load_mip_filter_tare_orientation(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_tare_orientation(struct mip_interface* device)
+mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -708,7 +708,7 @@ size_t extract_mip_filter_sensor_to_vehicle_rotation_euler_response(const uint8_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float roll, float pitch, float yaw)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float roll, float pitch, float yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -750,7 +750,7 @@ mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_inte
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float* roll, float* pitch, float* yaw)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float* roll, float* pitch, float* yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -799,7 +799,7 @@ mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
+mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -835,7 +835,7 @@ mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
+mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -871,7 +871,7 @@ mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
+mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -949,7 +949,7 @@ size_t extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(const uint8_t*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, const float* dcm)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, const float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -994,7 +994,7 @@ mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interf
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, float* dcm)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1048,7 +1048,7 @@ mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interfa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
+mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1090,7 +1090,7 @@ mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interfa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
+mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1132,7 +1132,7 @@ mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interfa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
+mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1209,7 +1209,7 @@ size_t extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(const u
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, const float* quat)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, const float* quat)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1253,7 +1253,7 @@ mip_cmd_result write_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, float* quat)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, float* quat)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1306,7 +1306,7 @@ mip_cmd_result read_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
+mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1347,7 +1347,7 @@ mip_cmd_result save_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
+mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1388,7 +1388,7 @@ mip_cmd_result load_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
+mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1446,7 +1446,7 @@ size_t extract_mip_filter_sensor_to_vehicle_offset_response(const uint8_t* buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_sensor_to_vehicle_offset(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interface* device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1471,7 +1471,7 @@ mip_cmd_result write_mip_filter_sensor_to_vehicle_offset(struct mip_interface* d
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_sensor_to_vehicle_offset(struct mip_interface* device, float* offset)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1505,7 +1505,7 @@ mip_cmd_result read_mip_filter_sensor_to_vehicle_offset(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_sensor_to_vehicle_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_save_sensor_to_vehicle_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1527,7 +1527,7 @@ mip_cmd_result save_mip_filter_sensor_to_vehicle_offset(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_sensor_to_vehicle_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_load_sensor_to_vehicle_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1549,7 +1549,7 @@ mip_cmd_result load_mip_filter_sensor_to_vehicle_offset(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_sensor_to_vehicle_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1604,7 +1604,7 @@ size_t extract_mip_filter_antenna_offset_response(const uint8_t* buffer, size_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_antenna_offset(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1626,7 +1626,7 @@ mip_cmd_result write_mip_filter_antenna_offset(struct mip_interface* device, con
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_antenna_offset(struct mip_interface* device, float* offset)
+mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1657,7 +1657,7 @@ mip_cmd_result read_mip_filter_antenna_offset(struct mip_interface* device, floa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_antenna_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_save_antenna_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1676,7 +1676,7 @@ mip_cmd_result save_mip_filter_antenna_offset(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_antenna_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_load_antenna_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1695,7 +1695,7 @@ mip_cmd_result load_mip_filter_antenna_offset(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_antenna_offset(struct mip_interface* device)
+mip_cmd_result mip_filter_default_antenna_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1757,7 +1757,7 @@ size_t extract_mip_filter_gnss_source_response(const uint8_t* buffer, size_t buf
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_gnss_source(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source source)
+mip_cmd_result mip_filter_write_gnss_source(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1777,7 +1777,7 @@ mip_cmd_result write_mip_filter_gnss_source(struct mip_interface* device, enum m
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_gnss_source(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source* source)
+mip_cmd_result mip_filter_read_gnss_source(struct mip_interface* device, enum mip_filter_gnss_source_command_gnss_source* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1806,7 +1806,7 @@ mip_cmd_result read_mip_filter_gnss_source(struct mip_interface* device, enum mi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_gnss_source(struct mip_interface* device)
+mip_cmd_result mip_filter_save_gnss_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1824,7 +1824,7 @@ mip_cmd_result save_mip_filter_gnss_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_gnss_source(struct mip_interface* device)
+mip_cmd_result mip_filter_load_gnss_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1842,7 +1842,7 @@ mip_cmd_result load_mip_filter_gnss_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_gnss_source(struct mip_interface* device)
+mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1911,7 +1911,7 @@ size_t extract_mip_filter_heading_source_response(const uint8_t* buffer, size_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_heading_source(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source source)
+mip_cmd_result mip_filter_write_heading_source(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1938,7 +1938,7 @@ mip_cmd_result write_mip_filter_heading_source(struct mip_interface* device, enu
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_heading_source(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source* source)
+mip_cmd_result mip_filter_read_heading_source(struct mip_interface* device, enum mip_filter_heading_source_command_heading_source* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1974,7 +1974,7 @@ mip_cmd_result read_mip_filter_heading_source(struct mip_interface* device, enum
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_heading_source(struct mip_interface* device)
+mip_cmd_result mip_filter_save_heading_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1999,7 +1999,7 @@ mip_cmd_result save_mip_filter_heading_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_heading_source(struct mip_interface* device)
+mip_cmd_result mip_filter_load_heading_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2024,7 +2024,7 @@ mip_cmd_result load_mip_filter_heading_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_heading_source(struct mip_interface* device)
+mip_cmd_result mip_filter_default_heading_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2081,7 +2081,7 @@ size_t extract_mip_filter_altitude_aiding_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_altitude_aiding(struct mip_interface* device, uint8_t aiding_selector)
+mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, uint8_t aiding_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2108,7 +2108,7 @@ mip_cmd_result write_mip_filter_altitude_aiding(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_altitude_aiding(struct mip_interface* device, uint8_t* aiding_selector)
+mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, uint8_t* aiding_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2144,7 +2144,7 @@ mip_cmd_result read_mip_filter_altitude_aiding(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_altitude_aiding(struct mip_interface* device)
+mip_cmd_result mip_filter_save_altitude_aiding(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2169,7 +2169,7 @@ mip_cmd_result save_mip_filter_altitude_aiding(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_altitude_aiding(struct mip_interface* device)
+mip_cmd_result mip_filter_load_altitude_aiding(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2194,7 +2194,7 @@ mip_cmd_result load_mip_filter_altitude_aiding(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_altitude_aiding(struct mip_interface* device)
+mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2247,7 +2247,7 @@ size_t extract_mip_filter_auto_zupt_response(const uint8_t* buffer, size_t buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_auto_zupt(struct mip_interface* device, uint8_t enable, float threshold)
+mip_cmd_result mip_filter_write_auto_zupt(struct mip_interface* device, uint8_t enable, float threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2267,7 +2267,7 @@ mip_cmd_result write_mip_filter_auto_zupt(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_auto_zupt(struct mip_interface* device, uint8_t* enable, float* threshold)
+mip_cmd_result mip_filter_read_auto_zupt(struct mip_interface* device, uint8_t* enable, float* threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2295,7 +2295,7 @@ mip_cmd_result read_mip_filter_auto_zupt(struct mip_interface* device, uint8_t* 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_auto_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_save_auto_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2311,7 +2311,7 @@ mip_cmd_result save_mip_filter_auto_zupt(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_auto_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_load_auto_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2327,7 +2327,7 @@ mip_cmd_result load_mip_filter_auto_zupt(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_auto_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2380,7 +2380,7 @@ size_t extract_mip_filter_auto_angular_zupt_response(const uint8_t* buffer, size
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_auto_angular_zupt(struct mip_interface* device, uint8_t enable, float threshold)
+mip_cmd_result mip_filter_write_auto_angular_zupt(struct mip_interface* device, uint8_t enable, float threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2400,7 +2400,7 @@ mip_cmd_result write_mip_filter_auto_angular_zupt(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_auto_angular_zupt(struct mip_interface* device, uint8_t* enable, float* threshold)
+mip_cmd_result mip_filter_read_auto_angular_zupt(struct mip_interface* device, uint8_t* enable, float* threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2428,7 +2428,7 @@ mip_cmd_result read_mip_filter_auto_angular_zupt(struct mip_interface* device, u
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_auto_angular_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_save_auto_angular_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2444,7 +2444,7 @@ mip_cmd_result save_mip_filter_auto_angular_zupt(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_auto_angular_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_load_auto_angular_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2460,7 +2460,7 @@ mip_cmd_result load_mip_filter_auto_angular_zupt(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_auto_angular_zupt(struct mip_interface* device)
+mip_cmd_result mip_filter_default_auto_angular_zupt(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2585,7 +2585,7 @@ size_t extract_mip_filter_aiding_measurement_enable_response(const uint8_t* buff
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable)
+mip_cmd_result mip_filter_write_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2606,7 +2606,7 @@ mip_cmd_result write_mip_filter_aiding_measurement_enable(struct mip_interface* 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool* enable)
+mip_cmd_result mip_filter_read_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2636,7 +2636,7 @@ mip_cmd_result read_mip_filter_aiding_measurement_enable(struct mip_interface* d
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+mip_cmd_result mip_filter_save_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2654,7 +2654,7 @@ mip_cmd_result save_mip_filter_aiding_measurement_enable(struct mip_interface* d
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+mip_cmd_result mip_filter_load_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2672,7 +2672,7 @@ mip_cmd_result load_mip_filter_aiding_measurement_enable(struct mip_interface* d
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
+mip_cmd_result mip_filter_default_aiding_measurement_enable(struct mip_interface* device, enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2762,7 +2762,7 @@ size_t extract_mip_filter_kinematic_constraint_response(const uint8_t* buffer, s
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_kinematic_constraint(struct mip_interface* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection)
+mip_cmd_result mip_filter_write_kinematic_constraint(struct mip_interface* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2784,7 +2784,7 @@ mip_cmd_result write_mip_filter_kinematic_constraint(struct mip_interface* devic
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_kinematic_constraint(struct mip_interface* device, uint8_t* acceleration_constraint_selection, uint8_t* velocity_constraint_selection, uint8_t* angular_constraint_selection)
+mip_cmd_result mip_filter_read_kinematic_constraint(struct mip_interface* device, uint8_t* acceleration_constraint_selection, uint8_t* velocity_constraint_selection, uint8_t* angular_constraint_selection)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2813,7 +2813,7 @@ mip_cmd_result read_mip_filter_kinematic_constraint(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_kinematic_constraint(struct mip_interface* device)
+mip_cmd_result mip_filter_save_kinematic_constraint(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2829,7 +2829,7 @@ mip_cmd_result save_mip_filter_kinematic_constraint(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_kinematic_constraint(struct mip_interface* device)
+mip_cmd_result mip_filter_load_kinematic_constraint(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2845,7 +2845,7 @@ mip_cmd_result load_mip_filter_kinematic_constraint(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_kinematic_constraint(struct mip_interface* device)
+mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2968,7 +2968,7 @@ size_t extract_mip_filter_initialization_configuration_response(const uint8_t* b
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_initialization_configuration(struct mip_interface* device, uint8_t wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, enum mip_filter_reference_frame reference_frame_selector)
+mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interface* device, uint8_t wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, enum mip_filter_reference_frame reference_frame_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3006,7 +3006,7 @@ mip_cmd_result write_mip_filter_initialization_configuration(struct mip_interfac
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_initialization_configuration(struct mip_interface* device, uint8_t* wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector, float* initial_heading, float* initial_pitch, float* initial_roll, float* initial_position, float* initial_velocity, enum mip_filter_reference_frame* reference_frame_selector)
+mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface* device, uint8_t* wait_for_run_command, enum mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src, enum mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector, float* initial_heading, float* initial_pitch, float* initial_roll, float* initial_position, float* initial_velocity, enum mip_filter_reference_frame* reference_frame_selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3045,7 +3045,7 @@ mip_cmd_result read_mip_filter_initialization_configuration(struct mip_interface
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_initialization_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_save_initialization_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3063,7 +3063,7 @@ mip_cmd_result save_mip_filter_initialization_configuration(struct mip_interface
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_initialization_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_load_initialization_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3081,7 +3081,7 @@ mip_cmd_result load_mip_filter_initialization_configuration(struct mip_interface
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_initialization_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_default_initialization_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3133,7 +3133,7 @@ size_t extract_mip_filter_adaptive_filter_options_response(const uint8_t* buffer
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_adaptive_filter_options(struct mip_interface* device, uint8_t level, uint16_t time_limit)
+mip_cmd_result mip_filter_write_adaptive_filter_options(struct mip_interface* device, uint8_t level, uint16_t time_limit)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3152,7 +3152,7 @@ mip_cmd_result write_mip_filter_adaptive_filter_options(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_adaptive_filter_options(struct mip_interface* device, uint8_t* level, uint16_t* time_limit)
+mip_cmd_result mip_filter_read_adaptive_filter_options(struct mip_interface* device, uint8_t* level, uint16_t* time_limit)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3179,7 +3179,7 @@ mip_cmd_result read_mip_filter_adaptive_filter_options(struct mip_interface* dev
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_adaptive_filter_options(struct mip_interface* device)
+mip_cmd_result mip_filter_save_adaptive_filter_options(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3194,7 +3194,7 @@ mip_cmd_result save_mip_filter_adaptive_filter_options(struct mip_interface* dev
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_adaptive_filter_options(struct mip_interface* device)
+mip_cmd_result mip_filter_load_adaptive_filter_options(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3209,7 +3209,7 @@ mip_cmd_result load_mip_filter_adaptive_filter_options(struct mip_interface* dev
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_adaptive_filter_options(struct mip_interface* device)
+mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3266,7 +3266,7 @@ size_t extract_mip_filter_multi_antenna_offset_response(const uint8_t* buffer, s
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, const float* antenna_offset)
+mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, const float* antenna_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3288,7 +3288,7 @@ mip_cmd_result write_mip_filter_multi_antenna_offset(struct mip_interface* devic
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, float* antenna_offset)
+mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, float* antenna_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3319,7 +3319,7 @@ mip_cmd_result read_mip_filter_multi_antenna_offset(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
+mip_cmd_result mip_filter_save_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3337,7 +3337,7 @@ mip_cmd_result save_mip_filter_multi_antenna_offset(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
+mip_cmd_result mip_filter_load_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3355,7 +3355,7 @@ mip_cmd_result load_mip_filter_multi_antenna_offset(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
+mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3417,7 +3417,7 @@ size_t extract_mip_filter_rel_pos_configuration_response(const uint8_t* buffer, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_rel_pos_configuration(struct mip_interface* device, uint8_t source, enum mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
+mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface* device, uint8_t source, enum mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3439,7 +3439,7 @@ mip_cmd_result write_mip_filter_rel_pos_configuration(struct mip_interface* devi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_rel_pos_configuration(struct mip_interface* device, uint8_t* source, enum mip_filter_reference_frame* reference_frame_selector, double* reference_coordinates)
+mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* device, uint8_t* source, enum mip_filter_reference_frame* reference_frame_selector, double* reference_coordinates)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3468,7 +3468,7 @@ mip_cmd_result read_mip_filter_rel_pos_configuration(struct mip_interface* devic
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_rel_pos_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_save_rel_pos_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3483,7 +3483,7 @@ mip_cmd_result save_mip_filter_rel_pos_configuration(struct mip_interface* devic
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_rel_pos_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_load_rel_pos_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3498,7 +3498,7 @@ mip_cmd_result load_mip_filter_rel_pos_configuration(struct mip_interface* devic
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_rel_pos_configuration(struct mip_interface* device)
+mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3570,7 +3570,7 @@ size_t extract_mip_filter_ref_point_lever_arm_response(const uint8_t* buffer, si
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_ref_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
+mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3594,7 +3594,7 @@ mip_cmd_result write_mip_filter_ref_point_lever_arm(struct mip_interface* device
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_ref_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel, float* lever_arm_offset)
+mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device, enum mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel, float* lever_arm_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3626,7 +3626,7 @@ mip_cmd_result read_mip_filter_ref_point_lever_arm(struct mip_interface* device,
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_ref_point_lever_arm(struct mip_interface* device)
+mip_cmd_result mip_filter_save_ref_point_lever_arm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3645,7 +3645,7 @@ mip_cmd_result save_mip_filter_ref_point_lever_arm(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_ref_point_lever_arm(struct mip_interface* device)
+mip_cmd_result mip_filter_load_ref_point_lever_arm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3664,7 +3664,7 @@ mip_cmd_result load_mip_filter_ref_point_lever_arm(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_ref_point_lever_arm(struct mip_interface* device)
+mip_cmd_result mip_filter_default_ref_point_lever_arm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3770,7 +3770,7 @@ size_t extract_mip_filter_speed_lever_arm_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_speed_lever_arm(struct mip_interface* device, uint8_t source, const float* lever_arm_offset)
+mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* device, uint8_t source, const float* lever_arm_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3796,7 +3796,7 @@ mip_cmd_result write_mip_filter_speed_lever_arm(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_speed_lever_arm(struct mip_interface* device, uint8_t source, float* lever_arm_offset)
+mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uint8_t source, float* lever_arm_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3831,7 +3831,7 @@ mip_cmd_result read_mip_filter_speed_lever_arm(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_speed_lever_arm(struct mip_interface* device, uint8_t source)
+mip_cmd_result mip_filter_save_speed_lever_arm(struct mip_interface* device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3853,7 +3853,7 @@ mip_cmd_result save_mip_filter_speed_lever_arm(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_speed_lever_arm(struct mip_interface* device, uint8_t source)
+mip_cmd_result mip_filter_load_speed_lever_arm(struct mip_interface* device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3875,7 +3875,7 @@ mip_cmd_result load_mip_filter_speed_lever_arm(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_speed_lever_arm(struct mip_interface* device, uint8_t source)
+mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3928,7 +3928,7 @@ size_t extract_mip_filter_wheeled_vehicle_constraint_control_response(const uint
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t enable)
+mip_cmd_result mip_filter_write_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3950,7 +3950,7 @@ mip_cmd_result write_mip_filter_wheeled_vehicle_constraint_control(struct mip_in
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t* enable)
+mip_cmd_result mip_filter_read_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3981,7 +3981,7 @@ mip_cmd_result read_mip_filter_wheeled_vehicle_constraint_control(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_wheeled_vehicle_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_save_wheeled_vehicle_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4001,7 +4001,7 @@ mip_cmd_result save_mip_filter_wheeled_vehicle_constraint_control(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_wheeled_vehicle_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_load_wheeled_vehicle_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4021,7 +4021,7 @@ mip_cmd_result load_mip_filter_wheeled_vehicle_constraint_control(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_wheeled_vehicle_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4071,7 +4071,7 @@ size_t extract_mip_filter_vertical_gyro_constraint_control_response(const uint8_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t enable)
+mip_cmd_result mip_filter_write_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4091,7 +4091,7 @@ mip_cmd_result write_mip_filter_vertical_gyro_constraint_control(struct mip_inte
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t* enable)
+mip_cmd_result mip_filter_read_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t* enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4120,7 +4120,7 @@ mip_cmd_result read_mip_filter_vertical_gyro_constraint_control(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_vertical_gyro_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_save_vertical_gyro_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4138,7 +4138,7 @@ mip_cmd_result save_mip_filter_vertical_gyro_constraint_control(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_vertical_gyro_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_load_vertical_gyro_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4156,7 +4156,7 @@ mip_cmd_result load_mip_filter_vertical_gyro_constraint_control(struct mip_inter
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_vertical_gyro_constraint_control(struct mip_interface* device)
+mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4209,7 +4209,7 @@ size_t extract_mip_filter_gnss_antenna_cal_control_response(const uint8_t* buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_gnss_antenna_cal_control(struct mip_interface* device, uint8_t enable, float max_offset)
+mip_cmd_result mip_filter_write_gnss_antenna_cal_control(struct mip_interface* device, uint8_t enable, float max_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4229,7 +4229,7 @@ mip_cmd_result write_mip_filter_gnss_antenna_cal_control(struct mip_interface* d
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_gnss_antenna_cal_control(struct mip_interface* device, uint8_t* enable, float* max_offset)
+mip_cmd_result mip_filter_read_gnss_antenna_cal_control(struct mip_interface* device, uint8_t* enable, float* max_offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4257,7 +4257,7 @@ mip_cmd_result read_mip_filter_gnss_antenna_cal_control(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_gnss_antenna_cal_control(struct mip_interface* device)
+mip_cmd_result mip_filter_save_gnss_antenna_cal_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4273,7 +4273,7 @@ mip_cmd_result save_mip_filter_gnss_antenna_cal_control(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_gnss_antenna_cal_control(struct mip_interface* device)
+mip_cmd_result mip_filter_load_gnss_antenna_cal_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4289,7 +4289,7 @@ mip_cmd_result load_mip_filter_gnss_antenna_cal_control(struct mip_interface* de
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_gnss_antenna_cal_control(struct mip_interface* device)
+mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4341,7 +4341,7 @@ size_t extract_mip_filter_magnetic_declination_source_response(const uint8_t* bu
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_filter_magnetic_declination_source(struct mip_interface* device, enum mip_filter_mag_declination_source source, float declination)
+mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, enum mip_filter_mag_declination_source source, float declination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4360,7 +4360,7 @@ mip_cmd_result write_mip_filter_magnetic_declination_source(struct mip_interface
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_filter_magnetic_declination_source(struct mip_interface* device, enum mip_filter_mag_declination_source* source, float* declination)
+mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, enum mip_filter_mag_declination_source* source, float* declination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4387,7 +4387,7 @@ mip_cmd_result read_mip_filter_magnetic_declination_source(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_filter_magnetic_declination_source(struct mip_interface* device)
+mip_cmd_result mip_filter_save_magnetic_declination_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4402,7 +4402,7 @@ mip_cmd_result save_mip_filter_magnetic_declination_source(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_filter_magnetic_declination_source(struct mip_interface* device)
+mip_cmd_result mip_filter_load_magnetic_declination_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4417,7 +4417,7 @@ mip_cmd_result load_mip_filter_magnetic_declination_source(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_filter_magnetic_declination_source(struct mip_interface* device)
+mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;

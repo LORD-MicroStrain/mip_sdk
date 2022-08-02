@@ -552,7 +552,7 @@ size_t extract_mip_base_comm_speed_response(const uint8_t* buffer, size_t buffer
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_base_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud)
+mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -584,7 +584,7 @@ mip_cmd_result write_mip_base_comm_speed(struct mip_interface* device, uint8_t p
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_base_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud)
+mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -625,7 +625,7 @@ mip_cmd_result read_mip_base_comm_speed(struct mip_interface* device, uint8_t po
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_base_comm_speed(struct mip_interface* device, uint8_t port)
+mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -654,7 +654,7 @@ mip_cmd_result save_mip_base_comm_speed(struct mip_interface* device, uint8_t po
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_base_comm_speed(struct mip_interface* device, uint8_t port)
+mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -683,7 +683,7 @@ mip_cmd_result load_mip_base_comm_speed(struct mip_interface* device, uint8_t po
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_base_comm_speed(struct mip_interface* device, uint8_t port)
+mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -732,7 +732,7 @@ size_t extract_mip_base_gps_time_update_command(const uint8_t* buffer, size_t bu
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_base_gps_time_update(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value)
+mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;

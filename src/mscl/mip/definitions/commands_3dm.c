@@ -312,7 +312,7 @@ size_t extract_mip_3dm_imu_message_format_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_imu_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_write_imu_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -333,7 +333,7 @@ mip_cmd_result write_mip_3dm_imu_message_format(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_imu_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -365,7 +365,7 @@ mip_cmd_result read_mip_3dm_imu_message_format(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_imu_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_imu_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -381,7 +381,7 @@ mip_cmd_result save_mip_3dm_imu_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_imu_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_imu_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -397,7 +397,7 @@ mip_cmd_result load_mip_3dm_imu_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_imu_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_imu_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -460,7 +460,7 @@ size_t extract_mip_3dm_gps_message_format_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gps_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_write_gps_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -481,7 +481,7 @@ mip_cmd_result write_mip_3dm_gps_message_format(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gps_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -513,7 +513,7 @@ mip_cmd_result read_mip_3dm_gps_message_format(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_gps_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_gps_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -529,7 +529,7 @@ mip_cmd_result save_mip_3dm_gps_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_gps_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_gps_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -545,7 +545,7 @@ mip_cmd_result load_mip_3dm_gps_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_gps_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_gps_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -608,7 +608,7 @@ size_t extract_mip_3dm_filter_message_format_response(const uint8_t* buffer, siz
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_filter_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_write_filter_message_format(struct mip_interface* device, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -629,7 +629,7 @@ mip_cmd_result write_mip_3dm_filter_message_format(struct mip_interface* device,
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_filter_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* device, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -661,7 +661,7 @@ mip_cmd_result read_mip_3dm_filter_message_format(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_filter_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_filter_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -677,7 +677,7 @@ mip_cmd_result save_mip_3dm_filter_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_filter_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_filter_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -693,7 +693,7 @@ mip_cmd_result load_mip_3dm_filter_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_filter_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1063,7 +1063,7 @@ size_t extract_mip_3dm_message_format_response(const uint8_t* buffer, size_t buf
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_write_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t num_descriptors, const struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1087,7 +1087,7 @@ mip_cmd_result write_mip_3dm_message_format(struct mip_interface* device, uint8_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
+mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t* num_descriptors, struct mip_descriptor_rate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1122,7 +1122,7 @@ mip_cmd_result read_mip_3dm_message_format(struct mip_interface* device, uint8_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_message_format(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_save_message_format(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1140,7 +1140,7 @@ mip_cmd_result save_mip_3dm_message_format(struct mip_interface* device, uint8_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_message_format(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_load_message_format(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1158,7 +1158,7 @@ mip_cmd_result load_mip_3dm_message_format(struct mip_interface* device, uint8_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_message_format(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_default_message_format(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1272,7 +1272,7 @@ size_t extract_mip_3dm_nmea_message_format_response(const uint8_t* buffer, size_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_nmea_message_format(struct mip_interface* device, uint8_t count, const struct mip_nmeamessage_format* format_entries)
+mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* device, uint8_t count, const struct mip_nmeamessage_format* format_entries)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1292,7 +1292,7 @@ mip_cmd_result write_mip_3dm_nmea_message_format(struct mip_interface* device, u
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_nmea_message_format(struct mip_interface* device, uint8_t* count, struct mip_nmeamessage_format* format_entries)
+mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* device, uint8_t* count, struct mip_nmeamessage_format* format_entries)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1323,7 +1323,7 @@ mip_cmd_result read_mip_3dm_nmea_message_format(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_nmea_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_nmea_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1338,7 +1338,7 @@ mip_cmd_result save_mip_3dm_nmea_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_nmea_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_nmea_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1353,7 +1353,7 @@ mip_cmd_result load_mip_3dm_nmea_message_format(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_nmea_message_format(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1391,7 +1391,7 @@ size_t extract_mip_3dm_device_settings_command(const uint8_t* buffer, size_t buf
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_device_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_device_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1409,7 +1409,7 @@ mip_cmd_result save_mip_3dm_device_settings(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_device_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_device_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1427,7 +1427,7 @@ mip_cmd_result load_mip_3dm_device_settings(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_device_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_device_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1487,7 +1487,7 @@ size_t extract_mip_3dm_uart_baudrate_response(const uint8_t* buffer, size_t buff
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_uart_baudrate(struct mip_interface* device, uint32_t baud)
+mip_cmd_result mip_3dm_write_uart_baudrate(struct mip_interface* device, uint32_t baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1517,7 +1517,7 @@ mip_cmd_result write_mip_3dm_uart_baudrate(struct mip_interface* device, uint32_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_uart_baudrate(struct mip_interface* device, uint32_t* baud)
+mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uint32_t* baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1556,7 +1556,7 @@ mip_cmd_result read_mip_3dm_uart_baudrate(struct mip_interface* device, uint32_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_uart_baudrate(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_uart_baudrate(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1584,7 +1584,7 @@ mip_cmd_result save_mip_3dm_uart_baudrate(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_uart_baudrate(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_uart_baudrate(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1612,7 +1612,7 @@ mip_cmd_result load_mip_3dm_uart_baudrate(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_uart_baudrate(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1718,7 +1718,7 @@ size_t extract_mip_3dm_datastream_control_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_datastream_control(struct mip_interface* device, uint8_t desc_set, bool enable)
+mip_cmd_result mip_3dm_write_datastream_control(struct mip_interface* device, uint8_t desc_set, bool enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1742,7 +1742,7 @@ mip_cmd_result write_mip_3dm_datastream_control(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_datastream_control(struct mip_interface* device, uint8_t desc_set, bool* enabled)
+mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device, uint8_t desc_set, bool* enabled)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1775,7 +1775,7 @@ mip_cmd_result read_mip_3dm_datastream_control(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_datastream_control(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_save_datastream_control(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1796,7 +1796,7 @@ mip_cmd_result save_mip_3dm_datastream_control(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_datastream_control(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_load_datastream_control(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1817,7 +1817,7 @@ mip_cmd_result load_mip_3dm_datastream_control(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_datastream_control(struct mip_interface* device, uint8_t desc_set)
+mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, uint8_t desc_set)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1905,7 +1905,7 @@ size_t extract_mip_3dm_gnss_sbas_settings_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gnss_sbas_settings(struct mip_interface* device, uint8_t enable_sbas, enum mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns)
+mip_cmd_result mip_3dm_write_gnss_sbas_settings(struct mip_interface* device, uint8_t enable_sbas, enum mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1931,7 +1931,7 @@ mip_cmd_result write_mip_3dm_gnss_sbas_settings(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gnss_sbas_settings(struct mip_interface* device, uint8_t* enable_sbas, enum mip_3dm_gnss_sbas_settings_command_sbasoptions* sbas_options, uint8_t* num_included_prns, uint16_t* included_prns)
+mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device, uint8_t* enable_sbas, enum mip_3dm_gnss_sbas_settings_command_sbasoptions* sbas_options, uint8_t* num_included_prns, uint16_t* included_prns)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1966,7 +1966,7 @@ mip_cmd_result read_mip_3dm_gnss_sbas_settings(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_gnss_sbas_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_gnss_sbas_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -1983,7 +1983,7 @@ mip_cmd_result save_mip_3dm_gnss_sbas_settings(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_gnss_sbas_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_gnss_sbas_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2000,7 +2000,7 @@ mip_cmd_result load_mip_3dm_gnss_sbas_settings(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_gnss_sbas_settings(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2059,7 +2059,7 @@ size_t extract_mip_3dm_gnss_time_assistance_response(const uint8_t* buffer, size
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gnss_time_assistance(struct mip_interface* device, double tow, uint16_t week_number, float accuracy)
+mip_cmd_result mip_3dm_write_gnss_time_assistance(struct mip_interface* device, double tow, uint16_t week_number, float accuracy)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2082,7 +2082,7 @@ mip_cmd_result write_mip_3dm_gnss_time_assistance(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gnss_time_assistance(struct mip_interface* device, double* tow, uint16_t* week_number, float* accuracy)
+mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, double* tow, uint16_t* week_number, float* accuracy)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2174,7 +2174,7 @@ size_t extract_mip_3dm_adv_lowpass_filter_response(const uint8_t* buffer, size_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
+mip_cmd_result mip_3dm_write_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2212,7 +2212,7 @@ mip_cmd_result write_mip_3dm_adv_lowpass_filter(struct mip_interface* device, ui
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable, bool* manual, uint16_t* frequency, uint8_t* reserved)
+mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable, bool* manual, uint16_t* frequency, uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2256,7 +2256,7 @@ mip_cmd_result read_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_save_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2285,7 +2285,7 @@ mip_cmd_result save_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2314,7 +2314,7 @@ mip_cmd_result load_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uin
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2362,7 +2362,7 @@ size_t extract_mip_3dm_pps_source_response(const uint8_t* buffer, size_t bufferS
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_pps_source(struct mip_interface* device, enum mip_pps_source source)
+mip_cmd_result mip_3dm_write_pps_source(struct mip_interface* device, enum mip_pps_source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2379,7 +2379,7 @@ mip_cmd_result write_mip_3dm_pps_source(struct mip_interface* device, enum mip_p
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_pps_source(struct mip_interface* device, enum mip_pps_source* source)
+mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, enum mip_pps_source* source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2405,7 +2405,7 @@ mip_cmd_result read_mip_3dm_pps_source(struct mip_interface* device, enum mip_pp
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_pps_source(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_pps_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2420,7 +2420,7 @@ mip_cmd_result save_mip_3dm_pps_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_pps_source(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_pps_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2435,7 +2435,7 @@ mip_cmd_result load_mip_3dm_pps_source(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_pps_source(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2549,7 +2549,7 @@ size_t extract_mip_3dm_gpio_config_response(const uint8_t* buffer, size_t buffer
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pin, enum mip_3dm_gpio_config_command_feature feature, enum mip_3dm_gpio_config_command_behavior behavior, enum mip_3dm_gpio_config_command_pin_mode pin_mode)
+mip_cmd_result mip_3dm_write_gpio_config(struct mip_interface* device, uint8_t pin, enum mip_3dm_gpio_config_command_feature feature, enum mip_3dm_gpio_config_command_behavior behavior, enum mip_3dm_gpio_config_command_pin_mode pin_mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2588,7 +2588,7 @@ mip_cmd_result write_mip_3dm_gpio_config(struct mip_interface* device, uint8_t p
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pin, enum mip_3dm_gpio_config_command_feature* feature, enum mip_3dm_gpio_config_command_behavior* behavior, enum mip_3dm_gpio_config_command_pin_mode* pin_mode)
+mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8_t pin, enum mip_3dm_gpio_config_command_feature* feature, enum mip_3dm_gpio_config_command_behavior* behavior, enum mip_3dm_gpio_config_command_pin_mode* pin_mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2634,7 +2634,7 @@ mip_cmd_result read_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pin)
+mip_cmd_result mip_3dm_save_gpio_config(struct mip_interface* device, uint8_t pin)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2666,7 +2666,7 @@ mip_cmd_result save_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pin)
+mip_cmd_result mip_3dm_load_gpio_config(struct mip_interface* device, uint8_t pin)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2698,7 +2698,7 @@ mip_cmd_result load_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_gpio_config(struct mip_interface* device, uint8_t pin)
+mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, uint8_t pin)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2765,7 +2765,7 @@ size_t extract_mip_3dm_gpio_state_response(const uint8_t* buffer, size_t bufferS
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gpio_state(struct mip_interface* device, uint8_t pin, bool state)
+mip_cmd_result mip_3dm_write_gpio_state(struct mip_interface* device, uint8_t pin, bool state)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2799,7 +2799,7 @@ mip_cmd_result write_mip_3dm_gpio_state(struct mip_interface* device, uint8_t pi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gpio_state(struct mip_interface* device, uint8_t pin, bool* state)
+mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_t pin, bool* state)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2881,7 +2881,7 @@ size_t extract_mip_3dm_odometer_response(const uint8_t* buffer, size_t bufferSiz
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_odometer(struct mip_interface* device, enum mip_3dm_odometer_command_mode mode, float scaling, float uncertainty)
+mip_cmd_result mip_3dm_write_odometer(struct mip_interface* device, enum mip_3dm_odometer_command_mode mode, float scaling, float uncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2902,7 +2902,7 @@ mip_cmd_result write_mip_3dm_odometer(struct mip_interface* device, enum mip_3dm
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_odometer(struct mip_interface* device, enum mip_3dm_odometer_command_mode* mode, float* scaling, float* uncertainty)
+mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, enum mip_3dm_odometer_command_mode* mode, float* scaling, float* uncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2930,7 +2930,7 @@ mip_cmd_result read_mip_3dm_odometer(struct mip_interface* device, enum mip_3dm_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_odometer(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_odometer(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2945,7 +2945,7 @@ mip_cmd_result save_mip_3dm_odometer(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_odometer(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_odometer(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -2960,7 +2960,7 @@ mip_cmd_result load_mip_3dm_odometer(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_odometer(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3157,7 +3157,7 @@ size_t extract_mip_3dm_event_control_response(const uint8_t* buffer, size_t buff
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_event_control(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_control_command_mode mode)
+mip_cmd_result mip_3dm_write_event_control(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_control_command_mode mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3185,7 +3185,7 @@ mip_cmd_result write_mip_3dm_event_control(struct mip_interface* device, uint8_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_event_control(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_control_command_mode* mode)
+mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_control_command_mode* mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3222,7 +3222,7 @@ mip_cmd_result read_mip_3dm_event_control(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_event_control(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_save_event_control(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3247,7 +3247,7 @@ mip_cmd_result save_mip_3dm_event_control(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_event_control(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_load_event_control(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3272,7 +3272,7 @@ mip_cmd_result load_mip_3dm_event_control(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_event_control(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_default_event_control(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3652,7 +3652,7 @@ size_t extract_mip_3dm_event_trigger_response(const uint8_t* buffer, size_t buff
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination)
+mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3679,7 +3679,7 @@ mip_cmd_result write_mip_3dm_event_trigger(struct mip_interface* device, uint8_t
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, void* gpio_threshold_combination)
+mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, void* gpio_threshold_combination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3714,7 +3714,7 @@ mip_cmd_result read_mip_3dm_event_trigger(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_event_trigger(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_save_event_trigger(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3731,7 +3731,7 @@ mip_cmd_result save_mip_3dm_event_trigger(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_event_trigger(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_load_event_trigger(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3748,7 +3748,7 @@ mip_cmd_result load_mip_3dm_event_trigger(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_event_trigger(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3890,7 +3890,7 @@ size_t extract_mip_3dm_event_action_response(const uint8_t* buffer, size_t buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const void* gpio_message)
+mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const void* gpio_message)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3917,7 +3917,7 @@ mip_cmd_result write_mip_3dm_event_action(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, void* gpio_message)
+mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, void* gpio_message)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3951,7 +3951,7 @@ mip_cmd_result read_mip_3dm_event_action(struct mip_interface* device, uint8_t i
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_event_action(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_save_event_action(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3968,7 +3968,7 @@ mip_cmd_result save_mip_3dm_event_action(struct mip_interface* device, uint8_t i
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_event_action(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_load_event_action(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -3985,7 +3985,7 @@ mip_cmd_result load_mip_3dm_event_action(struct mip_interface* device, uint8_t i
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_event_action(struct mip_interface* device, uint8_t instance)
+mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, uint8_t instance)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4038,7 +4038,7 @@ size_t extract_mip_3dm_accel_bias_response(const uint8_t* buffer, size_t bufferS
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_accel_bias(struct mip_interface* device, const float* bias)
+mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, const float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4057,7 +4057,7 @@ mip_cmd_result write_mip_3dm_accel_bias(struct mip_interface* device, const floa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_accel_bias(struct mip_interface* device, float* bias)
+mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4085,7 +4085,7 @@ mip_cmd_result read_mip_3dm_accel_bias(struct mip_interface* device, float* bias
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_accel_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_accel_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4101,7 +4101,7 @@ mip_cmd_result save_mip_3dm_accel_bias(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_accel_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_accel_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4117,7 +4117,7 @@ mip_cmd_result load_mip_3dm_accel_bias(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_accel_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4169,7 +4169,7 @@ size_t extract_mip_3dm_gyro_bias_response(const uint8_t* buffer, size_t bufferSi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_gyro_bias(struct mip_interface* device, const float* bias)
+mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, const float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4188,7 +4188,7 @@ mip_cmd_result write_mip_3dm_gyro_bias(struct mip_interface* device, const float
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_gyro_bias(struct mip_interface* device, float* bias)
+mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4216,7 +4216,7 @@ mip_cmd_result read_mip_3dm_gyro_bias(struct mip_interface* device, float* bias)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_gyro_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_gyro_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4232,7 +4232,7 @@ mip_cmd_result save_mip_3dm_gyro_bias(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_gyro_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_gyro_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4248,7 +4248,7 @@ mip_cmd_result load_mip_3dm_gyro_bias(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_gyro_bias(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4370,7 +4370,7 @@ size_t extract_mip_3dm_mag_hard_iron_offset_response(const uint8_t* buffer, size
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_mag_hard_iron_offset(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4393,7 +4393,7 @@ mip_cmd_result write_mip_3dm_mag_hard_iron_offset(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_mag_hard_iron_offset(struct mip_interface* device, float* offset)
+mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4425,7 +4425,7 @@ mip_cmd_result read_mip_3dm_mag_hard_iron_offset(struct mip_interface* device, f
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_mag_hard_iron_offset(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_mag_hard_iron_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4445,7 +4445,7 @@ mip_cmd_result save_mip_3dm_mag_hard_iron_offset(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_mag_hard_iron_offset(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_mag_hard_iron_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4465,7 +4465,7 @@ mip_cmd_result load_mip_3dm_mag_hard_iron_offset(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_mag_hard_iron_offset(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4525,7 +4525,7 @@ size_t extract_mip_3dm_mag_soft_iron_matrix_response(const uint8_t* buffer, size
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4552,7 +4552,7 @@ mip_cmd_result write_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device, float* offset)
+mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* device, float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4588,7 +4588,7 @@ mip_cmd_result read_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device, f
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_mag_soft_iron_matrix(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4612,7 +4612,7 @@ mip_cmd_result save_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4636,7 +4636,7 @@ mip_cmd_result load_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_mag_soft_iron_matrix(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4716,7 +4716,7 @@ size_t extract_mip_3dm_sensor_2_vehicle_transform_euler_response(const uint8_t* 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interface* device, float roll, float pitch, float yaw)
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(struct mip_interface* device, float roll, float pitch, float yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4760,7 +4760,7 @@ mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interfa
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interface* device, float* roll, float* pitch, float* yaw)
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_interface* device, float* roll, float* pitch, float* yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4811,7 +4811,7 @@ mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interfac
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4849,7 +4849,7 @@ mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interfac
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4887,7 +4887,7 @@ mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interfac
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_sensor_2_vehicle_transform_euler(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -4969,7 +4969,7 @@ size_t extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(const uint
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, const float* q)
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, const float* q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5018,7 +5018,7 @@ mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_in
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, float* q)
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, float* q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5076,7 +5076,7 @@ mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5122,7 +5122,7 @@ mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5168,7 +5168,7 @@ mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_int
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5248,7 +5248,7 @@ size_t extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(const uint8_t* bu
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface* device, const float* dcm)
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_interface* device, const float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5295,7 +5295,7 @@ mip_cmd_result write_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface* device, float* dcm)
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_interface* device, float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5351,7 +5351,7 @@ mip_cmd_result read_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5395,7 +5395,7 @@ mip_cmd_result save_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5439,7 +5439,7 @@ mip_cmd_result load_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface*
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5504,7 +5504,7 @@ size_t extract_mip_3dm_complementary_filter_response(const uint8_t* buffer, size
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_complementary_filter(struct mip_interface* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant)
+mip_cmd_result mip_3dm_write_complementary_filter(struct mip_interface* device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5530,7 +5530,7 @@ mip_cmd_result write_mip_3dm_complementary_filter(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_complementary_filter(struct mip_interface* device, bool* pitch_roll_enable, bool* heading_enable, float* pitch_roll_time_constant, float* heading_time_constant)
+mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* device, bool* pitch_roll_enable, bool* heading_enable, float* pitch_roll_time_constant, float* heading_time_constant)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5562,7 +5562,7 @@ mip_cmd_result read_mip_3dm_complementary_filter(struct mip_interface* device, b
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_complementary_filter(struct mip_interface* device)
+mip_cmd_result mip_3dm_save_complementary_filter(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5580,7 +5580,7 @@ mip_cmd_result save_mip_3dm_complementary_filter(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_complementary_filter(struct mip_interface* device)
+mip_cmd_result mip_3dm_load_complementary_filter(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5598,7 +5598,7 @@ mip_cmd_result load_mip_3dm_complementary_filter(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_complementary_filter(struct mip_interface* device)
+mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5656,7 +5656,7 @@ size_t extract_mip_3dm_sensor_range_response(const uint8_t* buffer, size_t buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_3dm_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor, uint8_t setting)
+mip_cmd_result mip_3dm_write_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor, uint8_t setting)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5682,7 +5682,7 @@ mip_cmd_result write_mip_3dm_sensor_range(struct mip_interface* device, enum mip
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_3dm_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor, uint8_t* setting)
+mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor, uint8_t* setting)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5717,7 +5717,7 @@ mip_cmd_result read_mip_3dm_sensor_range(struct mip_interface* device, enum mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_3dm_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
+mip_cmd_result mip_3dm_save_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5740,7 +5740,7 @@ mip_cmd_result save_mip_3dm_sensor_range(struct mip_interface* device, enum mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_3dm_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
+mip_cmd_result mip_3dm_load_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -5763,7 +5763,7 @@ mip_cmd_result load_mip_3dm_sensor_range(struct mip_interface* device, enum mip_
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_3dm_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
+mip_cmd_result mip_3dm_default_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
