@@ -66,7 +66,7 @@ size_t extract_mip_system_comm_mode_response(const uint8_t* buffer, size_t buffe
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_system_comm_mode(struct mip_interface* device, uint8_t mode)
+mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -90,7 +90,7 @@ mip_cmd_result write_mip_system_comm_mode(struct mip_interface* device, uint8_t 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_system_comm_mode(struct mip_interface* device, uint8_t* mode)
+mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -123,7 +123,7 @@ mip_cmd_result read_mip_system_comm_mode(struct mip_interface* device, uint8_t* 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_system_comm_mode(struct mip_interface* device)
+mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;

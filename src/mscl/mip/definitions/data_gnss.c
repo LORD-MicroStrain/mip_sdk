@@ -59,11 +59,11 @@ size_t extract_mip_sbas_system(const uint8_t* buffer, size_t bufferSize, size_t 
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_gnss_llh_pos_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_llh_pos_data_valid_flags self)
+size_t insert_mip_gnss_pos_llh_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_pos_llh_data_valid_flags self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_mip_gnss_llh_pos_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_llh_pos_data_valid_flags* self)
+size_t extract_mip_gnss_pos_llh_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_pos_llh_data_valid_flags* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -72,7 +72,7 @@ size_t extract_mip_gnss_llh_pos_data_valid_flags(const uint8_t* buffer, size_t b
 }
 
 
-size_t insert_mip_gnss_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_llh_pos_data* self)
+size_t insert_mip_gnss_pos_llh_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_pos_llh_data* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->latitude);
     offset = insert_double(buffer, bufferSize, offset, self->longitude);
@@ -80,12 +80,12 @@ size_t insert_mip_gnss_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t o
     offset = insert_double(buffer, bufferSize, offset, self->msl_height);
     offset = insert_float(buffer, bufferSize, offset, self->horizontal_accuracy);
     offset = insert_float(buffer, bufferSize, offset, self->vertical_accuracy);
-    offset = insert_mip_gnss_llh_pos_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
+    offset = insert_mip_gnss_pos_llh_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
     
     return offset;
 }
 
-size_t extract_mip_gnss_llh_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_llh_pos_data* self)
+size_t extract_mip_gnss_pos_llh_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_pos_llh_data* self)
 {
     offset = extract_double(buffer, bufferSize, offset, &self->latitude);
     offset = extract_double(buffer, bufferSize, offset, &self->longitude);
@@ -93,18 +93,18 @@ size_t extract_mip_gnss_llh_pos_data(const uint8_t* buffer, size_t bufferSize, s
     offset = extract_double(buffer, bufferSize, offset, &self->msl_height);
     offset = extract_float(buffer, bufferSize, offset, &self->horizontal_accuracy);
     offset = extract_float(buffer, bufferSize, offset, &self->vertical_accuracy);
-    offset = extract_mip_gnss_llh_pos_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
+    offset = extract_mip_gnss_pos_llh_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
     
     return offset;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_gnss_ecef_pos_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ecef_pos_data_valid_flags self)
+size_t insert_mip_gnss_pos_ecef_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_pos_ecef_data_valid_flags self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_mip_gnss_ecef_pos_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ecef_pos_data_valid_flags* self)
+size_t extract_mip_gnss_pos_ecef_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_pos_ecef_data_valid_flags* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -113,33 +113,33 @@ size_t extract_mip_gnss_ecef_pos_data_valid_flags(const uint8_t* buffer, size_t 
 }
 
 
-size_t insert_mip_gnss_ecef_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ecef_pos_data* self)
+size_t insert_mip_gnss_pos_ecef_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_pos_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_double(buffer, bufferSize, offset, self->x[i]);
     offset = insert_float(buffer, bufferSize, offset, self->x_accuracy);
-    offset = insert_mip_gnss_ecef_pos_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
+    offset = insert_mip_gnss_pos_ecef_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
     
     return offset;
 }
 
-size_t extract_mip_gnss_ecef_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ecef_pos_data* self)
+size_t extract_mip_gnss_pos_ecef_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_pos_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_double(buffer, bufferSize, offset, &self->x[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->x_accuracy);
-    offset = extract_mip_gnss_ecef_pos_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
+    offset = extract_mip_gnss_pos_ecef_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
     
     return offset;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_gnss_ned_vel_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ned_vel_data_valid_flags self)
+size_t insert_mip_gnss_vel_ned_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_vel_ned_data_valid_flags self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_mip_gnss_ned_vel_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ned_vel_data_valid_flags* self)
+size_t extract_mip_gnss_vel_ned_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_vel_ned_data_valid_flags* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -148,7 +148,7 @@ size_t extract_mip_gnss_ned_vel_data_valid_flags(const uint8_t* buffer, size_t b
 }
 
 
-size_t insert_mip_gnss_ned_vel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ned_vel_data* self)
+size_t insert_mip_gnss_vel_ned_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_vel_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->v[i]);
@@ -157,12 +157,12 @@ size_t insert_mip_gnss_ned_vel_data(uint8_t* buffer, size_t bufferSize, size_t o
     offset = insert_float(buffer, bufferSize, offset, self->heading);
     offset = insert_float(buffer, bufferSize, offset, self->speed_accuracy);
     offset = insert_float(buffer, bufferSize, offset, self->heading_accuracy);
-    offset = insert_mip_gnss_ned_vel_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
+    offset = insert_mip_gnss_vel_ned_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
     
     return offset;
 }
 
-size_t extract_mip_gnss_ned_vel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ned_vel_data* self)
+size_t extract_mip_gnss_vel_ned_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_vel_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->v[i]);
@@ -171,18 +171,18 @@ size_t extract_mip_gnss_ned_vel_data(const uint8_t* buffer, size_t bufferSize, s
     offset = extract_float(buffer, bufferSize, offset, &self->heading);
     offset = extract_float(buffer, bufferSize, offset, &self->speed_accuracy);
     offset = extract_float(buffer, bufferSize, offset, &self->heading_accuracy);
-    offset = extract_mip_gnss_ned_vel_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
+    offset = extract_mip_gnss_vel_ned_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
     
     return offset;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_gnss_ecef_vel_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ecef_vel_data_valid_flags self)
+size_t insert_mip_gnss_vel_ecef_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_vel_ecef_data_valid_flags self)
 {
     return insert_u16(buffer, bufferSize, offset, self);
 }
-size_t extract_mip_gnss_ecef_vel_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ecef_vel_data_valid_flags* self)
+size_t extract_mip_gnss_vel_ecef_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_vel_ecef_data_valid_flags* self)
 {
     uint16_t tmp;
     offset = extract_u16(buffer, bufferSize, offset, &tmp);
@@ -191,22 +191,22 @@ size_t extract_mip_gnss_ecef_vel_data_valid_flags(const uint8_t* buffer, size_t 
 }
 
 
-size_t insert_mip_gnss_ecef_vel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ecef_vel_data* self)
+size_t insert_mip_gnss_vel_ecef_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_vel_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = insert_float(buffer, bufferSize, offset, self->v[i]);
     offset = insert_float(buffer, bufferSize, offset, self->v_accuracy);
-    offset = insert_mip_gnss_ecef_vel_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
+    offset = insert_mip_gnss_vel_ecef_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
     
     return offset;
 }
 
-size_t extract_mip_gnss_ecef_vel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ecef_vel_data* self)
+size_t extract_mip_gnss_vel_ecef_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_vel_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         offset = extract_float(buffer, bufferSize, offset, &self->v[i]);
     offset = extract_float(buffer, bufferSize, offset, &self->v_accuracy);
-    offset = extract_mip_gnss_ecef_vel_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
+    offset = extract_mip_gnss_vel_ecef_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
     
     return offset;
 }

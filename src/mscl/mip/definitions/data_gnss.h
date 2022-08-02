@@ -26,34 +26,37 @@ struct mip_interface;
 
 enum 
 {
-    MIP_GNSS_DATA_DESC_SET                    = 0x81,
+    MIP_GNSS_DATA_DESC_SET                     = 0x81,
     
-    MIP_DATA_DESC_GNSS_POSITION_LLH           = 0x03,
-    MIP_DATA_DESC_GNSS_POSITION_ECEF          = 0x04,
-    MIP_DATA_DESC_GNSS_VELOCITY_NED           = 0x05,
-    MIP_DATA_DESC_GNSS_VELOCITY_ECEF          = 0x06,
-    MIP_DATA_DESC_GNSS_DOP                    = 0x07,
-    MIP_DATA_DESC_GNSS_UTC_TIME               = 0x08,
-    MIP_DATA_DESC_GNSS_GPS_TIME               = 0x09,
-    MIP_DATA_DESC_GNSS_CLOCK_INFO             = 0x0A,
-    MIP_DATA_DESC_GNSS_FIX_INFO               = 0x0B,
-    MIP_DATA_DESC_GNSS_SV_INFO                = 0x0C,
-    MIP_DATA_DESC_GNSS_HW_STATUS              = 0x0D,
-    MIP_DATA_DESC_GNSS_DGPS_INFO              = 0x0E,
-    MIP_DATA_DESC_GNSS_DGPS_CHANNEL_STATUS    = 0x0F,
-    MIP_DATA_DESC_GNSS_CLOCK_INFO_2           = 0x10,
-    MIP_DATA_DESC_GNSS_GPS_LEAP_SECONDS       = 0x11,
-    MIP_DATA_DESC_GNSS_SBAS_INFO              = 0x12,
-    MIP_DATA_DESC_GNSS_SBAS_CORRECTION        = 0x13,
-    MIP_DATA_DESC_GNSS_RF_ERROR_DETECTION     = 0x14,
-    MIP_DATA_DESC_GNSS_BASE_STATION_INFO      = 0x30,
-    MIP_DATA_DESC_GNSS_RTK_CORRECTIONS_STATUS = 0x31,
-    MIP_DATA_DESC_GNSS_SATELLITE_STATUS       = 0x20,
-    MIP_DATA_DESC_GNSS_RAW                    = 0x22,
-    MIP_DATA_DESC_GNSS_GPS_EPHEMERIS          = 0x61,
-    MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS      = 0x62,
-    MIP_DATA_DESC_GNSS_GPS_IONO_CORR          = 0x71,
-    MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR      = 0x73,
+    MIP_DATA_DESC_GNSS_POSITION_LLH            = 0x03,
+    MIP_DATA_DESC_GNSS_POSITION_ECEF           = 0x04,
+    MIP_DATA_DESC_GNSS_VELOCITY_NED            = 0x05,
+    MIP_DATA_DESC_GNSS_VELOCITY_ECEF           = 0x06,
+    MIP_DATA_DESC_GNSS_DOP                     = 0x07,
+    MIP_DATA_DESC_GNSS_UTC_TIME                = 0x08,
+    MIP_DATA_DESC_GNSS_GPS_TIME                = 0x09,
+    MIP_DATA_DESC_GNSS_CLOCK_INFO              = 0x0A,
+    MIP_DATA_DESC_GNSS_FIX_INFO                = 0x0B,
+    MIP_DATA_DESC_GNSS_SV_INFO                 = 0x0C,
+    MIP_DATA_DESC_GNSS_HW_STATUS               = 0x0D,
+    MIP_DATA_DESC_GNSS_DGPS_INFO               = 0x0E,
+    MIP_DATA_DESC_GNSS_DGPS_CHANNEL_STATUS     = 0x0F,
+    MIP_DATA_DESC_GNSS_CLOCK_INFO_2            = 0x10,
+    MIP_DATA_DESC_GNSS_GPS_LEAP_SECONDS        = 0x11,
+    MIP_DATA_DESC_GNSS_SBAS_INFO               = 0x12,
+    MIP_DATA_DESC_GNSS_SBAS_CORRECTION         = 0x13,
+    MIP_DATA_DESC_GNSS_RF_ERROR_DETECTION      = 0x14,
+    MIP_DATA_DESC_GNSS_SATELLITE_STATUS        = 0x20,
+    MIP_DATA_DESC_GNSS_SATELLITE_SIGNAL_STATUS = 0x21,
+    MIP_DATA_DESC_GNSS_RAW                     = 0x22,
+    MIP_DATA_DESC_GNSS_BASE_STATION_INFO       = 0x30,
+    MIP_DATA_DESC_GNSS_RTK_CORRECTIONS_STATUS  = 0x31,
+    MIP_DATA_DESC_GNSS_GPS_EPHEMERIS           = 0x61,
+    MIP_DATA_DESC_GNSS_GLONASS_EPHEMERIS       = 0x62,
+    MIP_DATA_DESC_GNSS_GALILEO_EPHEMERIS       = 0x63,
+    MIP_DATA_DESC_GNSS_GPS_IONO_CORR           = 0x71,
+    MIP_DATA_DESC_GNSS_GLONASS_IONO_CORR       = 0x72,
+    MIP_DATA_DESC_GNSS_GALILEO_IONO_CORR       = 0x73,
     
 };
 #ifdef __cplusplus
@@ -66,11 +69,11 @@ extern "C" {
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIP_GNSS1_DATA_DESC_SET_MIP_GNSS1_DATA_DESC_SET 0x91
-#define MIP_GNSS2_DATA_DESC_SET_MIP_GNSS2_DATA_DESC_SET 0x92
-#define MIP_GNSS3_DATA_DESC_SET_MIP_GNSS3_DATA_DESC_SET 0x93
-#define MIP_GNSS4_DATA_DESC_SET_MIP_GNSS4_DATA_DESC_SET 0x94
-#define MIP_GNSS5_DATA_DESC_SET_MIP_GNSS5_DATA_DESC_SET 0x95
+#define MIP_GNSS1_DATA_DESC_SET 0x91
+#define MIP_GNSS2_DATA_DESC_SET 0x92
+#define MIP_GNSS3_DATA_DESC_SET 0x93
+#define MIP_GNSS4_DATA_DESC_SET 0x94
+#define MIP_GNSS5_DATA_DESC_SET 0x95
 enum mip_gnss_constellation_id
 {
     MIP_GNSS_CONSTELLATION_ID_UNKNOWN = 0,  ///<  
@@ -165,32 +168,32 @@ enum mip_sbas_system
 size_t insert_mip_sbas_system(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sbas_system self);
 size_t extract_mip_sbas_system(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sbas_system* self);
 
-#define MIP_GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER_GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER 32
-#define MIP_GNSS_SV_INFO_MAX_SV_NUMBER_GNSS_SV_INFO_MAX_SV_NUMBER 32
+#define GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER 32
+#define GNSS_SV_INFO_MAX_SV_NUMBER 32
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup llh_pos  GNSS LLH Position
+///@defgroup pos_llh  GNSS LLH Position
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
 
-enum mip_gnss_llh_pos_data_valid_flags
+enum mip_gnss_pos_llh_data_valid_flags
 {
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_LAT_LON             = 0x01,
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_ELLIPSOID_HEIGHT    = 0x02,
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_MSL_HEIGHT          = 0x04,
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_HORIZONTAL_ACCURACY = 0x08,
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_VERTICAL_ACCURACY   = 0x10,
-    MIP_GNSS_LLH_POS_DATA_VALID_FLAGS_FLAGS               = 0x1F,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_LAT_LON             = 0x01,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_ELLIPSOID_HEIGHT    = 0x02,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_MSL_HEIGHT          = 0x04,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_HORIZONTAL_ACCURACY = 0x08,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_VERTICAL_ACCURACY   = 0x10,
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_FLAGS               = 0x1F,
 };
-size_t insert_mip_gnss_llh_pos_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_llh_pos_data_valid_flags self);
-size_t extract_mip_gnss_llh_pos_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_llh_pos_data_valid_flags* self);
+size_t insert_mip_gnss_pos_llh_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_pos_llh_data_valid_flags self);
+size_t extract_mip_gnss_pos_llh_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_pos_llh_data_valid_flags* self);
 
-struct mip_gnss_llh_pos_data
+struct mip_gnss_pos_llh_data
 {
     double                                            latitude;
     double                                            longitude;
@@ -198,59 +201,59 @@ struct mip_gnss_llh_pos_data
     double                                            msl_height;
     float                                             horizontal_accuracy;
     float                                             vertical_accuracy;
-    enum mip_gnss_llh_pos_data_valid_flags            valid_flags;
+    enum mip_gnss_pos_llh_data_valid_flags            valid_flags;
 };
-size_t insert_mip_gnss_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_llh_pos_data* self);
-size_t extract_mip_gnss_llh_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_llh_pos_data* self);
+size_t insert_mip_gnss_pos_llh_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_pos_llh_data* self);
+size_t extract_mip_gnss_pos_llh_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_pos_llh_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ecef_pos  GNSS ECEF Position
+///@defgroup pos_ecef  GNSS ECEF Position
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
 
-enum mip_gnss_ecef_pos_data_valid_flags
+enum mip_gnss_pos_ecef_data_valid_flags
 {
-    MIP_GNSS_ECEF_POS_DATA_VALID_FLAGS_POSITION          = 0x01,
-    MIP_GNSS_ECEF_POS_DATA_VALID_FLAGS_POSITION_ACCURACY = 0x02,
-    MIP_GNSS_ECEF_POS_DATA_VALID_FLAGS_FLAGS             = 0x03,
+    MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION          = 0x01,
+    MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION_ACCURACY = 0x02,
+    MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x03,
 };
-size_t insert_mip_gnss_ecef_pos_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ecef_pos_data_valid_flags self);
-size_t extract_mip_gnss_ecef_pos_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ecef_pos_data_valid_flags* self);
+size_t insert_mip_gnss_pos_ecef_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_pos_ecef_data_valid_flags self);
+size_t extract_mip_gnss_pos_ecef_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_pos_ecef_data_valid_flags* self);
 
-struct mip_gnss_ecef_pos_data
+struct mip_gnss_pos_ecef_data
 {
     double                                            x[3];
     float                                             x_accuracy;
-    enum mip_gnss_ecef_pos_data_valid_flags           valid_flags;
+    enum mip_gnss_pos_ecef_data_valid_flags           valid_flags;
 };
-size_t insert_mip_gnss_ecef_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ecef_pos_data* self);
-size_t extract_mip_gnss_ecef_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ecef_pos_data* self);
+size_t insert_mip_gnss_pos_ecef_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_pos_ecef_data* self);
+size_t extract_mip_gnss_pos_ecef_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_pos_ecef_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ned_vel  NED Velocity
+///@defgroup vel_ned  NED Velocity
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
 
-enum mip_gnss_ned_vel_data_valid_flags
+enum mip_gnss_vel_ned_data_valid_flags
 {
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_VELOCITY         = 0x01,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_SPEED_3D         = 0x02,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_GROUND_SPEED     = 0x04,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_HEADING          = 0x08,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_SPEED_ACCURACY   = 0x10,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_HEADING_ACCURACY = 0x20,
-    MIP_GNSS_NED_VEL_DATA_VALID_FLAGS_FLAGS            = 0x3F,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_VELOCITY         = 0x01,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_SPEED_3D         = 0x02,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_GROUND_SPEED     = 0x04,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_HEADING          = 0x08,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_SPEED_ACCURACY   = 0x10,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_HEADING_ACCURACY = 0x20,
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_FLAGS            = 0x3F,
 };
-size_t insert_mip_gnss_ned_vel_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ned_vel_data_valid_flags self);
-size_t extract_mip_gnss_ned_vel_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ned_vel_data_valid_flags* self);
+size_t insert_mip_gnss_vel_ned_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_vel_ned_data_valid_flags self);
+size_t extract_mip_gnss_vel_ned_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_vel_ned_data_valid_flags* self);
 
-struct mip_gnss_ned_vel_data
+struct mip_gnss_vel_ned_data
 {
     float                                             v[3];
     float                                             speed;
@@ -258,36 +261,36 @@ struct mip_gnss_ned_vel_data
     float                                             heading;
     float                                             speed_accuracy;
     float                                             heading_accuracy;
-    enum mip_gnss_ned_vel_data_valid_flags            valid_flags;
+    enum mip_gnss_vel_ned_data_valid_flags            valid_flags;
 };
-size_t insert_mip_gnss_ned_vel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ned_vel_data* self);
-size_t extract_mip_gnss_ned_vel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ned_vel_data* self);
+size_t insert_mip_gnss_vel_ned_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_vel_ned_data* self);
+size_t extract_mip_gnss_vel_ned_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_vel_ned_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ecef_vel  GNSS ECEF Velocity
+///@defgroup vel_ecef  GNSS ECEF Velocity
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
 
-enum mip_gnss_ecef_vel_data_valid_flags
+enum mip_gnss_vel_ecef_data_valid_flags
 {
-    MIP_GNSS_ECEF_VEL_DATA_VALID_FLAGS_VELOCITY          = 0x01,
-    MIP_GNSS_ECEF_VEL_DATA_VALID_FLAGS_VELOCITY_ACCURACY = 0x02,
-    MIP_GNSS_ECEF_VEL_DATA_VALID_FLAGS_FLAGS             = 0x03,
+    MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY          = 0x01,
+    MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY_ACCURACY = 0x02,
+    MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x03,
 };
-size_t insert_mip_gnss_ecef_vel_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_ecef_vel_data_valid_flags self);
-size_t extract_mip_gnss_ecef_vel_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_ecef_vel_data_valid_flags* self);
+size_t insert_mip_gnss_vel_ecef_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_gnss_vel_ecef_data_valid_flags self);
+size_t extract_mip_gnss_vel_ecef_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_gnss_vel_ecef_data_valid_flags* self);
 
-struct mip_gnss_ecef_vel_data
+struct mip_gnss_vel_ecef_data
 {
     float                                             v[3];
     float                                             v_accuracy;
-    enum mip_gnss_ecef_vel_data_valid_flags           valid_flags;
+    enum mip_gnss_vel_ecef_data_valid_flags           valid_flags;
 };
-size_t insert_mip_gnss_ecef_vel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_ecef_vel_data* self);
-size_t extract_mip_gnss_ecef_vel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_ecef_vel_data* self);
+size_t insert_mip_gnss_vel_ecef_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_gnss_vel_ecef_data* self);
+size_t extract_mip_gnss_vel_ecef_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_gnss_vel_ecef_data* self);
 
 ///@}
 ///
@@ -1238,69 +1241,69 @@ namespace GnssData {
 static const uint8_t DESCRIPTOR_SET = MIP_GNSS_DATA_DESC_SET;
 
 
-struct LlhPos : C::mip_gnss_llh_pos_data
+struct PosLlh : C::mip_gnss_pos_llh_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_LLH;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_gnss_llh_pos_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_gnss_pos_llh_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_llh_pos_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_gnss_pos_llh_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-struct EcefPos : C::mip_gnss_ecef_pos_data
+struct PosEcef : C::mip_gnss_pos_ecef_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_POSITION_ECEF;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_gnss_pos_ecef_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ecef_pos_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_gnss_pos_ecef_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-struct NedVel : C::mip_gnss_ned_vel_data
+struct VelNed : C::mip_gnss_vel_ned_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_NED;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_gnss_ned_vel_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_gnss_vel_ned_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ned_vel_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_gnss_vel_ned_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-struct EcefVel : C::mip_gnss_ecef_vel_data
+struct VelEcef : C::mip_gnss_vel_ecef_data
 {
     static const uint8_t descriptorSet = MIP_GNSS_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_GNSS_VELOCITY_ECEF;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_gnss_vel_ecef_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_gnss_ecef_vel_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_gnss_vel_ecef_data(buffer, bufferSize, offset, this);
     }
 };
 

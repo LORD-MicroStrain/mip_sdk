@@ -176,7 +176,7 @@ size_t extract_mip_gnss_signal_configuration_response(const uint8_t* buffer, siz
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_gnss_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
+mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -202,7 +202,7 @@ mip_cmd_result write_mip_gnss_signal_configuration(struct mip_interface* device,
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_gnss_signal_configuration(struct mip_interface* device, uint8_t* gps_enable, uint8_t* glonass_enable, uint8_t* galileo_enable, uint8_t* beidou_enable, uint8_t* reserved)
+mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable, uint8_t* glonass_enable, uint8_t* galileo_enable, uint8_t* beidou_enable, uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -233,7 +233,7 @@ mip_cmd_result read_mip_gnss_signal_configuration(struct mip_interface* device, 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_gnss_signal_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -248,7 +248,7 @@ mip_cmd_result save_mip_gnss_signal_configuration(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_gnss_signal_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -263,7 +263,7 @@ mip_cmd_result load_mip_gnss_signal_configuration(struct mip_interface* device)
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_gnss_signal_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -319,7 +319,7 @@ size_t extract_mip_gnss_rtk_dongle_configuration_response(const uint8_t* buffer,
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result write_mip_gnss_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved)
+mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -339,7 +339,7 @@ mip_cmd_result write_mip_gnss_rtk_dongle_configuration(struct mip_interface* dev
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result read_mip_gnss_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable, uint8_t* reserved)
+mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable, uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -367,7 +367,7 @@ mip_cmd_result read_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result save_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -382,7 +382,7 @@ mip_cmd_result save_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result load_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;
@@ -397,7 +397,7 @@ mip_cmd_result load_mip_gnss_rtk_dongle_configuration(struct mip_interface* devi
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result default_mip_gnss_rtk_dongle_configuration(struct mip_interface* device)
+mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     size_t cmdUsed = 0;

@@ -28,6 +28,7 @@ enum
 {
     MIP_SHARED_DATA_DESC_SET            = 0xFF,
     
+    
     MIP_DATA_DESC_SHARED_EVENT_SOURCE   = 0xD0,
     MIP_DATA_DESC_SHARED_TICKS          = 0xD1,
     MIP_DATA_DESC_SHARED_DELTA_TICKS    = 0xD2,
@@ -37,7 +38,7 @@ enum
     MIP_DATA_DESC_SHARED_REF_TIME_DELTA = 0xD6,
     MIP_DATA_DESC_SHARED_EXTERNAL_TIME  = 0xD7,
     MIP_DATA_DESC_SHARED_SYS_TIME_DELTA = 0xD8,
-    
+    MIP_DATA_DESC_SHARED_DEBUG_TICKS    = 0xFF,
 };
 #ifdef __cplusplus
 namespace C {
@@ -49,7 +50,7 @@ extern "C" {
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIP_DATA_DESC_SHARED_START_MIP_DATA_DESC_SHARED_START 0xD0
+#define MIP_DATA_DESC_SHARED_START 0xD0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields

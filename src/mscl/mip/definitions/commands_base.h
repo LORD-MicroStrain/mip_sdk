@@ -37,12 +37,16 @@ enum
     MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS   = 0x07,
     MIP_CMD_DESC_BASE_CONTINUOUS_BIT             = 0x08,
     MIP_CMD_DESC_BASE_COMM_SPEED                 = 0x09,
+    MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST         = 0x71,
     MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW     = 0x72,
+    MIP_CMD_DESC_BASE_SYSTEM_TIME                = 0x73,
     MIP_CMD_DESC_BASE_SOFT_RESET                 = 0x7E,
     
     MIP_REPLY_DESC_BASE_DEVICE_INFO              = 0x81,
     MIP_REPLY_DESC_BASE_DEVICE_DESCRIPTORS       = 0x82,
     MIP_REPLY_DESC_BASE_BUILT_IN_TEST            = 0x83,
+    MIP_REPLY_DESC_BASE_GPS_CORRELATION_WEEK     = 0x84,
+    MIP_REPLY_DESC_BASE_GPS_CORRELATION_SECONDS  = 0x85,
     MIP_REPLY_DESC_BASE_GET_EXTENDED_DESCRIPTORS = 0x86,
     MIP_REPLY_DESC_BASE_CONTINUOUS_BIT           = 0x88,
     MIP_REPLY_DESC_BASE_COMM_SPEED               = 0x89,
@@ -330,11 +334,11 @@ struct mip_base_comm_speed_response
 size_t insert_mip_base_comm_speed_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_comm_speed_response* self);
 size_t extract_mip_base_comm_speed_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_comm_speed_response* self);
 
-mip_cmd_result write_mip_base_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud);
-mip_cmd_result read_mip_base_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud);
-mip_cmd_result save_mip_base_comm_speed(struct mip_interface* device, uint8_t port);
-mip_cmd_result load_mip_base_comm_speed(struct mip_interface* device, uint8_t port);
-mip_cmd_result default_mip_base_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud);
+mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud);
+mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -362,7 +366,7 @@ struct mip_base_gps_time_update_command
 size_t insert_mip_base_gps_time_update_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_base_gps_time_update_command* self);
 size_t extract_mip_base_gps_time_update_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_base_gps_time_update_command* self);
 
-mip_cmd_result write_mip_base_gps_time_update(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value);
+mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -702,23 +706,23 @@ struct CommSpeed : C::mip_base_comm_speed_command
 };
 MipCmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
 {
-    return C::write_mip_base_comm_speed(&device, port, baud);
+    return C::mip_base_write_comm_speed(&device, port, baud);
 }
 MipCmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud)
 {
-    return C::read_mip_base_comm_speed(&device, port, &baud);
+    return C::mip_base_read_comm_speed(&device, port, &baud);
 }
 MipCmdResult saveCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    return C::save_mip_base_comm_speed(&device, port);
+    return C::mip_base_save_comm_speed(&device, port);
 }
 MipCmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    return C::load_mip_base_comm_speed(&device, port);
+    return C::mip_base_load_comm_speed(&device, port);
 }
 MipCmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    return C::default_mip_base_comm_speed(&device, port);
+    return C::mip_base_default_comm_speed(&device, port);
 }
 
 
@@ -747,7 +751,7 @@ struct GpsTimeUpdate : C::mip_base_gps_time_update_command
 };
 MipCmdResult writeGpsTimeUpdate(C::mip_interface& device, C::mip_base_gps_time_update_command_field_id field_id, uint32_t value)
 {
-    return C::write_mip_base_gps_time_update(&device, field_id, value);
+    return C::mip_base_write_gps_time_update(&device, field_id, value);
 }
 
 
