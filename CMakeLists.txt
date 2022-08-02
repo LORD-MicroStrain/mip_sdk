@@ -1,6 +1,10 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     MSCL-Embedded
@@ -100,7 +104,15 @@ set(MIPDEF_SOURCES
 
 set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
+
+option(MSCL_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+if(MSCL_DISABLE_CPP)
+    list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
+endif()
+
+
 add_library(mip ${ALL_MIP_SOURCES})
+
 
 if(${MSCL_TIMESTAMP_TYPE})
     add_compile_definitions("MSCL_TIMESTAMP_TYPE=${MSCL_TIMESTAMP_TYPE}")

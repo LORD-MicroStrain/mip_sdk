@@ -65,6 +65,11 @@ How to Build
 
 * CMake version 3.10 or later
 * A working C compiler
+  * C99 or later required
+* A working C++ compiler
+  * For C++ API only. Define `MSCL_DISABLE_CPP=ON` if you don't want to use any C++.
+  * C++11 or later required for the mip library
+  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
 * Doxygen, if building documentation
 
 ### Build configuration
@@ -77,6 +82,7 @@ The following options may be specified when configuring the build with CMake (e.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
 * BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
+* MSCL_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 
 ### Compilation for Linux
 
