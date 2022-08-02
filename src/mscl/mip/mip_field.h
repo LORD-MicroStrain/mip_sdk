@@ -91,11 +91,15 @@ bool mip_field_is_valid(const struct mip_field* field);
 ///
 ///@{
 
+void mip_field_init_empty(struct mip_field* field);
+
 struct mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
 
-struct mip_field mip_field_from_packet(const struct mip_packet* packet);
+struct mip_field mip_field_first_from_packet(const struct mip_packet* packet);
 struct mip_field mip_field_next_after(const struct mip_field* field);
 bool mip_field_next(struct mip_field* field);
+
+bool mip_field_next_in_packet(struct mip_field* field, const struct mip_packet* packet);
 
 // bool mip_field_is_at_end(const struct mip_field* field);
 

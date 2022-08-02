@@ -246,7 +246,8 @@ static enum mip_cmd_status process_fields_for_pending_cmd(struct mip_pending_cmd
 
     if( mip_packet_descriptor_set(packet) == pending->_descriptor_set )
     {
-        for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
+        struct mip_field field = {0};
+        while( mip_field_next_in_packet(&field, packet) )
         {
             // Not an ack/nack reply field, skip it.
             if( mip_field_field_descriptor(&field) != MIP_REPLY_DESC_GLOBAL_ACK_NACK )

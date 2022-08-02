@@ -253,7 +253,8 @@ void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mi
             handler->_packet_callback(handler->_user_data, packet, timestamp);
     }
 
-    for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
+    struct mip_field field = {0};
+    while( mip_field_next_in_packet(&field, packet) )
     {
         const uint8_t field_descriptor = mip_field_field_descriptor(&field);
 

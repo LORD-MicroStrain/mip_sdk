@@ -142,7 +142,7 @@ public:
     void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
     /// Returns the first field in the packet.
-    MipField firstField() const { return MipField(C::mip_field_from_packet(this)); }
+    MipField firstField() const { return MipField(C::mip_field_first_from_packet(this)); }
 
     /// Returns a forward iterator to the first field in the packet.
     ///@internal

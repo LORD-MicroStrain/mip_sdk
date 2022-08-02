@@ -3,6 +3,7 @@
 
 #include "mip_packet.h"
 #include "mip_offsets.h"
+#include "definitions/descriptors.h"
 
 #include <assert.h>
 
@@ -76,10 +77,23 @@ const uint8_t* mip_field_payload(const struct mip_field* field)
 ///
 bool mip_field_is_valid(const struct mip_field* field)
 {
-    return field->_field_descriptor != 0x00;
+    return field->_field_descriptor != MIP_INVALID_FIELD_DESCRIPTOR;
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Initialize a mip_field struct to an invalid/empty state.
+///
+/// Intended to be used with mip_field_next_in_packet. The field will not be
+/// valid (mip_field_is_valid will return false).
+///
+///@param field
+///
+void mip_field_init_empty(struct mip_field* field)
+{
+    mip_field_init(field, MIP_INVALID_DESCRIPTOR_SET, MIP_INVALID_FIELD_DESCRIPTOR, NULL, 0);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Constructs a %mip_field from a pointer to the heaader.
@@ -147,7 +161,7 @@ struct mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_
 ///
 ///@returns A mip_field struct with the first field from the packet.
 ///
-struct mip_field mip_field_from_packet(const struct mip_packet* packet)
+struct mip_field mip_field_first_from_packet(const struct mip_packet* packet)
 {
     return mip_field_from_header_ptr( mip_packet_payload(packet), mip_packet_payload_length(packet), mip_packet_descriptor_set(packet) );
 }
@@ -185,3 +199,34 @@ bool mip_field_next(struct mip_field* field)
     return mip_field_is_valid(field);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Iterates over all fields in a packet.
+///
+///@param field
+///       An initialized mip_field struct. This will be updated to the next
+///       field in the packet, if one exists. Otherwise it will be invalid.
+///@param packet
+///       A valid MIP packet.
+///
+///@returns true if another field exists.
+///@returns false if there are no more fields.
+///
+///Example usage:
+///@code{.cpp}
+/// struct mip_field field;
+/// mip_field_init_empty(&field);
+/// while( mip_field_next_in_packet(&field, packet) )
+/// {
+///   // Do something with the field.
+/// }
+///@endcode
+///
+bool mip_field_next_in_packet(struct mip_field* field, const struct mip_packet* packet)
+{
+    if( field->_remaining_length > 0 )
+        *field = mip_field_next_after(field);
+    else
+        *field = mip_field_first_from_packet(packet);
+
+    return mip_field_is_valid(field);
+}
