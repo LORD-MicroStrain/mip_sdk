@@ -51,6 +51,9 @@ const char* mip_cmd_result_to_string(mip_cmd_result result);
 
 bool mip_cmd_result_is_finished(mip_cmd_result result);
 
+bool mip_cmd_result_is_reply(mip_cmd_result result);
+bool mip_cmd_result_is_status(mip_cmd_result result);
+
 
 #ifdef __cplusplus
 } // extern "C"
@@ -81,9 +84,14 @@ struct MipCmdResult
     MipCmdResult(C::mip_ack ack)           : value(ack)    {}
     MipCmdResult(C::mip_cmd_status status) : value(status) {}
 
+    MipCmdResult& operator=(const MipCmdResult& other) = default;
+    MipCmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
+
     // operator bool() const { return value == C::MIP_ACK_OK; }
-    // operator void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
+    operator const void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
     bool operator!() const { return value == C::MIP_ACK_OK; }
+    operator C::mip_cmd_result&() { return value; }
+    operator C::mip_cmd_result() const { return value; }
 
     bool operator==(MipCmdResult other) const { return value == other.value; }
     bool operator!=(MipCmdResult other) const { return value != other.value; }
@@ -93,6 +101,8 @@ struct MipCmdResult
 
     const char* name() const { return C::mip_cmd_result_to_string(value); }
 
+    bool isReplyCode() const { return C::mip_cmd_result_is_reply(value); }
+    bool isStatusCode() const { return C::mip_cmd_result_is_status(value); }
     bool isFinished() const { return C::mip_cmd_result_is_finished(value); }
 };
 
