@@ -170,11 +170,43 @@ if(BUILD_DOCUMENTATION)
 
 endif(BUILD_DOCUMENTATION)
 
+#
+# Packaging
+#
 
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
-# set(ALL_MIP_HEADERS ${ALL_MIP_SOURCES})
-# list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "\.h$")
+set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mscl")
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-embedded-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
+    INSTALL_DESTINATION "${CONFIG_EXPORT_DIR}"
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CONFIG_EXPORT_DIR
+)
+unset(EXPORT_TARGETS)
+
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    COMPATIBILITY AnyNewerVersion
+)
+
+#
+# Installation
+#
 
 install(DIRECTORY "${SRC_DIR}/mscl" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
-install(TARGETS mip ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
+install(TARGETS mip EXPORT mscl-embedded-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
+
+install(EXPORT
+    mscl-embedded-targets
+    DESTINATION "${CONFIG_EXPORT_DIR}"
+)
+
+install(FILES
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
+    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    DESTINATION "${CONFIG_EXPORT_DIR}"
+)
+
