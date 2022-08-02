@@ -87,6 +87,13 @@ struct MipFunctionSelector
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &value); }
 
+    MipFunctionSelector() = default;
+    MipFunctionSelector(const MipFunctionSelector&) = default;
+    MipFunctionSelector(C::mip_function_selector fn) : value(fn) {}
+
+    MipFunctionSelector& operator=(const MipFunctionSelector&) = default;
+    MipFunctionSelector& operator=(C::mip_function_selector fn) { value=fn; return *this; }
+
     operator C::mip_function_selector() const { return value; }
     operator C::mip_function_selector&() { return value; }
 
