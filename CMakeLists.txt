@@ -19,6 +19,13 @@ include_directories(
 add_subdirectory("${EXT_DIR}")
 
 
+#
+# Build options
+#
+
+option(MSCL_TIMESTAMP_TYPE, "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+
+
 set(MSCL_DIR "${SRC_DIR}/mscl")
 
 #
@@ -94,6 +101,10 @@ set(MIPDEF_SOURCES
 set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
 add_library(mip ${ALL_MIP_SOURCES})
+
+if(${MSCL_TIMESTAMP_TYPE})
+    add_compile_definitions("MSCL_TIMESTAMP_TYPE=${MSCL_TIMESTAMP_TYPE}")
+endif()
 
 if(MSVC)
   target_compile_options(mip PRIVATE /W4)
