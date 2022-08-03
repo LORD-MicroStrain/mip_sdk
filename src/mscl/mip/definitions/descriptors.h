@@ -6,6 +6,8 @@
 
 #ifdef __cplusplus
 
+#include "../../utils/enum_wrapper.hpp"
+
 #include <tuple>
 #include <type_traits>
 
@@ -76,7 +78,8 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-struct MipFunctionSelector
+
+struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
 {
     static const C::mip_function_selector WRITE = C::MIP_FUNCTION_WRITE;
     static const C::mip_function_selector READ  = C::MIP_FUNCTION_READ;
@@ -85,19 +88,7 @@ struct MipFunctionSelector
     static const C::mip_function_selector RESET = C::MIP_FUNCTION_RESET;
 
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &value); }
-
-    MipFunctionSelector() = default;
-    MipFunctionSelector(const MipFunctionSelector&) = default;
-    MipFunctionSelector(C::mip_function_selector fn) : value(fn) {}
-
-    MipFunctionSelector& operator=(const MipFunctionSelector&) = default;
-    MipFunctionSelector& operator=(C::mip_function_selector fn) { value=fn; return *this; }
-
-    operator C::mip_function_selector() const { return value; }
-    operator C::mip_function_selector&() { return value; }
-
-    C::mip_function_selector value;
+    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &_value); }
 };
 
 using MipDescriptorRate = C::mip_descriptor_rate;
