@@ -63,21 +63,21 @@ struct MipCmdResult
 {
     enum
     {
-        ERROR            = C::MIP_STATUS_ERROR,
-        CANCELLED        = C::MIP_STATUS_CANCELLED,
-        TIMEDOUT         = C::MIP_STATUS_TIMEDOUT,
-        WAITING          = C::MIP_STATUS_WAITING,
-        PENDING          = C::MIP_STATUS_PENDING,
-        NONE             = C::MIP_STATUS_NONE,
-        OK               = C::MIP_ACK_OK,
-        UNKNOWN_CMD      = C::MIP_NACK_UNKNOWN_CMD,
-        INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM,
-        INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM,
-        COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED,
-        COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT,
+        STATUS_ERROR          = C::MIP_STATUS_ERROR,
+        STATUS_CANCELLED      = C::MIP_STATUS_CANCELLED,
+        STATUS_TIMEDOUT       = C::MIP_STATUS_TIMEDOUT,
+        STATUS_WAITING        = C::MIP_STATUS_WAITING,
+        STATUS_PENDING        = C::MIP_STATUS_PENDING,
+        STATUS_NONE           = C::MIP_STATUS_NONE,
+        ACK_OK                = C::MIP_ACK_OK,
+        NACK_UNKNOWN_CMD      = C::MIP_NACK_UNKNOWN_CMD,
+        NACK_INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM,
+        NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM,
+        NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED,
+        NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT,
     };
 
-    C::mip_cmd_result value = NONE;
+    C::mip_cmd_result value = STATUS_NONE;
 
     MipCmdResult() : value(C::MIP_ACK_OK) {}
     MipCmdResult(C::mip_cmd_result result) : value(result) {}
