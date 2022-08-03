@@ -28,8 +28,8 @@ enum
 {
     MIP_FILTER_DATA_DESC_SET                                         = 0x82,
     
-    MIP_DATA_DESC_FILTER_LLH_POS                                     = 0x01,
-    MIP_DATA_DESC_FILTER_NED_VEL                                     = 0x02,
+    MIP_DATA_DESC_FILTER_POS_LLH                                     = 0x01,
+    MIP_DATA_DESC_FILTER_VEL_NED                                     = 0x02,
     MIP_DATA_DESC_FILTER_ATT_QUATERNION                              = 0x03,
     MIP_DATA_DESC_FILTER_ATT_MATRIX                                  = 0x04,
     MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES                            = 0x05,
@@ -210,38 +210,38 @@ size_t extract_mip_gnss_aid_status_flags(const uint8_t* buffer, size_t bufferSiz
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup llh_pos  LLH Position
+///@defgroup position_llh  LLH Position
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
 
-struct mip_filter_llh_pos_data
+struct mip_filter_position_llh_data
 {
     double                                            latitude;
     double                                            longitude;
     double                                            ellipsoid_height;
     uint16_t                                          valid_flags;
 };
-size_t insert_mip_filter_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_llh_pos_data* self);
-size_t extract_mip_filter_llh_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_llh_pos_data* self);
+size_t insert_mip_filter_position_llh_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_position_llh_data* self);
+size_t extract_mip_filter_position_llh_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_position_llh_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ned_velocity  None
+///@defgroup velocity_ned  None
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
 
-struct mip_filter_ned_velocity_data
+struct mip_filter_velocity_ned_data
 {
     float                                             north;
     float                                             east;
     float                                             down;
     uint16_t                                          valid_flags;
 };
-size_t insert_mip_filter_ned_velocity_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ned_velocity_data* self);
-size_t extract_mip_filter_ned_velocity_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ned_velocity_data* self);
+size_t insert_mip_filter_velocity_ned_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_velocity_ned_data* self);
+size_t extract_mip_filter_velocity_ned_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_velocity_ned_data* self);
 
 ///@}
 ///
@@ -347,38 +347,38 @@ size_t extract_mip_filter_accel_bias_data(const uint8_t* buffer, size_t bufferSi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup llh_pos_uncertainty  LLH Position Uncertainty
+///@defgroup position_llh_uncertainty  LLH Position Uncertainty
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
 
-struct mip_filter_llh_pos_uncertainty_data
+struct mip_filter_position_llh_uncertainty_data
 {
     float                                             north;
     float                                             east;
     float                                             down;
     uint16_t                                          valid_flags;
 };
-size_t insert_mip_filter_llh_pos_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_llh_pos_uncertainty_data* self);
-size_t extract_mip_filter_llh_pos_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_llh_pos_uncertainty_data* self);
+size_t insert_mip_filter_position_llh_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_position_llh_uncertainty_data* self);
+size_t extract_mip_filter_position_llh_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_position_llh_uncertainty_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ned_vel_uncertainty  NED Velocity Uncertainty
+///@defgroup velocity_ned_uncertainty  NED Velocity Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
 
-struct mip_filter_ned_vel_uncertainty_data
+struct mip_filter_velocity_ned_uncertainty_data
 {
     float                                             north;
     float                                             east;
     float                                             down;
     uint16_t                                          valid_flags;
 };
-size_t insert_mip_filter_ned_vel_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ned_vel_uncertainty_data* self);
-size_t extract_mip_filter_ned_vel_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ned_vel_uncertainty_data* self);
+size_t insert_mip_filter_velocity_ned_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_velocity_ned_uncertainty_data* self);
+size_t extract_mip_filter_velocity_ned_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_velocity_ned_uncertainty_data* self);
 
 ///@}
 ///
@@ -1223,35 +1223,35 @@ namespace FilterData {
 static const uint8_t DESCRIPTOR_SET = MIP_FILTER_DATA_DESC_SET;
 
 
-struct LlhPos : C::mip_filter_llh_pos_data
+struct PositionLlh : C::mip_filter_position_llh_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_LLH_POS;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_POS_LLH;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_filter_llh_pos_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_filter_position_llh_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_llh_pos_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_filter_position_llh_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-struct NedVelocity : C::mip_filter_ned_velocity_data
+struct VelocityNed : C::mip_filter_velocity_ned_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_NED_VEL;
+    static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_VEL_NED;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_filter_ned_velocity_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_filter_velocity_ned_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ned_velocity_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_filter_velocity_ned_data(buffer, bufferSize, offset, this);
     }
 };
 
@@ -1342,35 +1342,35 @@ struct AccelBias : C::mip_filter_accel_bias_data
 
 
 
-struct LlhPosUncertainty : C::mip_filter_llh_pos_uncertainty_data
+struct PositionLlhUncertainty : C::mip_filter_position_llh_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_POS_UNCERTAINTY;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_filter_position_llh_uncertainty_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_llh_pos_uncertainty_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_filter_position_llh_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 
 
 
-struct NedVelUncertainty : C::mip_filter_ned_vel_uncertainty_data
+struct VelocityNedUncertainty : C::mip_filter_velocity_ned_uncertainty_data
 {
     static const uint8_t descriptorSet = MIP_FILTER_DATA_DESC_SET;
     static const uint8_t fieldDescriptor = MIP_DATA_DESC_FILTER_VEL_UNCERTAINTY;
     
     size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
     {
-        return C::insert_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, this);
+        return C::insert_mip_filter_velocity_ned_uncertainty_data(buffer, bufferSize, offset, this);
     }
     size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
     {
-        return C::extract_mip_filter_ned_vel_uncertainty_data(buffer, bufferSize, offset, this);
+        return C::extract_mip_filter_velocity_ned_uncertainty_data(buffer, bufferSize, offset, this);
     }
 };
 

@@ -98,7 +98,7 @@ size_t extract_mip_gnss_aid_status_flags(const uint8_t* buffer, size_t bufferSiz
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_filter_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_llh_pos_data* self)
+size_t insert_mip_filter_position_llh_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_position_llh_data* self)
 {
     offset = insert_double(buffer, bufferSize, offset, self->latitude);
     offset = insert_double(buffer, bufferSize, offset, self->longitude);
@@ -108,7 +108,7 @@ size_t insert_mip_filter_llh_pos_data(uint8_t* buffer, size_t bufferSize, size_t
     return offset;
 }
 
-size_t extract_mip_filter_llh_pos_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_llh_pos_data* self)
+size_t extract_mip_filter_position_llh_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_position_llh_data* self)
 {
     offset = extract_double(buffer, bufferSize, offset, &self->latitude);
     offset = extract_double(buffer, bufferSize, offset, &self->longitude);
@@ -120,7 +120,7 @@ size_t extract_mip_filter_llh_pos_data(const uint8_t* buffer, size_t bufferSize,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_filter_ned_velocity_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ned_velocity_data* self)
+size_t insert_mip_filter_velocity_ned_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_velocity_ned_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->north);
     offset = insert_float(buffer, bufferSize, offset, self->east);
@@ -130,7 +130,7 @@ size_t insert_mip_filter_ned_velocity_data(uint8_t* buffer, size_t bufferSize, s
     return offset;
 }
 
-size_t extract_mip_filter_ned_velocity_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ned_velocity_data* self)
+size_t extract_mip_filter_velocity_ned_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_velocity_ned_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->north);
     offset = extract_float(buffer, bufferSize, offset, &self->east);
@@ -244,7 +244,7 @@ size_t extract_mip_filter_accel_bias_data(const uint8_t* buffer, size_t bufferSi
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_filter_llh_pos_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_llh_pos_uncertainty_data* self)
+size_t insert_mip_filter_position_llh_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_position_llh_uncertainty_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->north);
     offset = insert_float(buffer, bufferSize, offset, self->east);
@@ -254,7 +254,7 @@ size_t insert_mip_filter_llh_pos_uncertainty_data(uint8_t* buffer, size_t buffer
     return offset;
 }
 
-size_t extract_mip_filter_llh_pos_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_llh_pos_uncertainty_data* self)
+size_t extract_mip_filter_position_llh_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_position_llh_uncertainty_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->north);
     offset = extract_float(buffer, bufferSize, offset, &self->east);
@@ -266,7 +266,7 @@ size_t extract_mip_filter_llh_pos_uncertainty_data(const uint8_t* buffer, size_t
 
 
 ////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_filter_ned_vel_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_ned_vel_uncertainty_data* self)
+size_t insert_mip_filter_velocity_ned_uncertainty_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_filter_velocity_ned_uncertainty_data* self)
 {
     offset = insert_float(buffer, bufferSize, offset, self->north);
     offset = insert_float(buffer, bufferSize, offset, self->east);
@@ -276,7 +276,7 @@ size_t insert_mip_filter_ned_vel_uncertainty_data(uint8_t* buffer, size_t buffer
     return offset;
 }
 
-size_t extract_mip_filter_ned_vel_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_ned_vel_uncertainty_data* self)
+size_t extract_mip_filter_velocity_ned_uncertainty_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_filter_velocity_ned_uncertainty_data* self)
 {
     offset = extract_float(buffer, bufferSize, offset, &self->north);
     offset = extract_float(buffer, bufferSize, offset, &self->east);
