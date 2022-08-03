@@ -69,7 +69,7 @@ int main(int argc, const char* argv[])
         uint16_t base_rate;
         result = mscl::TdmCommands::getBaseRate(*device, mscl::MIP_SENSOR_DATA_DESC_SET, base_rate);
 
-        if( result != mscl::MipCmdResult::OK )
+        if( result != mscl::MipCmdResult::ACK_OK )
             return fprintf(stderr, "Failed to get base rate: %s (%d)\n", result.name(), result.value), 1;
 
         // Set the message format to stream at 100 Hz.
@@ -85,13 +85,13 @@ int main(int argc, const char* argv[])
 
         result = mscl::TdmCommands::writeMessageFormat(*device, mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size(), descriptors.data());
 
-        if( result == mscl::MipCmdResult::COMMAND_FAILED )
+        if( result == mscl::MipCmdResult::NACK_COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
             result = mscl::TdmCommands::writeMessageFormat(*device, mscl::MIP_SENSOR_DATA_DESC_SET, descriptors.size()-1, descriptors.data());
         }
-        if( result != mscl::MipCmdResult::OK )
+        if( result != mscl::MipCmdResult::ACK_OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
 
         // Register some callbacks.
@@ -107,13 +107,13 @@ int main(int argc, const char* argv[])
         // Enable the data stream and resume the device.
 
         result = mscl::TdmCommands::writeDatastreamControl(*device, mscl::MIP_SENSOR_DATA_DESC_SET, true);
-        if( result != mscl::MipCmdResult::OK )
+        if( result != mscl::MipCmdResult::ACK_OK )
             return fprintf(stderr, "Failed to enable datastream: %s (%d)\n", result.name(), result.value), 1;
 
         // Resume the device to ensure it's streaming.
 
         result = mscl::BaseCommands::resume(*device);
-        if( result != mscl::MipCmdResult::OK )
+        if( result != mscl::MipCmdResult::ACK_OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", result.name(), result.value), 1;
 
         // Process data for 3 seconds.
@@ -126,7 +126,7 @@ int main(int argc, const char* argv[])
         } while( getCurrentTimestamp() - start_time < 3000 );
 
         result = mscl::BaseCommands::setIdle(*device);
-        if( result != mscl::MipCmdResult::OK )
+        if( result != mscl::MipCmdResult::ACK_OK )
             return fprintf(stderr, "Failed to idle device: %s (%d)\n", result.name(), result.value), 1;
 
         return 0;
