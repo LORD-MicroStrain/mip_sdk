@@ -35,7 +35,9 @@ void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type 
 
     printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
-    for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
+    struct mip_field field;
+    mip_field_init_empty(&field);
+    while( mip_field_next_in_packet(&field, packet) );
     {
         printf(" %02X", mip_field_field_descriptor(&field));
     }
@@ -224,12 +226,12 @@ int main(int argc, const char* argv[])
         { MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
     };
 
-    result = write_mip_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 3, descriptors);
+    result = mip_3dm_write_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 3, descriptors);
     if( result == MIP_NACK_INVALID_PARAM )
     {
         // Failed to set message format - maybe this device doesn't have a magnetometer.
         // Try again without the last descriptor (scaled mag).
-        result = write_mip_3dm_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 2, descriptors);
+        result = mip_3dm_write_message_format(&device, MIP_SENSOR_DATA_DESC_SET, 2, descriptors);
     }
     if( result != MIP_ACK_OK )
     {
