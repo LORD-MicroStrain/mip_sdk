@@ -47,6 +47,31 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets an optional user data pointer which can be retrieved later.
+///
+///@param device
+///@param pointer
+///
+void mip_interface_set_user_pointer(struct mip_interface* device, void* pointer)
+{
+    device->_user_pointer = pointer;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Retrieves the pointer set by mip_interface_set_user_pointer().
+///
+///@param device
+///
+///@returns The pointer value.
+///
+void* mip_interface_user_pointer(const struct mip_interface* device)
+{
+    return device->_user_pointer;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the maximum number of packets to parser per update call.
 ///
