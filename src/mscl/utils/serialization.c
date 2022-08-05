@@ -3,8 +3,10 @@
 
 #include <string.h>
 
+#ifdef __cplusplus
+namespace mscl {
+#endif
 
-#define SWAP(x,y) do { uint8_t tmp=(x); (x)=(y); (y)=tmp; } while(false)
 
 static void pack(uint8_t* buffer, const void* value, size_t size)
 {
@@ -64,3 +66,7 @@ EXTRACT_MACRO(s32,    int32_t )
 EXTRACT_MACRO(s64,    int64_t )
 EXTRACT_MACRO(float,  float   )
 EXTRACT_MACRO(double, double  )
+
+#ifdef __cplusplus
+} // namespace mscl
+#endif
