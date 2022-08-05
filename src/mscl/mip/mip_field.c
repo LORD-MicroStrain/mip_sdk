@@ -223,7 +223,7 @@ bool mip_field_next(struct mip_field* field)
 ///
 bool mip_field_next_in_packet(struct mip_field* field, const struct mip_packet* packet)
 {
-    if( field->_remaining_length > 0 )
+    if( field->_descriptor_set != MIP_INVALID_DESCRIPTOR_SET )
         *field = mip_field_next_after(field);
     else
         *field = mip_field_first_from_packet(packet);
