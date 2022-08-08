@@ -4,6 +4,7 @@
 #include <mscl/mip/mip_interface.h>
 #include <mscl/mip/mip_result.h>
 #include <mscl/types.h>
+#include <mscl/utils/serialization.h>
 
 #include <mscl/mip/definitions/descriptors.h>
 #include <mscl/mip/definitions/commands_base.h>
@@ -48,10 +49,12 @@ void handleAccel(void* user, const struct mip_field* field, timestamp_type times
 {
     (void)user;
     struct mip_sensor_scaled_accel_data data;
+    struct mip_serializer serializer;
 
-    size_t readBytes = extract_mip_sensor_scaled_accel_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
+    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
+    extract_mip_sensor_scaled_accel_data(&serializer, &data);
 
-    if(readBytes == mip_field_payload_length(field))
+    if(mip_serializer_ok(&serializer))
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 }
 
@@ -59,10 +62,12 @@ void handleGyro(void* user, const struct mip_field* field, timestamp_type timest
 {
     (void)user;
     struct mip_sensor_scaled_gyro_data data;
+    struct mip_serializer serializer;
+    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
 
-    size_t readBytes = extract_mip_sensor_scaled_gyro_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
+    extract_mip_sensor_scaled_gyro_data(&serializer, &data);
 
-    if(readBytes == mip_field_payload_length(field))
+    if(mip_serializer_ok(&serializer))
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
@@ -70,10 +75,12 @@ void handleMag(void* user, const struct mip_field* field, timestamp_type timesta
 {
     (void)user;
     struct mip_sensor_scaled_mag_data data;
+    struct mip_serializer serializer;
 
-    size_t readBytes = extract_mip_sensor_scaled_mag_data(mip_field_payload(field), mip_field_payload_length(field), 0, &data);
+    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
+    extract_mip_sensor_scaled_mag_data(&serializer, &data);
 
-    if(readBytes == mip_field_payload_length(field))
+    if(mip_serializer_ok(&serializer))
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 

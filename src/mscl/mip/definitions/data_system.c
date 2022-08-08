@@ -9,8 +9,12 @@
 
 #ifdef __cplusplus
 namespace mscl {
+namespace C {
 extern "C" {
+
 #endif // __cplusplus
+struct mip_interface;
+struct mip_serializer;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,78 +26,56 @@ extern "C" {
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_system_built_in_test_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_built_in_test_data* self)
+void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, const struct mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
-        offset = insert_u8(buffer, bufferSize, offset, self->result[i]);
-    
-    return offset;
+        insert_u8(serializer, self->result[i]);
 }
 
-size_t extract_mip_system_built_in_test_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_built_in_test_data* self)
+void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, struct mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
-        offset = extract_u8(buffer, bufferSize, offset, &self->result[i]);
-    
-    return offset;
+        extract_u8(serializer, &self->result[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_system_time_sync_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_time_sync_status_data* self)
+void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self)
 {
-    offset = insert_bool(buffer, bufferSize, offset, self->time_sync);
-    offset = insert_u8(buffer, bufferSize, offset, self->last_pps_rcvd);
-    
-    return offset;
+    insert_bool(serializer, self->time_sync);
+    insert_u8(serializer, self->last_pps_rcvd);
 }
 
-size_t extract_mip_system_time_sync_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_time_sync_status_data* self)
+void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, struct mip_system_time_sync_status_data* self)
 {
-    offset = extract_bool(buffer, bufferSize, offset, &self->time_sync);
-    offset = extract_u8(buffer, bufferSize, offset, &self->last_pps_rcvd);
-    
-    return offset;
+    extract_bool(serializer, &self->time_sync);
+    extract_u8(serializer, &self->last_pps_rcvd);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_system_gpio_state_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_state_data* self)
+void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self)
 {
-    offset = insert_u8(buffer, bufferSize, offset, self->states);
-    
-    return offset;
+    insert_u8(serializer, self->states);
 }
 
-size_t extract_mip_system_gpio_state_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_state_data* self)
+void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struct mip_system_gpio_state_data* self)
 {
-    offset = extract_u8(buffer, bufferSize, offset, &self->states);
-    
-    return offset;
+    extract_u8(serializer, &self->states);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_system_gpio_analog_value_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_analog_value_data* self)
+void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self)
 {
-    offset = insert_u8(buffer, bufferSize, offset, self->gpio_id);
-    offset = insert_float(buffer, bufferSize, offset, self->value);
-    
-    return offset;
+    insert_u8(serializer, self->gpio_id);
+    insert_float(serializer, self->value);
 }
 
-size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_analog_value_data* self)
+void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, struct mip_system_gpio_analog_value_data* self)
 {
-    offset = extract_u8(buffer, bufferSize, offset, &self->gpio_id);
-    offset = extract_float(buffer, bufferSize, offset, &self->value);
-    
-    return offset;
+    extract_u8(serializer, &self->gpio_id);
+    extract_float(serializer, &self->value);
 }
-
 
 
 #ifdef __cplusplus
-} // extern "C"
+} // namespace C
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

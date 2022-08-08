@@ -9,8 +9,12 @@
 
 #ifdef __cplusplus
 namespace mscl {
+namespace C {
 extern "C" {
+
 #endif // __cplusplus
+struct mip_interface;
+struct mip_serializer;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,448 +26,286 @@ extern "C" {
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_raw_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_accel_data* self)
+void insert_mip_sensor_raw_accel_data(struct mip_serializer* serializer, const struct mip_sensor_raw_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->raw_accel[i]);
-    
-    return offset;
+        insert_float(serializer, self->raw_accel[i]);
 }
 
-size_t extract_mip_sensor_raw_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_accel_data* self)
+void extract_mip_sensor_raw_accel_data(struct mip_serializer* serializer, struct mip_sensor_raw_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->raw_accel[i]);
-    
-    return offset;
+        extract_float(serializer, &self->raw_accel[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_raw_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_gyro_data* self)
+void insert_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, const struct mip_sensor_raw_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->raw_gyro[i]);
-    
-    return offset;
+        insert_float(serializer, self->raw_gyro[i]);
 }
 
-size_t extract_mip_sensor_raw_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_gyro_data* self)
+void extract_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, struct mip_sensor_raw_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->raw_gyro[i]);
-    
-    return offset;
+        extract_float(serializer, &self->raw_gyro[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_raw_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_mag_data* self)
+void insert_mip_sensor_raw_mag_data(struct mip_serializer* serializer, const struct mip_sensor_raw_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->raw_mag[i]);
-    
-    return offset;
+        insert_float(serializer, self->raw_mag[i]);
 }
 
-size_t extract_mip_sensor_raw_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_mag_data* self)
+void extract_mip_sensor_raw_mag_data(struct mip_serializer* serializer, struct mip_sensor_raw_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->raw_mag[i]);
-    
-    return offset;
+        extract_float(serializer, &self->raw_mag[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_raw_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_raw_pressure_data* self)
+void insert_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, const struct mip_sensor_raw_pressure_data* self)
 {
-    offset = insert_float(buffer, bufferSize, offset, self->raw_pressure);
-    
-    return offset;
+    insert_float(serializer, self->raw_pressure);
 }
 
-size_t extract_mip_sensor_raw_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_raw_pressure_data* self)
+void extract_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, struct mip_sensor_raw_pressure_data* self)
 {
-    offset = extract_float(buffer, bufferSize, offset, &self->raw_pressure);
-    
-    return offset;
+    extract_float(serializer, &self->raw_pressure);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_scaled_accel_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_accel_data* self)
+void insert_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->scaled_accel[i]);
-    
-    return offset;
+        insert_float(serializer, self->scaled_accel[i]);
 }
 
-size_t extract_mip_sensor_scaled_accel_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_accel_data* self)
+void extract_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, struct mip_sensor_scaled_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->scaled_accel[i]);
-    
-    return offset;
+        extract_float(serializer, &self->scaled_accel[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_scaled_gyro_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_gyro_data* self)
+void insert_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->scaled_gyro[i]);
-    
-    return offset;
+        insert_float(serializer, self->scaled_gyro[i]);
 }
 
-size_t extract_mip_sensor_scaled_gyro_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_gyro_data* self)
+void extract_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, struct mip_sensor_scaled_gyro_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->scaled_gyro[i]);
-    
-    return offset;
+        extract_float(serializer, &self->scaled_gyro[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_scaled_mag_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_mag_data* self)
+void insert_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->scaled_mag[i]);
-    
-    return offset;
+        insert_float(serializer, self->scaled_mag[i]);
 }
 
-size_t extract_mip_sensor_scaled_mag_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_mag_data* self)
+void extract_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, struct mip_sensor_scaled_mag_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->scaled_mag[i]);
-    
-    return offset;
+        extract_float(serializer, &self->scaled_mag[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_scaled_pressure_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_scaled_pressure_data* self)
+void insert_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_pressure_data* self)
 {
-    offset = insert_float(buffer, bufferSize, offset, self->scaled_pressure);
-    
-    return offset;
+    insert_float(serializer, self->scaled_pressure);
 }
 
-size_t extract_mip_sensor_scaled_pressure_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_scaled_pressure_data* self)
+void extract_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, struct mip_sensor_scaled_pressure_data* self)
 {
-    offset = extract_float(buffer, bufferSize, offset, &self->scaled_pressure);
-    
-    return offset;
+    extract_float(serializer, &self->scaled_pressure);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_delta_theta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_theta_data* self)
+void insert_mip_sensor_delta_theta_data(struct mip_serializer* serializer, const struct mip_sensor_delta_theta_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->delta_theta[i]);
-    
-    return offset;
+        insert_float(serializer, self->delta_theta[i]);
 }
 
-size_t extract_mip_sensor_delta_theta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_theta_data* self)
+void extract_mip_sensor_delta_theta_data(struct mip_serializer* serializer, struct mip_sensor_delta_theta_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->delta_theta[i]);
-    
-    return offset;
+        extract_float(serializer, &self->delta_theta[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_delta_velocity_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_delta_velocity_data* self)
+void insert_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, const struct mip_sensor_delta_velocity_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->delta_velocity[i]);
-    
-    return offset;
+        insert_float(serializer, self->delta_velocity[i]);
 }
 
-size_t extract_mip_sensor_delta_velocity_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_delta_velocity_data* self)
+void extract_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, struct mip_sensor_delta_velocity_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->delta_velocity[i]);
-    
-    return offset;
+        extract_float(serializer, &self->delta_velocity[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_comp_orientation_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_matrix_data* self)
+void insert_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* serializer, const struct mip_sensor_comp_orientation_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->m[i]);
-    
-    return offset;
+        insert_float(serializer, self->m[i]);
 }
 
-size_t extract_mip_sensor_comp_orientation_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_matrix_data* self)
+void extract_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* serializer, struct mip_sensor_comp_orientation_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
-    
-    return offset;
+        extract_float(serializer, &self->m[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_comp_quaternion_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_quaternion_data* self)
+void insert_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, const struct mip_sensor_comp_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->q[i]);
-    
-    return offset;
+        insert_float(serializer, self->q[i]);
 }
 
-size_t extract_mip_sensor_comp_quaternion_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_quaternion_data* self)
+void extract_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, struct mip_sensor_comp_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->q[i]);
-    
-    return offset;
+        extract_float(serializer, &self->q[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_comp_euler_angles_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_euler_angles_data* self)
+void insert_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer, const struct mip_sensor_comp_euler_angles_data* self)
 {
-    offset = insert_float(buffer, bufferSize, offset, self->roll);
-    offset = insert_float(buffer, bufferSize, offset, self->pitch);
-    offset = insert_float(buffer, bufferSize, offset, self->yaw);
-    
-    return offset;
+    insert_float(serializer, self->roll);
+    insert_float(serializer, self->pitch);
+    insert_float(serializer, self->yaw);
 }
 
-size_t extract_mip_sensor_comp_euler_angles_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_euler_angles_data* self)
+void extract_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer, struct mip_sensor_comp_euler_angles_data* self)
 {
-    offset = extract_float(buffer, bufferSize, offset, &self->roll);
-    offset = extract_float(buffer, bufferSize, offset, &self->pitch);
-    offset = extract_float(buffer, bufferSize, offset, &self->yaw);
-    
-    return offset;
+    extract_float(serializer, &self->roll);
+    extract_float(serializer, &self->pitch);
+    extract_float(serializer, &self->yaw);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_comp_orientation_update_matrix_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_comp_orientation_update_matrix_data* self)
+void insert_mip_sensor_comp_orientation_update_matrix_data(struct mip_serializer* serializer, const struct mip_sensor_comp_orientation_update_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->m[i]);
-    
-    return offset;
+        insert_float(serializer, self->m[i]);
 }
 
-size_t extract_mip_sensor_comp_orientation_update_matrix_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_comp_orientation_update_matrix_data* self)
+void extract_mip_sensor_comp_orientation_update_matrix_data(struct mip_serializer* serializer, struct mip_sensor_comp_orientation_update_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->m[i]);
-    
-    return offset;
+        extract_float(serializer, &self->m[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_orientation_raw_temp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_orientation_raw_temp_data* self)
+void insert_mip_sensor_orientation_raw_temp_data(struct mip_serializer* serializer, const struct mip_sensor_orientation_raw_temp_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
-        offset = insert_u16(buffer, bufferSize, offset, self->raw_temp[i]);
-    
-    return offset;
+        insert_u16(serializer, self->raw_temp[i]);
 }
 
-size_t extract_mip_sensor_orientation_raw_temp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_orientation_raw_temp_data* self)
+void extract_mip_sensor_orientation_raw_temp_data(struct mip_serializer* serializer, struct mip_sensor_orientation_raw_temp_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
-        offset = extract_u16(buffer, bufferSize, offset, &self->raw_temp[i]);
-    
-    return offset;
+        extract_u16(serializer, &self->raw_temp[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_internal_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_internal_timestamp_data* self)
+void insert_mip_sensor_internal_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_internal_timestamp_data* self)
 {
-    offset = insert_u32(buffer, bufferSize, offset, self->counts);
-    
-    return offset;
+    insert_u32(serializer, self->counts);
 }
 
-size_t extract_mip_sensor_internal_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_internal_timestamp_data* self)
+void extract_mip_sensor_internal_timestamp_data(struct mip_serializer* serializer, struct mip_sensor_internal_timestamp_data* self)
 {
-    offset = extract_u32(buffer, bufferSize, offset, &self->counts);
-    
-    return offset;
+    extract_u32(serializer, &self->counts);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_pps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_pps_timestamp_data* self)
+void insert_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_pps_timestamp_data* self)
 {
-    offset = insert_u32(buffer, bufferSize, offset, self->seconds);
-    offset = insert_u32(buffer, bufferSize, offset, self->useconds);
-    
-    return offset;
+    insert_u32(serializer, self->seconds);
+    insert_u32(serializer, self->useconds);
 }
 
-size_t extract_mip_sensor_pps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_pps_timestamp_data* self)
+void extract_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, struct mip_sensor_pps_timestamp_data* self)
 {
-    offset = extract_u32(buffer, bufferSize, offset, &self->seconds);
-    offset = extract_u32(buffer, bufferSize, offset, &self->useconds);
-    
-    return offset;
+    extract_u32(serializer, &self->seconds);
+    extract_u32(serializer, &self->useconds);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_gps_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_gps_timestamp_data_valid_flags self)
+void insert_mip_sensor_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_gps_timestamp_data* self)
 {
-    return insert_u16(buffer, bufferSize, offset, self);
+    insert_double(serializer, self->tow);
+    insert_u16(serializer, self->week_number);
+    insert_mip_sensor_gps_timestamp_data_valid_flags(serializer, self->valid_flags);
 }
-size_t extract_mip_sensor_gps_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_gps_timestamp_data_valid_flags* self)
+
+void extract_mip_sensor_gps_timestamp_data(struct mip_serializer* serializer, struct mip_sensor_gps_timestamp_data* self)
 {
-    uint16_t tmp;
-    offset = extract_u16(buffer, bufferSize, offset, &tmp);
-    *self = tmp;
-    return offset;
+    extract_double(serializer, &self->tow);
+    extract_u16(serializer, &self->week_number);
+    extract_mip_sensor_gps_timestamp_data_valid_flags(serializer, &self->valid_flags);
 }
 
-
-size_t insert_mip_sensor_gps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_gps_timestamp_data* self)
+void insert_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, const struct mip_sensor_temperature_abs_data* self)
 {
-    offset = insert_double(buffer, bufferSize, offset, self->tow);
-    offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    offset = insert_mip_sensor_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
-    
-    return offset;
+    insert_float(serializer, self->min_temp);
+    insert_float(serializer, self->max_temp);
+    insert_float(serializer, self->mean_temp);
 }
 
-size_t extract_mip_sensor_gps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_gps_timestamp_data* self)
+void extract_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, struct mip_sensor_temperature_abs_data* self)
 {
-    offset = extract_double(buffer, bufferSize, offset, &self->tow);
-    offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    offset = extract_mip_sensor_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
-    
-    return offset;
+    extract_float(serializer, &self->min_temp);
+    extract_float(serializer, &self->max_temp);
+    extract_float(serializer, &self->mean_temp);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_temperature_abs_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_temperature_abs_data* self)
-{
-    offset = insert_float(buffer, bufferSize, offset, self->min_temp);
-    offset = insert_float(buffer, bufferSize, offset, self->max_temp);
-    offset = insert_float(buffer, bufferSize, offset, self->mean_temp);
-    
-    return offset;
-}
-
-size_t extract_mip_sensor_temperature_abs_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_temperature_abs_data* self)
-{
-    offset = extract_float(buffer, bufferSize, offset, &self->min_temp);
-    offset = extract_float(buffer, bufferSize, offset, &self->max_temp);
-    offset = extract_float(buffer, bufferSize, offset, &self->mean_temp);
-    
-    return offset;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_up_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_up_vector_data* self)
+void insert_mip_sensor_up_vector_data(struct mip_serializer* serializer, const struct mip_sensor_up_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->up[i]);
-    
-    return offset;
+        insert_float(serializer, self->up[i]);
 }
 
-size_t extract_mip_sensor_up_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_up_vector_data* self)
+void extract_mip_sensor_up_vector_data(struct mip_serializer* serializer, struct mip_sensor_up_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->up[i]);
-    
-    return offset;
+        extract_float(serializer, &self->up[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_north_vector_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_north_vector_data* self)
+void insert_mip_sensor_north_vector_data(struct mip_serializer* serializer, const struct mip_sensor_north_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = insert_float(buffer, bufferSize, offset, self->north[i]);
-    
-    return offset;
+        insert_float(serializer, self->north[i]);
 }
 
-size_t extract_mip_sensor_north_vector_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_north_vector_data* self)
+void extract_mip_sensor_north_vector_data(struct mip_serializer* serializer, struct mip_sensor_north_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
-        offset = extract_float(buffer, bufferSize, offset, &self->north[i]);
-    
-    return offset;
+        extract_float(serializer, &self->north[i]);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_overrange_status_data_status(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_sensor_overrange_status_data_status self)
+void insert_mip_sensor_overrange_status_data(struct mip_serializer* serializer, const struct mip_sensor_overrange_status_data* self)
 {
-    return insert_u16(buffer, bufferSize, offset, self);
+    insert_mip_sensor_overrange_status_data_status(serializer, self->status);
 }
-size_t extract_mip_sensor_overrange_status_data_status(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_sensor_overrange_status_data_status* self)
+
+void extract_mip_sensor_overrange_status_data(struct mip_serializer* serializer, struct mip_sensor_overrange_status_data* self)
 {
-    uint16_t tmp;
-    offset = extract_u16(buffer, bufferSize, offset, &tmp);
-    *self = tmp;
-    return offset;
+    extract_mip_sensor_overrange_status_data_status(serializer, &self->status);
 }
 
-
-size_t insert_mip_sensor_overrange_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_overrange_status_data* self)
+void insert_mip_sensor_odometer_data_data(struct mip_serializer* serializer, const struct mip_sensor_odometer_data_data* self)
 {
-    offset = insert_mip_sensor_overrange_status_data_status(buffer, bufferSize, offset, self->status);
-    
-    return offset;
+    insert_float(serializer, self->speed);
+    insert_float(serializer, self->uncertainty);
+    insert_u16(serializer, self->valid_flags);
 }
 
-size_t extract_mip_sensor_overrange_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_overrange_status_data* self)
+void extract_mip_sensor_odometer_data_data(struct mip_serializer* serializer, struct mip_sensor_odometer_data_data* self)
 {
-    offset = extract_mip_sensor_overrange_status_data_status(buffer, bufferSize, offset, &self->status);
-    
-    return offset;
+    extract_float(serializer, &self->speed);
+    extract_float(serializer, &self->uncertainty);
+    extract_u16(serializer, &self->valid_flags);
 }
-
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_sensor_odometer_data_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_sensor_odometer_data_data* self)
-{
-    offset = insert_float(buffer, bufferSize, offset, self->speed);
-    offset = insert_float(buffer, bufferSize, offset, self->uncertainty);
-    offset = insert_u16(buffer, bufferSize, offset, self->valid_flags);
-    
-    return offset;
-}
-
-size_t extract_mip_sensor_odometer_data_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_sensor_odometer_data_data* self)
-{
-    offset = extract_float(buffer, bufferSize, offset, &self->speed);
-    offset = extract_float(buffer, bufferSize, offset, &self->uncertainty);
-    offset = extract_u16(buffer, bufferSize, offset, &self->valid_flags);
-    
-    return offset;
-}
-
 
 
 #ifdef __cplusplus
-} // extern "C"
+} // namespace C
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

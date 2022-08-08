@@ -18,7 +18,7 @@ int main(int argc, const char* argv[])
 
         mscl::C::mip_base_device_info device_info;
 
-        mscl::MipCmdResult result = mscl::BaseCommands::getDeviceInfo(*device, device_info);
+        mscl::MipCmdResult result = mscl::commands_base::getDeviceInfo(*device, device_info);
 
         if( result == mscl::C::MIP_ACK_OK )
         {

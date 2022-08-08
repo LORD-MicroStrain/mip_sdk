@@ -7,19 +7,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#ifdef __cplusplus
 namespace mscl {
-namespace C {
-extern "C" {
+class MipSerializer;
+namespace data_system {
 
-#endif // __cplusplus
+namespace C {
 struct mip_interface;
-struct mip_serializer;
+} // namespace C
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup system_data_c  SYSTEMData
+///@defgroup system_data_cpp  SYSTEMData
 ///
 ///@{
 
@@ -29,12 +28,12 @@ struct mip_serializer;
 
 enum 
 {
-    MIP_SYSTEM_DATA_DESC_SET               = 0xA0,
+    DESCRIPTOR_SET         = 0xA0,
     
-    MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST     = 0x01,
-    MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS  = 0x02,
-    MIP_DATA_DESC_SYSTEM_GPIO_STATE        = 0x03,
-    MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE = 0x04,
+    DATA_BUILT_IN_TEST     = 0x01,
+    DATA_TIME_SYNC_STATUS  = 0x02,
+    DATA_GPIO_STATE        = 0x03,
+    DATA_GPIO_ANALOG_VALUE = 0x04,
     
 };
 
@@ -48,7 +47,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_built_in_test  None
+///@defgroup cpp_built_in_test  None
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -71,35 +70,45 @@ enum
 ///
 ///@{
 
-struct mip_system_built_in_test_data
+struct BuiltInTest
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_BUILT_IN_TEST;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint8_t result[16];
     
 };
-void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, const struct mip_system_built_in_test_data* self);
-void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, struct mip_system_built_in_test_data* self);
+void insert(MipSerializer& serializer, const BuiltInTest& self);
+void extract(MipSerializer& serializer, BuiltInTest& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_time_sync_status  None
+///@defgroup cpp_time_sync_status  None
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
 
-struct mip_system_time_sync_status_data
+struct TimeSyncStatus
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_TIME_SYNC_STATUS;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     bool time_sync;
     uint8_t last_pps_rcvd;
     
 };
-void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self);
-void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, struct mip_system_time_sync_status_data* self);
+void insert(MipSerializer& serializer, const TimeSyncStatus& self);
+void extract(MipSerializer& serializer, TimeSyncStatus& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gpio_state  None
+///@defgroup cpp_gpio_state  None
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -122,31 +131,41 @@ void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer,
 ///
 ///@{
 
-struct mip_system_gpio_state_data
+struct GpioState
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_GPIO_STATE;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint8_t states;
     
 };
-void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self);
-void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struct mip_system_gpio_state_data* self);
+void insert(MipSerializer& serializer, const GpioState& self);
+void extract(MipSerializer& serializer, GpioState& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gpio_analog_value  None
+///@defgroup cpp_gpio_analog_value  None
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///
 ///@{
 
-struct mip_system_gpio_analog_value_data
+struct GpioAnalogValue
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_GPIO_ANALOG_VALUE;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint8_t gpio_id;
     float value;
     
 };
-void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self);
-void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, struct mip_system_gpio_analog_value_data* self);
+void insert(MipSerializer& serializer, const GpioAnalogValue& self);
+void extract(MipSerializer& serializer, GpioAnalogValue& self);
 
 ///@}
 ///
@@ -155,9 +174,6 @@ void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-#ifdef __cplusplus
-} // namespace C
+} // namespace data_system
 } // namespace mscl
-} // extern "C"
-#endif // __cplusplus
 

@@ -19,39 +19,52 @@ extern "C" {
 ///
 ///@{
 
-size_t insert_bool(uint8_t* buffer, size_t bufferSize, size_t offset, bool value);
-size_t insert_char(uint8_t* buffer, size_t bufferSize, size_t offset, char value);
+struct mip_serializer
+{
+    uint8_t* buffer;
+    size_t   buffer_size;
+    size_t   offset;
+};
 
-size_t insert_u8 (uint8_t* buffer, size_t bufferSize, size_t offset, uint8_t  value);
-size_t insert_u16(uint8_t* buffer, size_t bufferSize, size_t offset, uint16_t value);
-size_t insert_u32(uint8_t* buffer, size_t bufferSize, size_t offset, uint32_t value);
-size_t insert_u64(uint8_t* buffer, size_t bufferSize, size_t offset, uint64_t value);
-
-size_t insert_s8 (uint8_t* buffer, size_t bufferSize, size_t offset, int8_t  value);
-size_t insert_s16(uint8_t* buffer, size_t bufferSize, size_t offset, int16_t value);
-size_t insert_s32(uint8_t* buffer, size_t bufferSize, size_t offset, int32_t value);
-size_t insert_s64(uint8_t* buffer, size_t bufferSize, size_t offset, int64_t value);
-
-size_t insert_float (uint8_t* buffer, size_t bufferSize, size_t offset, float  value);
-size_t insert_double(uint8_t* buffer, size_t bufferSize, size_t offset, double value);
+void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
+void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
+bool mip_serializer_ok(const struct mip_serializer* serializer);
 
 
-size_t extract_bool(const uint8_t* buffer, size_t bufferSize, size_t offset, bool* value);
-size_t extract_char(const uint8_t* buffer, size_t bufferSize, size_t offset, char* value);
+void insert_bool(struct mip_serializer* serializer, bool value);
+void insert_char(struct mip_serializer* serializer, char value);
 
-size_t extract_u8 (const uint8_t* buffer, size_t bufferSize, size_t offset, uint8_t* value);
-size_t extract_u16(const uint8_t* buffer, size_t bufferSize, size_t offset, uint16_t* value);
-size_t extract_u32(const uint8_t* buffer, size_t bufferSize, size_t offset, uint32_t* value);
-size_t extract_u64(const uint8_t* buffer, size_t bufferSize, size_t offset, uint64_t* value);
+void insert_u8 (struct mip_serializer* serializer, uint8_t  value);
+void insert_u16(struct mip_serializer* serializer, uint16_t value);
+void insert_u32(struct mip_serializer* serializer, uint32_t value);
+void insert_u64(struct mip_serializer* serializer, uint64_t value);
 
-size_t extract_s8 (const uint8_t* buffer, size_t bufferSize, size_t offset, int8_t* value);
-size_t extract_s16(const uint8_t* buffer, size_t bufferSize, size_t offset, int16_t* value);
-size_t extract_s32(const uint8_t* buffer, size_t bufferSize, size_t offset, int32_t* value);
-size_t extract_s64(const uint8_t* buffer, size_t bufferSize, size_t offset, int64_t* value);
+void insert_s8 (struct mip_serializer* serializer, int8_t  value);
+void insert_s16(struct mip_serializer* serializer, int16_t value);
+void insert_s32(struct mip_serializer* serializer, int32_t value);
+void insert_s64(struct mip_serializer* serializer, int64_t value);
 
-size_t extract_float (const uint8_t* buffer, size_t bufferSize, size_t offset, float* value);
-size_t extract_double(const uint8_t* buffer, size_t bufferSize, size_t offset, double* value);
+void insert_float (struct mip_serializer* serializer, float  value);
+void insert_double(struct mip_serializer* serializer, double value);
 
+
+void extract_bool(struct mip_serializer* serializer, bool* value);
+void extract_char(struct mip_serializer* serializer, char* value);
+
+void extract_u8 (struct mip_serializer* serializer, uint8_t* value);
+void extract_u16(struct mip_serializer* serializer, uint16_t* value);
+void extract_u32(struct mip_serializer* serializer, uint32_t* value);
+void extract_u64(struct mip_serializer* serializer, uint64_t* value);
+
+void extract_s8 (struct mip_serializer* serializer, int8_t* value);
+void extract_s16(struct mip_serializer* serializer, int16_t* value);
+void extract_s32(struct mip_serializer* serializer, int32_t* value);
+void extract_s64(struct mip_serializer* serializer, int64_t* value);
+
+void extract_float (struct mip_serializer* serializer, float* value);
+void extract_double(struct mip_serializer* serializer, double* value);
+
+void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_t max_count);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,44 +73,60 @@ size_t extract_double(const uint8_t* buffer, size_t bufferSize, size_t offset, d
 } // extern "C"
 } // namespace C
 
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, bool value) { return C::insert_bool(buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, char value) { return C::insert_char(buffer, bufferSize, offset, value); }
+class MipSerializer : public C::mip_serializer
+{
+public:
+    MipSerializer(uint8_t* buffer, size_t size) { C::mip_serializer_init_insertion(this, buffer, size); }
+    MipSerializer(const uint8_t* buffer, size_t size) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); }
 
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, uint8_t  value) { return C::insert_u8 (buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, uint16_t value) { return C::insert_u16(buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, uint32_t value) { return C::insert_u32(buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, uint64_t value) { return C::insert_u64(buffer, bufferSize, offset, value); }
-
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, int8_t  value) { return C::insert_s8 (buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, int16_t value) { return C::insert_s16(buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, int32_t value) { return C::insert_s32(buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, int64_t value) { return C::insert_s64(buffer, bufferSize, offset, value); }
-
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, float  value) { return C::insert_float (buffer, bufferSize, offset, value); }
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, double value) { return C::insert_double(buffer, bufferSize, offset, value); }
-
-template<typename Enum>
-size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset, std::enable_if< std::is_enum<Enum>::value, Enum>::type value) { return insert(buffer, bufferSize, offset, static_cast< std::underlying_type<Enum>::type >(value) ); }
+    operator const void*() const { return C::mip_serializer_ok(this) ? this : nullptr; }
+    bool operator!() const { return C::mip_serializer_ok(this); }
+};
 
 
-size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, bool& value) { return C::extract_bool(buffer, bufferSize, offset, &value); }
-size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset, char& value) { return C::extract_char(buffer, bufferSize, offset, &value); }
-
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, uint8_t&  value) { return C::extract_u8 (buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, uint16_t& value) { return C::extract_u16(buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, uint32_t& value) { return C::extract_u32(buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, uint64_t& value) { return C::extract_u64(buffer, bufferSize, offset, &value); }
-
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, int8_t&  value) { return C::extract_s8 (buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, int16_t& value) { return C::extract_s16(buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, int32_t& value) { return C::extract_s32(buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, int64_t& value) { return C::extract_s64(buffer, bufferSize, offset, &value); }
-
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, float&  value) { return C::extract_float (buffer, bufferSize, offset, &value); }
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, double& value) { return C::extract_double(buffer, bufferSize, offset, &value); }
+void insert(MipSerializer& serializer, bool value)     { return C::insert_bool  (&serializer, value); }
+void insert(MipSerializer& serializer, char value)     { return C::insert_char  (&serializer, value); }
+void insert(MipSerializer& serializer, uint8_t  value) { return C::insert_u8    (&serializer, value); }
+void insert(MipSerializer& serializer, uint16_t value) { return C::insert_u16   (&serializer, value); }
+void insert(MipSerializer& serializer, uint32_t value) { return C::insert_u32   (&serializer, value); }
+void insert(MipSerializer& serializer, uint64_t value) { return C::insert_u64   (&serializer, value); }
+void insert(MipSerializer& serializer, int8_t  value)  { return C::insert_s8    (&serializer, value); }
+void insert(MipSerializer& serializer, int16_t value)  { return C::insert_s16   (&serializer, value); }
+void insert(MipSerializer& serializer, int32_t value)  { return C::insert_s32   (&serializer, value); }
+void insert(MipSerializer& serializer, int64_t value)  { return C::insert_s64   (&serializer, value); }
+void insert(MipSerializer& serializer, float  value)   { return C::insert_float (&serializer, value); }
+void insert(MipSerializer& serializer, double value)   { return C::insert_double(&serializer, value); }
 
 template<typename Enum>
-size_t extract(uint8_t* buffer, size_t bufferSize, size_t offset, std::enable_if< std::is_enum<Enum>::value, Enum>::type value) { return insert(buffer, bufferSize, offset, static_cast< std::underlying_type<Enum>::type >(value) ); }
+typename std::enable_if< std::is_enum<Enum>::value, void>::type
+/*void*/ insert(MipSerializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+
+
+void extract(MipSerializer& serializer, bool& value)     { return C::extract_bool  (&serializer, &value); }
+void extract(MipSerializer& serializer, char& value)     { return C::extract_char  (&serializer, &value); }
+void extract(MipSerializer& serializer, uint8_t&  value) { return C::extract_u8    (&serializer, &value); }
+void extract(MipSerializer& serializer, uint16_t& value) { return C::extract_u16   (&serializer, &value); }
+void extract(MipSerializer& serializer, uint32_t& value) { return C::extract_u32   (&serializer, &value); }
+void extract(MipSerializer& serializer, uint64_t& value) { return C::extract_u64   (&serializer, &value); }
+void extract(MipSerializer& serializer, int8_t&  value)  { return C::extract_s8    (&serializer, &value); }
+void extract(MipSerializer& serializer, int16_t& value)  { return C::extract_s16   (&serializer, &value); }
+void extract(MipSerializer& serializer, int32_t& value)  { return C::extract_s32   (&serializer, &value); }
+void extract(MipSerializer& serializer, int64_t& value)  { return C::extract_s64   (&serializer, &value); }
+void extract(MipSerializer& serializer, float&  value)   { return C::extract_float (&serializer, &value); }
+void extract(MipSerializer& serializer, double& value)   { return C::extract_double(&serializer, &value); }
+
+template<typename Enum>
+typename std::enable_if< std::is_enum<Enum>::value, void>::type
+/*void*/ extract(MipSerializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+
+
+template<typename T>
+bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize /*, size_t offset=0 */)
+{
+    MipSerializer serializer(buffer, bufferSize);
+    extract(serializer, value_out);
+    return !!serializer;
+}
 
 } // namespace mscl
 #endif // __cplusplus

@@ -7,19 +7,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#ifdef __cplusplus
 namespace mscl {
-namespace C {
-extern "C" {
+class MipSerializer;
+namespace data_shared {
 
-#endif // __cplusplus
+namespace C {
 struct mip_interface;
-struct mip_serializer;
+} // namespace C
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup shared_data_c  SHAREDData
+///@defgroup shared_data_cpp  SHAREDData
 ///
 ///@{
 
@@ -29,33 +28,33 @@ struct mip_serializer;
 
 enum 
 {
-    MIP_SHARED_DATA_DESC_SET            = 0xFF,
+    DESCRIPTOR_SET      = 0xFF,
     
     
-    MIP_DATA_DESC_SHARED_EVENT_SOURCE   = 0xD0,
-    MIP_DATA_DESC_SHARED_TICKS          = 0xD1,
-    MIP_DATA_DESC_SHARED_DELTA_TICKS    = 0xD2,
-    MIP_DATA_DESC_SHARED_GPS_TIME       = 0xD3,
-    MIP_DATA_DESC_SHARED_DELTA_TIME     = 0xD4,
-    MIP_DATA_DESC_SHARED_REFERENCE_TIME = 0xD5,
-    MIP_DATA_DESC_SHARED_REF_TIME_DELTA = 0xD6,
-    MIP_DATA_DESC_SHARED_EXTERNAL_TIME  = 0xD7,
-    MIP_DATA_DESC_SHARED_SYS_TIME_DELTA = 0xD8,
-    MIP_DATA_DESC_SHARED_DEBUG_TICKS    = 0xFF,
+    DATA_EVENT_SOURCE   = 0xD0,
+    DATA_TICKS          = 0xD1,
+    DATA_DELTA_TICKS    = 0xD2,
+    DATA_GPS_TIME       = 0xD3,
+    DATA_DELTA_TIME     = 0xD4,
+    DATA_REFERENCE_TIME = 0xD5,
+    DATA_REF_TIME_DELTA = 0xD6,
+    DATA_EXTERNAL_TIME  = 0xD7,
+    DATA_SYS_TIME_DELTA = 0xD8,
+    DATA_DEBUG_TICKS    = 0xFF,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
+static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_event_source  None
+///@defgroup cpp_event_source  None
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -63,18 +62,23 @@ enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 ///
 ///@{
 
-struct mip_shared_event_source_data
+struct EventSource
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_EVENT_SOURCE;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint8_t trigger_id;
     
 };
-void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const struct mip_shared_event_source_data* self);
-void extract_mip_shared_event_source_data(struct mip_serializer* serializer, struct mip_shared_event_source_data* self);
+void insert(MipSerializer& serializer, const EventSource& self);
+void extract(MipSerializer& serializer, EventSource& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ticks  None
+///@defgroup cpp_ticks  None
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -82,18 +86,23 @@ void extract_mip_shared_event_source_data(struct mip_serializer* serializer, str
 ///
 ///@{
 
-struct mip_shared_ticks_data
+struct Ticks
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_TICKS;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint32_t ticks;
     
 };
-void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const struct mip_shared_ticks_data* self);
-void extract_mip_shared_ticks_data(struct mip_serializer* serializer, struct mip_shared_ticks_data* self);
+void insert(MipSerializer& serializer, const Ticks& self);
+void extract(MipSerializer& serializer, Ticks& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_delta_ticks  None
+///@defgroup cpp_delta_ticks  None
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -102,18 +111,23 @@ void extract_mip_shared_ticks_data(struct mip_serializer* serializer, struct mip
 ///
 ///@{
 
-struct mip_shared_delta_ticks_data
+struct DeltaTicks
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_DELTA_TICKS;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint32_t ticks;
     
 };
-void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const struct mip_shared_delta_ticks_data* self);
-void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, struct mip_shared_delta_ticks_data* self);
+void insert(MipSerializer& serializer, const DeltaTicks& self);
+void extract(MipSerializer& serializer, DeltaTicks& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_timestamp  None
+///@defgroup cpp_gps_timestamp  None
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -121,30 +135,32 @@ void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, stru
 ///
 ///@{
 
-enum mip_shared_gps_timestamp_data_valid_flags
+struct GpsTimestamp
 {
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW         = 0x01,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x02,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x03,
-};
-
-struct mip_shared_gps_timestamp_data
-{
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_GPS_TIME;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    enum class ValidFlags : uint16_t
+    {
+        TOW         = 0x01,
+        WEEK_NUMBER = 0x02,
+        TIME_VALID  = 0x03,
+    };
+    
     double tow;
     uint16_t week_number;
-    enum mip_shared_gps_timestamp_data_valid_flags valid_flags;
+    ValidFlags valid_flags;
     
 };
-void insert_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_gps_timestamp_data* self);
-void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, struct mip_shared_gps_timestamp_data* self);
-
-void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_gps_timestamp_data_valid_flags self);
-void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_gps_timestamp_data_valid_flags* self);
+void insert(MipSerializer& serializer, const GpsTimestamp& self);
+void extract(MipSerializer& serializer, GpsTimestamp& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_delta_time  None
+///@defgroup cpp_delta_time  None
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -158,18 +174,23 @@ void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* se
 ///
 ///@{
 
-struct mip_shared_delta_time_data
+struct DeltaTime
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_DELTA_TIME;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     double seconds;
     
 };
-void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self);
-void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, struct mip_shared_delta_time_data* self);
+void insert(MipSerializer& serializer, const DeltaTime& self);
+void extract(MipSerializer& serializer, DeltaTime& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_reference_timestamp  None
+///@defgroup cpp_reference_timestamp  None
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -181,18 +202,23 @@ void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, struc
 ///
 ///@{
 
-struct mip_shared_reference_timestamp_data
+struct ReferenceTimestamp
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_REFERENCE_TIME;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint64_t nanoseconds;
     
 };
-void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_reference_timestamp_data* self);
-void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, struct mip_shared_reference_timestamp_data* self);
+void insert(MipSerializer& serializer, const ReferenceTimestamp& self);
+void extract(MipSerializer& serializer, ReferenceTimestamp& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_reference_time_delta  None
+///@defgroup cpp_reference_time_delta  None
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -206,18 +232,23 @@ void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializ
 ///
 ///@{
 
-struct mip_shared_reference_time_delta_data
+struct ReferenceTimeDelta
 {
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_REF_TIME_DELTA;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
     uint64_t dt_nanos;
     
 };
-void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_reference_time_delta_data* self);
-void extract_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, struct mip_shared_reference_time_delta_data* self);
+void insert(MipSerializer& serializer, const ReferenceTimeDelta& self);
+void extract(MipSerializer& serializer, ReferenceTimeDelta& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_timestamp  None
+///@defgroup cpp_external_timestamp  None
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -230,27 +261,29 @@ void extract_mip_shared_reference_time_delta_data(struct mip_serializer* seriali
 ///
 ///@{
 
-enum mip_shared_external_timestamp_data_valid_flags
+struct ExternalTimestamp
 {
-    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x01,
-};
-
-struct mip_shared_external_timestamp_data
-{
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_EXTERNAL_TIME;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    enum class ValidFlags : uint16_t
+    {
+        NANOSECONDS = 0x01,
+    };
+    
     uint64_t nanoseconds;
-    enum mip_shared_external_timestamp_data_valid_flags valid_flags;
+    ValidFlags valid_flags;
     
 };
-void insert_mip_shared_external_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_external_timestamp_data* self);
-void extract_mip_shared_external_timestamp_data(struct mip_serializer* serializer, struct mip_shared_external_timestamp_data* self);
-
-void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_timestamp_data_valid_flags self);
-void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_timestamp_data_valid_flags* self);
+void insert(MipSerializer& serializer, const ExternalTimestamp& self);
+void extract(MipSerializer& serializer, ExternalTimestamp& self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_time_delta  None
+///@defgroup cpp_external_time_delta  None
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,
@@ -267,22 +300,24 @@ void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serialize
 ///
 ///@{
 
-enum mip_shared_external_time_delta_data_valid_flags
+struct ExternalTimeDelta
 {
-    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x01,
-};
-
-struct mip_shared_external_time_delta_data
-{
+    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_SYS_TIME_DELTA;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    enum class ValidFlags : uint16_t
+    {
+        DT_NANOS = 0x01,
+    };
+    
     uint64_t dt_nanos;
-    enum mip_shared_external_time_delta_data_valid_flags valid_flags;
+    ValidFlags valid_flags;
     
 };
-void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_external_time_delta_data* self);
-void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializer, struct mip_shared_external_time_delta_data* self);
-
-void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_time_delta_data_valid_flags self);
-void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_time_delta_data_valid_flags* self);
+void insert(MipSerializer& serializer, const ExternalTimeDelta& self);
+void extract(MipSerializer& serializer, ExternalTimeDelta& self);
 
 ///@}
 ///
@@ -291,9 +326,6 @@ void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-#ifdef __cplusplus
-} // namespace C
+} // namespace data_shared
 } // namespace mscl
-} // extern "C"
-#endif // __cplusplus
 

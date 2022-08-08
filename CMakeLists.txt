@@ -102,8 +102,10 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_system.c"
     "${MIP_DIR}/definitions/data_system.h"
 )
+string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
+string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
+set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEF_CPP_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
 
 
 option(MSCL_DISABLE_CPP "Excludes all C++ files from the project." OFF)
