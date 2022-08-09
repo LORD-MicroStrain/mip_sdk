@@ -143,11 +143,14 @@ struct GpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW         = 0x01,
-        WEEK_NUMBER = 0x02,
-        TIME_VALID  = 0x03,
+        enum  : uint16_t
+        {
+            TOW         = 0x0001,
+            WEEK_NUMBER = 0x0002,
+            TIME_VALID  = 0x0003,
+        };
     };
     
     double tow;
@@ -269,9 +272,12 @@ struct ExternalTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        NANOSECONDS = 0x01,
+        enum  : uint16_t
+        {
+            NANOSECONDS = 0x0001,
+        };
     };
     
     uint64_t nanoseconds;
@@ -308,9 +314,12 @@ struct ExternalTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        DT_NANOS = 0x01,
+        enum  : uint16_t
+        {
+            DT_NANOS = 0x0001,
+        };
     };
     
     uint64_t dt_nanos;

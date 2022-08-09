@@ -476,13 +476,16 @@ struct GpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        PPS_VALID         = 0x01,
-        TIME_REFRESH      = 0x02,
-        TIME_INITIALIZED  = 0x04,
-        TOW_VALID         = 0x08,
-        WEEK_NUMBER_VALID = 0x10,
+        enum  : uint16_t
+        {
+            PPS_VALID         = 0x0001,
+            TIME_REFRESH      = 0x0002,
+            TIME_INITIALIZED  = 0x0004,
+            TOW_VALID         = 0x0008,
+            WEEK_NUMBER_VALID = 0x0010,
+        };
     };
     
     double tow;
@@ -585,18 +588,21 @@ struct OverrangeStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class Status : uint16_t
+    struct Status : Bitfield<Status,uint16_t>
     {
-        ACCEL_X = 0x01,
-        ACCEL_Y = 0x02,
-        ACCEL_Z = 0x04,
-        GYRO_X  = 0x10,
-        GYRO_Y  = 0x20,
-        GYRO_Z  = 0x40,
-        MAG_X   = 0x100,
-        MAG_Y   = 0x200,
-        MAG_Z   = 0x400,
-        PRESS   = 0x1000,
+        enum  : uint16_t
+        {
+            ACCEL_X = 0x0001,
+            ACCEL_Y = 0x0002,
+            ACCEL_Z = 0x0004,
+            GYRO_X  = 0x0010,
+            GYRO_Y  = 0x0020,
+            GYRO_Z  = 0x0040,
+            MAG_X   = 0x0100,
+            MAG_Y   = 0x0200,
+            MAG_Z   = 0x0400,
+            PRESS   = 0x1000,
+        };
     };
     
     Status status;

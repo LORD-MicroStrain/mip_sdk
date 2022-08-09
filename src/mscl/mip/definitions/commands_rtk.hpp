@@ -89,35 +89,41 @@ struct GetStatusFlags
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class StatusFlagsLegacy : uint32_t
+    struct StatusFlagsLegacy : Bitfield<StatusFlagsLegacy,uint32_t>
     {
-        CONTROLLERSTATE      = 0x07,
-        PLATFORMSTATE        = 0xF8,
-        CONTROLLERSTATUSCODE = 0x700,
-        PLATFORMSTATUSCODE   = 0x3800,
-        RESETCODE            = 0xC000,
-        SIGNALQUALITY        = 0xF0000,
-        RESERVED             = 0xFFF00000,
-        RSSI                 = 0x3F00000,
-        RSRP                 = 0xC000000,
-        RSRQ                 = 0x30000000,
-        SINR                 = 0xC0000000,
+        enum  : uint32_t
+        {
+            CONTROLLERSTATE      = 0x00000007,
+            PLATFORMSTATE        = 0x000000F8,
+            CONTROLLERSTATUSCODE = 0x00000700,
+            PLATFORMSTATUSCODE   = 0x00003800,
+            RESETCODE            = 0x0000C000,
+            SIGNALQUALITY        = 0x000F0000,
+            RESERVED             = 0xFFF00000,
+            RSSI                 = 0x03F00000,
+            RSRP                 = 0x0C000000,
+            RSRQ                 = 0x30000000,
+            SINR                 = 0xC0000000,
+        };
     };
     
-    enum class StatusFlags : uint32_t
+    struct StatusFlags : Bitfield<StatusFlags,uint32_t>
     {
-        MODEM_STATE             = 0x0F,
-        CONNECTION_TYPE         = 0xF0,
-        RSSI                    = 0xFF00,
-        SIGNAL_QUALITY          = 0xF0000,
-        TOWER_CHANGE_INDICATOR  = 0xF00000,
-        NMEA_TIMEOUT            = 0x1000000,
-        SERVER_TIMEOUT          = 0x2000000,
-        RTCM_TIMEOUT            = 0x4000000,
-        DEVICE_OUT_OF_RANGE     = 0x8000000,
-        CORRECTIONS_UNAVAILABLE = 0x10000000,
-        RESERVED                = 0x20000000,
-        VERSION                 = 0xC0000000,
+        enum  : uint32_t
+        {
+            MODEM_STATE             = 0x0000000F,
+            CONNECTION_TYPE         = 0x000000F0,
+            RSSI                    = 0x0000FF00,
+            SIGNAL_QUALITY          = 0x000F0000,
+            TOWER_CHANGE_INDICATOR  = 0x00F00000,
+            NMEA_TIMEOUT            = 0x01000000,
+            SERVER_TIMEOUT          = 0x02000000,
+            RTCM_TIMEOUT            = 0x04000000,
+            DEVICE_OUT_OF_RANGE     = 0x08000000,
+            CORRECTIONS_UNAVAILABLE = 0x10000000,
+            RESERVED                = 0x20000000,
+            VERSION                 = 0xC0000000,
+        };
     };
     
     
@@ -388,11 +394,14 @@ struct ServiceStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ServiceFlags : uint8_t
+    struct ServiceFlags : Bitfield<ServiceFlags,uint8_t>
     {
-        THROTTLE                = 0x01,
-        CORRECTIONS_UNAVAILABLE = 0x02,
-        RESERVED                = 0xFC,
+        enum  : uint8_t
+        {
+            THROTTLE                = 0x01,
+            CORRECTIONS_UNAVAILABLE = 0x02,
+            RESERVED                = 0xFC,
+        };
     };
     
     uint32_t reserved1;

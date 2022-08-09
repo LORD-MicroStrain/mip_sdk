@@ -180,14 +180,17 @@ struct PosLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        LAT_LON             = 0x01,
-        ELLIPSOID_HEIGHT    = 0x02,
-        MSL_HEIGHT          = 0x04,
-        HORIZONTAL_ACCURACY = 0x08,
-        VERTICAL_ACCURACY   = 0x10,
-        FLAGS               = 0x1F,
+        enum  : uint16_t
+        {
+            LAT_LON             = 0x0001,
+            ELLIPSOID_HEIGHT    = 0x0002,
+            MSL_HEIGHT          = 0x0004,
+            HORIZONTAL_ACCURACY = 0x0008,
+            VERTICAL_ACCURACY   = 0x0010,
+            FLAGS               = 0x001F,
+        };
     };
     
     double latitude;
@@ -217,11 +220,14 @@ struct PosEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        POSITION          = 0x01,
-        POSITION_ACCURACY = 0x02,
-        FLAGS             = 0x03,
+        enum  : uint16_t
+        {
+            POSITION          = 0x0001,
+            POSITION_ACCURACY = 0x0002,
+            FLAGS             = 0x0003,
+        };
     };
     
     double x[3];
@@ -247,15 +253,18 @@ struct VelNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        VELOCITY         = 0x01,
-        SPEED_3D         = 0x02,
-        GROUND_SPEED     = 0x04,
-        HEADING          = 0x08,
-        SPEED_ACCURACY   = 0x10,
-        HEADING_ACCURACY = 0x20,
-        FLAGS            = 0x3F,
+        enum  : uint16_t
+        {
+            VELOCITY         = 0x0001,
+            SPEED_3D         = 0x0002,
+            GROUND_SPEED     = 0x0004,
+            HEADING          = 0x0008,
+            SPEED_ACCURACY   = 0x0010,
+            HEADING_ACCURACY = 0x0020,
+            FLAGS            = 0x003F,
+        };
     };
     
     float v[3];
@@ -285,11 +294,14 @@ struct VelEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        VELOCITY          = 0x01,
-        VELOCITY_ACCURACY = 0x02,
-        FLAGS             = 0x03,
+        enum  : uint16_t
+        {
+            VELOCITY          = 0x0001,
+            VELOCITY_ACCURACY = 0x0002,
+            FLAGS             = 0x0003,
+        };
     };
     
     float v[3];
@@ -315,16 +327,19 @@ struct Dop
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        GDOP  = 0x01,
-        PDOP  = 0x02,
-        HDOP  = 0x04,
-        VDOP  = 0x08,
-        TDOP  = 0x10,
-        NDOP  = 0x20,
-        EDOP  = 0x40,
-        FLAGS = 0x7F,
+        enum  : uint16_t
+        {
+            GDOP  = 0x0001,
+            PDOP  = 0x0002,
+            HDOP  = 0x0004,
+            VDOP  = 0x0008,
+            TDOP  = 0x0010,
+            NDOP  = 0x0020,
+            EDOP  = 0x0040,
+            FLAGS = 0x007F,
+        };
     };
     
     float gdop;
@@ -355,11 +370,14 @@ struct UtcTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        GNSS_DATE_TIME     = 0x01,
-        LEAP_SECONDS_KNOWN = 0x02,
-        FLAGS              = 0x03,
+        enum  : uint16_t
+        {
+            GNSS_DATE_TIME     = 0x0001,
+            LEAP_SECONDS_KNOWN = 0x0002,
+            FLAGS              = 0x0003,
+        };
     };
     
     uint16_t year;
@@ -390,11 +408,14 @@ struct GpsTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW         = 0x01,
-        WEEK_NUMBER = 0x02,
-        FLAGS       = 0x03,
+        enum  : uint16_t
+        {
+            TOW         = 0x0001,
+            WEEK_NUMBER = 0x0002,
+            FLAGS       = 0x0003,
+        };
     };
     
     double tow;
@@ -420,12 +441,15 @@ struct ClockInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        BIAS              = 0x01,
-        DRIFT             = 0x02,
-        ACCURACY_ESTIMATE = 0x04,
-        FLAGS             = 0x07,
+        enum  : uint16_t
+        {
+            BIAS              = 0x0001,
+            DRIFT             = 0x0002,
+            ACCURACY_ESTIMATE = 0x0004,
+            FLAGS             = 0x0007,
+        };
     };
     
     double bias;
@@ -463,18 +487,24 @@ struct FixInfo
         FIX_RTK_FIXED = 6,  ///<  
     };
     
-    enum class FixFlags : uint16_t
+    struct FixFlags : Bitfield<FixFlags,uint16_t>
     {
-        SBAS_USED  = 0x01,
-        DNGSS_USED = 0x02,
+        enum  : uint16_t
+        {
+            SBAS_USED  = 0x0001,
+            DNGSS_USED = 0x0002,
+        };
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        FIX_TYPE  = 0x01,
-        NUM_SV    = 0x02,
-        FIX_FLAGS = 0x04,
-        FLAGS     = 0x07,
+        enum  : uint16_t
+        {
+            FIX_TYPE  = 0x0001,
+            NUM_SV    = 0x0002,
+            FIX_FLAGS = 0x0004,
+            FLAGS     = 0x0007,
+        };
     };
     
     FixType fix_type;
@@ -503,21 +533,27 @@ struct SvInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class SVFlags : uint16_t
+    struct SVFlags : Bitfield<SVFlags,uint16_t>
     {
-        USED_FOR_NAVIGATION = 0x01,
-        HEALTHY             = 0x02,
+        enum  : uint16_t
+        {
+            USED_FOR_NAVIGATION = 0x0001,
+            HEALTHY             = 0x0002,
+        };
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        CHANNEL             = 0x01,
-        SV_ID               = 0x02,
-        CARRIER_NOISE_RATIO = 0x04,
-        AZIMUTH             = 0x08,
-        ELEVATION           = 0x10,
-        SV_FLAGS            = 0x20,
-        FLAGS               = 0x3F,
+        enum  : uint16_t
+        {
+            CHANNEL             = 0x0001,
+            SV_ID               = 0x0002,
+            CARRIER_NOISE_RATIO = 0x0004,
+            AZIMUTH             = 0x0008,
+            ELEVATION           = 0x0010,
+            SV_FLAGS            = 0x0020,
+            FLAGS               = 0x003F,
+        };
     };
     
     uint8_t channel;
@@ -570,12 +606,15 @@ struct HwStatus
         UNKNOWN = 2,  ///<  
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        SENSOR_STATE  = 0x01,
-        ANTENNA_STATE = 0x02,
-        ANTENNA_POWER = 0x04,
-        FLAGS         = 0x07,
+        enum  : uint16_t
+        {
+            SENSOR_STATE  = 0x0001,
+            ANTENNA_STATE = 0x0002,
+            ANTENNA_POWER = 0x0004,
+            FLAGS         = 0x0007,
+        };
     };
     
     ReceiverState receiver_state;
@@ -614,13 +653,16 @@ struct DgpsInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        AGE                 = 0x01,
-        BASE_STATION_ID     = 0x02,
-        BASE_STATION_STATUS = 0x04,
-        NUM_CHANNELS        = 0x08,
-        FLAGS               = 0x0F,
+        enum  : uint16_t
+        {
+            AGE                 = 0x0001,
+            BASE_STATION_ID     = 0x0002,
+            BASE_STATION_STATUS = 0x0004,
+            NUM_CHANNELS        = 0x0008,
+            FLAGS               = 0x000F,
+        };
     };
     
     uint8_t sv_id;
@@ -650,13 +692,16 @@ struct DgpsChannel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        ID                    = 0x01,
-        AGE                   = 0x02,
-        RANGE_CORRECTION      = 0x04,
-        RANGE_RATE_CORRECTION = 0x08,
-        FLAGS                 = 0x0F,
+        enum  : uint16_t
+        {
+            ID                    = 0x0001,
+            AGE                   = 0x0002,
+            RANGE_CORRECTION      = 0x0004,
+            RANGE_RATE_CORRECTION = 0x0008,
+            FLAGS                 = 0x000F,
+        };
     };
     
     uint8_t sv_id;
@@ -686,13 +731,16 @@ struct ClockInfo2
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        BIAS           = 0x01,
-        DRIFT          = 0x02,
-        BIAS_ACCURACY  = 0x04,
-        DRIFT_ACCURACY = 0x08,
-        FLAGS          = 0x0F,
+        enum  : uint16_t
+        {
+            BIAS           = 0x0001,
+            DRIFT          = 0x0002,
+            BIAS_ACCURACY  = 0x0004,
+            DRIFT_ACCURACY = 0x0008,
+            FLAGS          = 0x000F,
+        };
     };
     
     double bias;
@@ -720,9 +768,12 @@ struct GpsLeapSeconds
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        LEAP_SECONDS = 0x02,
+        enum  : uint16_t
+        {
+            LEAP_SECONDS = 0x0002,
+        };
     };
     
     uint8_t leap_seconds;
@@ -747,23 +798,29 @@ struct SbasInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class SbasStatus : uint8_t
+    struct SbasStatus : Bitfield<SbasStatus,uint8_t>
     {
-        RANGE_AVAILABLE       = 0x01,
-        CORRECTIONS_AVAILABLE = 0x02,
-        INTEGRITY_AVAILABLE   = 0x04,
-        TEST_MODE             = 0x08,
+        enum  : uint8_t
+        {
+            RANGE_AVAILABLE       = 0x01,
+            CORRECTIONS_AVAILABLE = 0x02,
+            INTEGRITY_AVAILABLE   = 0x04,
+            TEST_MODE             = 0x08,
+        };
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW         = 0x01,
-        WEEK_NUMBER = 0x02,
-        SBAS_SYSTEM = 0x04,
-        SBAS_ID     = 0x08,
-        COUNT       = 0x10,
-        SBAS_STATUS = 0x20,
-        FLAGS       = 0x3F,
+        enum  : uint16_t
+        {
+            TOW         = 0x0001,
+            WEEK_NUMBER = 0x0002,
+            SBAS_SYSTEM = 0x0004,
+            SBAS_ID     = 0x0008,
+            COUNT       = 0x0010,
+            SBAS_STATUS = 0x0020,
+            FLAGS       = 0x003F,
+        };
     };
     
     double time_of_week;
@@ -815,12 +872,15 @@ struct SbasCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        UDREI                  = 0x01,
-        PSEUDORANGE_CORRECTION = 0x02,
-        IONO_CORRECTION        = 0x04,
-        FLAGS                  = 0x07,
+        enum  : uint16_t
+        {
+            UDREI                  = 0x0001,
+            PSEUDORANGE_CORRECTION = 0x0002,
+            IONO_CORRECTION        = 0x0004,
+            FLAGS                  = 0x0007,
+        };
     };
     
     uint8_t index;
@@ -877,12 +937,15 @@ struct RfErrorDetection
         SIGNIFICANT = 3,  ///<  
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        RF_BAND        = 0x01,
-        JAMMING_STATE  = 0x02,
-        SPOOFING_STATE = 0x04,
-        FLAGS          = 0x07,
+        enum  : uint16_t
+        {
+            RF_BAND        = 0x0001,
+            JAMMING_STATE  = 0x0002,
+            SPOOFING_STATE = 0x0004,
+            FLAGS          = 0x0007,
+        };
     };
     
     RFBand rf_band;
@@ -912,28 +975,34 @@ struct BaseStationInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class IndicatorFlags : uint16_t
+    struct IndicatorFlags : Bitfield<IndicatorFlags,uint16_t>
     {
-        GPS                = 0x01,
-        GLONASS            = 0x02,
-        GALILEO            = 0x04,
-        BEIDOU             = 0x08,
-        REF_STATION        = 0x10,
-        SINGLE_RECEIVER    = 0x20,
-        QUARTER_CYCLE_BIT1 = 0x40,
-        QUARTER_CYCLE_BIT2 = 0x80,
-        QUARTER_CYCLE_BITS = 0xC0,
+        enum  : uint16_t
+        {
+            GPS                = 0x0001,
+            GLONASS            = 0x0002,
+            GALILEO            = 0x0004,
+            BEIDOU             = 0x0008,
+            REF_STATION        = 0x0010,
+            SINGLE_RECEIVER    = 0x0020,
+            QUARTER_CYCLE_BIT1 = 0x0040,
+            QUARTER_CYCLE_BIT2 = 0x0080,
+            QUARTER_CYCLE_BITS = 0x00C0,
+        };
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW           = 0x01,
-        WEEK_NUMBER   = 0x02,
-        ECEF_POSITION = 0x04,
-        HEIGHT        = 0x08,
-        STATION_ID    = 0x10,
-        INDICATORS    = 0x20,
-        FLAGS         = 0x3F,
+        enum  : uint16_t
+        {
+            TOW           = 0x0001,
+            WEEK_NUMBER   = 0x0002,
+            ECEF_POSITION = 0x0004,
+            HEIGHT        = 0x0008,
+            STATION_ID    = 0x0010,
+            INDICATORS    = 0x0020,
+            FLAGS         = 0x003F,
+        };
     };
     
     double time_of_week;
@@ -962,30 +1031,36 @@ struct RtkCorrectionsStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW             = 0x01,
-        WEEK_NUMBER     = 0x02,
-        EPOCH_STATUS    = 0x04,
-        DONGLE_STATUS   = 0x08,
-        GPS_LATENCY     = 0x10,
-        GLONASS_LATENCY = 0x20,
-        GALILEO_LATENCY = 0x40,
-        BEIDOU_LATENCY  = 0x80,
-        FLAGS           = 0xFF,
+        enum  : uint16_t
+        {
+            TOW             = 0x0001,
+            WEEK_NUMBER     = 0x0002,
+            EPOCH_STATUS    = 0x0004,
+            DONGLE_STATUS   = 0x0008,
+            GPS_LATENCY     = 0x0010,
+            GLONASS_LATENCY = 0x0020,
+            GALILEO_LATENCY = 0x0040,
+            BEIDOU_LATENCY  = 0x0080,
+            FLAGS           = 0x00FF,
+        };
     };
     
-    enum class EpochStatus : uint16_t
+    struct EpochStatus : Bitfield<EpochStatus,uint16_t>
     {
-        ANTENNA_LOCATION_RECEIVED    = 0x01,
-        ANTENNA_DESCRIPTION_RECEIVED = 0x02,
-        GPS_RECEIVED                 = 0x04,
-        GLONASS_RECEIVED             = 0x08,
-        GALILEO_RECEIVED             = 0x10,
-        BEIDOU_RECEIVED              = 0x20,
-        USING_GPS_MSM_MESSAGES       = 0x40,
-        USING_GLONASS_MSM_MESSAGES   = 0x80,
-        DONGLE_STATUS_READ_FAILED    = 0x100,
+        enum  : uint16_t
+        {
+            ANTENNA_LOCATION_RECEIVED    = 0x0001,
+            ANTENNA_DESCRIPTION_RECEIVED = 0x0002,
+            GPS_RECEIVED                 = 0x0004,
+            GLONASS_RECEIVED             = 0x0008,
+            GALILEO_RECEIVED             = 0x0010,
+            BEIDOU_RECEIVED              = 0x0020,
+            USING_GPS_MSM_MESSAGES       = 0x0040,
+            USING_GLONASS_MSM_MESSAGES   = 0x0080,
+            DONGLE_STATUS_READ_FAILED    = 0x0100,
+        };
     };
     
     double time_of_week;
@@ -1018,16 +1093,19 @@ struct SatelliteStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW          = 0x01,
-        WEEK_NUMBER  = 0x02,
-        GNSS_ID      = 0x04,
-        SATELLITE_ID = 0x08,
-        ELEVATION    = 0x10,
-        AZIMUTH      = 0x20,
-        HEALTH       = 0x40,
-        FLAGS        = 0x7F,
+        enum  : uint16_t
+        {
+            TOW          = 0x0001,
+            WEEK_NUMBER  = 0x0002,
+            GNSS_ID      = 0x0004,
+            SATELLITE_ID = 0x0008,
+            ELEVATION    = 0x0010,
+            AZIMUTH      = 0x0020,
+            HEALTH       = 0x0040,
+            FLAGS        = 0x007F,
+        };
     };
     
     uint8_t index;
@@ -1070,25 +1148,28 @@ struct Raw
         FULLY_LOCKED = 5,  ///<  
     };
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW                       = 0x01,
-        WEEK_NUMBER               = 0x02,
-        RECEIVER_ID               = 0x04,
-        TRACKING_CHANNEL          = 0x08,
-        GNSS_ID                   = 0x10,
-        SATELLITE_ID              = 0x20,
-        SIGNAL_ID                 = 0x40,
-        SIGNAL_STRENGTH           = 0x80,
-        QUALITY                   = 0x100,
-        PSEUDORANGE               = 0x200,
-        CARRIER_PHASE             = 0x400,
-        DOPPLER                   = 0x800,
-        RANGE_UNCERTAINTY         = 0x1000,
-        CARRIER_PHASE_UNCERTAINTY = 0x2000,
-        DOPPLER_UNCERTAINTY       = 0x4000,
-        LOCK_TIME                 = 0x8000,
-        FLAGS                     = 0xFFFF,
+        enum  : uint16_t
+        {
+            TOW                       = 0x0001,
+            WEEK_NUMBER               = 0x0002,
+            RECEIVER_ID               = 0x0004,
+            TRACKING_CHANNEL          = 0x0008,
+            GNSS_ID                   = 0x0010,
+            SATELLITE_ID              = 0x0020,
+            SIGNAL_ID                 = 0x0040,
+            SIGNAL_STRENGTH           = 0x0080,
+            QUALITY                   = 0x0100,
+            PSEUDORANGE               = 0x0200,
+            CARRIER_PHASE             = 0x0400,
+            DOPPLER                   = 0x0800,
+            RANGE_UNCERTAINTY         = 0x1000,
+            CARRIER_PHASE_UNCERTAINTY = 0x2000,
+            DOPPLER_UNCERTAINTY       = 0x4000,
+            LOCK_TIME                 = 0x8000,
+            FLAGS                     = 0xFFFF,
+        };
     };
     
     uint8_t index;
@@ -1130,11 +1211,14 @@ struct GpsEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        EPHEMERIS   = 0x01,
-        MODERN_DATA = 0x02,
-        FLAGS       = 0x03,
+        enum  : uint16_t
+        {
+            EPHEMERIS   = 0x0001,
+            MODERN_DATA = 0x0002,
+            FLAGS       = 0x0003,
+        };
     };
     
     uint8_t index;
@@ -1191,10 +1275,13 @@ struct GloEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        EPHEMERIS = 0x01,
-        FLAGS     = 0x01,
+        enum  : uint16_t
+        {
+            EPHEMERIS = 0x0001,
+            FLAGS     = 0x0001,
+        };
     };
     
     uint8_t index;
@@ -1242,13 +1329,16 @@ struct GpsIonoCorr
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW         = 0x01,
-        WEEK_NUMBER = 0x02,
-        ALPHA       = 0x04,
-        BETA        = 0x08,
-        FLAGS       = 0x0F,
+        enum  : uint16_t
+        {
+            TOW         = 0x0001,
+            WEEK_NUMBER = 0x0002,
+            ALPHA       = 0x0004,
+            BETA        = 0x0008,
+            FLAGS       = 0x000F,
+        };
     };
     
     double time_of_week;
@@ -1276,13 +1366,16 @@ struct GalileoIonoCorr
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class ValidFlags : uint16_t
+    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
     {
-        TOW               = 0x01,
-        WEEK_NUMBER       = 0x02,
-        ALPHA             = 0x04,
-        DISTURBANCE_FLAGS = 0x08,
-        FLAGS             = 0x0F,
+        enum  : uint16_t
+        {
+            TOW               = 0x0001,
+            WEEK_NUMBER       = 0x0002,
+            ALPHA             = 0x0004,
+            DISTURBANCE_FLAGS = 0x0008,
+            FLAGS             = 0x000F,
+        };
     };
     
     double time_of_week;

@@ -77,35 +77,38 @@ enum class TimeFormat : uint8_t
     GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
 };
 
-enum class CommandedTestBitsGq7 : uint32_t
+struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7,uint32_t>
 {
-    GENERAL_HARDWARE_FAULT = 0x01,
-    GENERAL_FIRMWARE_FAULT = 0x02,
-    TIMING_OVERLOAD        = 0x04,
-    BUFFER_OVERRUN         = 0x08,
-    RESERVED               = 0xF0,
-    IPC_IMU_FAULT          = 0x100,
-    IPC_NAV_FAULT          = 0x200,
-    IPC_GNSS_FAULT         = 0x400,
-    COMMS_FAULT            = 0x800,
-    IMU_ACCEL_FAULT        = 0x1000,
-    IMU_GYRO_FAULT         = 0x2000,
-    IMU_MAG_FAULT          = 0x4000,
-    IMU_PRESS_FAULT        = 0x8000,
-    IMU_RESERVED           = 0x30000,
-    IMU_CAL_ERROR          = 0x40000,
-    IMU_GENERAL_FAULT      = 0x80000,
-    FILT_RESERVED          = 0x300000,
-    FILT_SOLUTION_FAULT    = 0x400000,
-    FILT_GENERAL_FAULT     = 0x800000,
-    GNSS_RECEIVER1_FAULT   = 0x1000000,
-    GNSS_ANTENNA1_FAULT    = 0x2000000,
-    GNSS_RECEIVER2_FAULT   = 0x4000000,
-    GNSS_ANTENNA2_FAULT    = 0x8000000,
-    GNSS_RTCM_FAILURE      = 0x10000000,
-    GNSS_RTK_FAULT         = 0x20000000,
-    GNSS_SOLUTION_FAULT    = 0x40000000,
-    GNSS_GENERAL_FAULT     = 0x80000000,
+    enum  : uint32_t
+    {
+        GENERAL_HARDWARE_FAULT = 0x00000001,
+        GENERAL_FIRMWARE_FAULT = 0x00000002,
+        TIMING_OVERLOAD        = 0x00000004,
+        BUFFER_OVERRUN         = 0x00000008,
+        RESERVED               = 0x000000F0,
+        IPC_IMU_FAULT          = 0x00000100,
+        IPC_NAV_FAULT          = 0x00000200,
+        IPC_GNSS_FAULT         = 0x00000400,
+        COMMS_FAULT            = 0x00000800,
+        IMU_ACCEL_FAULT        = 0x00001000,
+        IMU_GYRO_FAULT         = 0x00002000,
+        IMU_MAG_FAULT          = 0x00004000,
+        IMU_PRESS_FAULT        = 0x00008000,
+        IMU_RESERVED           = 0x00030000,
+        IMU_CAL_ERROR          = 0x00040000,
+        IMU_GENERAL_FAULT      = 0x00080000,
+        FILT_RESERVED          = 0x00300000,
+        FILT_SOLUTION_FAULT    = 0x00400000,
+        FILT_GENERAL_FAULT     = 0x00800000,
+        GNSS_RECEIVER1_FAULT   = 0x01000000,
+        GNSS_ANTENNA1_FAULT    = 0x02000000,
+        GNSS_RECEIVER2_FAULT   = 0x04000000,
+        GNSS_ANTENNA2_FAULT    = 0x08000000,
+        GNSS_RTCM_FAILURE      = 0x10000000,
+        GNSS_RTK_FAULT         = 0x20000000,
+        GNSS_SOLUTION_FAULT    = 0x40000000,
+        GNSS_GENERAL_FAULT     = 0x80000000,
+    };
 };
 
 

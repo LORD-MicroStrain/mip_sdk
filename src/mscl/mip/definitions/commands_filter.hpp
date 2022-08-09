@@ -258,15 +258,18 @@ struct EstimationControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    enum class EnableFlags : uint16_t
+    struct EnableFlags : Bitfield<EnableFlags,uint16_t>
     {
-        GYRO_BIAS          = 0x01,
-        ACCEL_BIAS         = 0x02,
-        GYRO_SCALE_FACTOR  = 0x04,
-        ACCEL_SCALE_FACTOR = 0x08,
-        ANTENNA_OFFSET     = 0x10,
-        AUTO_MAG_HARD_IRON = 0x20,
-        AUTO_MAG_SOFT_IRON = 0x40,
+        enum  : uint16_t
+        {
+            GYRO_BIAS          = 0x0001,
+            ACCEL_BIAS         = 0x0002,
+            GYRO_SCALE_FACTOR  = 0x0004,
+            ACCEL_SCALE_FACTOR = 0x0008,
+            ANTENNA_OFFSET     = 0x0010,
+            AUTO_MAG_HARD_IRON = 0x0020,
+            AUTO_MAG_SOFT_IRON = 0x0040,
+        };
     };
     
     MipFunctionSelector function;
@@ -426,11 +429,14 @@ struct TareOrientation
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    enum class MipTareAxes : uint8_t
+    struct MipTareAxes : Bitfield<MipTareAxes,uint8_t>
     {
-        ROLL  = 0x01,
-        PITCH = 0x02,
-        YAW   = 0x04,
+        enum  : uint8_t
+        {
+            ROLL  = 0x1,
+            PITCH = 0x2,
+            YAW   = 0x4,
+        };
     };
     
     MipFunctionSelector function;
@@ -1219,11 +1225,14 @@ struct InitializationConfiguration
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    enum class AlignmentSelector : uint8_t
+    struct AlignmentSelector : Bitfield<AlignmentSelector,uint8_t>
     {
-        DUAL_ANTENNA = 0x01,
-        KINEMATIC    = 0x02,
-        MAGNETOMETER = 0x04,
+        enum  : uint8_t
+        {
+            DUAL_ANTENNA = 0x01,
+            KINEMATIC    = 0x02,
+            MAGNETOMETER = 0x04,
+        };
     };
     
     enum class InitialConditionSource : uint8_t

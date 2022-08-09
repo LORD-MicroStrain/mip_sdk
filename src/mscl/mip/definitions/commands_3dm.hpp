@@ -913,11 +913,14 @@ struct GnssSbasSettings
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    enum class SBASOptions : uint16_t
+    struct SBASOptions : Bitfield<SBASOptions,uint16_t>
     {
-        ENABLE_RANGING     = 0x01,
-        ENABLE_CORRECTIONS = 0x02,
-        APPLY_INTEGRITY    = 0x04,
+        enum  : uint16_t
+        {
+            ENABLE_RANGING     = 0x0001,
+            ENABLE_CORRECTIONS = 0x0002,
+            APPLY_INTEGRITY    = 0x0004,
+        };
     };
     
     MipFunctionSelector function;
@@ -1170,11 +1173,14 @@ struct GpioConfig
         POWER_SHUTDOWN    = 1,  ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
     };
     
-    enum class PinMode : uint8_t
+    struct PinMode : Bitfield<PinMode,uint8_t>
     {
-        OPEN_DRAIN = 0x01,
-        PULLDOWN   = 0x02,
-        PULLUP     = 0x04,
+        enum  : uint8_t
+        {
+            OPEN_DRAIN = 0x01,
+            PULLDOWN   = 0x02,
+            PULLUP     = 0x04,
+        };
     };
     
     MipFunctionSelector function;
@@ -1457,11 +1463,14 @@ struct GetEventTriggerStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    enum class Status : uint8_t
+    struct Status : Bitfield<Status,uint8_t>
     {
-        ACTIVE  = 0x01,
-        ENABLED = 0x02,
-        TEST    = 0x04,
+        enum  : uint8_t
+        {
+            ACTIVE  = 0x01,
+            ENABLED = 0x02,
+            TEST    = 0x04,
+        };
     };
     
     struct Entry

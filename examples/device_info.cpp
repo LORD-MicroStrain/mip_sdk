@@ -1,7 +1,7 @@
 
 #include "example_utils.hpp"
 
-#include <mscl/mip/definitions/commands_base.h>
+#include <mscl/mip/definitions/commands_base.hpp>
 
 
 #include <vector>
@@ -16,11 +16,11 @@ int main(int argc, const char* argv[])
     {
         std::unique_ptr<mscl::MipDeviceInterface> device = handleCommonArgs(argc, argv);
 
-        mscl::C::mip_base_device_info device_info;
+        mscl::commands_base::BaseDeviceInfo device_info;
 
         mscl::MipCmdResult result = mscl::commands_base::getDeviceInfo(*device, device_info);
 
-        if( result == mscl::C::MIP_ACK_OK )
+        if( result == mscl::MipCmdResult::ACK_OK)
         {
             printf("Success:\n");
 
