@@ -81,6 +81,21 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
+template<typename Derived, typename BaseType>
+struct Bitfield
+{
+    BaseType value;
+
+    operator BaseType() const { return value; }
+    Bitfield& operator|=(Bitfield other) { value |= other.value; return *this; }
+    Bitfield& operator&=(Bitfield other) { value &= other.value; return *this; }
+};
+template<class Derived, typename BaseType> Bitfield<Derived,BaseType> operator|(Bitfield<Derived,BaseType> a, Bitfield<Derived,BaseType> b) { return a |= b; }
+template<class Derived, typename BaseType> Bitfield<Derived,BaseType> operator&(Bitfield<Derived,BaseType> a, Bitfield<Derived,BaseType> b) { return a &= b; }
+
+template<class Derived, typename BaseType> void extract(MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return extract(serializer, bitfield.value); }
+template<class Derived, typename BaseType> void insert (MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return insert (serializer, bitfield.value); }
+
 
 struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
 {
