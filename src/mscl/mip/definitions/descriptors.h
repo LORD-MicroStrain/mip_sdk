@@ -84,11 +84,11 @@ struct MipCompositeDescriptor
 
 struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
 {
-    static const C::mip_function_selector WRITE = C::MIP_FUNCTION_WRITE;
-    static const C::mip_function_selector READ  = C::MIP_FUNCTION_READ;
-    static const C::mip_function_selector SAVE  = C::MIP_FUNCTION_SAVE;
-    static const C::mip_function_selector LOAD  = C::MIP_FUNCTION_LOAD;
-    static const C::mip_function_selector RESET = C::MIP_FUNCTION_RESET;
+    static const uint8_t WRITE = C::MIP_FUNCTION_WRITE;
+    static const uint8_t READ  = C::MIP_FUNCTION_READ;
+    static const uint8_t SAVE  = C::MIP_FUNCTION_SAVE;
+    static const uint8_t LOAD  = C::MIP_FUNCTION_LOAD;
+    static const uint8_t RESET = C::MIP_FUNCTION_RESET;
 
     // size_t insert(struct mip_serializer* serializer) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
     // size_t extract(const struct mip_serializer* serializer) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &_value); }

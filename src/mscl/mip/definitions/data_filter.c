@@ -398,6 +398,17 @@ void extract_mip_filter_heading_update_state_data(struct mip_serializer* seriali
     extract_u16(serializer, &self->valid_flags);
 }
 
+void insert_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, const enum mip_filter_heading_update_state_data_heading_source self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, enum mip_filter_heading_update_state_data_heading_source* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_filter_magnetic_model_data(struct mip_serializer* serializer, const struct mip_filter_magnetic_model_data* self)
 {
     insert_float(serializer, self->intensity_north);
@@ -772,6 +783,17 @@ void extract_mip_filter_head_aid_status_data(struct mip_serializer* serializer, 
         extract_float(serializer, &self->reserved[i]);
 }
 
+void insert_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, const enum mip_filter_head_aid_status_data_heading_aid_type self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, enum mip_filter_head_aid_status_data_heading_aid_type* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_filter_rel_pos_ned_data(struct mip_serializer* serializer, const struct mip_filter_rel_pos_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
@@ -900,6 +922,28 @@ void extract_mip_filter_gnss_dual_antenna_status_data(struct mip_serializer* ser
     extract_mip_filter_gnss_dual_antenna_status_data_fix_type(serializer, &self->fix_type);
     extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(serializer, &self->status_flags);
     extract_u16(serializer, &self->valid_flags);
+}
+
+void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, const enum mip_filter_gnss_dual_antenna_status_data_fix_type self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, enum mip_filter_gnss_dual_antenna_status_data_fix_type* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 

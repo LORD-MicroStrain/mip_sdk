@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace commands_base {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace commands_base {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -134,6 +135,7 @@ struct Ping
 void insert(MipSerializer& serializer, const Ping& self);
 void extract(MipSerializer& serializer, Ping& self);
 
+MipCmdResult ping(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -158,6 +160,7 @@ struct SetIdle
 void insert(MipSerializer& serializer, const SetIdle& self);
 void extract(MipSerializer& serializer, SetIdle& self);
 
+MipCmdResult setIdle(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +192,7 @@ void extract(MipSerializer& serializer, GetDeviceInfo& self);
 void insert(MipSerializer& serializer, const GetDeviceInfo::Response& self);
 void extract(MipSerializer& serializer, GetDeviceInfo::Response& self);
 
+MipCmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,6 +228,7 @@ void extract(MipSerializer& serializer, GetDeviceDescriptors& self);
 void insert(MipSerializer& serializer, const GetDeviceDescriptors::Response& self);
 void extract(MipSerializer& serializer, GetDeviceDescriptors::Response& self);
 
+MipCmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -260,6 +265,7 @@ void extract(MipSerializer& serializer, BuiltInTest& self);
 void insert(MipSerializer& serializer, const BuiltInTest::Response& self);
 void extract(MipSerializer& serializer, BuiltInTest::Response& self);
 
+MipCmdResult builtInTest(C::mip_interface& device, uint32_t& result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -282,6 +288,7 @@ struct Resume
 void insert(MipSerializer& serializer, const Resume& self);
 void extract(MipSerializer& serializer, Resume& self);
 
+MipCmdResult resume(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -317,6 +324,7 @@ void extract(MipSerializer& serializer, GetExtendedDescriptors& self);
 void insert(MipSerializer& serializer, const GetExtendedDescriptors::Response& self);
 void extract(MipSerializer& serializer, GetExtendedDescriptors::Response& self);
 
+MipCmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -350,6 +358,7 @@ void extract(MipSerializer& serializer, ContinuousBit& self);
 void insert(MipSerializer& serializer, const ContinuousBit::Response& self);
 void extract(MipSerializer& serializer, ContinuousBit::Response& self);
 
+MipCmdResult continuousBit(C::mip_interface& device, uint8_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -403,6 +412,11 @@ void extract(MipSerializer& serializer, CommSpeed& self);
 void insert(MipSerializer& serializer, const CommSpeed::Response& self);
 void extract(MipSerializer& serializer, CommSpeed::Response& self);
 
+MipCmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
+MipCmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud);
+MipCmdResult saveCommSpeed(C::mip_interface& device, uint8_t port);
+MipCmdResult loadCommSpeed(C::mip_interface& device, uint8_t port);
+MipCmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -438,6 +452,7 @@ struct GpsTimeUpdate
 void insert(MipSerializer& serializer, const GpsTimeUpdate& self);
 void extract(MipSerializer& serializer, GpsTimeUpdate& self);
 
+MipCmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId field_id, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -460,6 +475,7 @@ struct SoftReset
 void insert(MipSerializer& serializer, const SoftReset& self);
 void extract(MipSerializer& serializer, SoftReset& self);
 
+MipCmdResult softReset(C::mip_interface& device);
 ///@}
 ///
 

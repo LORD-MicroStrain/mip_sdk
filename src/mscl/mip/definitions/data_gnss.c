@@ -81,6 +81,17 @@ void extract_mip_gnss_pos_llh_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_pos_llh_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_pos_llh_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_pos_llh_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, const struct mip_gnss_pos_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
@@ -95,6 +106,17 @@ void extract_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, struct mi
         extract_double(serializer, &self->x[i]);
     extract_float(serializer, &self->x_accuracy);
     extract_mip_gnss_pos_ecef_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_pos_ecef_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_pos_ecef_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_vel_ned_data(struct mip_serializer* serializer, const struct mip_gnss_vel_ned_data* self)
@@ -121,6 +143,17 @@ void extract_mip_gnss_vel_ned_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_vel_ned_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_vel_ned_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_vel_ned_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, const struct mip_gnss_vel_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
@@ -135,6 +168,17 @@ void extract_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, struct mi
         extract_float(serializer, &self->v[i]);
     extract_float(serializer, &self->v_accuracy);
     extract_mip_gnss_vel_ecef_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_vel_ecef_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_vel_ecef_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_dop_data(struct mip_serializer* serializer, const struct mip_gnss_dop_data* self)
@@ -161,6 +205,17 @@ void extract_mip_gnss_dop_data(struct mip_serializer* serializer, struct mip_gns
     extract_mip_gnss_dop_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dop_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dop_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_utc_time_data(struct mip_serializer* serializer, const struct mip_gnss_utc_time_data* self)
 {
     insert_u16(serializer, self->year);
@@ -185,6 +240,17 @@ void extract_mip_gnss_utc_time_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_utc_time_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_utc_time_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_utc_time_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_gps_time_data(struct mip_serializer* serializer, const struct mip_gnss_gps_time_data* self)
 {
     insert_double(serializer, self->tow);
@@ -197,6 +263,17 @@ void extract_mip_gnss_gps_time_data(struct mip_serializer* serializer, struct mi
     extract_double(serializer, &self->tow);
     extract_u16(serializer, &self->week_number);
     extract_mip_gnss_gps_time_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_time_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_time_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_clock_info_data(struct mip_serializer* serializer, const struct mip_gnss_clock_info_data* self)
@@ -215,6 +292,17 @@ void extract_mip_gnss_clock_info_data(struct mip_serializer* serializer, struct 
     extract_mip_gnss_clock_info_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_clock_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_clock_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_fix_info_data(struct mip_serializer* serializer, const struct mip_gnss_fix_info_data* self)
 {
     insert_mip_gnss_fix_info_data_fix_type(serializer, self->fix_type);
@@ -229,6 +317,39 @@ void extract_mip_gnss_fix_info_data(struct mip_serializer* serializer, struct mi
     extract_u8(serializer, &self->num_sv);
     extract_mip_gnss_fix_info_data_fix_flags(serializer, &self->fix_flags);
     extract_mip_gnss_fix_info_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_fix_type self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_fix_type* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_fix_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_fix_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_sv_info_data(struct mip_serializer* serializer, const struct mip_gnss_sv_info_data* self)
@@ -253,6 +374,28 @@ void extract_mip_gnss_sv_info_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_sv_info_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, const enum mip_gnss_sv_info_data_svflags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, enum mip_gnss_sv_info_data_svflags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sv_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sv_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_hw_status_data(struct mip_serializer* serializer, const struct mip_gnss_hw_status_data* self)
 {
     insert_mip_gnss_hw_status_data_receiver_state(serializer, self->receiver_state);
@@ -267,6 +410,50 @@ void extract_mip_gnss_hw_status_data(struct mip_serializer* serializer, struct m
     extract_mip_gnss_hw_status_data_antenna_state(serializer, &self->antenna_state);
     extract_mip_gnss_hw_status_data_antenna_power(serializer, &self->antenna_power);
     extract_mip_gnss_hw_status_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_receiver_state self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_receiver_state* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_antenna_state self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_antenna_state* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_antenna_power self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_antenna_power* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_dgps_info_data(struct mip_serializer* serializer, const struct mip_gnss_dgps_info_data* self)
@@ -287,6 +474,17 @@ void extract_mip_gnss_dgps_info_data(struct mip_serializer* serializer, struct m
     extract_mip_gnss_dgps_info_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dgps_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dgps_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, const struct mip_gnss_dgps_channel_data* self)
 {
     insert_u8(serializer, self->sv_id);
@@ -303,6 +501,17 @@ void extract_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, struc
     extract_float(serializer, &self->range_correction);
     extract_float(serializer, &self->range_rate_correction);
     extract_mip_gnss_dgps_channel_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dgps_channel_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dgps_channel_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, const struct mip_gnss_clock_info_2_data* self)
@@ -323,6 +532,17 @@ void extract_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, struc
     extract_mip_gnss_clock_info_2_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_clock_info_2_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_clock_info_2_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_gps_leap_seconds_data(struct mip_serializer* serializer, const struct mip_gnss_gps_leap_seconds_data* self)
 {
     insert_u8(serializer, self->leap_seconds);
@@ -333,6 +553,17 @@ void extract_mip_gnss_gps_leap_seconds_data(struct mip_serializer* serializer, s
 {
     extract_u8(serializer, &self->leap_seconds);
     extract_mip_gnss_gps_leap_seconds_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_leap_seconds_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_leap_seconds_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_sbas_info_data(struct mip_serializer* serializer, const struct mip_gnss_sbas_info_data* self)
@@ -355,6 +586,28 @@ void extract_mip_gnss_sbas_info_data(struct mip_serializer* serializer, struct m
     extract_u8(serializer, &self->count);
     extract_mip_gnss_sbas_info_data_sbas_status(serializer, &self->sbas_status);
     extract_mip_gnss_sbas_info_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, const enum mip_gnss_sbas_info_data_sbas_status self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, enum mip_gnss_sbas_info_data_sbas_status* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sbas_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sbas_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, const struct mip_gnss_sbas_correction_data* self)
@@ -385,6 +638,17 @@ void extract_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, st
     extract_mip_gnss_sbas_correction_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sbas_correction_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sbas_correction_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer, const struct mip_gnss_rf_error_detection_data* self)
 {
     insert_mip_gnss_rf_error_detection_data_rfband(serializer, self->rf_band);
@@ -403,6 +667,50 @@ void extract_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer,
     for(unsigned int i=0; i < 4; i++)
         extract_u8(serializer, &self->reserved[i]);
     extract_mip_gnss_rf_error_detection_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_rfband self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_rfband* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_jamming_state self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_jamming_state* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_spoofing_state self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_spoofing_state* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_base_station_info_data(struct mip_serializer* serializer, const struct mip_gnss_base_station_info_data* self)
@@ -427,6 +735,28 @@ void extract_mip_gnss_base_station_info_data(struct mip_serializer* serializer, 
     extract_u16(serializer, &self->station_id);
     extract_mip_gnss_base_station_info_data_indicator_flags(serializer, &self->indicators);
     extract_mip_gnss_base_station_info_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, const enum mip_gnss_base_station_info_data_indicator_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, enum mip_gnss_base_station_info_data_indicator_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_base_station_info_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_base_station_info_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_rtk_corrections_status_data(struct mip_serializer* serializer, const struct mip_gnss_rtk_corrections_status_data* self)
@@ -459,6 +789,28 @@ void extract_mip_gnss_rtk_corrections_status_data(struct mip_serializer* seriali
     extract_mip_gnss_rtk_corrections_status_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_rtk_corrections_status_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_rtk_corrections_status_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, const enum mip_gnss_rtk_corrections_status_data_epoch_status self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, enum mip_gnss_rtk_corrections_status_data_epoch_status* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_satellite_status_data(struct mip_serializer* serializer, const struct mip_gnss_satellite_status_data* self)
 {
     insert_u8(serializer, self->index);
@@ -485,6 +837,17 @@ void extract_mip_gnss_satellite_status_data(struct mip_serializer* serializer, s
     extract_float(serializer, &self->azimuth);
     extract_bool(serializer, &self->health);
     extract_mip_gnss_satellite_status_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_satellite_status_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_satellite_status_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_raw_data(struct mip_serializer* serializer, const struct mip_gnss_raw_data* self)
@@ -531,6 +894,28 @@ void extract_mip_gnss_raw_data(struct mip_serializer* serializer, struct mip_gns
     extract_float(serializer, &self->doppler_uncert);
     extract_float(serializer, &self->lock_time);
     extract_mip_gnss_raw_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, const enum mip_gnss_raw_data_gnss_signal_quality self)
+{
+    return insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, enum mip_gnss_raw_data_gnss_signal_quality* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_raw_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_raw_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, const struct mip_gnss_gps_ephemeris_data* self)
@@ -609,6 +994,17 @@ void extract_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_gps_ephemeris_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_ephemeris_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_ephemeris_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, const struct mip_gnss_glo_ephemeris_data* self)
 {
     insert_u8(serializer, self->index);
@@ -673,6 +1069,17 @@ void extract_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_glo_ephemeris_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_glo_ephemeris_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_glo_ephemeris_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, const struct mip_gnss_gps_iono_corr_data* self)
 {
     insert_double(serializer, self->time_of_week);
@@ -695,6 +1102,17 @@ void extract_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_gps_iono_corr_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_iono_corr_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_iono_corr_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, const struct mip_gnss_galileo_iono_corr_data* self)
 {
     insert_double(serializer, self->time_of_week);
@@ -713,6 +1131,17 @@ void extract_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, 
         extract_double(serializer, &self->alpha[i]);
     extract_u8(serializer, &self->disturbance_flags);
     extract_mip_gnss_galileo_iono_corr_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_galileo_iono_corr_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_galileo_iono_corr_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 

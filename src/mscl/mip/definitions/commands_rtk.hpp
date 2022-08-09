@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace commands_rtk {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace commands_rtk {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -135,6 +136,7 @@ void extract(MipSerializer& serializer, GetStatusFlags& self);
 void insert(MipSerializer& serializer, const GetStatusFlags::Response& self);
 void extract(MipSerializer& serializer, GetStatusFlags::Response& self);
 
+MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +167,7 @@ void extract(MipSerializer& serializer, GetImei& self);
 void insert(MipSerializer& serializer, const GetImei::Response& self);
 void extract(MipSerializer& serializer, GetImei::Response& self);
 
+MipCmdResult getImei(C::mip_interface& device, char* IMEI);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +198,7 @@ void extract(MipSerializer& serializer, GetImsi& self);
 void insert(MipSerializer& serializer, const GetImsi::Response& self);
 void extract(MipSerializer& serializer, GetImsi::Response& self);
 
+MipCmdResult getImsi(C::mip_interface& device, char* IMSI);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -225,6 +229,7 @@ void extract(MipSerializer& serializer, GetIccid& self);
 void insert(MipSerializer& serializer, const GetIccid::Response& self);
 void extract(MipSerializer& serializer, GetIccid::Response& self);
 
+MipCmdResult getIccid(C::mip_interface& device, char* ICCID);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -267,6 +272,11 @@ void extract(MipSerializer& serializer, ConnectedDeviceType& self);
 void insert(MipSerializer& serializer, const ConnectedDeviceType::Response& self);
 void extract(MipSerializer& serializer, ConnectedDeviceType::Response& self);
 
+MipCmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType);
+MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType);
+MipCmdResult saveConnectedDeviceType(C::mip_interface& device);
+MipCmdResult loadConnectedDeviceType(C::mip_interface& device);
+MipCmdResult defaultConnectedDeviceType(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -297,6 +307,7 @@ void extract(MipSerializer& serializer, GetActCode& self);
 void insert(MipSerializer& serializer, const GetActCode::Response& self);
 void extract(MipSerializer& serializer, GetActCode::Response& self);
 
+MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -327,6 +338,7 @@ void extract(MipSerializer& serializer, GetModemFirmwareVersion& self);
 void insert(MipSerializer& serializer, const GetModemFirmwareVersion::Response& self);
 void extract(MipSerializer& serializer, GetModemFirmwareVersion::Response& self);
 
+MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -360,6 +372,7 @@ void extract(MipSerializer& serializer, GetRssi& self);
 void insert(MipSerializer& serializer, const GetRssi::Response& self);
 void extract(MipSerializer& serializer, GetRssi::Response& self);
 
+MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -403,6 +416,7 @@ void extract(MipSerializer& serializer, ServiceStatus& self);
 void insert(MipSerializer& serializer, const ServiceStatus::Response& self);
 void extract(MipSerializer& serializer, ServiceStatus::Response& self);
 
+MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -425,6 +439,7 @@ struct ProdEraseStorage
 void insert(MipSerializer& serializer, const ProdEraseStorage& self);
 void extract(MipSerializer& serializer, ProdEraseStorage& self);
 
+MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -449,6 +464,7 @@ struct LedControl
 void insert(MipSerializer& serializer, const LedControl& self);
 void extract(MipSerializer& serializer, LedControl& self);
 
+MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -470,6 +486,7 @@ struct ModemHardReset
 void insert(MipSerializer& serializer, const ModemHardReset& self);
 void extract(MipSerializer& serializer, ModemHardReset& self);
 
+MipCmdResult modemHardReset(C::mip_interface& device);
 ///@}
 ///
 

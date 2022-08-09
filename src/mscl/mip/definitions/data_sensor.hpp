@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace data_sensor {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace data_sensor {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData

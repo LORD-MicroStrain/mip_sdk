@@ -80,40 +80,40 @@ public:
     MipSerializer(const uint8_t* buffer, size_t size) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); }
 
     operator const void*() const { return C::mip_serializer_ok(this) ? this : nullptr; }
-    bool operator!() const { return C::mip_serializer_ok(this); }
+    bool operator!() const { return !C::mip_serializer_ok(this); }
 };
 
 
-void insert(MipSerializer& serializer, bool value)     { return C::insert_bool  (&serializer, value); }
-void insert(MipSerializer& serializer, char value)     { return C::insert_char  (&serializer, value); }
-void insert(MipSerializer& serializer, uint8_t  value) { return C::insert_u8    (&serializer, value); }
-void insert(MipSerializer& serializer, uint16_t value) { return C::insert_u16   (&serializer, value); }
-void insert(MipSerializer& serializer, uint32_t value) { return C::insert_u32   (&serializer, value); }
-void insert(MipSerializer& serializer, uint64_t value) { return C::insert_u64   (&serializer, value); }
-void insert(MipSerializer& serializer, int8_t  value)  { return C::insert_s8    (&serializer, value); }
-void insert(MipSerializer& serializer, int16_t value)  { return C::insert_s16   (&serializer, value); }
-void insert(MipSerializer& serializer, int32_t value)  { return C::insert_s32   (&serializer, value); }
-void insert(MipSerializer& serializer, int64_t value)  { return C::insert_s64   (&serializer, value); }
-void insert(MipSerializer& serializer, float  value)   { return C::insert_float (&serializer, value); }
-void insert(MipSerializer& serializer, double value)   { return C::insert_double(&serializer, value); }
+inline void insert(MipSerializer& serializer, bool value)     { return C::insert_bool  (&serializer, value); }
+inline void insert(MipSerializer& serializer, char value)     { return C::insert_char  (&serializer, value); }
+inline void insert(MipSerializer& serializer, uint8_t  value) { return C::insert_u8    (&serializer, value); }
+inline void insert(MipSerializer& serializer, uint16_t value) { return C::insert_u16   (&serializer, value); }
+inline void insert(MipSerializer& serializer, uint32_t value) { return C::insert_u32   (&serializer, value); }
+inline void insert(MipSerializer& serializer, uint64_t value) { return C::insert_u64   (&serializer, value); }
+inline void insert(MipSerializer& serializer, int8_t  value)  { return C::insert_s8    (&serializer, value); }
+inline void insert(MipSerializer& serializer, int16_t value)  { return C::insert_s16   (&serializer, value); }
+inline void insert(MipSerializer& serializer, int32_t value)  { return C::insert_s32   (&serializer, value); }
+inline void insert(MipSerializer& serializer, int64_t value)  { return C::insert_s64   (&serializer, value); }
+inline void insert(MipSerializer& serializer, float  value)   { return C::insert_float (&serializer, value); }
+inline void insert(MipSerializer& serializer, double value)   { return C::insert_double(&serializer, value); }
 
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ insert(MipSerializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
 
 
-void extract(MipSerializer& serializer, bool& value)     { return C::extract_bool  (&serializer, &value); }
-void extract(MipSerializer& serializer, char& value)     { return C::extract_char  (&serializer, &value); }
-void extract(MipSerializer& serializer, uint8_t&  value) { return C::extract_u8    (&serializer, &value); }
-void extract(MipSerializer& serializer, uint16_t& value) { return C::extract_u16   (&serializer, &value); }
-void extract(MipSerializer& serializer, uint32_t& value) { return C::extract_u32   (&serializer, &value); }
-void extract(MipSerializer& serializer, uint64_t& value) { return C::extract_u64   (&serializer, &value); }
-void extract(MipSerializer& serializer, int8_t&  value)  { return C::extract_s8    (&serializer, &value); }
-void extract(MipSerializer& serializer, int16_t& value)  { return C::extract_s16   (&serializer, &value); }
-void extract(MipSerializer& serializer, int32_t& value)  { return C::extract_s32   (&serializer, &value); }
-void extract(MipSerializer& serializer, int64_t& value)  { return C::extract_s64   (&serializer, &value); }
-void extract(MipSerializer& serializer, float&  value)   { return C::extract_float (&serializer, &value); }
-void extract(MipSerializer& serializer, double& value)   { return C::extract_double(&serializer, &value); }
+inline void extract(MipSerializer& serializer, bool& value)     { return C::extract_bool  (&serializer, &value); }
+inline void extract(MipSerializer& serializer, char& value)     { return C::extract_char  (&serializer, &value); }
+inline void extract(MipSerializer& serializer, uint8_t&  value) { return C::extract_u8    (&serializer, &value); }
+inline void extract(MipSerializer& serializer, uint16_t& value) { return C::extract_u16   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, uint32_t& value) { return C::extract_u32   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, uint64_t& value) { return C::extract_u64   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, int8_t&  value)  { return C::extract_s8    (&serializer, &value); }
+inline void extract(MipSerializer& serializer, int16_t& value)  { return C::extract_s16   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, int32_t& value)  { return C::extract_s32   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, int64_t& value)  { return C::extract_s64   (&serializer, &value); }
+inline void extract(MipSerializer& serializer, float&  value)   { return C::extract_float (&serializer, &value); }
+inline void extract(MipSerializer& serializer, double& value)   { return C::extract_double(&serializer, &value); }
 
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type

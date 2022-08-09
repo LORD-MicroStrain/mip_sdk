@@ -70,6 +70,17 @@ void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, st
     extract_mip_shared_gps_timestamp_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_gps_timestamp_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_gps_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self)
 {
     insert_double(serializer, self->seconds);
@@ -112,6 +123,17 @@ void extract_mip_shared_external_timestamp_data(struct mip_serializer* serialize
     extract_mip_shared_external_timestamp_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_timestamp_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_external_time_delta_data* self)
 {
     insert_u64(serializer, self->dt_nanos);
@@ -122,6 +144,17 @@ void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializ
 {
     extract_u64(serializer, &self->dt_nanos);
     extract_mip_shared_external_time_delta_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_time_delta_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_time_delta_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 

@@ -129,6 +129,7 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+mip_cmd_result mip_base_ping(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,6 +142,7 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+mip_cmd_result mip_base_set_idle(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +151,15 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+struct mip_base_get_device_info_response
+{
+    struct mip_base_device_info device_info;
+    
+};
+void insert_mip_base_get_device_info_response(struct mip_serializer* serializer, const struct mip_base_get_device_info_response* self);
+void extract_mip_base_get_device_info_response(struct mip_serializer* serializer, struct mip_base_get_device_info_response* self);
+
+mip_cmd_result mip_base_get_device_info(struct mip_interface* device, struct mip_base_device_info* device_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +171,16 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+struct mip_base_get_device_descriptors_response
+{
+    uint8_t descriptors_count;
+    uint16_t* descriptors;
+    
+};
+void insert_mip_base_get_device_descriptors_response(struct mip_serializer* serializer, const struct mip_base_get_device_descriptors_response* self);
+void extract_mip_base_get_device_descriptors_response(struct mip_serializer* serializer, struct mip_base_get_device_descriptors_response* self);
+
+mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint8_t* descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +194,15 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+struct mip_base_built_in_test_response
+{
+    uint32_t result;
+    
+};
+void insert_mip_base_built_in_test_response(struct mip_serializer* serializer, const struct mip_base_built_in_test_response* self);
+void extract_mip_base_built_in_test_response(struct mip_serializer* serializer, struct mip_base_built_in_test_response* self);
+
+mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -183,6 +213,7 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+mip_cmd_result mip_base_resume(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +225,16 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+struct mip_base_get_extended_descriptors_response
+{
+    uint8_t descriptors_count;
+    uint16_t* descriptors;
+    
+};
+void insert_mip_base_get_extended_descriptors_response(struct mip_serializer* serializer, const struct mip_base_get_extended_descriptors_response* self);
+void extract_mip_base_get_extended_descriptors_response(struct mip_serializer* serializer, struct mip_base_get_extended_descriptors_response* self);
+
+mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint8_t* descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,6 +245,15 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ///
 ///@{
 
+struct mip_base_continuous_bit_response
+{
+    uint8_t result[16];
+    
+};
+void insert_mip_base_continuous_bit_response(struct mip_serializer* serializer, const struct mip_base_continuous_bit_response* self);
+void extract_mip_base_continuous_bit_response(struct mip_serializer* serializer, struct mip_base_continuous_bit_response* self);
+
+mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -233,18 +283,23 @@ struct mip_base_comm_speed_command
     uint32_t baud;
     
 };
+void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const struct mip_base_comm_speed_command* self);
+void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, struct mip_base_comm_speed_command* self);
+
 struct mip_base_comm_speed_response
 {
     uint8_t port;
     uint32_t baud;
     
 };
-void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const struct mip_base_comm_speed_command* self);
-void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, struct mip_base_comm_speed_command* self);
-
 void insert_mip_base_comm_speed_response(struct mip_serializer* serializer, const struct mip_base_comm_speed_response* self);
 void extract_mip_base_comm_speed_response(struct mip_serializer* serializer, struct mip_base_comm_speed_response* self);
 
+mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud);
+mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud);
+mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port);
+mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,6 +329,7 @@ void extract_mip_base_gps_time_update_command(struct mip_serializer* serializer,
 void insert_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, const enum mip_base_gps_time_update_command_field_id self);
 void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, enum mip_base_gps_time_update_command_field_id* self);
 
+mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, enum mip_base_gps_time_update_command_field_id field_id, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +340,7 @@ void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* se
 ///
 ///@{
 
+mip_cmd_result mip_base_soft_reset(struct mip_interface* device);
 ///@}
 ///
 

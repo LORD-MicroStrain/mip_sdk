@@ -38,7 +38,7 @@ void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type 
 
     struct mip_field field;
     mip_field_init_empty(&field);
-    while( mip_field_next_in_packet(&field, packet) );
+    while( mip_field_next_in_packet(&field, packet) )
     {
         printf(" %02X", mip_field_field_descriptor(&field));
     }

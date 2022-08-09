@@ -240,6 +240,17 @@ void extract_mip_sensor_gps_timestamp_data(struct mip_serializer* serializer, st
     extract_mip_sensor_gps_timestamp_data_valid_flags(serializer, &self->valid_flags);
 }
 
+void insert_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_sensor_gps_timestamp_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_sensor_gps_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, const struct mip_sensor_temperature_abs_data* self)
 {
     insert_float(serializer, self->min_temp);
@@ -286,6 +297,17 @@ void insert_mip_sensor_overrange_status_data(struct mip_serializer* serializer, 
 void extract_mip_sensor_overrange_status_data(struct mip_serializer* serializer, struct mip_sensor_overrange_status_data* self)
 {
     extract_mip_sensor_overrange_status_data_status(serializer, &self->status);
+}
+
+void insert_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, const enum mip_sensor_overrange_status_data_status self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, enum mip_sensor_overrange_status_data_status* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
 }
 
 void insert_mip_sensor_odometer_data_data(struct mip_serializer* serializer, const struct mip_sensor_odometer_data_data* self)

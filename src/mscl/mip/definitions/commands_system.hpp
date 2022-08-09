@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace commands_system {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace commands_system {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -96,6 +97,9 @@ void extract(MipSerializer& serializer, CommMode& self);
 void insert(MipSerializer& serializer, const CommMode::Response& self);
 void extract(MipSerializer& serializer, CommMode::Response& self);
 
+MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
+MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode);
+MipCmdResult defaultCommMode(C::mip_interface& device);
 ///@}
 ///
 

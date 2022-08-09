@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace commands_filter {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace commands_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -192,6 +193,7 @@ struct Reset
 void insert(MipSerializer& serializer, const Reset& self);
 void extract(MipSerializer& serializer, Reset& self);
 
+MipCmdResult reset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -226,6 +228,7 @@ struct SetInitialAttitude
 void insert(MipSerializer& serializer, const SetInitialAttitude& self);
 void extract(MipSerializer& serializer, SetInitialAttitude& self);
 
+MipCmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, float heading);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +287,11 @@ void extract(MipSerializer& serializer, EstimationControl& self);
 void insert(MipSerializer& serializer, const EstimationControl::Response& self);
 void extract(MipSerializer& serializer, EstimationControl::Response& self);
 
+MipCmdResult writeEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags enable);
+MipCmdResult readEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags& enable);
+MipCmdResult saveEstimationControl(C::mip_interface& device);
+MipCmdResult loadEstimationControl(C::mip_interface& device);
+MipCmdResult defaultEstimationControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,6 +324,7 @@ struct ExternalGnssUpdate
 void insert(MipSerializer& serializer, const ExternalGnssUpdate& self);
 void extract(MipSerializer& serializer, ExternalGnssUpdate& self);
 
+MipCmdResult externalGnssUpdate(C::mip_interface& device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -351,6 +360,7 @@ struct ExternalHeadingUpdate
 void insert(MipSerializer& serializer, const ExternalHeadingUpdate& self);
 void extract(MipSerializer& serializer, ExternalHeadingUpdate& self);
 
+MipCmdResult externalHeadingUpdate(C::mip_interface& device, float heading, float heading_uncertainty, uint8_t type);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -392,6 +402,7 @@ struct ExternalHeadingUpdateWithTime
 void insert(MipSerializer& serializer, const ExternalHeadingUpdateWithTime& self);
 void extract(MipSerializer& serializer, ExternalHeadingUpdateWithTime& self);
 
+MipCmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gps_time, uint16_t gps_week, float heading, float heading_uncertainty, uint8_t type);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -440,6 +451,11 @@ void extract(MipSerializer& serializer, TareOrientation& self);
 void insert(MipSerializer& serializer, const TareOrientation::Response& self);
 void extract(MipSerializer& serializer, TareOrientation::Response& self);
 
+MipCmdResult writeTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes axes);
+MipCmdResult readTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes& axes);
+MipCmdResult saveTareOrientation(C::mip_interface& device);
+MipCmdResult loadTareOrientation(C::mip_interface& device);
+MipCmdResult defaultTareOrientation(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -503,6 +519,11 @@ void extract(MipSerializer& serializer, SensorToVehicleRotationEuler& self);
 void insert(MipSerializer& serializer, const SensorToVehicleRotationEuler::Response& self);
 void extract(MipSerializer& serializer, SensorToVehicleRotationEuler::Response& self);
 
+MipCmdResult writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw);
+MipCmdResult readSensorToVehicleRotationEuler(C::mip_interface& device, float& roll, float& pitch, float& yaw);
+MipCmdResult saveSensorToVehicleRotationEuler(C::mip_interface& device);
+MipCmdResult loadSensorToVehicleRotationEuler(C::mip_interface& device);
+MipCmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -568,6 +589,11 @@ void extract(MipSerializer& serializer, SensorToVehicleRotationDcm& self);
 void insert(MipSerializer& serializer, const SensorToVehicleRotationDcm::Response& self);
 void extract(MipSerializer& serializer, SensorToVehicleRotationDcm::Response& self);
 
+MipCmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm);
+MipCmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcm);
+MipCmdResult saveSensorToVehicleRotationDcm(C::mip_interface& device);
+MipCmdResult loadSensorToVehicleRotationDcm(C::mip_interface& device);
+MipCmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -632,6 +658,11 @@ void extract(MipSerializer& serializer, SensorToVehicleRotationQuaternion& self)
 void insert(MipSerializer& serializer, const SensorToVehicleRotationQuaternion::Response& self);
 void extract(MipSerializer& serializer, SensorToVehicleRotationQuaternion::Response& self);
 
+MipCmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat);
+MipCmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quat);
+MipCmdResult saveSensorToVehicleRotationQuaternion(C::mip_interface& device);
+MipCmdResult loadSensorToVehicleRotationQuaternion(C::mip_interface& device);
+MipCmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -677,6 +708,11 @@ void extract(MipSerializer& serializer, SensorToVehicleOffset& self);
 void insert(MipSerializer& serializer, const SensorToVehicleOffset::Response& self);
 void extract(MipSerializer& serializer, SensorToVehicleOffset::Response& self);
 
+MipCmdResult writeSensorToVehicleOffset(C::mip_interface& device, const float* offset);
+MipCmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offset);
+MipCmdResult saveSensorToVehicleOffset(C::mip_interface& device);
+MipCmdResult loadSensorToVehicleOffset(C::mip_interface& device);
+MipCmdResult defaultSensorToVehicleOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -719,6 +755,11 @@ void extract(MipSerializer& serializer, AntennaOffset& self);
 void insert(MipSerializer& serializer, const AntennaOffset::Response& self);
 void extract(MipSerializer& serializer, AntennaOffset::Response& self);
 
+MipCmdResult writeAntennaOffset(C::mip_interface& device, const float* offset);
+MipCmdResult readAntennaOffset(C::mip_interface& device, float* offset);
+MipCmdResult saveAntennaOffset(C::mip_interface& device);
+MipCmdResult loadAntennaOffset(C::mip_interface& device);
+MipCmdResult defaultAntennaOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -768,6 +809,11 @@ void extract(MipSerializer& serializer, GnssSource& self);
 void insert(MipSerializer& serializer, const GnssSource::Response& self);
 void extract(MipSerializer& serializer, GnssSource::Response& self);
 
+MipCmdResult writeGnssSource(C::mip_interface& device, GnssSource::Source source);
+MipCmdResult readGnssSource(C::mip_interface& device, GnssSource::Source& source);
+MipCmdResult saveGnssSource(C::mip_interface& device);
+MipCmdResult loadGnssSource(C::mip_interface& device);
+MipCmdResult defaultGnssSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -828,6 +874,11 @@ void extract(MipSerializer& serializer, HeadingSource& self);
 void insert(MipSerializer& serializer, const HeadingSource::Response& self);
 void extract(MipSerializer& serializer, HeadingSource::Response& self);
 
+MipCmdResult writeHeadingSource(C::mip_interface& device, HeadingSource::Source source);
+MipCmdResult readHeadingSource(C::mip_interface& device, HeadingSource::Source& source);
+MipCmdResult saveHeadingSource(C::mip_interface& device);
+MipCmdResult loadHeadingSource(C::mip_interface& device);
+MipCmdResult defaultHeadingSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -876,6 +927,11 @@ void extract(MipSerializer& serializer, AltitudeAiding& self);
 void insert(MipSerializer& serializer, const AltitudeAiding::Response& self);
 void extract(MipSerializer& serializer, AltitudeAiding::Response& self);
 
+MipCmdResult writeAltitudeAiding(C::mip_interface& device, uint8_t aiding_selector);
+MipCmdResult readAltitudeAiding(C::mip_interface& device, uint8_t& aiding_selector);
+MipCmdResult saveAltitudeAiding(C::mip_interface& device);
+MipCmdResult loadAltitudeAiding(C::mip_interface& device);
+MipCmdResult defaultAltitudeAiding(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -917,6 +973,11 @@ void extract(MipSerializer& serializer, AutoZupt& self);
 void insert(MipSerializer& serializer, const AutoZupt::Response& self);
 void extract(MipSerializer& serializer, AutoZupt::Response& self);
 
+MipCmdResult writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold);
+MipCmdResult readAutoZupt(C::mip_interface& device, uint8_t& enable, float& threshold);
+MipCmdResult saveAutoZupt(C::mip_interface& device);
+MipCmdResult loadAutoZupt(C::mip_interface& device);
+MipCmdResult defaultAutoZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -958,6 +1019,11 @@ void extract(MipSerializer& serializer, AutoAngularZupt& self);
 void insert(MipSerializer& serializer, const AutoAngularZupt::Response& self);
 void extract(MipSerializer& serializer, AutoAngularZupt::Response& self);
 
+MipCmdResult writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold);
+MipCmdResult readAutoAngularZupt(C::mip_interface& device, uint8_t& enable, float& threshold);
+MipCmdResult saveAutoAngularZupt(C::mip_interface& device);
+MipCmdResult loadAutoAngularZupt(C::mip_interface& device);
+MipCmdResult defaultAutoAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -979,6 +1045,7 @@ struct CommandedZupt
 void insert(MipSerializer& serializer, const CommandedZupt& self);
 void extract(MipSerializer& serializer, CommandedZupt& self);
 
+MipCmdResult commandedZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1000,6 +1067,7 @@ struct CommandedAngularZupt
 void insert(MipSerializer& serializer, const CommandedAngularZupt& self);
 void extract(MipSerializer& serializer, CommandedAngularZupt& self);
 
+MipCmdResult commandedAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1052,6 +1120,11 @@ void extract(MipSerializer& serializer, AidingMeasurementEnable& self);
 void insert(MipSerializer& serializer, const AidingMeasurementEnable::Response& self);
 void extract(MipSerializer& serializer, AidingMeasurementEnable::Response& self);
 
+MipCmdResult writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aiding_source, bool enable);
+MipCmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aiding_source, bool& enable);
+MipCmdResult saveAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aiding_source);
+MipCmdResult loadAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aiding_source);
+MipCmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aiding_source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1074,6 +1147,7 @@ struct Run
 void insert(MipSerializer& serializer, const Run& self);
 void extract(MipSerializer& serializer, Run& self);
 
+MipCmdResult run(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1117,6 +1191,11 @@ void extract(MipSerializer& serializer, KinematicConstraint& self);
 void insert(MipSerializer& serializer, const KinematicConstraint::Response& self);
 void extract(MipSerializer& serializer, KinematicConstraint::Response& self);
 
+MipCmdResult writeKinematicConstraint(C::mip_interface& device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection);
+MipCmdResult readKinematicConstraint(C::mip_interface& device, uint8_t& acceleration_constraint_selection, uint8_t& velocity_constraint_selection, uint8_t& angular_constraint_selection);
+MipCmdResult saveKinematicConstraint(C::mip_interface& device);
+MipCmdResult loadKinematicConstraint(C::mip_interface& device);
+MipCmdResult defaultKinematicConstraint(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1189,6 +1268,11 @@ void extract(MipSerializer& serializer, InitializationConfiguration& self);
 void insert(MipSerializer& serializer, const InitializationConfiguration::Response& self);
 void extract(MipSerializer& serializer, InitializationConfiguration::Response& self);
 
+MipCmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t wait_for_run_command, InitializationConfiguration::InitialConditionSource initial_cond_src, InitializationConfiguration::AlignmentSelector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, FilterReferenceFrame reference_frame_selector);
+MipCmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t& wait_for_run_command, InitializationConfiguration::InitialConditionSource& initial_cond_src, InitializationConfiguration::AlignmentSelector& auto_heading_alignment_selector, float& initial_heading, float& initial_pitch, float& initial_roll, float* initial_position, float* initial_velocity, FilterReferenceFrame& reference_frame_selector);
+MipCmdResult saveInitializationConfiguration(C::mip_interface& device);
+MipCmdResult loadInitializationConfiguration(C::mip_interface& device);
+MipCmdResult defaultInitializationConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1228,6 +1312,11 @@ void extract(MipSerializer& serializer, AdaptiveFilterOptions& self);
 void insert(MipSerializer& serializer, const AdaptiveFilterOptions::Response& self);
 void extract(MipSerializer& serializer, AdaptiveFilterOptions::Response& self);
 
+MipCmdResult writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t time_limit);
+MipCmdResult readAdaptiveFilterOptions(C::mip_interface& device, uint8_t& level, uint16_t& time_limit);
+MipCmdResult saveAdaptiveFilterOptions(C::mip_interface& device);
+MipCmdResult loadAdaptiveFilterOptions(C::mip_interface& device);
+MipCmdResult defaultAdaptiveFilterOptions(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1269,6 +1358,11 @@ void extract(MipSerializer& serializer, MultiAntennaOffset& self);
 void insert(MipSerializer& serializer, const MultiAntennaOffset::Response& self);
 void extract(MipSerializer& serializer, MultiAntennaOffset::Response& self);
 
+MipCmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, const float* antenna_offset);
+MipCmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, float* antenna_offset);
+MipCmdResult saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id);
+MipCmdResult loadMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id);
+MipCmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1310,6 +1404,11 @@ void extract(MipSerializer& serializer, RelPosConfiguration& self);
 void insert(MipSerializer& serializer, const RelPosConfiguration::Response& self);
 void extract(MipSerializer& serializer, RelPosConfiguration::Response& self);
 
+MipCmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame reference_frame_selector, const double* reference_coordinates);
+MipCmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t& source, FilterReferenceFrame& reference_frame_selector, double* reference_coordinates);
+MipCmdResult saveRelPosConfiguration(C::mip_interface& device);
+MipCmdResult loadRelPosConfiguration(C::mip_interface& device);
+MipCmdResult defaultRelPosConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1359,6 +1458,11 @@ void extract(MipSerializer& serializer, RefPointLeverArm& self);
 void insert(MipSerializer& serializer, const RefPointLeverArm::Response& self);
 void extract(MipSerializer& serializer, RefPointLeverArm::Response& self);
 
+MipCmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector ref_point_sel, const float* lever_arm_offset);
+MipCmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector& ref_point_sel, float* lever_arm_offset);
+MipCmdResult saveRefPointLeverArm(C::mip_interface& device);
+MipCmdResult loadRefPointLeverArm(C::mip_interface& device);
+MipCmdResult defaultRefPointLeverArm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1385,6 +1489,7 @@ struct SpeedMeasurement
 void insert(MipSerializer& serializer, const SpeedMeasurement& self);
 void extract(MipSerializer& serializer, SpeedMeasurement& self);
 
+MipCmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float time_of_week, float speed, float speed_uncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1430,6 +1535,11 @@ void extract(MipSerializer& serializer, SpeedLeverArm& self);
 void insert(MipSerializer& serializer, const SpeedLeverArm::Response& self);
 void extract(MipSerializer& serializer, SpeedLeverArm::Response& self);
 
+MipCmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* lever_arm_offset);
+MipCmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lever_arm_offset);
+MipCmdResult saveSpeedLeverArm(C::mip_interface& device, uint8_t source);
+MipCmdResult loadSpeedLeverArm(C::mip_interface& device, uint8_t source);
+MipCmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1473,6 +1583,11 @@ void extract(MipSerializer& serializer, WheeledVehicleConstraintControl& self);
 void insert(MipSerializer& serializer, const WheeledVehicleConstraintControl::Response& self);
 void extract(MipSerializer& serializer, WheeledVehicleConstraintControl::Response& self);
 
+MipCmdResult writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable);
+MipCmdResult readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t& enable);
+MipCmdResult saveWheeledVehicleConstraintControl(C::mip_interface& device);
+MipCmdResult loadWheeledVehicleConstraintControl(C::mip_interface& device);
+MipCmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1514,6 +1629,11 @@ void extract(MipSerializer& serializer, VerticalGyroConstraintControl& self);
 void insert(MipSerializer& serializer, const VerticalGyroConstraintControl::Response& self);
 void extract(MipSerializer& serializer, VerticalGyroConstraintControl::Response& self);
 
+MipCmdResult writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable);
+MipCmdResult readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t& enable);
+MipCmdResult saveVerticalGyroConstraintControl(C::mip_interface& device);
+MipCmdResult loadVerticalGyroConstraintControl(C::mip_interface& device);
+MipCmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1555,6 +1675,11 @@ void extract(MipSerializer& serializer, GnssAntennaCalControl& self);
 void insert(MipSerializer& serializer, const GnssAntennaCalControl::Response& self);
 void extract(MipSerializer& serializer, GnssAntennaCalControl::Response& self);
 
+MipCmdResult writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float max_offset);
+MipCmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t& enable, float& max_offset);
+MipCmdResult saveGnssAntennaCalControl(C::mip_interface& device);
+MipCmdResult loadGnssAntennaCalControl(C::mip_interface& device);
+MipCmdResult defaultGnssAntennaCalControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1594,6 +1719,11 @@ void extract(MipSerializer& serializer, MagneticDeclinationSource& self);
 void insert(MipSerializer& serializer, const MagneticDeclinationSource::Response& self);
 void extract(MipSerializer& serializer, MagneticDeclinationSource::Response& self);
 
+MipCmdResult writeMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource source, float declination);
+MipCmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource& source, float& declination);
+MipCmdResult saveMagneticDeclinationSource(C::mip_interface& device);
+MipCmdResult loadMagneticDeclinationSource(C::mip_interface& device);
+MipCmdResult defaultMagneticDeclinationSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1618,6 +1748,7 @@ struct SetInitialHeading
 void insert(MipSerializer& serializer, const SetInitialHeading& self);
 void extract(MipSerializer& serializer, SetInitialHeading& self);
 
+MipCmdResult setInitialHeading(C::mip_interface& device, float heading);
 ///@}
 ///
 

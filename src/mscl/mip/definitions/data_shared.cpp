@@ -9,14 +9,16 @@
 
 namespace mscl {
 class MipSerializer;
-namespace data_shared {
 
 namespace C {
 struct mip_interface;
 } // namespace C
 
+namespace data_shared {
+
 using ::mscl::insert;
 using ::mscl::extract;
+using namespace ::mscl::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions

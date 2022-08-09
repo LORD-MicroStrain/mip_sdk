@@ -9,11 +9,12 @@
 
 namespace mscl {
 class MipSerializer;
-namespace commands_gnss {
 
 namespace C {
 struct mip_interface;
 } // namespace C
+
+namespace commands_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipCommands
@@ -98,6 +99,7 @@ void extract(MipSerializer& serializer, ReceiverInfo::Info& self);
 void insert(MipSerializer& serializer, const ReceiverInfo::Response& self);
 void extract(MipSerializer& serializer, ReceiverInfo::Response& self);
 
+MipCmdResult receiverInfo(C::mip_interface& device, uint8_t& num_receivers, ReceiverInfo::Info* receiver_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,6 +146,11 @@ void extract(MipSerializer& serializer, SignalConfiguration& self);
 void insert(MipSerializer& serializer, const SignalConfiguration::Response& self);
 void extract(MipSerializer& serializer, SignalConfiguration::Response& self);
 
+MipCmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved);
+MipCmdResult readSignalConfiguration(C::mip_interface& device, uint8_t& gps_enable, uint8_t& glonass_enable, uint8_t& galileo_enable, uint8_t& beidou_enable, uint8_t* reserved);
+MipCmdResult saveSignalConfiguration(C::mip_interface& device);
+MipCmdResult loadSignalConfiguration(C::mip_interface& device);
+MipCmdResult defaultSignalConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +191,11 @@ void extract(MipSerializer& serializer, RtkDongleConfiguration& self);
 void insert(MipSerializer& serializer, const RtkDongleConfiguration::Response& self);
 void extract(MipSerializer& serializer, RtkDongleConfiguration::Response& self);
 
+MipCmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved);
+MipCmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t& enable, uint8_t* reserved);
+MipCmdResult saveRtkDongleConfiguration(C::mip_interface& device);
+MipCmdResult loadRtkDongleConfiguration(C::mip_interface& device);
+MipCmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -208,6 +220,7 @@ struct ReceiverSafeMode
 void insert(MipSerializer& serializer, const ReceiverSafeMode& self);
 void extract(MipSerializer& serializer, ReceiverSafeMode& self);
 
+MipCmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiver_id, uint8_t enable);
 ///@}
 ///
 
