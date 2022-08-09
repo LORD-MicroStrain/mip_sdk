@@ -86,7 +86,7 @@ struct ReceiverInfo
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::REPLY_LIST_RECEIVERS;
         
         uint8_t num_receivers;
-        Info* receiver_info;
+        Info receiver_info[5];
         
     };
 };
