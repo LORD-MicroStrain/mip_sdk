@@ -10,6 +10,7 @@
 
 #include <mscl/mip/mip_device.hpp>
 
+#include <chrono>
 #include <memory>
 #include <exception>
 

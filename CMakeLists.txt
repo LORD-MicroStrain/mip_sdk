@@ -194,6 +194,7 @@ include(CMakePackageConfigHelpers)
 
 set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mscl")
 
+set(EXPORT_TARGETS mip)
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-embedded-config.cmake.in"
     "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
