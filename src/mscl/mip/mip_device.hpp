@@ -12,9 +12,55 @@ namespace mscl
 using MipDispatchHandler = C::mip_dispatch_handler;
 
 
+class MipCmdQueue : public C::mip_cmd_queue
+{
+public:
+    MipCmdQueue(Timeout baseReplyTimeout=1000) { C::mip_cmd_queue_init(this, baseReplyTimeout); }
+    ~MipCmdQueue() { assert(_first_pending_cmd==nullptr); }
+
+    MipCmdQueue(const MipCmdQueue&) = delete;
+    MipCmdQueue& operator=(const MipCmdQueue&) = delete;
+
+    void enqueue(C::mip_pending_cmd& cmd) { C::mip_cmd_queue_enqueue(this, &cmd); }
+    void dequeue(C::mip_pending_cmd& cmd) { C::mip_cmd_queue_dequeue(this, &cmd); }
+
+    void update(Timestamp now) { C::mip_cmd_queue_update(this, now); }
+
+    void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(this, timeout); }
+    Timeout baseReplyTimeout() const { return C::mip_cmd_queue_base_reply_timeout(this); }
+
+    void processPacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_cmd_queue_process_packet(this, &packet, timestamp); }
+};
+
+class MipPendingCmd : public C::mip_pending_cmd
+{
+    MipPendingCmd() { std::memset(this, 0, sizeof(C::mip_pending_cmd)); }
+    MipPendingCmd(uint8_t descriptorSet, uint8_t fieldDescriptor, Timeout additionalTime=0) { C::mip_pending_cmd_init_with_timeout(this, descriptorSet, fieldDescriptor, additionalTime); }
+    MipPendingCmd(uint8_t descriptorSet, uint8_t fieldDescriptor, uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime) { C::mip_pending_cmd_init_full(this, descriptorSet, fieldDescriptor, responseDescriptor, responseBuffer, responseBufferSize, additionalTime); }
+
+    template<class Cmd>
+    MipPendingCmd(const Cmd& cmd, Timeout additionalTime=0) : MipPendingCmd(cmd.descriptorSet, cmd.fieldDescriptor, additionalTime) {}
+
+    template<class Cmd>
+    MipPendingCmd(const Cmd& cmd, const typename Cmd::Response& response, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) : MipPendingCmd(cmd.descriptorSet, cmd.fieldDescriptor, response.fieldDescriptor, responseBuffer, responseBufferSize, additionalTime) {}
+
+    MipPendingCmd(const MipPendingCmd&) = delete;
+    MipPendingCmd& operator=(const MipPendingCmd&) = delete;
+
+    ~MipPendingCmd() { MipCmdResult tmp = status(); assert(tmp.isFinished() || tmp==MipCmdResult::STATUS_NONE); }
+
+    MipCmdResult status() const { return C::mip_pending_cmd_status(this); }
+
+    const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
+    uint8_t responseLength() const { return C::mip_pending_cmd_response_length(this); }
+};
+
+
+
 template<class Cmd> MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime=0);
 template<class Cmd> MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0);
 template<class Cmd, class... Args> MipCmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
+template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime);
 
 
 class MipDeviceInterface : public C::mip_interface
@@ -42,11 +88,11 @@ public:
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
 
-    MipParser&              parser()   { return *static_cast<MipParser*>(C::mip_interface_parser(this)); }
-    C::mip_cmd_queue&       cmdQueue() { return *C::mip_interface_cmd_queue(this); }
+    MipParser&   parser()   { return *static_cast<MipParser*>(C::mip_interface_parser(this)); }
+    MipCmdQueue& cmdQueue() { return *static_cast<MipCmdQueue*>(C::mip_interface_cmd_queue(this)); }
 
-    const MipParser&        parser() const   { return const_cast<MipDeviceInterface*>(this)->parser(); }
-    const C::mip_cmd_queue& cmdQueue() const { return const_cast<MipDeviceInterface*>(this)->cmdQueue(); }
+    const MipParser&   parser() const   { return const_cast<MipDeviceInterface*>(this)->parser(); }
+    const MipCmdQueue& cmdQueue() const { return const_cast<MipDeviceInterface*>(this)->cmdQueue(); }
 
     //
     // Communications
@@ -104,6 +150,11 @@ public:
     template<class Field, class Object, void (Object::*Callback)(const Field&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=Field::descriptorSet);
 
+
+    //
+    // Run function templates
+    //
+
     template<class Cmd>
     MipCmdResult runCommand(const Cmd& cmd, Timeout additionalTime=0) { return mscl::runCommand(*this, cmd, additionalTime); }
 
@@ -111,7 +162,14 @@ public:
     MipCmdResult runCommand(Args&&... args, Timeout additionalTime=0) { return mscl::runCommand(*this, std::forward<Args>(args)..., additionalTime); }
 
     template<class Cmd>
-    MipCmdResult runCommand(const Cmd& cmd, typename MipFieldInfo<Cmd>::Response& response, Timeout additionalTime=0) { return runCommand(*this, cmd, response, additionalTime); }
+    MipCmdResult runCommand(const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime=0) { return mscl::runCommand(*this, cmd, response, additionalTime); }
+
+
+    template<class Cmd>
+    bool startCommand(MipPendingCmd& pending, const Cmd& cmd, Timeout additionalTime=0) { return mscl::startCommand(*this, pending, cmd, additionalTime); }
+
+//    template<class Cmd>
+//    bool startCommand(MipPendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return mscl::startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }
 };
 
 
@@ -430,19 +488,42 @@ MipCmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::
     MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::responseDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     MipCmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
         return result;
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
-    size_t offset = MipFieldInfo<Cmd>::extract_response(buffer, responseLength, 0, response);
+    size_t offset = response.extract(buffer, responseLength, 0);
     if( offset != responseLength )
         return C::MIP_STATUS_ERROR;
 
     return C::MIP_ACK_OK;
 }
+
+
+template<class Cmd>
+bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime)
+{
+    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
+
+    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, additionalTime);
+
+    return C::mip_interface_start_command_packet(&device, &packet, &pending);
+}
+
+//template<class Cmd>
+//bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
+//{
+//    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+//    MipPacket packet = MipPacket::createFromField(buffer, sizeof(buffer), cmd);
+//
+//    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);
+//
+//    return C::mip_interface_start_command_packet(&device, &packet, &pending);
+//}
 
 
 } // namespace mscl

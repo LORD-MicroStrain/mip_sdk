@@ -296,17 +296,48 @@ mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* dev
     return result;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Similar to mip_interface_start_command_packet but waits for the
+///       command to complete.
+///
+///@param device
+///@param packet
+///       A MIP packet containing the command.
+///@param cmd
+///       The command status tracker. No lifetime requirement.
+///
 mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
+{
+    if( !mip_interface_start_command(device, packet, cmd) )
+        return MIP_STATUS_ERROR;
+
+    return mip_interface_wait_for_reply(device, cmd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Queues the command and sends the packet. Does not wait for completion.
+///
+///@param device
+///@param packet
+///       A MIP packet containing the command.
+///@param cmd
+///       The command status tracker. Must be valid while the command executes.
+///
+///@returns True if successful. Cmd must remain valid until the command finishes.
+///@returns False on error sending the packet. No cleanup is necessary and cmd
+///         can be destroyed immediately afterward in this case.
+///
+bool mip_interface_start_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
 {
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
     if( !mip_interface_send_to_device(device, mip_packet_pointer(packet), mip_packet_total_length(packet)) )
     {
         mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
-        return MIP_STATUS_ERROR;
+        return false;
     }
 
-    return mip_interface_wait_for_reply(device, cmd);
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

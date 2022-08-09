@@ -95,6 +95,8 @@ mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t d
 mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length, uint8_t response_descriptor, uint8_t* response_data, uint8_t* response_length_inout);
 mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd);
 
+bool mip_interface_start_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd);
+
 //
 // Data Callbacks
 //
