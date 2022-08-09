@@ -228,7 +228,7 @@ struct GetDeviceDescriptors
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_DEVICE_DESCRIPTORS;
         
         uint8_t descriptors_count;
-        uint16_t descriptors[253];
+        uint16_t* descriptors;
         
     };
 };
@@ -324,7 +324,7 @@ struct GetExtendedDescriptors
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         
         uint8_t descriptors_count;
-        uint16_t descriptors[253];
+        uint16_t* descriptors;
         
     };
 };
