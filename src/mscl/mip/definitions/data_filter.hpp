@@ -118,36 +118,39 @@ enum class FilterDynamicsMode : uint16_t
     GQ7_DEFAULT    = 1,  ///<  
 };
 
-enum class FilterStatusFlags : uint16_t
+struct FilterStatusFlags : Bitfield<FilterStatusFlags,uint16_t>
 {
-    GX5_INIT_NO_ATTITUDE                           = 0x1000,
-    GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
-    GX5_RUN_IMU_UNAVAILABLE                        = 0x01,
-    GX5_RUN_GPS_UNAVAILABLE                        = 0x02,
-    GX5_RUN_MATRIX_SINGULARITY                     = 0x08,
-    GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x10,
-    GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x20,
-    GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x40,
-    GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x80,
-    GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x100,
-    GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x200,
-    GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x400,
-    GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x800,
-    GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000,
-    GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000,
-    GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000,
-    GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000,
-    GQ7_FILTER_CONDITION                           = 0x03,
-    GQ7_ROLL_PITCH_WARNING                         = 0x04,
-    GQ7_HEADING_WARNING                            = 0x08,
-    GQ7_POSITION_WARNING                           = 0x10,
-    GQ7_VELOCITY_WARNING                           = 0x20,
-    GQ7_IMU_BIAS_WARNING                           = 0x40,
-    GQ7_GNSS_CLK_WARNING                           = 0x80,
-    GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x100,
-    GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x200,
-    GQ7_TIME_SYNC_WARNING                          = 0x400,
-    GQ7_SOLUTION_ERROR                             = 0xF000,
+    enum  : uint16_t
+    {
+        GX5_INIT_NO_ATTITUDE                           = 0x1000,
+        GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
+        GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,
+        GX5_RUN_GPS_UNAVAILABLE                        = 0x0002,
+        GX5_RUN_MATRIX_SINGULARITY                     = 0x0008,
+        GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010,
+        GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020,
+        GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040,
+        GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080,
+        GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100,
+        GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200,
+        GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400,
+        GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800,
+        GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000,
+        GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000,
+        GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000,
+        GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000,
+        GQ7_FILTER_CONDITION                           = 0x0003,
+        GQ7_ROLL_PITCH_WARNING                         = 0x0004,
+        GQ7_HEADING_WARNING                            = 0x0008,
+        GQ7_POSITION_WARNING                           = 0x0010,
+        GQ7_VELOCITY_WARNING                           = 0x0020,
+        GQ7_IMU_BIAS_WARNING                           = 0x0040,
+        GQ7_GNSS_CLK_WARNING                           = 0x0080,
+        GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100,
+        GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200,
+        GQ7_TIME_SYNC_WARNING                          = 0x0400,
+        GQ7_SOLUTION_ERROR                             = 0xF000,
+    };
 };
 
 enum class FilterAidingMeasurementType : uint8_t
@@ -160,34 +163,40 @@ enum class FilterAidingMeasurementType : uint8_t
     SPEED        = 6,  ///<  
 };
 
-enum class FilterMeasurementIndicator : uint8_t
+struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator,uint8_t>
 {
-    ENABLED               = 0x01,
-    USED                  = 0x02,
-    RESIDUAL_HIGH_WARNING = 0x04,
-    SAMPLE_TIME_WARNING   = 0x08,
-    CONFIGURATION_ERROR   = 0x10,
-    MAX_NUM_MEAS_EXCEEDED = 0x20,
+    enum  : uint8_t
+    {
+        ENABLED               = 0x01,
+        USED                  = 0x02,
+        RESIDUAL_HIGH_WARNING = 0x04,
+        SAMPLE_TIME_WARNING   = 0x08,
+        CONFIGURATION_ERROR   = 0x10,
+        MAX_NUM_MEAS_EXCEEDED = 0x20,
+    };
 };
 
-enum class GnssAidStatusFlags : uint16_t
+struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags,uint16_t>
 {
-    TIGHT_COUPLING = 0x01,
-    DIFFERENTIAL   = 0x02,
-    INTEGER_FIX    = 0x04,
-    GPS_L1         = 0x08,
-    GPS_L2         = 0x10,
-    GPS_L5         = 0x20,
-    GLO_L1         = 0x40,
-    GLO_L2         = 0x80,
-    GAL_E1         = 0x100,
-    GAL_E5         = 0x200,
-    GAL_E6         = 0x400,
-    BEI_B1         = 0x800,
-    BEI_B2         = 0x1000,
-    BEI_B3         = 0x2000,
-    NO_FIX         = 0x4000,
-    CONFIG_ERROR   = 0x8000,
+    enum  : uint16_t
+    {
+        TIGHT_COUPLING = 0x0001,
+        DIFFERENTIAL   = 0x0002,
+        INTEGER_FIX    = 0x0004,
+        GPS_L1         = 0x0008,
+        GPS_L2         = 0x0010,
+        GPS_L5         = 0x0020,
+        GLO_L1         = 0x0040,
+        GLO_L2         = 0x0080,
+        GAL_E1         = 0x0100,
+        GAL_E5         = 0x0200,
+        GAL_E6         = 0x0400,
+        BEI_B1         = 0x0800,
+        BEI_B2         = 0x1000,
+        BEI_B3         = 0x2000,
+        NO_FIX         = 0x4000,
+        CONFIG_ERROR   = 0x8000,
+    };
 };
 
 
@@ -1497,11 +1506,14 @@ struct GnssDualAntennaStatus
         FIX_DA_FIXED = 2,  ///<  
     };
     
-    enum class DualAntennaStatusFlags : uint16_t
+    struct DualAntennaStatusFlags : Bitfield<DualAntennaStatusFlags,uint16_t>
     {
-        RCV_1_DATA_VALID      = 0x01,
-        RCV_2_DATA_VALID      = 0x02,
-        ANTENNA_OFFSETS_VALID = 0x04,
+        enum  : uint16_t
+        {
+            RCV_1_DATA_VALID      = 0x0001,
+            RCV_2_DATA_VALID      = 0x0002,
+            ANTENNA_OFFSETS_VALID = 0x0004,
+        };
     };
     
     float time_of_week;
