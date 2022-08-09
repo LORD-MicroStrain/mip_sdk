@@ -217,7 +217,7 @@ struct PollImuMessage
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[83];
+    MipDescriptorRate* descriptors;
     
 };
 void insert(MipSerializer& serializer, const PollImuMessage& self);
@@ -248,7 +248,7 @@ struct PollGnssMessage
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[83];
+    MipDescriptorRate* descriptors;
     
 };
 void insert(MipSerializer& serializer, const PollGnssMessage& self);
@@ -279,7 +279,7 @@ struct PollFilterMessage
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[83];
+    MipDescriptorRate* descriptors;
     
 };
 void insert(MipSerializer& serializer, const PollFilterMessage& self);
@@ -309,7 +309,7 @@ struct ImuMessageFormat
     
     MipFunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[82];
+    MipDescriptorRate* descriptors;
     
     struct Response
     {
@@ -317,7 +317,7 @@ struct ImuMessageFormat
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate descriptors[82];
+        MipDescriptorRate* descriptors;
         
     };
 };
@@ -355,7 +355,7 @@ struct GpsMessageFormat
     
     MipFunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[82];
+    MipDescriptorRate* descriptors;
     
     struct Response
     {
@@ -363,7 +363,7 @@ struct GpsMessageFormat
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate descriptors[82];
+        MipDescriptorRate* descriptors;
         
     };
 };
@@ -401,7 +401,7 @@ struct FilterMessageFormat
     
     MipFunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[82];
+    MipDescriptorRate* descriptors;
     
     struct Response
     {
@@ -409,7 +409,7 @@ struct FilterMessageFormat
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate descriptors[82];
+        MipDescriptorRate* descriptors;
         
     };
 };
@@ -554,7 +554,7 @@ struct PollData
     uint8_t desc_set;
     bool suppress_ack;
     uint8_t num_descriptors;
-    uint8_t descriptors[82];
+    uint8_t* descriptors;
     
 };
 void insert(MipSerializer& serializer, const PollData& self);
@@ -619,7 +619,7 @@ struct MessageFormat
     MipFunctionSelector function;
     uint8_t desc_set;
     uint8_t num_descriptors;
-    MipDescriptorRate descriptors[82];
+    MipDescriptorRate* descriptors;
     
     struct Response
     {
@@ -628,7 +628,7 @@ struct MessageFormat
         
         uint8_t desc_set;
         uint8_t num_descriptors;
-        MipDescriptorRate descriptors[82];
+        MipDescriptorRate* descriptors;
         
     };
 };
@@ -666,7 +666,7 @@ struct NmeaPollData
     
     bool suppress_ack;
     uint8_t count;
-    NMEAMessageFormat format_entries[40];
+    NMEAMessageFormat* format_entries;
     
 };
 void insert(MipSerializer& serializer, const NmeaPollData& self);
@@ -694,7 +694,7 @@ struct NmeaMessageFormat
     
     MipFunctionSelector function;
     uint8_t count;
-    NMEAMessageFormat format_entries[40];
+    NMEAMessageFormat* format_entries;
     
     struct Response
     {
@@ -702,7 +702,7 @@ struct NmeaMessageFormat
         static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         
         uint8_t count;
-        NMEAMessageFormat format_entries[40];
+        NMEAMessageFormat* format_entries;
         
     };
 };
@@ -927,7 +927,7 @@ struct GnssSbasSettings
     uint8_t enable_sbas;
     SBASOptions sbas_options;
     uint8_t num_included_prns;
-    uint16_t included_prns[39];
+    uint16_t* included_prns;
     
     struct Response
     {
@@ -937,7 +937,7 @@ struct GnssSbasSettings
         uint8_t enable_sbas;
         SBASOptions sbas_options;
         uint8_t num_included_prns;
-        uint16_t included_prns[39];
+        uint16_t* included_prns;
         
     };
 };

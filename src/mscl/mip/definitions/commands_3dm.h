@@ -224,7 +224,7 @@ struct mip_3dm_poll_imu_message_command
 {
     bool suppress_ack;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[83];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_poll_imu_message_command(struct mip_serializer* serializer, const struct mip_3dm_poll_imu_message_command* self);
@@ -250,7 +250,7 @@ struct mip_3dm_poll_gnss_message_command
 {
     bool suppress_ack;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[83];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_poll_gnss_message_command(struct mip_serializer* serializer, const struct mip_3dm_poll_gnss_message_command* self);
@@ -276,7 +276,7 @@ struct mip_3dm_poll_filter_message_command
 {
     bool suppress_ack;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[83];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_poll_filter_message_command(struct mip_serializer* serializer, const struct mip_3dm_poll_filter_message_command* self);
@@ -297,7 +297,7 @@ struct mip_3dm_imu_message_format_command
 {
     enum mip_function_selector function;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_imu_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_imu_message_format_command* self);
@@ -306,7 +306,7 @@ void extract_mip_3dm_imu_message_format_command(struct mip_serializer* serialize
 struct mip_3dm_imu_message_format_response
 {
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_imu_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_imu_message_format_response* self);
@@ -331,7 +331,7 @@ struct mip_3dm_gps_message_format_command
 {
     enum mip_function_selector function;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_gps_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_gps_message_format_command* self);
@@ -340,7 +340,7 @@ void extract_mip_3dm_gps_message_format_command(struct mip_serializer* serialize
 struct mip_3dm_gps_message_format_response
 {
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_gps_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_gps_message_format_response* self);
@@ -365,7 +365,7 @@ struct mip_3dm_filter_message_format_command
 {
     enum mip_function_selector function;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_filter_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_filter_message_format_command* self);
@@ -374,7 +374,7 @@ void extract_mip_3dm_filter_message_format_command(struct mip_serializer* serial
 struct mip_3dm_filter_message_format_response
 {
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_filter_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_filter_message_format_response* self);
@@ -465,7 +465,7 @@ struct mip_3dm_poll_data_command
     uint8_t desc_set;
     bool suppress_ack;
     uint8_t num_descriptors;
-    uint8_t descriptors[82];
+    uint8_t* descriptors;
     
 };
 void insert_mip_3dm_poll_data_command(struct mip_serializer* serializer, const struct mip_3dm_poll_data_command* self);
@@ -513,7 +513,7 @@ struct mip_3dm_message_format_command
     enum mip_function_selector function;
     uint8_t desc_set;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_message_format_command* self);
@@ -523,7 +523,7 @@ struct mip_3dm_message_format_response
 {
     uint8_t desc_set;
     uint8_t num_descriptors;
-    struct mip_descriptor_rate descriptors[82];
+    struct mip_descriptor_rate* descriptors;
     
 };
 void insert_mip_3dm_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_message_format_response* self);
@@ -552,7 +552,7 @@ struct mip_3dm_nmea_poll_data_command
 {
     bool suppress_ack;
     uint8_t count;
-    struct mip_nmeamessage_format format_entries[40];
+    struct mip_nmeamessage_format* format_entries;
     
 };
 void insert_mip_3dm_nmea_poll_data_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_poll_data_command* self);
@@ -571,7 +571,7 @@ struct mip_3dm_nmea_message_format_command
 {
     enum mip_function_selector function;
     uint8_t count;
-    struct mip_nmeamessage_format format_entries[40];
+    struct mip_nmeamessage_format* format_entries;
     
 };
 void insert_mip_3dm_nmea_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_message_format_command* self);
@@ -580,7 +580,7 @@ void extract_mip_3dm_nmea_message_format_command(struct mip_serializer* serializ
 struct mip_3dm_nmea_message_format_response
 {
     uint8_t count;
-    struct mip_nmeamessage_format format_entries[40];
+    struct mip_nmeamessage_format* format_entries;
     
 };
 void insert_mip_3dm_nmea_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_nmea_message_format_response* self);
@@ -754,7 +754,7 @@ struct mip_3dm_gnss_sbas_settings_command
     uint8_t enable_sbas;
     enum mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options;
     uint8_t num_included_prns;
-    uint16_t included_prns[39];
+    uint16_t* included_prns;
     
 };
 void insert_mip_3dm_gnss_sbas_settings_command(struct mip_serializer* serializer, const struct mip_3dm_gnss_sbas_settings_command* self);
@@ -768,7 +768,7 @@ struct mip_3dm_gnss_sbas_settings_response
     uint8_t enable_sbas;
     enum mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options;
     uint8_t num_included_prns;
-    uint16_t included_prns[39];
+    uint16_t* included_prns;
     
 };
 void insert_mip_3dm_gnss_sbas_settings_response(struct mip_serializer* serializer, const struct mip_3dm_gnss_sbas_settings_response* self);
