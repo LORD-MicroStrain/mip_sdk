@@ -78,7 +78,7 @@ void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializ
 struct mip_gnss_receiver_info_response
 {
     uint8_t num_receivers;
-    struct mip_gnss_receiver_info_command_info* receiver_info;
+    struct mip_gnss_receiver_info_command_info receiver_info[5];
     
 };
 void insert_mip_gnss_receiver_info_response(struct mip_serializer* serializer, const struct mip_gnss_receiver_info_response* self);
