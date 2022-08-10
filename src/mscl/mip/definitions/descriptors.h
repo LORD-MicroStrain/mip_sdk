@@ -81,85 +81,12 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-template<typename DerivedT>
-struct Bitfield
-{
-// public:
-//     typedef DerivedT Derived;
-//
-//     auto& _value() { return static_cast<Derived*>(this)->value; }
-//
-//     template<typename Enum>
-//     static void _check_type() {
-//         static_assert( std::is_same< Enum, typename Derived::_enumType >::value, "Bitflag is of the wrong type" );
-//     }
-//
-// public:
-//     // Explicit conversion from an integral type is allowed.
-//     template<typename T>
-//     void assign(T base) {
-//         static_assert(std::is_integral<T>::value, "Must assign an integer");
-//         _value() = base;
-//     }
-//
-//     // No implicit conversion from int, this would break type safety.
-//     //Bitfield& operator=(BaseType base) { static_cast<Derived*>(this)->value = base; return *this; }
-//     template<typename D=Derived>
-//     Bitfield& operator=(typename D::_enumType other) { _check_type<decltype(other)>(); _value() = other; }
-//
-//     // Implicit conversion to an integral type is allowed (_enumType is not available, so use the biggest available).
-//     operator uint64_t() const { return _value(); }
-//
-//     // Combining bit flags
-//     template<typename D=Derived>
-//     Bitfield& operator|=(typename D::_enumType other) { _value() |= other; return *this; }
-//
-//     template<typename D=Derived>
-//     Bitfield& operator&=(typename D::_enumType other) { _value() &= other; return *this; }
-};
+///@brief A dummy struct which is used to mark bitfield objects.
+///
+template<typename DerivedT> struct Bitfield {};
 
 template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
 template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
-
-// template<class Derived>
-// typename std::enable_if< std::is_base_of<Bitfield<Derived>,Derived>::value, void >::type
-// /*void*/ extract(MipSerializer& serializer, Derived bitfield)
-// {
-//     typedef typename Derived::_enumType Enum;
-//     typedef typename std::underlying_type<Enum>::type Bits;
-//     Bits tmp;
-//     extract(serializer, tmp);
-//     bitfield = tmp;
-// }
-
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
-// /*Bf&*/ operator|(Bf& a, Bf b) { return a.value |= b.value; }
-//
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
-// /*Bf&*/ operator&(Bf& a, Bf b) { return a.value &= b.value; }
-//
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
-// /*Bf*/ operator|(Bf a, Bf b) { return a.value | b.value; }
-//
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
-// /*Bf*/ operator&(Bf a, Bf b) { return a.value & b.value; }
-//
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield, Bf>::value, void>::type
-// /*void*/ extract(MipSerializer& serializer, Bf bitfield)
-// {
-//     return extract(serializer, bitfield.value);
-// }
-// template<class Bf>
-// typename std::enable_if<std::is_base_of<Bitfield, Bf>::value, void>::type
-// /*void*/ insert(MipSerializer& serializer, Bf bitfield)
-// {
-//     return insert(serializer, bitfield.value);
-// }
 
 
 struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
@@ -169,9 +96,6 @@ struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
     static const uint8_t SAVE  = C::MIP_FUNCTION_SAVE;
     static const uint8_t LOAD  = C::MIP_FUNCTION_LOAD;
     static const uint8_t RESET = C::MIP_FUNCTION_RESET;
-
-    // size_t insert(struct mip_serializer* serializer) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
-    // size_t extract(const struct mip_serializer* serializer) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &_value); }
 };
 
 using MipDescriptorRate = C::mip_descriptor_rate;
