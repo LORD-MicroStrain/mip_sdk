@@ -9,14 +9,17 @@
 
 #ifdef __cplusplus
 namespace mscl {
-#endif // __cplusplus
+namespace C {
+extern "C" {
 
+#endif // __cplusplus
 struct mip_interface;
+struct mip_serializer;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup SHAREDData  SHARED
+///@defgroup shared_data_c  SHAREDData
 ///
 ///@{
 
@@ -40,24 +43,19 @@ enum
     MIP_DATA_DESC_SHARED_SYS_TIME_DELTA = 0xD8,
     MIP_DATA_DESC_SHARED_DEBUG_TICKS    = 0xFF,
 };
-#ifdef __cplusplus
-namespace C {
-extern "C" {
-#endif // __cplusplus
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MIP_DATA_DESC_SHARED_START 0xD0
+enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup event_source  None
+///@defgroup c_event_source  None
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -67,15 +65,16 @@ extern "C" {
 
 struct mip_shared_event_source_data
 {
-    uint8_t                                           trigger_id;
+    uint8_t trigger_id;
+    
 };
-size_t insert_mip_shared_event_source_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_event_source_data* self);
-size_t extract_mip_shared_event_source_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_event_source_data* self);
+void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const struct mip_shared_event_source_data* self);
+void extract_mip_shared_event_source_data(struct mip_serializer* serializer, struct mip_shared_event_source_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup ticks  None
+///@defgroup c_ticks  None
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -85,15 +84,16 @@ size_t extract_mip_shared_event_source_data(const uint8_t* buffer, size_t buffer
 
 struct mip_shared_ticks_data
 {
-    uint32_t                                          ticks;
+    uint32_t ticks;
+    
 };
-size_t insert_mip_shared_ticks_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_ticks_data* self);
-size_t extract_mip_shared_ticks_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_ticks_data* self);
+void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const struct mip_shared_ticks_data* self);
+void extract_mip_shared_ticks_data(struct mip_serializer* serializer, struct mip_shared_ticks_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup delta_ticks  None
+///@defgroup c_delta_ticks  None
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -104,15 +104,16 @@ size_t extract_mip_shared_ticks_data(const uint8_t* buffer, size_t bufferSize, s
 
 struct mip_shared_delta_ticks_data
 {
-    uint32_t                                          ticks;
+    uint32_t ticks;
+    
 };
-size_t insert_mip_shared_delta_ticks_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_delta_ticks_data* self);
-size_t extract_mip_shared_delta_ticks_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_delta_ticks_data* self);
+void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const struct mip_shared_delta_ticks_data* self);
+void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, struct mip_shared_delta_ticks_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup gps_timestamp  None
+///@defgroup c_gps_timestamp  None
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -122,26 +123,29 @@ size_t extract_mip_shared_delta_ticks_data(const uint8_t* buffer, size_t bufferS
 
 enum mip_shared_gps_timestamp_data_valid_flags
 {
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW         = 0x01,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x02,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x03,
+    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000,
+    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW         = 0x0001,
+    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002,
+    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x0003,
 };
-size_t insert_mip_shared_gps_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_gps_timestamp_data_valid_flags self);
-size_t extract_mip_shared_gps_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_gps_timestamp_data_valid_flags* self);
 
 struct mip_shared_gps_timestamp_data
 {
-    double                                            tow;
-    uint16_t                                          week_number;
-    enum mip_shared_gps_timestamp_data_valid_flags    valid_flags;
+    double tow;
+    uint16_t week_number;
+    enum mip_shared_gps_timestamp_data_valid_flags valid_flags;
+    
 };
-size_t insert_mip_shared_gps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_gps_timestamp_data* self);
-size_t extract_mip_shared_gps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_gps_timestamp_data* self);
+void insert_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_gps_timestamp_data* self);
+void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, struct mip_shared_gps_timestamp_data* self);
+
+void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_gps_timestamp_data_valid_flags self);
+void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_gps_timestamp_data_valid_flags* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup delta_time  None
+///@defgroup c_delta_time  None
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -157,15 +161,16 @@ size_t extract_mip_shared_gps_timestamp_data(const uint8_t* buffer, size_t buffe
 
 struct mip_shared_delta_time_data
 {
-    double                                            seconds;
+    double seconds;
+    
 };
-size_t insert_mip_shared_delta_time_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_delta_time_data* self);
-size_t extract_mip_shared_delta_time_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_delta_time_data* self);
+void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self);
+void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, struct mip_shared_delta_time_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup reference_timestamp  None
+///@defgroup c_reference_timestamp  None
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -179,15 +184,16 @@ size_t extract_mip_shared_delta_time_data(const uint8_t* buffer, size_t bufferSi
 
 struct mip_shared_reference_timestamp_data
 {
-    uint64_t                                          nanoseconds;
+    uint64_t nanoseconds;
+    
 };
-size_t insert_mip_shared_reference_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_reference_timestamp_data* self);
-size_t extract_mip_shared_reference_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_reference_timestamp_data* self);
+void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_reference_timestamp_data* self);
+void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, struct mip_shared_reference_timestamp_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup reference_time_delta  None
+///@defgroup c_reference_time_delta  None
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -203,15 +209,16 @@ size_t extract_mip_shared_reference_timestamp_data(const uint8_t* buffer, size_t
 
 struct mip_shared_reference_time_delta_data
 {
-    uint64_t                                          dt_nanos;
+    uint64_t dt_nanos;
+    
 };
-size_t insert_mip_shared_reference_time_delta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_reference_time_delta_data* self);
-size_t extract_mip_shared_reference_time_delta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_reference_time_delta_data* self);
+void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_reference_time_delta_data* self);
+void extract_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, struct mip_shared_reference_time_delta_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup external_timestamp  None
+///@defgroup c_external_timestamp  None
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -226,23 +233,26 @@ size_t extract_mip_shared_reference_time_delta_data(const uint8_t* buffer, size_
 
 enum mip_shared_external_timestamp_data_valid_flags
 {
-    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x01,
+    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000,
+    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x0001,
 };
-size_t insert_mip_shared_external_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_external_timestamp_data_valid_flags self);
-size_t extract_mip_shared_external_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_external_timestamp_data_valid_flags* self);
 
 struct mip_shared_external_timestamp_data
 {
-    uint64_t                                          nanoseconds;
+    uint64_t nanoseconds;
     enum mip_shared_external_timestamp_data_valid_flags valid_flags;
+    
 };
-size_t insert_mip_shared_external_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_external_timestamp_data* self);
-size_t extract_mip_shared_external_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_external_timestamp_data* self);
+void insert_mip_shared_external_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_external_timestamp_data* self);
+void extract_mip_shared_external_timestamp_data(struct mip_serializer* serializer, struct mip_shared_external_timestamp_data* self);
+
+void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_timestamp_data_valid_flags self);
+void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_timestamp_data_valid_flags* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup external_time_delta  None
+///@defgroup c_external_time_delta  None
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,
@@ -261,18 +271,21 @@ size_t extract_mip_shared_external_timestamp_data(const uint8_t* buffer, size_t 
 
 enum mip_shared_external_time_delta_data_valid_flags
 {
-    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x01,
+    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_NONE     = 0x0000,
+    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x0001,
 };
-size_t insert_mip_shared_external_time_delta_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_external_time_delta_data_valid_flags self);
-size_t extract_mip_shared_external_time_delta_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_external_time_delta_data_valid_flags* self);
 
 struct mip_shared_external_time_delta_data
 {
-    uint64_t                                          dt_nanos;
+    uint64_t dt_nanos;
     enum mip_shared_external_time_delta_data_valid_flags valid_flags;
+    
 };
-size_t insert_mip_shared_external_time_delta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_external_time_delta_data* self);
-size_t extract_mip_shared_external_time_delta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_external_time_delta_data* self);
+void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_external_time_delta_data* self);
+void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializer, struct mip_shared_external_time_delta_data* self);
+
+void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_time_delta_data_valid_flags self);
+void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_time_delta_data_valid_flags* self);
 
 ///@}
 ///
@@ -281,168 +294,9 @@ size_t extract_mip_shared_external_time_delta_data(const uint8_t* buffer, size_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-
 #ifdef __cplusplus
-} // extern "C"
 } // namespace C
-namespace SharedData {
-
-static const uint8_t DESCRIPTOR_SET = MIP_SHARED_DATA_DESC_SET;
-
-
-struct EventSource : C::mip_shared_event_source_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_event_source_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_event_source_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct Ticks : C::mip_shared_ticks_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_TICKS;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_ticks_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_ticks_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct DeltaTicks : C::mip_shared_delta_ticks_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TICKS;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_delta_ticks_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_delta_ticks_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct GpsTimestamp : C::mip_shared_gps_timestamp_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_GPS_TIME;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_gps_timestamp_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_gps_timestamp_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct DeltaTime : C::mip_shared_delta_time_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_DELTA_TIME;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_delta_time_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_delta_time_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct ReferenceTimestamp : C::mip_shared_reference_timestamp_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REFERENCE_TIME;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_reference_timestamp_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_reference_timestamp_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct ReferenceTimeDelta : C::mip_shared_reference_time_delta_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_REF_TIME_DELTA;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_reference_time_delta_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_reference_time_delta_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct ExternalTimestamp : C::mip_shared_external_timestamp_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_EXTERNAL_TIME;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_external_timestamp_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_external_timestamp_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct ExternalTimeDelta : C::mip_shared_external_time_delta_data
-{
-    static const uint8_t descriptorSet = MIP_SHARED_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SHARED_SYS_TIME_DELTA;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_shared_external_time_delta_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_shared_external_time_delta_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-} // namespace SharedData
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

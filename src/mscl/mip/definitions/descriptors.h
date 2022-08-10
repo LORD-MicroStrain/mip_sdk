@@ -6,6 +6,9 @@
 
 #ifdef __cplusplus
 
+#include "../../utils/serialization.h"
+#include "../../utils/enum_wrapper.hpp"
+
 #include <tuple>
 #include <type_traits>
 
@@ -37,6 +40,8 @@ bool is_response_descriptor(uint8_t field_descriptor);
 bool is_reserved_descriptor(uint8_t field_descriptor);
 
 
+struct mip_serializer;
+
 enum mip_function_selector
 {
     MIP_FUNCTION_WRITE = 0x01,
@@ -45,16 +50,16 @@ enum mip_function_selector
     MIP_FUNCTION_LOAD  = 0x04,
     MIP_FUNCTION_RESET = 0x05,
 };
-size_t insert_mip_function_selector(uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_function_selector self);
-size_t extract_mip_function_selector(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_function_selector* self);
+void insert_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector self);
+void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector* self);
 
 struct mip_descriptor_rate
 {
     uint8_t  descriptor;
     uint16_t decimation;
 };
-size_t insert_mip_descriptor_rate(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_descriptor_rate* self);
-size_t extract_mip_descriptor_rate(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_descriptor_rate* self);
+void insert_mip_descriptor_rate(struct mip_serializer* serializer, const struct mip_descriptor_rate* self);
+void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_descriptor_rate* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,59 +81,40 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-struct MipFunctionSelector
+///@brief A dummy struct which is used to mark bitfield objects.
+///
+template<typename DerivedT> struct Bitfield {};
+
+template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+
+
+struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
 {
-    static const C::mip_function_selector WRITE = C::MIP_FUNCTION_WRITE;
-    static const C::mip_function_selector READ  = C::MIP_FUNCTION_READ;
-    static const C::mip_function_selector SAVE  = C::MIP_FUNCTION_SAVE;
-    static const C::mip_function_selector LOAD  = C::MIP_FUNCTION_LOAD;
-    static const C::mip_function_selector RESET = C::MIP_FUNCTION_RESET;
-
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &value); }
-
-    MipFunctionSelector() = default;
-    MipFunctionSelector(const MipFunctionSelector&) = default;
-    MipFunctionSelector(C::mip_function_selector fn) : value(fn) {}
-
-    MipFunctionSelector& operator=(const MipFunctionSelector&) = default;
-    MipFunctionSelector& operator=(C::mip_function_selector fn) { value=fn; return *this; }
-
-    operator C::mip_function_selector() const { return value; }
-    operator C::mip_function_selector&() { return value; }
-
-    C::mip_function_selector value;
+    static const uint8_t WRITE = C::MIP_FUNCTION_WRITE;
+    static const uint8_t READ  = C::MIP_FUNCTION_READ;
+    static const uint8_t SAVE  = C::MIP_FUNCTION_SAVE;
+    static const uint8_t LOAD  = C::MIP_FUNCTION_LOAD;
+    static const uint8_t RESET = C::MIP_FUNCTION_RESET;
 };
 
 using MipDescriptorRate = C::mip_descriptor_rate;
 
-inline bool isDataDescriptorSet(uint8_t descriptorSet)     { return C::is_data_descriptor_set(descriptorSet); }
+inline bool isDataDescriptorSet   (uint8_t descriptorSet)  { return C::is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::is_reserved_descriptor_set(descriptorSet); }
 
-inline bool isCommandDescriptor(uint8_t fieldDescriptor)  { return C::is_command_descriptor(fieldDescriptor); }
-inline bool isReplyDescriptor(uint8_t fieldDescriptor)    { return C::is_reply_descriptor(fieldDescriptor); }
+inline bool isCommandDescriptor (uint8_t fieldDescriptor) { return C::is_command_descriptor(fieldDescriptor); }
+inline bool isReplyDescriptor   (uint8_t fieldDescriptor) { return C::is_reply_descriptor(fieldDescriptor); }
 inline bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_response_descriptor(fieldDescriptor); }
 inline bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
 
-// ////////////////////////////////////////////////////////////////////////////////
-// ///@brief Type traits struct for obtaining descriptors, etc. from field structs.
-// ///
-// /// This struct is specialized for each defined MIP field.
-// ///
-// template<class Field>
-// struct MipFieldInfo
-// {
-//     static const uint8_t descriptorSet   = MIP_INVALID_DESCRIPTOR_SET;
-//     static const uint8_t fieldDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
-//
-//     static_assert(!std::is_same<Field,Field>::value, "Missing specialization - did you forget to include the definition header?");
-//
-//     using Tuple = std::tuple<>;
-//
-//     static const bool responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;  // No response by default
-//     using Response = void;
-// };
+
+inline void insert(MipSerializer& serializer, MipFunctionSelector self) { return C::insert_mip_function_selector(&serializer, self); }
+inline void extract(MipSerializer& serializer, MipFunctionSelector& self) { return C::extract_mip_function_selector(&serializer, &self._value); }
+
+inline void insert(MipSerializer& serializer, const MipDescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
+inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 } // namespace mscl
 

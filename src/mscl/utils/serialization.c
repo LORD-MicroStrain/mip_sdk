@@ -3,8 +3,29 @@
 
 #include <string.h>
 
+#ifdef __cplusplus
+namespace mscl {
+#endif
 
-#define SWAP(x,y) do { uint8_t tmp=(x); (x)=(y); (y)=tmp; } while(false)
+
+void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size)
+{
+    serializer->buffer      = buffer;
+    serializer->buffer_size = buffer_size;
+    serializer->offset      = 0;
+}
+void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size)
+{
+    serializer->buffer      = (uint8_t*)buffer;
+    serializer->buffer_size = buffer_size;
+    serializer->offset      = 0;
+}
+
+bool mip_serializer_ok(const struct mip_serializer* serializer)
+{
+    return serializer->offset <= serializer->buffer_size;
+}
+
 
 static void pack(uint8_t* buffer, const void* value, size_t size)
 {
@@ -13,12 +34,12 @@ static void pack(uint8_t* buffer, const void* value, size_t size)
 }
 
 #define INSERT_MACRO(name, type) \
-size_t insert_##name(uint8_t* buffer, size_t space, size_t offset, type value) \
+void insert_##name(struct mip_serializer* serializer, type value) \
 { \
-    const size_t postOffset = offset + sizeof(type); \
-    if( space >= postOffset ) \
-        pack(&buffer[offset], &value, sizeof(type)); \
-    return postOffset; \
+    const size_t offset = serializer->offset + sizeof(type); \
+    if( offset <= serializer->buffer_size ) \
+        pack(&serializer->buffer[serializer->offset], &value, sizeof(type)); \
+    serializer->offset = offset; \
 }
 
 INSERT_MACRO(bool,   bool    )
@@ -44,12 +65,12 @@ static void unpack(const uint8_t* buffer, void* value, size_t size)
 
 
 #define EXTRACT_MACRO(name, type) \
-size_t extract_##name(const uint8_t* buffer, size_t bufferSize, size_t offset, type* value) \
+void extract_##name(struct mip_serializer* serializer, type* value) \
 { \
-    size_t postOffset = offset + sizeof(type); \
-    if( postOffset <= bufferSize ) \
-        unpack(&buffer[offset], value, sizeof(type)); \
-    return postOffset; \
+    const size_t offset = serializer->offset + sizeof(type); \
+    if( offset <= serializer->buffer_size ) \
+        unpack(&serializer->buffer[serializer->offset], value, sizeof(type)); \
+    serializer->offset = offset; \
 }
 
 EXTRACT_MACRO(bool,   bool    )
@@ -64,3 +85,25 @@ EXTRACT_MACRO(s32,    int32_t )
 EXTRACT_MACRO(s64,    int64_t )
 EXTRACT_MACRO(float,  float   )
 EXTRACT_MACRO(double, double  )
+
+
+void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
+{
+    *count_out = 0;  // Default to zero if extraction fails.
+    extract_u8(serializer, count_out);
+    if( *count_out > max_count )
+    {
+        // This is an error condition which can occur if the device sends
+        // more array entries than the receiving structure expected.
+        // This does not imply any sort of protocol violation, only that
+        // the receiving array was not large enough.
+        // Either way, deserialization cannot continue because the following
+        // array extraction would leave some elements in the input buffer.
+        *count_out = 0;
+        serializer->offset = SIZE_MAX;
+    }
+}
+
+#ifdef __cplusplus
+} // namespace mscl
+#endif
