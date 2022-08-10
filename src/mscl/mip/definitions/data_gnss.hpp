@@ -180,10 +180,11 @@ struct PosLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                = 0x0000,
             LAT_LON             = 0x0001,
             ELLIPSOID_HEIGHT    = 0x0002,
             MSL_HEIGHT          = 0x0004,
@@ -191,6 +192,12 @@ struct PosLlh
             VERTICAL_ACCURACY   = 0x0010,
             FLAGS               = 0x001F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double latitude;
@@ -220,14 +227,21 @@ struct PosEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE              = 0x0000,
             POSITION          = 0x0001,
             POSITION_ACCURACY = 0x0002,
             FLAGS             = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double x[3];
@@ -253,10 +267,11 @@ struct VelNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE             = 0x0000,
             VELOCITY         = 0x0001,
             SPEED_3D         = 0x0002,
             GROUND_SPEED     = 0x0004,
@@ -265,6 +280,12 @@ struct VelNed
             HEADING_ACCURACY = 0x0020,
             FLAGS            = 0x003F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     float v[3];
@@ -294,14 +315,21 @@ struct VelEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE              = 0x0000,
             VELOCITY          = 0x0001,
             VELOCITY_ACCURACY = 0x0002,
             FLAGS             = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     float v[3];
@@ -327,10 +355,11 @@ struct Dop
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE  = 0x0000,
             GDOP  = 0x0001,
             PDOP  = 0x0002,
             HDOP  = 0x0004,
@@ -340,6 +369,12 @@ struct Dop
             EDOP  = 0x0040,
             FLAGS = 0x007F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     float gdop;
@@ -370,14 +405,21 @@ struct UtcTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE               = 0x0000,
             GNSS_DATE_TIME     = 0x0001,
             LEAP_SECONDS_KNOWN = 0x0002,
             FLAGS              = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint16_t year;
@@ -408,14 +450,21 @@ struct GpsTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             TOW         = 0x0001,
             WEEK_NUMBER = 0x0002,
             FLAGS       = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double tow;
@@ -441,15 +490,22 @@ struct ClockInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE              = 0x0000,
             BIAS              = 0x0001,
             DRIFT             = 0x0002,
             ACCURACY_ESTIMATE = 0x0004,
             FLAGS             = 0x0007,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double bias;
@@ -487,24 +543,38 @@ struct FixInfo
         FIX_RTK_FIXED = 6,  ///<  
     };
     
-    struct FixFlags : Bitfield<FixFlags,uint16_t>
+    struct FixFlags : Bitfield<FixFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE       = 0x0000,
             SBAS_USED  = 0x0001,
             DNGSS_USED = 0x0002,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        FixFlags& operator=(uint16_t val) { value = val; return *this; }
+        FixFlags& operator|=(uint16_t val) { return *this = value | val; }
+        FixFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE      = 0x0000,
             FIX_TYPE  = 0x0001,
             NUM_SV    = 0x0002,
             FIX_FLAGS = 0x0004,
             FLAGS     = 0x0007,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     FixType fix_type;
@@ -533,19 +603,27 @@ struct SvInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct SVFlags : Bitfield<SVFlags,uint16_t>
+    struct SVFlags : Bitfield<SVFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                = 0x0000,
             USED_FOR_NAVIGATION = 0x0001,
             HEALTHY             = 0x0002,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        SVFlags& operator=(uint16_t val) { value = val; return *this; }
+        SVFlags& operator|=(uint16_t val) { return *this = value | val; }
+        SVFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                = 0x0000,
             CHANNEL             = 0x0001,
             SV_ID               = 0x0002,
             CARRIER_NOISE_RATIO = 0x0004,
@@ -554,6 +632,12 @@ struct SvInfo
             SV_FLAGS            = 0x0020,
             FLAGS               = 0x003F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t channel;
@@ -606,15 +690,22 @@ struct HwStatus
         UNKNOWN = 2,  ///<  
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE          = 0x0000,
             SENSOR_STATE  = 0x0001,
             ANTENNA_STATE = 0x0002,
             ANTENNA_POWER = 0x0004,
             FLAGS         = 0x0007,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     ReceiverState receiver_state;
@@ -653,16 +744,23 @@ struct DgpsInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                = 0x0000,
             AGE                 = 0x0001,
             BASE_STATION_ID     = 0x0002,
             BASE_STATION_STATUS = 0x0004,
             NUM_CHANNELS        = 0x0008,
             FLAGS               = 0x000F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t sv_id;
@@ -692,16 +790,23 @@ struct DgpsChannel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                  = 0x0000,
             ID                    = 0x0001,
             AGE                   = 0x0002,
             RANGE_CORRECTION      = 0x0004,
             RANGE_RATE_CORRECTION = 0x0008,
             FLAGS                 = 0x000F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t sv_id;
@@ -731,16 +836,23 @@ struct ClockInfo2
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE           = 0x0000,
             BIAS           = 0x0001,
             DRIFT          = 0x0002,
             BIAS_ACCURACY  = 0x0004,
             DRIFT_ACCURACY = 0x0008,
             FLAGS          = 0x000F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double bias;
@@ -768,12 +880,19 @@ struct GpsLeapSeconds
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE         = 0x0000,
             LEAP_SECONDS = 0x0002,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t leap_seconds;
@@ -798,21 +917,29 @@ struct SbasInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct SbasStatus : Bitfield<SbasStatus,uint8_t>
+    struct SbasStatus : Bitfield<SbasStatus>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE                  = 0x00,
             RANGE_AVAILABLE       = 0x01,
             CORRECTIONS_AVAILABLE = 0x02,
             INTEGRITY_AVAILABLE   = 0x04,
             TEST_MODE             = 0x08,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        SbasStatus& operator=(uint8_t val) { value = val; return *this; }
+        SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
+        SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             TOW         = 0x0001,
             WEEK_NUMBER = 0x0002,
             SBAS_SYSTEM = 0x0004,
@@ -821,6 +948,12 @@ struct SbasInfo
             SBAS_STATUS = 0x0020,
             FLAGS       = 0x003F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double time_of_week;
@@ -872,15 +1005,22 @@ struct SbasCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                   = 0x0000,
             UDREI                  = 0x0001,
             PSEUDORANGE_CORRECTION = 0x0002,
             IONO_CORRECTION        = 0x0004,
             FLAGS                  = 0x0007,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t index;
@@ -937,15 +1077,22 @@ struct RfErrorDetection
         SIGNIFICANT = 3,  ///<  
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE           = 0x0000,
             RF_BAND        = 0x0001,
             JAMMING_STATE  = 0x0002,
             SPOOFING_STATE = 0x0004,
             FLAGS          = 0x0007,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     RFBand rf_band;
@@ -975,10 +1122,11 @@ struct BaseStationInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct IndicatorFlags : Bitfield<IndicatorFlags,uint16_t>
+    struct IndicatorFlags : Bitfield<IndicatorFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE               = 0x0000,
             GPS                = 0x0001,
             GLONASS            = 0x0002,
             GALILEO            = 0x0004,
@@ -989,12 +1137,19 @@ struct BaseStationInfo
             QUARTER_CYCLE_BIT2 = 0x0080,
             QUARTER_CYCLE_BITS = 0x00C0,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        IndicatorFlags& operator=(uint16_t val) { value = val; return *this; }
+        IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
+        IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE          = 0x0000,
             TOW           = 0x0001,
             WEEK_NUMBER   = 0x0002,
             ECEF_POSITION = 0x0004,
@@ -1003,6 +1158,12 @@ struct BaseStationInfo
             INDICATORS    = 0x0020,
             FLAGS         = 0x003F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double time_of_week;
@@ -1031,10 +1192,11 @@ struct RtkCorrectionsStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE            = 0x0000,
             TOW             = 0x0001,
             WEEK_NUMBER     = 0x0002,
             EPOCH_STATUS    = 0x0004,
@@ -1045,12 +1207,19 @@ struct RtkCorrectionsStatus
             BEIDOU_LATENCY  = 0x0080,
             FLAGS           = 0x00FF,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    struct EpochStatus : Bitfield<EpochStatus,uint16_t>
+    struct EpochStatus : Bitfield<EpochStatus>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                         = 0x0000,
             ANTENNA_LOCATION_RECEIVED    = 0x0001,
             ANTENNA_DESCRIPTION_RECEIVED = 0x0002,
             GPS_RECEIVED                 = 0x0004,
@@ -1061,6 +1230,12 @@ struct RtkCorrectionsStatus
             USING_GLONASS_MSM_MESSAGES   = 0x0080,
             DONGLE_STATUS_READ_FAILED    = 0x0100,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        EpochStatus& operator=(uint16_t val) { value = val; return *this; }
+        EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
+        EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double time_of_week;
@@ -1093,10 +1268,11 @@ struct SatelliteStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE         = 0x0000,
             TOW          = 0x0001,
             WEEK_NUMBER  = 0x0002,
             GNSS_ID      = 0x0004,
@@ -1106,6 +1282,12 @@ struct SatelliteStatus
             HEALTH       = 0x0040,
             FLAGS        = 0x007F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t index;
@@ -1148,10 +1330,11 @@ struct Raw
         FULLY_LOCKED = 5,  ///<  
     };
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                      = 0x0000,
             TOW                       = 0x0001,
             WEEK_NUMBER               = 0x0002,
             RECEIVER_ID               = 0x0004,
@@ -1170,6 +1353,12 @@ struct Raw
             LOCK_TIME                 = 0x8000,
             FLAGS                     = 0xFFFF,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t index;
@@ -1211,14 +1400,21 @@ struct GpsEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             EPHEMERIS   = 0x0001,
             MODERN_DATA = 0x0002,
             FLAGS       = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t index;
@@ -1275,13 +1471,20 @@ struct GloEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE      = 0x0000,
             EPHEMERIS = 0x0001,
             FLAGS     = 0x0001,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint8_t index;
@@ -1329,16 +1532,23 @@ struct GpsIonoCorr
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             TOW         = 0x0001,
             WEEK_NUMBER = 0x0002,
             ALPHA       = 0x0004,
             BETA        = 0x0008,
             FLAGS       = 0x000F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double time_of_week;
@@ -1366,16 +1576,23 @@ struct GalileoIonoCorr
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE              = 0x0000,
             TOW               = 0x0001,
             WEEK_NUMBER       = 0x0002,
             ALPHA             = 0x0004,
             DISTURBANCE_FLAGS = 0x0008,
             FLAGS             = 0x000F,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double time_of_week;

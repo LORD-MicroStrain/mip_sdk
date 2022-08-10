@@ -90,6 +90,7 @@ void extract_mip_led_action(struct mip_serializer* serializer, enum mip_led_acti
 
 enum mip_rtk_get_status_flags_command_status_flags_legacy
 {
+    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_NONE                 = 0x00000000,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATE      = 0x00000007,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_PLATFORMSTATE        = 0x000000F8,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATUSCODE = 0x00000700,
@@ -105,6 +106,7 @@ enum mip_rtk_get_status_flags_command_status_flags_legacy
 
 enum mip_rtk_get_status_flags_command_status_flags
 {
+    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NONE                    = 0x00000000,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_MODEM_STATE             = 0x0000000F,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CONNECTION_TYPE         = 0x000000F0,
     MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RSSI                    = 0x0000FF00,
@@ -281,6 +283,7 @@ mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid, int32
 
 enum mip_rtk_service_status_command_service_flags
 {
+    MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_NONE                    = 0x00,
     MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_THROTTLE                = 0x01,
     MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_CORRECTIONS_UNAVAILABLE = 0x02,
     MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_RESERVED                = 0xFC,

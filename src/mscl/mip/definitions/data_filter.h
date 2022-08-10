@@ -126,6 +126,7 @@ void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, enum mi
 
 enum mip_filter_status_flags
 {
+    MIP_FILTER_STATUS_FLAGS_NONE                                           = 0x0000,
     MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_ATTITUDE                           = 0x1000,
     MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
     MIP_FILTER_STATUS_FLAGS_GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,
@@ -174,6 +175,7 @@ void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serialize
 
 enum mip_filter_measurement_indicator
 {
+    MIP_FILTER_MEASUREMENT_INDICATOR_NONE                  = 0x00,
     MIP_FILTER_MEASUREMENT_INDICATOR_ENABLED               = 0x01,
     MIP_FILTER_MEASUREMENT_INDICATOR_USED                  = 0x02,
     MIP_FILTER_MEASUREMENT_INDICATOR_RESIDUAL_HIGH_WARNING = 0x04,
@@ -187,6 +189,7 @@ void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer,
 
 enum mip_gnss_aid_status_flags
 {
+    MIP_GNSS_AID_STATUS_FLAGS_NONE           = 0x0000,
     MIP_GNSS_AID_STATUS_FLAGS_TIGHT_COUPLING = 0x0001,
     MIP_GNSS_AID_STATUS_FLAGS_DIFFERENTIAL   = 0x0002,
     MIP_GNSS_AID_STATUS_FLAGS_INTEGER_FIX    = 0x0004,
@@ -1246,6 +1249,7 @@ enum mip_filter_gnss_dual_antenna_status_data_fix_type
 
 enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags
 {
+    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_NONE                  = 0x0000,
     MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001,
     MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002,
     MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004,

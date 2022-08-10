@@ -743,6 +743,7 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
 
 enum mip_3dm_gnss_sbas_settings_command_sbasoptions
 {
+    MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_NONE               = 0x0000,
     MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_RANGING     = 0x0001,
     MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_CORRECTIONS = 0x0002,
     MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_APPLY_INTEGRITY    = 0x0004,
@@ -958,6 +959,7 @@ enum mip_3dm_gpio_config_command_behavior
 
 enum mip_3dm_gpio_config_command_pin_mode
 {
+    MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00,
     MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_OPEN_DRAIN = 0x01,
     MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02,
     MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04,
@@ -1211,6 +1213,7 @@ mip_cmd_result mip_3dm_default_event_control(struct mip_interface* device, uint8
 
 enum mip_3dm_get_event_trigger_status_command_status
 {
+    MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_NONE    = 0x00,
     MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ACTIVE  = 0x01,
     MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ENABLED = 0x02,
     MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_TEST    = 0x04,
