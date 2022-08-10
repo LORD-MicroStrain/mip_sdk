@@ -386,6 +386,7 @@ void extract_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, st
 
 enum mip_sensor_gps_timestamp_data_valid_flags
 {
+    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE              = 0x0000,
     MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_PPS_VALID         = 0x0001,
     MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_REFRESH      = 0x0002,
     MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x0004,
@@ -478,6 +479,7 @@ void extract_mip_sensor_north_vector_data(struct mip_serializer* serializer, str
 
 enum mip_sensor_overrange_status_data_status
 {
+    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_NONE    = 0x0000,
     MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_X = 0x0001,
     MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Y = 0x0002,
     MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Z = 0x0004,

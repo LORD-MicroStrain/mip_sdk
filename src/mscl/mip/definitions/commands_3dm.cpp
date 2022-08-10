@@ -2748,11 +2748,11 @@ void insert(MipSerializer& serializer, const EventTrigger& self)
     insert(serializer, self.instance);
     insert(serializer, self.type);
     if( self.type == EventTrigger::Type::GPIO )
-        insert(serializer, self.gpio);
+        insert(serializer, self.parameters.gpio);
     if( self.type == EventTrigger::Type::THRESHOLD )
-        insert(serializer, self.threshold);
+        insert(serializer, self.parameters.threshold);
     if( self.type == EventTrigger::Type::COMBINATION )
-        insert(serializer, self.combination);
+        insert(serializer, self.parameters.combination);
 }
 
 void extract(MipSerializer& serializer, EventTrigger& self)
@@ -2761,11 +2761,11 @@ void extract(MipSerializer& serializer, EventTrigger& self)
     extract(serializer, self.instance);
     extract(serializer, self.type);
     if( self.type == EventTrigger::Type::GPIO )
-        extract(serializer, self.gpio);
+        extract(serializer, self.parameters.gpio);
     if( self.type == EventTrigger::Type::THRESHOLD )
-        extract(serializer, self.threshold);
+        extract(serializer, self.parameters.threshold);
     if( self.type == EventTrigger::Type::COMBINATION )
-        extract(serializer, self.combination);
+        extract(serializer, self.parameters.combination);
 }
 
 void insert(MipSerializer& serializer, const EventTrigger::GpioParams& self)
@@ -2830,11 +2830,11 @@ void extract(MipSerializer& serializer, EventTrigger::CombinationParams& self)
 /// 
 /// @param instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param type Type of trigger to configure.
-/// @param  
+/// @param parameters 
 /// 
 /// @returns MipCmdResult
 /// 
-MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const void* gpio_threshold_combination)
+MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     MipSerializer serializer(buffer, sizeof(buffer));
@@ -2842,6 +2842,12 @@ MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, Event
     insert(serializer, MipFunctionSelector::WRITE);
     insert(serializer, instance);
     insert(serializer, type);
+    if( type == EventTrigger::Type::GPIO )
+        insert(serializer, parameters.gpio);
+    if( type == EventTrigger::Type::THRESHOLD )
+        insert(serializer, parameters.threshold);
+    if( type == EventTrigger::Type::COMBINATION )
+        insert(serializer, parameters.combination);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
@@ -2852,11 +2858,11 @@ MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, Event
 /// @param instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] type Type of trigger to configure.
-/// @param[out]  
+/// @param[out] parameters 
 /// 
 /// @returns MipCmdResult
 /// 
-MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, void* gpio_threshold_combination)
+MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, EventTrigger::Parameters& parameters)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     MipSerializer serializer(buffer, sizeof(buffer));
@@ -2874,6 +2880,12 @@ MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventT
         
         extract(serializer, instance);
         extract(serializer, type);
+        if( type == EventTrigger::Type::GPIO )
+            extract(serializer, parameters.gpio);
+        if( type == EventTrigger::Type::THRESHOLD )
+            extract(serializer, parameters.threshold);
+        if( type == EventTrigger::Type::COMBINATION )
+            extract(serializer, parameters.combination);
         
         if( !!!serializer )
             result_local = MIP_STATUS_ERROR;
@@ -2942,9 +2954,9 @@ void insert(MipSerializer& serializer, const EventAction& self)
     insert(serializer, self.trigger);
     insert(serializer, self.type);
     if( self.type == EventAction::Type::GPIO )
-        insert(serializer, self.gpio);
+        insert(serializer, self.parameters.gpio);
     if( self.type == EventAction::Type::MESSAGE )
-        insert(serializer, self.message);
+        insert(serializer, self.parameters.message);
 }
 
 void extract(MipSerializer& serializer, EventAction& self)
@@ -2954,9 +2966,9 @@ void extract(MipSerializer& serializer, EventAction& self)
     extract(serializer, self.trigger);
     extract(serializer, self.type);
     if( self.type == EventAction::Type::GPIO )
-        extract(serializer, self.gpio);
+        extract(serializer, self.parameters.gpio);
     if( self.type == EventAction::Type::MESSAGE )
-        extract(serializer, self.message);
+        extract(serializer, self.parameters.message);
 }
 
 void insert(MipSerializer& serializer, const EventAction::GpioParams& self)
@@ -2994,11 +3006,11 @@ void extract(MipSerializer& serializer, EventAction::MessageParams& self)
 /// @param instance Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param trigger Trigger ID number.
 /// @param type Type of action to configure.
-/// @param  
+/// @param parameters 
 /// 
 /// @returns MipCmdResult
 /// 
-MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const void* gpio_message)
+MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     MipSerializer serializer(buffer, sizeof(buffer));
@@ -3007,6 +3019,10 @@ MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_
     insert(serializer, instance);
     insert(serializer, trigger);
     insert(serializer, type);
+    if( type == EventAction::Type::GPIO )
+        insert(serializer, parameters.gpio);
+    if( type == EventAction::Type::MESSAGE )
+        insert(serializer, parameters.message);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EVENT_ACTION_CONFIG, buffer, serializer.offset);
@@ -3018,11 +3034,11 @@ MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_
 /// @param[out] instance Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] trigger Trigger ID number.
 /// @param[out] type Type of action to configure.
-/// @param[out]  
+/// @param[out] parameters 
 /// 
 /// @returns MipCmdResult
 /// 
-MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, void* gpio_message)
+MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, EventAction::Parameters& parameters)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     MipSerializer serializer(buffer, sizeof(buffer));
@@ -3041,6 +3057,10 @@ MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t
         extract(serializer, instance);
         extract(serializer, trigger);
         extract(serializer, type);
+        if( type == EventAction::Type::GPIO )
+            extract(serializer, parameters.gpio);
+        if( type == EventAction::Type::MESSAGE )
+            extract(serializer, parameters.message);
         
         if( !!!serializer )
             result_local = MIP_STATUS_ERROR;

@@ -143,14 +143,21 @@ struct GpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             TOW         = 0x0001,
             WEEK_NUMBER = 0x0002,
             TIME_VALID  = 0x0003,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double tow;
@@ -272,12 +279,19 @@ struct ExternalTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE        = 0x0000,
             NANOSECONDS = 0x0001,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint64_t nanoseconds;
@@ -314,12 +328,19 @@ struct ExternalTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE     = 0x0000,
             DT_NANOS = 0x0001,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     uint64_t dt_nanos;

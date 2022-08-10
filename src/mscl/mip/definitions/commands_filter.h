@@ -238,6 +238,7 @@ mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device, flo
 
 enum mip_filter_estimation_control_command_enable_flags
 {
+    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_NONE               = 0x0000,
     MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_BIAS          = 0x0001,
     MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_BIAS         = 0x0002,
     MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_SCALE_FACTOR  = 0x0004,
@@ -382,6 +383,7 @@ mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_interface
 
 enum mip_filter_tare_orientation_command_mip_tare_axes
 {
+    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_NONE  = 0x0,
     MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x1,
     MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2,
     MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4,
@@ -995,6 +997,7 @@ mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface* dev
 
 enum mip_filter_initialization_configuration_command_alignment_selector
 {
+    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_NONE         = 0x00,
     MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01,
     MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02,
     MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04,

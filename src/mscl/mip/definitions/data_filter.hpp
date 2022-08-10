@@ -118,10 +118,11 @@ enum class FilterDynamicsMode : uint16_t
     GQ7_DEFAULT    = 1,  ///<  
 };
 
-struct FilterStatusFlags : Bitfield<FilterStatusFlags,uint16_t>
+struct FilterStatusFlags : Bitfield<FilterStatusFlags>
 {
-    enum  : uint16_t
+    enum _enumType : uint16_t
     {
+        NONE                                           = 0x0000,
         GX5_INIT_NO_ATTITUDE                           = 0x1000,
         GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
         GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,
@@ -151,6 +152,12 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags,uint16_t>
         GQ7_TIME_SYNC_WARNING                          = 0x0400,
         GQ7_SOLUTION_ERROR                             = 0xF000,
     };
+    uint16_t value = NONE;
+    
+    operator uint16_t() const { return value; }
+    FilterStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+    FilterStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
+    FilterStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
 };
 
 enum class FilterAidingMeasurementType : uint8_t
@@ -163,10 +170,11 @@ enum class FilterAidingMeasurementType : uint8_t
     SPEED        = 6,  ///<  
 };
 
-struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator,uint8_t>
+struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
 {
-    enum  : uint8_t
+    enum _enumType : uint8_t
     {
+        NONE                  = 0x00,
         ENABLED               = 0x01,
         USED                  = 0x02,
         RESIDUAL_HIGH_WARNING = 0x04,
@@ -174,12 +182,19 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator,uint8_t>
         CONFIGURATION_ERROR   = 0x10,
         MAX_NUM_MEAS_EXCEEDED = 0x20,
     };
+    uint8_t value = NONE;
+    
+    operator uint8_t() const { return value; }
+    FilterMeasurementIndicator& operator=(uint8_t val) { value = val; return *this; }
+    FilterMeasurementIndicator& operator|=(uint8_t val) { return *this = value | val; }
+    FilterMeasurementIndicator& operator&=(uint8_t val) { return *this = value & val; }
 };
 
-struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags,uint16_t>
+struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 {
-    enum  : uint16_t
+    enum _enumType : uint16_t
     {
+        NONE           = 0x0000,
         TIGHT_COUPLING = 0x0001,
         DIFFERENTIAL   = 0x0002,
         INTEGER_FIX    = 0x0004,
@@ -197,6 +212,12 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags,uint16_t>
         NO_FIX         = 0x4000,
         CONFIG_ERROR   = 0x8000,
     };
+    uint16_t value = NONE;
+    
+    operator uint16_t() const { return value; }
+    GnssAidStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+    GnssAidStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
+    GnssAidStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
 };
 
 
@@ -1506,14 +1527,21 @@ struct GnssDualAntennaStatus
         FIX_DA_FIXED = 2,  ///<  
     };
     
-    struct DualAntennaStatusFlags : Bitfield<DualAntennaStatusFlags,uint16_t>
+    struct DualAntennaStatusFlags : Bitfield<DualAntennaStatusFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE                  = 0x0000,
             RCV_1_DATA_VALID      = 0x0001,
             RCV_2_DATA_VALID      = 0x0002,
             ANTENNA_OFFSETS_VALID = 0x0004,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        DualAntennaStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+        DualAntennaStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
+        DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     float time_of_week;

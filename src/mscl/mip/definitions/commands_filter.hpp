@@ -258,10 +258,11 @@ struct EstimationControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    struct EnableFlags : Bitfield<EnableFlags,uint16_t>
+    struct EnableFlags : Bitfield<EnableFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE               = 0x0000,
             GYRO_BIAS          = 0x0001,
             ACCEL_BIAS         = 0x0002,
             GYRO_SCALE_FACTOR  = 0x0004,
@@ -270,6 +271,12 @@ struct EstimationControl
             AUTO_MAG_HARD_IRON = 0x0020,
             AUTO_MAG_SOFT_IRON = 0x0040,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        EnableFlags& operator=(uint16_t val) { value = val; return *this; }
+        EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
+        EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     MipFunctionSelector function;
@@ -429,14 +436,21 @@ struct TareOrientation
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    struct MipTareAxes : Bitfield<MipTareAxes,uint8_t>
+    struct MipTareAxes : Bitfield<MipTareAxes>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE  = 0x0,
             ROLL  = 0x1,
             PITCH = 0x2,
             YAW   = 0x4,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
+        MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
+        MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
     };
     
     MipFunctionSelector function;
@@ -1225,14 +1239,21 @@ struct InitializationConfiguration
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    struct AlignmentSelector : Bitfield<AlignmentSelector,uint8_t>
+    struct AlignmentSelector : Bitfield<AlignmentSelector>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE         = 0x00,
             DUAL_ANTENNA = 0x01,
             KINEMATIC    = 0x02,
             MAGNETOMETER = 0x04,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
+        AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
+        AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
     };
     
     enum class InitialConditionSource : uint8_t

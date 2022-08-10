@@ -476,16 +476,23 @@ struct GpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ValidFlags : Bitfield<ValidFlags,uint16_t>
+    struct ValidFlags : Bitfield<ValidFlags>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE              = 0x0000,
             PPS_VALID         = 0x0001,
             TIME_REFRESH      = 0x0002,
             TIME_INITIALIZED  = 0x0004,
             TOW_VALID         = 0x0008,
             WEEK_NUMBER_VALID = 0x0010,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     double tow;
@@ -588,10 +595,11 @@ struct OverrangeStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct Status : Bitfield<Status,uint16_t>
+    struct Status : Bitfield<Status>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE    = 0x0000,
             ACCEL_X = 0x0001,
             ACCEL_Y = 0x0002,
             ACCEL_Z = 0x0004,
@@ -603,6 +611,12 @@ struct OverrangeStatus
             MAG_Z   = 0x0400,
             PRESS   = 0x1000,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        Status& operator=(uint16_t val) { value = val; return *this; }
+        Status& operator|=(uint16_t val) { return *this = value | val; }
+        Status& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     Status status;

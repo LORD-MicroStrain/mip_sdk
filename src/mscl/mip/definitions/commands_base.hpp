@@ -77,10 +77,11 @@ enum class TimeFormat : uint8_t
     GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
 };
 
-struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7,uint32_t>
+struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
 {
-    enum  : uint32_t
+    enum _enumType : uint32_t
     {
+        NONE                   = 0x00000000,
         GENERAL_HARDWARE_FAULT = 0x00000001,
         GENERAL_FIRMWARE_FAULT = 0x00000002,
         TIMING_OVERLOAD        = 0x00000004,
@@ -109,6 +110,12 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7,uint32_t>
         GNSS_SOLUTION_FAULT    = 0x40000000,
         GNSS_GENERAL_FAULT     = 0x80000000,
     };
+    uint32_t value = NONE;
+    
+    operator uint32_t() const { return value; }
+    CommandedTestBitsGq7& operator=(uint32_t val) { value = val; return *this; }
+    CommandedTestBitsGq7& operator|=(uint32_t val) { return *this = value | val; }
+    CommandedTestBitsGq7& operator&=(uint32_t val) { return *this = value & val; }
 };
 
 

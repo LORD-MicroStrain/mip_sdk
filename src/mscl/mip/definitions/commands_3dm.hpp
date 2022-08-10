@@ -913,14 +913,21 @@ struct GnssSbasSettings
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    struct SBASOptions : Bitfield<SBASOptions,uint16_t>
+    struct SBASOptions : Bitfield<SBASOptions>
     {
-        enum  : uint16_t
+        enum _enumType : uint16_t
         {
+            NONE               = 0x0000,
             ENABLE_RANGING     = 0x0001,
             ENABLE_CORRECTIONS = 0x0002,
             APPLY_INTEGRITY    = 0x0004,
         };
+        uint16_t value = NONE;
+        
+        operator uint16_t() const { return value; }
+        SBASOptions& operator=(uint16_t val) { value = val; return *this; }
+        SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
+        SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
     };
     
     MipFunctionSelector function;
@@ -1173,14 +1180,21 @@ struct GpioConfig
         POWER_SHUTDOWN    = 1,  ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
     };
     
-    struct PinMode : Bitfield<PinMode,uint8_t>
+    struct PinMode : Bitfield<PinMode>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE       = 0x00,
             OPEN_DRAIN = 0x01,
             PULLDOWN   = 0x02,
             PULLUP     = 0x04,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        PinMode& operator=(uint8_t val) { value = val; return *this; }
+        PinMode& operator|=(uint8_t val) { return *this = value | val; }
+        PinMode& operator&=(uint8_t val) { return *this = value & val; }
     };
     
     MipFunctionSelector function;
@@ -1463,14 +1477,21 @@ struct GetEventTriggerStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct Status : Bitfield<Status,uint8_t>
+    struct Status : Bitfield<Status>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE    = 0x00,
             ACTIVE  = 0x01,
             ENABLED = 0x02,
             TEST    = 0x04,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        Status& operator=(uint8_t val) { value = val; return *this; }
+        Status& operator|=(uint8_t val) { return *this = value | val; }
+        Status& operator&=(uint8_t val) { return *this = value & val; }
     };
     
     struct Entry
@@ -1629,15 +1650,17 @@ struct EventTrigger
         COMBINATION = 3,  ///<  Logical combination of two or more triggers. See CombinationParams.
     };
     
-    MipFunctionSelector function;
-    uint8_t instance;
-    Type type;
-    union
+    union Parameters
     {
         GpioParams gpio;
         ThresholdParams threshold;
         CombinationParams combination;
     };
+    
+    MipFunctionSelector function;
+    uint8_t instance;
+    Type type;
+    Parameters parameters;
     
     struct Response
     {
@@ -1646,12 +1669,7 @@ struct EventTrigger
         
         uint8_t instance;
         Type type;
-        union
-        {
-            GpioParams gpio;
-            ThresholdParams threshold;
-            CombinationParams combination;
-        };
+        Parameters parameters;
         
     };
 };
@@ -1670,8 +1688,8 @@ void extract(MipSerializer& serializer, EventTrigger::CombinationParams& self);
 void insert(MipSerializer& serializer, const EventTrigger::Response& self);
 void extract(MipSerializer& serializer, EventTrigger::Response& self);
 
-MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const void* gpio_threshold_combination);
-MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, void* gpio_threshold_combination);
+MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
+MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, EventTrigger::Parameters& parameters);
 MipCmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance);
 MipCmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance);
 MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
@@ -1725,15 +1743,17 @@ struct EventAction
         MESSAGE = 2,  ///<  Output a data packet. See MessageParameters.
     };
     
-    MipFunctionSelector function;
-    uint8_t instance;
-    uint8_t trigger;
-    Type type;
-    union
+    union Parameters
     {
         GpioParams gpio;
         MessageParams message;
     };
+    
+    MipFunctionSelector function;
+    uint8_t instance;
+    uint8_t trigger;
+    Type type;
+    Parameters parameters;
     
     struct Response
     {
@@ -1743,11 +1763,7 @@ struct EventAction
         uint8_t instance;
         uint8_t trigger;
         Type type;
-        union
-        {
-            GpioParams gpio;
-            MessageParams message;
-        };
+        Parameters parameters;
         
     };
 };
@@ -1763,8 +1779,8 @@ void extract(MipSerializer& serializer, EventAction::MessageParams& self);
 void insert(MipSerializer& serializer, const EventAction::Response& self);
 void extract(MipSerializer& serializer, EventAction::Response& self);
 
-MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const void* gpio_message);
-MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, void* gpio_message);
+MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
+MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, EventAction::Parameters& parameters);
 MipCmdResult saveEventAction(C::mip_interface& device, uint8_t instance);
 MipCmdResult loadEventAction(C::mip_interface& device, uint8_t instance);
 MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);

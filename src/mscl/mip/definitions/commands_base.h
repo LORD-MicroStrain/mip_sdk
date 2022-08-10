@@ -82,6 +82,7 @@ void extract_mip_time_format(struct mip_serializer* serializer, enum mip_time_fo
 
 enum mip_commanded_test_bits_gq7
 {
+    MIP_COMMANDED_TEST_BITS_GQ7_NONE                   = 0x00000000,
     MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_HARDWARE_FAULT = 0x00000001,
     MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_FIRMWARE_FAULT = 0x00000002,
     MIP_COMMANDED_TEST_BITS_GQ7_TIMING_OVERLOAD        = 0x00000004,

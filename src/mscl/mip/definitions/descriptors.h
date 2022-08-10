@@ -81,6 +81,7 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
+<<<<<<< HEAD
 template<typename Derived, typename BaseType>
 struct Bitfield
 {
@@ -95,6 +96,14 @@ template<class Derived, typename BaseType> Bitfield<Derived,BaseType> operator&(
 
 template<class Derived, typename BaseType> void extract(MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return extract(serializer, bitfield.value); }
 template<class Derived, typename BaseType> void insert (MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return insert (serializer, bitfield.value); }
+=======
+///@brief A dummy struct which is used to mark bitfield objects.
+///
+template<typename DerivedT> struct Bitfield {};
+
+template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+>>>>>>> master
 
 
 struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
@@ -104,9 +113,12 @@ struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
     static const uint8_t SAVE  = C::MIP_FUNCTION_SAVE;
     static const uint8_t LOAD  = C::MIP_FUNCTION_LOAD;
     static const uint8_t RESET = C::MIP_FUNCTION_RESET;
+<<<<<<< HEAD
 
     // size_t insert(struct mip_serializer* serializer) const { return C::insert_mip_function_selector(buffer, bufferSize, offset, *this); }
     // size_t extract(const struct mip_serializer* serializer) { return C::extract_mip_function_selector(buffer, bufferSize, offset, &_value); }
+=======
+>>>>>>> master
 };
 
 using MipDescriptorRate = C::mip_descriptor_rate;
@@ -126,6 +138,7 @@ inline void extract(MipSerializer& serializer, MipFunctionSelector& self) { retu
 
 inline void insert(MipSerializer& serializer, const MipDescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
 inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+<<<<<<< HEAD
 
 // ////////////////////////////////////////////////////////////////////////////////
 // ///@brief Type traits struct for obtaining descriptors, etc. from field structs.
@@ -145,6 +158,8 @@ inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return
 //     static const bool responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;  // No response by default
 //     using Response = void;
 // };
+=======
+>>>>>>> master
 
 } // namespace mscl
 

@@ -184,6 +184,7 @@ enum { GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 
 enum mip_gnss_pos_llh_data_valid_flags
 {
+    MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_NONE                = 0x0000,
     MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_LAT_LON             = 0x0001,
     MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_ELLIPSOID_HEIGHT    = 0x0002,
     MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_MSL_HEIGHT          = 0x0004,
@@ -219,6 +220,7 @@ void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer
 
 enum mip_gnss_pos_ecef_data_valid_flags
 {
+    MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_NONE              = 0x0000,
     MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION          = 0x0001,
     MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION_ACCURACY = 0x0002,
     MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003,
@@ -247,6 +249,7 @@ void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serialize
 
 enum mip_gnss_vel_ned_data_valid_flags
 {
+    MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_NONE             = 0x0000,
     MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_VELOCITY         = 0x0001,
     MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_SPEED_3D         = 0x0002,
     MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_GROUND_SPEED     = 0x0004,
@@ -283,6 +286,7 @@ void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer
 
 enum mip_gnss_vel_ecef_data_valid_flags
 {
+    MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_NONE              = 0x0000,
     MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY          = 0x0001,
     MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY_ACCURACY = 0x0002,
     MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003,
@@ -311,6 +315,7 @@ void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serialize
 
 enum mip_gnss_dop_data_valid_flags
 {
+    MIP_GNSS_DOP_DATA_VALID_FLAGS_NONE  = 0x0000,
     MIP_GNSS_DOP_DATA_VALID_FLAGS_GDOP  = 0x0001,
     MIP_GNSS_DOP_DATA_VALID_FLAGS_PDOP  = 0x0002,
     MIP_GNSS_DOP_DATA_VALID_FLAGS_HDOP  = 0x0004,
@@ -349,6 +354,7 @@ void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, en
 
 enum mip_gnss_utc_time_data_valid_flags
 {
+    MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_NONE               = 0x0000,
     MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_GNSS_DATE_TIME     = 0x0001,
     MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_LEAP_SECONDS_KNOWN = 0x0002,
     MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_FLAGS              = 0x0003,
@@ -382,6 +388,7 @@ void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serialize
 
 enum mip_gnss_gps_time_data_valid_flags
 {
+    MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_NONE        = 0x0000,
     MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_TOW         = 0x0001,
     MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002,
     MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_FLAGS       = 0x0003,
@@ -410,6 +417,7 @@ void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serialize
 
 enum mip_gnss_clock_info_data_valid_flags
 {
+    MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_NONE              = 0x0000,
     MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_BIAS              = 0x0001,
     MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_DRIFT             = 0x0002,
     MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_ACCURACY_ESTIMATE = 0x0004,
@@ -451,12 +459,14 @@ enum mip_gnss_fix_info_data_fix_type
 
 enum mip_gnss_fix_info_data_fix_flags
 {
+    MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_NONE       = 0x0000,
     MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_SBAS_USED  = 0x0001,
     MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_DNGSS_USED = 0x0002,
 };
 
 enum mip_gnss_fix_info_data_valid_flags
 {
+    MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_NONE      = 0x0000,
     MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FIX_TYPE  = 0x0001,
     MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_NUM_SV    = 0x0002,
     MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FIX_FLAGS = 0x0004,
@@ -495,12 +505,14 @@ void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serialize
 
 enum mip_gnss_sv_info_data_svflags
 {
+    MIP_GNSS_SV_INFO_DATA_SVFLAGS_NONE                = 0x0000,
     MIP_GNSS_SV_INFO_DATA_SVFLAGS_USED_FOR_NAVIGATION = 0x0001,
     MIP_GNSS_SV_INFO_DATA_SVFLAGS_HEALTHY             = 0x0002,
 };
 
 enum mip_gnss_sv_info_data_valid_flags
 {
+    MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_NONE                = 0x0000,
     MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_CHANNEL             = 0x0001,
     MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_SV_ID               = 0x0002,
     MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_CARRIER_NOISE_RATIO = 0x0004,
@@ -563,6 +575,7 @@ enum mip_gnss_hw_status_data_antenna_power
 
 enum mip_gnss_hw_status_data_valid_flags
 {
+    MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_NONE          = 0x0000,
     MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_SENSOR_STATE  = 0x0001,
     MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ANTENNA_STATE = 0x0002,
     MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ANTENNA_POWER = 0x0004,
@@ -614,6 +627,7 @@ void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializ
 
 enum mip_gnss_dgps_info_data_valid_flags
 {
+    MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_NONE                = 0x0000,
     MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_AGE                 = 0x0001,
     MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_BASE_STATION_ID     = 0x0002,
     MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_BASE_STATION_STATUS = 0x0004,
@@ -648,6 +662,7 @@ void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializ
 
 enum mip_gnss_dgps_channel_data_valid_flags
 {
+    MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_NONE                  = 0x0000,
     MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_ID                    = 0x0001,
     MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_AGE                   = 0x0002,
     MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_RANGE_CORRECTION      = 0x0004,
@@ -682,6 +697,7 @@ void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* seria
 
 enum mip_gnss_clock_info_2_data_valid_flags
 {
+    MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_NONE           = 0x0000,
     MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_BIAS           = 0x0001,
     MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_DRIFT          = 0x0002,
     MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_BIAS_ACCURACY  = 0x0004,
@@ -714,6 +730,7 @@ void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* seria
 
 enum mip_gnss_gps_leap_seconds_data_valid_flags
 {
+    MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_NONE         = 0x0000,
     MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_LEAP_SECONDS = 0x0002,
 };
 
@@ -739,6 +756,7 @@ void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* s
 
 enum mip_gnss_sbas_info_data_sbas_status
 {
+    MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_NONE                  = 0x00,
     MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_RANGE_AVAILABLE       = 0x01,
     MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_CORRECTIONS_AVAILABLE = 0x02,
     MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_INTEGRITY_AVAILABLE   = 0x04,
@@ -747,6 +765,7 @@ enum mip_gnss_sbas_info_data_sbas_status
 
 enum mip_gnss_sbas_info_data_valid_flags
 {
+    MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_NONE        = 0x0000,
     MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_TOW         = 0x0001,
     MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002,
     MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_SBAS_SYSTEM = 0x0004,
@@ -808,6 +827,7 @@ void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializ
 
 enum mip_gnss_sbas_correction_data_valid_flags
 {
+    MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_NONE                   = 0x0000,
     MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_UDREI                  = 0x0001,
     MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_PSEUDORANGE_CORRECTION = 0x0002,
     MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_IONO_CORRECTION        = 0x0004,
@@ -868,6 +888,7 @@ enum mip_gnss_rf_error_detection_data_spoofing_state
 
 enum mip_gnss_rf_error_detection_data_valid_flags
 {
+    MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_NONE           = 0x0000,
     MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_RF_BAND        = 0x0001,
     MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_JAMMING_STATE  = 0x0002,
     MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_SPOOFING_STATE = 0x0004,
@@ -910,6 +931,7 @@ void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer*
 
 enum mip_gnss_base_station_info_data_indicator_flags
 {
+    MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_NONE               = 0x0000,
     MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_GPS                = 0x0001,
     MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_GLONASS            = 0x0002,
     MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_GALILEO            = 0x0004,
@@ -923,6 +945,7 @@ enum mip_gnss_base_station_info_data_indicator_flags
 
 enum mip_gnss_base_station_info_data_valid_flags
 {
+    MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_NONE          = 0x0000,
     MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_TOW           = 0x0001,
     MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_WEEK_NUMBER   = 0x0002,
     MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_ECEF_POSITION = 0x0004,
@@ -961,6 +984,7 @@ void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* 
 
 enum mip_gnss_rtk_corrections_status_data_valid_flags
 {
+    MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_NONE            = 0x0000,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_TOW             = 0x0001,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_WEEK_NUMBER     = 0x0002,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_EPOCH_STATUS    = 0x0004,
@@ -974,6 +998,7 @@ enum mip_gnss_rtk_corrections_status_data_valid_flags
 
 enum mip_gnss_rtk_corrections_status_data_epoch_status
 {
+    MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_NONE                         = 0x0000,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_ANTENNA_LOCATION_RECEIVED    = 0x0001,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_ANTENNA_DESCRIPTION_RECEIVED = 0x0002,
     MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_GPS_RECEIVED                 = 0x0004,
@@ -1018,6 +1043,7 @@ void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serial
 
 enum mip_gnss_satellite_status_data_valid_flags
 {
+    MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_NONE         = 0x0000,
     MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_TOW          = 0x0001,
     MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_WEEK_NUMBER  = 0x0002,
     MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_GNSS_ID      = 0x0004,
@@ -1068,6 +1094,7 @@ enum mip_gnss_raw_data_gnss_signal_quality
 
 enum mip_gnss_raw_data_valid_flags
 {
+    MIP_GNSS_RAW_DATA_VALID_FLAGS_NONE                      = 0x0000,
     MIP_GNSS_RAW_DATA_VALID_FLAGS_TOW                       = 0x0001,
     MIP_GNSS_RAW_DATA_VALID_FLAGS_WEEK_NUMBER               = 0x0002,
     MIP_GNSS_RAW_DATA_VALID_FLAGS_RECEIVER_ID               = 0x0004,
@@ -1129,6 +1156,7 @@ void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, en
 
 enum mip_gnss_gps_ephemeris_data_valid_flags
 {
+    MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_NONE        = 0x0000,
     MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001,
     MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002,
     MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003,
@@ -1188,6 +1216,7 @@ void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* seri
 
 enum mip_gnss_glo_ephemeris_data_valid_flags
 {
+    MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_NONE      = 0x0000,
     MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS = 0x0001,
     MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS     = 0x0001,
 };
@@ -1237,6 +1266,7 @@ void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* seri
 
 enum mip_gnss_gps_iono_corr_data_valid_flags
 {
+    MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_NONE        = 0x0000,
     MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_TOW         = 0x0001,
     MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002,
     MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_ALPHA       = 0x0004,
@@ -1269,6 +1299,7 @@ void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* seri
 
 enum mip_gnss_galileo_iono_corr_data_valid_flags
 {
+    MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_NONE              = 0x0000,
     MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_TOW               = 0x0001,
     MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_WEEK_NUMBER       = 0x0002,
     MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_ALPHA             = 0x0004,

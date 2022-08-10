@@ -89,10 +89,11 @@ struct GetStatusFlags
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct StatusFlagsLegacy : Bitfield<StatusFlagsLegacy,uint32_t>
+    struct StatusFlagsLegacy : Bitfield<StatusFlagsLegacy>
     {
-        enum  : uint32_t
+        enum _enumType : uint32_t
         {
+            NONE                 = 0x00000000,
             CONTROLLERSTATE      = 0x00000007,
             PLATFORMSTATE        = 0x000000F8,
             CONTROLLERSTATUSCODE = 0x00000700,
@@ -105,12 +106,19 @@ struct GetStatusFlags
             RSRQ                 = 0x30000000,
             SINR                 = 0xC0000000,
         };
+        uint32_t value = NONE;
+        
+        operator uint32_t() const { return value; }
+        StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
+        StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
     };
     
-    struct StatusFlags : Bitfield<StatusFlags,uint32_t>
+    struct StatusFlags : Bitfield<StatusFlags>
     {
-        enum  : uint32_t
+        enum _enumType : uint32_t
         {
+            NONE                    = 0x00000000,
             MODEM_STATE             = 0x0000000F,
             CONNECTION_TYPE         = 0x000000F0,
             RSSI                    = 0x0000FF00,
@@ -124,6 +132,12 @@ struct GetStatusFlags
             RESERVED                = 0x20000000,
             VERSION                 = 0xC0000000,
         };
+        uint32_t value = NONE;
+        
+        operator uint32_t() const { return value; }
+        StatusFlags& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
+        StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
     };
     
     
@@ -394,14 +408,21 @@ struct ServiceStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    struct ServiceFlags : Bitfield<ServiceFlags,uint8_t>
+    struct ServiceFlags : Bitfield<ServiceFlags>
     {
-        enum  : uint8_t
+        enum _enumType : uint8_t
         {
+            NONE                    = 0x00,
             THROTTLE                = 0x01,
             CORRECTIONS_UNAVAILABLE = 0x02,
             RESERVED                = 0xFC,
         };
+        uint8_t value = NONE;
+        
+        operator uint8_t() const { return value; }
+        ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
+        ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
+        ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
     };
     
     uint32_t reserved1;
