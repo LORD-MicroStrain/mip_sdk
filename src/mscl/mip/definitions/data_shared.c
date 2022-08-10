@@ -9,8 +9,12 @@
 
 #ifdef __cplusplus
 namespace mscl {
+namespace C {
 extern "C" {
+
 #endif // __cplusplus
+struct mip_interface;
+struct mip_serializer;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,199 +26,141 @@ extern "C" {
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_event_source_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_event_source_data* self)
+void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const struct mip_shared_event_source_data* self)
 {
-    offset = insert_u8(buffer, bufferSize, offset, self->trigger_id);
-    
-    return offset;
+    insert_u8(serializer, self->trigger_id);
 }
 
-size_t extract_mip_shared_event_source_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_event_source_data* self)
+void extract_mip_shared_event_source_data(struct mip_serializer* serializer, struct mip_shared_event_source_data* self)
 {
-    offset = extract_u8(buffer, bufferSize, offset, &self->trigger_id);
-    
-    return offset;
+    extract_u8(serializer, &self->trigger_id);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_ticks_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_ticks_data* self)
+void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const struct mip_shared_ticks_data* self)
 {
-    offset = insert_u32(buffer, bufferSize, offset, self->ticks);
-    
-    return offset;
+    insert_u32(serializer, self->ticks);
 }
 
-size_t extract_mip_shared_ticks_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_ticks_data* self)
+void extract_mip_shared_ticks_data(struct mip_serializer* serializer, struct mip_shared_ticks_data* self)
 {
-    offset = extract_u32(buffer, bufferSize, offset, &self->ticks);
-    
-    return offset;
+    extract_u32(serializer, &self->ticks);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_delta_ticks_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_delta_ticks_data* self)
+void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const struct mip_shared_delta_ticks_data* self)
 {
-    offset = insert_u32(buffer, bufferSize, offset, self->ticks);
-    
-    return offset;
+    insert_u32(serializer, self->ticks);
 }
 
-size_t extract_mip_shared_delta_ticks_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_delta_ticks_data* self)
+void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, struct mip_shared_delta_ticks_data* self)
 {
-    offset = extract_u32(buffer, bufferSize, offset, &self->ticks);
-    
-    return offset;
+    extract_u32(serializer, &self->ticks);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_gps_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_gps_timestamp_data_valid_flags self)
+void insert_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_gps_timestamp_data* self)
 {
-    return insert_u16(buffer, bufferSize, offset, self);
+    insert_double(serializer, self->tow);
+    insert_u16(serializer, self->week_number);
+    insert_mip_shared_gps_timestamp_data_valid_flags(serializer, self->valid_flags);
 }
-size_t extract_mip_shared_gps_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_gps_timestamp_data_valid_flags* self)
+
+void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, struct mip_shared_gps_timestamp_data* self)
 {
-    uint16_t tmp;
-    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    extract_double(serializer, &self->tow);
+    extract_u16(serializer, &self->week_number);
+    extract_mip_shared_gps_timestamp_data_valid_flags(serializer, &self->valid_flags);
+}
+
+void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_gps_timestamp_data_valid_flags self)
+{
+    return insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_gps_timestamp_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
     *self = tmp;
-    return offset;
 }
 
-
-size_t insert_mip_shared_gps_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_gps_timestamp_data* self)
+void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self)
 {
-    offset = insert_double(buffer, bufferSize, offset, self->tow);
-    offset = insert_u16(buffer, bufferSize, offset, self->week_number);
-    offset = insert_mip_shared_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
-    
-    return offset;
+    insert_double(serializer, self->seconds);
 }
 
-size_t extract_mip_shared_gps_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_gps_timestamp_data* self)
+void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, struct mip_shared_delta_time_data* self)
 {
-    offset = extract_double(buffer, bufferSize, offset, &self->tow);
-    offset = extract_u16(buffer, bufferSize, offset, &self->week_number);
-    offset = extract_mip_shared_gps_timestamp_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
-    
-    return offset;
+    extract_double(serializer, &self->seconds);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_delta_time_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_delta_time_data* self)
+void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_reference_timestamp_data* self)
 {
-    offset = insert_double(buffer, bufferSize, offset, self->seconds);
-    
-    return offset;
+    insert_u64(serializer, self->nanoseconds);
 }
 
-size_t extract_mip_shared_delta_time_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_delta_time_data* self)
+void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, struct mip_shared_reference_timestamp_data* self)
 {
-    offset = extract_double(buffer, bufferSize, offset, &self->seconds);
-    
-    return offset;
+    extract_u64(serializer, &self->nanoseconds);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_reference_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_reference_timestamp_data* self)
+void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_reference_time_delta_data* self)
 {
-    offset = insert_u64(buffer, bufferSize, offset, self->nanoseconds);
-    
-    return offset;
+    insert_u64(serializer, self->dt_nanos);
 }
 
-size_t extract_mip_shared_reference_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_reference_timestamp_data* self)
+void extract_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, struct mip_shared_reference_time_delta_data* self)
 {
-    offset = extract_u64(buffer, bufferSize, offset, &self->nanoseconds);
-    
-    return offset;
+    extract_u64(serializer, &self->dt_nanos);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_reference_time_delta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_reference_time_delta_data* self)
+void insert_mip_shared_external_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_external_timestamp_data* self)
 {
-    offset = insert_u64(buffer, bufferSize, offset, self->dt_nanos);
-    
-    return offset;
+    insert_u64(serializer, self->nanoseconds);
+    insert_mip_shared_external_timestamp_data_valid_flags(serializer, self->valid_flags);
 }
 
-size_t extract_mip_shared_reference_time_delta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_reference_time_delta_data* self)
+void extract_mip_shared_external_timestamp_data(struct mip_serializer* serializer, struct mip_shared_external_timestamp_data* self)
 {
-    offset = extract_u64(buffer, bufferSize, offset, &self->dt_nanos);
-    
-    return offset;
+    extract_u64(serializer, &self->nanoseconds);
+    extract_mip_shared_external_timestamp_data_valid_flags(serializer, &self->valid_flags);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_external_timestamp_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_external_timestamp_data_valid_flags self)
+void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_timestamp_data_valid_flags self)
 {
-    return insert_u16(buffer, bufferSize, offset, self);
+    return insert_u16(serializer, (uint16_t)(self));
 }
-size_t extract_mip_shared_external_timestamp_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_external_timestamp_data_valid_flags* self)
+void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_timestamp_data_valid_flags* self)
 {
-    uint16_t tmp;
-    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
     *self = tmp;
-    return offset;
 }
 
-
-size_t insert_mip_shared_external_timestamp_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_external_timestamp_data* self)
+void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_external_time_delta_data* self)
 {
-    offset = insert_u64(buffer, bufferSize, offset, self->nanoseconds);
-    offset = insert_mip_shared_external_timestamp_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
-    
-    return offset;
+    insert_u64(serializer, self->dt_nanos);
+    insert_mip_shared_external_time_delta_data_valid_flags(serializer, self->valid_flags);
 }
 
-size_t extract_mip_shared_external_timestamp_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_external_timestamp_data* self)
+void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializer, struct mip_shared_external_time_delta_data* self)
 {
-    offset = extract_u64(buffer, bufferSize, offset, &self->nanoseconds);
-    offset = extract_mip_shared_external_timestamp_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
-    
-    return offset;
+    extract_u64(serializer, &self->dt_nanos);
+    extract_mip_shared_external_time_delta_data_valid_flags(serializer, &self->valid_flags);
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_shared_external_time_delta_data_valid_flags(uint8_t* buffer, size_t bufferSize, size_t offset, const enum mip_shared_external_time_delta_data_valid_flags self)
+void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_time_delta_data_valid_flags self)
 {
-    return insert_u16(buffer, bufferSize, offset, self);
+    return insert_u16(serializer, (uint16_t)(self));
 }
-size_t extract_mip_shared_external_time_delta_data_valid_flags(const uint8_t* buffer, size_t bufferSize, size_t offset, enum mip_shared_external_time_delta_data_valid_flags* self)
+void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_time_delta_data_valid_flags* self)
 {
-    uint16_t tmp;
-    offset = extract_u16(buffer, bufferSize, offset, &tmp);
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
     *self = tmp;
-    return offset;
 }
-
-
-size_t insert_mip_shared_external_time_delta_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_shared_external_time_delta_data* self)
-{
-    offset = insert_u64(buffer, bufferSize, offset, self->dt_nanos);
-    offset = insert_mip_shared_external_time_delta_data_valid_flags(buffer, bufferSize, offset, self->valid_flags);
-    
-    return offset;
-}
-
-size_t extract_mip_shared_external_time_delta_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_shared_external_time_delta_data* self)
-{
-    offset = extract_u64(buffer, bufferSize, offset, &self->dt_nanos);
-    offset = extract_mip_shared_external_time_delta_data_valid_flags(buffer, bufferSize, offset, &self->valid_flags);
-    
-    return offset;
-}
-
 
 
 #ifdef __cplusplus
-} // extern "C"
+} // namespace C
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

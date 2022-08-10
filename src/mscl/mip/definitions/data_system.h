@@ -9,14 +9,17 @@
 
 #ifdef __cplusplus
 namespace mscl {
-#endif // __cplusplus
+namespace C {
+extern "C" {
 
+#endif // __cplusplus
 struct mip_interface;
+struct mip_serializer;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
 ///@{
-///@defgroup SYSTEMData  SYSTEM
+///@defgroup system_data_c  SYSTEMData
 ///
 ///@{
 
@@ -34,11 +37,6 @@ enum
     MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE = 0x04,
     
 };
-#ifdef __cplusplus
-namespace C {
-extern "C" {
-#endif // __cplusplus
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -50,7 +48,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup built_in_test  None
+///@defgroup c_built_in_test  None
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -75,31 +73,33 @@ extern "C" {
 
 struct mip_system_built_in_test_data
 {
-    uint8_t                                           result[16];
+    uint8_t result[16];
+    
 };
-size_t insert_mip_system_built_in_test_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_built_in_test_data* self);
-size_t extract_mip_system_built_in_test_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_built_in_test_data* self);
+void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, const struct mip_system_built_in_test_data* self);
+void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, struct mip_system_built_in_test_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup time_sync_status  None
+///@defgroup c_time_sync_status  None
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
 
 struct mip_system_time_sync_status_data
 {
-    bool                                              time_sync;
-    uint8_t                                           last_pps_rcvd;
+    bool time_sync;
+    uint8_t last_pps_rcvd;
+    
 };
-size_t insert_mip_system_time_sync_status_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_time_sync_status_data* self);
-size_t extract_mip_system_time_sync_status_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_time_sync_status_data* self);
+void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self);
+void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, struct mip_system_time_sync_status_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup gpio_state  None
+///@defgroup c_gpio_state  None
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -124,15 +124,16 @@ size_t extract_mip_system_time_sync_status_data(const uint8_t* buffer, size_t bu
 
 struct mip_system_gpio_state_data
 {
-    uint8_t                                           states;
+    uint8_t states;
+    
 };
-size_t insert_mip_system_gpio_state_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_state_data* self);
-size_t extract_mip_system_gpio_state_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_state_data* self);
+void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self);
+void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struct mip_system_gpio_state_data* self);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup gpio_analog_value  None
+///@defgroup c_gpio_analog_value  None
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///
@@ -140,11 +141,12 @@ size_t extract_mip_system_gpio_state_data(const uint8_t* buffer, size_t bufferSi
 
 struct mip_system_gpio_analog_value_data
 {
-    uint8_t                                           gpio_id;
-    float                                             value;
+    uint8_t gpio_id;
+    float value;
+    
 };
-size_t insert_mip_system_gpio_analog_value_data(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_gpio_analog_value_data* self);
-size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_gpio_analog_value_data* self);
+void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self);
+void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, struct mip_system_gpio_analog_value_data* self);
 
 ///@}
 ///
@@ -153,83 +155,9 @@ size_t extract_mip_system_gpio_analog_value_data(const uint8_t* buffer, size_t b
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-
 #ifdef __cplusplus
-} // extern "C"
 } // namespace C
-namespace SystemData {
-
-static const uint8_t DESCRIPTOR_SET = MIP_SYSTEM_DATA_DESC_SET;
-
-
-struct BuiltInTest : C::mip_system_built_in_test_data
-{
-    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_BUILT_IN_TEST;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_system_built_in_test_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_system_built_in_test_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct TimeSyncStatus : C::mip_system_time_sync_status_data
-{
-    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_TIME_SYNC_STATUS;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_system_time_sync_status_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_system_time_sync_status_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct GpioState : C::mip_system_gpio_state_data
-{
-    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_STATE;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_system_gpio_state_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_system_gpio_state_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-struct GpioAnalogValue : C::mip_system_gpio_analog_value_data
-{
-    static const uint8_t descriptorSet = MIP_SYSTEM_DATA_DESC_SET;
-    static const uint8_t fieldDescriptor = MIP_DATA_DESC_SYSTEM_GPIO_ANALOG_VALUE;
-    
-    size_t insert(uint8_t* buffer, size_t bufferSize, size_t offset=0) const
-    {
-        return C::insert_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, this);
-    }
-    size_t extract(const uint8_t* buffer, size_t bufferSize, size_t offset=0)
-    {
-        return C::extract_mip_system_gpio_analog_value_data(buffer, bufferSize, offset, this);
-    }
-};
-
-
-
-} // namespace SystemData
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

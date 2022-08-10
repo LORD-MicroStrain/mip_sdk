@@ -9,8 +9,12 @@
 
 #ifdef __cplusplus
 namespace mscl {
+namespace C {
 extern "C" {
+
 #endif // __cplusplus
+struct mip_interface;
+struct mip_serializer;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,36 +26,17 @@ extern "C" {
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-size_t insert_mip_system_comm_mode_command(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_comm_mode_command* self)
+void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, const struct mip_system_comm_mode_command* self)
 {
-    offset = insert_u8(buffer, bufferSize, offset, self->mode);
-    
-    return offset;
+    insert_mip_function_selector(serializer, self->function);
+    insert_u8(serializer, self->mode);
 }
 
-size_t extract_mip_system_comm_mode_command(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_comm_mode_command* self)
+void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self)
 {
-    offset = extract_u8(buffer, bufferSize, offset, &self->mode);
-    
-    return offset;
+    extract_mip_function_selector(serializer, &self->function);
+    extract_u8(serializer, &self->mode);
 }
-
-
-size_t insert_mip_system_comm_mode_response(uint8_t* buffer, size_t bufferSize, size_t offset, const struct mip_system_comm_mode_response* self)
-{
-    offset = insert_u8(buffer, bufferSize, offset, self->mode);
-    
-    return offset;
-}
-
-size_t extract_mip_system_comm_mode_response(const uint8_t* buffer, size_t bufferSize, size_t offset, struct mip_system_comm_mode_response* self)
-{
-    offset = extract_u8(buffer, bufferSize, offset, &self->mode);
-    
-    return offset;
-}
-
 
 /// @brief Advanced specialized communication modes.
 /// 
@@ -68,13 +53,15 @@ size_t extract_mip_system_comm_mode_response(const uint8_t* buffer, size_t buffe
 /// 
 mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
 {
+    struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_WRITE);
-    cmdUsed = insert_u8(buffer, sizeof(buffer), cmdUsed, mode);
-    assert(cmdUsed <= sizeof(buffer));
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    insert_u8(&serializer, mode);
+    assert(mip_serializer_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset);
 }
 
 /// @brief Advanced specialized communication modes.
@@ -92,20 +79,24 @@ mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t 
 /// 
 mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode)
 {
+    struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_READ);
-    assert(cmdUsed <= sizeof(buffer));
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    assert(mip_serializer_ok(&serializer));
     
     uint8_t responseLength;
-    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    mip_cmd_result result_local = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result_local == MIP_ACK_OK )
     {
-        size_t responseUsed = 0;
-        responseUsed = extract_u8(buffer, sizeof(buffer), responseUsed, mode);
+        struct mip_serializer serializer;
+        mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
         
-        if( responseUsed != responseLength )
+        extract_u8(&serializer, mode);
+        
+        if( !mip_serializer_ok(&serializer) )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -125,16 +116,20 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
 /// 
 mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
 {
+    struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    size_t cmdUsed = 0;
-    cmdUsed = insert_mip_function_selector(buffer, sizeof(buffer), cmdUsed, MIP_FUNCTION_RESET);
-    assert(cmdUsed <= sizeof(buffer));
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, cmdUsed);
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    assert(mip_serializer_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset);
 }
 
 
 #ifdef __cplusplus
-} // extern "C"
+} // namespace C
 } // namespace mscl
+} // extern "C"
 #endif // __cplusplus
+

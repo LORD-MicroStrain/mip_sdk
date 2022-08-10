@@ -63,10 +63,11 @@ extern "C" {
 ///
 struct mip_interface
 {
-    struct mip_parser     _parser;         ///<@private MIP Parser for incoming MIP packets.
-    struct mip_cmd_queue  _queue;          ///<@private Queue for checking command replies.
-    struct mip_dispatcher _dispatcher;     ///<@private Dispatcher for data callbacks.
-    unsigned int          _max_update_pkts;  ///<@private Max number of MIP packets to parse at once.
+    struct mip_parser     _parser;          ///<@private MIP Parser for incoming MIP packets.
+    struct mip_cmd_queue  _queue;           ///<@private Queue for checking command replies.
+    struct mip_dispatcher _dispatcher;      ///<@private Dispatcher for data callbacks.
+    unsigned int          _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
+    void*                 _user_pointer;    ///<@private Optional user-specified data pointer.
 };
 
 
@@ -105,9 +106,11 @@ void mip_interface_register_field_callback(struct mip_interface* device, struct 
 // Accessors
 //
 
+void mip_interface_set_user_pointer(struct mip_interface* device, void* pointer);
 void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsigned int max_packets);
 unsigned int mip_interface_max_packets_per_update(const struct mip_interface* device);
 
+void* mip_interface_user_pointer(const struct mip_interface* device);
 struct mip_parser*    mip_interface_parser(struct mip_interface* device);
 struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 

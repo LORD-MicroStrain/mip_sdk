@@ -139,7 +139,7 @@ remaining_count mip_parser_parse(struct mip_parser* parser, const uint8_t* input
                 // Pull more data from the input buffer if possible.
                 ByteRing_copyFromAndUpdate(&parser->_ring, &input_buffer, &input_count);
 
-                return -input_count;
+                return -(remaining_count)input_count;
             }
         }
 
@@ -149,7 +149,7 @@ remaining_count mip_parser_parse(struct mip_parser* parser, const uint8_t* input
 
     } while( input_count );
 
-    return -input_count;
+    return -(remaining_count)input_count;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

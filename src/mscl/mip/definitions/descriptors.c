@@ -126,32 +126,29 @@ bool is_reserved_descriptor(uint8_t field_descriptor)
 
 
 
-size_t insert_mip_function_selector(uint8_t* buffer, size_t buffer_size, size_t offset, enum mip_function_selector self)
+void insert_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector self)
 {
-    return insert_u8(buffer, buffer_size, offset, self);
+    return insert_u8(serializer, self);
 }
 
-size_t extract_mip_function_selector(const uint8_t* buffer, size_t buffer_size, size_t offset, enum mip_function_selector* self)
+void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector* self)
 {
     uint8_t tmp;
-    offset = extract_u8(buffer, buffer_size, offset, &tmp);
+    extract_u8(serializer, &tmp);
     *self = tmp;
-    return offset;
 }
 
 
-size_t insert_mip_descriptor_rate(uint8_t* buffer, size_t buffer_size, size_t offset, const struct mip_descriptor_rate* self)
+void insert_mip_descriptor_rate(struct mip_serializer* serializer, const struct mip_descriptor_rate* self)
 {
-    offset = insert_u8(buffer, buffer_size, offset, self->descriptor);
-    offset = insert_u16(buffer, buffer_size, offset, self->decimation);
-    return offset;
+    insert_u8(serializer, self->descriptor);
+    insert_u16(serializer, self->decimation);
 }
 
-size_t extract_mip_descriptor_rate(const uint8_t* buffer, size_t buffer_size, size_t offset, struct mip_descriptor_rate* self)
+void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_descriptor_rate* self)
 {
-    offset = extract_u8(buffer, buffer_size, offset, &self->descriptor);
-    offset = extract_u16(buffer, buffer_size, offset, &self->decimation);
-    return offset;
+    extract_u8(serializer, &self->descriptor);
+    extract_u16(serializer, &self->decimation);
 }
 
 
