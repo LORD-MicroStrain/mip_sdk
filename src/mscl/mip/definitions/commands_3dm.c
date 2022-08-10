@@ -2967,11 +2967,11 @@ void insert_mip_3dm_event_trigger_command(struct mip_serializer* serializer, con
     insert_u8(serializer, self->instance);
     insert_mip_3dm_event_trigger_command_type(serializer, self->type);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
-        insert_mip_3dm_event_trigger_command_gpio_params(serializer, &self->gpio);
+        insert_mip_3dm_event_trigger_command_gpio_params(serializer, &self->parameters.gpio);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
-        insert_mip_3dm_event_trigger_command_threshold_params(serializer, &self->threshold);
+        insert_mip_3dm_event_trigger_command_threshold_params(serializer, &self->parameters.threshold);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
-        insert_mip_3dm_event_trigger_command_combination_params(serializer, &self->combination);
+        insert_mip_3dm_event_trigger_command_combination_params(serializer, &self->parameters.combination);
 }
 
 void extract_mip_3dm_event_trigger_command(struct mip_serializer* serializer, struct mip_3dm_event_trigger_command* self)
@@ -2980,11 +2980,11 @@ void extract_mip_3dm_event_trigger_command(struct mip_serializer* serializer, st
     extract_u8(serializer, &self->instance);
     extract_mip_3dm_event_trigger_command_type(serializer, &self->type);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
-        extract_mip_3dm_event_trigger_command_gpio_params(serializer, &self->gpio);
+        extract_mip_3dm_event_trigger_command_gpio_params(serializer, &self->parameters.gpio);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
-        extract_mip_3dm_event_trigger_command_threshold_params(serializer, &self->threshold);
+        extract_mip_3dm_event_trigger_command_threshold_params(serializer, &self->parameters.threshold);
     if( self->type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
-        extract_mip_3dm_event_trigger_command_combination_params(serializer, &self->combination);
+        extract_mip_3dm_event_trigger_command_combination_params(serializer, &self->parameters.combination);
 }
 
 void insert_mip_3dm_event_trigger_command_gpio_params(struct mip_serializer* serializer, const struct mip_3dm_event_trigger_command_gpio_params* self)
@@ -3082,11 +3082,11 @@ void extract_mip_3dm_event_trigger_command_type(struct mip_serializer* serialize
 /// 
 /// @param instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param type Type of trigger to configure.
-/// @param  
+/// @param parameters 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination)
+mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const union mip_3dm_event_trigger_command_parameters* parameters)
 {
     struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3095,6 +3095,12 @@ mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     insert_u8(&serializer, instance);
     insert_mip_3dm_event_trigger_command_type(&serializer, type);
+    if( type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
+        insert_mip_3dm_event_trigger_command_gpio_params(&serializer, &parameters->gpio);
+    if( type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
+        insert_mip_3dm_event_trigger_command_threshold_params(&serializer, &parameters->threshold);
+    if( type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
+        insert_mip_3dm_event_trigger_command_combination_params(&serializer, &parameters->combination);
     assert(mip_serializer_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
@@ -3105,11 +3111,11 @@ mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t
 /// @param instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] instance Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] type Type of trigger to configure.
-/// @param[out]  
+/// @param[out] parameters 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, void* gpio_threshold_combination)
+mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, union mip_3dm_event_trigger_command_parameters* parameters)
 {
     struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3129,6 +3135,12 @@ mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t 
         
         extract_u8(&serializer, &instance);
         extract_mip_3dm_event_trigger_command_type(&serializer, type);
+        if( *type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_GPIO )
+            extract_mip_3dm_event_trigger_command_gpio_params(&serializer, &parameters->gpio);
+        if( *type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD )
+            extract_mip_3dm_event_trigger_command_threshold_params(&serializer, &parameters->threshold);
+        if( *type == MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION )
+            extract_mip_3dm_event_trigger_command_combination_params(&serializer, &parameters->combination);
         
         if( !mip_serializer_ok(&serializer) )
             result_local = MIP_STATUS_ERROR;
@@ -3200,9 +3212,9 @@ void insert_mip_3dm_event_action_command(struct mip_serializer* serializer, cons
     insert_u8(serializer, self->trigger);
     insert_mip_3dm_event_action_command_type(serializer, self->type);
     if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
-        insert_mip_3dm_event_action_command_gpio_params(serializer, &self->gpio);
+        insert_mip_3dm_event_action_command_gpio_params(serializer, &self->parameters.gpio);
     if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
-        insert_mip_3dm_event_action_command_message_params(serializer, &self->message);
+        insert_mip_3dm_event_action_command_message_params(serializer, &self->parameters.message);
 }
 
 void extract_mip_3dm_event_action_command(struct mip_serializer* serializer, struct mip_3dm_event_action_command* self)
@@ -3212,9 +3224,9 @@ void extract_mip_3dm_event_action_command(struct mip_serializer* serializer, str
     extract_u8(serializer, &self->trigger);
     extract_mip_3dm_event_action_command_type(serializer, &self->type);
     if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
-        extract_mip_3dm_event_action_command_gpio_params(serializer, &self->gpio);
+        extract_mip_3dm_event_action_command_gpio_params(serializer, &self->parameters.gpio);
     if( self->type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
-        extract_mip_3dm_event_action_command_message_params(serializer, &self->message);
+        extract_mip_3dm_event_action_command_message_params(serializer, &self->parameters.message);
 }
 
 void insert_mip_3dm_event_action_command_gpio_params(struct mip_serializer* serializer, const struct mip_3dm_event_action_command_gpio_params* self)
@@ -3274,11 +3286,11 @@ void extract_mip_3dm_event_action_command_type(struct mip_serializer* serializer
 /// @param instance Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param trigger Trigger ID number.
 /// @param type Type of action to configure.
-/// @param  
+/// @param parameters 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const void* gpio_message)
+mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const union mip_3dm_event_action_command_parameters* parameters)
 {
     struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3288,6 +3300,10 @@ mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t 
     insert_u8(&serializer, instance);
     insert_u8(&serializer, trigger);
     insert_mip_3dm_event_action_command_type(&serializer, type);
+    if( type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
+        insert_mip_3dm_event_action_command_gpio_params(&serializer, &parameters->gpio);
+    if( type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
+        insert_mip_3dm_event_action_command_message_params(&serializer, &parameters->message);
     assert(mip_serializer_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset);
@@ -3299,11 +3315,11 @@ mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t 
 /// @param[out] instance Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
 /// @param[out] trigger Trigger ID number.
 /// @param[out] type Type of action to configure.
-/// @param[out]  
+/// @param[out] parameters 
 /// 
 /// @returns mip_cmd_result
 /// 
-mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, void* gpio_message)
+mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, union mip_3dm_event_action_command_parameters* parameters)
 {
     struct mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3324,6 +3340,10 @@ mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t i
         extract_u8(&serializer, &instance);
         extract_u8(&serializer, trigger);
         extract_mip_3dm_event_action_command_type(&serializer, type);
+        if( *type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_GPIO )
+            extract_mip_3dm_event_action_command_gpio_params(&serializer, &parameters->gpio);
+        if( *type == MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE )
+            extract_mip_3dm_event_action_command_message_params(&serializer, &parameters->message);
         
         if( !mip_serializer_ok(&serializer) )
             result_local = MIP_STATUS_ERROR;

@@ -1358,17 +1358,19 @@ enum mip_3dm_event_trigger_command_type
     MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_COMBINATION = 3,  ///<  Logical combination of two or more triggers. See CombinationParams.
 };
 
+union mip_3dm_event_trigger_command_parameters
+{
+    struct mip_3dm_event_trigger_command_gpio_params gpio;
+    struct mip_3dm_event_trigger_command_threshold_params threshold;
+    struct mip_3dm_event_trigger_command_combination_params combination;
+};
+
 struct mip_3dm_event_trigger_command
 {
     enum mip_function_selector function;
     uint8_t instance;
     enum mip_3dm_event_trigger_command_type type;
-    union
-    {
-        struct mip_3dm_event_trigger_command_gpio_params gpio;
-        struct mip_3dm_event_trigger_command_threshold_params threshold;
-        struct mip_3dm_event_trigger_command_combination_params combination;
-    };
+    union mip_3dm_event_trigger_command_parameters parameters;
     
 };
 void insert_mip_3dm_event_trigger_command(struct mip_serializer* serializer, const struct mip_3dm_event_trigger_command* self);
@@ -1396,19 +1398,14 @@ struct mip_3dm_event_trigger_response
 {
     uint8_t instance;
     enum mip_3dm_event_trigger_command_type type;
-    union
-    {
-        struct mip_3dm_event_trigger_command_gpio_params gpio;
-        struct mip_3dm_event_trigger_command_threshold_params threshold;
-        struct mip_3dm_event_trigger_command_combination_params combination;
-    };
+    union mip_3dm_event_trigger_command_parameters parameters;
     
 };
 void insert_mip_3dm_event_trigger_response(struct mip_serializer* serializer, const struct mip_3dm_event_trigger_response* self);
 void extract_mip_3dm_event_trigger_response(struct mip_serializer* serializer, struct mip_3dm_event_trigger_response* self);
 
-mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const void* gpio_threshold_combination);
-mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, void* gpio_threshold_combination);
+mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type type, const union mip_3dm_event_trigger_command_parameters* parameters);
+mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type, union mip_3dm_event_trigger_command_parameters* parameters);
 mip_cmd_result mip_3dm_save_event_trigger(struct mip_interface* device, uint8_t instance);
 mip_cmd_result mip_3dm_load_event_trigger(struct mip_interface* device, uint8_t instance);
 mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, uint8_t instance);
@@ -1451,17 +1448,19 @@ enum mip_3dm_event_action_command_type
     MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE = 2,  ///<  Output a data packet. See MessageParameters.
 };
 
+union mip_3dm_event_action_command_parameters
+{
+    struct mip_3dm_event_action_command_gpio_params gpio;
+    struct mip_3dm_event_action_command_message_params message;
+};
+
 struct mip_3dm_event_action_command
 {
     enum mip_function_selector function;
     uint8_t instance;
     uint8_t trigger;
     enum mip_3dm_event_action_command_type type;
-    union
-    {
-        struct mip_3dm_event_action_command_gpio_params gpio;
-        struct mip_3dm_event_action_command_message_params message;
-    };
+    union mip_3dm_event_action_command_parameters parameters;
     
 };
 void insert_mip_3dm_event_action_command(struct mip_serializer* serializer, const struct mip_3dm_event_action_command* self);
@@ -1484,18 +1483,14 @@ struct mip_3dm_event_action_response
     uint8_t instance;
     uint8_t trigger;
     enum mip_3dm_event_action_command_type type;
-    union
-    {
-        struct mip_3dm_event_action_command_gpio_params gpio;
-        struct mip_3dm_event_action_command_message_params message;
-    };
+    union mip_3dm_event_action_command_parameters parameters;
     
 };
 void insert_mip_3dm_event_action_response(struct mip_serializer* serializer, const struct mip_3dm_event_action_response* self);
 void extract_mip_3dm_event_action_response(struct mip_serializer* serializer, struct mip_3dm_event_action_response* self);
 
-mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const void* gpio_message);
-mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, void* gpio_message);
+mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uint8_t instance, uint8_t trigger, enum mip_3dm_event_action_command_type type, const union mip_3dm_event_action_command_parameters* parameters);
+mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger, enum mip_3dm_event_action_command_type* type, union mip_3dm_event_action_command_parameters* parameters);
 mip_cmd_result mip_3dm_save_event_action(struct mip_interface* device, uint8_t instance);
 mip_cmd_result mip_3dm_load_event_action(struct mip_interface* device, uint8_t instance);
 mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, uint8_t instance);

@@ -1650,15 +1650,17 @@ struct EventTrigger
         COMBINATION = 3,  ///<  Logical combination of two or more triggers. See CombinationParams.
     };
     
-    MipFunctionSelector function;
-    uint8_t instance;
-    Type type;
-    union
+    union Parameters
     {
         GpioParams gpio;
         ThresholdParams threshold;
         CombinationParams combination;
     };
+    
+    MipFunctionSelector function;
+    uint8_t instance;
+    Type type;
+    Parameters parameters;
     
     struct Response
     {
@@ -1667,12 +1669,7 @@ struct EventTrigger
         
         uint8_t instance;
         Type type;
-        union
-        {
-            GpioParams gpio;
-            ThresholdParams threshold;
-            CombinationParams combination;
-        };
+        Parameters parameters;
         
     };
 };
@@ -1691,8 +1688,8 @@ void extract(MipSerializer& serializer, EventTrigger::CombinationParams& self);
 void insert(MipSerializer& serializer, const EventTrigger::Response& self);
 void extract(MipSerializer& serializer, EventTrigger::Response& self);
 
-MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const void* gpio_threshold_combination);
-MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, void* gpio_threshold_combination);
+MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
+MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, EventTrigger::Parameters& parameters);
 MipCmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance);
 MipCmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance);
 MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
@@ -1746,15 +1743,17 @@ struct EventAction
         MESSAGE = 2,  ///<  Output a data packet. See MessageParameters.
     };
     
-    MipFunctionSelector function;
-    uint8_t instance;
-    uint8_t trigger;
-    Type type;
-    union
+    union Parameters
     {
         GpioParams gpio;
         MessageParams message;
     };
+    
+    MipFunctionSelector function;
+    uint8_t instance;
+    uint8_t trigger;
+    Type type;
+    Parameters parameters;
     
     struct Response
     {
@@ -1764,11 +1763,7 @@ struct EventAction
         uint8_t instance;
         uint8_t trigger;
         Type type;
-        union
-        {
-            GpioParams gpio;
-            MessageParams message;
-        };
+        Parameters parameters;
         
     };
 };
@@ -1784,8 +1779,8 @@ void extract(MipSerializer& serializer, EventAction::MessageParams& self);
 void insert(MipSerializer& serializer, const EventAction::Response& self);
 void extract(MipSerializer& serializer, EventAction::Response& self);
 
-MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const void* gpio_message);
-MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, void* gpio_message);
+MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
+MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, EventAction::Parameters& parameters);
 MipCmdResult saveEventAction(C::mip_interface& device, uint8_t instance);
 MipCmdResult loadEventAction(C::mip_interface& device, uint8_t instance);
 MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
