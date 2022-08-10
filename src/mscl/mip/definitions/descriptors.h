@@ -81,20 +81,85 @@ struct MipCompositeDescriptor
 } // extern "C"
 } // namespace "C"
 
-template<typename Derived, typename BaseType>
+template<typename DerivedT>
 struct Bitfield
 {
-    BaseType value;
-
-    operator BaseType() const { return value; }
-    Bitfield& operator|=(Bitfield other) { value |= other.value; return *this; }
-    Bitfield& operator&=(Bitfield other) { value &= other.value; return *this; }
+// public:
+//     typedef DerivedT Derived;
+//
+//     auto& _value() { return static_cast<Derived*>(this)->value; }
+//
+//     template<typename Enum>
+//     static void _check_type() {
+//         static_assert( std::is_same< Enum, typename Derived::_enumType >::value, "Bitflag is of the wrong type" );
+//     }
+//
+// public:
+//     // Explicit conversion from an integral type is allowed.
+//     template<typename T>
+//     void assign(T base) {
+//         static_assert(std::is_integral<T>::value, "Must assign an integer");
+//         _value() = base;
+//     }
+//
+//     // No implicit conversion from int, this would break type safety.
+//     //Bitfield& operator=(BaseType base) { static_cast<Derived*>(this)->value = base; return *this; }
+//     template<typename D=Derived>
+//     Bitfield& operator=(typename D::_enumType other) { _check_type<decltype(other)>(); _value() = other; }
+//
+//     // Implicit conversion to an integral type is allowed (_enumType is not available, so use the biggest available).
+//     operator uint64_t() const { return _value(); }
+//
+//     // Combining bit flags
+//     template<typename D=Derived>
+//     Bitfield& operator|=(typename D::_enumType other) { _value() |= other; return *this; }
+//
+//     template<typename D=Derived>
+//     Bitfield& operator&=(typename D::_enumType other) { _value() &= other; return *this; }
 };
-template<class Derived, typename BaseType> Bitfield<Derived,BaseType> operator|(Bitfield<Derived,BaseType> a, Bitfield<Derived,BaseType> b) { return a |= b; }
-template<class Derived, typename BaseType> Bitfield<Derived,BaseType> operator&(Bitfield<Derived,BaseType> a, Bitfield<Derived,BaseType> b) { return a &= b; }
 
-template<class Derived, typename BaseType> void extract(MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return extract(serializer, bitfield.value); }
-template<class Derived, typename BaseType> void insert (MipSerializer& serializer, Bitfield<Derived,BaseType> bitfield) { return insert (serializer, bitfield.value); }
+template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+
+// template<class Derived>
+// typename std::enable_if< std::is_base_of<Bitfield<Derived>,Derived>::value, void >::type
+// /*void*/ extract(MipSerializer& serializer, Derived bitfield)
+// {
+//     typedef typename Derived::_enumType Enum;
+//     typedef typename std::underlying_type<Enum>::type Bits;
+//     Bits tmp;
+//     extract(serializer, tmp);
+//     bitfield = tmp;
+// }
+
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
+// /*Bf&*/ operator|(Bf& a, Bf b) { return a.value |= b.value; }
+//
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
+// /*Bf&*/ operator&(Bf& a, Bf b) { return a.value &= b.value; }
+//
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
+// /*Bf*/ operator|(Bf a, Bf b) { return a.value | b.value; }
+//
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield,Bf>::value, Bf>::type
+// /*Bf*/ operator&(Bf a, Bf b) { return a.value & b.value; }
+//
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield, Bf>::value, void>::type
+// /*void*/ extract(MipSerializer& serializer, Bf bitfield)
+// {
+//     return extract(serializer, bitfield.value);
+// }
+// template<class Bf>
+// typename std::enable_if<std::is_base_of<Bitfield, Bf>::value, void>::type
+// /*void*/ insert(MipSerializer& serializer, Bf bitfield)
+// {
+//     return insert(serializer, bitfield.value);
+// }
 
 
 struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
@@ -126,25 +191,6 @@ inline void extract(MipSerializer& serializer, MipFunctionSelector& self) { retu
 
 inline void insert(MipSerializer& serializer, const MipDescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
 inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
-
-// ////////////////////////////////////////////////////////////////////////////////
-// ///@brief Type traits struct for obtaining descriptors, etc. from field structs.
-// ///
-// /// This struct is specialized for each defined MIP field.
-// ///
-// template<class Field>
-// struct MipFieldInfo
-// {
-//     static const uint8_t descriptorSet   = MIP_INVALID_DESCRIPTOR_SET;
-//     static const uint8_t fieldDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;
-//
-//     static_assert(!std::is_same<Field,Field>::value, "Missing specialization - did you forget to include the definition header?");
-//
-//     using Tuple = std::tuple<>;
-//
-//     static const bool responseDescriptor = MIP_INVALID_FIELD_DESCRIPTOR;  // No response by default
-//     using Response = void;
-// };
 
 } // namespace mscl
 
