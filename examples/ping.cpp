@@ -62,7 +62,7 @@ int main(int argc, const char* argv[])
 
         uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
-        mip::MipPacket packet(buffer, sizeof(buffer), mip::MIP_BASE_COMMAND_DESC_SET);
+        mip::Packet packet(buffer, sizeof(buffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
         uint8_t* payload;
         mip::RemainingCount available = packet.allocField(mip::MIP_CMD_DESC_BASE_PING, 0, &payload);
@@ -107,7 +107,7 @@ int main(int argc, const char* argv[])
 
         uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
 
-        mip::MipPacket packet(packetBuffer, sizeof(packetBuffer), mip::MIP_BASE_COMMAND_DESC_SET);
+        mip::Packet packet(packetBuffer, sizeof(packetBuffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
         packet.addField(mip::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, NULL, 0);
         packet.finalize();
@@ -243,7 +243,7 @@ int main(int argc, const char* argv[])
 // {
 //     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 //
-//     struct C::MipPacket packet;
+//     struct C::Packet packet;
 //     MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);
 //
 //     uint8_t* payload;

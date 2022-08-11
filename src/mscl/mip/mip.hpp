@@ -97,19 +97,19 @@ public:
 /// for(MipField field : packet) { ... }
 ///@endcode
 ///
-class MipPacket : public C::mip_packet
+class Packet : public C::mip_packet
 {
     class FieldIterator;
 
 public:
     ///@copydoc mip_packet_create
-    MipPacket(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
+    Packet(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip_packet_from_buffer
-    MipPacket(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
-    /// Constructs a C++ %MipPacket class from the base C object.
-    MipPacket(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
-    /// Constructs a C++ %MipPacket class from the base C object.
-    MipPacket(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
+    Packet(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
+    /// Constructs a C++ %Packet class from the base C object.
+    Packet(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
+    /// Constructs a C++ %Packet class from the base C object.
+    Packet(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
 
     uint8_t      descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip_packet_descriptor_set
     PacketLength totalLength()   const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip_packet_total_length
@@ -166,9 +166,9 @@ public:
     }
 
     template<class Field>
-    static MipPacket createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::fieldDescriptor)
+    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::fieldDescriptor)
     {
-        MipPacket packet(buffer, bufferSize, Field::descriptorSet);
+        Packet packet(buffer, bufferSize, Field::descriptorSet);
         packet.addField<Field>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -207,17 +207,17 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP parser.
 ///
-class MipParser : public C::mip_parser
+class Parser : public C::mip_parser
 {
 public:
     ///@copydoc mip_parser_init
-    MipParser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip_parser_init
-    MipParser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const MipPacket*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const Packet*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
-    MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
 
-    template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
+    template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
     void setCallback(T& object);
 
     ///@copydoc mip_parser_reset
@@ -240,10 +240,10 @@ public:
 ///@code{.cpp}
 /// struct MyClass
 /// {
-///     void handlePacket(const MipPacket& packet, Timeout timeout);
+///     void handlePacket(const Packet& packet, Timeout timeout);
 /// };
 ///
-/// MipParser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
+/// Parser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
 ///@endcode
 ///
 ///@tparam T Class type containing the member function to be called.
@@ -261,12 +261,12 @@ public:
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
-void MipParser::setCallback(T& object)
+template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
+void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet* pkt, Timestamp timestamp)->bool
     {
-        return (static_cast<T*>(obj)->*Callback)(MipPacket(pkt), timestamp);
+        return (static_cast<T*>(obj)->*Callback)(Packet(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);
@@ -293,7 +293,7 @@ void MipParser::setCallback(T& object)
 ///       function may also throw an exception instead of returning false.
 ///
 ///@param maxPackets
-///       Maximum number of packets to parse, just like for MipParser::parse().
+///       Maximum number of packets to parse, just like for Parser::parse().
 ///
 ///@return Same as the return value of reader.
 ///

@@ -13,7 +13,7 @@
 #include <thread>
 
 
-void handlePacket(void*, const mip::MipPacket& packet, mip::Timestamp timestamp)
+void handlePacket(void*, const mip::Packet& packet, mip::Timestamp timestamp)
 {
     // if(packet.descriptorSet() != mip::MIP_SENSOR_DATA_DESC_SET)
     //     return;
