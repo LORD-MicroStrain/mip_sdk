@@ -23,7 +23,7 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const MipPacket* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const Packet* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
         bool error = false;
@@ -71,14 +71,14 @@ int main(int argc, const char* argv[])
         return true;
     };
 
-    MipParser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    Parser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
 
 
     const unsigned int NUM_ITERATIONS = 100;
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        MipPacket packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
