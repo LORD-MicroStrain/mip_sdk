@@ -36,17 +36,17 @@ template<class Field> struct MipFieldInfo;
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP field.
 ///
-class MipField : public C::mip_field
+class Field : public C::mip_field
 {
 public:
     /// Construct an empty MIP field.
-    MipField() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
+    Field() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
     ///@copydoc mip_field_init()
-    MipField(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
+    Field(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
     ///@copydoc mip_field_from_header_ptr()
-    MipField(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set) { *this = C::mip_field_from_header_ptr(header, total_length, descriptor_set); }
-    /// Creates a %MipField class from the mip_field C struct.
-    MipField(const C::mip_field& other) { std::memcpy(static_cast<C::mip_field*>(this), &other, sizeof(C::mip_field)); }
+    Field(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set) { *this = C::mip_field_from_header_ptr(header, total_length, descriptor_set); }
+    /// Creates a %Field class from the mip_field C struct.
+    Field(const C::mip_field& other) { std::memcpy(static_cast<C::mip_field*>(this), &other, sizeof(C::mip_field)); }
 
     ///@copydoc mip_field_descriptor_set
     uint8_t descriptorSet() const { return C::mip_field_descriptor_set(this); }
@@ -66,7 +66,7 @@ public:
     bool isValid() const { return C::mip_field_is_valid(this); }
 
     ///@copydoc mip_field_next_after
-    MipField nextAfter() const { return C::mip_field_next_after(this); }
+    Field nextAfter() const { return C::mip_field_next_after(this); }
     ///@copydoc mip_field_next
     bool next() { return C::mip_field_next(this); }
 
@@ -94,7 +94,7 @@ public:
 /// Fields may be iterated over using the C-style method or with a range-based
 /// for loop:
 ///@code{.cpp}
-/// for(MipField field : packet) { ... }
+/// for(Field field : packet) { ... }
 ///@endcode
 ///
 class Packet : public C::mip_packet
@@ -142,7 +142,7 @@ public:
     void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
     /// Returns the first field in the packet.
-    MipField firstField() const { return MipField(C::mip_field_first_from_packet(this)); }
+    Field firstField() const { return Field(C::mip_field_first_from_packet(this)); }
 
     /// Returns a forward iterator to the first field in the packet.
     ///@internal
@@ -153,7 +153,7 @@ public:
 #if __cpp_range_based_for >= 201603
     nullptr_t     end() const { return nullptr; }
 #else
-    FieldIterator end() const { return MipField(); }
+    FieldIterator end() const { return Field(); }
 #endif
 
     template<class Field>
@@ -180,7 +180,7 @@ private:
     class FieldIterator
     {
     public:
-        FieldIterator(const MipField& first) : mField(first) {}
+        FieldIterator(const Field& first) : mField(first) {}
         FieldIterator() {}
 
         bool operator==(const FieldIterator& other) const {
@@ -194,11 +194,11 @@ private:
         bool operator==(std::nullptr_t) const { return !mField.isValid(); }
         bool operator!=(std::nullptr_t) const { return mField.isValid(); }
 
-        const MipField& operator*() const { return mField; }
+        const Field& operator*() const { return mField; }
 
         FieldIterator& operator++() { mField.next(); return *this; }
     private:
-        MipField mField;
+        Field mField;
     };
 
 };
