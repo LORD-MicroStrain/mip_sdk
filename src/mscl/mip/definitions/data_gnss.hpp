@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -209,8 +209,8 @@ struct PosLlh
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PosLlh& self);
-void extract(MipSerializer& serializer, PosLlh& self);
+void insert(Serializer& serializer, const PosLlh& self);
+void extract(Serializer& serializer, PosLlh& self);
 
 ///@}
 ///
@@ -249,8 +249,8 @@ struct PosEcef
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PosEcef& self);
-void extract(MipSerializer& serializer, PosEcef& self);
+void insert(Serializer& serializer, const PosEcef& self);
+void extract(Serializer& serializer, PosEcef& self);
 
 ///@}
 ///
@@ -297,8 +297,8 @@ struct VelNed
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelNed& self);
-void extract(MipSerializer& serializer, VelNed& self);
+void insert(Serializer& serializer, const VelNed& self);
+void extract(Serializer& serializer, VelNed& self);
 
 ///@}
 ///
@@ -337,8 +337,8 @@ struct VelEcef
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelEcef& self);
-void extract(MipSerializer& serializer, VelEcef& self);
+void insert(Serializer& serializer, const VelEcef& self);
+void extract(Serializer& serializer, VelEcef& self);
 
 ///@}
 ///
@@ -387,8 +387,8 @@ struct Dop
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Dop& self);
-void extract(MipSerializer& serializer, Dop& self);
+void insert(Serializer& serializer, const Dop& self);
+void extract(Serializer& serializer, Dop& self);
 
 ///@}
 ///
@@ -432,8 +432,8 @@ struct UtcTime
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const UtcTime& self);
-void extract(MipSerializer& serializer, UtcTime& self);
+void insert(Serializer& serializer, const UtcTime& self);
+void extract(Serializer& serializer, UtcTime& self);
 
 ///@}
 ///
@@ -472,8 +472,8 @@ struct GpsTime
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsTime& self);
-void extract(MipSerializer& serializer, GpsTime& self);
+void insert(Serializer& serializer, const GpsTime& self);
+void extract(Serializer& serializer, GpsTime& self);
 
 ///@}
 ///
@@ -514,8 +514,8 @@ struct ClockInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockInfo& self);
-void extract(MipSerializer& serializer, ClockInfo& self);
+void insert(Serializer& serializer, const ClockInfo& self);
+void extract(Serializer& serializer, ClockInfo& self);
 
 ///@}
 ///
@@ -583,8 +583,8 @@ struct FixInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const FixInfo& self);
-void extract(MipSerializer& serializer, FixInfo& self);
+void insert(Serializer& serializer, const FixInfo& self);
+void extract(Serializer& serializer, FixInfo& self);
 
 ///@}
 ///
@@ -649,8 +649,8 @@ struct SvInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SvInfo& self);
-void extract(MipSerializer& serializer, SvInfo& self);
+void insert(Serializer& serializer, const SvInfo& self);
+void extract(Serializer& serializer, SvInfo& self);
 
 ///@}
 ///
@@ -714,8 +714,8 @@ struct HwStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const HwStatus& self);
-void extract(MipSerializer& serializer, HwStatus& self);
+void insert(Serializer& serializer, const HwStatus& self);
+void extract(Serializer& serializer, HwStatus& self);
 
 ///@}
 ///
@@ -770,8 +770,8 @@ struct DgpsInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const DgpsInfo& self);
-void extract(MipSerializer& serializer, DgpsInfo& self);
+void insert(Serializer& serializer, const DgpsInfo& self);
+void extract(Serializer& serializer, DgpsInfo& self);
 
 ///@}
 ///
@@ -816,8 +816,8 @@ struct DgpsChannel
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const DgpsChannel& self);
-void extract(MipSerializer& serializer, DgpsChannel& self);
+void insert(Serializer& serializer, const DgpsChannel& self);
+void extract(Serializer& serializer, DgpsChannel& self);
 
 ///@}
 ///
@@ -862,8 +862,8 @@ struct ClockInfo2
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockInfo2& self);
-void extract(MipSerializer& serializer, ClockInfo2& self);
+void insert(Serializer& serializer, const ClockInfo2& self);
+void extract(Serializer& serializer, ClockInfo2& self);
 
 ///@}
 ///
@@ -899,8 +899,8 @@ struct GpsLeapSeconds
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsLeapSeconds& self);
-void extract(MipSerializer& serializer, GpsLeapSeconds& self);
+void insert(Serializer& serializer, const GpsLeapSeconds& self);
+void extract(Serializer& serializer, GpsLeapSeconds& self);
 
 ///@}
 ///
@@ -965,8 +965,8 @@ struct SbasInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SbasInfo& self);
-void extract(MipSerializer& serializer, SbasInfo& self);
+void insert(Serializer& serializer, const SbasInfo& self);
+void extract(Serializer& serializer, SbasInfo& self);
 
 ///@}
 ///
@@ -1035,8 +1035,8 @@ struct SbasCorrection
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SbasCorrection& self);
-void extract(MipSerializer& serializer, SbasCorrection& self);
+void insert(Serializer& serializer, const SbasCorrection& self);
+void extract(Serializer& serializer, SbasCorrection& self);
 
 ///@}
 ///
@@ -1102,8 +1102,8 @@ struct RfErrorDetection
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const RfErrorDetection& self);
-void extract(MipSerializer& serializer, RfErrorDetection& self);
+void insert(Serializer& serializer, const RfErrorDetection& self);
+void extract(Serializer& serializer, RfErrorDetection& self);
 
 ///@}
 ///
@@ -1175,8 +1175,8 @@ struct BaseStationInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const BaseStationInfo& self);
-void extract(MipSerializer& serializer, BaseStationInfo& self);
+void insert(Serializer& serializer, const BaseStationInfo& self);
+void extract(Serializer& serializer, BaseStationInfo& self);
 
 ///@}
 ///
@@ -1250,8 +1250,8 @@ struct RtkCorrectionsStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const RtkCorrectionsStatus& self);
-void extract(MipSerializer& serializer, RtkCorrectionsStatus& self);
+void insert(Serializer& serializer, const RtkCorrectionsStatus& self);
+void extract(Serializer& serializer, RtkCorrectionsStatus& self);
 
 ///@}
 ///
@@ -1302,8 +1302,8 @@ struct SatelliteStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SatelliteStatus& self);
-void extract(MipSerializer& serializer, SatelliteStatus& self);
+void insert(Serializer& serializer, const SatelliteStatus& self);
+void extract(Serializer& serializer, SatelliteStatus& self);
 
 ///@}
 ///
@@ -1382,8 +1382,8 @@ struct Raw
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Raw& self);
-void extract(MipSerializer& serializer, Raw& self);
+void insert(Serializer& serializer, const Raw& self);
+void extract(Serializer& serializer, Raw& self);
 
 ///@}
 ///
@@ -1453,8 +1453,8 @@ struct GpsEphemeris
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsEphemeris& self);
-void extract(MipSerializer& serializer, GpsEphemeris& self);
+void insert(Serializer& serializer, const GpsEphemeris& self);
+void extract(Serializer& serializer, GpsEphemeris& self);
 
 ///@}
 ///
@@ -1514,8 +1514,8 @@ struct GloEphemeris
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GloEphemeris& self);
-void extract(MipSerializer& serializer, GloEphemeris& self);
+void insert(Serializer& serializer, const GloEphemeris& self);
+void extract(Serializer& serializer, GloEphemeris& self);
 
 ///@}
 ///
@@ -1558,8 +1558,8 @@ struct GpsIonoCorr
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsIonoCorr& self);
-void extract(MipSerializer& serializer, GpsIonoCorr& self);
+void insert(Serializer& serializer, const GpsIonoCorr& self);
+void extract(Serializer& serializer, GpsIonoCorr& self);
 
 ///@}
 ///
@@ -1602,8 +1602,8 @@ struct GalileoIonoCorr
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GalileoIonoCorr& self);
-void extract(MipSerializer& serializer, GalileoIonoCorr& self);
+void insert(Serializer& serializer, const GalileoIonoCorr& self);
+void extract(Serializer& serializer, GalileoIonoCorr& self);
 
 ///@}
 ///

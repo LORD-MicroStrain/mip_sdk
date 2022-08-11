@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -150,13 +150,13 @@ struct GetStatusFlags
         
     };
 };
-void insert(MipSerializer& serializer, const GetStatusFlags& self);
-void extract(MipSerializer& serializer, GetStatusFlags& self);
+void insert(Serializer& serializer, const GetStatusFlags& self);
+void extract(Serializer& serializer, GetStatusFlags& self);
 
-void insert(MipSerializer& serializer, const GetStatusFlags::Response& self);
-void extract(MipSerializer& serializer, GetStatusFlags::Response& self);
+void insert(Serializer& serializer, const GetStatusFlags::Response& self);
+void extract(Serializer& serializer, GetStatusFlags::Response& self);
 
-MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags);
+CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -181,13 +181,13 @@ struct GetImei
         
     };
 };
-void insert(MipSerializer& serializer, const GetImei& self);
-void extract(MipSerializer& serializer, GetImei& self);
+void insert(Serializer& serializer, const GetImei& self);
+void extract(Serializer& serializer, GetImei& self);
 
-void insert(MipSerializer& serializer, const GetImei::Response& self);
-void extract(MipSerializer& serializer, GetImei::Response& self);
+void insert(Serializer& serializer, const GetImei::Response& self);
+void extract(Serializer& serializer, GetImei::Response& self);
 
-MipCmdResult getImei(C::mip_interface& device, char* IMEI);
+CmdResult getImei(C::mip_interface& device, char* IMEI);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -212,13 +212,13 @@ struct GetImsi
         
     };
 };
-void insert(MipSerializer& serializer, const GetImsi& self);
-void extract(MipSerializer& serializer, GetImsi& self);
+void insert(Serializer& serializer, const GetImsi& self);
+void extract(Serializer& serializer, GetImsi& self);
 
-void insert(MipSerializer& serializer, const GetImsi::Response& self);
-void extract(MipSerializer& serializer, GetImsi::Response& self);
+void insert(Serializer& serializer, const GetImsi::Response& self);
+void extract(Serializer& serializer, GetImsi::Response& self);
 
-MipCmdResult getImsi(C::mip_interface& device, char* IMSI);
+CmdResult getImsi(C::mip_interface& device, char* IMSI);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -243,13 +243,13 @@ struct GetIccid
         
     };
 };
-void insert(MipSerializer& serializer, const GetIccid& self);
-void extract(MipSerializer& serializer, GetIccid& self);
+void insert(Serializer& serializer, const GetIccid& self);
+void extract(Serializer& serializer, GetIccid& self);
 
-void insert(MipSerializer& serializer, const GetIccid::Response& self);
-void extract(MipSerializer& serializer, GetIccid::Response& self);
+void insert(Serializer& serializer, const GetIccid::Response& self);
+void extract(Serializer& serializer, GetIccid::Response& self);
 
-MipCmdResult getIccid(C::mip_interface& device, char* ICCID);
+CmdResult getIccid(C::mip_interface& device, char* ICCID);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +274,7 @@ struct ConnectedDeviceType
         GQ7     = 1,  ///<  
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     Type devType;
     
     struct Response
@@ -286,17 +286,17 @@ struct ConnectedDeviceType
         
     };
 };
-void insert(MipSerializer& serializer, const ConnectedDeviceType& self);
-void extract(MipSerializer& serializer, ConnectedDeviceType& self);
+void insert(Serializer& serializer, const ConnectedDeviceType& self);
+void extract(Serializer& serializer, ConnectedDeviceType& self);
 
-void insert(MipSerializer& serializer, const ConnectedDeviceType::Response& self);
-void extract(MipSerializer& serializer, ConnectedDeviceType::Response& self);
+void insert(Serializer& serializer, const ConnectedDeviceType::Response& self);
+void extract(Serializer& serializer, ConnectedDeviceType::Response& self);
 
-MipCmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType);
-MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType);
-MipCmdResult saveConnectedDeviceType(C::mip_interface& device);
-MipCmdResult loadConnectedDeviceType(C::mip_interface& device);
-MipCmdResult defaultConnectedDeviceType(C::mip_interface& device);
+CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType);
+CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType);
+CmdResult saveConnectedDeviceType(C::mip_interface& device);
+CmdResult loadConnectedDeviceType(C::mip_interface& device);
+CmdResult defaultConnectedDeviceType(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -321,13 +321,13 @@ struct GetActCode
         
     };
 };
-void insert(MipSerializer& serializer, const GetActCode& self);
-void extract(MipSerializer& serializer, GetActCode& self);
+void insert(Serializer& serializer, const GetActCode& self);
+void extract(Serializer& serializer, GetActCode& self);
 
-void insert(MipSerializer& serializer, const GetActCode::Response& self);
-void extract(MipSerializer& serializer, GetActCode::Response& self);
+void insert(Serializer& serializer, const GetActCode::Response& self);
+void extract(Serializer& serializer, GetActCode::Response& self);
 
-MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode);
+CmdResult getActCode(C::mip_interface& device, char* ActivationCode);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -352,13 +352,13 @@ struct GetModemFirmwareVersion
         
     };
 };
-void insert(MipSerializer& serializer, const GetModemFirmwareVersion& self);
-void extract(MipSerializer& serializer, GetModemFirmwareVersion& self);
+void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
+void extract(Serializer& serializer, GetModemFirmwareVersion& self);
 
-void insert(MipSerializer& serializer, const GetModemFirmwareVersion::Response& self);
-void extract(MipSerializer& serializer, GetModemFirmwareVersion::Response& self);
+void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self);
+void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self);
 
-MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion);
+CmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -386,13 +386,13 @@ struct GetRssi
         
     };
 };
-void insert(MipSerializer& serializer, const GetRssi& self);
-void extract(MipSerializer& serializer, GetRssi& self);
+void insert(Serializer& serializer, const GetRssi& self);
+void extract(Serializer& serializer, GetRssi& self);
 
-void insert(MipSerializer& serializer, const GetRssi::Response& self);
-void extract(MipSerializer& serializer, GetRssi::Response& self);
+void insert(Serializer& serializer, const GetRssi::Response& self);
+void extract(Serializer& serializer, GetRssi::Response& self);
 
-MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality);
+CmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -440,13 +440,13 @@ struct ServiceStatus
         
     };
 };
-void insert(MipSerializer& serializer, const ServiceStatus& self);
-void extract(MipSerializer& serializer, ServiceStatus& self);
+void insert(Serializer& serializer, const ServiceStatus& self);
+void extract(Serializer& serializer, ServiceStatus& self);
 
-void insert(MipSerializer& serializer, const ServiceStatus::Response& self);
-void extract(MipSerializer& serializer, ServiceStatus::Response& self);
+void insert(Serializer& serializer, const ServiceStatus::Response& self);
+void extract(Serializer& serializer, ServiceStatus::Response& self);
 
-MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime);
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -466,10 +466,10 @@ struct ProdEraseStorage
     MediaSelector media;
     
 };
-void insert(MipSerializer& serializer, const ProdEraseStorage& self);
-void extract(MipSerializer& serializer, ProdEraseStorage& self);
+void insert(Serializer& serializer, const ProdEraseStorage& self);
+void extract(Serializer& serializer, ProdEraseStorage& self);
 
-MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
+CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -491,10 +491,10 @@ struct LedControl
     uint32_t period;
     
 };
-void insert(MipSerializer& serializer, const LedControl& self);
-void extract(MipSerializer& serializer, LedControl& self);
+void insert(Serializer& serializer, const LedControl& self);
+void extract(Serializer& serializer, LedControl& self);
 
-MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period);
+CmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -513,10 +513,10 @@ struct ModemHardReset
     
     
 };
-void insert(MipSerializer& serializer, const ModemHardReset& self);
-void extract(MipSerializer& serializer, ModemHardReset& self);
+void insert(Serializer& serializer, const ModemHardReset& self);
+void extract(Serializer& serializer, ModemHardReset& self);
 
-MipCmdResult modemHardReset(C::mip_interface& device);
+CmdResult modemHardReset(C::mip_interface& device);
 ///@}
 ///
 

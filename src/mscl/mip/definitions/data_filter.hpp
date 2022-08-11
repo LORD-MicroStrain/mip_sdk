@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -244,8 +244,8 @@ struct PositionLlh
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PositionLlh& self);
-void extract(MipSerializer& serializer, PositionLlh& self);
+void insert(Serializer& serializer, const PositionLlh& self);
+void extract(Serializer& serializer, PositionLlh& self);
 
 ///@}
 ///
@@ -268,8 +268,8 @@ struct VelocityNed
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelocityNed& self);
-void extract(MipSerializer& serializer, VelocityNed& self);
+void insert(Serializer& serializer, const VelocityNed& self);
+void extract(Serializer& serializer, VelocityNed& self);
 
 ///@}
 ///
@@ -298,8 +298,8 @@ struct AttitudeQuaternion
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AttitudeQuaternion& self);
-void extract(MipSerializer& serializer, AttitudeQuaternion& self);
+void insert(Serializer& serializer, const AttitudeQuaternion& self);
+void extract(Serializer& serializer, AttitudeQuaternion& self);
 
 ///@}
 ///
@@ -330,8 +330,8 @@ struct AttitudeDcm
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AttitudeDcm& self);
-void extract(MipSerializer& serializer, AttitudeDcm& self);
+void insert(Serializer& serializer, const AttitudeDcm& self);
+void extract(Serializer& serializer, AttitudeDcm& self);
 
 ///@}
 ///
@@ -355,8 +355,8 @@ struct EulerAngles
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EulerAngles& self);
-void extract(MipSerializer& serializer, EulerAngles& self);
+void insert(Serializer& serializer, const EulerAngles& self);
+void extract(Serializer& serializer, EulerAngles& self);
 
 ///@}
 ///
@@ -377,8 +377,8 @@ struct GyroBias
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GyroBias& self);
-void extract(MipSerializer& serializer, GyroBias& self);
+void insert(Serializer& serializer, const GyroBias& self);
+void extract(Serializer& serializer, GyroBias& self);
 
 ///@}
 ///
@@ -399,8 +399,8 @@ struct AccelBias
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AccelBias& self);
-void extract(MipSerializer& serializer, AccelBias& self);
+void insert(Serializer& serializer, const AccelBias& self);
+void extract(Serializer& serializer, AccelBias& self);
 
 ///@}
 ///
@@ -423,8 +423,8 @@ struct PositionLlhUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PositionLlhUncertainty& self);
-void extract(MipSerializer& serializer, PositionLlhUncertainty& self);
+void insert(Serializer& serializer, const PositionLlhUncertainty& self);
+void extract(Serializer& serializer, PositionLlhUncertainty& self);
 
 ///@}
 ///
@@ -447,8 +447,8 @@ struct VelocityNedUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelocityNedUncertainty& self);
-void extract(MipSerializer& serializer, VelocityNedUncertainty& self);
+void insert(Serializer& serializer, const VelocityNedUncertainty& self);
+void extract(Serializer& serializer, VelocityNedUncertainty& self);
 
 ///@}
 ///
@@ -472,8 +472,8 @@ struct EulerAnglesUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EulerAnglesUncertainty& self);
-void extract(MipSerializer& serializer, EulerAnglesUncertainty& self);
+void insert(Serializer& serializer, const EulerAnglesUncertainty& self);
+void extract(Serializer& serializer, EulerAnglesUncertainty& self);
 
 ///@}
 ///
@@ -494,8 +494,8 @@ struct GyroBiasUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GyroBiasUncertainty& self);
-void extract(MipSerializer& serializer, GyroBiasUncertainty& self);
+void insert(Serializer& serializer, const GyroBiasUncertainty& self);
+void extract(Serializer& serializer, GyroBiasUncertainty& self);
 
 ///@}
 ///
@@ -516,8 +516,8 @@ struct AccelBiasUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AccelBiasUncertainty& self);
-void extract(MipSerializer& serializer, AccelBiasUncertainty& self);
+void insert(Serializer& serializer, const AccelBiasUncertainty& self);
+void extract(Serializer& serializer, AccelBiasUncertainty& self);
 
 ///@}
 ///
@@ -545,8 +545,8 @@ struct Timestamp
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Timestamp& self);
-void extract(MipSerializer& serializer, Timestamp& self);
+void insert(Serializer& serializer, const Timestamp& self);
+void extract(Serializer& serializer, Timestamp& self);
 
 ///@}
 ///
@@ -568,8 +568,8 @@ struct Status
     FilterStatusFlags status_flags;
     
 };
-void insert(MipSerializer& serializer, const Status& self);
-void extract(MipSerializer& serializer, Status& self);
+void insert(Serializer& serializer, const Status& self);
+void extract(Serializer& serializer, Status& self);
 
 ///@}
 ///
@@ -591,8 +591,8 @@ struct LinearAccel
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const LinearAccel& self);
-void extract(MipSerializer& serializer, LinearAccel& self);
+void insert(Serializer& serializer, const LinearAccel& self);
+void extract(Serializer& serializer, LinearAccel& self);
 
 ///@}
 ///
@@ -613,8 +613,8 @@ struct GravityVector
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GravityVector& self);
-void extract(MipSerializer& serializer, GravityVector& self);
+void insert(Serializer& serializer, const GravityVector& self);
+void extract(Serializer& serializer, GravityVector& self);
 
 ///@}
 ///
@@ -635,8 +635,8 @@ struct CompAccel
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const CompAccel& self);
-void extract(MipSerializer& serializer, CompAccel& self);
+void insert(Serializer& serializer, const CompAccel& self);
+void extract(Serializer& serializer, CompAccel& self);
 
 ///@}
 ///
@@ -657,8 +657,8 @@ struct CompAngularRate
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const CompAngularRate& self);
-void extract(MipSerializer& serializer, CompAngularRate& self);
+void insert(Serializer& serializer, const CompAngularRate& self);
+void extract(Serializer& serializer, CompAngularRate& self);
 
 ///@}
 ///
@@ -679,8 +679,8 @@ struct QuaternionAttitudeUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const QuaternionAttitudeUncertainty& self);
-void extract(MipSerializer& serializer, QuaternionAttitudeUncertainty& self);
+void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self);
+void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self);
 
 ///@}
 ///
@@ -701,8 +701,8 @@ struct Wgs84GravityMag
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Wgs84GravityMag& self);
-void extract(MipSerializer& serializer, Wgs84GravityMag& self);
+void insert(Serializer& serializer, const Wgs84GravityMag& self);
+void extract(Serializer& serializer, Wgs84GravityMag& self);
 
 ///@}
 ///
@@ -737,8 +737,8 @@ struct HeadingUpdateState
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const HeadingUpdateState& self);
-void extract(MipSerializer& serializer, HeadingUpdateState& self);
+void insert(Serializer& serializer, const HeadingUpdateState& self);
+void extract(Serializer& serializer, HeadingUpdateState& self);
 
 ///@}
 ///
@@ -764,8 +764,8 @@ struct MagneticModel
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagneticModel& self);
-void extract(MipSerializer& serializer, MagneticModel& self);
+void insert(Serializer& serializer, const MagneticModel& self);
+void extract(Serializer& serializer, MagneticModel& self);
 
 ///@}
 ///
@@ -786,8 +786,8 @@ struct AccelScaleFactor
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AccelScaleFactor& self);
-void extract(MipSerializer& serializer, AccelScaleFactor& self);
+void insert(Serializer& serializer, const AccelScaleFactor& self);
+void extract(Serializer& serializer, AccelScaleFactor& self);
 
 ///@}
 ///
@@ -808,8 +808,8 @@ struct AccelScaleFactorUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AccelScaleFactorUncertainty& self);
-void extract(MipSerializer& serializer, AccelScaleFactorUncertainty& self);
+void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self);
+void extract(Serializer& serializer, AccelScaleFactorUncertainty& self);
 
 ///@}
 ///
@@ -830,8 +830,8 @@ struct GyroScaleFactor
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GyroScaleFactor& self);
-void extract(MipSerializer& serializer, GyroScaleFactor& self);
+void insert(Serializer& serializer, const GyroScaleFactor& self);
+void extract(Serializer& serializer, GyroScaleFactor& self);
 
 ///@}
 ///
@@ -852,8 +852,8 @@ struct GyroScaleFactorUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GyroScaleFactorUncertainty& self);
-void extract(MipSerializer& serializer, GyroScaleFactorUncertainty& self);
+void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self);
+void extract(Serializer& serializer, GyroScaleFactorUncertainty& self);
 
 ///@}
 ///
@@ -874,8 +874,8 @@ struct MagBias
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagBias& self);
-void extract(MipSerializer& serializer, MagBias& self);
+void insert(Serializer& serializer, const MagBias& self);
+void extract(Serializer& serializer, MagBias& self);
 
 ///@}
 ///
@@ -896,8 +896,8 @@ struct MagBiasUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagBiasUncertainty& self);
-void extract(MipSerializer& serializer, MagBiasUncertainty& self);
+void insert(Serializer& serializer, const MagBiasUncertainty& self);
+void extract(Serializer& serializer, MagBiasUncertainty& self);
 
 ///@}
 ///
@@ -924,8 +924,8 @@ struct StandardAtmosphere
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const StandardAtmosphere& self);
-void extract(MipSerializer& serializer, StandardAtmosphere& self);
+void insert(Serializer& serializer, const StandardAtmosphere& self);
+void extract(Serializer& serializer, StandardAtmosphere& self);
 
 ///@}
 ///
@@ -950,8 +950,8 @@ struct PressureAltitude
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PressureAltitude& self);
-void extract(MipSerializer& serializer, PressureAltitude& self);
+void insert(Serializer& serializer, const PressureAltitude& self);
+void extract(Serializer& serializer, PressureAltitude& self);
 
 ///@}
 ///
@@ -971,8 +971,8 @@ struct DensityAltitude
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const DensityAltitude& self);
-void extract(MipSerializer& serializer, DensityAltitude& self);
+void insert(Serializer& serializer, const DensityAltitude& self);
+void extract(Serializer& serializer, DensityAltitude& self);
 
 ///@}
 ///
@@ -995,8 +995,8 @@ struct AntennaOffsetCorrection
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AntennaOffsetCorrection& self);
-void extract(MipSerializer& serializer, AntennaOffsetCorrection& self);
+void insert(Serializer& serializer, const AntennaOffsetCorrection& self);
+void extract(Serializer& serializer, AntennaOffsetCorrection& self);
 
 ///@}
 ///
@@ -1017,8 +1017,8 @@ struct AntennaOffsetCorrectionUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const AntennaOffsetCorrectionUncertainty& self);
-void extract(MipSerializer& serializer, AntennaOffsetCorrectionUncertainty& self);
+void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self);
+void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self);
 
 ///@}
 ///
@@ -1042,8 +1042,8 @@ struct MultiAntennaOffsetCorrection
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MultiAntennaOffsetCorrection& self);
-void extract(MipSerializer& serializer, MultiAntennaOffsetCorrection& self);
+void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self);
+void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self);
 
 ///@}
 ///
@@ -1065,8 +1065,8 @@ struct MultiAntennaOffsetCorrectionUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self);
-void extract(MipSerializer& serializer, MultiAntennaOffsetCorrectionUncertainty& self);
+void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self);
+void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& self);
 
 ///@}
 ///
@@ -1089,8 +1089,8 @@ struct MagnetometerOffset
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerOffset& self);
-void extract(MipSerializer& serializer, MagnetometerOffset& self);
+void insert(Serializer& serializer, const MagnetometerOffset& self);
+void extract(Serializer& serializer, MagnetometerOffset& self);
 
 ///@}
 ///
@@ -1113,8 +1113,8 @@ struct MagnetometerMatrix
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerMatrix& self);
-void extract(MipSerializer& serializer, MagnetometerMatrix& self);
+void insert(Serializer& serializer, const MagnetometerMatrix& self);
+void extract(Serializer& serializer, MagnetometerMatrix& self);
 
 ///@}
 ///
@@ -1135,8 +1135,8 @@ struct MagnetometerOffsetUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerOffsetUncertainty& self);
-void extract(MipSerializer& serializer, MagnetometerOffsetUncertainty& self);
+void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self);
+void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self);
 
 ///@}
 ///
@@ -1157,8 +1157,8 @@ struct MagnetometerMatrixUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerMatrixUncertainty& self);
-void extract(MipSerializer& serializer, MagnetometerMatrixUncertainty& self);
+void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self);
+void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self);
 
 ///@}
 ///
@@ -1178,8 +1178,8 @@ struct MagnetometerCovarianceMatrix
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerCovarianceMatrix& self);
-void extract(MipSerializer& serializer, MagnetometerCovarianceMatrix& self);
+void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self);
+void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self);
 
 ///@}
 ///
@@ -1200,8 +1200,8 @@ struct MagnetometerResidualVector
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const MagnetometerResidualVector& self);
-void extract(MipSerializer& serializer, MagnetometerResidualVector& self);
+void insert(Serializer& serializer, const MagnetometerResidualVector& self);
+void extract(Serializer& serializer, MagnetometerResidualVector& self);
 
 ///@}
 ///
@@ -1224,8 +1224,8 @@ struct ClockCorrection
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockCorrection& self);
-void extract(MipSerializer& serializer, ClockCorrection& self);
+void insert(Serializer& serializer, const ClockCorrection& self);
+void extract(Serializer& serializer, ClockCorrection& self);
 
 ///@}
 ///
@@ -1248,8 +1248,8 @@ struct ClockCorrectionUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockCorrectionUncertainty& self);
-void extract(MipSerializer& serializer, ClockCorrectionUncertainty& self);
+void insert(Serializer& serializer, const ClockCorrectionUncertainty& self);
+void extract(Serializer& serializer, ClockCorrectionUncertainty& self);
 
 ///@}
 ///
@@ -1272,8 +1272,8 @@ struct GnssPosAidStatus
     uint8_t reserved[8];
     
 };
-void insert(MipSerializer& serializer, const GnssPosAidStatus& self);
-void extract(MipSerializer& serializer, GnssPosAidStatus& self);
+void insert(Serializer& serializer, const GnssPosAidStatus& self);
+void extract(Serializer& serializer, GnssPosAidStatus& self);
 
 ///@}
 ///
@@ -1295,8 +1295,8 @@ struct GnssAttAidStatus
     uint8_t reserved[8];
     
 };
-void insert(MipSerializer& serializer, const GnssAttAidStatus& self);
-void extract(MipSerializer& serializer, GnssAttAidStatus& self);
+void insert(Serializer& serializer, const GnssAttAidStatus& self);
+void extract(Serializer& serializer, GnssAttAidStatus& self);
 
 ///@}
 ///
@@ -1324,8 +1324,8 @@ struct HeadAidStatus
     float reserved[2];
     
 };
-void insert(MipSerializer& serializer, const HeadAidStatus& self);
-void extract(MipSerializer& serializer, HeadAidStatus& self);
+void insert(Serializer& serializer, const HeadAidStatus& self);
+void extract(Serializer& serializer, HeadAidStatus& self);
 
 ///@}
 ///
@@ -1346,8 +1346,8 @@ struct RelPosNed
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const RelPosNed& self);
-void extract(MipSerializer& serializer, RelPosNed& self);
+void insert(Serializer& serializer, const RelPosNed& self);
+void extract(Serializer& serializer, RelPosNed& self);
 
 ///@}
 ///
@@ -1368,8 +1368,8 @@ struct EcefPos
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EcefPos& self);
-void extract(MipSerializer& serializer, EcefPos& self);
+void insert(Serializer& serializer, const EcefPos& self);
+void extract(Serializer& serializer, EcefPos& self);
 
 ///@}
 ///
@@ -1390,8 +1390,8 @@ struct EcefVel
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EcefVel& self);
-void extract(MipSerializer& serializer, EcefVel& self);
+void insert(Serializer& serializer, const EcefVel& self);
+void extract(Serializer& serializer, EcefVel& self);
 
 ///@}
 ///
@@ -1412,8 +1412,8 @@ struct EcefPosUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EcefPosUncertainty& self);
-void extract(MipSerializer& serializer, EcefPosUncertainty& self);
+void insert(Serializer& serializer, const EcefPosUncertainty& self);
+void extract(Serializer& serializer, EcefPosUncertainty& self);
 
 ///@}
 ///
@@ -1434,8 +1434,8 @@ struct EcefVelUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const EcefVelUncertainty& self);
-void extract(MipSerializer& serializer, EcefVelUncertainty& self);
+void insert(Serializer& serializer, const EcefVelUncertainty& self);
+void extract(Serializer& serializer, EcefVelUncertainty& self);
 
 ///@}
 ///
@@ -1458,8 +1458,8 @@ struct AidingMeasurementSummary
     FilterMeasurementIndicator indicator;
     
 };
-void insert(MipSerializer& serializer, const AidingMeasurementSummary& self);
-void extract(MipSerializer& serializer, AidingMeasurementSummary& self);
+void insert(Serializer& serializer, const AidingMeasurementSummary& self);
+void extract(Serializer& serializer, AidingMeasurementSummary& self);
 
 ///@}
 ///
@@ -1480,8 +1480,8 @@ struct OdometerScaleFactorError
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const OdometerScaleFactorError& self);
-void extract(MipSerializer& serializer, OdometerScaleFactorError& self);
+void insert(Serializer& serializer, const OdometerScaleFactorError& self);
+void extract(Serializer& serializer, OdometerScaleFactorError& self);
 
 ///@}
 ///
@@ -1502,8 +1502,8 @@ struct OdometerScaleFactorErrorUncertainty
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const OdometerScaleFactorErrorUncertainty& self);
-void extract(MipSerializer& serializer, OdometerScaleFactorErrorUncertainty& self);
+void insert(Serializer& serializer, const OdometerScaleFactorErrorUncertainty& self);
+void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self);
 
 ///@}
 ///
@@ -1552,8 +1552,8 @@ struct GnssDualAntennaStatus
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GnssDualAntennaStatus& self);
-void extract(MipSerializer& serializer, GnssDualAntennaStatus& self);
+void insert(Serializer& serializer, const GnssDualAntennaStatus& self);
+void extract(Serializer& serializer, GnssDualAntennaStatus& self);
 
 ///@}
 ///

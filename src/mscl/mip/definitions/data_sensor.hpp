@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -86,8 +86,8 @@ struct RawAccel
     float raw_accel[3];
     
 };
-void insert(MipSerializer& serializer, const RawAccel& self);
-void extract(MipSerializer& serializer, RawAccel& self);
+void insert(Serializer& serializer, const RawAccel& self);
+void extract(Serializer& serializer, RawAccel& self);
 
 ///@}
 ///
@@ -108,8 +108,8 @@ struct RawGyro
     float raw_gyro[3];
     
 };
-void insert(MipSerializer& serializer, const RawGyro& self);
-void extract(MipSerializer& serializer, RawGyro& self);
+void insert(Serializer& serializer, const RawGyro& self);
+void extract(Serializer& serializer, RawGyro& self);
 
 ///@}
 ///
@@ -130,8 +130,8 @@ struct RawMag
     float raw_mag[3];
     
 };
-void insert(MipSerializer& serializer, const RawMag& self);
-void extract(MipSerializer& serializer, RawMag& self);
+void insert(Serializer& serializer, const RawMag& self);
+void extract(Serializer& serializer, RawMag& self);
 
 ///@}
 ///
@@ -152,8 +152,8 @@ struct RawPressure
     float raw_pressure;
     
 };
-void insert(MipSerializer& serializer, const RawPressure& self);
-void extract(MipSerializer& serializer, RawPressure& self);
+void insert(Serializer& serializer, const RawPressure& self);
+void extract(Serializer& serializer, RawPressure& self);
 
 ///@}
 ///
@@ -174,8 +174,8 @@ struct ScaledAccel
     float scaled_accel[3];
     
 };
-void insert(MipSerializer& serializer, const ScaledAccel& self);
-void extract(MipSerializer& serializer, ScaledAccel& self);
+void insert(Serializer& serializer, const ScaledAccel& self);
+void extract(Serializer& serializer, ScaledAccel& self);
 
 ///@}
 ///
@@ -196,8 +196,8 @@ struct ScaledGyro
     float scaled_gyro[3];
     
 };
-void insert(MipSerializer& serializer, const ScaledGyro& self);
-void extract(MipSerializer& serializer, ScaledGyro& self);
+void insert(Serializer& serializer, const ScaledGyro& self);
+void extract(Serializer& serializer, ScaledGyro& self);
 
 ///@}
 ///
@@ -218,8 +218,8 @@ struct ScaledMag
     float scaled_mag[3];
     
 };
-void insert(MipSerializer& serializer, const ScaledMag& self);
-void extract(MipSerializer& serializer, ScaledMag& self);
+void insert(Serializer& serializer, const ScaledMag& self);
+void extract(Serializer& serializer, ScaledMag& self);
 
 ///@}
 ///
@@ -239,8 +239,8 @@ struct ScaledPressure
     float scaled_pressure;
     
 };
-void insert(MipSerializer& serializer, const ScaledPressure& self);
-void extract(MipSerializer& serializer, ScaledPressure& self);
+void insert(Serializer& serializer, const ScaledPressure& self);
+void extract(Serializer& serializer, ScaledPressure& self);
 
 ///@}
 ///
@@ -261,8 +261,8 @@ struct DeltaTheta
     float delta_theta[3];
     
 };
-void insert(MipSerializer& serializer, const DeltaTheta& self);
-void extract(MipSerializer& serializer, DeltaTheta& self);
+void insert(Serializer& serializer, const DeltaTheta& self);
+void extract(Serializer& serializer, DeltaTheta& self);
 
 ///@}
 ///
@@ -283,8 +283,8 @@ struct DeltaVelocity
     float delta_velocity[3];
     
 };
-void insert(MipSerializer& serializer, const DeltaVelocity& self);
-void extract(MipSerializer& serializer, DeltaVelocity& self);
+void insert(Serializer& serializer, const DeltaVelocity& self);
+void extract(Serializer& serializer, DeltaVelocity& self);
 
 ///@}
 ///
@@ -314,8 +314,8 @@ struct CompOrientationMatrix
     float m[9];
     
 };
-void insert(MipSerializer& serializer, const CompOrientationMatrix& self);
-void extract(MipSerializer& serializer, CompOrientationMatrix& self);
+void insert(Serializer& serializer, const CompOrientationMatrix& self);
+void extract(Serializer& serializer, CompOrientationMatrix& self);
 
 ///@}
 ///
@@ -343,8 +343,8 @@ struct CompQuaternion
     float q[4];
     
 };
-void insert(MipSerializer& serializer, const CompQuaternion& self);
-void extract(MipSerializer& serializer, CompQuaternion& self);
+void insert(Serializer& serializer, const CompQuaternion& self);
+void extract(Serializer& serializer, CompQuaternion& self);
 
 ///@}
 ///
@@ -367,8 +367,8 @@ struct CompEulerAngles
     float yaw;
     
 };
-void insert(MipSerializer& serializer, const CompEulerAngles& self);
-void extract(MipSerializer& serializer, CompEulerAngles& self);
+void insert(Serializer& serializer, const CompEulerAngles& self);
+void extract(Serializer& serializer, CompEulerAngles& self);
 
 ///@}
 ///
@@ -388,8 +388,8 @@ struct CompOrientationUpdateMatrix
     float m[9];
     
 };
-void insert(MipSerializer& serializer, const CompOrientationUpdateMatrix& self);
-void extract(MipSerializer& serializer, CompOrientationUpdateMatrix& self);
+void insert(Serializer& serializer, const CompOrientationUpdateMatrix& self);
+void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
 
 ///@}
 ///
@@ -409,8 +409,8 @@ struct OrientationRawTemp
     uint16_t raw_temp[4];
     
 };
-void insert(MipSerializer& serializer, const OrientationRawTemp& self);
-void extract(MipSerializer& serializer, OrientationRawTemp& self);
+void insert(Serializer& serializer, const OrientationRawTemp& self);
+void extract(Serializer& serializer, OrientationRawTemp& self);
 
 ///@}
 ///
@@ -430,8 +430,8 @@ struct InternalTimestamp
     uint32_t counts;
     
 };
-void insert(MipSerializer& serializer, const InternalTimestamp& self);
-void extract(MipSerializer& serializer, InternalTimestamp& self);
+void insert(Serializer& serializer, const InternalTimestamp& self);
+void extract(Serializer& serializer, InternalTimestamp& self);
 
 ///@}
 ///
@@ -452,8 +452,8 @@ struct PpsTimestamp
     uint32_t useconds;
     
 };
-void insert(MipSerializer& serializer, const PpsTimestamp& self);
-void extract(MipSerializer& serializer, PpsTimestamp& self);
+void insert(Serializer& serializer, const PpsTimestamp& self);
+void extract(Serializer& serializer, PpsTimestamp& self);
 
 ///@}
 ///
@@ -500,8 +500,8 @@ struct GpsTimestamp
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsTimestamp& self);
-void extract(MipSerializer& serializer, GpsTimestamp& self);
+void insert(Serializer& serializer, const GpsTimestamp& self);
+void extract(Serializer& serializer, GpsTimestamp& self);
 
 ///@}
 ///
@@ -527,8 +527,8 @@ struct TemperatureAbs
     float mean_temp;
     
 };
-void insert(MipSerializer& serializer, const TemperatureAbs& self);
-void extract(MipSerializer& serializer, TemperatureAbs& self);
+void insert(Serializer& serializer, const TemperatureAbs& self);
+void extract(Serializer& serializer, TemperatureAbs& self);
 
 ///@}
 ///
@@ -554,8 +554,8 @@ struct UpVector
     float up[3];
     
 };
-void insert(MipSerializer& serializer, const UpVector& self);
-void extract(MipSerializer& serializer, UpVector& self);
+void insert(Serializer& serializer, const UpVector& self);
+void extract(Serializer& serializer, UpVector& self);
 
 ///@}
 ///
@@ -578,8 +578,8 @@ struct NorthVector
     float north[3];
     
 };
-void insert(MipSerializer& serializer, const NorthVector& self);
-void extract(MipSerializer& serializer, NorthVector& self);
+void insert(Serializer& serializer, const NorthVector& self);
+void extract(Serializer& serializer, NorthVector& self);
 
 ///@}
 ///
@@ -622,8 +622,8 @@ struct OverrangeStatus
     Status status;
     
 };
-void insert(MipSerializer& serializer, const OverrangeStatus& self);
-void extract(MipSerializer& serializer, OverrangeStatus& self);
+void insert(Serializer& serializer, const OverrangeStatus& self);
+void extract(Serializer& serializer, OverrangeStatus& self);
 
 ///@}
 ///
@@ -644,8 +644,8 @@ struct OdometerData
     uint16_t valid_flags;
     
 };
-void insert(MipSerializer& serializer, const OdometerData& self);
-void extract(MipSerializer& serializer, OdometerData& self);
+void insert(Serializer& serializer, const OdometerData& self);
+void extract(Serializer& serializer, OdometerData& self);
 
 ///@}
 ///

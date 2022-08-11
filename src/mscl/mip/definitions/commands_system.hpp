@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -79,7 +79,7 @@ struct CommMode
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t mode;
     
     struct Response
@@ -91,15 +91,15 @@ struct CommMode
         
     };
 };
-void insert(MipSerializer& serializer, const CommMode& self);
-void extract(MipSerializer& serializer, CommMode& self);
+void insert(Serializer& serializer, const CommMode& self);
+void extract(Serializer& serializer, CommMode& self);
 
-void insert(MipSerializer& serializer, const CommMode::Response& self);
-void extract(MipSerializer& serializer, CommMode::Response& self);
+void insert(Serializer& serializer, const CommMode::Response& self);
+void extract(Serializer& serializer, CommMode::Response& self);
 
-MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
-MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode);
-MipCmdResult defaultCommMode(C::mip_interface& device);
+CmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
+CmdResult readCommMode(C::mip_interface& device, uint8_t& mode);
+CmdResult defaultCommMode(C::mip_interface& device);
 ///@}
 ///
 

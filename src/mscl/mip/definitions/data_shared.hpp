@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -73,8 +73,8 @@ struct EventSource
     uint8_t trigger_id;
     
 };
-void insert(MipSerializer& serializer, const EventSource& self);
-void extract(MipSerializer& serializer, EventSource& self);
+void insert(Serializer& serializer, const EventSource& self);
+void extract(Serializer& serializer, EventSource& self);
 
 ///@}
 ///
@@ -97,8 +97,8 @@ struct Ticks
     uint32_t ticks;
     
 };
-void insert(MipSerializer& serializer, const Ticks& self);
-void extract(MipSerializer& serializer, Ticks& self);
+void insert(Serializer& serializer, const Ticks& self);
+void extract(Serializer& serializer, Ticks& self);
 
 ///@}
 ///
@@ -122,8 +122,8 @@ struct DeltaTicks
     uint32_t ticks;
     
 };
-void insert(MipSerializer& serializer, const DeltaTicks& self);
-void extract(MipSerializer& serializer, DeltaTicks& self);
+void insert(Serializer& serializer, const DeltaTicks& self);
+void extract(Serializer& serializer, DeltaTicks& self);
 
 ///@}
 ///
@@ -165,8 +165,8 @@ struct GpsTimestamp
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsTimestamp& self);
-void extract(MipSerializer& serializer, GpsTimestamp& self);
+void insert(Serializer& serializer, const GpsTimestamp& self);
+void extract(Serializer& serializer, GpsTimestamp& self);
 
 ///@}
 ///
@@ -195,8 +195,8 @@ struct DeltaTime
     double seconds;
     
 };
-void insert(MipSerializer& serializer, const DeltaTime& self);
-void extract(MipSerializer& serializer, DeltaTime& self);
+void insert(Serializer& serializer, const DeltaTime& self);
+void extract(Serializer& serializer, DeltaTime& self);
 
 ///@}
 ///
@@ -223,8 +223,8 @@ struct ReferenceTimestamp
     uint64_t nanoseconds;
     
 };
-void insert(MipSerializer& serializer, const ReferenceTimestamp& self);
-void extract(MipSerializer& serializer, ReferenceTimestamp& self);
+void insert(Serializer& serializer, const ReferenceTimestamp& self);
+void extract(Serializer& serializer, ReferenceTimestamp& self);
 
 ///@}
 ///
@@ -253,8 +253,8 @@ struct ReferenceTimeDelta
     uint64_t dt_nanos;
     
 };
-void insert(MipSerializer& serializer, const ReferenceTimeDelta& self);
-void extract(MipSerializer& serializer, ReferenceTimeDelta& self);
+void insert(Serializer& serializer, const ReferenceTimeDelta& self);
+void extract(Serializer& serializer, ReferenceTimeDelta& self);
 
 ///@}
 ///
@@ -298,8 +298,8 @@ struct ExternalTimestamp
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ExternalTimestamp& self);
-void extract(MipSerializer& serializer, ExternalTimestamp& self);
+void insert(Serializer& serializer, const ExternalTimestamp& self);
+void extract(Serializer& serializer, ExternalTimestamp& self);
 
 ///@}
 ///
@@ -347,8 +347,8 @@ struct ExternalTimeDelta
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ExternalTimeDelta& self);
-void extract(MipSerializer& serializer, ExternalTimeDelta& self);
+void insert(Serializer& serializer, const ExternalTimeDelta& self);
+void extract(Serializer& serializer, ExternalTimeDelta& self);
 
 ///@}
 ///

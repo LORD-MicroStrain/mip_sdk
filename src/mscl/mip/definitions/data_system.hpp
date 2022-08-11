@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -81,8 +81,8 @@ struct BuiltInTest
     uint8_t result[16];
     
 };
-void insert(MipSerializer& serializer, const BuiltInTest& self);
-void extract(MipSerializer& serializer, BuiltInTest& self);
+void insert(Serializer& serializer, const BuiltInTest& self);
+void extract(Serializer& serializer, BuiltInTest& self);
 
 ///@}
 ///
@@ -103,8 +103,8 @@ struct TimeSyncStatus
     uint8_t last_pps_rcvd;
     
 };
-void insert(MipSerializer& serializer, const TimeSyncStatus& self);
-void extract(MipSerializer& serializer, TimeSyncStatus& self);
+void insert(Serializer& serializer, const TimeSyncStatus& self);
+void extract(Serializer& serializer, TimeSyncStatus& self);
 
 ///@}
 ///
@@ -142,8 +142,8 @@ struct GpioState
     uint8_t states;
     
 };
-void insert(MipSerializer& serializer, const GpioState& self);
-void extract(MipSerializer& serializer, GpioState& self);
+void insert(Serializer& serializer, const GpioState& self);
+void extract(Serializer& serializer, GpioState& self);
 
 ///@}
 ///
@@ -165,8 +165,8 @@ struct GpioAnalogValue
     float value;
     
 };
-void insert(MipSerializer& serializer, const GpioAnalogValue& self);
-void extract(MipSerializer& serializer, GpioAnalogValue& self);
+void insert(Serializer& serializer, const GpioAnalogValue& self);
+void extract(Serializer& serializer, GpioAnalogValue& self);
 
 ///@}
 ///

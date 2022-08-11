@@ -8,7 +8,7 @@
 
 
 namespace mip {
-class MipSerializer;
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -29,13 +29,13 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(MipSerializer& serializer, const CommMode& self)
+void insert(Serializer& serializer, const CommMode& self)
 {
     insert(serializer, self.function);
     insert(serializer, self.mode);
 }
 
-void extract(MipSerializer& serializer, CommMode& self)
+void extract(Serializer& serializer, CommMode& self)
 {
     extract(serializer, self.function);
     extract(serializer, self.mode);
@@ -52,14 +52,14 @@ void extract(MipSerializer& serializer, CommMode& self)
 /// 
 /// @param mode 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
+CmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::WRITE);
+    insert(serializer, FunctionSelector::WRITE);
     insert(serializer, mode);
     assert(!!serializer);
     
@@ -77,14 +77,14 @@ MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 /// 
 /// @param[out] mode 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
+CmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::READ);
+    insert(serializer, FunctionSelector::READ);
     assert(!!serializer);
     
     uint8_t responseLength;
@@ -92,7 +92,7 @@ MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, mode);
         
@@ -112,14 +112,14 @@ MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
 /// 
 /// 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult defaultCommMode(C::mip_interface& device)
+CmdResult defaultCommMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::RESET);
+    insert(serializer, FunctionSelector::RESET);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset);
