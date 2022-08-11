@@ -29,6 +29,7 @@ struct mip_serializer
 void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
 bool mip_serializer_ok(const struct mip_serializer* serializer);
+bool mip_serializer_finished(const struct mip_serializer* serializer, size_t expected_length);
 
 
 void insert_bool(struct mip_serializer* serializer, bool value);
@@ -76,11 +77,15 @@ void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_
 class Serializer : public C::mip_serializer
 {
 public:
-    Serializer(uint8_t* buffer, size_t size) { C::mip_serializer_init_insertion(this, buffer, size); }
-    Serializer(const uint8_t* buffer, size_t size) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); }
+    Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_insertion(this, buffer, size); this->offset = offset; }
+    Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->offset = offset; }
 
-    operator const void*() const { return C::mip_serializer_ok(this) ? this : nullptr; }
-    bool operator!() const { return !C::mip_serializer_ok(this); }
+    bool isOk() const { return C::mip_serializer_ok(this); }
+    bool isFinished() const { return isFinished(this->buffer_size); }
+    bool isFinished(size_t expectedLength) const { return C::mip_serializer_finished(this, expectedLength); }
+
+    operator const void*() const { return isOk() ? this : nullptr; }
+    bool operator!() const { return !isOk(); }
 };
 
 
@@ -101,6 +106,13 @@ template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ insert(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
 
+template<typename T>
+bool insert(const T& value, uint8_t* buffer, size_t bufferSize)
+{
+    Serializer serializer(buffer, bufferSize);
+    insert(serializer, value);
+    return !!serializer;
+}
 
 inline void extract(Serializer& serializer, bool& value)     { return C::extract_bool  (&serializer, &value); }
 inline void extract(Serializer& serializer, char& value)     { return C::extract_char  (&serializer, &value); }
@@ -121,11 +133,11 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 
 
 template<typename T>
-bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize /*, size_t offset=0 */)
+bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
 {
-    Serializer serializer(buffer, bufferSize);
+    Serializer serializer(buffer, bufferSize, offset);
     extract(serializer, value_out);
-    return !!serializer;
+    return exact_size ? serializer.isFinished() : serializer.isOk();
 }
 
 } // namespace mip

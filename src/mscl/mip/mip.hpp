@@ -157,18 +157,19 @@ public:
 #endif
 
     template<class Field>
-    bool addField(const Field& field, uint8_t fieldDescriptor = Field::fieldDescriptor)
+    bool addField(const Field& field, uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
     {
         uint8_t* payload;
         size_t available = allocField(fieldDescriptor, 0, &payload);
-        size_t used = field.insert(payload, available, 0);
-        return reallocLastField(payload, used) >= 0;
+        Serializer serializer(payload, available);
+        insert(serializer, field);
+        return reallocLastField(payload, serializer.offset) >= 0;
     }
 
     template<class Field>
-    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::fieldDescriptor)
+    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::FIELD_DESCRIPTOR)
     {
-        Packet packet(buffer, bufferSize, Field::descriptorSet);
+        Packet packet(buffer, bufferSize, Field::DESCRIPTOR_SET);
         packet.addField<Field>(field, fieldDescriptor);
         packet.finalize();
         return packet;

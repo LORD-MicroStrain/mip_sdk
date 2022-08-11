@@ -26,6 +26,11 @@ bool mip_serializer_ok(const struct mip_serializer* serializer)
     return serializer->offset <= serializer->buffer_size;
 }
 
+bool mip_serializer_finished(const struct mip_serializer* serializer, size_t expected_length)
+{
+    return serializer->offset == expected_length;
+}
+
 
 static void pack(uint8_t* buffer, const void* value, size_t size)
 {

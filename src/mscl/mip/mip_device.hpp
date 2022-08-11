@@ -164,7 +164,7 @@ public:
 
 
     template<class Cmd>
-    bool startCommand(PendingCmd& pending, const Cmd& cmd, Timeout additionalTime=0) { return mscl::startCommand(*this, pending, cmd, additionalTime); }
+    bool startCommand(PendingCmd& pending, const Cmd& cmd, Timeout additionalTime=0) { return mip::startCommand(*this, pending, cmd, additionalTime); }
 
 //    template<class Cmd>
 //    bool startCommand(PendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return mscl::startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }
@@ -467,7 +467,7 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additiona
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, additionalTime);
+    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
 
     return C::mip_interface_run_command_packet(&device, &packet, &pending);
 }
@@ -486,14 +486,14 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::responseDescriptor, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
         return result;
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
-    size_t offset = response.extract(buffer, responseLength, 0);
+    size_t offset = extract(response, buffer, responseLength, 0);
     if( offset != responseLength )
         return C::MIP_STATUS_ERROR;
 
@@ -507,7 +507,7 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
-    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, additionalTime);
+    C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
 
     return C::mip_interface_start_command_packet(&device, &packet, &pending);
 }
