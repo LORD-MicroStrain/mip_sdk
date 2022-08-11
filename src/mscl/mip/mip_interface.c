@@ -308,7 +308,7 @@ mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* dev
 ///
 mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
 {
-    if( !mip_interface_start_command(device, packet, cmd) )
+    if( !mip_interface_start_command_packet(device, packet, cmd) )
         return MIP_STATUS_ERROR;
 
     return mip_interface_wait_for_reply(device, cmd);

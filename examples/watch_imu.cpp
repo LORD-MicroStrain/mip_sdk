@@ -91,10 +91,10 @@ int main(int argc, const char* argv[])
 
         // Register some callbacks.
 
-        mip::MipDispatchHandler packetHandler;
+        mip::DispatchHandler packetHandler;
         device->registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_DESCSET_DATA);
 
-        mip::MipDispatchHandler dataHandlers[3];
+        mip::DispatchHandler dataHandlers[3];
         device->registerFieldCallback<&handleAccel>(dataHandlers[0], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_ACCEL_SCALED);
         device->registerFieldCallback<&handleGyro >(dataHandlers[1], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_GYRO_SCALED );
         device->registerFieldCallback<&handleMag  >(dataHandlers[2], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_MAG_SCALED  );
