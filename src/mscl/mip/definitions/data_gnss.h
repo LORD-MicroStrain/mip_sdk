@@ -169,8 +169,8 @@ enum mip_sbas_system
 void insert_mip_sbas_system(struct mip_serializer* serializer, const enum mip_sbas_system self);
 void extract_mip_sbas_system(struct mip_serializer* serializer, enum mip_sbas_system* self);
 
-enum { GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32 };
-enum { GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
+enum { MIP_GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32 };
+enum { MIP_GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields

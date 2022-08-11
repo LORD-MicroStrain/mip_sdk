@@ -276,7 +276,7 @@ mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* re
 ///
 ///@{
 
-enum { ALL_PORTS = 0 };
+enum { MIP_BASE_COMM_SPEED_COMMAND_ALL_PORTS = 0 };
 struct mip_base_comm_speed_command
 {
     enum mip_function_selector function;

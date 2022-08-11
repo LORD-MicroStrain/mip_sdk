@@ -45,14 +45,14 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum { GNSS_GPS_ENABLE_L1CA = 0x0001 };
-enum { GNSS_GPS_ENABLE_L2C = 0x0002 };
-enum { GNSS_GLONASS_ENABLE_L1OF = 0x0001 };
-enum { GNSS_GLONASS_ENABLE_L2OF = 0x0002 };
-enum { GNSS_GALILEO_ENABLE_E1 = 0x0001 };
-enum { GNSS_GALILEO_ENABLE_E5B = 0x0002 };
-enum { GNSS_BEIDOU_ENABLE_B1 = 0x0001 };
-enum { GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
+enum { MIP_GNSS_GPS_ENABLE_L1CA = 0x0001 };
+enum { MIP_GNSS_GPS_ENABLE_L2C = 0x0002 };
+enum { MIP_GNSS_GLONASS_ENABLE_L1OF = 0x0001 };
+enum { MIP_GNSS_GLONASS_ENABLE_L2OF = 0x0002 };
+enum { MIP_GNSS_GALILEO_ENABLE_E1 = 0x0001 };
+enum { MIP_GNSS_GALILEO_ENABLE_E5B = 0x0002 };
+enum { MIP_GNSS_BEIDOU_ENABLE_B1 = 0x0001 };
+enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
