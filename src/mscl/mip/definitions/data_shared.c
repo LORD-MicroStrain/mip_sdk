@@ -8,7 +8,7 @@
 
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -160,7 +160,7 @@ void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializ
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

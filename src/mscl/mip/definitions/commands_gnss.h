@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -186,7 +186,7 @@ mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

@@ -8,7 +8,7 @@
 
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -4117,7 +4117,7 @@ mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, floa
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

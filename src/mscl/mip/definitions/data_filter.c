@@ -8,7 +8,7 @@
 
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -949,7 +949,7 @@ void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

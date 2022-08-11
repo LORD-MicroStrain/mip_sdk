@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -1331,7 +1331,7 @@ void extract_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* 
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

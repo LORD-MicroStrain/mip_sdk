@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -370,7 +370,7 @@ mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

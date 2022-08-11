@@ -140,7 +140,7 @@ CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info)
         
         extract(serializer, device_info);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -179,10 +179,10 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors_co
         Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, descriptors_count);
-        for(unsigned int i=0; (i < descriptors_count) && !!serializer; i++)
+        for(unsigned int i=0; (i < descriptors_count) && serializer.isOk(); i++)
             extract(serializer, descriptors[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -223,7 +223,7 @@ CmdResult builtInTest(C::mip_interface& device, uint32_t& result)
         
         extract(serializer, result);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -285,10 +285,10 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descriptors_
         Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, descriptors_count);
-        for(unsigned int i=0; (i < descriptors_count) && !!serializer; i++)
+        for(unsigned int i=0; (i < descriptors_count) && serializer.isOk(); i++)
             extract(serializer, descriptors[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -327,7 +327,7 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* result)
         for(unsigned int i=0; i < 16; i++)
             extract(serializer, result[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -374,7 +374,7 @@ CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, port);
     insert(serializer, baud);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset);
 }
@@ -406,7 +406,7 @@ CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud)
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, port);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset, REPLY_COMM_SPEED, buffer, &responseLength);
@@ -418,7 +418,7 @@ CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud)
         extract(serializer, port);
         extract(serializer, baud);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -449,7 +449,7 @@ CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port)
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, port);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset);
 }
@@ -479,7 +479,7 @@ CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, port);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset);
 }
@@ -509,7 +509,7 @@ CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, port);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset);
 }
@@ -544,7 +544,7 @@ CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fi
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, field_id);
     insert(serializer, value);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GPS_TIME_BROADCAST_NEW, buffer, serializer.offset);
 }

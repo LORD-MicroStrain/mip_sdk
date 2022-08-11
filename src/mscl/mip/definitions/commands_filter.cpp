@@ -93,7 +93,7 @@ CmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, 
     insert(serializer, roll);
     insert(serializer, pitch);
     insert(serializer, heading);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_ATTITUDE, buffer, serializer.offset);
 }
@@ -132,7 +132,7 @@ CmdResult writeEstimationControl(C::mip_interface& device, EstimationControl::En
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, serializer.offset);
 }
@@ -158,7 +158,7 @@ CmdResult readEstimationControl(C::mip_interface& device, EstimationControl::Ena
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, serializer.offset, REPLY_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
@@ -169,7 +169,7 @@ CmdResult readEstimationControl(C::mip_interface& device, EstimationControl::Ena
         
         extract(serializer, enable);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -195,7 +195,7 @@ CmdResult saveEstimationControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, serializer.offset);
 }
@@ -220,7 +220,7 @@ CmdResult loadEstimationControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, serializer.offset);
 }
@@ -245,7 +245,7 @@ CmdResult defaultEstimationControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, serializer.offset);
 }
@@ -312,7 +312,7 @@ CmdResult externalGnssUpdate(C::mip_interface& device, double gps_time, uint16_t
         insert(serializer, pos_uncertainty[i]);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, vel_uncertainty[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_GNSS_UPDATE, buffer, serializer.offset);
 }
@@ -358,7 +358,7 @@ CmdResult externalHeadingUpdate(C::mip_interface& device, float heading, float h
     insert(serializer, heading);
     insert(serializer, heading_uncertainty);
     insert(serializer, type);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE, buffer, serializer.offset);
 }
@@ -416,7 +416,7 @@ CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gps_tim
     insert(serializer, heading);
     insert(serializer, heading_uncertainty);
     insert(serializer, type);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE_WITH_TIME, buffer, serializer.offset);
 }
@@ -449,7 +449,7 @@ CmdResult writeTareOrientation(C::mip_interface& device, TareOrientation::MipTar
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, axes);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, serializer.offset);
 }
@@ -469,7 +469,7 @@ CmdResult readTareOrientation(C::mip_interface& device, TareOrientation::MipTare
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, serializer.offset, REPLY_TARE_ORIENTATION, buffer, &responseLength);
@@ -480,7 +480,7 @@ CmdResult readTareOrientation(C::mip_interface& device, TareOrientation::MipTare
         
         extract(serializer, axes);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -500,7 +500,7 @@ CmdResult saveTareOrientation(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, serializer.offset);
 }
@@ -519,7 +519,7 @@ CmdResult loadTareOrientation(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, serializer.offset);
 }
@@ -538,7 +538,7 @@ CmdResult defaultTareOrientation(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, serializer.offset);
 }
@@ -597,7 +597,7 @@ CmdResult writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll
     insert(serializer, roll);
     insert(serializer, pitch);
     insert(serializer, yaw);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, serializer.offset);
 }
@@ -637,7 +637,7 @@ CmdResult readSensorToVehicleRotationEuler(C::mip_interface& device, float& roll
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, serializer.offset, REPLY_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
@@ -650,7 +650,7 @@ CmdResult readSensorToVehicleRotationEuler(C::mip_interface& device, float& roll
         extract(serializer, pitch);
         extract(serializer, yaw);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -688,7 +688,7 @@ CmdResult saveSensorToVehicleRotationEuler(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, serializer.offset);
 }
@@ -725,7 +725,7 @@ CmdResult loadSensorToVehicleRotationEuler(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, serializer.offset);
 }
@@ -762,7 +762,7 @@ CmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, serializer.offset);
 }
@@ -822,7 +822,7 @@ CmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, const float*
     insert(serializer, FunctionSelector::WRITE);
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, serializer.offset);
 }
@@ -866,7 +866,7 @@ CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcm)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, serializer.offset, REPLY_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
@@ -878,7 +878,7 @@ CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcm)
         for(unsigned int i=0; i < 9; i++)
             extract(serializer, dcm[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -922,7 +922,7 @@ CmdResult saveSensorToVehicleRotationDcm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, serializer.offset);
 }
@@ -965,7 +965,7 @@ CmdResult loadSensorToVehicleRotationDcm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, serializer.offset);
 }
@@ -1008,7 +1008,7 @@ CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, serializer.offset);
 }
@@ -1067,7 +1067,7 @@ CmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const
     insert(serializer, FunctionSelector::WRITE);
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, quat[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, serializer.offset);
 }
@@ -1110,7 +1110,7 @@ CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float*
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, serializer.offset, REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
@@ -1122,7 +1122,7 @@ CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float*
         for(unsigned int i=0; i < 4; i++)
             extract(serializer, quat[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1165,7 +1165,7 @@ CmdResult saveSensorToVehicleRotationQuaternion(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, serializer.offset);
 }
@@ -1207,7 +1207,7 @@ CmdResult loadSensorToVehicleRotationQuaternion(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, serializer.offset);
 }
@@ -1249,7 +1249,7 @@ CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, serializer.offset);
 }
@@ -1289,7 +1289,7 @@ CmdResult writeSensorToVehicleOffset(C::mip_interface& device, const float* offs
     insert(serializer, FunctionSelector::WRITE);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, serializer.offset);
 }
@@ -1313,7 +1313,7 @@ CmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, serializer.offset, REPLY_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
@@ -1325,7 +1325,7 @@ CmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offset)
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, offset[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1349,7 +1349,7 @@ CmdResult saveSensorToVehicleOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, serializer.offset);
 }
@@ -1372,7 +1372,7 @@ CmdResult loadSensorToVehicleOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, serializer.offset);
 }
@@ -1395,7 +1395,7 @@ CmdResult defaultSensorToVehicleOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, serializer.offset);
 }
@@ -1432,7 +1432,7 @@ CmdResult writeAntennaOffset(C::mip_interface& device, const float* offset)
     insert(serializer, FunctionSelector::WRITE);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -1453,7 +1453,7 @@ CmdResult readAntennaOffset(C::mip_interface& device, float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, serializer.offset, REPLY_ANTENNA_OFFSET, buffer, &responseLength);
@@ -1465,7 +1465,7 @@ CmdResult readAntennaOffset(C::mip_interface& device, float* offset)
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, offset[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1486,7 +1486,7 @@ CmdResult saveAntennaOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -1506,7 +1506,7 @@ CmdResult loadAntennaOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -1526,7 +1526,7 @@ CmdResult defaultAntennaOffset(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -1559,7 +1559,7 @@ CmdResult writeGnssSource(C::mip_interface& device, GnssSource::Source source)
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, serializer.offset);
 }
@@ -1579,7 +1579,7 @@ CmdResult readGnssSource(C::mip_interface& device, GnssSource::Source& source)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, serializer.offset, REPLY_GNSS_SOURCE_CONTROL, buffer, &responseLength);
@@ -1590,7 +1590,7 @@ CmdResult readGnssSource(C::mip_interface& device, GnssSource::Source& source)
         
         extract(serializer, source);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1610,7 +1610,7 @@ CmdResult saveGnssSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, serializer.offset);
 }
@@ -1629,7 +1629,7 @@ CmdResult loadGnssSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, serializer.offset);
 }
@@ -1648,7 +1648,7 @@ CmdResult defaultGnssSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, serializer.offset);
 }
@@ -1688,7 +1688,7 @@ CmdResult writeHeadingSource(C::mip_interface& device, HeadingSource::Source sou
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, serializer.offset);
 }
@@ -1715,7 +1715,7 @@ CmdResult readHeadingSource(C::mip_interface& device, HeadingSource::Source& sou
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, serializer.offset, REPLY_HEADING_UPDATE_CONTROL, buffer, &responseLength);
@@ -1726,7 +1726,7 @@ CmdResult readHeadingSource(C::mip_interface& device, HeadingSource::Source& sou
         
         extract(serializer, source);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1753,7 +1753,7 @@ CmdResult saveHeadingSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, serializer.offset);
 }
@@ -1779,7 +1779,7 @@ CmdResult loadHeadingSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, serializer.offset);
 }
@@ -1805,7 +1805,7 @@ CmdResult defaultHeadingSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, serializer.offset);
 }
@@ -1845,7 +1845,7 @@ CmdResult writeAltitudeAiding(C::mip_interface& device, uint8_t aiding_selector)
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, aiding_selector);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, serializer.offset);
 }
@@ -1872,7 +1872,7 @@ CmdResult readAltitudeAiding(C::mip_interface& device, uint8_t& aiding_selector)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, serializer.offset, REPLY_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
@@ -1883,7 +1883,7 @@ CmdResult readAltitudeAiding(C::mip_interface& device, uint8_t& aiding_selector)
         
         extract(serializer, aiding_selector);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -1910,7 +1910,7 @@ CmdResult saveAltitudeAiding(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, serializer.offset);
 }
@@ -1936,7 +1936,7 @@ CmdResult loadAltitudeAiding(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, serializer.offset);
 }
@@ -1962,7 +1962,7 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, serializer.offset);
 }
@@ -1997,7 +1997,7 @@ CmdResult writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshol
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     insert(serializer, threshold);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2016,7 +2016,7 @@ CmdResult readAutoZupt(C::mip_interface& device, uint8_t& enable, float& thresho
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, serializer.offset, REPLY_ZUPT_CONTROL, buffer, &responseLength);
@@ -2028,7 +2028,7 @@ CmdResult readAutoZupt(C::mip_interface& device, uint8_t& enable, float& thresho
         extract(serializer, enable);
         extract(serializer, threshold);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2046,7 +2046,7 @@ CmdResult saveAutoZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2063,7 +2063,7 @@ CmdResult loadAutoZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2080,7 +2080,7 @@ CmdResult defaultAutoZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2115,7 +2115,7 @@ CmdResult writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float t
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     insert(serializer, threshold);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2134,7 +2134,7 @@ CmdResult readAutoAngularZupt(C::mip_interface& device, uint8_t& enable, float& 
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, serializer.offset, REPLY_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
@@ -2146,7 +2146,7 @@ CmdResult readAutoAngularZupt(C::mip_interface& device, uint8_t& enable, float& 
         extract(serializer, enable);
         extract(serializer, threshold);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2164,7 +2164,7 @@ CmdResult saveAutoAngularZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2181,7 +2181,7 @@ CmdResult loadAutoAngularZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2198,7 +2198,7 @@ CmdResult defaultAutoAngularZupt(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, serializer.offset);
 }
@@ -2277,7 +2277,7 @@ CmdResult writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasureme
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, aiding_source);
     insert(serializer, enable);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, serializer.offset);
 }
@@ -2298,7 +2298,7 @@ CmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasuremen
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, aiding_source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, serializer.offset, REPLY_AIDING_MEASUREMENT_ENABLE, buffer, &responseLength);
@@ -2310,7 +2310,7 @@ CmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasuremen
         extract(serializer, aiding_source);
         extract(serializer, enable);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2330,7 +2330,7 @@ CmdResult saveAidingMeasurementEnable(C::mip_interface& device, AidingMeasuremen
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, aiding_source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, serializer.offset);
 }
@@ -2349,7 +2349,7 @@ CmdResult loadAidingMeasurementEnable(C::mip_interface& device, AidingMeasuremen
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, aiding_source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, serializer.offset);
 }
@@ -2368,7 +2368,7 @@ CmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasure
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, aiding_source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, serializer.offset);
 }
@@ -2430,7 +2430,7 @@ CmdResult writeKinematicConstraint(C::mip_interface& device, uint8_t acceleratio
     insert(serializer, acceleration_constraint_selection);
     insert(serializer, velocity_constraint_selection);
     insert(serializer, angular_constraint_selection);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, serializer.offset);
 }
@@ -2450,7 +2450,7 @@ CmdResult readKinematicConstraint(C::mip_interface& device, uint8_t& acceleratio
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, serializer.offset, REPLY_KINEMATIC_CONSTRAINT, buffer, &responseLength);
@@ -2463,7 +2463,7 @@ CmdResult readKinematicConstraint(C::mip_interface& device, uint8_t& acceleratio
         extract(serializer, velocity_constraint_selection);
         extract(serializer, angular_constraint_selection);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2481,7 +2481,7 @@ CmdResult saveKinematicConstraint(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, serializer.offset);
 }
@@ -2498,7 +2498,7 @@ CmdResult loadKinematicConstraint(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, serializer.offset);
 }
@@ -2515,7 +2515,7 @@ CmdResult defaultKinematicConstraint(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, serializer.offset);
 }
@@ -2586,7 +2586,7 @@ CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t wai
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, initial_velocity[i]);
     insert(serializer, reference_frame_selector);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, serializer.offset);
 }
@@ -2614,7 +2614,7 @@ CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t& wai
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, serializer.offset, REPLY_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
@@ -2635,7 +2635,7 @@ CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t& wai
             extract(serializer, initial_velocity[i]);
         extract(serializer, reference_frame_selector);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2655,7 +2655,7 @@ CmdResult saveInitializationConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, serializer.offset);
 }
@@ -2674,7 +2674,7 @@ CmdResult loadInitializationConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, serializer.offset);
 }
@@ -2693,7 +2693,7 @@ CmdResult defaultInitializationConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, serializer.offset);
 }
@@ -2727,7 +2727,7 @@ CmdResult writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, ui
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, level);
     insert(serializer, time_limit);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, serializer.offset);
 }
@@ -2745,7 +2745,7 @@ CmdResult readAdaptiveFilterOptions(C::mip_interface& device, uint8_t& level, ui
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, serializer.offset, REPLY_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
@@ -2757,7 +2757,7 @@ CmdResult readAdaptiveFilterOptions(C::mip_interface& device, uint8_t& level, ui
         extract(serializer, level);
         extract(serializer, time_limit);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2774,7 +2774,7 @@ CmdResult saveAdaptiveFilterOptions(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, serializer.offset);
 }
@@ -2790,7 +2790,7 @@ CmdResult loadAdaptiveFilterOptions(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, serializer.offset);
 }
@@ -2806,7 +2806,7 @@ CmdResult defaultAdaptiveFilterOptions(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, serializer.offset);
 }
@@ -2844,7 +2844,7 @@ CmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id,
     insert(serializer, receiver_id);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, antenna_offset[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -2865,7 +2865,7 @@ CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, 
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, receiver_id);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, serializer.offset, REPLY_MULTI_ANTENNA_OFFSET, buffer, &responseLength);
@@ -2878,7 +2878,7 @@ CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id, 
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, antenna_offset[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -2898,7 +2898,7 @@ CmdResult saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id)
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, receiver_id);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -2917,7 +2917,7 @@ CmdResult loadMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_id)
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, receiver_id);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -2936,7 +2936,7 @@ CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiver_i
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, receiver_id);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, serializer.offset);
 }
@@ -2977,7 +2977,7 @@ CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, Fil
     insert(serializer, reference_frame_selector);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, reference_coordinates[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, serializer.offset);
 }
@@ -2996,7 +2996,7 @@ CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t& source, Fil
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, serializer.offset, REPLY_REL_POS_CONFIGURATION, buffer, &responseLength);
@@ -3010,7 +3010,7 @@ CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t& source, Fil
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, reference_coordinates[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3027,7 +3027,7 @@ CmdResult saveRelPosConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, serializer.offset);
 }
@@ -3043,7 +3043,7 @@ CmdResult loadRelPosConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, serializer.offset);
 }
@@ -3059,7 +3059,7 @@ CmdResult defaultRelPosConfiguration(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, serializer.offset);
 }
@@ -3100,7 +3100,7 @@ CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refe
     insert(serializer, ref_point_sel);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, lever_arm_offset[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3122,7 +3122,7 @@ CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refer
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, serializer.offset, REPLY_REF_POINT_LEVER_ARM, buffer, &responseLength);
@@ -3135,7 +3135,7 @@ CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refer
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, lever_arm_offset[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3156,7 +3156,7 @@ CmdResult saveRefPointLeverArm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3176,7 +3176,7 @@ CmdResult loadRefPointLeverArm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3196,7 +3196,7 @@ CmdResult defaultRefPointLeverArm(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3236,7 +3236,7 @@ CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float time_
     insert(serializer, time_of_week);
     insert(serializer, speed);
     insert(serializer, speed_uncertainty);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_MEASUREMENT, buffer, serializer.offset);
 }
@@ -3278,7 +3278,7 @@ CmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const flo
     insert(serializer, source);
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, lever_arm_offset[i]);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3303,7 +3303,7 @@ CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lev
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, serializer.offset, REPLY_SPEED_LEVER_ARM, buffer, &responseLength);
@@ -3316,7 +3316,7 @@ CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lev
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, lever_arm_offset[i]);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3340,7 +3340,7 @@ CmdResult saveSpeedLeverArm(C::mip_interface& device, uint8_t source)
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3363,7 +3363,7 @@ CmdResult loadSpeedLeverArm(C::mip_interface& device, uint8_t source)
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3386,7 +3386,7 @@ CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source)
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, source);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, serializer.offset);
 }
@@ -3421,7 +3421,7 @@ CmdResult writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3443,7 +3443,7 @@ CmdResult readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t&
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, serializer.offset, REPLY_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
@@ -3454,7 +3454,7 @@ CmdResult readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t&
         
         extract(serializer, enable);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3476,7 +3476,7 @@ CmdResult saveWheeledVehicleConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3497,7 +3497,7 @@ CmdResult loadWheeledVehicleConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3518,7 +3518,7 @@ CmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3551,7 +3551,7 @@ CmdResult writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t e
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3571,7 +3571,7 @@ CmdResult readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t& e
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, serializer.offset, REPLY_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
@@ -3582,7 +3582,7 @@ CmdResult readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t& e
         
         extract(serializer, enable);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3602,7 +3602,7 @@ CmdResult saveVerticalGyroConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3621,7 +3621,7 @@ CmdResult loadVerticalGyroConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3640,7 +3640,7 @@ CmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, serializer.offset);
 }
@@ -3675,7 +3675,7 @@ CmdResult writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, f
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     insert(serializer, max_offset);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, serializer.offset);
 }
@@ -3694,7 +3694,7 @@ CmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t& enable, f
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, serializer.offset, REPLY_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
@@ -3706,7 +3706,7 @@ CmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t& enable, f
         extract(serializer, enable);
         extract(serializer, max_offset);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3724,7 +3724,7 @@ CmdResult saveGnssAntennaCalControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, serializer.offset);
 }
@@ -3741,7 +3741,7 @@ CmdResult loadGnssAntennaCalControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, serializer.offset);
 }
@@ -3758,7 +3758,7 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, serializer.offset);
 }
@@ -3792,7 +3792,7 @@ CmdResult writeMagneticDeclinationSource(C::mip_interface& device, FilterMagDecl
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
     insert(serializer, declination);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, serializer.offset);
 }
@@ -3810,7 +3810,7 @@ CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDecli
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     uint8_t responseLength;
     mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, serializer.offset, REPLY_DECLINATION_SOURCE, buffer, &responseLength);
@@ -3822,7 +3822,7 @@ CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDecli
         extract(serializer, source);
         extract(serializer, declination);
         
-        if( !!!serializer )
+        if( !serializer.isOk() )
             result_local = MIP_STATUS_ERROR;
     }
     return result_local;
@@ -3839,7 +3839,7 @@ CmdResult saveMagneticDeclinationSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, serializer.offset);
 }
@@ -3855,7 +3855,7 @@ CmdResult loadMagneticDeclinationSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, serializer.offset);
 }
@@ -3871,7 +3871,7 @@ CmdResult defaultMagneticDeclinationSource(C::mip_interface& device)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, serializer.offset);
 }
@@ -3900,7 +3900,7 @@ CmdResult setInitialHeading(C::mip_interface& device, float heading)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, heading);
-    assert(!!serializer);
+    assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_HEADING, buffer, serializer.offset);
 }

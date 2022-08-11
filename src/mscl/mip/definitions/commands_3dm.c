@@ -8,7 +8,7 @@
 
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -5144,7 +5144,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, en
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 
