@@ -6,7 +6,7 @@
 
 
 TcpMipDevice::TcpMipDevice(const std::string& hostname, uint16_t port) :
-    MipDeviceInterface(mParseBuffer, sizeof(mParseBuffer), 1000, 2000),
+    DeviceInterface(mParseBuffer, sizeof(mParseBuffer), 1000, 2000),
     mSocket(hostname, port)
 {
 }
@@ -15,10 +15,10 @@ bool TcpMipDevice::update()
 {
     try
     {
-        mscl::Timestamp now = getCurrentTimestamp();
-        mscl::C::mip_cmd_queue_update(&cmdQueue(), now);
+        mip::Timestamp now = getCurrentTimestamp();
+        mip::C::mip_cmd_queue_update(&cmdQueue(), now);
 
-        return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mscl::Timestamp* timestamp_out)->bool
+        return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mip::Timestamp* timestamp_out)->bool
         {
             *count_out = mSocket.recv(buffer, maxCount);
             *timestamp_out = getCurrentTimestamp();

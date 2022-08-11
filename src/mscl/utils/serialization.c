@@ -85,3 +85,25 @@ EXTRACT_MACRO(s32,    int32_t )
 EXTRACT_MACRO(s64,    int64_t )
 EXTRACT_MACRO(float,  float   )
 EXTRACT_MACRO(double, double  )
+
+
+void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
+{
+    *count_out = 0;  // Default to zero if extraction fails.
+    extract_u8(serializer, count_out);
+    if( *count_out > max_count )
+    {
+        // This is an error condition which can occur if the device sends
+        // more array entries than the receiving structure expected.
+        // This does not imply any sort of protocol violation, only that
+        // the receiving array was not large enough.
+        // Either way, deserialization cannot continue because the following
+        // array extraction would leave some elements in the input buffer.
+        *count_out = 0;
+        serializer->offset = SIZE_MAX;
+    }
+}
+
+#ifdef __cplusplus
+} // namespace mip
+#endif

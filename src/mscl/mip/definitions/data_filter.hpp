@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -233,8 +233,8 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 
 struct PositionLlh
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_POS_LLH;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_LLH;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -257,8 +257,8 @@ void extract(MipSerializer& serializer, PositionLlh& self);
 
 struct VelocityNed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_VEL_NED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -289,8 +289,8 @@ void extract(MipSerializer& serializer, VelocityNed& self);
 
 struct AttitudeQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ATT_QUATERNION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_QUATERNION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -321,8 +321,8 @@ void extract(MipSerializer& serializer, AttitudeQuaternion& self);
 
 struct AttitudeDcm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ATT_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_MATRIX;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -344,8 +344,8 @@ void extract(MipSerializer& serializer, AttitudeDcm& self);
 
 struct EulerAngles
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ATT_EULER_ANGLES;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -368,8 +368,8 @@ void extract(MipSerializer& serializer, EulerAngles& self);
 
 struct GyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GYRO_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -390,8 +390,8 @@ void extract(MipSerializer& serializer, GyroBias& self);
 
 struct AccelBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ACCEL_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -412,8 +412,8 @@ void extract(MipSerializer& serializer, AccelBias& self);
 
 struct PositionLlhUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_POS_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -436,8 +436,8 @@ void extract(MipSerializer& serializer, PositionLlhUncertainty& self);
 
 struct VelocityNedUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_VEL_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -461,8 +461,8 @@ void extract(MipSerializer& serializer, VelocityNedUncertainty& self);
 
 struct EulerAnglesUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ATT_UNCERTAINTY_EULER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_EULER;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -485,8 +485,8 @@ void extract(MipSerializer& serializer, EulerAnglesUncertainty& self);
 
 struct GyroBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -507,8 +507,8 @@ void extract(MipSerializer& serializer, GyroBiasUncertainty& self);
 
 struct AccelBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -535,8 +535,8 @@ void extract(MipSerializer& serializer, AccelBiasUncertainty& self);
 
 struct Timestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_FILTER_TIMESTAMP;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_TIMESTAMP;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -558,8 +558,8 @@ void extract(MipSerializer& serializer, Timestamp& self);
 
 struct Status
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_FILTER_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -582,8 +582,8 @@ void extract(MipSerializer& serializer, Status& self);
 
 struct LinearAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_LINEAR_ACCELERATION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_LINEAR_ACCELERATION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -604,8 +604,8 @@ void extract(MipSerializer& serializer, LinearAccel& self);
 
 struct GravityVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GRAVITY_VECTOR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -626,8 +626,8 @@ void extract(MipSerializer& serializer, GravityVector& self);
 
 struct CompAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_COMPENSATED_ACCELERATION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ACCELERATION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -648,8 +648,8 @@ void extract(MipSerializer& serializer, CompAccel& self);
 
 struct CompAngularRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -670,8 +670,8 @@ void extract(MipSerializer& serializer, CompAngularRate& self);
 
 struct QuaternionAttitudeUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -692,8 +692,8 @@ void extract(MipSerializer& serializer, QuaternionAttitudeUncertainty& self);
 
 struct Wgs84GravityMag
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_WGS84_GRAVITY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -717,8 +717,8 @@ void extract(MipSerializer& serializer, Wgs84GravityMag& self);
 
 struct HeadingUpdateState
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_HEADING_UPDATE_STATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -751,8 +751,8 @@ void extract(MipSerializer& serializer, HeadingUpdateState& self);
 
 struct MagneticModel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAGNETIC_MODEL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAGNETIC_MODEL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -777,8 +777,8 @@ void extract(MipSerializer& serializer, MagneticModel& self);
 
 struct AccelScaleFactor
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ACCEL_SCALE_FACTOR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -799,8 +799,8 @@ void extract(MipSerializer& serializer, AccelScaleFactor& self);
 
 struct AccelScaleFactorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -821,8 +821,8 @@ void extract(MipSerializer& serializer, AccelScaleFactorUncertainty& self);
 
 struct GyroScaleFactor
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GYRO_SCALE_FACTOR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -843,8 +843,8 @@ void extract(MipSerializer& serializer, GyroScaleFactor& self);
 
 struct GyroScaleFactorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -865,8 +865,8 @@ void extract(MipSerializer& serializer, GyroScaleFactorUncertainty& self);
 
 struct MagBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -887,8 +887,8 @@ void extract(MipSerializer& serializer, MagBias& self);
 
 struct MagBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -911,8 +911,8 @@ void extract(MipSerializer& serializer, MagBiasUncertainty& self);
 
 struct StandardAtmosphere
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -941,8 +941,8 @@ void extract(MipSerializer& serializer, StandardAtmosphere& self);
 
 struct PressureAltitude
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -962,8 +962,8 @@ void extract(MipSerializer& serializer, PressureAltitude& self);
 
 struct DensityAltitude
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_DENSITY_ALTITUDE_DATA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -986,8 +986,8 @@ void extract(MipSerializer& serializer, DensityAltitude& self);
 
 struct AntennaOffsetCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1008,8 +1008,8 @@ void extract(MipSerializer& serializer, AntennaOffsetCorrection& self);
 
 struct AntennaOffsetCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1032,8 +1032,8 @@ void extract(MipSerializer& serializer, AntennaOffsetCorrectionUncertainty& self
 
 struct MultiAntennaOffsetCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1055,8 +1055,8 @@ void extract(MipSerializer& serializer, MultiAntennaOffsetCorrection& self);
 
 struct MultiAntennaOffsetCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1080,8 +1080,8 @@ void extract(MipSerializer& serializer, MultiAntennaOffsetCorrectionUncertainty&
 
 struct MagnetometerOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_COMPENSATION_OFFSET;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1104,8 +1104,8 @@ void extract(MipSerializer& serializer, MagnetometerOffset& self);
 
 struct MagnetometerMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_COMPENSATION_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1126,8 +1126,8 @@ void extract(MipSerializer& serializer, MagnetometerMatrix& self);
 
 struct MagnetometerOffsetUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1148,8 +1148,8 @@ void extract(MipSerializer& serializer, MagnetometerOffsetUncertainty& self);
 
 struct MagnetometerMatrixUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1169,8 +1169,8 @@ void extract(MipSerializer& serializer, MagnetometerMatrixUncertainty& self);
 
 struct MagnetometerCovarianceMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_COVARIANCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1191,8 +1191,8 @@ void extract(MipSerializer& serializer, MagnetometerCovarianceMatrix& self);
 
 struct MagnetometerResidualVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_MAG_RESIDUAL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_RESIDUAL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1213,8 +1213,8 @@ void extract(MipSerializer& serializer, MagnetometerResidualVector& self);
 
 struct ClockCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_CLOCK_CORRECTION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1237,8 +1237,8 @@ void extract(MipSerializer& serializer, ClockCorrection& self);
 
 struct ClockCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1261,8 +1261,8 @@ void extract(MipSerializer& serializer, ClockCorrectionUncertainty& self);
 
 struct GnssPosAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GNSS_POS_AID_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1285,8 +1285,8 @@ void extract(MipSerializer& serializer, GnssPosAidStatus& self);
 
 struct GnssAttAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GNSS_ATT_AID_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_ATT_AID_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1308,8 +1308,8 @@ void extract(MipSerializer& serializer, GnssAttAidStatus& self);
 
 struct HeadAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_HEAD_AID_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1337,8 +1337,8 @@ void extract(MipSerializer& serializer, HeadAidStatus& self);
 
 struct RelPosNed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_REL_POS_NED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_REL_POS_NED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1359,8 +1359,8 @@ void extract(MipSerializer& serializer, RelPosNed& self);
 
 struct EcefPos
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ECEF_POS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1381,8 +1381,8 @@ void extract(MipSerializer& serializer, EcefPos& self);
 
 struct EcefVel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ECEF_VEL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1403,8 +1403,8 @@ void extract(MipSerializer& serializer, EcefVel& self);
 
 struct EcefPosUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ECEF_POS_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1425,8 +1425,8 @@ void extract(MipSerializer& serializer, EcefPosUncertainty& self);
 
 struct EcefVelUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1447,8 +1447,8 @@ void extract(MipSerializer& serializer, EcefVelUncertainty& self);
 
 struct AidingMeasurementSummary
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_AID_MEAS_SUMMARY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1471,8 +1471,8 @@ void extract(MipSerializer& serializer, AidingMeasurementSummary& self);
 
 struct OdometerScaleFactorError
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1493,8 +1493,8 @@ void extract(MipSerializer& serializer, OdometerScaleFactorError& self);
 
 struct OdometerScaleFactorErrorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1515,8 +1515,8 @@ void extract(MipSerializer& serializer, OdometerScaleFactorErrorUncertainty& sel
 
 struct GnssDualAntennaStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1563,5 +1563,5 @@ void extract(MipSerializer& serializer, GnssDualAntennaStatus& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace data_filter
-} // namespace mscl
+} // namespace mip
 

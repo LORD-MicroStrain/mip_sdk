@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -67,8 +67,8 @@ static const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 
 struct ReceiverInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::CMD_LIST_RECEIVERS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -82,8 +82,8 @@ struct ReceiverInfo
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::REPLY_LIST_RECEIVERS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
         
         uint8_t num_receivers;
         Info* receiver_info;
@@ -111,8 +111,8 @@ MipCmdResult receiverInfo(C::mip_interface& device, uint8_t& num_receivers, Rece
 
 struct SignalConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::CMD_SIGNAL_CONFIGURATION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -129,8 +129,8 @@ struct SignalConfiguration
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
         
         uint8_t gps_enable;
         uint8_t glonass_enable;
@@ -162,8 +162,8 @@ MipCmdResult defaultSignalConfiguration(C::mip_interface& device);
 
 struct RtkDongleConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -177,8 +177,8 @@ struct RtkDongleConfiguration
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
         
         uint8_t enable;
         uint8_t reserved[3];
@@ -208,8 +208,8 @@ MipCmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
 
 struct ReceiverSafeMode
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_gnss::CMD_RECEIVER_SAFE_MODE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RECEIVER_SAFE_MODE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -229,5 +229,5 @@ MipCmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiver_id, uin
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_gnss
-} // namespace mscl
+} // namespace mip
 

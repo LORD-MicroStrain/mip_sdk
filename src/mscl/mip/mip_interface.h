@@ -8,7 +8,7 @@
 #include "mip_dispatch.h"
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mip{
 namespace C {
 extern "C" {
 #endif
@@ -153,7 +153,7 @@ extern bool mip_interface_user_send_to_device(struct mip_interface* device, cons
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 } // namespace C
 } // extern "C"
 #endif

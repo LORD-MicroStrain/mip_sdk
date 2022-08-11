@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -78,8 +78,8 @@ enum
 
 struct RawAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_ACCEL_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -100,8 +100,8 @@ void extract(MipSerializer& serializer, RawAccel& self);
 
 struct RawGyro
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_GYRO_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -122,8 +122,8 @@ void extract(MipSerializer& serializer, RawGyro& self);
 
 struct RawMag
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_MAG_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -144,8 +144,8 @@ void extract(MipSerializer& serializer, RawMag& self);
 
 struct RawPressure
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_PRESSURE_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -166,8 +166,8 @@ void extract(MipSerializer& serializer, RawPressure& self);
 
 struct ScaledAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_ACCEL_SCALED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -188,8 +188,8 @@ void extract(MipSerializer& serializer, ScaledAccel& self);
 
 struct ScaledGyro
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_GYRO_SCALED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -210,8 +210,8 @@ void extract(MipSerializer& serializer, ScaledGyro& self);
 
 struct ScaledMag
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_MAG_SCALED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -231,8 +231,8 @@ void extract(MipSerializer& serializer, ScaledMag& self);
 
 struct ScaledPressure
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_PRESSURE_SCALED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -253,8 +253,8 @@ void extract(MipSerializer& serializer, ScaledPressure& self);
 
 struct DeltaTheta
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_DELTA_THETA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_THETA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -275,8 +275,8 @@ void extract(MipSerializer& serializer, DeltaTheta& self);
 
 struct DeltaVelocity
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_DELTA_VELOCITY;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_VELOCITY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -306,8 +306,8 @@ void extract(MipSerializer& serializer, DeltaVelocity& self);
 
 struct CompOrientationMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_COMP_ORIENTATION_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_MATRIX;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -335,8 +335,8 @@ void extract(MipSerializer& serializer, CompOrientationMatrix& self);
 
 struct CompQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_COMP_QUATERNION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_QUATERNION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -357,8 +357,8 @@ void extract(MipSerializer& serializer, CompQuaternion& self);
 
 struct CompEulerAngles
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_COMP_EULER_ANGLES;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_EULER_ANGLES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -380,8 +380,8 @@ void extract(MipSerializer& serializer, CompEulerAngles& self);
 
 struct CompOrientationUpdateMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_COMP_ORIENTATION_UPDATE_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_UPDATE_MATRIX;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -401,8 +401,8 @@ void extract(MipSerializer& serializer, CompOrientationUpdateMatrix& self);
 
 struct OrientationRawTemp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_TEMPERATURE_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -422,8 +422,8 @@ void extract(MipSerializer& serializer, OrientationRawTemp& self);
 
 struct InternalTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_TIME_STAMP_INTERNAL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_INTERNAL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -443,8 +443,8 @@ void extract(MipSerializer& serializer, InternalTimestamp& self);
 
 struct PpsTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_TIME_STAMP_PPS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_PPS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -471,8 +471,8 @@ void extract(MipSerializer& serializer, PpsTimestamp& self);
 
 struct GpsTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_TIME_STAMP_GPS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -517,8 +517,8 @@ void extract(MipSerializer& serializer, GpsTimestamp& self);
 
 struct TemperatureAbs
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_TEMPERATURE_ABS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_ABS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -546,8 +546,8 @@ void extract(MipSerializer& serializer, TemperatureAbs& self);
 
 struct UpVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_STAB_ACCEL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_ACCEL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -570,8 +570,8 @@ void extract(MipSerializer& serializer, UpVector& self);
 
 struct NorthVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_STAB_MAG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_MAG;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -590,8 +590,8 @@ void extract(MipSerializer& serializer, NorthVector& self);
 
 struct OverrangeStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_OVERRANGE_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -634,8 +634,8 @@ void extract(MipSerializer& serializer, OverrangeStatus& self);
 
 struct OdometerData
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_sensor::DATA_ODOMETER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ODOMETER;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -655,5 +655,5 @@ void extract(MipSerializer& serializer, OdometerData& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace data_sensor
-} // namespace mscl
+} // namespace mip
 

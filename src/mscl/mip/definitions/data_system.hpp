@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -73,8 +73,8 @@ enum
 
 struct BuiltInTest
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_BUILT_IN_TEST;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_BUILT_IN_TEST;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -94,8 +94,8 @@ void extract(MipSerializer& serializer, BuiltInTest& self);
 
 struct TimeSyncStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_TIME_SYNC_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_TIME_SYNC_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -134,8 +134,8 @@ void extract(MipSerializer& serializer, TimeSyncStatus& self);
 
 struct GpioState
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_GPIO_STATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_STATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -156,8 +156,8 @@ void extract(MipSerializer& serializer, GpioState& self);
 
 struct GpioAnalogValue
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_system::DATA_GPIO_ANALOG_VALUE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_ANALOG_VALUE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -176,5 +176,5 @@ void extract(MipSerializer& serializer, GpioAnalogValue& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace data_system
-} // namespace mscl
+} // namespace mip
 

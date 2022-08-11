@@ -7,7 +7,7 @@
 #include <assert.h>
 
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace commands_base {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -574,5 +574,5 @@ MipCmdResult softReset(C::mip_interface& device)
 
 
 } // namespace commands_base
-} // namespace mscl
+} // namespace mip
 

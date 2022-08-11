@@ -25,7 +25,7 @@
 ///@brief A collection of C++ classes and functions covering the full
 /// mscl-embedded api.
 ///
-namespace mscl
+namespace mip
 {
 
 using PacketLength = C::packet_length;
@@ -316,5 +316,5 @@ bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPa
 }
 
 
-} // namespace mscl
+} // namespace mip
 ////////////////////////////////////////////////////////////////////////////////

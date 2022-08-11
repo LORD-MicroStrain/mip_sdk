@@ -7,7 +7,7 @@
 #include <assert.h>
 
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace data_sensor {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -307,5 +307,5 @@ void extract(MipSerializer& serializer, OdometerData& self)
 
 
 } // namespace data_sensor
-} // namespace mscl
+} // namespace mip
 

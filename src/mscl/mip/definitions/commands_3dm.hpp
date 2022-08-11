@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -210,8 +210,8 @@ enum class SensorRangeType : uint8_t
 
 struct PollImuMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_IMU_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_IMU_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -241,8 +241,8 @@ MipCmdResult pollImuMessage(C::mip_interface& device, bool suppress_ack, uint8_t
 
 struct PollGnssMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_GNSS_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_GNSS_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -272,8 +272,8 @@ MipCmdResult pollGnssMessage(C::mip_interface& device, bool suppress_ack, uint8_
 
 struct PollFilterMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_FILTER_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_FILTER_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -298,8 +298,8 @@ MipCmdResult pollFilterMessage(C::mip_interface& device, bool suppress_ack, uint
 
 struct ImuMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -313,8 +313,8 @@ struct ImuMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
         MipDescriptorRate* descriptors;
@@ -344,8 +344,8 @@ MipCmdResult defaultImuMessageFormat(C::mip_interface& device);
 
 struct GpsMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -359,8 +359,8 @@ struct GpsMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
         MipDescriptorRate* descriptors;
@@ -390,8 +390,8 @@ MipCmdResult defaultGpsMessageFormat(C::mip_interface& device);
 
 struct FilterMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -405,8 +405,8 @@ struct FilterMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
         MipDescriptorRate* descriptors;
@@ -437,16 +437,16 @@ MipCmdResult defaultFilterMessageFormat(C::mip_interface& device);
 
 struct ImuGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_IMU_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_IMU_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_IMU_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
         
         uint16_t rate;
         
@@ -472,16 +472,16 @@ MipCmdResult imuGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct GpsGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_GNSS_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_GNSS_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
         
         uint16_t rate;
         
@@ -507,16 +507,16 @@ MipCmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct FilterGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_FILTER_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_FILTER_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_FILTER_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
         
         uint16_t rate;
         
@@ -546,8 +546,8 @@ MipCmdResult filterGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct PollData
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_DATA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -571,8 +571,8 @@ MipCmdResult pollData(C::mip_interface& device, uint8_t desc_set, bool suppress_
 
 struct GetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -580,8 +580,8 @@ struct GetBaseRate
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
         
         uint8_t desc_set;
         uint16_t rate;
@@ -607,8 +607,8 @@ MipCmdResult getBaseRate(C::mip_interface& device, uint8_t desc_set, uint16_t& r
 
 struct MessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -623,8 +623,8 @@ struct MessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
         
         uint8_t desc_set;
         uint8_t num_descriptors;
@@ -659,8 +659,8 @@ MipCmdResult defaultMessageFormat(C::mip_interface& device, uint8_t desc_set);
 
 struct NmeaPollData
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_NMEA_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_NMEA_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -683,8 +683,8 @@ MipCmdResult nmeaPollData(C::mip_interface& device, bool suppress_ack, uint8_t c
 
 struct NmeaMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -698,8 +698,8 @@ struct NmeaMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         
         uint8_t count;
         NMEAMessageFormat* format_entries;
@@ -731,8 +731,8 @@ MipCmdResult defaultNmeaMessageFormat(C::mip_interface& device);
 
 struct DeviceSettings
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
     
     static const bool HAS_WRITE_FUNCTION = false;
     static const bool HAS_READ_FUNCTION = false;
@@ -773,8 +773,8 @@ MipCmdResult defaultDeviceSettings(C::mip_interface& device);
 
 struct UartBaudrate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_UART_BAUDRATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_UART_BAUDRATE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -787,8 +787,8 @@ struct UartBaudrate
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_UART_BAUDRATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
         
         uint32_t baud;
         
@@ -818,8 +818,8 @@ MipCmdResult defaultUartBaudrate(C::mip_interface& device);
 
 struct FactoryStreaming
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -853,8 +853,8 @@ MipCmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action
 
 struct DatastreamControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CONTROL_DATA_STREAM;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONTROL_DATA_STREAM;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -872,8 +872,8 @@ struct DatastreamControl
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_DATASTREAM_ENABLE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
         
         uint8_t desc_set;
         bool enabled;
@@ -904,8 +904,8 @@ MipCmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t desc_set
 
 struct GnssSbasSettings
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -938,8 +938,8 @@ struct GnssSbasSettings
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
         
         uint8_t enable_sbas;
         SBASOptions sbas_options;
@@ -972,8 +972,8 @@ MipCmdResult defaultGnssSbasSettings(C::mip_interface& device);
 
 struct GnssTimeAssistance
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -988,8 +988,8 @@ struct GnssTimeAssistance
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
         
         double tow;
         uint16_t week_number;
@@ -1028,8 +1028,8 @@ MipCmdResult readGnssTimeAssistance(C::mip_interface& device, double& tow, uint1
 
 struct AdvLowpassFilter
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ADVANCED_DATA_FILTER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ADVANCED_DATA_FILTER;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1046,8 +1046,8 @@ struct AdvLowpassFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
         
         uint8_t target_descriptor;
         bool enable;
@@ -1078,8 +1078,8 @@ MipCmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t target_de
 
 struct PpsSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_PPS_SOURCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_PPS_SOURCE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1101,8 +1101,8 @@ struct PpsSource
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_PPS_SOURCE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
         
         Source source;
         
@@ -1145,8 +1145,8 @@ MipCmdResult defaultPpsSource(C::mip_interface& device);
 
 struct GpioConfig
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GPIO_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1205,8 +1205,8 @@ struct GpioConfig
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GPIO_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
         
         uint8_t pin;
         Feature feature;
@@ -1251,8 +1251,8 @@ MipCmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
 
 struct GpioState
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GPIO_STATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_STATE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1266,8 +1266,8 @@ struct GpioState
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GPIO_STATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
         
         uint8_t pin;
         bool state;
@@ -1293,8 +1293,8 @@ MipCmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool& state);
 
 struct Odometer
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ODOMETER_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ODOMETER_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1315,8 +1315,8 @@ struct Odometer
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ODOMETER_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
         
         Mode mode;
         float scaling;
@@ -1361,8 +1361,8 @@ MipCmdResult defaultOdometer(C::mip_interface& device);
 
 struct GetEventSupport
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_SUPPORT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_SUPPORT;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1382,8 +1382,8 @@ struct GetEventSupport
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_SUPPORT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
         
         Query query;
         uint8_t max_instances;
@@ -1421,8 +1421,8 @@ MipCmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query qu
 
 struct EventControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_CONTROL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_CONTROL;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1444,8 +1444,8 @@ struct EventControl
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_CONTROL;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
         
         uint8_t instance;
         Mode mode;
@@ -1472,8 +1472,8 @@ MipCmdResult defaultEventControl(C::mip_interface& device, uint8_t instance);
 
 struct GetEventTriggerStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1505,8 +1505,8 @@ struct GetEventTriggerStatus
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
         
         uint8_t count;
         Entry triggers[20];
@@ -1532,8 +1532,8 @@ MipCmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_c
 
 struct GetEventActionStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_ACTION_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1548,8 +1548,8 @@ struct GetEventActionStatus
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_ACTION_STATUS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
         
         uint8_t count;
         Entry actions[20];
@@ -1576,8 +1576,8 @@ MipCmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_co
 
 struct EventTrigger
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1664,8 +1664,8 @@ struct EventTrigger
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
         
         uint8_t instance;
         Type type;
@@ -1703,8 +1703,8 @@ MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
 
 struct EventAction
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_ACTION_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1757,8 +1757,8 @@ struct EventAction
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
         
         uint8_t instance;
         uint8_t trigger;
@@ -1796,8 +1796,8 @@ MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
 
 struct AccelBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ACCEL_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ACCEL_BIAS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1810,8 +1810,8 @@ struct AccelBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
         
         float bias[3];
         
@@ -1840,8 +1840,8 @@ MipCmdResult defaultAccelBias(C::mip_interface& device);
 
 struct GyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GYRO_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GYRO_BIAS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1854,8 +1854,8 @@ struct GyroBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
         float bias[3];
         
@@ -1887,8 +1887,8 @@ MipCmdResult defaultGyroBias(C::mip_interface& device);
 
 struct CaptureGyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1896,8 +1896,8 @@ struct CaptureGyroBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
         float bias[3];
         
@@ -1926,8 +1926,8 @@ MipCmdResult captureGyroBias(C::mip_interface& device, uint16_t averaging_time_m
 
 struct MagHardIronOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_HARD_IRON_OFFSET;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_HARD_IRON_OFFSET;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1940,8 +1940,8 @@ struct MagHardIronOffset
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
         
         float offset[3];
         
@@ -1978,8 +1978,8 @@ MipCmdResult defaultMagHardIronOffset(C::mip_interface& device);
 
 struct MagSoftIronMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SOFT_IRON_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SOFT_IRON_MATRIX;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1992,8 +1992,8 @@ struct MagSoftIronMatrix
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
         
         float offset[9];
         
@@ -2044,8 +2044,8 @@ MipCmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
 
 struct Sensor2VehicleTransformEuler
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2060,8 +2060,8 @@ struct Sensor2VehicleTransformEuler
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
         
         float roll;
         float pitch;
@@ -2122,8 +2122,8 @@ MipCmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
 
 struct Sensor2VehicleTransformQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2136,8 +2136,8 @@ struct Sensor2VehicleTransformQuaternion
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
         
         float q[4];
         
@@ -2194,8 +2194,8 @@ MipCmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
 
 struct Sensor2VehicleTransformDcm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2208,8 +2208,8 @@ struct Sensor2VehicleTransformDcm
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
         
         float dcm[9];
         
@@ -2240,8 +2240,8 @@ MipCmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
 
 struct ComplementaryFilter
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_LEGACY_COMP_FILTER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LEGACY_COMP_FILTER;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2257,8 +2257,8 @@ struct ComplementaryFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_LEGACY_COMP_FILTER;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
         
         bool pitch_roll_enable;
         bool heading_enable;
@@ -2295,8 +2295,8 @@ MipCmdResult defaultComplementaryFilter(C::mip_interface& device);
 
 struct SensorRange
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR_RANGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR_RANGE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2310,8 +2310,8 @@ struct SensorRange
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR_RANGE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
         
         SensorRangeType sensor;
         uint8_t setting;
@@ -2342,8 +2342,8 @@ MipCmdResult defaultSensorRange(C::mip_interface& device, SensorRangeType sensor
 
 struct CalibratedSensorRanges
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CALIBRATED_RANGES;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CALIBRATED_RANGES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -2357,8 +2357,8 @@ struct CalibratedSensorRanges
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_CALIBRATED_RANGES;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
         
         SensorRangeType sensor;
         uint8_t num_ranges;
@@ -2384,5 +2384,5 @@ MipCmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType se
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_3dm
-} // namespace mscl
+} // namespace mip
 

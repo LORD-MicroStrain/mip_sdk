@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -70,8 +70,8 @@ static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 
 struct CommMode
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_system::CMD_COM_MODE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -84,8 +84,8 @@ struct CommMode
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_system::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_system::REPLY_COM_MODE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
         
         uint8_t mode;
         
@@ -108,5 +108,5 @@ MipCmdResult defaultCommMode(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_system
-} // namespace mscl
+} // namespace mip
 

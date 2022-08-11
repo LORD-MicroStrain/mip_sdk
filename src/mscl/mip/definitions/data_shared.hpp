@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -65,8 +65,8 @@ static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 
 struct EventSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_EVENT_SOURCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -89,8 +89,8 @@ void extract(MipSerializer& serializer, EventSource& self);
 
 struct Ticks
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_TICKS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -114,8 +114,8 @@ void extract(MipSerializer& serializer, Ticks& self);
 
 struct DeltaTicks
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_DELTA_TICKS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -138,8 +138,8 @@ void extract(MipSerializer& serializer, DeltaTicks& self);
 
 struct GpsTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_GPS_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -187,8 +187,8 @@ void extract(MipSerializer& serializer, GpsTimestamp& self);
 
 struct DeltaTime
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_DELTA_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -215,8 +215,8 @@ void extract(MipSerializer& serializer, DeltaTime& self);
 
 struct ReferenceTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_REFERENCE_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -245,8 +245,8 @@ void extract(MipSerializer& serializer, ReferenceTimestamp& self);
 
 struct ReferenceTimeDelta
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_REF_TIME_DELTA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -274,8 +274,8 @@ void extract(MipSerializer& serializer, ReferenceTimeDelta& self);
 
 struct ExternalTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_EXTERNAL_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -323,8 +323,8 @@ void extract(MipSerializer& serializer, ExternalTimestamp& self);
 
 struct ExternalTimeDelta
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_shared::DATA_SYS_TIME_DELTA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -358,5 +358,5 @@ void extract(MipSerializer& serializer, ExternalTimeDelta& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace data_shared
-} // namespace mscl
+} // namespace mip
 

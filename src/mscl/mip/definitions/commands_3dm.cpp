@@ -7,7 +7,7 @@
 #include <assert.h>
 
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace commands_3dm {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -56,7 +56,7 @@ void insert(MipSerializer& serializer, const PollImuMessage& self)
 void extract(MipSerializer& serializer, PollImuMessage& self)
 {
     extract(serializer, self.suppress_ack);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -100,7 +100,7 @@ void insert(MipSerializer& serializer, const PollGnssMessage& self)
 void extract(MipSerializer& serializer, PollGnssMessage& self)
 {
     extract(serializer, self.suppress_ack);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -144,7 +144,7 @@ void insert(MipSerializer& serializer, const PollFilterMessage& self)
 void extract(MipSerializer& serializer, PollFilterMessage& self)
 {
     extract(serializer, self.suppress_ack);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -188,7 +188,7 @@ void insert(MipSerializer& serializer, const ImuMessageFormat& self)
 void extract(MipSerializer& serializer, ImuMessageFormat& self)
 {
     extract(serializer, self.function);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -238,7 +238,7 @@ MipCmdResult readImuMessageFormat(C::mip_interface& device, uint8_t& num_descrip
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &num_descriptors, num_descriptors);
+        ::mip::C::extract_count(&serializer, &num_descriptors, num_descriptors);
         for(unsigned int i=0; i < num_descriptors; i++)
             extract(serializer, descriptors[i]);
         
@@ -310,7 +310,7 @@ void insert(MipSerializer& serializer, const GpsMessageFormat& self)
 void extract(MipSerializer& serializer, GpsMessageFormat& self)
 {
     extract(serializer, self.function);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -360,7 +360,7 @@ MipCmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t& num_descrip
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &num_descriptors, num_descriptors);
+        ::mip::C::extract_count(&serializer, &num_descriptors, num_descriptors);
         for(unsigned int i=0; i < num_descriptors; i++)
             extract(serializer, descriptors[i]);
         
@@ -432,7 +432,7 @@ void insert(MipSerializer& serializer, const FilterMessageFormat& self)
 void extract(MipSerializer& serializer, FilterMessageFormat& self)
 {
     extract(serializer, self.function);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -482,7 +482,7 @@ MipCmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t& num_desc
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &num_descriptors, num_descriptors);
+        ::mip::C::extract_count(&serializer, &num_descriptors, num_descriptors);
         for(unsigned int i=0; i < num_descriptors; i++)
             extract(serializer, descriptors[i]);
         
@@ -673,7 +673,7 @@ void extract(MipSerializer& serializer, PollData& self)
 {
     extract(serializer, self.desc_set);
     extract(serializer, self.suppress_ack);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -763,7 +763,7 @@ void extract(MipSerializer& serializer, MessageFormat& self)
 {
     extract(serializer, self.function);
     extract(serializer, self.desc_set);
-    mscl::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    ::mip::C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -819,7 +819,7 @@ MipCmdResult readMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8
         MipSerializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, desc_set);
-        mscl::C::extract_count(&serializer, &num_descriptors, num_descriptors);
+        ::mip::C::extract_count(&serializer, &num_descriptors, num_descriptors);
         for(unsigned int i=0; i < num_descriptors; i++)
             extract(serializer, descriptors[i]);
         
@@ -897,7 +897,7 @@ void insert(MipSerializer& serializer, const NmeaPollData& self)
 void extract(MipSerializer& serializer, NmeaPollData& self)
 {
     extract(serializer, self.suppress_ack);
-    mscl::C::extract_count(&serializer, &self.count, self.count);
+    ::mip::C::extract_count(&serializer, &self.count, self.count);
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.format_entries[i]);
 }
@@ -940,7 +940,7 @@ void insert(MipSerializer& serializer, const NmeaMessageFormat& self)
 void extract(MipSerializer& serializer, NmeaMessageFormat& self)
 {
     extract(serializer, self.function);
-    mscl::C::extract_count(&serializer, &self.count, self.count);
+    ::mip::C::extract_count(&serializer, &self.count, self.count);
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.format_entries[i]);
 }
@@ -988,7 +988,7 @@ MipCmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t& count, NME
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &count, count);
+        ::mip::C::extract_count(&serializer, &count, count);
         for(unsigned int i=0; i < count; i++)
             extract(serializer, format_entries[i]);
         
@@ -1474,7 +1474,7 @@ void extract(MipSerializer& serializer, GnssSbasSettings& self)
     extract(serializer, self.function);
     extract(serializer, self.enable_sbas);
     extract(serializer, self.sbas_options);
-    mscl::C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+    ::mip::C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
     for(unsigned int i=0; i < self.num_included_prns; i++)
         extract(serializer, self.included_prns[i]);
 }
@@ -1534,7 +1534,7 @@ MipCmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t& enable_sbas
         
         extract(serializer, enable_sbas);
         extract(serializer, sbas_options);
-        mscl::C::extract_count(&serializer, &num_included_prns, num_included_prns);
+        ::mip::C::extract_count(&serializer, &num_included_prns, num_included_prns);
         for(unsigned int i=0; i < num_included_prns; i++)
             extract(serializer, included_prns[i]);
         
@@ -2465,7 +2465,7 @@ MipCmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query qu
         
         extract(serializer, query);
         extract(serializer, max_instances);
-        mscl::C::extract_count(&serializer, &num_entries, num_entries);
+        ::mip::C::extract_count(&serializer, &num_entries, num_entries);
         for(unsigned int i=0; i < num_entries; i++)
             extract(serializer, entries[i]);
         
@@ -2645,7 +2645,7 @@ void insert(MipSerializer& serializer, const GetEventTriggerStatus& self)
 
 void extract(MipSerializer& serializer, GetEventTriggerStatus& self)
 {
-    mscl::C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    ::mip::C::extract_count(&serializer, &self.requested_count, self.requested_count);
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
 }
@@ -2679,7 +2679,7 @@ MipCmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_c
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &count, count);
+        ::mip::C::extract_count(&serializer, &count, count);
         for(unsigned int i=0; i < count; i++)
             extract(serializer, triggers[i]);
         
@@ -2698,7 +2698,7 @@ void insert(MipSerializer& serializer, const GetEventActionStatus& self)
 
 void extract(MipSerializer& serializer, GetEventActionStatus& self)
 {
-    mscl::C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    ::mip::C::extract_count(&serializer, &self.requested_count, self.requested_count);
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
 }
@@ -2732,7 +2732,7 @@ MipCmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_co
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &count, count);
+        ::mip::C::extract_count(&serializer, &count, count);
         for(unsigned int i=0; i < count; i++)
             extract(serializer, actions[i]);
         
@@ -2996,7 +2996,7 @@ void extract(MipSerializer& serializer, EventAction::MessageParams& self)
 {
     extract(serializer, self.desc_set);
     extract(serializer, self.decimation);
-    mscl::C::extract_count(&serializer, &self.num_fields, self.num_fields);
+    ::mip::C::extract_count(&serializer, &self.num_fields, self.num_fields);
     for(unsigned int i=0; i < self.num_fields; i++)
         extract(serializer, self.descriptors[i]);
 }
@@ -4787,7 +4787,7 @@ MipCmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType se
         MipSerializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, sensor);
-        mscl::C::extract_count(&serializer, &num_ranges, num_ranges);
+        ::mip::C::extract_count(&serializer, &num_ranges, num_ranges);
         for(unsigned int i=0; i < num_ranges; i++)
             extract(serializer, ranges[i]);
         
@@ -4799,5 +4799,5 @@ MipCmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType se
 
 
 } // namespace commands_3dm
-} // namespace mscl
+} // namespace mip
 

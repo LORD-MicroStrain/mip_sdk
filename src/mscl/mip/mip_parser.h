@@ -7,7 +7,7 @@
 #include "../types.h"
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mip{
 namespace C {
 extern "C" {
 #endif
@@ -82,7 +82,7 @@ timeout_type mip_timeout_from_baudrate(uint32_t baudrate);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 } // namespace C
 } // extern "C"
 #endif

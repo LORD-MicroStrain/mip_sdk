@@ -12,7 +12,7 @@
 #include <tuple>
 #include <type_traits>
 
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 #endif // __cplusplus
@@ -65,11 +65,11 @@ void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_d
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Convenience struct holding both descriptor set and field descriptor.
 ///
-struct MipCompositeDescriptor
+struct CompositeDescriptor
 {
 #ifdef __cplusplus
-    bool operator==(const MipCompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    bool operator<(const MipCompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+    bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
+    bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
 #endif // __cplusplus
 
     uint8_t descriptorSet;    ///< MIP descriptor set.
@@ -85,11 +85,11 @@ struct MipCompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
-template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert (Serializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void extract(Serializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
 
 
-struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
+struct FunctionSelector : detail::EnumWrapper<C::mip_function_selector>
 {
     static const uint8_t WRITE = C::MIP_FUNCTION_WRITE;
     static const uint8_t READ  = C::MIP_FUNCTION_READ;
@@ -98,7 +98,7 @@ struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
     static const uint8_t RESET = C::MIP_FUNCTION_RESET;
 };
 
-using MipDescriptorRate = C::mip_descriptor_rate;
+using DescriptorRate = C::mip_descriptor_rate;
 
 inline bool isDataDescriptorSet   (uint8_t descriptorSet)  { return C::is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
@@ -110,11 +110,11 @@ inline bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_respons
 inline bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
 
 
-inline void insert(MipSerializer& serializer, MipFunctionSelector self) { return C::insert_mip_function_selector(&serializer, self); }
-inline void extract(MipSerializer& serializer, MipFunctionSelector& self) { return C::extract_mip_function_selector(&serializer, &self._value); }
+inline void insert(Serializer& serializer, FunctionSelector self) { return C::insert_mip_function_selector(&serializer, self); }
+inline void extract(Serializer& serializer, FunctionSelector& self) { return C::extract_mip_function_selector(&serializer, &self._value); }
 
-inline void insert(MipSerializer& serializer, const MipDescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
+inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 } // namespace mscl
 

@@ -7,7 +7,7 @@
 #include <assert.h>
 
 
-namespace mscl {
+namespace mip {
 class MipSerializer;
 
 namespace C {
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace commands_gnss {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -75,7 +75,7 @@ MipCmdResult receiverInfo(C::mip_interface& device, uint8_t& num_receivers, Rece
     {
         MipSerializer serializer(buffer, sizeof(buffer));
         
-        mscl::C::extract_count(&serializer, &num_receivers, num_receivers);
+        ::mip::C::extract_count(&serializer, &num_receivers, num_receivers);
         for(unsigned int i=0; i < num_receivers; i++)
             extract(serializer, receiver_info[i]);
         
@@ -371,5 +371,5 @@ MipCmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiver_id, uin
 
 
 } // namespace commands_gnss
-} // namespace mscl
+} // namespace mip
 
