@@ -20,13 +20,13 @@ void handlePacket(void*, const mip::Packet& packet, mip::Timestamp timestamp)
 
     printf("\nGot packet with descriptor set 0x%02X:", packet.descriptorSet());
 
-    for(mip::MipField field : packet)
+    for(mip::Field field : packet)
         printf(" %02X", field.fieldDescriptor());
 
     printf("\n");
 }
 
-void handleAccel(void*, const mip::MipField& field, mip::Timestamp timestamp)
+void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledAccel data;
 
@@ -34,7 +34,7 @@ void handleAccel(void*, const mip::MipField& field, mip::Timestamp timestamp)
         printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
 }
 
-void handleGyro(void*, const mip::MipField& field, mip::Timestamp timestamp)
+void handleGyro(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledGyro data;
 
@@ -42,7 +42,7 @@ void handleGyro(void*, const mip::MipField& field, mip::Timestamp timestamp)
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void*, const mip::MipField& field, mip::Timestamp timestamp)
+void handleMag(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledMag data;
 

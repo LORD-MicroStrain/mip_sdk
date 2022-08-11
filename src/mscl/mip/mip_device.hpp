@@ -91,10 +91,10 @@ public:
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, Object* object);
 
 
-    template<void (*Callback)(void*, const MipField&, Timestamp)>
+    template<void (*Callback)(void*, const Field&, Timestamp)>
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData=nullptr);
 
-    template<class Object, void (Object::*Callback)(const MipField& field, Timestamp)>
+    template<class Object, void (Object::*Callback)(const Field& field, Timestamp)>
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object);
 
 
@@ -211,7 +211,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_field(void* context, const MipField& packet, Timestamp timestamp)
+/// void handle_field(void* context, const Field& packet, Timestamp timestamp)
 /// {
 ///   // Use the field data
 /// }
@@ -228,12 +228,12 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///
 ///@endcode
 ///
-template<void (*Callback)(void*, const MipField&, Timestamp)>
+template<void (*Callback)(void*, const Field&, Timestamp)>
 void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData)
 {
     auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
     {
-        Callback(context, MipField(*field), timestamp);
+        Callback(context, Field(*field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, userData);
@@ -255,7 +255,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///@code{.cpp}
 /// class MySystem
 /// {
-///   void handleField(const MipField& field, Timestamp timestamp)
+///   void handleField(const Field& field, Timestamp timestamp)
 ///   {
 ///   }
 ///
@@ -270,13 +270,13 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 /// };
 ///@endcode
 ///
-template<class Object, void (Object::*Callback)(const MipField&, Timestamp)>
+template<class Object, void (Object::*Callback)(const Field&, Timestamp)>
 void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object)
 {
     auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(MipField(*field), timestamp);
+        (obj->*Callback)(Field(*field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
