@@ -7,8 +7,8 @@
 #include <assert.h>
 
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace data_gnss {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -29,7 +29,7 @@ using namespace ::mscl::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(MipSerializer& serializer, const PosLlh& self)
+void insert(Serializer& serializer, const PosLlh& self)
 {
     insert(serializer, self.latitude);
     insert(serializer, self.longitude);
@@ -40,7 +40,7 @@ void insert(MipSerializer& serializer, const PosLlh& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, PosLlh& self)
+void extract(Serializer& serializer, PosLlh& self)
 {
     extract(serializer, self.latitude);
     extract(serializer, self.longitude);
@@ -51,7 +51,7 @@ void extract(MipSerializer& serializer, PosLlh& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const PosEcef& self)
+void insert(Serializer& serializer, const PosEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.x[i]);
@@ -59,7 +59,7 @@ void insert(MipSerializer& serializer, const PosEcef& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, PosEcef& self)
+void extract(Serializer& serializer, PosEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.x[i]);
@@ -67,7 +67,7 @@ void extract(MipSerializer& serializer, PosEcef& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const VelNed& self)
+void insert(Serializer& serializer, const VelNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.v[i]);
@@ -79,7 +79,7 @@ void insert(MipSerializer& serializer, const VelNed& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, VelNed& self)
+void extract(Serializer& serializer, VelNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.v[i]);
@@ -91,7 +91,7 @@ void extract(MipSerializer& serializer, VelNed& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const VelEcef& self)
+void insert(Serializer& serializer, const VelEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.v[i]);
@@ -99,7 +99,7 @@ void insert(MipSerializer& serializer, const VelEcef& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, VelEcef& self)
+void extract(Serializer& serializer, VelEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.v[i]);
@@ -107,7 +107,7 @@ void extract(MipSerializer& serializer, VelEcef& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const Dop& self)
+void insert(Serializer& serializer, const Dop& self)
 {
     insert(serializer, self.gdop);
     insert(serializer, self.pdop);
@@ -119,7 +119,7 @@ void insert(MipSerializer& serializer, const Dop& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, Dop& self)
+void extract(Serializer& serializer, Dop& self)
 {
     extract(serializer, self.gdop);
     extract(serializer, self.pdop);
@@ -131,7 +131,7 @@ void extract(MipSerializer& serializer, Dop& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const UtcTime& self)
+void insert(Serializer& serializer, const UtcTime& self)
 {
     insert(serializer, self.year);
     insert(serializer, self.month);
@@ -143,7 +143,7 @@ void insert(MipSerializer& serializer, const UtcTime& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, UtcTime& self)
+void extract(Serializer& serializer, UtcTime& self)
 {
     extract(serializer, self.year);
     extract(serializer, self.month);
@@ -155,21 +155,21 @@ void extract(MipSerializer& serializer, UtcTime& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GpsTime& self)
+void insert(Serializer& serializer, const GpsTime& self)
 {
     insert(serializer, self.tow);
     insert(serializer, self.week_number);
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GpsTime& self)
+void extract(Serializer& serializer, GpsTime& self)
 {
     extract(serializer, self.tow);
     extract(serializer, self.week_number);
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const ClockInfo& self)
+void insert(Serializer& serializer, const ClockInfo& self)
 {
     insert(serializer, self.bias);
     insert(serializer, self.drift);
@@ -177,7 +177,7 @@ void insert(MipSerializer& serializer, const ClockInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, ClockInfo& self)
+void extract(Serializer& serializer, ClockInfo& self)
 {
     extract(serializer, self.bias);
     extract(serializer, self.drift);
@@ -185,7 +185,7 @@ void extract(MipSerializer& serializer, ClockInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const FixInfo& self)
+void insert(Serializer& serializer, const FixInfo& self)
 {
     insert(serializer, self.fix_type);
     insert(serializer, self.num_sv);
@@ -193,7 +193,7 @@ void insert(MipSerializer& serializer, const FixInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, FixInfo& self)
+void extract(Serializer& serializer, FixInfo& self)
 {
     extract(serializer, self.fix_type);
     extract(serializer, self.num_sv);
@@ -201,7 +201,7 @@ void extract(MipSerializer& serializer, FixInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const SvInfo& self)
+void insert(Serializer& serializer, const SvInfo& self)
 {
     insert(serializer, self.channel);
     insert(serializer, self.sv_id);
@@ -212,7 +212,7 @@ void insert(MipSerializer& serializer, const SvInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, SvInfo& self)
+void extract(Serializer& serializer, SvInfo& self)
 {
     extract(serializer, self.channel);
     extract(serializer, self.sv_id);
@@ -223,7 +223,7 @@ void extract(MipSerializer& serializer, SvInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const HwStatus& self)
+void insert(Serializer& serializer, const HwStatus& self)
 {
     insert(serializer, self.receiver_state);
     insert(serializer, self.antenna_state);
@@ -231,7 +231,7 @@ void insert(MipSerializer& serializer, const HwStatus& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, HwStatus& self)
+void extract(Serializer& serializer, HwStatus& self)
 {
     extract(serializer, self.receiver_state);
     extract(serializer, self.antenna_state);
@@ -239,7 +239,7 @@ void extract(MipSerializer& serializer, HwStatus& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const DgpsInfo& self)
+void insert(Serializer& serializer, const DgpsInfo& self)
 {
     insert(serializer, self.sv_id);
     insert(serializer, self.age);
@@ -248,7 +248,7 @@ void insert(MipSerializer& serializer, const DgpsInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, DgpsInfo& self)
+void extract(Serializer& serializer, DgpsInfo& self)
 {
     extract(serializer, self.sv_id);
     extract(serializer, self.age);
@@ -257,7 +257,7 @@ void extract(MipSerializer& serializer, DgpsInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const DgpsChannel& self)
+void insert(Serializer& serializer, const DgpsChannel& self)
 {
     insert(serializer, self.sv_id);
     insert(serializer, self.age);
@@ -266,7 +266,7 @@ void insert(MipSerializer& serializer, const DgpsChannel& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, DgpsChannel& self)
+void extract(Serializer& serializer, DgpsChannel& self)
 {
     extract(serializer, self.sv_id);
     extract(serializer, self.age);
@@ -275,7 +275,7 @@ void extract(MipSerializer& serializer, DgpsChannel& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const ClockInfo2& self)
+void insert(Serializer& serializer, const ClockInfo2& self)
 {
     insert(serializer, self.bias);
     insert(serializer, self.drift);
@@ -284,7 +284,7 @@ void insert(MipSerializer& serializer, const ClockInfo2& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, ClockInfo2& self)
+void extract(Serializer& serializer, ClockInfo2& self)
 {
     extract(serializer, self.bias);
     extract(serializer, self.drift);
@@ -293,19 +293,19 @@ void extract(MipSerializer& serializer, ClockInfo2& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GpsLeapSeconds& self)
+void insert(Serializer& serializer, const GpsLeapSeconds& self)
 {
     insert(serializer, self.leap_seconds);
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GpsLeapSeconds& self)
+void extract(Serializer& serializer, GpsLeapSeconds& self)
 {
     extract(serializer, self.leap_seconds);
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const SbasInfo& self)
+void insert(Serializer& serializer, const SbasInfo& self)
 {
     insert(serializer, self.time_of_week);
     insert(serializer, self.week_number);
@@ -316,7 +316,7 @@ void insert(MipSerializer& serializer, const SbasInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, SbasInfo& self)
+void extract(Serializer& serializer, SbasInfo& self)
 {
     extract(serializer, self.time_of_week);
     extract(serializer, self.week_number);
@@ -327,7 +327,7 @@ void extract(MipSerializer& serializer, SbasInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const SbasCorrection& self)
+void insert(Serializer& serializer, const SbasCorrection& self)
 {
     insert(serializer, self.index);
     insert(serializer, self.count);
@@ -341,7 +341,7 @@ void insert(MipSerializer& serializer, const SbasCorrection& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, SbasCorrection& self)
+void extract(Serializer& serializer, SbasCorrection& self)
 {
     extract(serializer, self.index);
     extract(serializer, self.count);
@@ -355,7 +355,7 @@ void extract(MipSerializer& serializer, SbasCorrection& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const RfErrorDetection& self)
+void insert(Serializer& serializer, const RfErrorDetection& self)
 {
     insert(serializer, self.rf_band);
     insert(serializer, self.jamming_state);
@@ -365,7 +365,7 @@ void insert(MipSerializer& serializer, const RfErrorDetection& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, RfErrorDetection& self)
+void extract(Serializer& serializer, RfErrorDetection& self)
 {
     extract(serializer, self.rf_band);
     extract(serializer, self.jamming_state);
@@ -375,7 +375,7 @@ void extract(MipSerializer& serializer, RfErrorDetection& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const BaseStationInfo& self)
+void insert(Serializer& serializer, const BaseStationInfo& self)
 {
     insert(serializer, self.time_of_week);
     insert(serializer, self.week_number);
@@ -387,7 +387,7 @@ void insert(MipSerializer& serializer, const BaseStationInfo& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, BaseStationInfo& self)
+void extract(Serializer& serializer, BaseStationInfo& self)
 {
     extract(serializer, self.time_of_week);
     extract(serializer, self.week_number);
@@ -399,7 +399,7 @@ void extract(MipSerializer& serializer, BaseStationInfo& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const RtkCorrectionsStatus& self)
+void insert(Serializer& serializer, const RtkCorrectionsStatus& self)
 {
     insert(serializer, self.time_of_week);
     insert(serializer, self.week_number);
@@ -414,7 +414,7 @@ void insert(MipSerializer& serializer, const RtkCorrectionsStatus& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, RtkCorrectionsStatus& self)
+void extract(Serializer& serializer, RtkCorrectionsStatus& self)
 {
     extract(serializer, self.time_of_week);
     extract(serializer, self.week_number);
@@ -429,7 +429,7 @@ void extract(MipSerializer& serializer, RtkCorrectionsStatus& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const SatelliteStatus& self)
+void insert(Serializer& serializer, const SatelliteStatus& self)
 {
     insert(serializer, self.index);
     insert(serializer, self.count);
@@ -443,7 +443,7 @@ void insert(MipSerializer& serializer, const SatelliteStatus& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, SatelliteStatus& self)
+void extract(Serializer& serializer, SatelliteStatus& self)
 {
     extract(serializer, self.index);
     extract(serializer, self.count);
@@ -457,7 +457,7 @@ void extract(MipSerializer& serializer, SatelliteStatus& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const Raw& self)
+void insert(Serializer& serializer, const Raw& self)
 {
     insert(serializer, self.index);
     insert(serializer, self.count);
@@ -480,7 +480,7 @@ void insert(MipSerializer& serializer, const Raw& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, Raw& self)
+void extract(Serializer& serializer, Raw& self)
 {
     extract(serializer, self.index);
     extract(serializer, self.count);
@@ -503,7 +503,7 @@ void extract(MipSerializer& serializer, Raw& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GpsEphemeris& self)
+void insert(Serializer& serializer, const GpsEphemeris& self)
 {
     insert(serializer, self.index);
     insert(serializer, self.count);
@@ -541,7 +541,7 @@ void insert(MipSerializer& serializer, const GpsEphemeris& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GpsEphemeris& self)
+void extract(Serializer& serializer, GpsEphemeris& self)
 {
     extract(serializer, self.index);
     extract(serializer, self.count);
@@ -579,7 +579,7 @@ void extract(MipSerializer& serializer, GpsEphemeris& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GloEphemeris& self)
+void insert(Serializer& serializer, const GloEphemeris& self)
 {
     insert(serializer, self.index);
     insert(serializer, self.count);
@@ -611,7 +611,7 @@ void insert(MipSerializer& serializer, const GloEphemeris& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GloEphemeris& self)
+void extract(Serializer& serializer, GloEphemeris& self)
 {
     extract(serializer, self.index);
     extract(serializer, self.count);
@@ -643,7 +643,7 @@ void extract(MipSerializer& serializer, GloEphemeris& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GpsIonoCorr& self)
+void insert(Serializer& serializer, const GpsIonoCorr& self)
 {
     insert(serializer, self.time_of_week);
     insert(serializer, self.week_number);
@@ -654,7 +654,7 @@ void insert(MipSerializer& serializer, const GpsIonoCorr& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GpsIonoCorr& self)
+void extract(Serializer& serializer, GpsIonoCorr& self)
 {
     extract(serializer, self.time_of_week);
     extract(serializer, self.week_number);
@@ -665,7 +665,7 @@ void extract(MipSerializer& serializer, GpsIonoCorr& self)
     extract(serializer, self.valid_flags);
 }
 
-void insert(MipSerializer& serializer, const GalileoIonoCorr& self)
+void insert(Serializer& serializer, const GalileoIonoCorr& self)
 {
     insert(serializer, self.time_of_week);
     insert(serializer, self.week_number);
@@ -675,7 +675,7 @@ void insert(MipSerializer& serializer, const GalileoIonoCorr& self)
     insert(serializer, self.valid_flags);
 }
 
-void extract(MipSerializer& serializer, GalileoIonoCorr& self)
+void extract(Serializer& serializer, GalileoIonoCorr& self)
 {
     extract(serializer, self.time_of_week);
     extract(serializer, self.week_number);
@@ -687,5 +687,5 @@ void extract(MipSerializer& serializer, GalileoIonoCorr& self)
 
 
 } // namespace data_gnss
-} // namespace mscl
+} // namespace mip
 

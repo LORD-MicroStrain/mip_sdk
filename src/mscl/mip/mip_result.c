@@ -2,7 +2,7 @@
 #include "mip_result.h"
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 extern "C" {
 #endif // __cplusplus
 
@@ -90,5 +90,5 @@ bool mip_cmd_result_is_status(mip_cmd_result result)
 
 #ifdef __cplusplus
 } // extern "C"
-} // namespace mscl
+} // namespace mip
 #endif // __cplusplus

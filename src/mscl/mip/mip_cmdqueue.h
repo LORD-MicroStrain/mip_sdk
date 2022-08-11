@@ -7,7 +7,7 @@
 #include "mip_result.h"
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -90,6 +90,6 @@ void mip_cmd_queue_process_packet(struct mip_cmd_queue* queue, const struct mip_
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif

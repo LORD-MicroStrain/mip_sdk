@@ -4,7 +4,7 @@
 #include <string.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 #endif
 
 
@@ -105,5 +105,5 @@ void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_
 }
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 #endif

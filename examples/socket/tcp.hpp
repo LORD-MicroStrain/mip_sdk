@@ -5,7 +5,7 @@
 #include <string>
 
 
-namespace mscl
+namespace mip
 {
 using namespace std::literals;
 
@@ -45,4 +45,4 @@ protected:
 };
 
 
-} // namespace mscl
+} // namespace mip

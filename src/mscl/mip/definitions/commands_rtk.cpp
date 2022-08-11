@@ -7,8 +7,8 @@
 #include <assert.h>
 
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace commands_rtk {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -29,19 +29,19 @@ using namespace ::mscl::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(MipSerializer& serializer, const GetStatusFlags& self)
+void insert(Serializer& serializer, const GetStatusFlags& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetStatusFlags& self)
+void extract(Serializer& serializer, GetStatusFlags& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags)
+CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -50,7 +50,7 @@ MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlag
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, flags);
         
@@ -60,19 +60,19 @@ MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlag
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const GetImei& self)
+void insert(Serializer& serializer, const GetImei& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetImei& self)
+void extract(Serializer& serializer, GetImei& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getImei(C::mip_interface& device, char* IMEI)
+CmdResult getImei(C::mip_interface& device, char* IMEI)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -81,7 +81,7 @@ MipCmdResult getImei(C::mip_interface& device, char* IMEI)
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         for(unsigned int i=0; i < 32; i++)
             extract(serializer, IMEI[i]);
@@ -92,19 +92,19 @@ MipCmdResult getImei(C::mip_interface& device, char* IMEI)
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const GetImsi& self)
+void insert(Serializer& serializer, const GetImsi& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetImsi& self)
+void extract(Serializer& serializer, GetImsi& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getImsi(C::mip_interface& device, char* IMSI)
+CmdResult getImsi(C::mip_interface& device, char* IMSI)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -113,7 +113,7 @@ MipCmdResult getImsi(C::mip_interface& device, char* IMSI)
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         for(unsigned int i=0; i < 32; i++)
             extract(serializer, IMSI[i]);
@@ -124,19 +124,19 @@ MipCmdResult getImsi(C::mip_interface& device, char* IMSI)
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const GetIccid& self)
+void insert(Serializer& serializer, const GetIccid& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetIccid& self)
+void extract(Serializer& serializer, GetIccid& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getIccid(C::mip_interface& device, char* ICCID)
+CmdResult getIccid(C::mip_interface& device, char* ICCID)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -145,7 +145,7 @@ MipCmdResult getIccid(C::mip_interface& device, char* ICCID)
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         for(unsigned int i=0; i < 32; i++)
             extract(serializer, ICCID[i]);
@@ -156,36 +156,36 @@ MipCmdResult getIccid(C::mip_interface& device, char* ICCID)
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const ConnectedDeviceType& self)
+void insert(Serializer& serializer, const ConnectedDeviceType& self)
 {
     insert(serializer, self.function);
     insert(serializer, self.devType);
 }
 
-void extract(MipSerializer& serializer, ConnectedDeviceType& self)
+void extract(Serializer& serializer, ConnectedDeviceType& self)
 {
     extract(serializer, self.function);
     extract(serializer, self.devType);
 }
 
-MipCmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType)
+CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::WRITE);
+    insert(serializer, FunctionSelector::WRITE);
     insert(serializer, devType);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
 }
 
-MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType)
+CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::READ);
+    insert(serializer, FunctionSelector::READ);
     assert(!!serializer);
     
     uint8_t responseLength;
@@ -193,7 +193,7 @@ MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceTy
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, devType);
         
@@ -203,52 +203,52 @@ MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceTy
     return result_local;
 }
 
-MipCmdResult saveConnectedDeviceType(C::mip_interface& device)
+CmdResult saveConnectedDeviceType(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::SAVE);
+    insert(serializer, FunctionSelector::SAVE);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
 }
 
-MipCmdResult loadConnectedDeviceType(C::mip_interface& device)
+CmdResult loadConnectedDeviceType(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::LOAD);
+    insert(serializer, FunctionSelector::LOAD);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
 }
 
-MipCmdResult defaultConnectedDeviceType(C::mip_interface& device)
+CmdResult defaultConnectedDeviceType(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
-    insert(serializer, MipFunctionSelector::RESET);
+    insert(serializer, FunctionSelector::RESET);
     assert(!!serializer);
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
 }
 
-void insert(MipSerializer& serializer, const GetActCode& self)
+void insert(Serializer& serializer, const GetActCode& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetActCode& self)
+void extract(Serializer& serializer, GetActCode& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode)
+CmdResult getActCode(C::mip_interface& device, char* ActivationCode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -257,7 +257,7 @@ MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode)
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         for(unsigned int i=0; i < 32; i++)
             extract(serializer, ActivationCode[i]);
@@ -268,19 +268,19 @@ MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode)
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const GetModemFirmwareVersion& self)
+void insert(Serializer& serializer, const GetModemFirmwareVersion& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetModemFirmwareVersion& self)
+void extract(Serializer& serializer, GetModemFirmwareVersion& self)
 {
     (void)serializer;
     (void)self;
 }
 
-MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion)
+CmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -289,7 +289,7 @@ MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwa
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         for(unsigned int i=0; i < 32; i++)
             extract(serializer, ModemFirmwareVersion[i]);
@@ -300,13 +300,13 @@ MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwa
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const GetRssi& self)
+void insert(Serializer& serializer, const GetRssi& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, GetRssi& self)
+void extract(Serializer& serializer, GetRssi& self)
 {
     (void)serializer;
     (void)self;
@@ -318,9 +318,9 @@ void extract(MipSerializer& serializer, GetRssi& self)
 /// @param[out] rssi 
 /// @param[out] signalQuality 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality)
+CmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -329,7 +329,7 @@ MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, valid);
         extract(serializer, rssi);
@@ -341,13 +341,13 @@ MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const ServiceStatus& self)
+void insert(Serializer& serializer, const ServiceStatus& self)
 {
     insert(serializer, self.reserved1);
     insert(serializer, self.reserved2);
 }
 
-void extract(MipSerializer& serializer, ServiceStatus& self)
+void extract(Serializer& serializer, ServiceStatus& self)
 {
     extract(serializer, self.reserved1);
     extract(serializer, self.reserved2);
@@ -362,12 +362,12 @@ void extract(MipSerializer& serializer, ServiceStatus& self)
 /// @param[out] lastBytes 
 /// @param[out] lastBytesTime 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime)
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, reserved1);
     insert(serializer, reserved2);
@@ -378,7 +378,7 @@ MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_
     
     if( result_local == MIP_ACK_OK )
     {
-        MipSerializer serializer(buffer, sizeof(buffer));
+        Serializer serializer(buffer, sizeof(buffer));
         
         extract(serializer, flags);
         extract(serializer, recievedBytes);
@@ -391,12 +391,12 @@ MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_
     return result_local;
 }
 
-void insert(MipSerializer& serializer, const ProdEraseStorage& self)
+void insert(Serializer& serializer, const ProdEraseStorage& self)
 {
     insert(serializer, self.media);
 }
 
-void extract(MipSerializer& serializer, ProdEraseStorage& self)
+void extract(Serializer& serializer, ProdEraseStorage& self)
 {
     extract(serializer, self.media);
 }
@@ -405,12 +405,12 @@ void extract(MipSerializer& serializer, ProdEraseStorage& self)
 /// This command is only available in calibration mode.
 /// @param media 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media)
+CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, media);
     assert(!!serializer);
@@ -418,7 +418,7 @@ MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media)
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, serializer.offset);
 }
 
-void insert(MipSerializer& serializer, const LedControl& self)
+void insert(Serializer& serializer, const LedControl& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.primaryColor[i]);
@@ -428,7 +428,7 @@ void insert(MipSerializer& serializer, const LedControl& self)
     insert(serializer, self.period);
 }
 
-void extract(MipSerializer& serializer, LedControl& self)
+void extract(Serializer& serializer, LedControl& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.primaryColor[i]);
@@ -445,12 +445,12 @@ void extract(MipSerializer& serializer, LedControl& self)
 /// @param act 
 /// @param period 
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period)
+CmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    MipSerializer serializer(buffer, sizeof(buffer));
+    Serializer serializer(buffer, sizeof(buffer));
     
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, primaryColor[i]);
@@ -463,13 +463,13 @@ MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, c
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, serializer.offset);
 }
 
-void insert(MipSerializer& serializer, const ModemHardReset& self)
+void insert(Serializer& serializer, const ModemHardReset& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void extract(MipSerializer& serializer, ModemHardReset& self)
+void extract(Serializer& serializer, ModemHardReset& self)
 {
     (void)serializer;
     (void)self;
@@ -478,14 +478,14 @@ void extract(MipSerializer& serializer, ModemHardReset& self)
 /// @brief This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!
 /// This command is only available in calibration mode.
 /// 
-/// @returns MipCmdResult
+/// @returns CmdResult
 /// 
-MipCmdResult modemHardReset(C::mip_interface& device)
+CmdResult modemHardReset(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MODEM_HARD_RESET, NULL, 0);
 }
 
 
 } // namespace commands_rtk
-} // namespace mscl
+} // namespace mip
 

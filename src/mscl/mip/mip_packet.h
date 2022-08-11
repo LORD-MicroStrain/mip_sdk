@@ -3,7 +3,7 @@
 #include "../types.h"
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mip{
 namespace C {
 extern "C" {
 #endif
@@ -101,7 +101,7 @@ bool            mip_packet_is_data(const struct mip_packet* packet);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 } // namespace C
 } // extern "C"
 #endif

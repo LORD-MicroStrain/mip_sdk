@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 #endif // __cplusplus
@@ -59,7 +59,7 @@ bool mip_cmd_result_is_status(mip_cmd_result result);
 } // extern "C"
 } // namespace C
 
-struct MipCmdResult
+struct CmdResult
 {
     enum
     {
@@ -79,13 +79,13 @@ struct MipCmdResult
 
     C::mip_cmd_result value = STATUS_NONE;
 
-    MipCmdResult() : value(C::MIP_ACK_OK) {}
-    MipCmdResult(C::mip_cmd_result result) : value(result) {}
-    MipCmdResult(C::mip_ack ack)           : value(ack)    {}
-    MipCmdResult(C::mip_cmd_status status) : value(status) {}
+    CmdResult() : value(C::MIP_ACK_OK) {}
+    CmdResult(C::mip_cmd_result result) : value(result) {}
+    CmdResult(C::mip_ack ack)           : value(ack)    {}
+    CmdResult(C::mip_cmd_status status) : value(status) {}
 
-    MipCmdResult& operator=(const MipCmdResult& other) = default;
-    MipCmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
+    CmdResult& operator=(const CmdResult& other) = default;
+    CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
     // operator bool() const { return value == C::MIP_ACK_OK; }
     operator const void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
@@ -93,8 +93,8 @@ struct MipCmdResult
     operator C::mip_cmd_result&() { return value; }
     operator C::mip_cmd_result() const { return value; }
 
-    bool operator==(MipCmdResult other) const { return value == other.value; }
-    bool operator!=(MipCmdResult other) const { return value != other.value; }
+    bool operator==(CmdResult other) const { return value == other.value; }
+    bool operator!=(CmdResult other) const { return value != other.value; }
 
     bool operator==(C::mip_cmd_result other) const { return value == other; }
     bool operator!=(C::mip_cmd_result other) const { return value != other; }
@@ -106,7 +106,7 @@ struct MipCmdResult
     bool isFinished() const { return C::mip_cmd_result_is_finished(value); }
 };
 
-using MipAck = C::mip_ack;
+// using Ack = C::mip_ack;
 
-} // namespace mscl
+} // namespace mip
 #endif // __cplusplus

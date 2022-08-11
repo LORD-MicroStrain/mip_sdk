@@ -7,8 +7,8 @@
 #include <assert.h>
 
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -16,9 +16,9 @@ struct mip_interface;
 
 namespace data_system {
 
-using ::mscl::insert;
-using ::mscl::extract;
-using namespace ::mscl::C;
+using ::mip::insert;
+using ::mip::extract;
+using namespace ::mip::C;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Type Definitions
@@ -29,47 +29,47 @@ using namespace ::mscl::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(MipSerializer& serializer, const BuiltInTest& self)
+void insert(Serializer& serializer, const BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         insert(serializer, self.result[i]);
 }
 
-void extract(MipSerializer& serializer, BuiltInTest& self)
+void extract(Serializer& serializer, BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         extract(serializer, self.result[i]);
 }
 
-void insert(MipSerializer& serializer, const TimeSyncStatus& self)
+void insert(Serializer& serializer, const TimeSyncStatus& self)
 {
     insert(serializer, self.time_sync);
     insert(serializer, self.last_pps_rcvd);
 }
 
-void extract(MipSerializer& serializer, TimeSyncStatus& self)
+void extract(Serializer& serializer, TimeSyncStatus& self)
 {
     extract(serializer, self.time_sync);
     extract(serializer, self.last_pps_rcvd);
 }
 
-void insert(MipSerializer& serializer, const GpioState& self)
+void insert(Serializer& serializer, const GpioState& self)
 {
     insert(serializer, self.states);
 }
 
-void extract(MipSerializer& serializer, GpioState& self)
+void extract(Serializer& serializer, GpioState& self)
 {
     extract(serializer, self.states);
 }
 
-void insert(MipSerializer& serializer, const GpioAnalogValue& self)
+void insert(Serializer& serializer, const GpioAnalogValue& self)
 {
     insert(serializer, self.gpio_id);
     insert(serializer, self.value);
 }
 
-void extract(MipSerializer& serializer, GpioAnalogValue& self)
+void extract(Serializer& serializer, GpioAnalogValue& self)
 {
     extract(serializer, self.gpio_id);
     extract(serializer, self.value);
@@ -77,5 +77,5 @@ void extract(MipSerializer& serializer, GpioAnalogValue& self)
 
 
 } // namespace data_system
-} // namespace mscl
+} // namespace mip
 

@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -69,8 +69,8 @@ struct BaseDeviceInfo
     char device_options[16];
     
 };
-void insert(MipSerializer& serializer, const BaseDeviceInfo& self);
-void extract(MipSerializer& serializer, BaseDeviceInfo& self);
+void insert(Serializer& serializer, const BaseDeviceInfo& self);
+void extract(Serializer& serializer, BaseDeviceInfo& self);
 
 enum class TimeFormat : uint8_t
 {
@@ -135,17 +135,17 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
 
 struct Ping
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_PING;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_PING;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
 };
-void insert(MipSerializer& serializer, const Ping& self);
-void extract(MipSerializer& serializer, Ping& self);
+void insert(Serializer& serializer, const Ping& self);
+void extract(Serializer& serializer, Ping& self);
 
-MipCmdResult ping(C::mip_interface& device);
+CmdResult ping(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,17 +160,17 @@ MipCmdResult ping(C::mip_interface& device);
 
 struct SetIdle
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_SET_TO_IDLE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SET_TO_IDLE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
 };
-void insert(MipSerializer& serializer, const SetIdle& self);
-void extract(MipSerializer& serializer, SetIdle& self);
+void insert(Serializer& serializer, const SetIdle& self);
+void extract(Serializer& serializer, SetIdle& self);
 
-MipCmdResult setIdle(C::mip_interface& device);
+CmdResult setIdle(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -181,28 +181,28 @@ MipCmdResult setIdle(C::mip_interface& device);
 
 struct GetDeviceInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_GET_DEVICE_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_DEVICE_INFO;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_INFO;
         
         BaseDeviceInfo device_info;
         
     };
 };
-void insert(MipSerializer& serializer, const GetDeviceInfo& self);
-void extract(MipSerializer& serializer, GetDeviceInfo& self);
+void insert(Serializer& serializer, const GetDeviceInfo& self);
+void extract(Serializer& serializer, GetDeviceInfo& self);
 
-void insert(MipSerializer& serializer, const GetDeviceInfo::Response& self);
-void extract(MipSerializer& serializer, GetDeviceInfo::Response& self);
+void insert(Serializer& serializer, const GetDeviceInfo::Response& self);
+void extract(Serializer& serializer, GetDeviceInfo::Response& self);
 
-MipCmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info);
+CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,29 +216,29 @@ MipCmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info
 
 struct GetDeviceDescriptors
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_GET_DEVICE_DESCRIPTORS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_DESCRIPTORS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_DEVICE_DESCRIPTORS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
         
         uint8_t descriptors_count;
         uint16_t* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const GetDeviceDescriptors& self);
-void extract(MipSerializer& serializer, GetDeviceDescriptors& self);
+void insert(Serializer& serializer, const GetDeviceDescriptors& self);
+void extract(Serializer& serializer, GetDeviceDescriptors& self);
 
-void insert(MipSerializer& serializer, const GetDeviceDescriptors::Response& self);
-void extract(MipSerializer& serializer, GetDeviceDescriptors::Response& self);
+void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self);
+void extract(Serializer& serializer, GetDeviceDescriptors::Response& self);
 
-MipCmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -254,28 +254,28 @@ MipCmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors
 
 struct BuiltInTest
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_BUILT_IN_TEST;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_BUILT_IN_TEST;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_BUILT_IN_TEST;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_BUILT_IN_TEST;
         
         uint32_t result;
         
     };
 };
-void insert(MipSerializer& serializer, const BuiltInTest& self);
-void extract(MipSerializer& serializer, BuiltInTest& self);
+void insert(Serializer& serializer, const BuiltInTest& self);
+void extract(Serializer& serializer, BuiltInTest& self);
 
-void insert(MipSerializer& serializer, const BuiltInTest::Response& self);
-void extract(MipSerializer& serializer, BuiltInTest::Response& self);
+void insert(Serializer& serializer, const BuiltInTest::Response& self);
+void extract(Serializer& serializer, BuiltInTest::Response& self);
 
-MipCmdResult builtInTest(C::mip_interface& device, uint32_t& result);
+CmdResult builtInTest(C::mip_interface& device, uint32_t& result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -288,17 +288,17 @@ MipCmdResult builtInTest(C::mip_interface& device, uint32_t& result);
 
 struct Resume
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_RESUME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_RESUME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
 };
-void insert(MipSerializer& serializer, const Resume& self);
-void extract(MipSerializer& serializer, Resume& self);
+void insert(Serializer& serializer, const Resume& self);
+void extract(Serializer& serializer, Resume& self);
 
-MipCmdResult resume(C::mip_interface& device);
+CmdResult resume(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -312,29 +312,29 @@ MipCmdResult resume(C::mip_interface& device);
 
 struct GetExtendedDescriptors
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_GET_EXTENDED_DESCRIPTORS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_EXTENDED_DESCRIPTORS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         
         uint8_t descriptors_count;
         uint16_t* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const GetExtendedDescriptors& self);
-void extract(MipSerializer& serializer, GetExtendedDescriptors& self);
+void insert(Serializer& serializer, const GetExtendedDescriptors& self);
+void extract(Serializer& serializer, GetExtendedDescriptors& self);
 
-void insert(MipSerializer& serializer, const GetExtendedDescriptors::Response& self);
-void extract(MipSerializer& serializer, GetExtendedDescriptors::Response& self);
+void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self);
+void extract(Serializer& serializer, GetExtendedDescriptors::Response& self);
 
-MipCmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -347,28 +347,28 @@ MipCmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descripto
 
 struct ContinuousBit
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_CONTINUOUS_BIT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_CONTINUOUS_BIT;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_CONTINUOUS_BIT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_CONTINUOUS_BIT;
         
         uint8_t result[16];
         
     };
 };
-void insert(MipSerializer& serializer, const ContinuousBit& self);
-void extract(MipSerializer& serializer, ContinuousBit& self);
+void insert(Serializer& serializer, const ContinuousBit& self);
+void extract(Serializer& serializer, ContinuousBit& self);
 
-void insert(MipSerializer& serializer, const ContinuousBit::Response& self);
-void extract(MipSerializer& serializer, ContinuousBit::Response& self);
+void insert(Serializer& serializer, const ContinuousBit::Response& self);
+void extract(Serializer& serializer, ContinuousBit::Response& self);
 
-MipCmdResult continuousBit(C::mip_interface& device, uint8_t* result);
+CmdResult continuousBit(C::mip_interface& device, uint8_t* result);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -392,8 +392,8 @@ MipCmdResult continuousBit(C::mip_interface& device, uint8_t* result);
 
 struct CommSpeed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_COMM_SPEED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_COMM_SPEED;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -402,31 +402,31 @@ struct CommSpeed
     static const bool HAS_RESET_FUNCTION = true;
     
     static const uint32_t ALL_PORTS = 0;
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t port;
     uint32_t baud;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::REPLY_COMM_SPEED;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_COMM_SPEED;
         
         uint8_t port;
         uint32_t baud;
         
     };
 };
-void insert(MipSerializer& serializer, const CommSpeed& self);
-void extract(MipSerializer& serializer, CommSpeed& self);
+void insert(Serializer& serializer, const CommSpeed& self);
+void extract(Serializer& serializer, CommSpeed& self);
 
-void insert(MipSerializer& serializer, const CommSpeed::Response& self);
-void extract(MipSerializer& serializer, CommSpeed::Response& self);
+void insert(Serializer& serializer, const CommSpeed::Response& self);
+void extract(Serializer& serializer, CommSpeed::Response& self);
 
-MipCmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
-MipCmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud);
-MipCmdResult saveCommSpeed(C::mip_interface& device, uint8_t port);
-MipCmdResult loadCommSpeed(C::mip_interface& device, uint8_t port);
-MipCmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
+CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
+CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud);
+CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port);
+CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port);
+CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -439,8 +439,8 @@ MipCmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
 
 struct GpsTimeUpdate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = false;
@@ -454,15 +454,15 @@ struct GpsTimeUpdate
         TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     FieldId field_id;
     uint32_t value;
     
 };
-void insert(MipSerializer& serializer, const GpsTimeUpdate& self);
-void extract(MipSerializer& serializer, GpsTimeUpdate& self);
+void insert(Serializer& serializer, const GpsTimeUpdate& self);
+void extract(Serializer& serializer, GpsTimeUpdate& self);
 
-MipCmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId field_id, uint32_t value);
+CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId field_id, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -475,17 +475,17 @@ MipCmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId
 
 struct SoftReset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_base::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_base::CMD_SOFT_RESET;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SOFT_RESET;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
 };
-void insert(MipSerializer& serializer, const SoftReset& self);
-void extract(MipSerializer& serializer, SoftReset& self);
+void insert(Serializer& serializer, const SoftReset& self);
+void extract(Serializer& serializer, SoftReset& self);
 
-MipCmdResult softReset(C::mip_interface& device);
+CmdResult softReset(C::mip_interface& device);
 ///@}
 ///
 
@@ -494,5 +494,5 @@ MipCmdResult softReset(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_base
-} // namespace mscl
+} // namespace mip
 

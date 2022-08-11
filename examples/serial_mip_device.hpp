@@ -7,10 +7,10 @@
 #include <string>
 
 
-extern mscl::Timestamp getCurrentTimestamp();
+extern mip::Timestamp getCurrentTimestamp();
 
 
-class SerialMipDevice : public mscl::MipDeviceInterface
+class SerialMipDevice : public mip::DeviceInterface
 {
 public:
     SerialMipDevice(const std::string& portName, uint32_t baudrate);

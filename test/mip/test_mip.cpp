@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 
-using namespace mscl;
+using namespace mip;
 
 
 uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
