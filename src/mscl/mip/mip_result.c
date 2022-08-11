@@ -88,6 +88,14 @@ bool mip_cmd_result_is_status(mip_cmd_result result)
     return result < 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Determines if the result is an ack (successful response from the device)
+///
+bool mip_cmd_result_is_ack(mip_cmd_result result)
+{
+    return result == MIP_ACK_OK;
+}
+
 #ifdef __cplusplus
 } // extern "C"
 } // namespace mscl

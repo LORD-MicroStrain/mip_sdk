@@ -20,7 +20,7 @@ int main(int argc, const char* argv[])
 
         mscl::MipCmdResult result = mscl::commands_base::getDeviceInfo(*device, device_info);
 
-        if( result == mscl::MipCmdResult::ACK_OK)
+        if( !!result )
         {
             printf("Success:\n");
 
