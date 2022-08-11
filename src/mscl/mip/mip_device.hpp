@@ -12,9 +12,8 @@ namespace mip
 using DispatchHandler = C::mip_dispatch_handler;
 
 
-class CmdQueue : public C::mip_cmd_queue
+struct CmdQueue : public C::mip_cmd_queue
 {
-public:
     CmdQueue(Timeout baseReplyTimeout=1000) { C::mip_cmd_queue_init(this, baseReplyTimeout); }
     ~CmdQueue() { assert(_first_pending_cmd==nullptr); }
 
@@ -32,7 +31,7 @@ public:
     void processPacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_cmd_queue_process_packet(this, &packet, timestamp); }
 };
 
-class PendingCmd : public C::mip_pending_cmd
+struct PendingCmd : public C::mip_pending_cmd
 {
     PendingCmd() { std::memset(this, 0, sizeof(C::mip_pending_cmd)); }
     PendingCmd(uint8_t descriptorSet, uint8_t fieldDescriptor, Timeout additionalTime=0) { C::mip_pending_cmd_init_with_timeout(this, descriptorSet, fieldDescriptor, additionalTime); }
@@ -88,7 +87,7 @@ public:
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
 
     Parser&   parser()   { return *static_cast<Parser*>(C::mip_interface_parser(this)); }
-    CmdQueue& cmdQueue() { return *C::mip_interface_cmd_queue(this); }
+    CmdQueue& cmdQueue() { return *static_cast<CmdQueue*>(C::mip_interface_cmd_queue(this)); }
 
     const Parser&   parser()   const   { return const_cast<DeviceInterface*>(this)->parser(); }
     const CmdQueue& cmdQueue() const { return const_cast<DeviceInterface*>(this)->cmdQueue(); }
