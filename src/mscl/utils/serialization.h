@@ -129,7 +129,11 @@ inline void extract(Serializer& serializer, double& value)   { return C::extract
 
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
-/*void*/ extract(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+/*void*/ extract(Serializer& serializer, Enum& value) {
+    typename std::underlying_type<Enum>::type tmp;
+    extract(serializer, tmp);
+    value = static_cast<Enum>(tmp);
+}
 
 
 template<typename T>
