@@ -62,7 +62,7 @@ int main(int argc, const char* argv[])
         // Get the base rate.
 
         uint16_t base_rate;
-        result = mip::commands_3dm::getBaseRate(*device, mip::data_sensor::DESCRIPTOR_SET, base_rate);
+        result = mip::commands_3dm::getBaseRate(*device, mip::data_sensor::DESCRIPTOR_SET, &base_rate);
 
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to get base rate: %s (%d)\n", result.name(), result.value), 1;
