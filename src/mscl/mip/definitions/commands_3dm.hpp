@@ -223,7 +223,7 @@ struct PollImuMessage
 void insert(Serializer& serializer, const PollImuMessage& self);
 void extract(Serializer& serializer, PollImuMessage& self);
 
-CmdResult pollImuMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const DescriptorRate* descriptors);
+CmdResult pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +254,7 @@ struct PollGnssMessage
 void insert(Serializer& serializer, const PollGnssMessage& self);
 void extract(Serializer& serializer, PollGnssMessage& self);
 
-CmdResult pollGnssMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const DescriptorRate* descriptors);
+CmdResult pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -285,7 +285,7 @@ struct PollFilterMessage
 void insert(Serializer& serializer, const PollFilterMessage& self);
 void extract(Serializer& serializer, PollFilterMessage& self);
 
-CmdResult pollFilterMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const DescriptorRate* descriptors);
+CmdResult pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -327,8 +327,8 @@ void extract(Serializer& serializer, ImuMessageFormat& self);
 void insert(Serializer& serializer, const ImuMessageFormat::Response& self);
 void extract(Serializer& serializer, ImuMessageFormat::Response& self);
 
-CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const DescriptorRate* descriptors);
-CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, DescriptorRate* descriptors);
+CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 CmdResult saveImuMessageFormat(C::mip_interface& device);
 CmdResult loadImuMessageFormat(C::mip_interface& device);
 CmdResult defaultImuMessageFormat(C::mip_interface& device);
@@ -373,8 +373,8 @@ void extract(Serializer& serializer, GpsMessageFormat& self);
 void insert(Serializer& serializer, const GpsMessageFormat::Response& self);
 void extract(Serializer& serializer, GpsMessageFormat::Response& self);
 
-CmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const DescriptorRate* descriptors);
-CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, DescriptorRate* descriptors);
+CmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 CmdResult saveGpsMessageFormat(C::mip_interface& device);
 CmdResult loadGpsMessageFormat(C::mip_interface& device);
 CmdResult defaultGpsMessageFormat(C::mip_interface& device);
@@ -419,8 +419,8 @@ void extract(Serializer& serializer, FilterMessageFormat& self);
 void insert(Serializer& serializer, const FilterMessageFormat::Response& self);
 void extract(Serializer& serializer, FilterMessageFormat::Response& self);
 
-CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const DescriptorRate* descriptors);
-CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, DescriptorRate* descriptors);
+CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
 CmdResult saveFilterMessageFormat(C::mip_interface& device);
 CmdResult loadFilterMessageFormat(C::mip_interface& device);
 CmdResult defaultFilterMessageFormat(C::mip_interface& device);
@@ -458,7 +458,7 @@ void extract(Serializer& serializer, ImuGetBaseRate& self);
 void insert(Serializer& serializer, const ImuGetBaseRate::Response& self);
 void extract(Serializer& serializer, ImuGetBaseRate::Response& self);
 
-CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -493,7 +493,7 @@ void extract(Serializer& serializer, GpsGetBaseRate& self);
 void insert(Serializer& serializer, const GpsGetBaseRate::Response& self);
 void extract(Serializer& serializer, GpsGetBaseRate::Response& self);
 
-CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -528,7 +528,7 @@ void extract(Serializer& serializer, FilterGetBaseRate& self);
 void insert(Serializer& serializer, const FilterGetBaseRate::Response& self);
 void extract(Serializer& serializer, FilterGetBaseRate::Response& self);
 
-CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -560,7 +560,7 @@ struct PollData
 void insert(Serializer& serializer, const PollData& self);
 void extract(Serializer& serializer, PollData& self);
 
-CmdResult pollData(C::mip_interface& device, uint8_t desc_set, bool suppress_ack, uint8_t num_descriptors, const uint8_t* descriptors);
+CmdResult pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, uint8_t numDescriptors, const uint8_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -594,7 +594,7 @@ void extract(Serializer& serializer, GetBaseRate& self);
 void insert(Serializer& serializer, const GetBaseRate::Response& self);
 void extract(Serializer& serializer, GetBaseRate::Response& self);
 
-CmdResult getBaseRate(C::mip_interface& device, uint8_t desc_set, uint16_t& rate);
+CmdResult getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -638,11 +638,11 @@ void extract(Serializer& serializer, MessageFormat& self);
 void insert(Serializer& serializer, const MessageFormat::Response& self);
 void extract(Serializer& serializer, MessageFormat::Response& self);
 
-CmdResult writeMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t num_descriptors, const DescriptorRate* descriptors);
-CmdResult readMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t& num_descriptors, DescriptorRate* descriptors);
-CmdResult saveMessageFormat(C::mip_interface& device, uint8_t desc_set);
-CmdResult loadMessageFormat(C::mip_interface& device, uint8_t desc_set);
-CmdResult defaultMessageFormat(C::mip_interface& device, uint8_t desc_set);
+CmdResult writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
+CmdResult saveMessageFormat(C::mip_interface& device, uint8_t descSet);
+CmdResult loadMessageFormat(C::mip_interface& device, uint8_t descSet);
+CmdResult defaultMessageFormat(C::mip_interface& device, uint8_t descSet);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -672,7 +672,7 @@ struct NmeaPollData
 void insert(Serializer& serializer, const NmeaPollData& self);
 void extract(Serializer& serializer, NmeaPollData& self);
 
-CmdResult nmeaPollData(C::mip_interface& device, bool suppress_ack, uint8_t count, const NMEAMessageFormat* format_entries);
+CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NMEAMessageFormat* formatEntries);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -712,8 +712,8 @@ void extract(Serializer& serializer, NmeaMessageFormat& self);
 void insert(Serializer& serializer, const NmeaMessageFormat::Response& self);
 void extract(Serializer& serializer, NmeaMessageFormat::Response& self);
 
-CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NMEAMessageFormat* format_entries);
-CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t& count, NMEAMessageFormat* format_entries);
+CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NMEAMessageFormat* formatEntries);
+CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NMEAMessageFormat* formatEntriesOut);
 CmdResult saveNmeaMessageFormat(C::mip_interface& device);
 CmdResult loadNmeaMessageFormat(C::mip_interface& device);
 CmdResult defaultNmeaMessageFormat(C::mip_interface& device);
@@ -801,7 +801,7 @@ void insert(Serializer& serializer, const UartBaudrate::Response& self);
 void extract(Serializer& serializer, UartBaudrate::Response& self);
 
 CmdResult writeUartBaudrate(C::mip_interface& device, uint32_t baud);
-CmdResult readUartBaudrate(C::mip_interface& device, uint32_t& baud);
+CmdResult readUartBaudrate(C::mip_interface& device, uint32_t* baudOut);
 CmdResult saveUartBaudrate(C::mip_interface& device);
 CmdResult loadUartBaudrate(C::mip_interface& device);
 CmdResult defaultUartBaudrate(C::mip_interface& device);
@@ -886,11 +886,11 @@ void extract(Serializer& serializer, DatastreamControl& self);
 void insert(Serializer& serializer, const DatastreamControl::Response& self);
 void extract(Serializer& serializer, DatastreamControl::Response& self);
 
-CmdResult writeDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool enable);
-CmdResult readDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool& enabled);
-CmdResult saveDatastreamControl(C::mip_interface& device, uint8_t desc_set);
-CmdResult loadDatastreamControl(C::mip_interface& device, uint8_t desc_set);
-CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t desc_set);
+CmdResult writeDatastreamControl(C::mip_interface& device, uint8_t descSet, bool enable);
+CmdResult readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool* enabledOut);
+CmdResult saveDatastreamControl(C::mip_interface& device, uint8_t descSet);
+CmdResult loadDatastreamControl(C::mip_interface& device, uint8_t descSet);
+CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t descSet);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -954,8 +954,8 @@ void extract(Serializer& serializer, GnssSbasSettings& self);
 void insert(Serializer& serializer, const GnssSbasSettings::Response& self);
 void extract(Serializer& serializer, GnssSbasSettings::Response& self);
 
-CmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enable_sbas, GnssSbasSettings::SBASOptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns);
-CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t& enable_sbas, GnssSbasSettings::SBASOptions& sbas_options, uint8_t& num_included_prns, uint16_t* included_prns);
+CmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, GnssSbasSettings::SBASOptions sbasOptions, uint8_t numIncludedPrns, const uint16_t* includedPrns);
+CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut, GnssSbasSettings::SBASOptions* sbasOptionsOut, uint8_t* numIncludedPrnsOut, uint8_t numIncludedPrnsOutMax, uint16_t* includedPrnsOut);
 CmdResult saveGnssSbasSettings(C::mip_interface& device);
 CmdResult loadGnssSbasSettings(C::mip_interface& device);
 CmdResult defaultGnssSbasSettings(C::mip_interface& device);
@@ -1003,8 +1003,8 @@ void extract(Serializer& serializer, GnssTimeAssistance& self);
 void insert(Serializer& serializer, const GnssTimeAssistance::Response& self);
 void extract(Serializer& serializer, GnssTimeAssistance::Response& self);
 
-CmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t week_number, float accuracy);
-CmdResult readGnssTimeAssistance(C::mip_interface& device, double& tow, uint16_t& week_number, float& accuracy);
+CmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t weekNumber, float accuracy);
+CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint16_t* weekNumberOut, float* accuracyOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1063,11 +1063,11 @@ void extract(Serializer& serializer, AdvLowpassFilter& self);
 void insert(Serializer& serializer, const AdvLowpassFilter::Response& self);
 void extract(Serializer& serializer, AdvLowpassFilter::Response& self);
 
-CmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool& enable, bool& manual, uint16_t& frequency, uint8_t& reserved);
-CmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
-CmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
-CmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
+CmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
+CmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1115,7 +1115,7 @@ void insert(Serializer& serializer, const PpsSource::Response& self);
 void extract(Serializer& serializer, PpsSource::Response& self);
 
 CmdResult writePpsSource(C::mip_interface& device, PpsSource::Source source);
-CmdResult readPpsSource(C::mip_interface& device, PpsSource::Source& source);
+CmdResult readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut);
 CmdResult savePpsSource(C::mip_interface& device);
 CmdResult loadPpsSource(C::mip_interface& device);
 CmdResult defaultPpsSource(C::mip_interface& device);
@@ -1221,8 +1221,8 @@ void extract(Serializer& serializer, GpioConfig& self);
 void insert(Serializer& serializer, const GpioConfig::Response& self);
 void extract(Serializer& serializer, GpioConfig::Response& self);
 
-CmdResult writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pin_mode);
-CmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature& feature, GpioConfig::Behavior& behavior, GpioConfig::PinMode& pin_mode);
+CmdResult writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pinMode);
+CmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature* featureOut, GpioConfig::Behavior* behaviorOut, GpioConfig::PinMode* pinModeOut);
 CmdResult saveGpioConfig(C::mip_interface& device, uint8_t pin);
 CmdResult loadGpioConfig(C::mip_interface& device, uint8_t pin);
 CmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
@@ -1281,7 +1281,7 @@ void insert(Serializer& serializer, const GpioState::Response& self);
 void extract(Serializer& serializer, GpioState::Response& self);
 
 CmdResult writeGpioState(C::mip_interface& device, uint8_t pin, bool state);
-CmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool& state);
+CmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1331,7 +1331,7 @@ void insert(Serializer& serializer, const Odometer::Response& self);
 void extract(Serializer& serializer, Odometer::Response& self);
 
 CmdResult writeOdometer(C::mip_interface& device, Odometer::Mode mode, float scaling, float uncertainty);
-CmdResult readOdometer(C::mip_interface& device, Odometer::Mode& mode, float& scaling, float& uncertainty);
+CmdResult readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float* scalingOut, float* uncertaintyOut);
 CmdResult saveOdometer(C::mip_interface& device);
 CmdResult loadOdometer(C::mip_interface& device);
 CmdResult defaultOdometer(C::mip_interface& device);
@@ -1401,7 +1401,7 @@ void extract(Serializer& serializer, GetEventSupport::Info& self);
 void insert(Serializer& serializer, const GetEventSupport::Response& self);
 void extract(Serializer& serializer, GetEventSupport::Response& self);
 
-CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t& max_instances, uint8_t& num_entries, GetEventSupport::Info* entries);
+CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t* maxInstancesOut, uint8_t* numEntriesOut, uint8_t numEntriesOutMax, GetEventSupport::Info* entriesOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1459,7 +1459,7 @@ void insert(Serializer& serializer, const EventControl::Response& self);
 void extract(Serializer& serializer, EventControl::Response& self);
 
 CmdResult writeEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode mode);
-CmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode& mode);
+CmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode* modeOut);
 CmdResult saveEventControl(C::mip_interface& device, uint8_t instance);
 CmdResult loadEventControl(C::mip_interface& device, uint8_t instance);
 CmdResult defaultEventControl(C::mip_interface& device, uint8_t instance);
@@ -1522,7 +1522,7 @@ void extract(Serializer& serializer, GetEventTriggerStatus::Entry& self);
 void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self);
 void extract(Serializer& serializer, GetEventTriggerStatus::Response& self);
 
-CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t& count, GetEventTriggerStatus::Entry* triggers);
+CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventTriggerStatus::Entry* triggersOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1565,7 +1565,7 @@ void extract(Serializer& serializer, GetEventActionStatus::Entry& self);
 void insert(Serializer& serializer, const GetEventActionStatus::Response& self);
 void extract(Serializer& serializer, GetEventActionStatus::Response& self);
 
-CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t& count, GetEventActionStatus::Entry* actions);
+CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventActionStatus::Entry* actionsOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1689,7 +1689,7 @@ void insert(Serializer& serializer, const EventTrigger::Response& self);
 void extract(Serializer& serializer, EventTrigger::Response& self);
 
 CmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
-CmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, EventTrigger::Parameters& parameters);
+CmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type* typeOut, EventTrigger::Parameters* parametersOut);
 CmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance);
 CmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance);
 CmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
@@ -1780,7 +1780,7 @@ void insert(Serializer& serializer, const EventAction::Response& self);
 void extract(Serializer& serializer, EventAction::Response& self);
 
 CmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
-CmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, EventAction::Parameters& parameters);
+CmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* triggerOut, EventAction::Type* typeOut, EventAction::Parameters* parametersOut);
 CmdResult saveEventAction(C::mip_interface& device, uint8_t instance);
 CmdResult loadEventAction(C::mip_interface& device, uint8_t instance);
 CmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
@@ -1824,7 +1824,7 @@ void insert(Serializer& serializer, const AccelBias::Response& self);
 void extract(Serializer& serializer, AccelBias::Response& self);
 
 CmdResult writeAccelBias(C::mip_interface& device, const float* bias);
-CmdResult readAccelBias(C::mip_interface& device, float* bias);
+CmdResult readAccelBias(C::mip_interface& device, float* biasOut);
 CmdResult saveAccelBias(C::mip_interface& device);
 CmdResult loadAccelBias(C::mip_interface& device);
 CmdResult defaultAccelBias(C::mip_interface& device);
@@ -1868,7 +1868,7 @@ void insert(Serializer& serializer, const GyroBias::Response& self);
 void extract(Serializer& serializer, GyroBias::Response& self);
 
 CmdResult writeGyroBias(C::mip_interface& device, const float* bias);
-CmdResult readGyroBias(C::mip_interface& device, float* bias);
+CmdResult readGyroBias(C::mip_interface& device, float* biasOut);
 CmdResult saveGyroBias(C::mip_interface& device);
 CmdResult loadGyroBias(C::mip_interface& device);
 CmdResult defaultGyroBias(C::mip_interface& device);
@@ -1909,7 +1909,7 @@ void extract(Serializer& serializer, CaptureGyroBias& self);
 void insert(Serializer& serializer, const CaptureGyroBias::Response& self);
 void extract(Serializer& serializer, CaptureGyroBias::Response& self);
 
-CmdResult captureGyroBias(C::mip_interface& device, uint16_t averaging_time_ms, float* bias);
+CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1954,7 +1954,7 @@ void insert(Serializer& serializer, const MagHardIronOffset::Response& self);
 void extract(Serializer& serializer, MagHardIronOffset::Response& self);
 
 CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset);
-CmdResult readMagHardIronOffset(C::mip_interface& device, float* offset);
+CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut);
 CmdResult saveMagHardIronOffset(C::mip_interface& device);
 CmdResult loadMagHardIronOffset(C::mip_interface& device);
 CmdResult defaultMagHardIronOffset(C::mip_interface& device);
@@ -2006,7 +2006,7 @@ void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self);
 void extract(Serializer& serializer, MagSoftIronMatrix::Response& self);
 
 CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
-CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offset);
+CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
 CmdResult saveMagSoftIronMatrix(C::mip_interface& device);
 CmdResult loadMagSoftIronMatrix(C::mip_interface& device);
 CmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
@@ -2076,7 +2076,7 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformEuler::Response
 void extract(Serializer& serializer, Sensor2VehicleTransformEuler::Response& self);
 
 CmdResult writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw);
-CmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float& roll, float& pitch, float& yaw);
+CmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
 CmdResult saveSensor2VehicleTransformEuler(C::mip_interface& device);
 CmdResult loadSensor2VehicleTransformEuler(C::mip_interface& device);
 CmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
@@ -2150,7 +2150,7 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Res
 void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
 
 CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
-CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* q);
+CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut);
 CmdResult saveSensor2VehicleTransformQuaternion(C::mip_interface& device);
 CmdResult loadSensor2VehicleTransformQuaternion(C::mip_interface& device);
 CmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
@@ -2222,7 +2222,7 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& 
 void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self);
 
 CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
-CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcm);
+CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut);
 CmdResult saveSensor2VehicleTransformDcm(C::mip_interface& device);
 CmdResult loadSensor2VehicleTransformDcm(C::mip_interface& device);
 CmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
@@ -2273,8 +2273,8 @@ void extract(Serializer& serializer, ComplementaryFilter& self);
 void insert(Serializer& serializer, const ComplementaryFilter::Response& self);
 void extract(Serializer& serializer, ComplementaryFilter::Response& self);
 
-CmdResult writeComplementaryFilter(C::mip_interface& device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant);
-CmdResult readComplementaryFilter(C::mip_interface& device, bool& pitch_roll_enable, bool& heading_enable, float& pitch_roll_time_constant, float& heading_time_constant);
+CmdResult writeComplementaryFilter(C::mip_interface& device, bool pitchRollEnable, bool headingEnable, float pitchRollTimeConstant, float headingTimeConstant);
+CmdResult readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnableOut, bool* headingEnableOut, float* pitchRollTimeConstantOut, float* headingTimeConstantOut);
 CmdResult saveComplementaryFilter(C::mip_interface& device);
 CmdResult loadComplementaryFilter(C::mip_interface& device);
 CmdResult defaultComplementaryFilter(C::mip_interface& device);
@@ -2325,7 +2325,7 @@ void insert(Serializer& serializer, const SensorRange::Response& self);
 void extract(Serializer& serializer, SensorRange::Response& self);
 
 CmdResult writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting);
-CmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t& setting);
+CmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t* settingOut);
 CmdResult saveSensorRange(C::mip_interface& device, SensorRangeType sensor);
 CmdResult loadSensorRange(C::mip_interface& device, SensorRangeType sensor);
 CmdResult defaultSensorRange(C::mip_interface& device, SensorRangeType sensor);
@@ -2375,7 +2375,7 @@ void extract(Serializer& serializer, CalibratedSensorRanges::Entry& self);
 void insert(Serializer& serializer, const CalibratedSensorRanges::Response& self);
 void extract(Serializer& serializer, CalibratedSensorRanges::Response& self);
 
-CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t& num_ranges, CalibratedSensorRanges::Entry* ranges);
+CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t* numRangesOut, uint8_t numRangesOutMax, CalibratedSensorRanges::Entry* rangesOut);
 ///@}
 ///
 

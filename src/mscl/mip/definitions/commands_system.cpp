@@ -31,29 +31,15 @@ using namespace ::mip::C;
 
 void insert(Serializer& serializer, const CommMode& self)
 {
-    insert(serializer, self.function);
     insert(serializer, self.mode);
+    
 }
-
 void extract(Serializer& serializer, CommMode& self)
 {
-    extract(serializer, self.function);
     extract(serializer, self.mode);
+    
 }
 
-/// @brief Advanced specialized communication modes.
-/// 
-/// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
-/// Please see the specific device's user manual for possible modes.
-/// 
-/// This command responds with an ACK/NACK just prior to switching to the new protocol.
-/// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
-/// @param mode 
-/// 
-/// @returns CmdResult
-/// 
 CmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -61,25 +47,12 @@ CmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, mode);
+    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset);
 }
-
-/// @brief Advanced specialized communication modes.
-/// 
-/// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
-/// Please see the specific device's user manual for possible modes.
-/// 
-/// This command responds with an ACK/NACK just prior to switching to the new protocol.
-/// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
-/// @param[out] mode 
-/// 
-/// @returns CmdResult
-/// 
-CmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
+CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -88,32 +61,20 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t& mode)
     assert(serializer.isOk());
     
     uint8_t responseLength;
-    mip_cmd_result result_local = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset, REPLY_COM_MODE, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset, REPLY_COM_MODE, buffer, &responseLength);
     
-    if( result_local == MIP_ACK_OK )
+    if( result == MIP_ACK_OK )
     {
-        Serializer serializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, sizeof(buffer));
         
-        extract(serializer, mode);
+        assert(modeOut);
+        extract(deserializer, *modeOut);
         
-        if( !serializer.isOk() )
-            result_local = MIP_STATUS_ERROR;
+        if( !deserializer.isOk() )
+            result = MIP_STATUS_ERROR;
     }
-    return result_local;
+    return result;
 }
-
-/// @brief Advanced specialized communication modes.
-/// 
-/// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
-/// Please see the specific device's user manual for possible modes.
-/// 
-/// This command responds with an ACK/NACK just prior to switching to the new protocol.
-/// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
-/// 
-/// @returns CmdResult
-/// 
 CmdResult defaultCommMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -124,7 +85,6 @@ CmdResult defaultCommMode(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset);
 }
-
 
 } // namespace commands_system
 } // namespace mip

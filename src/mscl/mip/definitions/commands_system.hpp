@@ -98,7 +98,7 @@ void insert(Serializer& serializer, const CommMode::Response& self);
 void extract(Serializer& serializer, CommMode::Response& self);
 
 CmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
-CmdResult readCommMode(C::mip_interface& device, uint8_t& mode);
+CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut);
 CmdResult defaultCommMode(C::mip_interface& device);
 ///@}
 ///

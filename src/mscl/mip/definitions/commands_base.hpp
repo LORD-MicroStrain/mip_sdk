@@ -202,7 +202,7 @@ void extract(Serializer& serializer, GetDeviceInfo& self);
 void insert(Serializer& serializer, const GetDeviceInfo::Response& self);
 void extract(Serializer& serializer, GetDeviceInfo::Response& self);
 
-CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo& device_info);
+CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +238,7 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self);
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self);
 void extract(Serializer& serializer, GetDeviceDescriptors::Response& self);
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +275,7 @@ void extract(Serializer& serializer, BuiltInTest& self);
 void insert(Serializer& serializer, const BuiltInTest::Response& self);
 void extract(Serializer& serializer, BuiltInTest::Response& self);
 
-CmdResult builtInTest(C::mip_interface& device, uint32_t& result);
+CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,7 +334,7 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self);
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self);
 void extract(Serializer& serializer, GetExtendedDescriptors::Response& self);
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint8_t& descriptors_count, uint16_t* descriptors);
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -368,7 +368,7 @@ void extract(Serializer& serializer, ContinuousBit& self);
 void insert(Serializer& serializer, const ContinuousBit::Response& self);
 void extract(Serializer& serializer, ContinuousBit::Response& self);
 
-CmdResult continuousBit(C::mip_interface& device, uint8_t* result);
+CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -423,7 +423,7 @@ void insert(Serializer& serializer, const CommSpeed::Response& self);
 void extract(Serializer& serializer, CommSpeed::Response& self);
 
 CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
-CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t& baud);
+CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut);
 CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port);
 CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port);
 CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
@@ -462,7 +462,7 @@ struct GpsTimeUpdate
 void insert(Serializer& serializer, const GpsTimeUpdate& self);
 void extract(Serializer& serializer, GpsTimeUpdate& self);
 
-CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId field_id, uint32_t value);
+CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////

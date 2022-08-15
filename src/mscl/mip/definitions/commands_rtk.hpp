@@ -156,7 +156,7 @@ void extract(Serializer& serializer, GetStatusFlags& self);
 void insert(Serializer& serializer, const GetStatusFlags::Response& self);
 void extract(Serializer& serializer, GetStatusFlags::Response& self);
 
-CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags);
+CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,7 +187,7 @@ void extract(Serializer& serializer, GetImei& self);
 void insert(Serializer& serializer, const GetImei::Response& self);
 void extract(Serializer& serializer, GetImei::Response& self);
 
-CmdResult getImei(C::mip_interface& device, char* IMEI);
+CmdResult getImei(C::mip_interface& device, char* imeiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -218,7 +218,7 @@ void extract(Serializer& serializer, GetImsi& self);
 void insert(Serializer& serializer, const GetImsi::Response& self);
 void extract(Serializer& serializer, GetImsi::Response& self);
 
-CmdResult getImsi(C::mip_interface& device, char* IMSI);
+CmdResult getImsi(C::mip_interface& device, char* imsiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ void extract(Serializer& serializer, GetIccid& self);
 void insert(Serializer& serializer, const GetIccid::Response& self);
 void extract(Serializer& serializer, GetIccid::Response& self);
 
-CmdResult getIccid(C::mip_interface& device, char* ICCID);
+CmdResult getIccid(C::mip_interface& device, char* iccidOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -292,8 +292,8 @@ void extract(Serializer& serializer, ConnectedDeviceType& self);
 void insert(Serializer& serializer, const ConnectedDeviceType::Response& self);
 void extract(Serializer& serializer, ConnectedDeviceType::Response& self);
 
-CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType);
-CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType);
+CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype);
+CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut);
 CmdResult saveConnectedDeviceType(C::mip_interface& device);
 CmdResult loadConnectedDeviceType(C::mip_interface& device);
 CmdResult defaultConnectedDeviceType(C::mip_interface& device);
@@ -327,7 +327,7 @@ void extract(Serializer& serializer, GetActCode& self);
 void insert(Serializer& serializer, const GetActCode::Response& self);
 void extract(Serializer& serializer, GetActCode::Response& self);
 
-CmdResult getActCode(C::mip_interface& device, char* ActivationCode);
+CmdResult getActCode(C::mip_interface& device, char* activationcodeOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -358,7 +358,7 @@ void extract(Serializer& serializer, GetModemFirmwareVersion& self);
 void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self);
 void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self);
 
-CmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion);
+CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -392,7 +392,7 @@ void extract(Serializer& serializer, GetRssi& self);
 void insert(Serializer& serializer, const GetRssi::Response& self);
 void extract(Serializer& serializer, GetRssi::Response& self);
 
-CmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality);
+CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -446,7 +446,7 @@ void extract(Serializer& serializer, ServiceStatus& self);
 void insert(Serializer& serializer, const ServiceStatus::Response& self);
 void extract(Serializer& serializer, ServiceStatus::Response& self);
 
-CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime);
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* recievedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -494,7 +494,7 @@ struct LedControl
 void insert(Serializer& serializer, const LedControl& self);
 void extract(Serializer& serializer, LedControl& self);
 
-CmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period);
+CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////

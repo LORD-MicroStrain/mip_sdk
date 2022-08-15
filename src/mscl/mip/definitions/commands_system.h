@@ -85,9 +85,9 @@ struct mip_system_comm_mode_response
 void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self);
 void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, struct mip_system_comm_mode_response* self);
 
-mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
-mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode);
-mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
+enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
+enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);
+enum mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
 ///@}
 ///
 

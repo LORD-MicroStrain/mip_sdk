@@ -33,46 +33,54 @@ void insert(Serializer& serializer, const BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         insert(serializer, self.result[i]);
+    
 }
-
 void extract(Serializer& serializer, BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         extract(serializer, self.result[i]);
+    
 }
 
 void insert(Serializer& serializer, const TimeSyncStatus& self)
 {
     insert(serializer, self.time_sync);
+    
     insert(serializer, self.last_pps_rcvd);
+    
 }
-
 void extract(Serializer& serializer, TimeSyncStatus& self)
 {
     extract(serializer, self.time_sync);
+    
     extract(serializer, self.last_pps_rcvd);
+    
 }
 
 void insert(Serializer& serializer, const GpioState& self)
 {
     insert(serializer, self.states);
+    
 }
-
 void extract(Serializer& serializer, GpioState& self)
 {
     extract(serializer, self.states);
+    
 }
 
 void insert(Serializer& serializer, const GpioAnalogValue& self)
 {
     insert(serializer, self.gpio_id);
+    
     insert(serializer, self.value);
+    
 }
-
 void extract(Serializer& serializer, GpioAnalogValue& self)
 {
     extract(serializer, self.gpio_id);
+    
     extract(serializer, self.value);
+    
 }
 
 
