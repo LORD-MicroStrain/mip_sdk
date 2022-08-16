@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mscl/mip/mip_device.hpp>
+#include <mip/mip_device.hpp>
 
 #include <serial/serial.h>
 
