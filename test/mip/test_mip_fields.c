@@ -1,7 +1,7 @@
 
-#include <mscl/mip/mip_field.h>
-#include <mscl/mip/mip_packet.h>
-#include <mscl/mip/mip_offsets.h>
+#include <mip/mip_field.h>
+#include <mip/mip_packet.h>
+#include <mip/mip_offsets.h>
 
 #include <stdio.h>
 #include <stdlib.h>

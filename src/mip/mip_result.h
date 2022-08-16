@@ -39,7 +39,7 @@ bool mip_cmd_result_is_finished(enum mip_cmd_result result);
 bool mip_cmd_result_is_reply(enum mip_cmd_result result);
 bool mip_cmd_result_is_status(enum mip_cmd_result result);
 
-bool mip_cmd_result_is_ack(mip_cmd_result result);
+bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 
 #ifdef __cplusplus
 } // extern "C"

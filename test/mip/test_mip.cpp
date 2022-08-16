@@ -1,5 +1,5 @@
 
-#include <mscl/mip/mip.hpp>
+#include <mip/mip.hpp>
 
 #include <cstring>
 #include <algorithm>

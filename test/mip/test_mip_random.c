@@ -1,6 +1,6 @@
 
-#include <mscl/mip/mip_packet.h>
-#include <mscl/mip/mip_parser.h>
+#include <mip/mip_packet.h>
+#include <mip/mip_parser.h>
 
 #include <stdio.h>
 #include <stdlib.h>

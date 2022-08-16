@@ -1,5 +1,5 @@
 
-#include <mscl/mip/mip_parser.h>
+#include <mip/mip_parser.h>
 
 #include <stdio.h>
 #include <stdlib.h>
