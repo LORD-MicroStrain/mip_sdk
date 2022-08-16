@@ -15,6 +15,7 @@ extern "C" {
 #endif // __cplusplus
 struct mip_interface;
 struct mip_serializer;
+struct mip_field;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +39,14 @@ void extract_mip_sensor_raw_accel_data(struct mip_serializer* serializer, struct
         extract_float(serializer, &self->raw_accel[i]);
     
 }
+void extract_mip_sensor_raw_accel_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_raw_accel_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_raw_accel_data(&serializer, self);
+}
 
 void insert_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, const struct mip_sensor_raw_gyro_data* self)
 {
@@ -50,6 +59,14 @@ void extract_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, struct 
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->raw_gyro[i]);
     
+}
+void extract_mip_sensor_raw_gyro_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_raw_gyro_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_raw_gyro_data(&serializer, self);
 }
 
 void insert_mip_sensor_raw_mag_data(struct mip_serializer* serializer, const struct mip_sensor_raw_mag_data* self)
@@ -64,6 +81,14 @@ void extract_mip_sensor_raw_mag_data(struct mip_serializer* serializer, struct m
         extract_float(serializer, &self->raw_mag[i]);
     
 }
+void extract_mip_sensor_raw_mag_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_raw_mag_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_raw_mag_data(&serializer, self);
+}
 
 void insert_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, const struct mip_sensor_raw_pressure_data* self)
 {
@@ -74,6 +99,14 @@ void extract_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, str
 {
     extract_float(serializer, &self->raw_pressure);
     
+}
+void extract_mip_sensor_raw_pressure_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_raw_pressure_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_raw_pressure_data(&serializer, self);
 }
 
 void insert_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_accel_data* self)
@@ -88,6 +121,14 @@ void extract_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, str
         extract_float(serializer, &self->scaled_accel[i]);
     
 }
+void extract_mip_sensor_scaled_accel_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_scaled_accel_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_scaled_accel_data(&serializer, self);
+}
 
 void insert_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_gyro_data* self)
 {
@@ -100,6 +141,14 @@ void extract_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, stru
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->scaled_gyro[i]);
     
+}
+void extract_mip_sensor_scaled_gyro_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_scaled_gyro_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_scaled_gyro_data(&serializer, self);
 }
 
 void insert_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_mag_data* self)
@@ -114,6 +163,14 @@ void extract_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, struc
         extract_float(serializer, &self->scaled_mag[i]);
     
 }
+void extract_mip_sensor_scaled_mag_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_scaled_mag_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_scaled_mag_data(&serializer, self);
+}
 
 void insert_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, const struct mip_sensor_scaled_pressure_data* self)
 {
@@ -124,6 +181,14 @@ void extract_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, 
 {
     extract_float(serializer, &self->scaled_pressure);
     
+}
+void extract_mip_sensor_scaled_pressure_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_scaled_pressure_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_scaled_pressure_data(&serializer, self);
 }
 
 void insert_mip_sensor_delta_theta_data(struct mip_serializer* serializer, const struct mip_sensor_delta_theta_data* self)
@@ -138,6 +203,14 @@ void extract_mip_sensor_delta_theta_data(struct mip_serializer* serializer, stru
         extract_float(serializer, &self->delta_theta[i]);
     
 }
+void extract_mip_sensor_delta_theta_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_delta_theta_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_delta_theta_data(&serializer, self);
+}
 
 void insert_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, const struct mip_sensor_delta_velocity_data* self)
 {
@@ -150,6 +223,14 @@ void extract_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, s
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->delta_velocity[i]);
     
+}
+void extract_mip_sensor_delta_velocity_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_delta_velocity_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_delta_velocity_data(&serializer, self);
 }
 
 void insert_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* serializer, const struct mip_sensor_comp_orientation_matrix_data* self)
@@ -164,6 +245,14 @@ void extract_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* seri
         extract_float(serializer, &self->m[i]);
     
 }
+void extract_mip_sensor_comp_orientation_matrix_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_comp_orientation_matrix_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_comp_orientation_matrix_data(&serializer, self);
+}
 
 void insert_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, const struct mip_sensor_comp_quaternion_data* self)
 {
@@ -176,6 +265,14 @@ void extract_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, 
     for(unsigned int i=0; i < 4; i++)
         extract_float(serializer, &self->q[i]);
     
+}
+void extract_mip_sensor_comp_quaternion_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_comp_quaternion_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_comp_quaternion_data(&serializer, self);
 }
 
 void insert_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer, const struct mip_sensor_comp_euler_angles_data* self)
@@ -196,6 +293,14 @@ void extract_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer
     extract_float(serializer, &self->yaw);
     
 }
+void extract_mip_sensor_comp_euler_angles_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_comp_euler_angles_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_comp_euler_angles_data(&serializer, self);
+}
 
 void insert_mip_sensor_comp_orientation_update_matrix_data(struct mip_serializer* serializer, const struct mip_sensor_comp_orientation_update_matrix_data* self)
 {
@@ -208,6 +313,14 @@ void extract_mip_sensor_comp_orientation_update_matrix_data(struct mip_serialize
     for(unsigned int i=0; i < 9; i++)
         extract_float(serializer, &self->m[i]);
     
+}
+void extract_mip_sensor_comp_orientation_update_matrix_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_comp_orientation_update_matrix_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_comp_orientation_update_matrix_data(&serializer, self);
 }
 
 void insert_mip_sensor_orientation_raw_temp_data(struct mip_serializer* serializer, const struct mip_sensor_orientation_raw_temp_data* self)
@@ -222,6 +335,14 @@ void extract_mip_sensor_orientation_raw_temp_data(struct mip_serializer* seriali
         extract_u16(serializer, &self->raw_temp[i]);
     
 }
+void extract_mip_sensor_orientation_raw_temp_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_orientation_raw_temp_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_orientation_raw_temp_data(&serializer, self);
+}
 
 void insert_mip_sensor_internal_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_internal_timestamp_data* self)
 {
@@ -232,6 +353,14 @@ void extract_mip_sensor_internal_timestamp_data(struct mip_serializer* serialize
 {
     extract_u32(serializer, &self->counts);
     
+}
+void extract_mip_sensor_internal_timestamp_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_internal_timestamp_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_internal_timestamp_data(&serializer, self);
 }
 
 void insert_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_pps_timestamp_data* self)
@@ -247,6 +376,14 @@ void extract_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, st
     
     extract_u32(serializer, &self->useconds);
     
+}
+void extract_mip_sensor_pps_timestamp_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_pps_timestamp_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_pps_timestamp_data(&serializer, self);
 }
 
 void insert_mip_sensor_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_sensor_gps_timestamp_data* self)
@@ -266,6 +403,14 @@ void extract_mip_sensor_gps_timestamp_data(struct mip_serializer* serializer, st
     
     extract_mip_sensor_gps_timestamp_data_valid_flags(serializer, &self->valid_flags);
     
+}
+void extract_mip_sensor_gps_timestamp_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_gps_timestamp_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_gps_timestamp_data(&serializer, self);
 }
 
 void insert_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_sensor_gps_timestamp_data_valid_flags self)
@@ -297,6 +442,14 @@ void extract_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, 
     extract_float(serializer, &self->mean_temp);
     
 }
+void extract_mip_sensor_temperature_abs_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_temperature_abs_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_temperature_abs_data(&serializer, self);
+}
 
 void insert_mip_sensor_up_vector_data(struct mip_serializer* serializer, const struct mip_sensor_up_vector_data* self)
 {
@@ -309,6 +462,14 @@ void extract_mip_sensor_up_vector_data(struct mip_serializer* serializer, struct
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->up[i]);
     
+}
+void extract_mip_sensor_up_vector_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_up_vector_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_up_vector_data(&serializer, self);
 }
 
 void insert_mip_sensor_north_vector_data(struct mip_serializer* serializer, const struct mip_sensor_north_vector_data* self)
@@ -323,6 +484,14 @@ void extract_mip_sensor_north_vector_data(struct mip_serializer* serializer, str
         extract_float(serializer, &self->north[i]);
     
 }
+void extract_mip_sensor_north_vector_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_north_vector_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_north_vector_data(&serializer, self);
+}
 
 void insert_mip_sensor_overrange_status_data(struct mip_serializer* serializer, const struct mip_sensor_overrange_status_data* self)
 {
@@ -333,6 +502,14 @@ void extract_mip_sensor_overrange_status_data(struct mip_serializer* serializer,
 {
     extract_mip_sensor_overrange_status_data_status(serializer, &self->status);
     
+}
+void extract_mip_sensor_overrange_status_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_overrange_status_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_overrange_status_data(&serializer, self);
 }
 
 void insert_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, const enum mip_sensor_overrange_status_data_status self)
@@ -363,6 +540,14 @@ void extract_mip_sensor_odometer_data_data(struct mip_serializer* serializer, st
     
     extract_u16(serializer, &self->valid_flags);
     
+}
+void extract_mip_sensor_odometer_data_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_sensor_odometer_data_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_sensor_odometer_data_data(&serializer, self);
 }
 
 

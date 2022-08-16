@@ -15,6 +15,7 @@ extern "C" {
 #endif // __cplusplus
 struct mip_interface;
 struct mip_serializer;
+struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
@@ -78,6 +79,7 @@ struct mip_system_built_in_test_data
 };
 void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, const struct mip_system_built_in_test_data* self);
 void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, struct mip_system_built_in_test_data* self);
+void extract_mip_system_built_in_test_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -95,6 +97,7 @@ struct mip_system_time_sync_status_data
 };
 void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self);
 void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, struct mip_system_time_sync_status_data* self);
+void extract_mip_system_time_sync_status_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -129,6 +132,7 @@ struct mip_system_gpio_state_data
 };
 void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self);
 void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struct mip_system_gpio_state_data* self);
+void extract_mip_system_gpio_state_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -147,6 +151,7 @@ struct mip_system_gpio_analog_value_data
 };
 void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self);
 void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, struct mip_system_gpio_analog_value_data* self);
+void extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///

@@ -15,6 +15,7 @@ extern "C" {
 #endif // __cplusplus
 struct mip_interface;
 struct mip_serializer;
+struct mip_field;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +39,14 @@ void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, st
         extract_u8(serializer, &self->result[i]);
     
 }
+void extract_mip_system_built_in_test_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_system_built_in_test_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_system_built_in_test_data(&serializer, self);
+}
 
 void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self)
 {
@@ -53,6 +62,14 @@ void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer,
     extract_u8(serializer, &self->last_pps_rcvd);
     
 }
+void extract_mip_system_time_sync_status_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_system_time_sync_status_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_system_time_sync_status_data(&serializer, self);
+}
 
 void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self)
 {
@@ -63,6 +80,14 @@ void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struc
 {
     extract_u8(serializer, &self->states);
     
+}
+void extract_mip_system_gpio_state_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_system_gpio_state_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_system_gpio_state_data(&serializer, self);
 }
 
 void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self)
@@ -78,6 +103,14 @@ void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer
     
     extract_float(serializer, &self->value);
     
+}
+void extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field* field, void* ptr)
+{
+    assert(ptr);
+    struct mip_system_gpio_analog_value_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_system_gpio_analog_value_data(&serializer, self);
 }
 
 
