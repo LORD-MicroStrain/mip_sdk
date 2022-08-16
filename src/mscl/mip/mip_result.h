@@ -39,6 +39,7 @@ bool mip_cmd_result_is_finished(enum mip_cmd_result result);
 bool mip_cmd_result_is_reply(enum mip_cmd_result result);
 bool mip_cmd_result_is_status(enum mip_cmd_result result);
 
+bool mip_cmd_result_is_ack(mip_cmd_result result);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -72,8 +73,8 @@ struct CmdResult
     CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
     // operator bool() const { return value == C::MIP_ACK_OK; }
-    operator const void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
-    bool operator!() const { return value == C::MIP_ACK_OK; }
+    operator const void*() const { return isAck() ? this : nullptr; }
+    bool operator!() const { return !isAck(); }
     operator C::mip_cmd_result&() { return value; }
     operator C::mip_cmd_result() const { return value; }
 
@@ -88,6 +89,7 @@ struct CmdResult
     bool isReplyCode() const { return C::mip_cmd_result_is_reply(value); }
     bool isStatusCode() const { return C::mip_cmd_result_is_status(value); }
     bool isFinished() const { return C::mip_cmd_result_is_finished(value); }
+    bool isAck() const { return C::mip_cmd_result_is_ack(value); }
 };
 
 // using Ack = C::mip_ack;
