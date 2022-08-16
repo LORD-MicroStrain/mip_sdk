@@ -9,11 +9,11 @@
 #include <cstring>
 #include <stdio.h>
 
-namespace mscl
+namespace mip
 {
     namespace C {
-        MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response);
-        MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info);
+        CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response);
+        CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info);
     }
 }
 
@@ -62,19 +62,19 @@ int main(int argc, const char* argv[])
 
         uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
-        mscl::MipPacket packet(buffer, sizeof(buffer), mscl::MIP_BASE_COMMAND_DESC_SET);
+        mip::Packet packet(buffer, sizeof(buffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
         uint8_t* payload;
-        mscl::RemainingCount available = packet.allocField(mscl::MIP_CMD_DESC_BASE_PING, 0, &payload);
+        mip::RemainingCount available = packet.allocField(mip::MIP_CMD_DESC_BASE_PING, 0, &payload);
 
     #if METHOD == 1
-        mscl::MipCmd_Base_GetDeviceInfo info;
-        size_t used = mscl::insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, &info);
+        mip::MipCmd_Base_GetDeviceInfo info;
+        size_t used = mip::insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, &info);
     #elif METHOD == 2
-        mscl::MipCmd_Base_GetDeviceInfo info;
-        size_t used = mscl::insert(payload, available, 0, info);
+        mip::MipCmd_Base_GetDeviceInfo info;
+        size_t used = mip::insert(payload, available, 0, info);
     #elif METHOD == 3
-        size_t used = mscl::insert_MipCmd_Base_GetDeviceInfo_args(payload, available, 0);
+        size_t used = mip::insert_MipCmd_Base_GetDeviceInfo_args(payload, available, 0);
     #endif
 
         // Skip error checking as this field will always fit in this buffer.
@@ -101,31 +101,31 @@ int main(int argc, const char* argv[])
         MipDevice device(argv[1], baud);
 
         uint8_t responseBuffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-        mscl::C::MipPendingCmd cmd;
-        mscl::C::MipPendingCmd_initWithResponse(&cmd, mscl::MIP_BASE_COMMAND_DESC_SET, mscl::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, mscl::MIP_REPLY_DESC_BASE_DEVICE_INFO, responseBuffer, sizeof(responseBuffer));
-        mscl::C::MipCmdQueue_enqueue(device.cmdQueue(), &cmd);
+        mip::C::MipPendingCmd cmd;
+        mip::C::MipPendingCmd_initWithResponse(&cmd, mip::MIP_BASE_COMMAND_DESC_SET, mip::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, mip::MIP_REPLY_DESC_BASE_DEVICE_INFO, responseBuffer, sizeof(responseBuffer));
+        mip::C::MipCmdQueue_enqueue(device.cmdQueue(), &cmd);
 
         uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
 
-        mscl::MipPacket packet(packetBuffer, sizeof(packetBuffer), mscl::MIP_BASE_COMMAND_DESC_SET);
+        mip::Packet packet(packetBuffer, sizeof(packetBuffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
-        packet.addField(mscl::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, NULL, 0);
+        packet.addField(mip::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, NULL, 0);
         packet.finalize();
 
         device.sendToDevice(packet);
 
-        mscl::MipCmdResult result = device.waitForReply(cmd);
+        mip::CmdResult result = device.waitForReply(cmd);
 
 //         MipBase_DeviceInfo info;
-//         MipCmdResult result = MipInterface_getDeviceInfo(device, &info);
+//         CmdResult result = MipInterface_getDeviceInfo(device, &info);
 
-        if( result == mscl::MIP_ACK_OK )
+        if( result == mip::MIP_ACK_OK )
         {
-            const size_t responseSize = mscl::C::MipPendingCmd_responseLength(&cmd);
+            const size_t responseSize = mip::C::MipPendingCmd_responseLength(&cmd);
             printf("Success: command completed with ACK: responseLength=%ld\n", responseSize);
 
-            mscl::MipCmd_Base_GetDeviceInfo_Response response;
-            size_t used = mscl::extract_MipCmd_Base_GetDeviceInfo_Response(mscl::C::MipPendingCmd_response(&cmd), responseSize, 0, &response);
+            mip::MipCmd_Base_GetDeviceInfo_Response response;
+            size_t used = mip::extract_MipCmd_Base_GetDeviceInfo_Response(mip::C::MipPendingCmd_response(&cmd), responseSize, 0, &response);
             if( used == responseSize )
             {
                 auto print_info = [](const char* name, const char info[16])
@@ -154,29 +154,29 @@ int main(int argc, const char* argv[])
         }
         else
         {
-            printf("Error: command completed with NACK: %s (%d)\n", mscl::MipCmdResult_toString(result), result);
+            printf("Error: command completed with NACK: %s (%d)\n", mip::MipCmdResult_toString(result), result);
         }
 #elif METHOD >= 5
     MipDevice device(argv[1], baud);
 
-    mscl::MipCmd_Base_GetDeviceInfo cmd;
-    mscl::MipCmd_Base_GetDeviceInfo_Response response;
+    mip::MipCmd_Base_GetDeviceInfo cmd;
+    mip::MipCmd_Base_GetDeviceInfo_Response response;
 
     #if METHOD == 5
-        mscl::MipCmdResult result = exec_MipCmd_Base_GetDeviceInfo(&device, &cmd, &response);
+        mip::CmdResult result = exec_MipCmd_Base_GetDeviceInfo(&device, &cmd, &response);
     #elif METHOD == 6
-        mscl::MipCmdResult result = mipcmd_base_getDeviceInfo(&device, &response.device_info);
+        mip::CmdResult result = mipcmd_base_getDeviceInfo(&device, &response.device_info);
     #elif METHOD == 7
-        mscl::MipCmdResult result = mscl::runCommand(&device, cmd, response);
+        mip::CmdResult result = mip::runCommand(&device, cmd, response);
     #elif METHOD == 8
-        mscl::MipDeviceInterface* device2 = &device;
-        mscl::C::MipInterfaceState* device3 = device2;
-        mscl::MipInterfaceState* device4 = device3;
-        static_assert(std::is_same<mscl::MipInterfaceState, mscl::C::MipInterfaceState>::value, "Not the same");
-        mscl::MipCmdResult result = mscl::get_device_information(device4, &response.device_info);
+        mip::DeviceInterface* device2 = &device;
+        mip::C::MipInterfaceState* device3 = device2;
+        mip::MipInterfaceState* device4 = device3;
+        static_assert(std::is_same<mip::MipInterfaceState, mip::C::MipInterfaceState>::value, "Not the same");
+        mip::CmdResult result = mip::get_device_information(device4, &response.device_info);
     #endif
 
-        if( result == mscl::MIP_ACK_OK )
+        if( result == mip::MIP_ACK_OK )
         {
             printf("Success:\n");
 
@@ -201,7 +201,7 @@ int main(int argc, const char* argv[])
         }
         else
         {
-            printf("Error: command completed with NACK: %s (%d)\n", mscl::MipCmdResult_toString(result), result);
+            printf("Error: command completed with NACK: %s (%d)\n", mip::MipCmdResult_toString(result), result);
         }
 
 #endif
@@ -215,12 +215,12 @@ int main(int argc, const char* argv[])
     return 0;
 }
 //
-// namespace mscl
+// namespace mip
 // {
 // namespace C
 // {
 //
-// MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info)
+// CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info)
 // {
 //     uint8_t payload[MIP_FIELD_LENGTH_MAX];
 //
@@ -228,7 +228,7 @@ int main(int argc, const char* argv[])
 //     assert(payloadLength <= sizeof(payload));
 //
 //     uint8_t responseLength;
-//     MipCmdResult result = C::MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, payload, payloadLength, MIP_REPLY_DESC_BASE_DEVICE_INFO, payload, &responseLength);
+//     CmdResult result = C::MipInterface_runCommandWithResponse(device, MIP_BASE_COMMAND_DESC_SET, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, payload, payloadLength, MIP_REPLY_DESC_BASE_DEVICE_INFO, payload, &responseLength);
 //     if( result == MIP_ACK_OK )
 //     {
 //         size_t used = extract_MipBaseDeviceInfo(payload, responseLength, 0, info);
@@ -239,11 +239,11 @@ int main(int argc, const char* argv[])
 //     return result;
 // }
 //
-// MipCmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response)
+// CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response)
 // {
 //     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 //
-//     struct C::MipPacket packet;
+//     struct C::Packet packet;
 //     MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);
 //
 //     uint8_t* payload;
@@ -267,7 +267,7 @@ int main(int argc, const char* argv[])
 //         return MIP_STATUS_ERROR;
 //     }
 //
-//     MipCmdResult result = C::MipInterface_waitForReply(device, &pending);
+//     CmdResult result = C::MipInterface_waitForReply(device, &pending);
 //
 //     if( result == MIP_ACK_OK )
 //     {

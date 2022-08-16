@@ -1,6 +1,6 @@
 #pragma once
 
-namespace mscl
+namespace mip
 {
     namespace detail
     {

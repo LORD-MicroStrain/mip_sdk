@@ -230,9 +230,9 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device)
 ///
 ///@returns The final status of the command.
 ///
-mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, const struct mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, const struct mip_pending_cmd* cmd)
 {
-    mip_cmd_result status;
+    enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
     {
         if( !mip_interface_update(device) )
@@ -259,7 +259,7 @@ mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, const 
 ///        MIP_NACK_* - Device rejected the command.
 ///        MIP_STATUS_* - An error occured (e.g. timeout).
 ///
-mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length)
+enum mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length)
 {
     return mip_interface_run_command_with_response(device, descriptor_set, cmd_descriptor, cmd_data, cmd_length, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
 }
@@ -271,7 +271,7 @@ mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t d
 ///       Descriptor of the response data. May be MIP_INVALID_FIELD_DESCRIPTOR
 ///       if no response is expected.
 ///
-mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* device,
+enum mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* device,
     uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length,
     uint8_t response_descriptor, uint8_t* response_buffer, uint8_t* response_length_inout)
 {
@@ -288,7 +288,7 @@ mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* dev
     const uint8_t response_length = response_length_inout ? *response_length_inout : 0;
     mip_pending_cmd_init_with_response(&cmd, descriptor_set, cmd_descriptor, response_descriptor, response_buffer, response_length);
 
-    mip_cmd_result result = mip_interface_run_command_packet(device, &packet, &cmd);
+    enum mip_cmd_result result = mip_interface_run_command_packet(device, &packet, &cmd);
 
     if( response_length_inout )
         *response_length_inout = mip_pending_cmd_response_length(&cmd);
@@ -296,17 +296,48 @@ mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* dev
     return result;
 }
 
-mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Similar to mip_interface_start_command_packet but waits for the
+///       command to complete.
+///
+///@param device
+///@param packet
+///       A MIP packet containing the command.
+///@param cmd
+///       The command status tracker. No lifetime requirement.
+///
+enum mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
+{
+    if( !mip_interface_start_command_packet(device, packet, cmd) )
+        return MIP_STATUS_ERROR;
+
+    return mip_interface_wait_for_reply(device, cmd);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Queues the command and sends the packet. Does not wait for completion.
+///
+///@param device
+///@param packet
+///       A MIP packet containing the command.
+///@param cmd
+///       The command status tracker. Must be valid while the command executes.
+///
+///@returns True if successful. Cmd must remain valid until the command finishes.
+///@returns False on error sending the packet. No cleanup is necessary and cmd
+///         can be destroyed immediately afterward in this case.
+///
+bool mip_interface_start_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
 {
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
     if( !mip_interface_send_to_device(device, mip_packet_pointer(packet), mip_packet_total_length(packet)) )
     {
         mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
-        return MIP_STATUS_ERROR;
+        return false;
     }
 
-    return mip_interface_wait_for_reply(device, cmd);
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

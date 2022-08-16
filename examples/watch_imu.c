@@ -209,7 +209,7 @@ int main(int argc, const char* argv[])
     // Record program start time for use with difftime in getTimestamp().
     time(&startTime);
 
-    mip_cmd_result result;
+    enum mip_cmd_result result;
 
     // Get the base rate.
     volatile uint32_t now = clock();

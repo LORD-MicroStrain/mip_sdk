@@ -25,7 +25,7 @@
 ///@brief A collection of C++ classes and functions covering the full
 /// mscl-embedded api.
 ///
-namespace mscl
+namespace mip
 {
 
 using PacketLength = C::packet_length;
@@ -36,17 +36,17 @@ template<class Field> struct MipFieldInfo;
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP field.
 ///
-class MipField : public C::mip_field
+class Field : public C::mip_field
 {
 public:
     /// Construct an empty MIP field.
-    MipField() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
+    Field() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
     ///@copydoc mip_field_init()
-    MipField(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
+    Field(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
     ///@copydoc mip_field_from_header_ptr()
-    MipField(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set) { *this = C::mip_field_from_header_ptr(header, total_length, descriptor_set); }
-    /// Creates a %MipField class from the mip_field C struct.
-    MipField(const C::mip_field& other) { std::memcpy(static_cast<C::mip_field*>(this), &other, sizeof(C::mip_field)); }
+    Field(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set) { *this = C::mip_field_from_header_ptr(header, total_length, descriptor_set); }
+    /// Creates a %Field class from the mip_field C struct.
+    Field(const C::mip_field& other) { std::memcpy(static_cast<C::mip_field*>(this), &other, sizeof(C::mip_field)); }
 
     ///@copydoc mip_field_descriptor_set
     uint8_t descriptorSet() const { return C::mip_field_descriptor_set(this); }
@@ -66,7 +66,7 @@ public:
     bool isValid() const { return C::mip_field_is_valid(this); }
 
     ///@copydoc mip_field_next_after
-    MipField nextAfter() const { return C::mip_field_next_after(this); }
+    Field nextAfter() const { return C::mip_field_next_after(this); }
     ///@copydoc mip_field_next
     bool next() { return C::mip_field_next(this); }
 
@@ -94,22 +94,22 @@ public:
 /// Fields may be iterated over using the C-style method or with a range-based
 /// for loop:
 ///@code{.cpp}
-/// for(MipField field : packet) { ... }
+/// for(Field field : packet) { ... }
 ///@endcode
 ///
-class MipPacket : public C::mip_packet
+class Packet : public C::mip_packet
 {
     class FieldIterator;
 
 public:
     ///@copydoc mip_packet_create
-    MipPacket(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
+    Packet(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip_packet_from_buffer
-    MipPacket(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
-    /// Constructs a C++ %MipPacket class from the base C object.
-    MipPacket(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
-    /// Constructs a C++ %MipPacket class from the base C object.
-    MipPacket(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
+    Packet(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
+    /// Constructs a C++ %Packet class from the base C object.
+    Packet(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
+    /// Constructs a C++ %Packet class from the base C object.
+    Packet(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
 
     uint8_t      descriptorSet() const { return C::mip_packet_descriptor_set(this); }  ///<@copydoc mip_packet_descriptor_set
     PacketLength totalLength()   const { return C::mip_packet_total_length(this);   }  ///<@copydoc mip_packet_total_length
@@ -142,7 +142,7 @@ public:
     void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
     /// Returns the first field in the packet.
-    MipField firstField() const { return MipField(C::mip_field_first_from_packet(this)); }
+    Field firstField() const { return Field(C::mip_field_first_from_packet(this)); }
 
     /// Returns a forward iterator to the first field in the packet.
     ///@internal
@@ -153,22 +153,23 @@ public:
 #if __cpp_range_based_for >= 201603
     nullptr_t     end() const { return nullptr; }
 #else
-    FieldIterator end() const { return MipField(); }
+    FieldIterator end() const { return Field(); }
 #endif
 
     template<class Field>
-    bool addField(const Field& field, uint8_t fieldDescriptor = Field::fieldDescriptor)
+    bool addField(const Field& field, uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
     {
         uint8_t* payload;
         size_t available = allocField(fieldDescriptor, 0, &payload);
-        size_t used = field.insert(payload, available, 0);
-        return reallocLastField(payload, used) >= 0;
+        Serializer serializer(payload, available);
+        insert(serializer, field);
+        return reallocLastField(payload, serializer.offset) >= 0;
     }
 
     template<class Field>
-    static MipPacket createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::fieldDescriptor)
+    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::FIELD_DESCRIPTOR)
     {
-        MipPacket packet(buffer, bufferSize, Field::descriptorSet);
+        Packet packet(buffer, bufferSize, Field::DESCRIPTOR_SET);
         packet.addField<Field>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -180,7 +181,7 @@ private:
     class FieldIterator
     {
     public:
-        FieldIterator(const MipField& first) : mField(first) {}
+        FieldIterator(const Field& first) : mField(first) {}
         FieldIterator() {}
 
         bool operator==(const FieldIterator& other) const {
@@ -194,11 +195,11 @@ private:
         bool operator==(std::nullptr_t) const { return !mField.isValid(); }
         bool operator!=(std::nullptr_t) const { return mField.isValid(); }
 
-        const MipField& operator*() const { return mField; }
+        const Field& operator*() const { return mField; }
 
         FieldIterator& operator++() { mField.next(); return *this; }
     private:
-        MipField mField;
+        Field mField;
     };
 
 };
@@ -207,17 +208,17 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP parser.
 ///
-class MipParser : public C::mip_parser
+class Parser : public C::mip_parser
 {
 public:
     ///@copydoc mip_parser_init
-    MipParser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip_parser_init
-    MipParser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const MipPacket*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const Packet*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
-    MipParser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
 
-    template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
+    template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
     void setCallback(T& object);
 
     ///@copydoc mip_parser_reset
@@ -240,10 +241,10 @@ public:
 ///@code{.cpp}
 /// struct MyClass
 /// {
-///     void handlePacket(const MipPacket& packet, Timeout timeout);
+///     void handlePacket(const Packet& packet, Timeout timeout);
 /// };
 ///
-/// MipParser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
+/// Parser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
 ///@endcode
 ///
 ///@tparam T Class type containing the member function to be called.
@@ -261,12 +262,12 @@ public:
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-template<class T, bool (T::*Callback)(const MipPacket&, Timestamp)>
-void MipParser::setCallback(T& object)
+template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
+void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet* pkt, Timestamp timestamp)->bool
     {
-        return (static_cast<T*>(obj)->*Callback)(MipPacket(pkt), timestamp);
+        return (static_cast<T*>(obj)->*Callback)(Packet(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);
@@ -293,7 +294,7 @@ void MipParser::setCallback(T& object)
 ///       function may also throw an exception instead of returning false.
 ///
 ///@param maxPackets
-///       Maximum number of packets to parse, just like for MipParser::parse().
+///       Maximum number of packets to parse, just like for Parser::parse().
 ///
 ///@return Same as the return value of reader.
 ///
@@ -316,5 +317,5 @@ bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPa
 }
 
 
-} // namespace mscl
+} // namespace mip
 ////////////////////////////////////////////////////////////////////////////////

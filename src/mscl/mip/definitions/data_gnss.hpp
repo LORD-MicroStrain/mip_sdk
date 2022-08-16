@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -175,8 +175,8 @@ static const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 
 struct PosLlh
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_POSITION_LLH;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -209,8 +209,8 @@ struct PosLlh
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PosLlh& self);
-void extract(MipSerializer& serializer, PosLlh& self);
+void insert(Serializer& serializer, const PosLlh& self);
+void extract(Serializer& serializer, PosLlh& self);
 
 ///@}
 ///
@@ -222,8 +222,8 @@ void extract(MipSerializer& serializer, PosLlh& self);
 
 struct PosEcef
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_POSITION_ECEF;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -249,8 +249,8 @@ struct PosEcef
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const PosEcef& self);
-void extract(MipSerializer& serializer, PosEcef& self);
+void insert(Serializer& serializer, const PosEcef& self);
+void extract(Serializer& serializer, PosEcef& self);
 
 ///@}
 ///
@@ -262,8 +262,8 @@ void extract(MipSerializer& serializer, PosEcef& self);
 
 struct VelNed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_VELOCITY_NED;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -297,8 +297,8 @@ struct VelNed
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelNed& self);
-void extract(MipSerializer& serializer, VelNed& self);
+void insert(Serializer& serializer, const VelNed& self);
+void extract(Serializer& serializer, VelNed& self);
 
 ///@}
 ///
@@ -310,8 +310,8 @@ void extract(MipSerializer& serializer, VelNed& self);
 
 struct VelEcef
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_VELOCITY_ECEF;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -337,8 +337,8 @@ struct VelEcef
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const VelEcef& self);
-void extract(MipSerializer& serializer, VelEcef& self);
+void insert(Serializer& serializer, const VelEcef& self);
+void extract(Serializer& serializer, VelEcef& self);
 
 ///@}
 ///
@@ -350,8 +350,8 @@ void extract(MipSerializer& serializer, VelEcef& self);
 
 struct Dop
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_DOP;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -387,8 +387,8 @@ struct Dop
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Dop& self);
-void extract(MipSerializer& serializer, Dop& self);
+void insert(Serializer& serializer, const Dop& self);
+void extract(Serializer& serializer, Dop& self);
 
 ///@}
 ///
@@ -400,8 +400,8 @@ void extract(MipSerializer& serializer, Dop& self);
 
 struct UtcTime
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_UTC_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -432,8 +432,8 @@ struct UtcTime
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const UtcTime& self);
-void extract(MipSerializer& serializer, UtcTime& self);
+void insert(Serializer& serializer, const UtcTime& self);
+void extract(Serializer& serializer, UtcTime& self);
 
 ///@}
 ///
@@ -445,8 +445,8 @@ void extract(MipSerializer& serializer, UtcTime& self);
 
 struct GpsTime
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GPS_TIME;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -472,8 +472,8 @@ struct GpsTime
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsTime& self);
-void extract(MipSerializer& serializer, GpsTime& self);
+void insert(Serializer& serializer, const GpsTime& self);
+void extract(Serializer& serializer, GpsTime& self);
 
 ///@}
 ///
@@ -485,8 +485,8 @@ void extract(MipSerializer& serializer, GpsTime& self);
 
 struct ClockInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_CLOCK_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -514,8 +514,8 @@ struct ClockInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockInfo& self);
-void extract(MipSerializer& serializer, ClockInfo& self);
+void insert(Serializer& serializer, const ClockInfo& self);
+void extract(Serializer& serializer, ClockInfo& self);
 
 ///@}
 ///
@@ -527,8 +527,8 @@ void extract(MipSerializer& serializer, ClockInfo& self);
 
 struct FixInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_FIX_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -583,8 +583,8 @@ struct FixInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const FixInfo& self);
-void extract(MipSerializer& serializer, FixInfo& self);
+void insert(Serializer& serializer, const FixInfo& self);
+void extract(Serializer& serializer, FixInfo& self);
 
 ///@}
 ///
@@ -598,8 +598,8 @@ void extract(MipSerializer& serializer, FixInfo& self);
 
 struct SvInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_SV_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -649,8 +649,8 @@ struct SvInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SvInfo& self);
-void extract(MipSerializer& serializer, SvInfo& self);
+void insert(Serializer& serializer, const SvInfo& self);
+void extract(Serializer& serializer, SvInfo& self);
 
 ///@}
 ///
@@ -662,8 +662,8 @@ void extract(MipSerializer& serializer, SvInfo& self);
 
 struct HwStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_HW_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -714,8 +714,8 @@ struct HwStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const HwStatus& self);
-void extract(MipSerializer& serializer, HwStatus& self);
+void insert(Serializer& serializer, const HwStatus& self);
+void extract(Serializer& serializer, HwStatus& self);
 
 ///@}
 ///
@@ -739,8 +739,8 @@ void extract(MipSerializer& serializer, HwStatus& self);
 
 struct DgpsInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_DGPS_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -770,8 +770,8 @@ struct DgpsInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const DgpsInfo& self);
-void extract(MipSerializer& serializer, DgpsInfo& self);
+void insert(Serializer& serializer, const DgpsInfo& self);
+void extract(Serializer& serializer, DgpsInfo& self);
 
 ///@}
 ///
@@ -785,8 +785,8 @@ void extract(MipSerializer& serializer, DgpsInfo& self);
 
 struct DgpsChannel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_DGPS_CHANNEL_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -816,8 +816,8 @@ struct DgpsChannel
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const DgpsChannel& self);
-void extract(MipSerializer& serializer, DgpsChannel& self);
+void insert(Serializer& serializer, const DgpsChannel& self);
+void extract(Serializer& serializer, DgpsChannel& self);
 
 ///@}
 ///
@@ -831,8 +831,8 @@ void extract(MipSerializer& serializer, DgpsChannel& self);
 
 struct ClockInfo2
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_CLOCK_INFO_2;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -862,8 +862,8 @@ struct ClockInfo2
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const ClockInfo2& self);
-void extract(MipSerializer& serializer, ClockInfo2& self);
+void insert(Serializer& serializer, const ClockInfo2& self);
+void extract(Serializer& serializer, ClockInfo2& self);
 
 ///@}
 ///
@@ -875,8 +875,8 @@ void extract(MipSerializer& serializer, ClockInfo2& self);
 
 struct GpsLeapSeconds
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GPS_LEAP_SECONDS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -899,8 +899,8 @@ struct GpsLeapSeconds
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsLeapSeconds& self);
-void extract(MipSerializer& serializer, GpsLeapSeconds& self);
+void insert(Serializer& serializer, const GpsLeapSeconds& self);
+void extract(Serializer& serializer, GpsLeapSeconds& self);
 
 ///@}
 ///
@@ -912,8 +912,8 @@ void extract(MipSerializer& serializer, GpsLeapSeconds& self);
 
 struct SbasInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_SBAS_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -965,8 +965,8 @@ struct SbasInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SbasInfo& self);
-void extract(MipSerializer& serializer, SbasInfo& self);
+void insert(Serializer& serializer, const SbasInfo& self);
+void extract(Serializer& serializer, SbasInfo& self);
 
 ///@}
 ///
@@ -1000,8 +1000,8 @@ void extract(MipSerializer& serializer, SbasInfo& self);
 
 struct SbasCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_SBAS_CORRECTION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1035,8 +1035,8 @@ struct SbasCorrection
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SbasCorrection& self);
-void extract(MipSerializer& serializer, SbasCorrection& self);
+void insert(Serializer& serializer, const SbasCorrection& self);
+void extract(Serializer& serializer, SbasCorrection& self);
 
 ///@}
 ///
@@ -1048,8 +1048,8 @@ void extract(MipSerializer& serializer, SbasCorrection& self);
 
 struct RfErrorDetection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_RF_ERROR_DETECTION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1102,8 +1102,8 @@ struct RfErrorDetection
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const RfErrorDetection& self);
-void extract(MipSerializer& serializer, RfErrorDetection& self);
+void insert(Serializer& serializer, const RfErrorDetection& self);
+void extract(Serializer& serializer, RfErrorDetection& self);
 
 ///@}
 ///
@@ -1117,8 +1117,8 @@ void extract(MipSerializer& serializer, RfErrorDetection& self);
 
 struct BaseStationInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_BASE_STATION_INFO;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1175,8 +1175,8 @@ struct BaseStationInfo
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const BaseStationInfo& self);
-void extract(MipSerializer& serializer, BaseStationInfo& self);
+void insert(Serializer& serializer, const BaseStationInfo& self);
+void extract(Serializer& serializer, BaseStationInfo& self);
 
 ///@}
 ///
@@ -1187,8 +1187,8 @@ void extract(MipSerializer& serializer, BaseStationInfo& self);
 
 struct RtkCorrectionsStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1250,8 +1250,8 @@ struct RtkCorrectionsStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const RtkCorrectionsStatus& self);
-void extract(MipSerializer& serializer, RtkCorrectionsStatus& self);
+void insert(Serializer& serializer, const RtkCorrectionsStatus& self);
+void extract(Serializer& serializer, RtkCorrectionsStatus& self);
 
 ///@}
 ///
@@ -1263,8 +1263,8 @@ void extract(MipSerializer& serializer, RtkCorrectionsStatus& self);
 
 struct SatelliteStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_SATELLITE_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1302,8 +1302,8 @@ struct SatelliteStatus
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const SatelliteStatus& self);
-void extract(MipSerializer& serializer, SatelliteStatus& self);
+void insert(Serializer& serializer, const SatelliteStatus& self);
+void extract(Serializer& serializer, SatelliteStatus& self);
 
 ///@}
 ///
@@ -1315,8 +1315,8 @@ void extract(MipSerializer& serializer, SatelliteStatus& self);
 
 struct Raw
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_RAW;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1382,8 +1382,8 @@ struct Raw
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const Raw& self);
-void extract(MipSerializer& serializer, Raw& self);
+void insert(Serializer& serializer, const Raw& self);
+void extract(Serializer& serializer, Raw& self);
 
 ///@}
 ///
@@ -1395,8 +1395,8 @@ void extract(MipSerializer& serializer, Raw& self);
 
 struct GpsEphemeris
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GPS_EPHEMERIS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1453,8 +1453,8 @@ struct GpsEphemeris
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsEphemeris& self);
-void extract(MipSerializer& serializer, GpsEphemeris& self);
+void insert(Serializer& serializer, const GpsEphemeris& self);
+void extract(Serializer& serializer, GpsEphemeris& self);
 
 ///@}
 ///
@@ -1466,8 +1466,8 @@ void extract(MipSerializer& serializer, GpsEphemeris& self);
 
 struct GloEphemeris
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GLONASS_EPHEMERIS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1514,8 +1514,8 @@ struct GloEphemeris
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GloEphemeris& self);
-void extract(MipSerializer& serializer, GloEphemeris& self);
+void insert(Serializer& serializer, const GloEphemeris& self);
+void extract(Serializer& serializer, GloEphemeris& self);
 
 ///@}
 ///
@@ -1527,8 +1527,8 @@ void extract(MipSerializer& serializer, GloEphemeris& self);
 
 struct GpsIonoCorr
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GPS_IONO_CORR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1558,8 +1558,8 @@ struct GpsIonoCorr
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GpsIonoCorr& self);
-void extract(MipSerializer& serializer, GpsIonoCorr& self);
+void insert(Serializer& serializer, const GpsIonoCorr& self);
+void extract(Serializer& serializer, GpsIonoCorr& self);
 
 ///@}
 ///
@@ -1571,8 +1571,8 @@ void extract(MipSerializer& serializer, GpsIonoCorr& self);
 
 struct GalileoIonoCorr
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::data_gnss::DATA_GALILEO_IONO_CORR;
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1602,8 +1602,8 @@ struct GalileoIonoCorr
     ValidFlags valid_flags;
     
 };
-void insert(MipSerializer& serializer, const GalileoIonoCorr& self);
-void extract(MipSerializer& serializer, GalileoIonoCorr& self);
+void insert(Serializer& serializer, const GalileoIonoCorr& self);
+void extract(Serializer& serializer, GalileoIonoCorr& self);
 
 ///@}
 ///
@@ -1613,5 +1613,5 @@ void extract(MipSerializer& serializer, GalileoIonoCorr& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace data_gnss
-} // namespace mscl
+} // namespace mip
 

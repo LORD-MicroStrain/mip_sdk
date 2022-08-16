@@ -103,7 +103,7 @@ void mip_pending_cmd_init_full(struct mip_pending_cmd* cmd, uint8_t descriptor_s
 ///
 ///@see mip_cmd_status
 ///
-enum mip_cmd_status mip_pending_cmd_status(const struct mip_pending_cmd* cmd)
+enum mip_cmd_result mip_pending_cmd_status(const struct mip_pending_cmd* cmd)
 {
     return cmd->_status;
 }
@@ -228,7 +228,7 @@ void mip_cmd_queue_dequeue(struct mip_cmd_queue* queue, struct mip_pending_cmd* 
 ///         not updated). The caller should set pending->_status to this value
 ///         after doing any additional processing requiring the pending struct.
 ///
-static enum mip_cmd_status process_fields_for_pending_cmd(struct mip_pending_cmd* pending, const struct mip_packet* packet, timeout_type base_timeout, timestamp_type timestamp)
+static enum mip_cmd_result process_fields_for_pending_cmd(struct mip_pending_cmd* pending, const struct mip_packet* packet, timeout_type base_timeout, timestamp_type timestamp)
 {
     assert( pending->_status != MIP_STATUS_NONE );         // pending->_status must be set to MIP_STATUS_PENDING in mip_cmd_queue_enqueue to get here.
     assert( !mip_cmd_result_is_finished(pending->_status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
@@ -346,7 +346,7 @@ void mip_cmd_queue_process_packet(struct mip_cmd_queue* queue, const struct mip_
     {
         struct mip_pending_cmd* pending = queue->_first_pending_cmd;
 
-        const mip_cmd_result status = process_fields_for_pending_cmd(pending, packet, queue->_base_timeout, timestamp);
+        const enum mip_cmd_result status = process_fields_for_pending_cmd(pending, packet, queue->_base_timeout, timestamp);
 
         if( mip_cmd_result_is_finished(status) )
         {

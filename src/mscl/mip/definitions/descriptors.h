@@ -12,7 +12,7 @@
 #include <tuple>
 #include <type_traits>
 
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 #endif // __cplusplus
@@ -61,44 +61,53 @@ struct mip_descriptor_rate
 void insert_mip_descriptor_rate(struct mip_serializer* serializer, const struct mip_descriptor_rate* self);
 void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_descriptor_rate* self);
 
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Convenience struct holding both descriptor set and field descriptor.
-///
-struct MipCompositeDescriptor
-{
-#ifdef __cplusplus
-    bool operator==(const MipCompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    bool operator<(const MipCompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
-#endif // __cplusplus
-
-    uint8_t descriptorSet;    ///< MIP descriptor set.
-    uint8_t fieldDescriptor;  ///< MIP field descriptor.
-};
-
 #ifdef __cplusplus
 
 } // extern "C"
 } // namespace "C"
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Convenience struct holding both descriptor set and field descriptor.
+///
+struct CompositeDescriptor
+{
+    uint8_t descriptorSet;    ///< MIP descriptor set.
+    uint8_t fieldDescriptor;  ///< MIP field descriptor.
+
+    CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
+    CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
+
+    CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
+
+    uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
+
+//    operator uint16_t() const { return as_u16(); }
+
+    bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
+    bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+
+};
+
+
 ///@brief A dummy struct which is used to mark bitfield objects.
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
-template<class Derived> void extract(MipSerializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert (Serializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
 
 
-struct MipFunctionSelector : detail::EnumWrapper<C::mip_function_selector>
+enum class FunctionSelector : uint8_t
 {
-    static const uint8_t WRITE = C::MIP_FUNCTION_WRITE;
-    static const uint8_t READ  = C::MIP_FUNCTION_READ;
-    static const uint8_t SAVE  = C::MIP_FUNCTION_SAVE;
-    static const uint8_t LOAD  = C::MIP_FUNCTION_LOAD;
-    static const uint8_t RESET = C::MIP_FUNCTION_RESET;
+    WRITE = C::MIP_FUNCTION_WRITE,
+    READ  = C::MIP_FUNCTION_READ,
+    SAVE  = C::MIP_FUNCTION_SAVE,
+    LOAD  = C::MIP_FUNCTION_LOAD,
+    RESET = C::MIP_FUNCTION_RESET,
 };
 
-using MipDescriptorRate = C::mip_descriptor_rate;
+using DescriptorRate = C::mip_descriptor_rate;
 
 inline bool isDataDescriptorSet   (uint8_t descriptorSet)  { return C::is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
@@ -110,12 +119,9 @@ inline bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_respons
 inline bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
 
 
-inline void insert(MipSerializer& serializer, MipFunctionSelector self) { return C::insert_mip_function_selector(&serializer, self); }
-inline void extract(MipSerializer& serializer, MipFunctionSelector& self) { return C::extract_mip_function_selector(&serializer, &self._value); }
+inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
+inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
-inline void insert(MipSerializer& serializer, const MipDescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(MipSerializer& serializer, MipDescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
-
-} // namespace mscl
+} // namespace mip
 
 #endif // __cplusplus

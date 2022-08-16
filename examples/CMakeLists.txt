@@ -37,8 +37,6 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
 
     if(NOT MSCL_DISABLE_CPP)
 
-        message("Not building C++ examples because MSCL_DISABLE_CPP is set.")
-
         add_executable(DeviceInfo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
         target_link_libraries(DeviceInfo mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(DeviceInfo PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
