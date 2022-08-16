@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mip{
 namespace C {
 extern "C" {
 #endif
@@ -109,7 +109,7 @@ bool mip_field_next_in_packet(struct mip_field* field, const struct mip_packet* 
 ///
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 } // namespace C
 } // extern "C"
 #endif

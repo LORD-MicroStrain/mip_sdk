@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 extern "C" {
 
@@ -169,8 +169,8 @@ enum mip_sbas_system
 void insert_mip_sbas_system(struct mip_serializer* serializer, const enum mip_sbas_system self);
 void extract_mip_sbas_system(struct mip_serializer* serializer, enum mip_sbas_system* self);
 
-enum { GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32 };
-enum { GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
+enum { MIP_GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32 };
+enum { MIP_GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -1331,7 +1331,7 @@ void extract_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* 
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus
 

@@ -8,13 +8,13 @@
 #include <stdlib.h>
 
 
-using namespace mscl;
+using namespace mip;
 
 
 uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-MipField fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -23,11 +23,11 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const MipPacket* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const Packet* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
         bool error = false;
-        for(MipField field : *parsedPacket)
+        for(Field field : *parsedPacket)
         {
             if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
             {
@@ -71,14 +71,14 @@ int main(int argc, const char* argv[])
         return true;
     };
 
-    MipParser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    Parser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
 
 
     const unsigned int NUM_ITERATIONS = 100;
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        MipPacket packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
@@ -94,7 +94,7 @@ int main(int argc, const char* argv[])
             for(unsigned int p=0; p<payloadLength; p++)
                 payload[p] = rand() & 0xFF;
 
-            fields[numFields] = MipField(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
+            fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
         }
 
         packet.finalize();

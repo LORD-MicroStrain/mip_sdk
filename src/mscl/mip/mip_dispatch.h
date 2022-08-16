@@ -7,7 +7,7 @@
 
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 namespace C {
 #endif
 
@@ -129,5 +129,5 @@ void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mi
 
 #ifdef __cplusplus
 } // namespace C
-} // namespace mscl
+} // namespace mip
 #endif

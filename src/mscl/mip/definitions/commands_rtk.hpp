@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -84,8 +84,8 @@ enum class LedAction : uint8_t
 
 struct GetStatusFlags
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_STATUS_FLAGS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -143,20 +143,20 @@ struct GetStatusFlags
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_STATUS_FLAGS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
         
         StatusFlags flags;
         
     };
 };
-void insert(MipSerializer& serializer, const GetStatusFlags& self);
-void extract(MipSerializer& serializer, GetStatusFlags& self);
+void insert(Serializer& serializer, const GetStatusFlags& self);
+void extract(Serializer& serializer, GetStatusFlags& self);
 
-void insert(MipSerializer& serializer, const GetStatusFlags::Response& self);
-void extract(MipSerializer& serializer, GetStatusFlags::Response& self);
+void insert(Serializer& serializer, const GetStatusFlags::Response& self);
+void extract(Serializer& serializer, GetStatusFlags::Response& self);
 
-MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags& flags);
+CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -166,28 +166,28 @@ MipCmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlag
 
 struct GetImei
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_IMEI;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_IMEI;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
         
         char IMEI[32];
         
     };
 };
-void insert(MipSerializer& serializer, const GetImei& self);
-void extract(MipSerializer& serializer, GetImei& self);
+void insert(Serializer& serializer, const GetImei& self);
+void extract(Serializer& serializer, GetImei& self);
 
-void insert(MipSerializer& serializer, const GetImei::Response& self);
-void extract(MipSerializer& serializer, GetImei::Response& self);
+void insert(Serializer& serializer, const GetImei::Response& self);
+void extract(Serializer& serializer, GetImei::Response& self);
 
-MipCmdResult getImei(C::mip_interface& device, char* IMEI);
+CmdResult getImei(C::mip_interface& device, char* imeiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -197,28 +197,28 @@ MipCmdResult getImei(C::mip_interface& device, char* IMEI);
 
 struct GetImsi
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_IMSI;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_IMSI;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
         
         char IMSI[32];
         
     };
 };
-void insert(MipSerializer& serializer, const GetImsi& self);
-void extract(MipSerializer& serializer, GetImsi& self);
+void insert(Serializer& serializer, const GetImsi& self);
+void extract(Serializer& serializer, GetImsi& self);
 
-void insert(MipSerializer& serializer, const GetImsi::Response& self);
-void extract(MipSerializer& serializer, GetImsi::Response& self);
+void insert(Serializer& serializer, const GetImsi::Response& self);
+void extract(Serializer& serializer, GetImsi::Response& self);
 
-MipCmdResult getImsi(C::mip_interface& device, char* IMSI);
+CmdResult getImsi(C::mip_interface& device, char* imsiOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -228,28 +228,28 @@ MipCmdResult getImsi(C::mip_interface& device, char* IMSI);
 
 struct GetIccid
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_ICCID;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_ICCID;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
         
         char ICCID[32];
         
     };
 };
-void insert(MipSerializer& serializer, const GetIccid& self);
-void extract(MipSerializer& serializer, GetIccid& self);
+void insert(Serializer& serializer, const GetIccid& self);
+void extract(Serializer& serializer, GetIccid& self);
 
-void insert(MipSerializer& serializer, const GetIccid::Response& self);
-void extract(MipSerializer& serializer, GetIccid::Response& self);
+void insert(Serializer& serializer, const GetIccid::Response& self);
+void extract(Serializer& serializer, GetIccid::Response& self);
 
-MipCmdResult getIccid(C::mip_interface& device, char* ICCID);
+CmdResult getIccid(C::mip_interface& device, char* iccidOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -259,8 +259,8 @@ MipCmdResult getIccid(C::mip_interface& device, char* ICCID);
 
 struct ConnectedDeviceType
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -274,29 +274,29 @@ struct ConnectedDeviceType
         GQ7     = 1,  ///<  
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     Type devType;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
         
         Type devType;
         
     };
 };
-void insert(MipSerializer& serializer, const ConnectedDeviceType& self);
-void extract(MipSerializer& serializer, ConnectedDeviceType& self);
+void insert(Serializer& serializer, const ConnectedDeviceType& self);
+void extract(Serializer& serializer, ConnectedDeviceType& self);
 
-void insert(MipSerializer& serializer, const ConnectedDeviceType::Response& self);
-void extract(MipSerializer& serializer, ConnectedDeviceType::Response& self);
+void insert(Serializer& serializer, const ConnectedDeviceType::Response& self);
+void extract(Serializer& serializer, ConnectedDeviceType::Response& self);
 
-MipCmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devType);
-MipCmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type& devType);
-MipCmdResult saveConnectedDeviceType(C::mip_interface& device);
-MipCmdResult loadConnectedDeviceType(C::mip_interface& device);
-MipCmdResult defaultConnectedDeviceType(C::mip_interface& device);
+CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype);
+CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut);
+CmdResult saveConnectedDeviceType(C::mip_interface& device);
+CmdResult loadConnectedDeviceType(C::mip_interface& device);
+CmdResult defaultConnectedDeviceType(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -306,28 +306,28 @@ MipCmdResult defaultConnectedDeviceType(C::mip_interface& device);
 
 struct GetActCode
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_ACT_CODE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_ACT_CODE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
         
         char ActivationCode[32];
         
     };
 };
-void insert(MipSerializer& serializer, const GetActCode& self);
-void extract(MipSerializer& serializer, GetActCode& self);
+void insert(Serializer& serializer, const GetActCode& self);
+void extract(Serializer& serializer, GetActCode& self);
 
-void insert(MipSerializer& serializer, const GetActCode::Response& self);
-void extract(MipSerializer& serializer, GetActCode::Response& self);
+void insert(Serializer& serializer, const GetActCode::Response& self);
+void extract(Serializer& serializer, GetActCode::Response& self);
 
-MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode);
+CmdResult getActCode(C::mip_interface& device, char* activationcodeOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -337,28 +337,28 @@ MipCmdResult getActCode(C::mip_interface& device, char* ActivationCode);
 
 struct GetModemFirmwareVersion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
         
         char ModemFirmwareVersion[32];
         
     };
 };
-void insert(MipSerializer& serializer, const GetModemFirmwareVersion& self);
-void extract(MipSerializer& serializer, GetModemFirmwareVersion& self);
+void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
+void extract(Serializer& serializer, GetModemFirmwareVersion& self);
 
-void insert(MipSerializer& serializer, const GetModemFirmwareVersion::Response& self);
-void extract(MipSerializer& serializer, GetModemFirmwareVersion::Response& self);
+void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self);
+void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self);
 
-MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwareVersion);
+CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -369,16 +369,16 @@ MipCmdResult getModemFirmwareVersion(C::mip_interface& device, char* ModemFirmwa
 
 struct GetRssi
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_GET_RSSI;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_GET_RSSI;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
         
         bool valid;
         int32_t rssi;
@@ -386,13 +386,13 @@ struct GetRssi
         
     };
 };
-void insert(MipSerializer& serializer, const GetRssi& self);
-void extract(MipSerializer& serializer, GetRssi& self);
+void insert(Serializer& serializer, const GetRssi& self);
+void extract(Serializer& serializer, GetRssi& self);
 
-void insert(MipSerializer& serializer, const GetRssi::Response& self);
-void extract(MipSerializer& serializer, GetRssi::Response& self);
+void insert(Serializer& serializer, const GetRssi::Response& self);
+void extract(Serializer& serializer, GetRssi::Response& self);
 
-MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32_t& signalQuality);
+CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -403,8 +403,8 @@ MipCmdResult getRssi(C::mip_interface& device, bool& valid, int32_t& rssi, int32
 
 struct ServiceStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_SERVICE_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -430,8 +430,8 @@ struct ServiceStatus
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::REPLY_SERVICE_STATUS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
         
         ServiceFlags flags;
         uint32_t recievedBytes;
@@ -440,13 +440,13 @@ struct ServiceStatus
         
     };
 };
-void insert(MipSerializer& serializer, const ServiceStatus& self);
-void extract(MipSerializer& serializer, ServiceStatus& self);
+void insert(Serializer& serializer, const ServiceStatus& self);
+void extract(Serializer& serializer, ServiceStatus& self);
 
-void insert(MipSerializer& serializer, const ServiceStatus::Response& self);
-void extract(MipSerializer& serializer, ServiceStatus::Response& self);
+void insert(Serializer& serializer, const ServiceStatus::Response& self);
+void extract(Serializer& serializer, ServiceStatus::Response& self);
 
-MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags& flags, uint32_t& recievedBytes, uint32_t& lastBytes, uint64_t& lastBytesTime);
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* recievedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -458,18 +458,18 @@ MipCmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_
 
 struct ProdEraseStorage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_PROD_ERASE_STORAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     MediaSelector media;
     
 };
-void insert(MipSerializer& serializer, const ProdEraseStorage& self);
-void extract(MipSerializer& serializer, ProdEraseStorage& self);
+void insert(Serializer& serializer, const ProdEraseStorage& self);
+void extract(Serializer& serializer, ProdEraseStorage& self);
 
-MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
+CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -480,8 +480,8 @@ MipCmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
 
 struct LedControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_CONTROL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -491,10 +491,10 @@ struct LedControl
     uint32_t period;
     
 };
-void insert(MipSerializer& serializer, const LedControl& self);
-void extract(MipSerializer& serializer, LedControl& self);
+void insert(Serializer& serializer, const LedControl& self);
+void extract(Serializer& serializer, LedControl& self);
 
-MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, const uint8_t* altColor, LedAction act, uint32_t period);
+CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -506,17 +506,17 @@ MipCmdResult ledControl(C::mip_interface& device, const uint8_t* primaryColor, c
 
 struct ModemHardReset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_rtk::CMD_MODEM_HARD_RESET;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
 };
-void insert(MipSerializer& serializer, const ModemHardReset& self);
-void extract(MipSerializer& serializer, ModemHardReset& self);
+void insert(Serializer& serializer, const ModemHardReset& self);
+void extract(Serializer& serializer, ModemHardReset& self);
 
-MipCmdResult modemHardReset(C::mip_interface& device);
+CmdResult modemHardReset(C::mip_interface& device);
 ///@}
 ///
 
@@ -525,5 +525,5 @@ MipCmdResult modemHardReset(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_rtk
-} // namespace mscl
+} // namespace mip
 

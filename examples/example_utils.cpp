@@ -9,16 +9,16 @@
     #define PORT_KEY "/dev/"
 #endif
 
-mscl::Timestamp getCurrentTimestamp()
+mip::Timestamp getCurrentTimestamp()
 {
     using namespace std::chrono;
     duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
 
-std::unique_ptr<mscl::MipDeviceInterface> openDeviceFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port)
+std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port)
 {
-    std::unique_ptr<mscl::MipDeviceInterface> device;
+    std::unique_ptr<mip::DeviceInterface> device;
 
     if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
     {
@@ -51,7 +51,7 @@ std::unique_ptr<mscl::MipDeviceInterface> openDeviceFromArgs(const std::string& 
     }
 }
 
-std::unique_ptr<mscl::MipDeviceInterface> handleCommonArgs(int argc, const char* argv[], int maxArgs)
+std::unique_ptr<mip::DeviceInterface> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
 #ifdef MSCL_USE_SERIAL
     if( argc == 1 )

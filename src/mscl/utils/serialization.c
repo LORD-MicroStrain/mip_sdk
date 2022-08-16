@@ -4,7 +4,7 @@
 #include <string.h>
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 #endif
 
 
@@ -24,6 +24,11 @@ void mip_serializer_init_extraction(struct mip_serializer* serializer, const uin
 bool mip_serializer_ok(const struct mip_serializer* serializer)
 {
     return serializer->offset <= serializer->buffer_size;
+}
+
+bool mip_serializer_finished(const struct mip_serializer* serializer, size_t expected_length)
+{
+    return serializer->offset == expected_length;
 }
 
 
@@ -105,5 +110,5 @@ void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_
 }
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 #endif

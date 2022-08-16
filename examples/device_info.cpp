@@ -2,25 +2,24 @@
 #include "example_utils.hpp"
 
 #include <mscl/mip/definitions/commands_base.hpp>
-
+#include <mscl/mip/definitions/commands_filter.hpp>
 
 #include <vector>
 #include <cstring>
 #include <stdio.h>
 
 
-
 int main(int argc, const char* argv[])
 {
     try
     {
-        std::unique_ptr<mscl::MipDeviceInterface> device = handleCommonArgs(argc, argv);
+        std::unique_ptr<mip::DeviceInterface> device = handleCommonArgs(argc, argv);
 
-        mscl::commands_base::BaseDeviceInfo device_info;
+        mip::commands_base::BaseDeviceInfo device_info;
 
-        mscl::MipCmdResult result = mscl::commands_base::getDeviceInfo(*device, device_info);
+        mip::CmdResult result = mip::commands_base::getDeviceInfo(*device, &device_info);
 
-        if( !!result )
+        if( result == mip::CmdResult::ACK_OK)
         {
             printf("Success:\n");
 
@@ -47,6 +46,11 @@ int main(int argc, const char* argv[])
         {
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
+
+        mip::commands_filter::EstimationControl::EnableFlags flags;
+        flags = mip::commands_filter::EstimationControl::EnableFlags::NONE;
+        flags |= mip::commands_filter::EstimationControl::EnableFlags::ACCEL_BIAS;
+        flags = flags.ACCEL_BIAS | flags.GYRO_BIAS;
     }
     catch(const std::underflow_error& ex)
     {

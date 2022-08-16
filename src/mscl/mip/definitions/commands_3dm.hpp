@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -178,8 +178,8 @@ struct NMEAMessageFormat
     uint16_t decimation;
     
 };
-void insert(MipSerializer& serializer, const NMEAMessageFormat& self);
-void extract(MipSerializer& serializer, NMEAMessageFormat& self);
+void insert(Serializer& serializer, const NMEAMessageFormat& self);
+void extract(Serializer& serializer, NMEAMessageFormat& self);
 
 enum class SensorRangeType : uint8_t
 {
@@ -210,20 +210,20 @@ enum class SensorRangeType : uint8_t
 
 struct PollImuMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_IMU_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_IMU_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
 };
-void insert(MipSerializer& serializer, const PollImuMessage& self);
-void extract(MipSerializer& serializer, PollImuMessage& self);
+void insert(Serializer& serializer, const PollImuMessage& self);
+void extract(Serializer& serializer, PollImuMessage& self);
 
-MipCmdResult pollImuMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
+CmdResult pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -241,20 +241,20 @@ MipCmdResult pollImuMessage(C::mip_interface& device, bool suppress_ack, uint8_t
 
 struct PollGnssMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_GNSS_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_GNSS_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
 };
-void insert(MipSerializer& serializer, const PollGnssMessage& self);
-void extract(MipSerializer& serializer, PollGnssMessage& self);
+void insert(Serializer& serializer, const PollGnssMessage& self);
+void extract(Serializer& serializer, PollGnssMessage& self);
 
-MipCmdResult pollGnssMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
+CmdResult pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -272,20 +272,20 @@ MipCmdResult pollGnssMessage(C::mip_interface& device, bool suppress_ack, uint8_
 
 struct PollFilterMessage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_FILTER_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_FILTER_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     bool suppress_ack;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
 };
-void insert(MipSerializer& serializer, const PollFilterMessage& self);
-void extract(MipSerializer& serializer, PollFilterMessage& self);
+void insert(Serializer& serializer, const PollFilterMessage& self);
+void extract(Serializer& serializer, PollFilterMessage& self);
 
-MipCmdResult pollFilterMessage(C::mip_interface& device, bool suppress_ack, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
+CmdResult pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,8 +298,8 @@ MipCmdResult pollFilterMessage(C::mip_interface& device, bool suppress_ack, uint
 
 struct ImuMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -307,31 +307,31 @@ struct ImuMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate* descriptors;
+        DescriptorRate* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const ImuMessageFormat& self);
-void extract(MipSerializer& serializer, ImuMessageFormat& self);
+void insert(Serializer& serializer, const ImuMessageFormat& self);
+void extract(Serializer& serializer, ImuMessageFormat& self);
 
-void insert(MipSerializer& serializer, const ImuMessageFormat::Response& self);
-void extract(MipSerializer& serializer, ImuMessageFormat::Response& self);
+void insert(Serializer& serializer, const ImuMessageFormat::Response& self);
+void extract(Serializer& serializer, ImuMessageFormat::Response& self);
 
-MipCmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
-MipCmdResult readImuMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, MipDescriptorRate* descriptors);
-MipCmdResult saveImuMessageFormat(C::mip_interface& device);
-MipCmdResult loadImuMessageFormat(C::mip_interface& device);
-MipCmdResult defaultImuMessageFormat(C::mip_interface& device);
+CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
+CmdResult saveImuMessageFormat(C::mip_interface& device);
+CmdResult loadImuMessageFormat(C::mip_interface& device);
+CmdResult defaultImuMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -344,8 +344,8 @@ MipCmdResult defaultImuMessageFormat(C::mip_interface& device);
 
 struct GpsMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -353,31 +353,31 @@ struct GpsMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate* descriptors;
+        DescriptorRate* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const GpsMessageFormat& self);
-void extract(MipSerializer& serializer, GpsMessageFormat& self);
+void insert(Serializer& serializer, const GpsMessageFormat& self);
+void extract(Serializer& serializer, GpsMessageFormat& self);
 
-void insert(MipSerializer& serializer, const GpsMessageFormat::Response& self);
-void extract(MipSerializer& serializer, GpsMessageFormat::Response& self);
+void insert(Serializer& serializer, const GpsMessageFormat::Response& self);
+void extract(Serializer& serializer, GpsMessageFormat::Response& self);
 
-MipCmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
-MipCmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, MipDescriptorRate* descriptors);
-MipCmdResult saveGpsMessageFormat(C::mip_interface& device);
-MipCmdResult loadGpsMessageFormat(C::mip_interface& device);
-MipCmdResult defaultGpsMessageFormat(C::mip_interface& device);
+CmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
+CmdResult saveGpsMessageFormat(C::mip_interface& device);
+CmdResult loadGpsMessageFormat(C::mip_interface& device);
+CmdResult defaultGpsMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -390,8 +390,8 @@ MipCmdResult defaultGpsMessageFormat(C::mip_interface& device);
 
 struct FilterMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -399,31 +399,31 @@ struct FilterMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
         
         uint8_t num_descriptors;
-        MipDescriptorRate* descriptors;
+        DescriptorRate* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const FilterMessageFormat& self);
-void extract(MipSerializer& serializer, FilterMessageFormat& self);
+void insert(Serializer& serializer, const FilterMessageFormat& self);
+void extract(Serializer& serializer, FilterMessageFormat& self);
 
-void insert(MipSerializer& serializer, const FilterMessageFormat::Response& self);
-void extract(MipSerializer& serializer, FilterMessageFormat::Response& self);
+void insert(Serializer& serializer, const FilterMessageFormat::Response& self);
+void extract(Serializer& serializer, FilterMessageFormat::Response& self);
 
-MipCmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
-MipCmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t& num_descriptors, MipDescriptorRate* descriptors);
-MipCmdResult saveFilterMessageFormat(C::mip_interface& device);
-MipCmdResult loadFilterMessageFormat(C::mip_interface& device);
-MipCmdResult defaultFilterMessageFormat(C::mip_interface& device);
+CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
+CmdResult saveFilterMessageFormat(C::mip_interface& device);
+CmdResult loadFilterMessageFormat(C::mip_interface& device);
+CmdResult defaultFilterMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -437,28 +437,28 @@ MipCmdResult defaultFilterMessageFormat(C::mip_interface& device);
 
 struct ImuGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_IMU_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_IMU_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_IMU_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
         
         uint16_t rate;
         
     };
 };
-void insert(MipSerializer& serializer, const ImuGetBaseRate& self);
-void extract(MipSerializer& serializer, ImuGetBaseRate& self);
+void insert(Serializer& serializer, const ImuGetBaseRate& self);
+void extract(Serializer& serializer, ImuGetBaseRate& self);
 
-void insert(MipSerializer& serializer, const ImuGetBaseRate::Response& self);
-void extract(MipSerializer& serializer, ImuGetBaseRate::Response& self);
+void insert(Serializer& serializer, const ImuGetBaseRate::Response& self);
+void extract(Serializer& serializer, ImuGetBaseRate::Response& self);
 
-MipCmdResult imuGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -472,28 +472,28 @@ MipCmdResult imuGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct GpsGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_GNSS_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_GNSS_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
         
         uint16_t rate;
         
     };
 };
-void insert(MipSerializer& serializer, const GpsGetBaseRate& self);
-void extract(MipSerializer& serializer, GpsGetBaseRate& self);
+void insert(Serializer& serializer, const GpsGetBaseRate& self);
+void extract(Serializer& serializer, GpsGetBaseRate& self);
 
-void insert(MipSerializer& serializer, const GpsGetBaseRate::Response& self);
-void extract(MipSerializer& serializer, GpsGetBaseRate::Response& self);
+void insert(Serializer& serializer, const GpsGetBaseRate::Response& self);
+void extract(Serializer& serializer, GpsGetBaseRate::Response& self);
 
-MipCmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -507,28 +507,28 @@ MipCmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct FilterGetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_FILTER_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_FILTER_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_FILTER_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
         
         uint16_t rate;
         
     };
 };
-void insert(MipSerializer& serializer, const FilterGetBaseRate& self);
-void extract(MipSerializer& serializer, FilterGetBaseRate& self);
+void insert(Serializer& serializer, const FilterGetBaseRate& self);
+void extract(Serializer& serializer, FilterGetBaseRate& self);
 
-void insert(MipSerializer& serializer, const FilterGetBaseRate::Response& self);
-void extract(MipSerializer& serializer, FilterGetBaseRate::Response& self);
+void insert(Serializer& serializer, const FilterGetBaseRate::Response& self);
+void extract(Serializer& serializer, FilterGetBaseRate::Response& self);
 
-MipCmdResult filterGetBaseRate(C::mip_interface& device, uint16_t& rate);
+CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -546,8 +546,8 @@ MipCmdResult filterGetBaseRate(C::mip_interface& device, uint16_t& rate);
 
 struct PollData
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_DATA;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -557,10 +557,10 @@ struct PollData
     uint8_t* descriptors;
     
 };
-void insert(MipSerializer& serializer, const PollData& self);
-void extract(MipSerializer& serializer, PollData& self);
+void insert(Serializer& serializer, const PollData& self);
+void extract(Serializer& serializer, PollData& self);
 
-MipCmdResult pollData(C::mip_interface& device, uint8_t desc_set, bool suppress_ack, uint8_t num_descriptors, const uint8_t* descriptors);
+CmdResult pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, uint8_t numDescriptors, const uint8_t* descriptors);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -571,8 +571,8 @@ MipCmdResult pollData(C::mip_interface& device, uint8_t desc_set, bool suppress_
 
 struct GetBaseRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GET_BASE_RATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_BASE_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -580,21 +580,21 @@ struct GetBaseRate
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_BASE_RATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
         
         uint8_t desc_set;
         uint16_t rate;
         
     };
 };
-void insert(MipSerializer& serializer, const GetBaseRate& self);
-void extract(MipSerializer& serializer, GetBaseRate& self);
+void insert(Serializer& serializer, const GetBaseRate& self);
+void extract(Serializer& serializer, GetBaseRate& self);
 
-void insert(MipSerializer& serializer, const GetBaseRate::Response& self);
-void extract(MipSerializer& serializer, GetBaseRate::Response& self);
+void insert(Serializer& serializer, const GetBaseRate::Response& self);
+void extract(Serializer& serializer, GetBaseRate::Response& self);
 
-MipCmdResult getBaseRate(C::mip_interface& device, uint8_t desc_set, uint16_t& rate);
+CmdResult getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -607,8 +607,8 @@ MipCmdResult getBaseRate(C::mip_interface& device, uint8_t desc_set, uint16_t& r
 
 struct MessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -616,33 +616,33 @@ struct MessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t desc_set;
     uint8_t num_descriptors;
-    MipDescriptorRate* descriptors;
+    DescriptorRate* descriptors;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
         
         uint8_t desc_set;
         uint8_t num_descriptors;
-        MipDescriptorRate* descriptors;
+        DescriptorRate* descriptors;
         
     };
 };
-void insert(MipSerializer& serializer, const MessageFormat& self);
-void extract(MipSerializer& serializer, MessageFormat& self);
+void insert(Serializer& serializer, const MessageFormat& self);
+void extract(Serializer& serializer, MessageFormat& self);
 
-void insert(MipSerializer& serializer, const MessageFormat::Response& self);
-void extract(MipSerializer& serializer, MessageFormat::Response& self);
+void insert(Serializer& serializer, const MessageFormat::Response& self);
+void extract(Serializer& serializer, MessageFormat::Response& self);
 
-MipCmdResult writeMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t num_descriptors, const MipDescriptorRate* descriptors);
-MipCmdResult readMessageFormat(C::mip_interface& device, uint8_t desc_set, uint8_t& num_descriptors, MipDescriptorRate* descriptors);
-MipCmdResult saveMessageFormat(C::mip_interface& device, uint8_t desc_set);
-MipCmdResult loadMessageFormat(C::mip_interface& device, uint8_t desc_set);
-MipCmdResult defaultMessageFormat(C::mip_interface& device, uint8_t desc_set);
+CmdResult writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t numDescriptors, const DescriptorRate* descriptors);
+CmdResult readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
+CmdResult saveMessageFormat(C::mip_interface& device, uint8_t descSet);
+CmdResult loadMessageFormat(C::mip_interface& device, uint8_t descSet);
+CmdResult defaultMessageFormat(C::mip_interface& device, uint8_t descSet);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -659,8 +659,8 @@ MipCmdResult defaultMessageFormat(C::mip_interface& device, uint8_t desc_set);
 
 struct NmeaPollData
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_POLL_NMEA_MESSAGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_NMEA_MESSAGE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -669,10 +669,10 @@ struct NmeaPollData
     NMEAMessageFormat* format_entries;
     
 };
-void insert(MipSerializer& serializer, const NmeaPollData& self);
-void extract(MipSerializer& serializer, NmeaPollData& self);
+void insert(Serializer& serializer, const NmeaPollData& self);
+void extract(Serializer& serializer, NmeaPollData& self);
 
-MipCmdResult nmeaPollData(C::mip_interface& device, bool suppress_ack, uint8_t count, const NMEAMessageFormat* format_entries);
+CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NMEAMessageFormat* formatEntries);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -683,8 +683,8 @@ MipCmdResult nmeaPollData(C::mip_interface& device, bool suppress_ack, uint8_t c
 
 struct NmeaMessageFormat
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -692,31 +692,31 @@ struct NmeaMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t count;
     NMEAMessageFormat* format_entries;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         
         uint8_t count;
         NMEAMessageFormat* format_entries;
         
     };
 };
-void insert(MipSerializer& serializer, const NmeaMessageFormat& self);
-void extract(MipSerializer& serializer, NmeaMessageFormat& self);
+void insert(Serializer& serializer, const NmeaMessageFormat& self);
+void extract(Serializer& serializer, NmeaMessageFormat& self);
 
-void insert(MipSerializer& serializer, const NmeaMessageFormat::Response& self);
-void extract(MipSerializer& serializer, NmeaMessageFormat::Response& self);
+void insert(Serializer& serializer, const NmeaMessageFormat::Response& self);
+void extract(Serializer& serializer, NmeaMessageFormat::Response& self);
 
-MipCmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NMEAMessageFormat* format_entries);
-MipCmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t& count, NMEAMessageFormat* format_entries);
-MipCmdResult saveNmeaMessageFormat(C::mip_interface& device);
-MipCmdResult loadNmeaMessageFormat(C::mip_interface& device);
-MipCmdResult defaultNmeaMessageFormat(C::mip_interface& device);
+CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NMEAMessageFormat* formatEntries);
+CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NMEAMessageFormat* formatEntriesOut);
+CmdResult saveNmeaMessageFormat(C::mip_interface& device);
+CmdResult loadNmeaMessageFormat(C::mip_interface& device);
+CmdResult defaultNmeaMessageFormat(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -731,8 +731,8 @@ MipCmdResult defaultNmeaMessageFormat(C::mip_interface& device);
 
 struct DeviceSettings
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
     
     static const bool HAS_WRITE_FUNCTION = false;
     static const bool HAS_READ_FUNCTION = false;
@@ -740,15 +740,15 @@ struct DeviceSettings
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     
 };
-void insert(MipSerializer& serializer, const DeviceSettings& self);
-void extract(MipSerializer& serializer, DeviceSettings& self);
+void insert(Serializer& serializer, const DeviceSettings& self);
+void extract(Serializer& serializer, DeviceSettings& self);
 
-MipCmdResult saveDeviceSettings(C::mip_interface& device);
-MipCmdResult loadDeviceSettings(C::mip_interface& device);
-MipCmdResult defaultDeviceSettings(C::mip_interface& device);
+CmdResult saveDeviceSettings(C::mip_interface& device);
+CmdResult loadDeviceSettings(C::mip_interface& device);
+CmdResult defaultDeviceSettings(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -773,8 +773,8 @@ MipCmdResult defaultDeviceSettings(C::mip_interface& device);
 
 struct UartBaudrate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_UART_BAUDRATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_UART_BAUDRATE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -782,29 +782,29 @@ struct UartBaudrate
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint32_t baud;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_UART_BAUDRATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
         
         uint32_t baud;
         
     };
 };
-void insert(MipSerializer& serializer, const UartBaudrate& self);
-void extract(MipSerializer& serializer, UartBaudrate& self);
+void insert(Serializer& serializer, const UartBaudrate& self);
+void extract(Serializer& serializer, UartBaudrate& self);
 
-void insert(MipSerializer& serializer, const UartBaudrate::Response& self);
-void extract(MipSerializer& serializer, UartBaudrate::Response& self);
+void insert(Serializer& serializer, const UartBaudrate::Response& self);
+void extract(Serializer& serializer, UartBaudrate::Response& self);
 
-MipCmdResult writeUartBaudrate(C::mip_interface& device, uint32_t baud);
-MipCmdResult readUartBaudrate(C::mip_interface& device, uint32_t& baud);
-MipCmdResult saveUartBaudrate(C::mip_interface& device);
-MipCmdResult loadUartBaudrate(C::mip_interface& device);
-MipCmdResult defaultUartBaudrate(C::mip_interface& device);
+CmdResult writeUartBaudrate(C::mip_interface& device, uint32_t baud);
+CmdResult readUartBaudrate(C::mip_interface& device, uint32_t* baudOut);
+CmdResult saveUartBaudrate(C::mip_interface& device);
+CmdResult loadUartBaudrate(C::mip_interface& device);
+CmdResult defaultUartBaudrate(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -818,8 +818,8 @@ MipCmdResult defaultUartBaudrate(C::mip_interface& device);
 
 struct FactoryStreaming
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -834,10 +834,10 @@ struct FactoryStreaming
     uint8_t reserved;
     
 };
-void insert(MipSerializer& serializer, const FactoryStreaming& self);
-void extract(MipSerializer& serializer, FactoryStreaming& self);
+void insert(Serializer& serializer, const FactoryStreaming& self);
+void extract(Serializer& serializer, FactoryStreaming& self);
 
-MipCmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action action, uint8_t reserved);
+CmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action action, uint8_t reserved);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -853,8 +853,8 @@ MipCmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action
 
 struct DatastreamControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CONTROL_DATA_STREAM;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONTROL_DATA_STREAM;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -866,31 +866,31 @@ struct DatastreamControl
     static const uint8_t LEGACY_GNSS_STREAM = 0x02;
     static const uint8_t LEGACY_FILTER_STREAM = 0x03;
     static const uint8_t ALL_STREAMS = 0x00;
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t desc_set;
     bool enable;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_DATASTREAM_ENABLE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
         
         uint8_t desc_set;
         bool enabled;
         
     };
 };
-void insert(MipSerializer& serializer, const DatastreamControl& self);
-void extract(MipSerializer& serializer, DatastreamControl& self);
+void insert(Serializer& serializer, const DatastreamControl& self);
+void extract(Serializer& serializer, DatastreamControl& self);
 
-void insert(MipSerializer& serializer, const DatastreamControl::Response& self);
-void extract(MipSerializer& serializer, DatastreamControl::Response& self);
+void insert(Serializer& serializer, const DatastreamControl::Response& self);
+void extract(Serializer& serializer, DatastreamControl::Response& self);
 
-MipCmdResult writeDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool enable);
-MipCmdResult readDatastreamControl(C::mip_interface& device, uint8_t desc_set, bool& enabled);
-MipCmdResult saveDatastreamControl(C::mip_interface& device, uint8_t desc_set);
-MipCmdResult loadDatastreamControl(C::mip_interface& device, uint8_t desc_set);
-MipCmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t desc_set);
+CmdResult writeDatastreamControl(C::mip_interface& device, uint8_t descSet, bool enable);
+CmdResult readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool* enabledOut);
+CmdResult saveDatastreamControl(C::mip_interface& device, uint8_t descSet);
+CmdResult loadDatastreamControl(C::mip_interface& device, uint8_t descSet);
+CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t descSet);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -904,8 +904,8 @@ MipCmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t desc_set
 
 struct GnssSbasSettings
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -930,7 +930,7 @@ struct GnssSbasSettings
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t enable_sbas;
     SBASOptions sbas_options;
     uint8_t num_included_prns;
@@ -938,8 +938,8 @@ struct GnssSbasSettings
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
         
         uint8_t enable_sbas;
         SBASOptions sbas_options;
@@ -948,17 +948,17 @@ struct GnssSbasSettings
         
     };
 };
-void insert(MipSerializer& serializer, const GnssSbasSettings& self);
-void extract(MipSerializer& serializer, GnssSbasSettings& self);
+void insert(Serializer& serializer, const GnssSbasSettings& self);
+void extract(Serializer& serializer, GnssSbasSettings& self);
 
-void insert(MipSerializer& serializer, const GnssSbasSettings::Response& self);
-void extract(MipSerializer& serializer, GnssSbasSettings::Response& self);
+void insert(Serializer& serializer, const GnssSbasSettings::Response& self);
+void extract(Serializer& serializer, GnssSbasSettings::Response& self);
 
-MipCmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enable_sbas, GnssSbasSettings::SBASOptions sbas_options, uint8_t num_included_prns, const uint16_t* included_prns);
-MipCmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t& enable_sbas, GnssSbasSettings::SBASOptions& sbas_options, uint8_t& num_included_prns, uint16_t* included_prns);
-MipCmdResult saveGnssSbasSettings(C::mip_interface& device);
-MipCmdResult loadGnssSbasSettings(C::mip_interface& device);
-MipCmdResult defaultGnssSbasSettings(C::mip_interface& device);
+CmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, GnssSbasSettings::SBASOptions sbasOptions, uint8_t numIncludedPrns, const uint16_t* includedPrns);
+CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut, GnssSbasSettings::SBASOptions* sbasOptionsOut, uint8_t* numIncludedPrnsOut, uint8_t numIncludedPrnsOutMax, uint16_t* includedPrnsOut);
+CmdResult saveGnssSbasSettings(C::mip_interface& device);
+CmdResult loadGnssSbasSettings(C::mip_interface& device);
+CmdResult defaultGnssSbasSettings(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -972,8 +972,8 @@ MipCmdResult defaultGnssSbasSettings(C::mip_interface& device);
 
 struct GnssTimeAssistance
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -981,15 +981,15 @@ struct GnssTimeAssistance
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = false;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     double tow;
     uint16_t week_number;
     float accuracy;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
         
         double tow;
         uint16_t week_number;
@@ -997,14 +997,14 @@ struct GnssTimeAssistance
         
     };
 };
-void insert(MipSerializer& serializer, const GnssTimeAssistance& self);
-void extract(MipSerializer& serializer, GnssTimeAssistance& self);
+void insert(Serializer& serializer, const GnssTimeAssistance& self);
+void extract(Serializer& serializer, GnssTimeAssistance& self);
 
-void insert(MipSerializer& serializer, const GnssTimeAssistance::Response& self);
-void extract(MipSerializer& serializer, GnssTimeAssistance::Response& self);
+void insert(Serializer& serializer, const GnssTimeAssistance::Response& self);
+void extract(Serializer& serializer, GnssTimeAssistance::Response& self);
 
-MipCmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t week_number, float accuracy);
-MipCmdResult readGnssTimeAssistance(C::mip_interface& device, double& tow, uint16_t& week_number, float& accuracy);
+CmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t weekNumber, float accuracy);
+CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint16_t* weekNumberOut, float* accuracyOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1028,8 +1028,8 @@ MipCmdResult readGnssTimeAssistance(C::mip_interface& device, double& tow, uint1
 
 struct AdvLowpassFilter
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ADVANCED_DATA_FILTER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ADVANCED_DATA_FILTER;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1037,7 +1037,7 @@ struct AdvLowpassFilter
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t target_descriptor;
     bool enable;
     bool manual;
@@ -1046,8 +1046,8 @@ struct AdvLowpassFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
         
         uint8_t target_descriptor;
         bool enable;
@@ -1057,17 +1057,17 @@ struct AdvLowpassFilter
         
     };
 };
-void insert(MipSerializer& serializer, const AdvLowpassFilter& self);
-void extract(MipSerializer& serializer, AdvLowpassFilter& self);
+void insert(Serializer& serializer, const AdvLowpassFilter& self);
+void extract(Serializer& serializer, AdvLowpassFilter& self);
 
-void insert(MipSerializer& serializer, const AdvLowpassFilter::Response& self);
-void extract(MipSerializer& serializer, AdvLowpassFilter::Response& self);
+void insert(Serializer& serializer, const AdvLowpassFilter::Response& self);
+void extract(Serializer& serializer, AdvLowpassFilter::Response& self);
 
-MipCmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-MipCmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor, bool& enable, bool& manual, uint16_t& frequency, uint8_t& reserved);
-MipCmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
-MipCmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
-MipCmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t target_descriptor);
+CmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
+CmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1078,8 +1078,8 @@ MipCmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t target_de
 
 struct PpsSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_PPS_SOURCE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_PPS_SOURCE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1096,29 +1096,29 @@ struct PpsSource
         GENERATED  = 4,  ///<  PPS is generated from the system oscillator.
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     Source source;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_PPS_SOURCE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
         
         Source source;
         
     };
 };
-void insert(MipSerializer& serializer, const PpsSource& self);
-void extract(MipSerializer& serializer, PpsSource& self);
+void insert(Serializer& serializer, const PpsSource& self);
+void extract(Serializer& serializer, PpsSource& self);
 
-void insert(MipSerializer& serializer, const PpsSource::Response& self);
-void extract(MipSerializer& serializer, PpsSource::Response& self);
+void insert(Serializer& serializer, const PpsSource::Response& self);
+void extract(Serializer& serializer, PpsSource::Response& self);
 
-MipCmdResult writePpsSource(C::mip_interface& device, PpsSource::Source source);
-MipCmdResult readPpsSource(C::mip_interface& device, PpsSource::Source& source);
-MipCmdResult savePpsSource(C::mip_interface& device);
-MipCmdResult loadPpsSource(C::mip_interface& device);
-MipCmdResult defaultPpsSource(C::mip_interface& device);
+CmdResult writePpsSource(C::mip_interface& device, PpsSource::Source source);
+CmdResult readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut);
+CmdResult savePpsSource(C::mip_interface& device);
+CmdResult loadPpsSource(C::mip_interface& device);
+CmdResult defaultPpsSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1145,8 +1145,8 @@ MipCmdResult defaultPpsSource(C::mip_interface& device);
 
 struct GpioConfig
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GPIO_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1197,7 +1197,7 @@ struct GpioConfig
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t pin;
     Feature feature;
     Behavior behavior;
@@ -1205,8 +1205,8 @@ struct GpioConfig
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GPIO_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
         
         uint8_t pin;
         Feature feature;
@@ -1215,17 +1215,17 @@ struct GpioConfig
         
     };
 };
-void insert(MipSerializer& serializer, const GpioConfig& self);
-void extract(MipSerializer& serializer, GpioConfig& self);
+void insert(Serializer& serializer, const GpioConfig& self);
+void extract(Serializer& serializer, GpioConfig& self);
 
-void insert(MipSerializer& serializer, const GpioConfig::Response& self);
-void extract(MipSerializer& serializer, GpioConfig::Response& self);
+void insert(Serializer& serializer, const GpioConfig::Response& self);
+void extract(Serializer& serializer, GpioConfig::Response& self);
 
-MipCmdResult writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pin_mode);
-MipCmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature& feature, GpioConfig::Behavior& behavior, GpioConfig::PinMode& pin_mode);
-MipCmdResult saveGpioConfig(C::mip_interface& device, uint8_t pin);
-MipCmdResult loadGpioConfig(C::mip_interface& device, uint8_t pin);
-MipCmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
+CmdResult writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pinMode);
+CmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature* featureOut, GpioConfig::Behavior* behaviorOut, GpioConfig::PinMode* pinModeOut);
+CmdResult saveGpioConfig(C::mip_interface& device, uint8_t pin);
+CmdResult loadGpioConfig(C::mip_interface& device, uint8_t pin);
+CmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1251,8 +1251,8 @@ MipCmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
 
 struct GpioState
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GPIO_STATE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_STATE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1260,28 +1260,28 @@ struct GpioState
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = false;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t pin;
     bool state;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GPIO_STATE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
         
         uint8_t pin;
         bool state;
         
     };
 };
-void insert(MipSerializer& serializer, const GpioState& self);
-void extract(MipSerializer& serializer, GpioState& self);
+void insert(Serializer& serializer, const GpioState& self);
+void extract(Serializer& serializer, GpioState& self);
 
-void insert(MipSerializer& serializer, const GpioState::Response& self);
-void extract(MipSerializer& serializer, GpioState::Response& self);
+void insert(Serializer& serializer, const GpioState::Response& self);
+void extract(Serializer& serializer, GpioState::Response& self);
 
-MipCmdResult writeGpioState(C::mip_interface& device, uint8_t pin, bool state);
-MipCmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool& state);
+CmdResult writeGpioState(C::mip_interface& device, uint8_t pin, bool state);
+CmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1293,8 +1293,8 @@ MipCmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool& state);
 
 struct Odometer
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ODOMETER_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ODOMETER_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1308,15 +1308,15 @@ struct Odometer
         QUADRATURE = 2,  ///<  Quadrature encoder mode.
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     Mode mode;
     float scaling;
     float uncertainty;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ODOMETER_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
         
         Mode mode;
         float scaling;
@@ -1324,17 +1324,17 @@ struct Odometer
         
     };
 };
-void insert(MipSerializer& serializer, const Odometer& self);
-void extract(MipSerializer& serializer, Odometer& self);
+void insert(Serializer& serializer, const Odometer& self);
+void extract(Serializer& serializer, Odometer& self);
 
-void insert(MipSerializer& serializer, const Odometer::Response& self);
-void extract(MipSerializer& serializer, Odometer::Response& self);
+void insert(Serializer& serializer, const Odometer::Response& self);
+void extract(Serializer& serializer, Odometer::Response& self);
 
-MipCmdResult writeOdometer(C::mip_interface& device, Odometer::Mode mode, float scaling, float uncertainty);
-MipCmdResult readOdometer(C::mip_interface& device, Odometer::Mode& mode, float& scaling, float& uncertainty);
-MipCmdResult saveOdometer(C::mip_interface& device);
-MipCmdResult loadOdometer(C::mip_interface& device);
-MipCmdResult defaultOdometer(C::mip_interface& device);
+CmdResult writeOdometer(C::mip_interface& device, Odometer::Mode mode, float scaling, float uncertainty);
+CmdResult readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float* scalingOut, float* uncertaintyOut);
+CmdResult saveOdometer(C::mip_interface& device);
+CmdResult loadOdometer(C::mip_interface& device);
+CmdResult defaultOdometer(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1361,8 +1361,8 @@ MipCmdResult defaultOdometer(C::mip_interface& device);
 
 struct GetEventSupport
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_SUPPORT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_SUPPORT;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1382,8 +1382,8 @@ struct GetEventSupport
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_SUPPORT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
         
         Query query;
         uint8_t max_instances;
@@ -1392,16 +1392,16 @@ struct GetEventSupport
         
     };
 };
-void insert(MipSerializer& serializer, const GetEventSupport& self);
-void extract(MipSerializer& serializer, GetEventSupport& self);
+void insert(Serializer& serializer, const GetEventSupport& self);
+void extract(Serializer& serializer, GetEventSupport& self);
 
-void insert(MipSerializer& serializer, const GetEventSupport::Info& self);
-void extract(MipSerializer& serializer, GetEventSupport::Info& self);
+void insert(Serializer& serializer, const GetEventSupport::Info& self);
+void extract(Serializer& serializer, GetEventSupport::Info& self);
 
-void insert(MipSerializer& serializer, const GetEventSupport::Response& self);
-void extract(MipSerializer& serializer, GetEventSupport::Response& self);
+void insert(Serializer& serializer, const GetEventSupport::Response& self);
+void extract(Serializer& serializer, GetEventSupport::Response& self);
 
-MipCmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t& max_instances, uint8_t& num_entries, GetEventSupport::Info* entries);
+CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t* maxInstancesOut, uint8_t* numEntriesOut, uint8_t numEntriesOutMax, GetEventSupport::Info* entriesOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1421,8 +1421,8 @@ MipCmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query qu
 
 struct EventControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_CONTROL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_CONTROL;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1438,31 +1438,31 @@ struct EventControl
         TEST_PULSE = 3,  ///<  Trigger is forced to the active state for one event cycle only. After the test cycle, the mode reverts to the previous state (either enabled or disabled).
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t instance;
     Mode mode;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_CONTROL;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
         
         uint8_t instance;
         Mode mode;
         
     };
 };
-void insert(MipSerializer& serializer, const EventControl& self);
-void extract(MipSerializer& serializer, EventControl& self);
+void insert(Serializer& serializer, const EventControl& self);
+void extract(Serializer& serializer, EventControl& self);
 
-void insert(MipSerializer& serializer, const EventControl::Response& self);
-void extract(MipSerializer& serializer, EventControl::Response& self);
+void insert(Serializer& serializer, const EventControl::Response& self);
+void extract(Serializer& serializer, EventControl::Response& self);
 
-MipCmdResult writeEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode mode);
-MipCmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode& mode);
-MipCmdResult saveEventControl(C::mip_interface& device, uint8_t instance);
-MipCmdResult loadEventControl(C::mip_interface& device, uint8_t instance);
-MipCmdResult defaultEventControl(C::mip_interface& device, uint8_t instance);
+CmdResult writeEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode mode);
+CmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode* modeOut);
+CmdResult saveEventControl(C::mip_interface& device, uint8_t instance);
+CmdResult loadEventControl(C::mip_interface& device, uint8_t instance);
+CmdResult defaultEventControl(C::mip_interface& device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1472,8 +1472,8 @@ MipCmdResult defaultEventControl(C::mip_interface& device, uint8_t instance);
 
 struct GetEventTriggerStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1505,24 +1505,24 @@ struct GetEventTriggerStatus
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
         
         uint8_t count;
         Entry triggers[20];
         
     };
 };
-void insert(MipSerializer& serializer, const GetEventTriggerStatus& self);
-void extract(MipSerializer& serializer, GetEventTriggerStatus& self);
+void insert(Serializer& serializer, const GetEventTriggerStatus& self);
+void extract(Serializer& serializer, GetEventTriggerStatus& self);
 
-void insert(MipSerializer& serializer, const GetEventTriggerStatus::Entry& self);
-void extract(MipSerializer& serializer, GetEventTriggerStatus::Entry& self);
+void insert(Serializer& serializer, const GetEventTriggerStatus::Entry& self);
+void extract(Serializer& serializer, GetEventTriggerStatus::Entry& self);
 
-void insert(MipSerializer& serializer, const GetEventTriggerStatus::Response& self);
-void extract(MipSerializer& serializer, GetEventTriggerStatus::Response& self);
+void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self);
+void extract(Serializer& serializer, GetEventTriggerStatus::Response& self);
 
-MipCmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t& count, GetEventTriggerStatus::Entry* triggers);
+CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventTriggerStatus::Entry* triggersOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1532,8 +1532,8 @@ MipCmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requested_c
 
 struct GetEventActionStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_ACTION_STATUS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1548,24 +1548,24 @@ struct GetEventActionStatus
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_ACTION_STATUS;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
         
         uint8_t count;
         Entry actions[20];
         
     };
 };
-void insert(MipSerializer& serializer, const GetEventActionStatus& self);
-void extract(MipSerializer& serializer, GetEventActionStatus& self);
+void insert(Serializer& serializer, const GetEventActionStatus& self);
+void extract(Serializer& serializer, GetEventActionStatus& self);
 
-void insert(MipSerializer& serializer, const GetEventActionStatus::Entry& self);
-void extract(MipSerializer& serializer, GetEventActionStatus::Entry& self);
+void insert(Serializer& serializer, const GetEventActionStatus::Entry& self);
+void extract(Serializer& serializer, GetEventActionStatus::Entry& self);
 
-void insert(MipSerializer& serializer, const GetEventActionStatus::Response& self);
-void extract(MipSerializer& serializer, GetEventActionStatus::Response& self);
+void insert(Serializer& serializer, const GetEventActionStatus::Response& self);
+void extract(Serializer& serializer, GetEventActionStatus::Response& self);
 
-MipCmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_count, const uint8_t* requested_instances, uint8_t& count, GetEventActionStatus::Entry* actions);
+CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventActionStatus::Entry* actionsOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1576,8 +1576,8 @@ MipCmdResult getEventActionStatus(C::mip_interface& device, uint8_t requested_co
 
 struct EventTrigger
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1657,15 +1657,15 @@ struct EventTrigger
         CombinationParams combination;
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t instance;
     Type type;
     Parameters parameters;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
         
         uint8_t instance;
         Type type;
@@ -1673,26 +1673,26 @@ struct EventTrigger
         
     };
 };
-void insert(MipSerializer& serializer, const EventTrigger& self);
-void extract(MipSerializer& serializer, EventTrigger& self);
+void insert(Serializer& serializer, const EventTrigger& self);
+void extract(Serializer& serializer, EventTrigger& self);
 
-void insert(MipSerializer& serializer, const EventTrigger::GpioParams& self);
-void extract(MipSerializer& serializer, EventTrigger::GpioParams& self);
+void insert(Serializer& serializer, const EventTrigger::GpioParams& self);
+void extract(Serializer& serializer, EventTrigger::GpioParams& self);
 
-void insert(MipSerializer& serializer, const EventTrigger::ThresholdParams& self);
-void extract(MipSerializer& serializer, EventTrigger::ThresholdParams& self);
+void insert(Serializer& serializer, const EventTrigger::ThresholdParams& self);
+void extract(Serializer& serializer, EventTrigger::ThresholdParams& self);
 
-void insert(MipSerializer& serializer, const EventTrigger::CombinationParams& self);
-void extract(MipSerializer& serializer, EventTrigger::CombinationParams& self);
+void insert(Serializer& serializer, const EventTrigger::CombinationParams& self);
+void extract(Serializer& serializer, EventTrigger::CombinationParams& self);
 
-void insert(MipSerializer& serializer, const EventTrigger::Response& self);
-void extract(MipSerializer& serializer, EventTrigger::Response& self);
+void insert(Serializer& serializer, const EventTrigger::Response& self);
+void extract(Serializer& serializer, EventTrigger::Response& self);
 
-MipCmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
-MipCmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type& type, EventTrigger::Parameters& parameters);
-MipCmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance);
-MipCmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance);
-MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
+CmdResult writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
+CmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type* typeOut, EventTrigger::Parameters* parametersOut);
+CmdResult saveEventTrigger(C::mip_interface& device, uint8_t instance);
+CmdResult loadEventTrigger(C::mip_interface& device, uint8_t instance);
+CmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1703,8 +1703,8 @@ MipCmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance);
 
 struct EventAction
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_EVENT_ACTION_CONFIG;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_CONFIG;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1749,7 +1749,7 @@ struct EventAction
         MessageParams message;
     };
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t instance;
     uint8_t trigger;
     Type type;
@@ -1757,8 +1757,8 @@ struct EventAction
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
         
         uint8_t instance;
         uint8_t trigger;
@@ -1767,23 +1767,23 @@ struct EventAction
         
     };
 };
-void insert(MipSerializer& serializer, const EventAction& self);
-void extract(MipSerializer& serializer, EventAction& self);
+void insert(Serializer& serializer, const EventAction& self);
+void extract(Serializer& serializer, EventAction& self);
 
-void insert(MipSerializer& serializer, const EventAction::GpioParams& self);
-void extract(MipSerializer& serializer, EventAction::GpioParams& self);
+void insert(Serializer& serializer, const EventAction::GpioParams& self);
+void extract(Serializer& serializer, EventAction::GpioParams& self);
 
-void insert(MipSerializer& serializer, const EventAction::MessageParams& self);
-void extract(MipSerializer& serializer, EventAction::MessageParams& self);
+void insert(Serializer& serializer, const EventAction::MessageParams& self);
+void extract(Serializer& serializer, EventAction::MessageParams& self);
 
-void insert(MipSerializer& serializer, const EventAction::Response& self);
-void extract(MipSerializer& serializer, EventAction::Response& self);
+void insert(Serializer& serializer, const EventAction::Response& self);
+void extract(Serializer& serializer, EventAction::Response& self);
 
-MipCmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
-MipCmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t& trigger, EventAction::Type& type, EventAction::Parameters& parameters);
-MipCmdResult saveEventAction(C::mip_interface& device, uint8_t instance);
-MipCmdResult loadEventAction(C::mip_interface& device, uint8_t instance);
-MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
+CmdResult writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
+CmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* triggerOut, EventAction::Type* typeOut, EventAction::Parameters* parametersOut);
+CmdResult saveEventAction(C::mip_interface& device, uint8_t instance);
+CmdResult loadEventAction(C::mip_interface& device, uint8_t instance);
+CmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1796,8 +1796,8 @@ MipCmdResult defaultEventAction(C::mip_interface& device, uint8_t instance);
 
 struct AccelBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_ACCEL_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ACCEL_BIAS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1805,29 +1805,29 @@ struct AccelBias
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float bias[3];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
         
         float bias[3];
         
     };
 };
-void insert(MipSerializer& serializer, const AccelBias& self);
-void extract(MipSerializer& serializer, AccelBias& self);
+void insert(Serializer& serializer, const AccelBias& self);
+void extract(Serializer& serializer, AccelBias& self);
 
-void insert(MipSerializer& serializer, const AccelBias::Response& self);
-void extract(MipSerializer& serializer, AccelBias::Response& self);
+void insert(Serializer& serializer, const AccelBias::Response& self);
+void extract(Serializer& serializer, AccelBias::Response& self);
 
-MipCmdResult writeAccelBias(C::mip_interface& device, const float* bias);
-MipCmdResult readAccelBias(C::mip_interface& device, float* bias);
-MipCmdResult saveAccelBias(C::mip_interface& device);
-MipCmdResult loadAccelBias(C::mip_interface& device);
-MipCmdResult defaultAccelBias(C::mip_interface& device);
+CmdResult writeAccelBias(C::mip_interface& device, const float* bias);
+CmdResult readAccelBias(C::mip_interface& device, float* biasOut);
+CmdResult saveAccelBias(C::mip_interface& device);
+CmdResult loadAccelBias(C::mip_interface& device);
+CmdResult defaultAccelBias(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1840,8 +1840,8 @@ MipCmdResult defaultAccelBias(C::mip_interface& device);
 
 struct GyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_GYRO_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GYRO_BIAS;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1849,29 +1849,29 @@ struct GyroBias
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float bias[3];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
         float bias[3];
         
     };
 };
-void insert(MipSerializer& serializer, const GyroBias& self);
-void extract(MipSerializer& serializer, GyroBias& self);
+void insert(Serializer& serializer, const GyroBias& self);
+void extract(Serializer& serializer, GyroBias& self);
 
-void insert(MipSerializer& serializer, const GyroBias::Response& self);
-void extract(MipSerializer& serializer, GyroBias::Response& self);
+void insert(Serializer& serializer, const GyroBias::Response& self);
+void extract(Serializer& serializer, GyroBias::Response& self);
 
-MipCmdResult writeGyroBias(C::mip_interface& device, const float* bias);
-MipCmdResult readGyroBias(C::mip_interface& device, float* bias);
-MipCmdResult saveGyroBias(C::mip_interface& device);
-MipCmdResult loadGyroBias(C::mip_interface& device);
-MipCmdResult defaultGyroBias(C::mip_interface& device);
+CmdResult writeGyroBias(C::mip_interface& device, const float* bias);
+CmdResult readGyroBias(C::mip_interface& device, float* biasOut);
+CmdResult saveGyroBias(C::mip_interface& device);
+CmdResult loadGyroBias(C::mip_interface& device);
+CmdResult defaultGyroBias(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1887,8 +1887,8 @@ MipCmdResult defaultGyroBias(C::mip_interface& device);
 
 struct CaptureGyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -1896,20 +1896,20 @@ struct CaptureGyroBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
         float bias[3];
         
     };
 };
-void insert(MipSerializer& serializer, const CaptureGyroBias& self);
-void extract(MipSerializer& serializer, CaptureGyroBias& self);
+void insert(Serializer& serializer, const CaptureGyroBias& self);
+void extract(Serializer& serializer, CaptureGyroBias& self);
 
-void insert(MipSerializer& serializer, const CaptureGyroBias::Response& self);
-void extract(MipSerializer& serializer, CaptureGyroBias::Response& self);
+void insert(Serializer& serializer, const CaptureGyroBias::Response& self);
+void extract(Serializer& serializer, CaptureGyroBias::Response& self);
 
-MipCmdResult captureGyroBias(C::mip_interface& device, uint16_t averaging_time_ms, float* bias);
+CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1926,8 +1926,8 @@ MipCmdResult captureGyroBias(C::mip_interface& device, uint16_t averaging_time_m
 
 struct MagHardIronOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_HARD_IRON_OFFSET;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_HARD_IRON_OFFSET;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1935,29 +1935,29 @@ struct MagHardIronOffset
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float offset[3];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
         
         float offset[3];
         
     };
 };
-void insert(MipSerializer& serializer, const MagHardIronOffset& self);
-void extract(MipSerializer& serializer, MagHardIronOffset& self);
+void insert(Serializer& serializer, const MagHardIronOffset& self);
+void extract(Serializer& serializer, MagHardIronOffset& self);
 
-void insert(MipSerializer& serializer, const MagHardIronOffset::Response& self);
-void extract(MipSerializer& serializer, MagHardIronOffset::Response& self);
+void insert(Serializer& serializer, const MagHardIronOffset::Response& self);
+void extract(Serializer& serializer, MagHardIronOffset::Response& self);
 
-MipCmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset);
-MipCmdResult readMagHardIronOffset(C::mip_interface& device, float* offset);
-MipCmdResult saveMagHardIronOffset(C::mip_interface& device);
-MipCmdResult loadMagHardIronOffset(C::mip_interface& device);
-MipCmdResult defaultMagHardIronOffset(C::mip_interface& device);
+CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset);
+CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut);
+CmdResult saveMagHardIronOffset(C::mip_interface& device);
+CmdResult loadMagHardIronOffset(C::mip_interface& device);
+CmdResult defaultMagHardIronOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1978,8 +1978,8 @@ MipCmdResult defaultMagHardIronOffset(C::mip_interface& device);
 
 struct MagSoftIronMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SOFT_IRON_MATRIX;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SOFT_IRON_MATRIX;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1987,29 +1987,29 @@ struct MagSoftIronMatrix
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float offset[9];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
         
         float offset[9];
         
     };
 };
-void insert(MipSerializer& serializer, const MagSoftIronMatrix& self);
-void extract(MipSerializer& serializer, MagSoftIronMatrix& self);
+void insert(Serializer& serializer, const MagSoftIronMatrix& self);
+void extract(Serializer& serializer, MagSoftIronMatrix& self);
 
-void insert(MipSerializer& serializer, const MagSoftIronMatrix::Response& self);
-void extract(MipSerializer& serializer, MagSoftIronMatrix::Response& self);
+void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self);
+void extract(Serializer& serializer, MagSoftIronMatrix::Response& self);
 
-MipCmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
-MipCmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offset);
-MipCmdResult saveMagSoftIronMatrix(C::mip_interface& device);
-MipCmdResult loadMagSoftIronMatrix(C::mip_interface& device);
-MipCmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
+CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
+CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
+CmdResult saveMagSoftIronMatrix(C::mip_interface& device);
+CmdResult loadMagSoftIronMatrix(C::mip_interface& device);
+CmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2044,8 +2044,8 @@ MipCmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
 
 struct Sensor2VehicleTransformEuler
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2053,15 +2053,15 @@ struct Sensor2VehicleTransformEuler
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float roll;
     float pitch;
     float yaw;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
         
         float roll;
         float pitch;
@@ -2069,17 +2069,17 @@ struct Sensor2VehicleTransformEuler
         
     };
 };
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformEuler& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformEuler& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformEuler& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformEuler& self);
 
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformEuler::Response& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformEuler::Response& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformEuler::Response& self);
 
-MipCmdResult writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw);
-MipCmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float& roll, float& pitch, float& yaw);
-MipCmdResult saveSensor2VehicleTransformEuler(C::mip_interface& device);
-MipCmdResult loadSensor2VehicleTransformEuler(C::mip_interface& device);
-MipCmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
+CmdResult writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw);
+CmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
+CmdResult saveSensor2VehicleTransformEuler(C::mip_interface& device);
+CmdResult loadSensor2VehicleTransformEuler(C::mip_interface& device);
+CmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2122,8 +2122,8 @@ MipCmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
 
 struct Sensor2VehicleTransformQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2131,29 +2131,29 @@ struct Sensor2VehicleTransformQuaternion
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float q[4];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
         
         float q[4];
         
     };
 };
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformQuaternion& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformQuaternion& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self);
 
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
 
-MipCmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
-MipCmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* q);
-MipCmdResult saveSensor2VehicleTransformQuaternion(C::mip_interface& device);
-MipCmdResult loadSensor2VehicleTransformQuaternion(C::mip_interface& device);
-MipCmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
+CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
+CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut);
+CmdResult saveSensor2VehicleTransformQuaternion(C::mip_interface& device);
+CmdResult loadSensor2VehicleTransformQuaternion(C::mip_interface& device);
+CmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2194,8 +2194,8 @@ MipCmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
 
 struct Sensor2VehicleTransformDcm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2203,29 +2203,29 @@ struct Sensor2VehicleTransformDcm
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     float dcm[9];
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
         
         float dcm[9];
         
     };
 };
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformDcm& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformDcm& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformDcm& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self);
 
-void insert(MipSerializer& serializer, const Sensor2VehicleTransformDcm::Response& self);
-void extract(MipSerializer& serializer, Sensor2VehicleTransformDcm::Response& self);
+void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self);
+void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self);
 
-MipCmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
-MipCmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcm);
-MipCmdResult saveSensor2VehicleTransformDcm(C::mip_interface& device);
-MipCmdResult loadSensor2VehicleTransformDcm(C::mip_interface& device);
-MipCmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
+CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
+CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut);
+CmdResult saveSensor2VehicleTransformDcm(C::mip_interface& device);
+CmdResult loadSensor2VehicleTransformDcm(C::mip_interface& device);
+CmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2240,8 +2240,8 @@ MipCmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
 
 struct ComplementaryFilter
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_LEGACY_COMP_FILTER;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LEGACY_COMP_FILTER;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2249,7 +2249,7 @@ struct ComplementaryFilter
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     bool pitch_roll_enable;
     bool heading_enable;
     float pitch_roll_time_constant;
@@ -2257,8 +2257,8 @@ struct ComplementaryFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_LEGACY_COMP_FILTER;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
         
         bool pitch_roll_enable;
         bool heading_enable;
@@ -2267,17 +2267,17 @@ struct ComplementaryFilter
         
     };
 };
-void insert(MipSerializer& serializer, const ComplementaryFilter& self);
-void extract(MipSerializer& serializer, ComplementaryFilter& self);
+void insert(Serializer& serializer, const ComplementaryFilter& self);
+void extract(Serializer& serializer, ComplementaryFilter& self);
 
-void insert(MipSerializer& serializer, const ComplementaryFilter::Response& self);
-void extract(MipSerializer& serializer, ComplementaryFilter::Response& self);
+void insert(Serializer& serializer, const ComplementaryFilter::Response& self);
+void extract(Serializer& serializer, ComplementaryFilter::Response& self);
 
-MipCmdResult writeComplementaryFilter(C::mip_interface& device, bool pitch_roll_enable, bool heading_enable, float pitch_roll_time_constant, float heading_time_constant);
-MipCmdResult readComplementaryFilter(C::mip_interface& device, bool& pitch_roll_enable, bool& heading_enable, float& pitch_roll_time_constant, float& heading_time_constant);
-MipCmdResult saveComplementaryFilter(C::mip_interface& device);
-MipCmdResult loadComplementaryFilter(C::mip_interface& device);
-MipCmdResult defaultComplementaryFilter(C::mip_interface& device);
+CmdResult writeComplementaryFilter(C::mip_interface& device, bool pitchRollEnable, bool headingEnable, float pitchRollTimeConstant, float headingTimeConstant);
+CmdResult readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnableOut, bool* headingEnableOut, float* pitchRollTimeConstantOut, float* headingTimeConstantOut);
+CmdResult saveComplementaryFilter(C::mip_interface& device);
+CmdResult loadComplementaryFilter(C::mip_interface& device);
+CmdResult defaultComplementaryFilter(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2295,8 +2295,8 @@ MipCmdResult defaultComplementaryFilter(C::mip_interface& device);
 
 struct SensorRange
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_SENSOR_RANGE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR_RANGE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -2304,31 +2304,31 @@ struct SensorRange
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     SensorRangeType sensor;
     uint8_t setting;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_SENSOR_RANGE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
         
         SensorRangeType sensor;
         uint8_t setting;
         
     };
 };
-void insert(MipSerializer& serializer, const SensorRange& self);
-void extract(MipSerializer& serializer, SensorRange& self);
+void insert(Serializer& serializer, const SensorRange& self);
+void extract(Serializer& serializer, SensorRange& self);
 
-void insert(MipSerializer& serializer, const SensorRange::Response& self);
-void extract(MipSerializer& serializer, SensorRange::Response& self);
+void insert(Serializer& serializer, const SensorRange::Response& self);
+void extract(Serializer& serializer, SensorRange::Response& self);
 
-MipCmdResult writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting);
-MipCmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t& setting);
-MipCmdResult saveSensorRange(C::mip_interface& device, SensorRangeType sensor);
-MipCmdResult loadSensorRange(C::mip_interface& device, SensorRangeType sensor);
-MipCmdResult defaultSensorRange(C::mip_interface& device, SensorRangeType sensor);
+CmdResult writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting);
+CmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t* settingOut);
+CmdResult saveSensorRange(C::mip_interface& device, SensorRangeType sensor);
+CmdResult loadSensorRange(C::mip_interface& device, SensorRangeType sensor);
+CmdResult defaultSensorRange(C::mip_interface& device, SensorRangeType sensor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -2342,8 +2342,8 @@ MipCmdResult defaultSensorRange(C::mip_interface& device, SensorRangeType sensor
 
 struct CalibratedSensorRanges
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::CMD_CALIBRATED_RANGES;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CALIBRATED_RANGES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
@@ -2357,8 +2357,8 @@ struct CalibratedSensorRanges
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_3dm::REPLY_CALIBRATED_RANGES;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
         
         SensorRangeType sensor;
         uint8_t num_ranges;
@@ -2366,16 +2366,16 @@ struct CalibratedSensorRanges
         
     };
 };
-void insert(MipSerializer& serializer, const CalibratedSensorRanges& self);
-void extract(MipSerializer& serializer, CalibratedSensorRanges& self);
+void insert(Serializer& serializer, const CalibratedSensorRanges& self);
+void extract(Serializer& serializer, CalibratedSensorRanges& self);
 
-void insert(MipSerializer& serializer, const CalibratedSensorRanges::Entry& self);
-void extract(MipSerializer& serializer, CalibratedSensorRanges::Entry& self);
+void insert(Serializer& serializer, const CalibratedSensorRanges::Entry& self);
+void extract(Serializer& serializer, CalibratedSensorRanges::Entry& self);
 
-void insert(MipSerializer& serializer, const CalibratedSensorRanges::Response& self);
-void extract(MipSerializer& serializer, CalibratedSensorRanges::Response& self);
+void insert(Serializer& serializer, const CalibratedSensorRanges::Response& self);
+void extract(Serializer& serializer, CalibratedSensorRanges::Response& self);
 
-MipCmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t& num_ranges, CalibratedSensorRanges::Entry* ranges);
+CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t* numRangesOut, uint8_t numRangesOutMax, CalibratedSensorRanges::Entry* rangesOut);
 ///@}
 ///
 
@@ -2384,5 +2384,5 @@ MipCmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType se
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_3dm
-} // namespace mscl
+} // namespace mip
 

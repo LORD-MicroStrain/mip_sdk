@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mscl {
-class MipSerializer;
+namespace mip {
+class Serializer;
 
 namespace C {
 struct mip_interface;
@@ -70,8 +70,8 @@ static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 
 struct CommMode
 {
-    static const uint8_t DESCRIPTOR_SET = ::mscl::commands_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_system::CMD_COM_MODE;
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -79,27 +79,27 @@ struct CommMode
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = true;
     
-    MipFunctionSelector function;
+    FunctionSelector function;
     uint8_t mode;
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mscl::commands_system::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mscl::commands_system::REPLY_COM_MODE;
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
         
         uint8_t mode;
         
     };
 };
-void insert(MipSerializer& serializer, const CommMode& self);
-void extract(MipSerializer& serializer, CommMode& self);
+void insert(Serializer& serializer, const CommMode& self);
+void extract(Serializer& serializer, CommMode& self);
 
-void insert(MipSerializer& serializer, const CommMode::Response& self);
-void extract(MipSerializer& serializer, CommMode::Response& self);
+void insert(Serializer& serializer, const CommMode::Response& self);
+void extract(Serializer& serializer, CommMode::Response& self);
 
-MipCmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
-MipCmdResult readCommMode(C::mip_interface& device, uint8_t& mode);
-MipCmdResult defaultCommMode(C::mip_interface& device);
+CmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
+CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut);
+CmdResult defaultCommMode(C::mip_interface& device);
 ///@}
 ///
 
@@ -108,5 +108,5 @@ MipCmdResult defaultCommMode(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_system
-} // namespace mscl
+} // namespace mip
 

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-namespace mscl{
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -43,6 +43,6 @@ using RemainingCount = C::remaining_count;
 using Timestamp      = C::timestamp_type;
 using Timeout        = C::timeout_type;
 
-} // namespace mscl
+} // namespace mip
 
 #endif

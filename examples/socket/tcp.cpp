@@ -11,7 +11,7 @@
 #include <cstdio>
 
 
-namespace mscl
+namespace mip
 {
 
 
@@ -134,4 +134,4 @@ int TcpSocket::recv(uint8_t* buffer, size_t maxLength)
     return count;
 }
 
-} // namespace mscl
+} // namespace mip
