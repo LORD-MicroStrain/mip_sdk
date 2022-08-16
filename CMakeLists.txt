@@ -22,6 +22,8 @@ include_directories(
 
 add_subdirectory("${EXT_DIR}")
 
+set(MIP_DIR "${SRC_DIR}/mip")
+
 
 #
 # Build options
@@ -30,13 +32,11 @@ add_subdirectory("${EXT_DIR}")
 option(MSCL_TIMESTAMP_TYPE, "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 
-set(MSCL_DIR "${SRC_DIR}/mscl")
-
 #
 # Utils
 #
 
-set(UTILS_DIR "${MSCL_DIR}/utils")
+set(UTILS_DIR "${MIP_DIR}/utils")
 
 set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.c"
@@ -49,8 +49,6 @@ set(UTILS_SOURCES
 #
 # MIP Control
 #
-
-set(MIP_DIR "${MSCL_DIR}/mip")
 
 set(MIP_SOURCES
     "${MIP_DIR}/mip_cmdqueue.c"
@@ -66,6 +64,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_parser.h"
     "${MIP_DIR}/mip_result.c"
     "${MIP_DIR}/mip_result.h"
+    "${MIP_DIR}/mip_types.h"
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
