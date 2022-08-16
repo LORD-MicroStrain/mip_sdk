@@ -57,7 +57,7 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(num_receivers_out);
         extract_count(&deserializer, num_receivers_out, num_receivers_out_max);
@@ -135,13 +135,13 @@ enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* dev
     
     assert(mip_serializer_ok(&serializer));
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(gps_enable_out);
         extract_u8(&deserializer, gps_enable_out);
@@ -245,13 +245,13 @@ enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface*
     
     assert(mip_serializer_ok(&serializer));
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(enable_out);
         extract_u8(&deserializer, enable_out);

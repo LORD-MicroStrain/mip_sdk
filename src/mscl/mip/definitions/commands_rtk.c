@@ -80,7 +80,7 @@ enum mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, enum 
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(flags_out);
         extract_mip_rtk_get_status_flags_command_status_flags(&deserializer, flags_out);
@@ -100,7 +100,7 @@ enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_ou
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(imei_out);
         for(unsigned int i=0; i < 32; i++)
@@ -121,7 +121,7 @@ enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_ou
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(imsi_out);
         for(unsigned int i=0; i < 32; i++)
@@ -142,7 +142,7 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(iccid_out);
         for(unsigned int i=0; i < 32; i++)
@@ -199,13 +199,13 @@ enum mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* dev
     
     assert(mip_serializer_ok(&serializer));
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, serializer.offset, MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(dev_type_out);
         extract_mip_rtk_connected_device_type_command_type(&deserializer, dev_type_out);
@@ -261,7 +261,7 @@ enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* act
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(activation_code_out);
         for(unsigned int i=0; i < 32; i++)
@@ -282,7 +282,7 @@ enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* dev
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(modem_firmware_version_out);
         for(unsigned int i=0; i < 32; i++)
@@ -303,7 +303,7 @@ enum mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_o
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(valid_out);
         extract_bool(&deserializer, valid_out);
@@ -357,13 +357,13 @@ enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_
     
     assert(mip_serializer_ok(&serializer));
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, serializer.offset, MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(flags_out);
         extract_mip_rtk_service_status_command_service_flags(&deserializer, flags_out);

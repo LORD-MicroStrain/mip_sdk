@@ -60,12 +60,12 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, serializer.offset, REPLY_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(modeOut);
         extract(deserializer, *modeOut);

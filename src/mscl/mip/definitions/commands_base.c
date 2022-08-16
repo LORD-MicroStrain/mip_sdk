@@ -107,7 +107,7 @@ enum mip_cmd_result mip_base_get_device_info(struct mip_interface* device, struc
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(device_info_out);
         extract_mip_base_device_info(&deserializer, device_info_out);
@@ -127,7 +127,7 @@ enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
         uint8_t descriptors_out_count_max = *descriptors_out_count;
@@ -149,7 +149,7 @@ enum mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(result_out);
         extract_u32(&deserializer, result_out);
@@ -173,7 +173,7 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
         uint8_t descriptors_out_count_max = *descriptors_out_count;
@@ -195,7 +195,7 @@ enum mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(result_out);
         for(unsigned int i=0; i < 16; i++)
@@ -249,13 +249,13 @@ enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8
     
     assert(mip_serializer_ok(&serializer));
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset, MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
         struct mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, sizeof(buffer));
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         extract_u8(&deserializer, &port);
         

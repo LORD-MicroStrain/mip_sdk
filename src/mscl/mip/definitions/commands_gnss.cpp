@@ -70,7 +70,7 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numReceiversOut, numReceiversOutMax);
         assert(receiverInfoOut);
@@ -142,12 +142,12 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, serializer.offset, REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(gpsEnableOut);
         extract(deserializer, *gpsEnableOut);
@@ -241,12 +241,12 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset, REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);

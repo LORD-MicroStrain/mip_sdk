@@ -49,7 +49,7 @@ CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* 
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(flagsOut);
         extract(deserializer, *flagsOut);
@@ -79,7 +79,7 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(imeiOut);
         for(unsigned int i=0; i < 32; i++)
@@ -110,7 +110,7 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(imsiOut);
         for(unsigned int i=0; i < 32; i++)
@@ -141,7 +141,7 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(iccidOut);
         for(unsigned int i=0; i < 32; i++)
@@ -183,12 +183,12 @@ CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType:
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset, REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(devtypeOut);
         extract(deserializer, *devtypeOut);
@@ -248,7 +248,7 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(activationcodeOut);
         for(unsigned int i=0; i < 32; i++)
@@ -279,7 +279,7 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(modemfirmwareversionOut);
         for(unsigned int i=0; i < 32; i++)
@@ -310,7 +310,7 @@ CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, in
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(validOut);
         extract(deserializer, *validOut);
@@ -352,12 +352,12 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
     
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, serializer.offset, REPLY_SERVICE_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(flagsOut);
         extract(deserializer, *flagsOut);

@@ -120,7 +120,7 @@ CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(deviceInfoOut);
         extract(deserializer, *deviceInfoOut);
@@ -150,7 +150,7 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOu
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
         uint8_t descriptorsoutcountMax = *descriptorsOutCount;
@@ -182,7 +182,7 @@ CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(resultOut);
         extract(deserializer, *resultOut);
@@ -227,7 +227,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
         uint8_t descriptorsoutcountMax = *descriptorsOutCount;
@@ -259,7 +259,7 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut)
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         assert(resultOut);
         for(unsigned int i=0; i < 16; i++)
@@ -309,12 +309,12 @@ CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOu
     
     assert(serializer.isOk());
     
-    uint8_t responseLength;
+    uint8_t responseLength = sizeof(buffer);
     CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, serializer.offset, REPLY_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, sizeof(buffer));
+        Serializer deserializer(buffer, responseLength);
         
         extract(deserializer, port);
         
