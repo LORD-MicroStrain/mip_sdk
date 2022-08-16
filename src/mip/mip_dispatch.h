@@ -40,6 +40,14 @@ typedef void (*mip_dispatch_packet_callback)(void* context, const struct mip_pac
 ///
 typedef void (*mip_dispatch_field_callback )(void* context, const struct mip_field* field, timestamp_type timestamp);
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Signature for extraction callbacks.
+///
+///@param field A valid mip_field.
+///@param ptr   A pointer to the destination field structure.
+///
+typedef void (*mip_dispatch_extractor)(const struct mip_field* field, void* ptr);
+
 
 enum {
     /// Field descriptor for packet callbacks. Never matches a field descriptor.
@@ -72,8 +80,6 @@ enum {
 ///
 ///@{
 
-
-
 ///@brief Handler information for MIP Packet or Field callbacks.
 ///
 struct mip_dispatch_handler
@@ -81,23 +87,24 @@ struct mip_dispatch_handler
     struct mip_dispatch_handler* _next;                ///<@private Pointer to the next handler in the list.
     union
     {
-        mip_dispatch_packet_callback _packet_callback;  ///<@private User function for packets. Valid if field_descriptor == 0x00.
-        mip_dispatch_field_callback  _field_callback;   ///<@private User callback for data fields. Valid if field_descriptor != 0x00.
+        mip_dispatch_packet_callback  _packet_callback;  ///<@private User function for packets. Valid if _type is MIP_DISPATCH_TYPE_PACKET_*.
+        mip_dispatch_field_callback   _field_callback;   ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_FIELD.
+        mip_dispatch_extractor        _extract_callback; ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_EXTRACT.
     };
     void*   _user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
+    uint8_t _type;                                      ///<@private Type of the callback. (Using u8 for better struct packing.) @see mip_dispatch_type
     uint8_t _descriptor_set;                            ///<@private MIP descriptor set for this callback.
     uint8_t _field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
-    bool    _enabled;                                  ///<@private If false, the handler will be ignored.
+    uint8_t _enabled;                                   ///<@private If false, the handler will be ignored. (Using u8 for better struct packing.)
 };
 
 
-void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* context);
+void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void* context);
 void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* context);
+void mip_dispatch_handler_init_extractor(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr);
 
 void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool enable);
 bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler);
-
-bool mip_dispatch_handler_matches(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor);
 
 
 ///@}

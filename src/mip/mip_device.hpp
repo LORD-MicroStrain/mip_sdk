@@ -124,15 +124,16 @@ public:
     // Data Callbacks
     //
 
-    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, C::mip_dispatch_packet_callback callback, void* userData) { C::mip_interface_register_packet_callback(this, &handler, descriptorSet, callback, userData); }
+    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, C::mip_dispatch_packet_callback callback, void* userData) { C::mip_interface_register_packet_callback(this, &handler, descriptorSet, afterFields, callback, userData); }
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, C::mip_dispatch_field_callback callback, void* userData) { C::mip_interface_register_field_callback(this, &handler, descriptorSet, fieldDescriptor, callback, userData); }
+    // void registerExtractCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, C::mip_dispatch_field_callback callback, void* userData) { C::mip_interface_register_field_callback(this, &handler, descriptorSet, fieldDescriptor, callback, userData); }
 
 
     template<void (*Callback)(void*, const Packet&, Timestamp)>
-    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, void* userData=nullptr);
+    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData=nullptr);
 
     template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
-    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, Object* object);
+    void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object);
 
 
     template<void (*Callback)(void*, const Field&, Timestamp)>
@@ -201,14 +202,14 @@ public:
 ///@endcode
 ///
 template<void (*Callback)(void*, const Packet&, Timestamp)>
-void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, void* userData)
+void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
     auto callback = [](void* context, const C::mip_packet* packet, Timestamp timestamp)
     {
         Callback(context, Packet(*packet), timestamp);
     };
 
-    registerPacketCallback(handler, descriptorSet, callback, userData);
+    registerPacketCallback(handler, descriptorSet, afterFields, callback, userData);
 }
 
 
@@ -242,7 +243,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///@endcode
 ///
 template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
-void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, Object* object)
+void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
     auto callback = [](void* pointer, const Packet& packet, Timestamp timestamp)
     {
@@ -250,7 +251,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
         (obj->*Callback)(Packet(packet), timestamp);
     };
 
-    registerPacketCallback(handler, descriptorSet, callback, object);
+    registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
 }
 
 

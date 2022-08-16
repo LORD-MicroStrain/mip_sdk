@@ -13,6 +13,7 @@ namespace C {
 extern "C" {
 #endif // __cplusplus
 
+struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup Serialization Functions for reading and writing to byte buffers.
@@ -28,6 +29,7 @@ struct mip_serializer
 
 void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
+void mip_serializer_init_from_field(struct mip_serializer* serializer, const struct mip_field* field);
 bool mip_serializer_ok(const struct mip_serializer* serializer);
 bool mip_serializer_finished(const struct mip_serializer* serializer, size_t expected_length);
 
