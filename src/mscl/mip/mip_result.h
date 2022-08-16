@@ -73,7 +73,7 @@ struct CmdResult
     CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
     // operator bool() const { return value == C::MIP_ACK_OK; }
-    operator const void*() const { return value == C::MIP_ACK_OK ? this : nullptr; }
+    operator const void*() const { return isAck() ? this : nullptr; }
     bool operator!() const { return !isAck(); }
     operator C::mip_cmd_result&() { return value; }
     operator C::mip_cmd_result() const { return value; }
