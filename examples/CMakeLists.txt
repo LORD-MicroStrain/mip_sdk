@@ -14,7 +14,7 @@ if(WITH_SERIALPORT)
         "${EXAMPLE_DIR}/serial_mip_device.hpp"
     )
     set(SERIAL_LIB "serial")
-    set(SERIAL_DEFS "MSCL_USE_SERIAL")
+    set(SERIAL_DEFS "MIP_USE_SERIAL")
 
 endif()
 
@@ -25,7 +25,7 @@ if(WITH_SOCKETS)
         "${EXAMPLE_DIR}/tcp_mip_device.hpp"
     )
     set(SOCKET_LIB "socket")
-    set(SOCKET_DEFS "MSCL_USE_SOCKETS")
+    set(SOCKET_DEFS "MIP_USE_SOCKETS")
 
 endif()
 
@@ -35,7 +35,7 @@ add_subdirectory("${EXAMPLE_DIR}/socket")
 
 if(WITH_SERIALPORT OR WITH_SOCKETS)
 
-    if(NOT MSCL_DISABLE_CPP)
+    if(NOT MIP_DISABLE_CPP)
 
         add_executable(DeviceInfo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/device_info.cpp" ${DEVICE_SOURCES})
         target_link_libraries(DeviceInfo mip "${SERIAL_LIB}" "${SOCKET_LIB}")
