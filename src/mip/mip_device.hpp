@@ -46,7 +46,7 @@ struct PendingCmd : public C::mip_pending_cmd
     PendingCmd(const PendingCmd&) = delete;
     PendingCmd& operator=(const PendingCmd&) = delete;
 
-    ~PendingCmd() { CmdResult tmp = status(); assert(tmp.isFinished() || tmp==CmdResult::STATUS_NONE); }
+    ~PendingCmd() { CmdResult tmp = status(); assert(tmp.isFinished() || tmp==CmdResult::STATUS_NONE); (void)tmp; }
 
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
