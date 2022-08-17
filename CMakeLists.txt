@@ -182,7 +182,7 @@ if(BUILD_DOCUMENTATION)
         set(DOXYGEN_QUIET YES)
     endif()
 
-    doxygen_add_docs(mscl_embedded
+    doxygen_add_docs(mip
         "${SRC_DIR}"
         COMMENT "Generating documentation."
     )
@@ -196,19 +196,19 @@ endif(BUILD_DOCUMENTATION)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mscl")
+set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mip")
 
 set(EXPORT_TARGETS mip)
 configure_package_config_file(
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/mscl-embedded-config.cmake.in"
-    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/mip-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/mip-config.cmake"
     INSTALL_DESTINATION "${CONFIG_EXPORT_DIR}"
     PATH_VARS CMAKE_INSTALL_INCLUDEDIR CONFIG_EXPORT_DIR
 )
 unset(EXPORT_TARGETS)
 
 write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
     COMPATIBILITY AnyNewerVersion
 )
 
@@ -216,17 +216,17 @@ write_basic_package_version_file(
 # Installation
 #
 
-install(DIRECTORY "${SRC_DIR}/mscl" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
-install(TARGETS mip EXPORT mscl-embedded-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
+install(DIRECTORY "${SRC_DIR}/mip" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
+install(TARGETS mip EXPORT mip-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
 
 install(EXPORT
-    mscl-embedded-targets
+    mip-targets
     DESTINATION "${CONFIG_EXPORT_DIR}"
 )
 
 install(FILES
-    "${CMAKE_BINARY_DIR}/mscl-embedded-config.cmake"
-    "${CMAKE_BINARY_DIR}/mscl-embedded-config-version.cmake"
+    "${CMAKE_BINARY_DIR}/mip-config.cmake"
+    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
     DESTINATION "${CONFIG_EXPORT_DIR}"
 )
 
