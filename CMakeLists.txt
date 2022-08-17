@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
-    MSCL-Embedded
+    libmip
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
