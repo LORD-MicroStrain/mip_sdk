@@ -141,7 +141,7 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self)
     (void)self;
 }
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax)
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -217,7 +217,7 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self)
     (void)self;
 }
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax)
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);

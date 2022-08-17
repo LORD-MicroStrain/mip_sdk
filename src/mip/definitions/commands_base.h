@@ -182,7 +182,7 @@ struct mip_base_get_device_descriptors_response
 void insert_mip_base_get_device_descriptors_response(struct mip_serializer* serializer, const struct mip_base_get_device_descriptors_response* self);
 void extract_mip_base_get_device_descriptors_response(struct mip_serializer* serializer, struct mip_base_get_device_descriptors_response* self);
 
-enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max);
+enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -236,7 +236,7 @@ struct mip_base_get_extended_descriptors_response
 void insert_mip_base_get_extended_descriptors_response(struct mip_serializer* serializer, const struct mip_base_get_extended_descriptors_response* self);
 void extract_mip_base_get_extended_descriptors_response(struct mip_serializer* serializer, struct mip_base_get_extended_descriptors_response* self);
 
-enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max);
+enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
