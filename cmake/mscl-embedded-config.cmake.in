@@ -1,9 +1,0 @@
-
-@PACKAGE_INIT@
-
-set_and_check(MSCL_EMBEDDED_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
-include(@PACKAGE_CONFIG_EXPORT_DIR@/mscl-embedded-targets.cmake)
-
-set(MSCL_EMBEDDED_LIBRARIES "@EXPORT_TARGETS@")
-
-check_required_components(@EXPORT_TARGETS@)

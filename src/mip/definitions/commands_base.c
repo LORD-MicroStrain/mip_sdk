@@ -118,7 +118,7 @@ enum mip_cmd_result mip_base_get_device_info(struct mip_interface* device, struc
     }
     return result;
 }
-enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count)
+enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -131,8 +131,7 @@ enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        uint8_t descriptors_out_count_max = *descriptors_out_count;
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_count_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
         if( !mip_serializer_ok(&deserializer) )
@@ -164,7 +163,7 @@ enum mip_cmd_result mip_base_resume(struct mip_interface* device)
 {
     return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_RESUME, NULL, 0);
 }
-enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count)
+enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -177,8 +176,7 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        uint8_t descriptors_out_count_max = *descriptors_out_count;
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_count_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
         if( !mip_serializer_ok(&deserializer) )
