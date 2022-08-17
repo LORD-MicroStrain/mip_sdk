@@ -15,6 +15,7 @@ extern "C" {
 #endif // __cplusplus
 struct mip_interface;
 struct mip_serializer;
+struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup MipData
@@ -70,6 +71,7 @@ struct mip_shared_event_source_data
 };
 void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const struct mip_shared_event_source_data* self);
 void extract_mip_shared_event_source_data(struct mip_serializer* serializer, struct mip_shared_event_source_data* self);
+void extract_mip_shared_event_source_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -89,6 +91,7 @@ struct mip_shared_ticks_data
 };
 void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const struct mip_shared_ticks_data* self);
 void extract_mip_shared_ticks_data(struct mip_serializer* serializer, struct mip_shared_ticks_data* self);
+void extract_mip_shared_ticks_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -109,6 +112,7 @@ struct mip_shared_delta_ticks_data
 };
 void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const struct mip_shared_delta_ticks_data* self);
 void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, struct mip_shared_delta_ticks_data* self);
+void extract_mip_shared_delta_ticks_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -138,6 +142,7 @@ struct mip_shared_gps_timestamp_data
 };
 void insert_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_gps_timestamp_data* self);
 void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, struct mip_shared_gps_timestamp_data* self);
+void extract_mip_shared_gps_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
 void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_gps_timestamp_data_valid_flags self);
 void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_gps_timestamp_data_valid_flags* self);
@@ -166,6 +171,7 @@ struct mip_shared_delta_time_data
 };
 void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self);
 void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, struct mip_shared_delta_time_data* self);
+void extract_mip_shared_delta_time_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -189,6 +195,7 @@ struct mip_shared_reference_timestamp_data
 };
 void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_reference_timestamp_data* self);
 void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, struct mip_shared_reference_timestamp_data* self);
+void extract_mip_shared_reference_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -214,6 +221,7 @@ struct mip_shared_reference_time_delta_data
 };
 void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_reference_time_delta_data* self);
 void extract_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, struct mip_shared_reference_time_delta_data* self);
+void extract_mip_shared_reference_time_delta_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
@@ -245,6 +253,7 @@ struct mip_shared_external_timestamp_data
 };
 void insert_mip_shared_external_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_external_timestamp_data* self);
 void extract_mip_shared_external_timestamp_data(struct mip_serializer* serializer, struct mip_shared_external_timestamp_data* self);
+void extract_mip_shared_external_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
 void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_timestamp_data_valid_flags self);
 void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_timestamp_data_valid_flags* self);
@@ -283,6 +292,7 @@ struct mip_shared_external_time_delta_data
 };
 void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_external_time_delta_data* self);
 void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializer, struct mip_shared_external_time_delta_data* self);
+void extract_mip_shared_external_time_delta_data_from_field(const struct mip_field* field, void* ptr);
 
 void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const enum mip_shared_external_time_delta_data_valid_flags self);
 void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, enum mip_shared_external_time_delta_data_valid_flags* self);

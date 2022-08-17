@@ -104,10 +104,10 @@ enum class FilterMode : uint16_t
     GX5_INIT               = 1,  ///<  
     GX5_RUN_SOLUTION_VALID = 2,  ///<  
     GX5_RUN_SOLUTION_ERROR = 3,  ///<  
-    GQ7_INIT               = 1,  ///<  
-    GQ7_VERT_GYRO          = 2,  ///<  
-    GQ7_AHRS               = 3,  ///<  
-    GQ7_FULL_NAV           = 4,  ///<  
+    INIT                   = 1,  ///<  
+    VERT_GYRO              = 2,  ///<  
+    AHRS                   = 3,  ///<  
+    FULL_NAV               = 4,  ///<  
 };
 
 enum class FilterDynamicsMode : uint16_t
