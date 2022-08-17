@@ -22,6 +22,10 @@ include_directories(
 
 add_subdirectory("${EXT_DIR}")
 
+if(WITH_INTERNAL)
+    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/int")
+endif()
+
 
 #
 # Build options
@@ -101,6 +105,7 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_shared.h"
     "${MIP_DIR}/definitions/data_system.c"
     "${MIP_DIR}/definitions/data_system.h"
+    ${INTDEF_SOURCES}
 )
 string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
