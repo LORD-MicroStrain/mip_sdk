@@ -10,6 +10,9 @@
 #include "mip_parser.h"
 #include "definitions/descriptors.h"
 
+//MIP Utils
+#include "serialization.h"
+
 //MIP Commands
 #include "commands_base.h"
 #include "commands_3dm.h"
