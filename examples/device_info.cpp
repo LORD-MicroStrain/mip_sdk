@@ -1,8 +1,8 @@
 
 #include "example_utils.hpp"
 
-#include <mscl/mip/definitions/commands_base.hpp>
-#include <mscl/mip/definitions/commands_filter.hpp>
+#include <mip/definitions/commands_base.hpp>
+#include <mip/definitions/commands_filter.hpp>
 
 #include <vector>
 #include <cstring>
@@ -17,7 +17,7 @@ int main(int argc, const char* argv[])
 
         mip::commands_base::BaseDeviceInfo device_info;
 
-        mip::CmdResult result = mip::commands_base::getDeviceInfo(*device, device_info);
+        mip::CmdResult result = mip::commands_base::getDeviceInfo(*device, &device_info);
 
         if( result == mip::CmdResult::ACK_OK)
         {

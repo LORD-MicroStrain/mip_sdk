@@ -1,9 +1,9 @@
 
 #include "serial_mip_device.hpp"
 
-#include <mscl/mip/definitions/commands_base.h>
-#include <mscl/mip/mip.hpp>
-#include <mscl/mip/mip_device.hpp>
+#include <mip/definitions/commands_base.h>
+#include <mip/mip.hpp>
+#include <mip/mip_device.hpp>
 #include <serial/serial.h>
 
 #include <cstring>

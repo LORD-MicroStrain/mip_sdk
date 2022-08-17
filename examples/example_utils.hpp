@@ -8,7 +8,7 @@
     #include "tcp_mip_device.hpp"
 #endif
 
-#include <mscl/mip/mip_device.hpp>
+#include <mip/mip_device.hpp>
 
 #include <chrono>
 #include <memory>
