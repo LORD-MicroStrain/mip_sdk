@@ -1,5 +1,6 @@
 
 #include "serialization.h"
+#include "../mip_field.h"
 
 #include <string.h>
 
@@ -19,6 +20,10 @@ void mip_serializer_init_extraction(struct mip_serializer* serializer, const uin
     serializer->buffer      = (uint8_t*)buffer;
     serializer->buffer_size = buffer_size;
     serializer->offset      = 0;
+}
+void mip_serializer_init_from_field(struct mip_serializer* serializer, const struct mip_field* field)
+{
+    mip_serializer_init_extraction(serializer, mip_field_payload(field), mip_field_payload_length(field));
 }
 
 bool mip_serializer_ok(const struct mip_serializer* serializer)

@@ -101,8 +101,9 @@ bool mip_interface_start_command_packet(struct mip_interface* device, const stru
 // Data Callbacks
 //
 
-void mip_interface_register_packet_callback(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, mip_dispatch_packet_callback callback, void* user_data);
+void mip_interface_register_packet_callback(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void* user_data);
 void mip_interface_register_field_callback(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data);
+void mip_interface_register_extractor(struct mip_interface* device, struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor callback, void* field_ptr);
 
 //
 // Accessors

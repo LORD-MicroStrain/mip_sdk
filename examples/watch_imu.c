@@ -28,7 +28,7 @@
 int port = -1;
 uint8_t parse_buffer[1024];
 struct mip_interface device;
-
+struct mip_sensor_scaled_accel_data scaled_accel;
 
 void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type timestamp)
 {
@@ -55,7 +55,15 @@ void handleAccel(void* user, const struct mip_field* field, timestamp_type times
     extract_mip_sensor_scaled_accel_data(&serializer, &data);
 
     if(mip_serializer_ok(&serializer))
-        printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
+    {
+        // Compute delta from last packet (the extractor runs after this, so the data is one packet behind).
+        float delta[3] = {
+            data.scaled_accel[0] - scaled_accel.scaled_accel[0],
+            data.scaled_accel[1] - scaled_accel.scaled_accel[1],
+            data.scaled_accel[2] - scaled_accel.scaled_accel[2],
+        };
+        printf("Accel Data: %f, %f, %f (delta %f, %f, %f)\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2], delta[0], delta[1], delta[2]);
+    }
 }
 
 void handleGyro(void* user, const struct mip_field* field, timestamp_type timestamp)
@@ -248,11 +256,12 @@ int main(int argc, const char* argv[])
 
     // Register some callbacks.
     struct mip_dispatch_handler packet_handler;
-    struct mip_dispatch_handler data_handlers[3];
-    mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_DESCSET_DATA, &handlePacket, NULL);
+    struct mip_dispatch_handler data_handlers[4];
+    mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_DESCSET_DATA, false, &handlePacket, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
     mip_interface_register_field_callback(&device, &data_handlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);
+    mip_interface_register_extractor(&device, &data_handlers[3], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &extract_mip_sensor_scaled_accel_data_from_field, &scaled_accel);
 
     result = mip_base_resume(&device);
     if( result != MIP_ACK_OK )
