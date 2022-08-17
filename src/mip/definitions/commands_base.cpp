@@ -141,7 +141,7 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self)
     (void)self;
 }
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount)
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -153,8 +153,7 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOu
         Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
-        uint8_t descriptorsoutcountMax = *descriptorsOutCount;
-        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsoutcountMax) && deserializer.isOk(); (*descriptorsOutCount)++)
+        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isOk(); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
         
         if( !deserializer.isOk() )
@@ -218,7 +217,7 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self)
     (void)self;
 }
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount)
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -230,8 +229,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
         Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
-        uint8_t descriptorsoutcountMax = *descriptorsOutCount;
-        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsoutcountMax) && deserializer.isOk(); (*descriptorsOutCount)++)
+        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isOk(); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
         
         if( !deserializer.isOk() )

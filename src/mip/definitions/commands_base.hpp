@@ -238,7 +238,7 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self);
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self);
 void extract(Serializer& serializer, GetDeviceDescriptors::Response& self);
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount);
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,7 +334,7 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self);
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self);
 void extract(Serializer& serializer, GetExtendedDescriptors::Response& self);
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount);
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, uint8_t* descriptorsOutCount, size_t descriptorsOutMax);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
