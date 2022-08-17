@@ -182,7 +182,7 @@ if(BUILD_DOCUMENTATION)
         set(DOXYGEN_QUIET YES)
     endif()
 
-    doxygen_add_docs(mip
+    doxygen_add_docs(docs
         "${SRC_DIR}"
         COMMENT "Generating documentation."
     )
