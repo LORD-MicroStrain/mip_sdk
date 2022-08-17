@@ -10,8 +10,6 @@
 #include "mip_parser.h"
 #include "mip_offsets.h"
 #include "definitions/descriptors.h"
-
-#include "definitions/descriptors.h"
 #include "mip_types.h"
 
 #include <assert.h>
@@ -56,6 +54,9 @@ public:
     uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
     ///@copydoc mip_field_payload
     const uint8_t* payload() const { return C::mip_field_payload(this); }
+
+    template<class Field>
+    bool extract(Field& field) const { return mip::extract(field, payload(), payloadLength(), 0, true); }
 
     ///@brief Index the payload at the given location.
     ///@param index

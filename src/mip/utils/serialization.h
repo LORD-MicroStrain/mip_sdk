@@ -137,7 +137,25 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
     value = static_cast<Enum>(tmp);
 }
 
-
+////////////////////////////////////////////////////////////////////////////////
+///@brief Extract the value given a buffer, size, and starting offset.
+///
+///@param[out] value_out
+///       This parameter will be filled with the extracted value.
+///@param buffer
+///       A pointer to the raw data.
+///@param bufferSize
+///       Length of the buffer, or the relevant data within the buffer.
+///@param offset
+///       Start reading from this offset in the buffer. Default 0.
+///@param exact_size
+///       If true, exactly bufferSize bytes must be used in order for the return
+///       value to be true.
+///
+///@returns True if the extraction was successful, false otherwise. "Success"
+///         means the supplied data was sufficient. If exact_size is true, then
+///         exactly bufferSize data must be used.
+///
 template<typename T>
 bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
 {

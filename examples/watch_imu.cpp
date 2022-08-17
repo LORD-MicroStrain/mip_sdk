@@ -12,6 +12,7 @@
 
 #include <thread>
 
+mip::data_sensor::ScaledAccel scaled_accel;
 
 void handlePacket(void*, const mip::Packet& packet, mip::Timestamp timestamp)
 {
@@ -30,15 +31,23 @@ void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledAccel data;
 
-    if( mip::extract(data, field.payload(), field.payloadLength()) )
-        printf("Accel Data: %f, %f, %f\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2]);
+    if( field.extract(data) )
+    {
+        // Compute delta from last packet (the extractor runs after this, so scaled_accel is one packet behind).
+        float delta[3] = {
+            data.scaled_accel[0] - scaled_accel.scaled_accel[0],
+            data.scaled_accel[1] - scaled_accel.scaled_accel[1],
+            data.scaled_accel[2] - scaled_accel.scaled_accel[2],
+        };
+        printf("Accel Data: %f, %f, %f (delta %f, %f, %f)\n", data.scaled_accel[0], data.scaled_accel[1], data.scaled_accel[2], delta[0], delta[1], delta[2]);
+    }
 }
 
 void handleGyro(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledGyro data;
 
-    if( mip::extract(data, field.payload(), field.payloadLength()) )
+    if( field.extract(data) )
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
@@ -46,7 +55,7 @@ void handleMag(void*, const mip::Field& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledMag data;
 
-    if( mip::extract(data, field.payload(), field.payloadLength()) )
+    if( field.extract(data) )
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 
@@ -94,10 +103,11 @@ int main(int argc, const char* argv[])
         mip::DispatchHandler packetHandler;
         device->registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_DESCSET_DATA, false);
 
-        mip::DispatchHandler dataHandlers[3];
+        mip::DispatchHandler dataHandlers[4];
         device->registerFieldCallback<&handleAccel>(dataHandlers[0], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_ACCEL_SCALED);
         device->registerFieldCallback<&handleGyro >(dataHandlers[1], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_GYRO_SCALED );
         device->registerFieldCallback<&handleMag  >(dataHandlers[2], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_MAG_SCALED  );
+        device->registerExtractor(dataHandlers[3], &scaled_accel);
 
         // Enable the data stream and resume the device.
 
