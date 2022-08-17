@@ -36,8 +36,8 @@ enum mip_dispatch_type
 ///
 ///@param descriptor_set
 ///       The callback will only be invoked for fields belonging to this
-///       descriptor set. Can be MIP_DISPATCH_WILDCARD to match any packet,
-///       or MIP_DISPATCH_DATA to match only data packets
+///       descriptor set. Can be MIP_DISPATCH_ANY_DESCRIPTOR to match any packet,
+///       or MIP_DISPATCH_ANY_DATA_SET to match only data packets.
 ///@param post_callback
 ///       If false, the callback is called before any field callbacks from the
 ///       same packet. If true, the callback is called after field callbacks.
@@ -68,13 +68,12 @@ void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handl
 ///
 ///@param descriptor_set
 ///       The callback will only be invoked for fields belonging to this
-///       descriptor set. Can be MIP_DISPATCH_DESCRIPTOR_WILDCARD to match any
-///       packet, or MIP_DISPATCH_DESCSET_DATA to match only data packets.
+///       descriptor set. Can be MIP_DISPATCH_ANY_DESCRIPTOR to match any
+///       packet, or MIP_DISPATCH_ANY_DATA_SET to match only data packets.
 ///
 ///@param field_descriptor
 ///       The callback will only be invoked for fields of this field descriptor.
-///       It can be MIP_DISPATCH_DESCRIPTOR_WILDCARD, but not
-///       MIP_DISPATCH_FIELDDESC_NONE.
+///       It can be MIP_DISPATCH_ANY_DESCRIPTOR to select all field descriptors.
 ///
 ///@param callback
 ///       The callback function.
@@ -84,8 +83,6 @@ void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handl
 ///
 void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
 {
-    assert(field_descriptor != MIP_DISPATCH_FIELDDESC_NONE);
-
     handler->_next             = NULL;
     handler->_field_callback   = callback;
     handler->_user_data        = user_data;
@@ -109,6 +106,8 @@ void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handle
 ///       The callback will only be invoked for fields belonging to this
 ///       descriptor set. It must match the descriptor set corresponding to the
 ///       extract function and object pointed to by field_ptr.
+///       This may be MIP_DISPATCH_ANY_DATA_SET if the field descriptor is from
+///       the shared data region.
 ///
 ///@param field_descriptor
 ///       The callback will only be invoked for fields of this field descriptor.
@@ -129,8 +128,10 @@ void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handle
 ///
 void mip_dispatch_handler_init_extractor(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr)
 {
-    assert(descriptor_set != MIP_INVALID_DESCRIPTOR_SET && descriptor_set != MIP_DISPATCH_DESCSET_DATA);
-    assert(field_descriptor != MIP_INVALID_FIELD_DESCRIPTOR && field_descriptor != MIP_DISPATCH_DESCRIPTOR_WILDCARD);
+    // The only wildcard allowed is MIP_DISPATCH_ANY_DATA_SET when field_descriptor is from the shared data set.
+    assert(descriptor_set != MIP_DISPATCH_ANY_DESCRIPTOR);
+    assert(field_descriptor != MIP_DISPATCH_ANY_DESCRIPTOR && field_descriptor != MIP_DISPATCH_ANY_DATA_SET);
+    assert(!mip_is_data_descriptor_set(descriptor_set) || (descriptor_set != MIP_DISPATCH_ANY_DATA_SET) || mip_is_shared_data_field_descriptor(field_descriptor));
     assert(field_ptr);
 
     handler->_next             = NULL;
@@ -248,6 +249,15 @@ void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self)
     }
 }
 
+static bool mip_dispatch_is_descriptor_set_match(uint8_t desc_set, uint8_t handler_desc_set)
+{
+    return (
+        (handler_desc_set == desc_set) ||
+        (handler_desc_set == MIP_DISPATCH_ANY_DESCRIPTOR) ||
+        ((handler_desc_set == MIP_DISPATCH_ANY_DATA_SET) && mip_is_data_descriptor_set(desc_set))
+    );
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Called to dispatch packet callback before and after field iteration.
 ///@internal
@@ -266,12 +276,12 @@ static void mip_dispatcher_call_packet_callbacks(struct mip_dispatcher* self, co
     {
         switch(handler->_type)
         {
-        case MIP_DISPATCH_TYPE_PACKET_POST: if(!post) continue; break;
-        case MIP_DISPATCH_TYPE_PACKET_PRE:  if(post) continue; break;
+        case MIP_DISPATCH_TYPE_PACKET_POST: if(!post) continue; else break;
+        case MIP_DISPATCH_TYPE_PACKET_PRE:  if( post) continue; else break;
         default: continue;
         }
 
-        if( handler->_descriptor_set == MIP_DISPATCH_DESCRIPTOR_WILDCARD || descriptor_set == handler->_descriptor_set )
+        if( mip_dispatch_is_descriptor_set_match(descriptor_set, handler->_descriptor_set) )
             handler->_packet_callback(handler->_user_data, packet, timestamp);
     }
 }
@@ -286,15 +296,11 @@ static void mip_dispatcher_call_packet_callbacks(struct mip_dispatcher* self, co
 ///
 ///@returns true if the field matches.
 ///
-bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_desc, uint8_t handler_desc_set, uint8_t handler_field_desc)
+static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_desc, uint8_t handler_desc_set, uint8_t handler_field_desc)
 {
-    return (
-        (handler_desc_set == desc_set) ||
-        (handler_desc_set == MIP_DISPATCH_DESCRIPTOR_WILDCARD) ||
-        (handler_desc_set == MIP_DISPATCH_DESCSET_DATA)
-    ) && (
+    return mip_dispatch_is_descriptor_set_match(desc_set, handler_desc_set) && (
         (handler_field_desc == field_desc) ||
-        (handler_field_desc == MIP_DISPATCH_DESCRIPTOR_WILDCARD)
+        (handler_field_desc == MIP_DISPATCH_ANY_DESCRIPTOR)
     );
 }
 

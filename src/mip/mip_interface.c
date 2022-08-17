@@ -348,15 +348,11 @@ bool mip_interface_start_command_packet(struct mip_interface* device, const stru
 ///@param handler
 ///       An uninitialized mip_dispatch_handler object. This call will initialize it.
 ///@param descriptor_set
-///       The descriptor set of interest. Can also be MIP_DISPATCH_WILDCARD for
-///       all packets, or MIP_DISPATCH_DATA for only data packets.
 ///@param after_fields
-///       If true, the callback is called after any field callbacks for the same
-///       packet. Otherwise, it is called before the field callbacks.
 ///@param callback
-///       A function to call with the packet.
 ///@param user_data
-///       A pointer which will be passed to the callback.
+///
+///@see mip_dispatch_handler_init_packet_handler for details.
 ///
 void mip_interface_register_packet_callback(
     struct mip_interface* device, struct mip_dispatch_handler* handler,
@@ -375,22 +371,16 @@ void mip_interface_register_packet_callback(
 ///@param handler
 ///       An uninitialized mip_dispatch_handler object. This call will initialize it.
 ///@param descriptor_set
-///       The descriptor set of interest. Can also be MIP_DISPATCH_WILDCARD for
-///       all packets, or MIP_DISPATCH_DATA_PACKETS for only data packets.
 ///@param field_descriptor
-///       Field descriptor of interest. Can be MIP_DISPATCH_DESCRIPTOR_WILDCARD
-///       for any field descriptor. Cannot be MIP_DISPATCH_FIELDDESC_NONE (0x00).
 ///@param callback
-///       A function to call with the field.
 ///@param user_data
-///       A pointer which will be passed to the callback.
+///
+///@see mip_dispatch_handler_init_field_handler for details.
 ///
 void mip_interface_register_field_callback(
     struct mip_interface* device, struct mip_dispatch_handler* handler,
     uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
 {
-    assert(field_descriptor != MIP_DISPATCH_FIELDDESC_NONE);
-
     mip_dispatch_handler_init_field_handler(handler, descriptor_set, field_descriptor, callback, user_data);
     mip_dispatcher_add_handler(&device->_dispatcher, handler);
 }
@@ -407,7 +397,7 @@ void mip_interface_register_field_callback(
 ///@param extractor
 ///@param field_ptr
 ///
-///@see mip_dispatch_handler_init_extract_handler
+///@see mip_dispatch_handler_init_extract_handler for details.
 ///
 void mip_interface_register_extractor(
     struct mip_interface* device, struct mip_dispatch_handler* handler,

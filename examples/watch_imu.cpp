@@ -43,20 +43,14 @@ void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
     }
 }
 
-void handleGyro(void*, const mip::Field& field, mip::Timestamp timestamp)
+void handleGyro(void*, const mip::data_sensor::ScaledGyro& data, mip::Timestamp timestamp)
 {
-    mip::data_sensor::ScaledGyro data;
-
-    if( field.extract(data) )
-        printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
+    printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void*, const mip::Field& field, mip::Timestamp timestamp)
+void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp timestamp)
 {
-    mip::data_sensor::ScaledMag data;
-
-    if( field.extract(data) )
-        printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
+    printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 
 
@@ -101,12 +95,12 @@ int main(int argc, const char* argv[])
         // Register some callbacks.
 
         mip::DispatchHandler packetHandler;
-        device->registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_DESCSET_DATA, false);
+        device->registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_ANY_DATA_SET, false);
 
         mip::DispatchHandler dataHandlers[4];
         device->registerFieldCallback<&handleAccel>(dataHandlers[0], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_ACCEL_SCALED);
-        device->registerFieldCallback<&handleGyro >(dataHandlers[1], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_GYRO_SCALED );
-        device->registerFieldCallback<&handleMag  >(dataHandlers[2], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_MAG_SCALED  );
+        device->registerDataCallback<mip::data_sensor::ScaledGyro, &handleGyro>(dataHandlers[1]);
+        device->registerDataCallback<mip::data_sensor::ScaledMag,  &handleMag >(dataHandlers[2]);
         device->registerExtractor(dataHandlers[3], &scaled_accel);
 
         // Enable the data stream and resume the device.

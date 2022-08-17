@@ -48,9 +48,9 @@ enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uin
     
     insert_u8(&serializer, mode);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
 {
@@ -60,10 +60,10 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset, MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -73,7 +73,7 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
         assert(mode_out);
         extract_u8(&deserializer, mode_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -86,9 +86,9 @@ enum mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

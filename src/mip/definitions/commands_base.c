@@ -113,12 +113,12 @@ enum mip_cmd_result mip_base_get_device_info(struct mip_interface* device, struc
         assert(device_info_out);
         extract_mip_base_device_info(&deserializer, device_info_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max)
+enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -131,10 +131,10 @@ enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_complete(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -154,7 +154,7 @@ enum mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_
         assert(result_out);
         extract_u32(&deserializer, result_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -163,7 +163,7 @@ enum mip_cmd_result mip_base_resume(struct mip_interface* device)
 {
     return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_RESUME, NULL, 0);
 }
-enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, uint8_t* descriptors_out_count, size_t descriptors_out_max)
+enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
@@ -176,10 +176,10 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_ok(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_complete(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -200,7 +200,7 @@ enum mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_
         for(unsigned int i=0; i < 16; i++)
             extract_u8(&deserializer, &result_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -232,9 +232,9 @@ enum mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint
     
     insert_u32(&serializer, baud);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud_out)
 {
@@ -246,10 +246,10 @@ enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8
     
     insert_u8(&serializer, port);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset, MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -261,7 +261,7 @@ enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8
         assert(baud_out);
         extract_u32(&deserializer, baud_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -276,9 +276,9 @@ enum mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8
     
     insert_u8(&serializer, port);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port)
 {
@@ -290,9 +290,9 @@ enum mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8
     
     insert_u8(&serializer, port);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port)
 {
@@ -304,9 +304,9 @@ enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, ui
     
     insert_u8(&serializer, port);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, const struct mip_base_gps_time_update_command* self)
 {
@@ -346,9 +346,9 @@ enum mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device,
     
     insert_u32(&serializer, value);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_soft_reset(struct mip_interface* device)
 {

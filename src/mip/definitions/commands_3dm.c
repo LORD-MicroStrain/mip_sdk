@@ -131,9 +131,9 @@ enum mip_cmd_result mip_3dm_poll_imu_message(struct mip_interface* device, bool 
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_IMU_MESSAGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_IMU_MESSAGE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_poll_gnss_message_command(struct mip_serializer* serializer, const struct mip_3dm_poll_gnss_message_command* self)
 {
@@ -172,9 +172,9 @@ enum mip_cmd_result mip_3dm_poll_gnss_message(struct mip_interface* device, bool
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_GNSS_MESSAGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_GNSS_MESSAGE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_poll_filter_message_command(struct mip_serializer* serializer, const struct mip_3dm_poll_filter_message_command* self)
 {
@@ -213,9 +213,9 @@ enum mip_cmd_result mip_3dm_poll_filter_message(struct mip_interface* device, bo
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_FILTER_MESSAGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_FILTER_MESSAGE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_imu_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_imu_message_format_command* self)
 {
@@ -250,9 +250,9 @@ enum mip_cmd_result mip_3dm_write_imu_message_format(struct mip_interface* devic
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, struct mip_descriptor_rate* descriptors_out)
 {
@@ -262,10 +262,10 @@ enum mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -280,7 +280,7 @@ enum mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -293,9 +293,9 @@ enum mip_cmd_result mip_3dm_save_imu_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_imu_message_format(struct mip_interface* device)
 {
@@ -305,9 +305,9 @@ enum mip_cmd_result mip_3dm_load_imu_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_imu_message_format(struct mip_interface* device)
 {
@@ -317,9 +317,9 @@ enum mip_cmd_result mip_3dm_default_imu_message_format(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gps_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_gps_message_format_command* self)
 {
@@ -354,9 +354,9 @@ enum mip_cmd_result mip_3dm_write_gps_message_format(struct mip_interface* devic
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, struct mip_descriptor_rate* descriptors_out)
 {
@@ -366,10 +366,10 @@ enum mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -384,7 +384,7 @@ enum mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -397,9 +397,9 @@ enum mip_cmd_result mip_3dm_save_gps_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_gps_message_format(struct mip_interface* device)
 {
@@ -409,9 +409,9 @@ enum mip_cmd_result mip_3dm_load_gps_message_format(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_gps_message_format(struct mip_interface* device)
 {
@@ -421,9 +421,9 @@ enum mip_cmd_result mip_3dm_default_gps_message_format(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_filter_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_filter_message_format_command* self)
 {
@@ -458,9 +458,9 @@ enum mip_cmd_result mip_3dm_write_filter_message_format(struct mip_interface* de
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* device, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, struct mip_descriptor_rate* descriptors_out)
 {
@@ -470,10 +470,10 @@ enum mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -488,7 +488,7 @@ enum mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* dev
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -501,9 +501,9 @@ enum mip_cmd_result mip_3dm_save_filter_message_format(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_filter_message_format(struct mip_interface* device)
 {
@@ -513,9 +513,9 @@ enum mip_cmd_result mip_3dm_load_filter_message_format(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* device)
 {
@@ -525,9 +525,9 @@ enum mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_FILTER_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint16_t* rate_out)
 {
@@ -544,7 +544,7 @@ enum mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -564,7 +564,7 @@ enum mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -584,7 +584,7 @@ enum mip_cmd_result mip_3dm_filter_get_base_rate(struct mip_interface* device, u
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -632,9 +632,9 @@ enum mip_cmd_result mip_3dm_poll_data(struct mip_interface* device, uint8_t desc
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_u8(&serializer, descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_DATA, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_DATA, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_get_base_rate_command(struct mip_serializer* serializer, const struct mip_3dm_get_base_rate_command* self)
 {
@@ -655,10 +655,10 @@ enum mip_cmd_result mip_3dm_get_base_rate(struct mip_interface* device, uint8_t 
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GET_BASE_RATE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_BASE_RATE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GET_BASE_RATE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_BASE_RATE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -670,7 +670,7 @@ enum mip_cmd_result mip_3dm_get_base_rate(struct mip_interface* device, uint8_t 
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -714,9 +714,9 @@ enum mip_cmd_result mip_3dm_write_message_format(struct mip_interface* device, u
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, uint8_t desc_set, uint8_t* num_descriptors_out, uint8_t num_descriptors_out_max, struct mip_descriptor_rate* descriptors_out)
 {
@@ -728,10 +728,10 @@ enum mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, ui
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_MESSAGE_FORMAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -748,7 +748,7 @@ enum mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, ui
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -763,9 +763,9 @@ enum mip_cmd_result mip_3dm_save_message_format(struct mip_interface* device, ui
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_message_format(struct mip_interface* device, uint8_t desc_set)
 {
@@ -777,9 +777,9 @@ enum mip_cmd_result mip_3dm_load_message_format(struct mip_interface* device, ui
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_message_format(struct mip_interface* device, uint8_t desc_set)
 {
@@ -791,9 +791,9 @@ enum mip_cmd_result mip_3dm_default_message_format(struct mip_interface* device,
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_nmea_poll_data_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_poll_data_command* self)
 {
@@ -832,9 +832,9 @@ enum mip_cmd_result mip_3dm_nmea_poll_data(struct mip_interface* device, bool su
     for(unsigned int i=0; i < count; i++)
         insert_mip_nmeamessage_format(&serializer, &format_entries[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_NMEA_MESSAGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_POLL_NMEA_MESSAGE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_nmea_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_message_format_command* self)
 {
@@ -869,9 +869,9 @@ enum mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* devi
     for(unsigned int i=0; i < count; i++)
         insert_mip_nmeamessage_format(&serializer, &format_entries[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* device, uint8_t* count_out, uint8_t count_out_max, struct mip_nmeamessage_format* format_entries_out)
 {
@@ -881,10 +881,10 @@ enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* devic
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -899,7 +899,7 @@ enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* devic
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_nmeamessage_format(&deserializer, &format_entries_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -912,9 +912,9 @@ enum mip_cmd_result mip_3dm_save_nmea_message_format(struct mip_interface* devic
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_nmea_message_format(struct mip_interface* device)
 {
@@ -924,9 +924,9 @@ enum mip_cmd_result mip_3dm_load_nmea_message_format(struct mip_interface* devic
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device)
 {
@@ -936,9 +936,9 @@ enum mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* de
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_NMEA_MESSAGE_FORMAT, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_device_settings_command(struct mip_serializer* serializer, const struct mip_3dm_device_settings_command* self)
 {
@@ -959,9 +959,9 @@ enum mip_cmd_result mip_3dm_save_device_settings(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_device_settings(struct mip_interface* device)
 {
@@ -971,9 +971,9 @@ enum mip_cmd_result mip_3dm_load_device_settings(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_device_settings(struct mip_interface* device)
 {
@@ -983,9 +983,9 @@ enum mip_cmd_result mip_3dm_default_device_settings(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_DEVICE_STARTUP_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_uart_baudrate_command(struct mip_serializer* serializer, const struct mip_3dm_uart_baudrate_command* self)
 {
@@ -1008,9 +1008,9 @@ enum mip_cmd_result mip_3dm_write_uart_baudrate(struct mip_interface* device, ui
     
     insert_u32(&serializer, baud);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uint32_t* baud_out)
 {
@@ -1020,10 +1020,10 @@ enum mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uin
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_UART_BAUDRATE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_UART_BAUDRATE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1033,7 +1033,7 @@ enum mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uin
         assert(baud_out);
         extract_u32(&deserializer, baud_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1046,9 +1046,9 @@ enum mip_cmd_result mip_3dm_save_uart_baudrate(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_uart_baudrate(struct mip_interface* device)
 {
@@ -1058,9 +1058,9 @@ enum mip_cmd_result mip_3dm_load_uart_baudrate(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device)
 {
@@ -1070,9 +1070,9 @@ enum mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_UART_BAUDRATE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_factory_streaming_command(struct mip_serializer* serializer, const struct mip_3dm_factory_streaming_command* self)
 {
@@ -1110,9 +1110,9 @@ enum mip_cmd_result mip_3dm_factory_streaming(struct mip_interface* device, enum
     
     insert_u8(&serializer, reserved);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONFIGURE_FACTORY_STREAMING, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONFIGURE_FACTORY_STREAMING, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_datastream_control_command(struct mip_serializer* serializer, const struct mip_3dm_datastream_control_command* self)
 {
@@ -1141,9 +1141,9 @@ enum mip_cmd_result mip_3dm_write_datastream_control(struct mip_interface* devic
     
     insert_bool(&serializer, enable);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device, uint8_t desc_set, bool* enabled_out)
 {
@@ -1155,10 +1155,10 @@ enum mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, serializer.offset, MIP_REPLY_DESC_3DM_DATASTREAM_ENABLE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_DATASTREAM_ENABLE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1170,7 +1170,7 @@ enum mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device
         assert(enabled_out);
         extract_bool(&deserializer, enabled_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1185,9 +1185,9 @@ enum mip_cmd_result mip_3dm_save_datastream_control(struct mip_interface* device
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_datastream_control(struct mip_interface* device, uint8_t desc_set)
 {
@@ -1199,9 +1199,9 @@ enum mip_cmd_result mip_3dm_load_datastream_control(struct mip_interface* device
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, uint8_t desc_set)
 {
@@ -1213,9 +1213,9 @@ enum mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* dev
     
     insert_u8(&serializer, desc_set);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gnss_sbas_settings_command(struct mip_serializer* serializer, const struct mip_3dm_gnss_sbas_settings_command* self)
 {
@@ -1273,9 +1273,9 @@ enum mip_cmd_result mip_3dm_write_gnss_sbas_settings(struct mip_interface* devic
     for(unsigned int i=0; i < num_included_prns; i++)
         insert_u16(&serializer, included_prns[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device, uint8_t* enable_sbas_out, enum mip_3dm_gnss_sbas_settings_command_sbasoptions* sbas_options_out, uint8_t* num_included_prns_out, uint8_t num_included_prns_out_max, uint16_t* included_prns_out)
 {
@@ -1285,10 +1285,10 @@ enum mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1309,7 +1309,7 @@ enum mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device
         for(unsigned int i=0; i < *num_included_prns_out; i++)
             extract_u16(&deserializer, &included_prns_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1322,9 +1322,9 @@ enum mip_cmd_result mip_3dm_save_gnss_sbas_settings(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_gnss_sbas_settings(struct mip_interface* device)
 {
@@ -1334,9 +1334,9 @@ enum mip_cmd_result mip_3dm_load_gnss_sbas_settings(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device)
 {
@@ -1346,9 +1346,9 @@ enum mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gnss_time_assistance_command(struct mip_serializer* serializer, const struct mip_3dm_gnss_time_assistance_command* self)
 {
@@ -1383,9 +1383,9 @@ enum mip_cmd_result mip_3dm_write_gnss_time_assistance(struct mip_interface* dev
     
     insert_float(&serializer, accuracy);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, double* tow_out, uint16_t* week_number_out, float* accuracy_out)
 {
@@ -1395,10 +1395,10 @@ enum mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GNSS_TIME_ASSISTANCE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1414,7 +1414,7 @@ enum mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* devi
         assert(accuracy_out);
         extract_float(&deserializer, accuracy_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1464,9 +1464,9 @@ enum mip_cmd_result mip_3dm_write_adv_lowpass_filter(struct mip_interface* devic
     
     insert_u8(&serializer, reserved);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out)
 {
@@ -1478,10 +1478,10 @@ enum mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device
     
     insert_u8(&serializer, target_descriptor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, serializer.offset, MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1502,7 +1502,7 @@ enum mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device
         assert(reserved_out);
         extract_u8(&deserializer, reserved_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1517,9 +1517,9 @@ enum mip_cmd_result mip_3dm_save_adv_lowpass_filter(struct mip_interface* device
     
     insert_u8(&serializer, target_descriptor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
@@ -1531,9 +1531,9 @@ enum mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device
     
     insert_u8(&serializer, target_descriptor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
@@ -1545,9 +1545,9 @@ enum mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* dev
     
     insert_u8(&serializer, target_descriptor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_pps_source_command(struct mip_serializer* serializer, const struct mip_3dm_pps_source_command* self)
 {
@@ -1581,9 +1581,9 @@ enum mip_cmd_result mip_3dm_write_pps_source(struct mip_interface* device, enum 
     
     insert_mip_3dm_pps_source_command_source(&serializer, source);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, enum mip_3dm_pps_source_command_source* source_out)
 {
@@ -1593,10 +1593,10 @@ enum mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, enum m
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_PPS_SOURCE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_PPS_SOURCE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1606,7 +1606,7 @@ enum mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, enum m
         assert(source_out);
         extract_mip_3dm_pps_source_command_source(&deserializer, source_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1619,9 +1619,9 @@ enum mip_cmd_result mip_3dm_save_pps_source(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_pps_source(struct mip_interface* device)
 {
@@ -1631,9 +1631,9 @@ enum mip_cmd_result mip_3dm_load_pps_source(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device)
 {
@@ -1643,9 +1643,9 @@ enum mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_PPS_SOURCE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gpio_config_command(struct mip_serializer* serializer, const struct mip_3dm_gpio_config_command* self)
 {
@@ -1719,9 +1719,9 @@ enum mip_cmd_result mip_3dm_write_gpio_config(struct mip_interface* device, uint
     
     insert_mip_3dm_gpio_config_command_pin_mode(&serializer, pin_mode);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8_t pin, enum mip_3dm_gpio_config_command_feature* feature_out, enum mip_3dm_gpio_config_command_behavior* behavior_out, enum mip_3dm_gpio_config_command_pin_mode* pin_mode_out)
 {
@@ -1733,10 +1733,10 @@ enum mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8
     
     insert_u8(&serializer, pin);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GPIO_CONFIG, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GPIO_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1754,7 +1754,7 @@ enum mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8
         assert(pin_mode_out);
         extract_mip_3dm_gpio_config_command_pin_mode(&deserializer, pin_mode_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1769,9 +1769,9 @@ enum mip_cmd_result mip_3dm_save_gpio_config(struct mip_interface* device, uint8
     
     insert_u8(&serializer, pin);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_gpio_config(struct mip_interface* device, uint8_t pin)
 {
@@ -1783,9 +1783,9 @@ enum mip_cmd_result mip_3dm_load_gpio_config(struct mip_interface* device, uint8
     
     insert_u8(&serializer, pin);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, uint8_t pin)
 {
@@ -1797,9 +1797,9 @@ enum mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, ui
     
     insert_u8(&serializer, pin);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gpio_state_command(struct mip_serializer* serializer, const struct mip_3dm_gpio_state_command* self)
 {
@@ -1828,9 +1828,9 @@ enum mip_cmd_result mip_3dm_write_gpio_state(struct mip_interface* device, uint8
     
     insert_bool(&serializer, state);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_t pin, bool* state_out)
 {
@@ -1842,10 +1842,10 @@ enum mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_
     
     insert_u8(&serializer, pin);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GPIO_STATE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GPIO_STATE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GPIO_STATE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1857,7 +1857,7 @@ enum mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_
         assert(state_out);
         extract_bool(&deserializer, state_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1906,9 +1906,9 @@ enum mip_cmd_result mip_3dm_write_odometer(struct mip_interface* device, enum mi
     
     insert_float(&serializer, uncertainty);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, enum mip_3dm_odometer_command_mode* mode_out, float* scaling_out, float* uncertainty_out)
 {
@@ -1918,10 +1918,10 @@ enum mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, enum mip
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, serializer.offset, MIP_REPLY_DESC_3DM_ODOMETER_CONFIG, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_ODOMETER_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1937,7 +1937,7 @@ enum mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, enum mip
         assert(uncertainty_out);
         extract_float(&deserializer, uncertainty_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1950,9 +1950,9 @@ enum mip_cmd_result mip_3dm_save_odometer(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_odometer(struct mip_interface* device)
 {
@@ -1962,9 +1962,9 @@ enum mip_cmd_result mip_3dm_load_odometer(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device)
 {
@@ -1974,9 +1974,9 @@ enum mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ODOMETER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_get_event_support_command(struct mip_serializer* serializer, const struct mip_3dm_get_event_support_command* self)
 {
@@ -2023,10 +2023,10 @@ enum mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, enum
     
     insert_mip_3dm_get_event_support_command_query(&serializer, query);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_SUPPORT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_SUPPORT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_SUPPORT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_SUPPORT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2046,7 +2046,7 @@ enum mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, enum
         for(unsigned int i=0; i < *num_entries_out; i++)
             extract_mip_3dm_get_event_support_command_info(&deserializer, &entries_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2089,9 +2089,9 @@ enum mip_cmd_result mip_3dm_write_event_control(struct mip_interface* device, ui
     
     insert_mip_3dm_event_control_command_mode(&serializer, mode);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_control_command_mode* mode_out)
 {
@@ -2103,10 +2103,10 @@ enum mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_CONTROL, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2118,7 +2118,7 @@ enum mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uin
         assert(mode_out);
         extract_mip_3dm_event_control_command_mode(&deserializer, mode_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2133,9 +2133,9 @@ enum mip_cmd_result mip_3dm_save_event_control(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_event_control(struct mip_interface* device, uint8_t instance)
 {
@@ -2147,9 +2147,9 @@ enum mip_cmd_result mip_3dm_load_event_control(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_event_control(struct mip_interface* device, uint8_t instance)
 {
@@ -2161,9 +2161,9 @@ enum mip_cmd_result mip_3dm_default_event_control(struct mip_interface* device, 
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_CONTROL, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_get_event_trigger_status_command(struct mip_serializer* serializer, const struct mip_3dm_get_event_trigger_status_command* self)
 {
@@ -2222,10 +2222,10 @@ enum mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* devic
     for(unsigned int i=0; i < requested_count; i++)
         insert_u8(&serializer, requested_instances[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_TRIGGER_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2240,7 +2240,7 @@ enum mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* devic
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_trigger_status_command_entry(&deserializer, &triggers_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2291,10 +2291,10 @@ enum mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device
     for(unsigned int i=0; i < requested_count; i++)
         insert_u8(&serializer, requested_instances[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_ACTION_STATUS, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_STATUS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_ACTION_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2309,7 +2309,7 @@ enum mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_action_status_command_entry(&deserializer, &actions_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2514,9 +2514,9 @@ enum mip_cmd_result mip_3dm_write_event_trigger(struct mip_interface* device, ui
         insert_mip_3dm_event_trigger_command_combination_params(&serializer, &parameters->combination);
         
     }
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uint8_t instance, enum mip_3dm_event_trigger_command_type* type_out, union mip_3dm_event_trigger_command_parameters* parameters_out)
 {
@@ -2528,10 +2528,10 @@ enum mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2558,7 +2558,7 @@ enum mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uin
             extract_mip_3dm_event_trigger_command_combination_params(&deserializer, &parameters_out->combination);
             
         }
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2573,9 +2573,9 @@ enum mip_cmd_result mip_3dm_save_event_trigger(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_event_trigger(struct mip_interface* device, uint8_t instance)
 {
@@ -2587,9 +2587,9 @@ enum mip_cmd_result mip_3dm_load_event_trigger(struct mip_interface* device, uin
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, uint8_t instance)
 {
@@ -2601,9 +2601,9 @@ enum mip_cmd_result mip_3dm_default_event_trigger(struct mip_interface* device, 
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_TRIGGER_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_event_action_command(struct mip_serializer* serializer, const struct mip_3dm_event_action_command* self)
 {
@@ -2732,9 +2732,9 @@ enum mip_cmd_result mip_3dm_write_event_action(struct mip_interface* device, uin
         insert_mip_3dm_event_action_command_message_params(&serializer, &parameters->message);
         
     }
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint8_t instance, uint8_t* trigger_out, enum mip_3dm_event_action_command_type* type_out, union mip_3dm_event_action_command_parameters* parameters_out)
 {
@@ -2746,10 +2746,10 @@ enum mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset, MIP_REPLY_DESC_3DM_EVENT_ACTION_CONFIG, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_EVENT_ACTION_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2774,7 +2774,7 @@ enum mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint
             extract_mip_3dm_event_action_command_message_params(&deserializer, &parameters_out->message);
             
         }
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2789,9 +2789,9 @@ enum mip_cmd_result mip_3dm_save_event_action(struct mip_interface* device, uint
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_event_action(struct mip_interface* device, uint8_t instance)
 {
@@ -2803,9 +2803,9 @@ enum mip_cmd_result mip_3dm_load_event_action(struct mip_interface* device, uint
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, uint8_t instance)
 {
@@ -2817,9 +2817,9 @@ enum mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, u
     
     insert_u8(&serializer, instance);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_EVENT_ACTION_CONFIG, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_accel_bias_command(struct mip_serializer* serializer, const struct mip_3dm_accel_bias_command* self)
 {
@@ -2846,9 +2846,9 @@ enum mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, const
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, bias[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float* bias_out)
 {
@@ -2858,10 +2858,10 @@ enum mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float*
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_ACCEL_BIAS_VECTOR, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2872,7 +2872,7 @@ enum mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float*
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2885,9 +2885,9 @@ enum mip_cmd_result mip_3dm_save_accel_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_accel_bias(struct mip_interface* device)
 {
@@ -2897,9 +2897,9 @@ enum mip_cmd_result mip_3dm_load_accel_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device)
 {
@@ -2909,9 +2909,9 @@ enum mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ACCEL_BIAS, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gyro_bias_command(struct mip_serializer* serializer, const struct mip_3dm_gyro_bias_command* self)
 {
@@ -2938,9 +2938,9 @@ enum mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, const 
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, bias[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* bias_out)
 {
@@ -2950,10 +2950,10 @@ enum mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -2964,7 +2964,7 @@ enum mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* 
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2977,9 +2977,9 @@ enum mip_cmd_result mip_3dm_save_gyro_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_gyro_bias(struct mip_interface* device)
 {
@@ -2989,9 +2989,9 @@ enum mip_cmd_result mip_3dm_load_gyro_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device)
 {
@@ -3001,9 +3001,9 @@ enum mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GYRO_BIAS, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_capture_gyro_bias_command(struct mip_serializer* serializer, const struct mip_3dm_capture_gyro_bias_command* self)
 {
@@ -3024,10 +3024,10 @@ enum mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint
     
     insert_u16(&serializer, averaging_time_ms);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS, buffer, serializer.offset, MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CAPTURE_GYRO_BIAS, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GYRO_BIAS_VECTOR, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3038,7 +3038,7 @@ enum mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3068,9 +3068,9 @@ enum mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* dev
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, offset[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* device, float* offset_out)
 {
@@ -3080,10 +3080,10 @@ enum mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, serializer.offset, MIP_REPLY_DESC_3DM_HARD_IRON_OFFSET_VECTOR, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_HARD_IRON_OFFSET_VECTOR, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3094,7 +3094,7 @@ enum mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* devi
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3107,9 +3107,9 @@ enum mip_cmd_result mip_3dm_save_mag_hard_iron_offset(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_mag_hard_iron_offset(struct mip_interface* device)
 {
@@ -3119,9 +3119,9 @@ enum mip_cmd_result mip_3dm_load_mag_hard_iron_offset(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* device)
 {
@@ -3131,9 +3131,9 @@ enum mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* d
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_HARD_IRON_OFFSET, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_mag_soft_iron_matrix_command(struct mip_serializer* serializer, const struct mip_3dm_mag_soft_iron_matrix_command* self)
 {
@@ -3160,9 +3160,9 @@ enum mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* dev
     for(unsigned int i=0; i < 9; i++)
         insert_float(&serializer, offset[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* device, float* offset_out)
 {
@@ -3172,10 +3172,10 @@ enum mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, serializer.offset, MIP_REPLY_DESC_3DM_SOFT_IRON_COMP_MATRIX, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_SOFT_IRON_COMP_MATRIX, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3186,7 +3186,7 @@ enum mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* devi
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3199,9 +3199,9 @@ enum mip_cmd_result mip_3dm_save_mag_soft_iron_matrix(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(struct mip_interface* device)
 {
@@ -3211,9 +3211,9 @@ enum mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device)
 {
@@ -3223,9 +3223,9 @@ enum mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* d
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(struct mip_serializer* serializer, const struct mip_3dm_sensor_2_vehicle_transform_euler_command* self)
 {
@@ -3260,9 +3260,9 @@ enum mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_euler(struct mip_in
     
     insert_float(&serializer, yaw);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out)
 {
@@ -3272,10 +3272,10 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_int
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, serializer.offset, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3291,7 +3291,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_int
         assert(yaw_out);
         extract_float(&deserializer, yaw_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3304,9 +3304,9 @@ enum mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_euler(struct mip_int
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(struct mip_interface* device)
 {
@@ -3316,9 +3316,9 @@ enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_euler(struct mip_int
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_interface* device)
 {
@@ -3328,9 +3328,9 @@ enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_EUL, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(struct mip_serializer* serializer, const struct mip_3dm_sensor_2_vehicle_transform_quaternion_command* self)
 {
@@ -3357,9 +3357,9 @@ enum mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct m
     for(unsigned int i=0; i < 4; i++)
         insert_float(&serializer, q[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, float* q_out)
 {
@@ -3369,10 +3369,10 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, serializer.offset, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3383,7 +3383,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mi
         for(unsigned int i=0; i < 4; i++)
             extract_float(&deserializer, &q_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3396,9 +3396,9 @@ enum mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(struct mi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
 {
@@ -3408,9 +3408,9 @@ enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(struct mi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct mip_interface* device)
 {
@@ -3420,9 +3420,9 @@ enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(struct mip_serializer* serializer, const struct mip_3dm_sensor_2_vehicle_transform_dcm_command* self)
 {
@@ -3449,9 +3449,9 @@ enum mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_inte
     for(unsigned int i=0; i < 9; i++)
         insert_float(&serializer, dcm[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_interface* device, float* dcm_out)
 {
@@ -3461,10 +3461,10 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_inter
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, serializer.offset, MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3475,7 +3475,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_inter
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &dcm_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3488,9 +3488,9 @@ enum mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(struct mip_inter
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
 {
@@ -3500,9 +3500,9 @@ enum mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(struct mip_inter
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interface* device)
 {
@@ -3512,9 +3512,9 @@ enum mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_in
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_complementary_filter_command(struct mip_serializer* serializer, const struct mip_3dm_complementary_filter_command* self)
 {
@@ -3555,9 +3555,9 @@ enum mip_cmd_result mip_3dm_write_complementary_filter(struct mip_interface* dev
     
     insert_float(&serializer, heading_time_constant);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* device, bool* pitch_roll_enable_out, bool* heading_enable_out, float* pitch_roll_time_constant_out, float* heading_time_constant_out)
 {
@@ -3567,10 +3567,10 @@ enum mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, serializer.offset, MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_LEGACY_COMP_FILTER, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3589,7 +3589,7 @@ enum mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* devi
         assert(heading_time_constant_out);
         extract_float(&deserializer, heading_time_constant_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3602,9 +3602,9 @@ enum mip_cmd_result mip_3dm_save_complementary_filter(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_complementary_filter(struct mip_interface* device)
 {
@@ -3614,9 +3614,9 @@ enum mip_cmd_result mip_3dm_load_complementary_filter(struct mip_interface* devi
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* device)
 {
@@ -3626,9 +3626,9 @@ enum mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* d
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_sensor_range_command(struct mip_serializer* serializer, const struct mip_3dm_sensor_range_command* self)
 {
@@ -3657,9 +3657,9 @@ enum mip_cmd_result mip_3dm_write_sensor_range(struct mip_interface* device, enu
     
     insert_u8(&serializer, setting);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor, uint8_t* setting_out)
 {
@@ -3671,10 +3671,10 @@ enum mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, enum
     
     insert_mip_sensor_range_type(&serializer, sensor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, serializer.offset, MIP_REPLY_DESC_3DM_SENSOR_RANGE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_SENSOR_RANGE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3686,7 +3686,7 @@ enum mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, enum
         assert(setting_out);
         extract_u8(&deserializer, setting_out);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3701,9 +3701,9 @@ enum mip_cmd_result mip_3dm_save_sensor_range(struct mip_interface* device, enum
     
     insert_mip_sensor_range_type(&serializer, sensor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_load_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
 {
@@ -3715,9 +3715,9 @@ enum mip_cmd_result mip_3dm_load_sensor_range(struct mip_interface* device, enum
     
     insert_mip_sensor_range_type(&serializer, sensor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_3dm_default_sensor_range(struct mip_interface* device, enum mip_sensor_range_type sensor)
 {
@@ -3729,9 +3729,9 @@ enum mip_cmd_result mip_3dm_default_sensor_range(struct mip_interface* device, e
     
     insert_mip_sensor_range_type(&serializer, sensor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SENSOR_RANGE, buffer, mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_calibrated_sensor_ranges_command(struct mip_serializer* serializer, const struct mip_3dm_calibrated_sensor_ranges_command* self)
 {
@@ -3767,10 +3767,10 @@ enum mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* devic
     
     insert_mip_sensor_range_type(&serializer, sensor);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CALIBRATED_RANGES, buffer, serializer.offset, MIP_REPLY_DESC_3DM_CALIBRATED_RANGES, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CALIBRATED_RANGES, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_CALIBRATED_RANGES, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -3787,7 +3787,7 @@ enum mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* devic
         for(unsigned int i=0; i < *num_ranges_out; i++)
             extract_mip_3dm_calibrated_sensor_ranges_command_entry(&deserializer, &ranges_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( !mip_serializer_is_complete(&deserializer) )
             result = MIP_STATUS_ERROR;
     }
     return result;

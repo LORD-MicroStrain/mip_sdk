@@ -392,7 +392,8 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
     {
         DataField data;
 
-        data.extract(C::mip_field_payload(field), C::mip_field_payload_length(field));
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
 
         Callback(context, data, timestamp);
     };
@@ -451,10 +452,10 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
     {
         DataField data;
 
-        data.extract(C::mip_field_payload(field), C::mip_field_payload_length(field));
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
 
         Object* obj = static_cast<Object*>(pointer);
-
         (obj->*Callback)(data, timestamp);
     };
 
