@@ -1,12 +1,12 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// GQ7_Example.cpp
+// GX5_45_Example.cpp
 //
-// C++ Example set-up program for the GQ7
+// C++ Example set-up program for the GX5-45
 //
-// This example shows a typical setup for the GQ7 sensor in a wheeled-vehicle application using C++.
-// It is not an exhaustive example of all GQ7 settings.
+// This example shows a typical setup for the GX5-45 sensor in a wheeled-vehicle application using using C++.
+// It is not an exhaustive example of all GX5-45 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
 //
@@ -40,24 +40,23 @@ using namespace mip;
 
 std::unique_ptr<mip::DeviceInterface> device;
 
-//Sensor-to-vehicle frame transformation (Euler Angles)
-float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
+//Sensor-to-vehicle frame rotation (Euler Angles)
+float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
 
-//GNSS antenna offsets
-float gnss1_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
-float gnss2_antenna_offset_meters[3] = {0.25, 0.0, 0.0};
+//GNSS antenna offset
+float gnss_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
 
 //Device data stores
-data_shared::GpsTimestamp sensor_gps_time;
+data_sensor::GpsTimestamp sensor_gps_time;
 data_sensor::ScaledAccel  sensor_accel;
 data_sensor::ScaledGyro   sensor_gyro;
 data_sensor::ScaledMag    sensor_mag;
 
-data_gnss::FixInfo        gnss_fix_info[2];
+data_gnss::FixInfo        gnss_fix_info;
 
-bool gnss_fix_info_valid[2] = {false};
+bool gnss_fix_info_valid = false;
 
-data_shared::GpsTimestamp filter_gps_time;
+data_filter::Timestamp    filter_gps_time;
 data_filter::Status       filter_status;
 data_filter::PositionLlh  filter_position_llh;
 data_filter::VelocityNed  filter_velocity_ned;
@@ -121,38 +120,34 @@ int main(int argc, const char* argv[])
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
     //We could have also set it directly with information from the datasheet (shown in GNSS setup).
 
-    if(commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK)
+    if(commands_3dm::imuGetBaseRate(*device, &sensor_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
     std::array<DescriptorRate, 4> sensor_descriptors = {{
-        { data_shared::DATA_GPS_TIME,     sensor_decimation },
-        { data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
-        { data_sensor::DATA_GYRO_SCALED,  sensor_decimation },
-        { data_sensor::DATA_MAG_SCALED,   sensor_decimation },
+        { data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
+        { data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
+        { data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
+        { data_sensor::DATA_MAG_SCALED,     sensor_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_sensor::DESCRIPTOR_SET, sensor_descriptors.size(), sensor_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeImuMessageFormat(*device, sensor_descriptors.size(), sensor_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
     //
-    //Setup GNSS 1 and 2 data format to 2 Hz (decimation of 1)
+    //Setup GNSS data format to 4 Hz (decimation of 1)
     //
 
     std::array<DescriptorRate, 1> gnss_descriptors = {{
         { data_gnss::DATA_FIX_INFO, 1 }
     }};
 
-    //GNSS1
-    if(commands_3dm::writeMessageFormat(*device, data_gnss::MIP_GNSS1_DATA_DESC_SET, gnss_descriptors.size(), gnss_descriptors.data()) != CmdResult::ACK_OK)
+    //GNSS
+    if(commands_3dm::writeGpsMessageFormat(*device, gnss_descriptors.size(), gnss_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 message format!");
-
-    //GNSS2
-    if(commands_3dm::writeMessageFormat(*device, data_gnss::MIP_GNSS2_DATA_DESC_SET, gnss_descriptors.size(), gnss_descriptors.data()) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set GNSS2 message format!");
 
 
     //
@@ -161,7 +156,7 @@ int main(int argc, const char* argv[])
 
     uint16_t filter_base_rate;
 
-    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
+    if(commands_3dm::filterGetBaseRate(*device, &filter_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
 
     const uint16_t filter_sample_rate = 100; // Hz
@@ -175,63 +170,32 @@ int main(int argc, const char* argv[])
         { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
     }};
 
-    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
+    if(commands_3dm::writeFilterMessageFormat(*device, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
     //
-    //Setup the sensor to vehicle transformation
+    //Setup the sensor to vehicle rotation
     //
 
-    if(commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
+    if(commands_filter::writeSensorToVehicleRotationEuler(*device, sensor_to_vehicle_rotation_euler[0], sensor_to_vehicle_rotation_euler[1], sensor_to_vehicle_rotation_euler[2]) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set sensor-2-vehicle rotation!");
 
 
     //
-    //Setup the GNSS antenna offsets
+    //Setup the GNSS antenna offset
     //
 
-    //GNSS1
-    if(commands_filter::writeMultiAntennaOffset(*device, 1, gnss1_antenna_offset_meters) != CmdResult::ACK_OK)
+    if(commands_filter::writeAntennaOffset(*device, gnss_antenna_offset_meters) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 antenna offset!");
-
-    //GNSS2
-    if(commands_filter::writeMultiAntennaOffset(*device, 2, gnss2_antenna_offset_meters) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set GNSS2 antenna offset!");
-
+   
 
     //
-    //Setup the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
+    //Setup heading update control
     //
 
-    if(commands_filter::writeAidingMeasurementEnable(*device, commands_filter::AidingMeasurementEnable::AidingSource::GNSS_POS_VEL, true) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter aiding measurement enable!");
-
-    if(commands_filter::writeAidingMeasurementEnable(*device, commands_filter::AidingMeasurementEnable::AidingSource::GNSS_HEADING, true) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter aiding measurement enable!");
-
-
-    //
-    //Enable the wheeled-vehicle constraint
-    //
-
-    if(commands_filter::writeWheeledVehicleConstraintControl(*device, 1) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter wheeled-vehicle constraint enable!");
-
-
-    //
-    //Setup the filter initialization (note: heading alignment is a bitfield!)
-    //
-
-    float filter_init_pos[3] = {0};
-    float filter_init_vel[3] = {0};
-
-    commands_filter::InitializationConfiguration::AlignmentSelector alignment;
-    alignment = alignment.DUAL_ANTENNA | alignment.KINEMATIC;
-
-    if(commands_filter::writeInitializationConfiguration(*device, 0, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT, 
-       alignment, 0.0, 0.0, 0.0, filter_init_pos, filter_init_vel, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter initialization configuration!");
+    if(commands_filter::writeHeadingSource(*device, commands_filter::HeadingSource::Source::GNSS_VEL_AND_MAG) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set filter heading update control!");
 
 
     //
@@ -249,28 +213,24 @@ int main(int argc, const char* argv[])
     //Sensor Data
     DispatchHandler sensor_data_handlers[4];
 
-    device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, data_sensor::DESCRIPTOR_SET);
+    device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
     device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
 
-
     //GNSS Data
-    DispatchHandler gnss_data_handlers[2];
+    DispatchHandler gnss_data_handlers[1];
 
-    device->registerExtractor(gnss_data_handlers[0], &gnss_fix_info[0], data_gnss::MIP_GNSS1_DATA_DESC_SET);
-    device->registerExtractor(gnss_data_handlers[1], &gnss_fix_info[1], data_gnss::MIP_GNSS2_DATA_DESC_SET);
-
-
+    device->registerExtractor(gnss_data_handlers[0], &gnss_fix_info);
+ 
     //Filter Data
     DispatchHandler filter_data_handlers[5];
 
-    device->registerExtractor(filter_data_handlers[0], &filter_gps_time, data_filter::DESCRIPTOR_SET);
+    device->registerExtractor(filter_data_handlers[0], &filter_gps_time);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
     device->registerExtractor(filter_data_handlers[2], &filter_position_llh);
     device->registerExtractor(filter_data_handlers[3], &filter_velocity_ned);
     device->registerExtractor(filter_data_handlers[4], &filter_euler_angles);
-
 
     //
     //Resume the device
@@ -293,22 +253,16 @@ int main(int argc, const char* argv[])
     {
         device->update();
 
-
         //Check GNSS fixes and alert the user when they become valid
-        for(int i=0; i<2; i++)
+        if((gnss_fix_info_valid == false) && (gnss_fix_info.fix_type == data_gnss::FixInfo::FixType::FIX_3D) &&
+            (gnss_fix_info.valid_flags & data_gnss::FixInfo::ValidFlags::FIX_TYPE))
         {
-            if((gnss_fix_info_valid[i] == false) && ((gnss_fix_info[i].fix_type == data_gnss::FixInfo::FixType::FIX_3D) ||
-                                                     (gnss_fix_info[i].fix_type == data_gnss::FixInfo::FixType::FIX_RTK_FLOAT) ||
-                                                     (gnss_fix_info[i].fix_type == data_gnss::FixInfo::FixType::FIX_RTK_FIXED)) &&
-                (gnss_fix_info[i].valid_flags & data_gnss::FixInfo::ValidFlags::FIX_TYPE))
-            {
-                printf("NOTE: GNSS%i fix info valid.\n", i+1);
-                gnss_fix_info_valid[i] = true;
-            }
+            printf("NOTE: GNSS fix info valid.\n");
+            gnss_fix_info_valid = true;
         }
-
+ 
         //Check Filter State
-        if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
+        if((!filter_state_full_nav) && ((filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
         {
             printf("NOTE: Filter has entered full navigation mode.\n");
             filter_state_full_nav = true;

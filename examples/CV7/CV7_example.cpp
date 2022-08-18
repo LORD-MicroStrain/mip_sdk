@@ -39,6 +39,9 @@ using namespace mip;
 
 std::unique_ptr<mip::DeviceInterface> device;
 
+//Sensor-to-vehicle frame transformation (Euler Angles)
+float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
+
 //Device data stores
 data_shared::GpsTimestamp sensor_gps_time;
 data_sensor::ScaledAccel  sensor_accel;
@@ -142,6 +145,14 @@ int main(int argc, const char* argv[])
 
     if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
+
+
+    //
+    //Setup the sensor to vehicle transformation
+    //
+
+    if(commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
 
 
     //
@@ -249,10 +260,6 @@ void exit_gracefully(const char *message)
 {
     if(message)
         printf("%s\n", message);
-
-    //Close com port
-    //if(serial_port_is_open(&device_port))
-    //    serial_port_close(&device_port);
 
 #ifdef _WIN32
     int dummy = getchar();
