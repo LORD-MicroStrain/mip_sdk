@@ -351,7 +351,9 @@ void exit_gracefully(const char *message)
     //if(device)
     //  device->
 
+#ifdef _WIN32
     int dummy = getchar();
+#endif
 
     exit(0);
 }

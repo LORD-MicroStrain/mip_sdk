@@ -362,7 +362,9 @@ void exit_gracefully(const char *message)
     if(serial_port_is_open(&device_port))
         serial_port_close(&device_port);
 
+#ifdef _WIN32
     int dummy = getchar();
+#endif
 
     exit(0);
 }
