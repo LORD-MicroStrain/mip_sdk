@@ -112,8 +112,11 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
     };
     uint32_t value = NONE;
     
+    CommandedTestBitsGq7() : value(NONE) {}
+    CommandedTestBitsGq7(int val) : value(val) {}
     operator uint32_t() const { return value; }
     CommandedTestBitsGq7& operator=(uint32_t val) { value = val; return *this; }
+    CommandedTestBitsGq7& operator=(int val) { value = val; return *this; }
     CommandedTestBitsGq7& operator|=(uint32_t val) { return *this = value | val; }
     CommandedTestBitsGq7& operator&=(uint32_t val) { return *this = value & val; }
 };

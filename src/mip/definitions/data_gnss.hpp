@@ -194,8 +194,11 @@ struct PosLlh
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -238,8 +241,11 @@ struct PosEcef
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -282,8 +288,11 @@ struct VelNed
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -326,8 +335,11 @@ struct VelEcef
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -371,8 +383,11 @@ struct Dop
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -416,8 +431,11 @@ struct UtcTime
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -461,8 +479,11 @@ struct GpsTime
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -502,8 +523,11 @@ struct ClockInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -553,8 +577,11 @@ struct FixInfo
         };
         uint16_t value = NONE;
         
+        FixFlags() : value(NONE) {}
+        FixFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         FixFlags& operator=(uint16_t val) { value = val; return *this; }
+        FixFlags& operator=(int val) { value = val; return *this; }
         FixFlags& operator|=(uint16_t val) { return *this = value | val; }
         FixFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -571,8 +598,11 @@ struct FixInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -613,8 +643,11 @@ struct SvInfo
         };
         uint16_t value = NONE;
         
+        SVFlags() : value(NONE) {}
+        SVFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         SVFlags& operator=(uint16_t val) { value = val; return *this; }
+        SVFlags& operator=(int val) { value = val; return *this; }
         SVFlags& operator|=(uint16_t val) { return *this = value | val; }
         SVFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -634,8 +667,11 @@ struct SvInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -702,8 +738,11 @@ struct HwStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -757,8 +796,11 @@ struct DgpsInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -803,8 +845,11 @@ struct DgpsChannel
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -849,8 +894,11 @@ struct ClockInfo2
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -889,8 +937,11 @@ struct GpsLeapSeconds
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -929,8 +980,11 @@ struct SbasInfo
         };
         uint8_t value = NONE;
         
+        SbasStatus() : value(NONE) {}
+        SbasStatus(int val) : value(val) {}
         operator uint8_t() const { return value; }
         SbasStatus& operator=(uint8_t val) { value = val; return *this; }
+        SbasStatus& operator=(int val) { value = val; return *this; }
         SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
         SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
     };
@@ -950,8 +1004,11 @@ struct SbasInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1017,8 +1074,11 @@ struct SbasCorrection
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1089,8 +1149,11 @@ struct RfErrorDetection
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1139,8 +1202,11 @@ struct BaseStationInfo
         };
         uint16_t value = NONE;
         
+        IndicatorFlags() : value(NONE) {}
+        IndicatorFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         IndicatorFlags& operator=(uint16_t val) { value = val; return *this; }
+        IndicatorFlags& operator=(int val) { value = val; return *this; }
         IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
         IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1160,8 +1226,11 @@ struct BaseStationInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1209,8 +1278,11 @@ struct RtkCorrectionsStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1232,8 +1304,11 @@ struct RtkCorrectionsStatus
         };
         uint16_t value = NONE;
         
+        EpochStatus() : value(NONE) {}
+        EpochStatus(int val) : value(val) {}
         operator uint16_t() const { return value; }
         EpochStatus& operator=(uint16_t val) { value = val; return *this; }
+        EpochStatus& operator=(int val) { value = val; return *this; }
         EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1284,8 +1359,11 @@ struct SatelliteStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1355,8 +1433,11 @@ struct Raw
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1411,8 +1492,11 @@ struct GpsEphemeris
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1481,8 +1565,11 @@ struct GloEphemeris
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1545,8 +1632,11 @@ struct GpsIonoCorr
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1589,8 +1679,11 @@ struct GalileoIonoCorr
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };

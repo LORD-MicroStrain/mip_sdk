@@ -489,8 +489,11 @@ struct GpsTimestamp
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -613,8 +616,11 @@ struct OverrangeStatus
         };
         uint16_t value = NONE;
         
+        Status() : value(NONE) {}
+        Status(int val) : value(val) {}
         operator uint16_t() const { return value; }
         Status& operator=(uint16_t val) { value = val; return *this; }
+        Status& operator=(int val) { value = val; return *this; }
         Status& operator|=(uint16_t val) { return *this = value | val; }
         Status& operator&=(uint16_t val) { return *this = value & val; }
     };

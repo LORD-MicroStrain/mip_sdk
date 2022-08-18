@@ -924,8 +924,11 @@ struct GnssSbasSettings
         };
         uint16_t value = NONE;
         
+        SBASOptions() : value(NONE) {}
+        SBASOptions(int val) : value(val) {}
         operator uint16_t() const { return value; }
         SBASOptions& operator=(uint16_t val) { value = val; return *this; }
+        SBASOptions& operator=(int val) { value = val; return *this; }
         SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1191,8 +1194,11 @@ struct GpioConfig
         };
         uint8_t value = NONE;
         
+        PinMode() : value(NONE) {}
+        PinMode(int val) : value(val) {}
         operator uint8_t() const { return value; }
         PinMode& operator=(uint8_t val) { value = val; return *this; }
+        PinMode& operator=(int val) { value = val; return *this; }
         PinMode& operator|=(uint8_t val) { return *this = value | val; }
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
     };
@@ -1488,8 +1494,11 @@ struct GetEventTriggerStatus
         };
         uint8_t value = NONE;
         
+        Status() : value(NONE) {}
+        Status(int val) : value(val) {}
         operator uint8_t() const { return value; }
         Status& operator=(uint8_t val) { value = val; return *this; }
+        Status& operator=(int val) { value = val; return *this; }
         Status& operator|=(uint8_t val) { return *this = value | val; }
         Status& operator&=(uint8_t val) { return *this = value & val; }
     };
