@@ -404,11 +404,17 @@ void mip_cmd_queue_update(struct mip_cmd_queue* queue, timestamp_type now)
 ///@param queue
 ///@param timeout
 ///
-void mip_cmd_queue_set_base_reply_timeout(struct mip_cmd_queue* queue, timeout_type timeout);
+void mip_cmd_queue_set_base_reply_timeout(struct mip_cmd_queue* queue, timeout_type timeout)
+{
+    queue->_base_timeout = timeout;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the base reply timeout for all commands.
 ///
 ///@returns The minimum time to wait for a reply to any command.
 ///
-timeout_type mip_cmd_queue_base_reply_timeout(const struct mip_cmd_queue* queue);
+timeout_type mip_cmd_queue_base_reply_timeout(const struct mip_cmd_queue* queue)
+{
+    return queue->_base_timeout;
+}
