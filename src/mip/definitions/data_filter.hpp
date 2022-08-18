@@ -154,8 +154,11 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
     };
     uint16_t value = NONE;
     
+    FilterStatusFlags() : value(NONE) {}
+    FilterStatusFlags(int val) : value(val) {}
     operator uint16_t() const { return value; }
     FilterStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+    FilterStatusFlags& operator=(int val) { value = val; return *this; }
     FilterStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
     FilterStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
 };
@@ -184,8 +187,11 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
     };
     uint8_t value = NONE;
     
+    FilterMeasurementIndicator() : value(NONE) {}
+    FilterMeasurementIndicator(int val) : value(val) {}
     operator uint8_t() const { return value; }
     FilterMeasurementIndicator& operator=(uint8_t val) { value = val; return *this; }
+    FilterMeasurementIndicator& operator=(int val) { value = val; return *this; }
     FilterMeasurementIndicator& operator|=(uint8_t val) { return *this = value | val; }
     FilterMeasurementIndicator& operator&=(uint8_t val) { return *this = value & val; }
 };
@@ -214,8 +220,11 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
     };
     uint16_t value = NONE;
     
+    GnssAidStatusFlags() : value(NONE) {}
+    GnssAidStatusFlags(int val) : value(val) {}
     operator uint16_t() const { return value; }
     GnssAidStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+    GnssAidStatusFlags& operator=(int val) { value = val; return *this; }
     GnssAidStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
     GnssAidStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
 };
@@ -1538,8 +1547,11 @@ struct GnssDualAntennaStatus
         };
         uint16_t value = NONE;
         
+        DualAntennaStatusFlags() : value(NONE) {}
+        DualAntennaStatusFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         DualAntennaStatusFlags& operator=(uint16_t val) { value = val; return *this; }
+        DualAntennaStatusFlags& operator=(int val) { value = val; return *this; }
         DualAntennaStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
         DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
     };

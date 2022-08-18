@@ -273,8 +273,11 @@ struct EstimationControl
         };
         uint16_t value = NONE;
         
+        EnableFlags() : value(NONE) {}
+        EnableFlags(int val) : value(val) {}
         operator uint16_t() const { return value; }
         EnableFlags& operator=(uint16_t val) { value = val; return *this; }
+        EnableFlags& operator=(int val) { value = val; return *this; }
         EnableFlags& operator|=(uint16_t val) { return *this = value | val; }
         EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -447,8 +450,11 @@ struct TareOrientation
         };
         uint8_t value = NONE;
         
+        MipTareAxes() : value(NONE) {}
+        MipTareAxes(int val) : value(val) {}
         operator uint8_t() const { return value; }
         MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
+        MipTareAxes& operator=(int val) { value = val; return *this; }
         MipTareAxes& operator|=(uint8_t val) { return *this = value | val; }
         MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
     };
@@ -1250,8 +1256,11 @@ struct InitializationConfiguration
         };
         uint8_t value = NONE;
         
+        AlignmentSelector() : value(NONE) {}
+        AlignmentSelector(int val) : value(val) {}
         operator uint8_t() const { return value; }
         AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
+        AlignmentSelector& operator=(int val) { value = val; return *this; }
         AlignmentSelector& operator|=(uint8_t val) { return *this = value | val; }
         AlignmentSelector& operator&=(uint8_t val) { return *this = value & val; }
     };

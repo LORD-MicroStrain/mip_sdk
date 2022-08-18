@@ -108,8 +108,11 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
+        StatusFlagsLegacy() : value(NONE) {}
+        StatusFlagsLegacy(int val) : value(val) {}
         operator uint32_t() const { return value; }
         StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlagsLegacy& operator=(int val) { value = val; return *this; }
         StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
     };
@@ -134,8 +137,11 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
+        StatusFlags() : value(NONE) {}
+        StatusFlags(int val) : value(val) {}
         operator uint32_t() const { return value; }
         StatusFlags& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlags& operator=(int val) { value = val; return *this; }
         StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
     };
@@ -419,8 +425,11 @@ struct ServiceStatus
         };
         uint8_t value = NONE;
         
+        ServiceFlags() : value(NONE) {}
+        ServiceFlags(int val) : value(val) {}
         operator uint8_t() const { return value; }
         ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
+        ServiceFlags& operator=(int val) { value = val; return *this; }
         ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
         ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
     };

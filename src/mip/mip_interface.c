@@ -45,6 +45,8 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
 
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
+
+    mip_dispatcher_init(&device->_dispatcher);
 }
 
 
