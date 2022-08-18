@@ -72,6 +72,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
+    "${MIP_DIR}/mip_all.h"
 )
 
 set(MIPDEV_SOURCES
@@ -148,7 +149,7 @@ endif()
 # EXAMPLES
 #
 
-option(BUILD_EXAMPLES "Builds the example programs." OFF)
+option(BUILD_EXAMPLES "Builds the example programs." ON)
 
 if(BUILD_EXAMPLES)
     add_subdirectory("examples")
