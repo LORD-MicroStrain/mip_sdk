@@ -73,9 +73,9 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-bool serial_port_open(serial_port *port, char *port_str, int baudrate)
+bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 {
-    
+
  if(port_str == NULL)
     return false;
 
@@ -85,7 +85,7 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
 
     //Connect to the provided com port
     port->handle = CreateFile(port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-    
+
     //Check for an invalid handle
     if(port->handle == INVALID_HANDLE_VALUE)
     {
@@ -96,7 +96,7 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
     //Setup the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
       return false;
-    
+
     //Set the timeouts
     COMMTIMEOUTS timeouts;
     GetCommTimeouts(port->handle, &timeouts);
@@ -112,7 +112,7 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
 
     //Setup the com port parameters
     ready = GetCommState(port->handle, &dcb);
-    
+
     //Close the serial port, mutex, and exit
     if(!ready)
     {
@@ -120,7 +120,7 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
       return false;
     }
 
-    dcb.BaudRate      = baudrate;   //Baudrate is typically 115200 
+    dcb.BaudRate      = baudrate;   //Baudrate is typically 115200
     dcb.ByteSize      = 8;          //Charsize is 8,  default for MicroStrain
     dcb.Parity        = NOPARITY;   //Parity is none, default for MicroStrain
     dcb.StopBits      = ONESTOPBIT; //Stopbits is 1,  default for MicroStrain
@@ -128,14 +128,14 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
     dcb.fDtrControl   = DTR_CONTROL_ENABLE;
 
     ready = SetCommState(port->handle, &dcb);
-    
+
     //Close the serial port and exit
     if(!ready)
     {
       CloseHandle(port->handle);
       return false;
     }
-    
+
 #else //Linux
 
   port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
@@ -162,7 +162,7 @@ bool serial_port_open(serial_port *port, char *port_str, int baudrate)
   // Persist the settings
   if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
     return false;
- 
+
   // Flush any waiting data
   tcflush(port->handle, TCIOFLUSH);
 
@@ -209,36 +209,35 @@ bool serial_port_close(serial_port *port)
 //
 /////////////////////////////////////////////////////////////////////////////
 
-bool serial_port_write(serial_port *port, void *buffer, uint32_t num_bytes, uint32_t *bytes_written)
+bool serial_port_write(serial_port *port, const void *buffer, uint32_t num_bytes, uint32_t *bytes_written)
 {
- 
+
  *bytes_written = 0;
 
  //Check for a valid port handle
  if(!port->is_open)
   return false;
-  
+
  #ifdef _WIN32 //Windows
     DWORD  local_bytes_written;
 
     //Call the windows write function
-    if(WriteFile(port->handle, buffer, num_bytes, &local_bytes_written, NULL))
-    {
-     *bytes_written = local_bytes_written;
-     
-     if(*bytes_written == num_bytes)
-      return true;
-    }
+    if(!WriteFile(port->handle, buffer, num_bytes, &local_bytes_written, NULL))
+      return false;
+
+    *bytes_written = local_bytes_written;
 
 #else //Linux
-  *bytes_written = write(port->handle, data, length);
+  int local_count = write(port->handle, buffer, num_bytes);
 
-  if(written_bytes == length)
-    return true;
- 
+  if( local_count < 0 )
+    return false;
+
+  *bytes_written = local_count;
+
 #endif
 
- return false;
+  return *bytes_written == num_bytes;
 }
 
 
@@ -249,35 +248,34 @@ bool serial_port_write(serial_port *port, void *buffer, uint32_t num_bytes, uint
 /////////////////////////////////////////////////////////////////////////////
 
 bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint32_t *bytes_read)
-{ 
+{
  //Set the bytes read to zero
  *bytes_read = 0;
 
  //Check for a valid port handle
  if(!port->is_open)
   return false;
-  
+
 #ifdef _WIN32 //Windows
     DWORD  local_bytes_read;
 
     //Call the windows read function
-    if(ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
-    {
-     *bytes_read = local_bytes_read;
-    
-     if(*bytes_read == num_bytes)
-      return true;
-    }
+    if(!ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
+      return false;
+
+    *bytes_read = local_bytes_read;
 
  #else //Linux
-    *bytes_read = read(port->handle, buffer, num_bytes);
+    int local_count = read(port->handle, buffer, num_bytes);
 
-    if(*bytes_read == num_bytes)
-      return true;
+    if( local_count < 0 )
+      return false;
+
+    *bytes_read = local_count;
 
 #endif
 
- return false;
+  return *bytes_read == num_bytes;
 }
 
 
@@ -288,29 +286,28 @@ bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint3
 /////////////////////////////////////////////////////////////////////////////
 
 uint32_t serial_port_read_count(serial_port *port)
-{ 
+{
  //Check for a valid port handle
  if(!port->is_open)
   return 0;
- 
+
 #ifdef _WIN32 //Windows
    COMSTAT com_status;
    DWORD   errors;
 
    //This function gets the current com status
-   if(ClearCommError(port->handle, &errors, &com_status))
-   {
-    return com_status.cbInQue;
-   }
- 
+   if(!ClearCommError(port->handle, &errors, &com_status))
+    return false;
+
+  return com_status.cbInQue;
+
 #else //Linux
    int bytes_available;
-   ioctl(port->handle, FIONREAD, &bytes_available);
+   if( ioctl(port->handle, FIONREAD, &bytes_available) < 0 )
+    return 0;
 
    return bytes_available;
 #endif
-
- return 0;
 }
 
 

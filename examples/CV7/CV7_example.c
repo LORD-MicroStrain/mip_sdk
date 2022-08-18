@@ -1,11 +1,11 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// CV7_Example.c 
+// CV7_Example.c
 //
 // C Example set-up program for the CV7
 //
-// This example shows a typical setup for the CV7 sensor using C.  
+// This example shows a typical setup for the CV7 sensor using C.
 // It is not an exhaustive example of all CV7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -13,11 +13,11 @@
 //
 //!@section LICENSE
 //!
-//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING 
-//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER 
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD 
-//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY 
-//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS 
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@
 
 serial_port device_port;
 clock_t start_time;
-    
+
 int port = -1;
 uint8_t parse_buffer[1024];
 struct mip_interface device;
@@ -81,7 +81,7 @@ bool should_exit();
 ////////////////////////////////////////////////////////////////////////////////
 
 
-void main(int argc, const char* argv[])
+int main(int argc, const char* argv[])
 {
 
     //
@@ -99,7 +99,7 @@ void main(int argc, const char* argv[])
 
     char port_name[100];
 
-    //Create the port name 
+    //Create the port name
     sprintf(port_name, "\\\\.\\COM%d", port);
 
     //
@@ -107,7 +107,7 @@ void main(int argc, const char* argv[])
     //
 
     start_time = clock();
- 
+
     printf("Connecting to and configuring sensor.\n");
 
     //
@@ -115,7 +115,7 @@ void main(int argc, const char* argv[])
     //
 
     if(!serial_port_open(&device_port, port_name, baudrate))
-        exit_gracefully("ERROR: Could not open device port!");    
+        exit_gracefully("ERROR: Could not open device port!");
 
 
     //
@@ -152,7 +152,7 @@ void main(int argc, const char* argv[])
     //
     //Setup Sensor data format to 100 Hz
     //
-    
+
     uint16_t sensor_base_rate;
 
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
@@ -160,7 +160,7 @@ void main(int argc, const char* argv[])
 
     if(mip_3dm_get_base_rate(&device, MIP_SENSOR_DATA_DESC_SET, &sensor_base_rate) != MIP_ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
-   
+
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
@@ -183,7 +183,7 @@ void main(int argc, const char* argv[])
 
     if(mip_3dm_get_base_rate(&device, MIP_FILTER_DATA_DESC_SET, &filter_base_rate) != MIP_ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
-   
+
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
@@ -196,7 +196,7 @@ void main(int argc, const char* argv[])
     if(mip_3dm_write_message_format(&device, MIP_FILTER_DATA_DESC_SET, 3, filter_descriptors) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
-  
+
     //
     //Setup the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     //
@@ -208,7 +208,7 @@ void main(int argc, const char* argv[])
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
- 
+
     if(mip_filter_reset(&device) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
@@ -219,7 +219,7 @@ void main(int argc, const char* argv[])
 
     //Sensor Data
     struct mip_dispatch_handler sensor_data_handlers[4];
-  
+
     mip_interface_register_extractor(&device, &sensor_data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SHARED_GPS_TIME,     extract_mip_shared_gps_timestamp_data_from_field, &sensor_gps_time);
     mip_interface_register_extractor(&device, &sensor_data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, extract_mip_sensor_scaled_accel_data_from_field,  &sensor_accel);
     mip_interface_register_extractor(&device, &sensor_data_handlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED,  extract_mip_sensor_scaled_gyro_data_from_field,   &sensor_gyro);
@@ -278,7 +278,7 @@ void main(int argc, const char* argv[])
         running = !should_exit();
     }
 
- 
+
     exit_gracefully("Example Completed Successfully.");
 }
 
@@ -309,7 +309,7 @@ bool mip_interface_user_update(struct mip_interface* device)
 
     uint8_t buffer[256];
     uint32_t bytes_read;
-     
+
     uint32_t count = serial_port_read_count(&device_port);
 
     if(count > 256)
@@ -318,7 +318,7 @@ bool mip_interface_user_update(struct mip_interface* device)
     if(count > 0)
     {
        serial_port_read(&device_port, buffer, count, &bytes_read);
-       
+
        mip_interface_receive_bytes(device, buffer, bytes_read, now);
     }
 

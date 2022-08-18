@@ -1,11 +1,11 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// CV7_Example.c 
+// CV7_Example.c
 //
 // C++ Example set-up program for the CV7
 //
-// This example shows a typical setup for the CV7 sensor using C++.  
+// This example shows a typical setup for the CV7 sensor using C++.
 // It is not an exhaustive example of all CV7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -13,11 +13,11 @@
 //
 //!@section LICENSE
 //!
-//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING 
-//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER 
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD 
-//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY 
-//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS 
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ bool should_exit();
 ////////////////////////////////////////////////////////////////////////////////
 
 
-void main(int argc, const char* argv[])
+int main(int argc, const char* argv[])
 {
 
     device = handleCommonArgs(argc, argv);
@@ -99,7 +99,7 @@ void main(int argc, const char* argv[])
     //
     //Setup Sensor data format to 100 Hz
     //
-    
+
     uint16_t sensor_base_rate;
 
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
@@ -107,7 +107,7 @@ void main(int argc, const char* argv[])
 
     if(commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
-   
+
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
@@ -130,7 +130,7 @@ void main(int argc, const char* argv[])
 
     if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
-   
+
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
@@ -143,7 +143,7 @@ void main(int argc, const char* argv[])
     if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
-  
+
     //
     //Setup the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     //
@@ -155,7 +155,7 @@ void main(int argc, const char* argv[])
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
- 
+
     if(commands_filter::reset(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
@@ -166,7 +166,7 @@ void main(int argc, const char* argv[])
 
     //Sensor Data
     DispatchHandler sensor_data_handlers[4];
-  
+
     device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, data_sensor::DESCRIPTOR_SET);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
@@ -225,7 +225,7 @@ void main(int argc, const char* argv[])
         running = !should_exit();
     }
 
- 
+
     exit_gracefully("Example Completed Successfully.");
 }
 

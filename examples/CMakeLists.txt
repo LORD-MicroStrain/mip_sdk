@@ -48,11 +48,11 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
         target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
-        add_executable(GQ7_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GQ7/GQ7_Example.cpp" ${DEVICE_SOURCES})
+        add_executable(GQ7_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GQ7/GQ7_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(GQ7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(GQ7_Example PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
-        add_executable(CV7_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7/CV7_Example.cpp" ${DEVICE_SOURCES})
+        add_executable(CV7_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7/CV7_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(CV7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CV7_Example PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
@@ -61,10 +61,10 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
     target_link_libraries(WatchImuC mip)
 
-    add_executable(GQ7_ExampleC "${EXAMPLE_DIR}/GQ7/GQ7_Example.c" "${EXAMPLE_DIR}/serial.c")
+    add_executable(GQ7_ExampleC "${EXAMPLE_DIR}/GQ7/GQ7_example.c" "${EXAMPLE_DIR}/serial.c")
     target_link_libraries(GQ7_ExampleC mip)
 
-    add_executable(CV7_ExampleC "${EXAMPLE_DIR}/CV7/CV7_Example.c" "${EXAMPLE_DIR}/serial.c")
+    add_executable(CV7_ExampleC "${EXAMPLE_DIR}/CV7/CV7_example.c" "${EXAMPLE_DIR}/serial.c")
     target_link_libraries(CV7_ExampleC mip)
 
 endif()

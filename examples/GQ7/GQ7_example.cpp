@@ -5,7 +5,7 @@
 //
 // C++ Example set-up program for the GQ7
 //
-// This example shows a typical setup for the GQ7 sensor in a wheeled-vehicle application using C++.  
+// This example shows a typical setup for the GQ7 sensor in a wheeled-vehicle application using C++.
 // It is not an exhaustive example of all GQ7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -13,11 +13,11 @@
 //
 //!@section LICENSE
 //!
-//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING 
-//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER 
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD 
-//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY 
-//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS 
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ using namespace mip;
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
-   
+
 std::unique_ptr<mip::DeviceInterface> device;
 
 //GNSS antenna offsets
@@ -79,11 +79,11 @@ bool should_exit();
 ////////////////////////////////////////////////////////////////////////////////
 
 
-void main(int argc, const char* argv[])
+int main(int argc, const char* argv[])
 {
 
     device = handleCommonArgs(argc, argv);
-     
+
     printf("Connecting to and configuring sensor.\n");
 
     //
@@ -113,7 +113,7 @@ void main(int argc, const char* argv[])
     //
     //Setup Sensor data format to 100 Hz
     //
-    
+
     uint16_t sensor_base_rate;
 
     //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
@@ -121,7 +121,7 @@ void main(int argc, const char* argv[])
 
     if(commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get sensor base rate format!");
-   
+
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
@@ -139,7 +139,7 @@ void main(int argc, const char* argv[])
     //
     //Setup GNSS 1 and 2 data format to 2 Hz (decimation of 1)
     //
-    
+
     std::array<DescriptorRate, 1> gnss_descriptors = {{
         { data_gnss::DATA_FIX_INFO, 1 }
     }};
@@ -161,7 +161,7 @@ void main(int argc, const char* argv[])
 
     if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
          exit_gracefully("ERROR: Could not get filter base rate format!");
-   
+
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
@@ -212,14 +212,14 @@ void main(int argc, const char* argv[])
     //
     //Setup the filter initialization (note: heading alignment is a bitfield!)
     //
-    
+
     float filter_init_pos[3] = {0};
     float filter_init_vel[3] = {0};
 
     commands_filter::InitializationConfiguration::AlignmentSelector alignment;
     alignment = alignment.DUAL_ANTENNA | alignment.KINEMATIC;
 
-    if(commands_filter::writeInitializationConfiguration(*device, 0, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL, 
+    if(commands_filter::writeInitializationConfiguration(*device, 0, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL,
        alignment, 0.0, 0.0, 0.0, filter_init_pos, filter_init_vel, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter initialization configuration!");
 
@@ -227,7 +227,7 @@ void main(int argc, const char* argv[])
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
- 
+
     if(commands_filter::reset(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
 
@@ -238,20 +238,20 @@ void main(int argc, const char* argv[])
 
     //Sensor Data
     DispatchHandler sensor_data_handlers[4];
-  
+
     device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, data_sensor::DESCRIPTOR_SET);
     device->registerExtractor(sensor_data_handlers[1], &sensor_accel);
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
     device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
 
- 
+
     //GNSS Data
     DispatchHandler gnss_data_handlers[2];
 
     device->registerExtractor(sensor_data_handlers[1], &gnss_fix_info[0], data_gnss::MIP_GNSS1_DATA_DESC_SET);
     device->registerExtractor(sensor_data_handlers[1], &gnss_fix_info[1], data_gnss::MIP_GNSS2_DATA_DESC_SET);
-  
-   
+
+
     //Filter Data
     DispatchHandler filter_data_handlers[5];
 
