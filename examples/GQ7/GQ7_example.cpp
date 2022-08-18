@@ -219,7 +219,7 @@ int main(int argc, const char* argv[])
     commands_filter::InitializationConfiguration::AlignmentSelector alignment;
     alignment = alignment.DUAL_ANTENNA | alignment.KINEMATIC;
 
-    if(commands_filter::writeInitializationConfiguration(*device, 0, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL,
+    if(commands_filter::writeInitializationConfiguration(*device, 0, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT, 
        alignment, 0.0, 0.0, 0.0, filter_init_pos, filter_init_vel, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter initialization configuration!");
 
