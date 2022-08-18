@@ -40,7 +40,6 @@ void mip_parser_init(struct mip_parser* parser, uint8_t* buffer, size_t buffer_s
 
     parser->_expected_length = MIPPARSER_RESET_LENGTH;
 
-    assert(callback != NULL);
     parser->_callback = callback;
     parser->_callback_object = callback_object;
 }
