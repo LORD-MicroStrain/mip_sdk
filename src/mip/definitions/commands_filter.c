@@ -1112,6 +1112,93 @@ enum mip_cmd_result mip_filter_default_heading_source(struct mip_interface* devi
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HEADING_UPDATE_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert_mip_filter_auto_init_control_command(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_command* self)
+{
+    insert_u8(serializer, self->enable);
+    
+}
+void extract_mip_filter_auto_init_control_command(struct mip_serializer* serializer, struct mip_filter_auto_init_control_command* self)
+{
+    extract_u8(serializer, &self->enable);
+    
+}
+
+enum mip_cmd_result mip_filter_write_auto_init_control(struct mip_interface* device, uint8_t enable)
+{
+    struct mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_u8(&serializer, enable);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+enum mip_cmd_result mip_filter_read_auto_init_control(struct mip_interface* device, uint8_t* enable_out)
+{
+    struct mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_AUTOINIT_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        struct mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(enable_out);
+        extract_u8(&deserializer, enable_out);
+        
+        if( !mip_serializer_is_complete(&deserializer) )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+enum mip_cmd_result mip_filter_save_auto_init_control(struct mip_interface* device)
+{
+    struct mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+enum mip_cmd_result mip_filter_load_auto_init_control(struct mip_interface* device)
+{
+    struct mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+enum mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* device)
+{
+    struct mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, const struct mip_filter_altitude_aiding_command* self)
 {
     insert_u8(serializer, self->aiding_selector);
