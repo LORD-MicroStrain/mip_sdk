@@ -248,8 +248,8 @@ void main(int argc, const char* argv[])
     //GNSS Data
     DispatchHandler gnss_data_handlers[2];
 
-    device->registerExtractor(sensor_data_handlers[1], &gnss_fix_info[0], data_gnss::MIP_GNSS1_DATA_DESC_SET);
-    device->registerExtractor(sensor_data_handlers[1], &gnss_fix_info[1], data_gnss::MIP_GNSS2_DATA_DESC_SET);
+    device->registerExtractor(gnss_data_handlers[0], &gnss_fix_info[0], data_gnss::MIP_GNSS1_DATA_DESC_SET);
+    device->registerExtractor(gnss_data_handlers[1], &gnss_fix_info[1], data_gnss::MIP_GNSS2_DATA_DESC_SET);
   
    
     //Filter Data
