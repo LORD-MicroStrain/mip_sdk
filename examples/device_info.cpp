@@ -46,11 +46,6 @@ int main(int argc, const char* argv[])
         {
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
-
-        mip::commands_filter::EstimationControl::EnableFlags flags;
-        flags = mip::commands_filter::EstimationControl::EnableFlags::NONE;
-        flags |= mip::commands_filter::EstimationControl::EnableFlags::ACCEL_BIAS;
-        flags = flags.ACCEL_BIAS | flags.GYRO_BIAS;
     }
     catch(const std::underflow_error& ex)
     {
