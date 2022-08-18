@@ -763,6 +763,44 @@ enum mip_cmd_result mip_filter_default_heading_source(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_auto_init_control  Auto-initialization Control
+/// Filter Auto-initialization Control
+/// 
+/// Enable/Disable automatic initialization upon device startup.
+/// 
+/// Possible enable values:
+/// 
+/// 0x00 - Disable auto-initialization
+/// 0x01 - Enable auto-initialization
+/// 
+///
+///@{
+
+struct mip_filter_auto_init_control_command
+{
+    enum mip_function_selector function;
+    uint8_t enable;
+    
+};
+void insert_mip_filter_auto_init_control_command(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_command* self);
+void extract_mip_filter_auto_init_control_command(struct mip_serializer* serializer, struct mip_filter_auto_init_control_command* self);
+
+struct mip_filter_auto_init_control_response
+{
+    uint8_t enable;
+    
+};
+void insert_mip_filter_auto_init_control_response(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_response* self);
+void extract_mip_filter_auto_init_control_response(struct mip_serializer* serializer, struct mip_filter_auto_init_control_response* self);
+
+enum mip_cmd_result mip_filter_write_auto_init_control(struct mip_interface* device, uint8_t enable);
+enum mip_cmd_result mip_filter_read_auto_init_control(struct mip_interface* device, uint8_t* enable_out);
+enum mip_cmd_result mip_filter_save_auto_init_control(struct mip_interface* device);
+enum mip_cmd_result mip_filter_load_auto_init_control(struct mip_interface* device);
+enum mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_altitude_aiding  Altitude Aiding Control
 /// Altitude Aiding Control
 /// 

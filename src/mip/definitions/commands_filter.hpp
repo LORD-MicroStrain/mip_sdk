@@ -274,7 +274,7 @@ struct EstimationControl
         uint16_t value = NONE;
         
         EnableFlags() : value(NONE) {}
-        EnableFlags(int val) : value(val) {}
+        EnableFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         EnableFlags& operator=(uint16_t val) { value = val; return *this; }
         EnableFlags& operator=(int val) { value = val; return *this; }
@@ -451,7 +451,7 @@ struct TareOrientation
         uint8_t value = NONE;
         
         MipTareAxes() : value(NONE) {}
-        MipTareAxes(int val) : value(val) {}
+        MipTareAxes(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
         MipTareAxes& operator=(int val) { value = val; return *this; }
@@ -908,6 +908,56 @@ CmdResult defaultHeadingSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_auto_init_control  Auto-initialization Control
+/// Filter Auto-initialization Control
+/// 
+/// Enable/Disable automatic initialization upon device startup.
+/// 
+/// Possible enable values:
+/// 
+/// 0x00 - Disable auto-initialization
+/// 0x01 - Enable auto-initialization
+/// 
+///
+///@{
+
+struct AutoInitControl
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_AUTOINIT_CONTROL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function;
+    uint8_t enable;
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AUTOINIT_CONTROL;
+        
+        uint8_t enable;
+        
+    };
+};
+void insert(Serializer& serializer, const AutoInitControl& self);
+void extract(Serializer& serializer, AutoInitControl& self);
+
+void insert(Serializer& serializer, const AutoInitControl::Response& self);
+void extract(Serializer& serializer, AutoInitControl::Response& self);
+
+CmdResult writeAutoInitControl(C::mip_interface& device, uint8_t enable);
+CmdResult readAutoInitControl(C::mip_interface& device, uint8_t* enableOut);
+CmdResult saveAutoInitControl(C::mip_interface& device);
+CmdResult loadAutoInitControl(C::mip_interface& device);
+CmdResult defaultAutoInitControl(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_altitude_aiding  Altitude Aiding Control
 /// Altitude Aiding Control
 /// 
@@ -1257,7 +1307,7 @@ struct InitializationConfiguration
         uint8_t value = NONE;
         
         AlignmentSelector() : value(NONE) {}
-        AlignmentSelector(int val) : value(val) {}
+        AlignmentSelector(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
         AlignmentSelector& operator=(int val) { value = val; return *this; }

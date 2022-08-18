@@ -234,7 +234,7 @@ enum mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud_out)
 {
@@ -249,7 +249,7 @@ enum mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_BASE_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -278,7 +278,7 @@ enum mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port)
 {
@@ -292,7 +292,7 @@ enum mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port)
 {
@@ -306,7 +306,7 @@ enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, ui
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, const struct mip_base_gps_time_update_command* self)
 {
@@ -348,7 +348,7 @@ enum mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device,
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_base_soft_reset(struct mip_interface* device)
 {

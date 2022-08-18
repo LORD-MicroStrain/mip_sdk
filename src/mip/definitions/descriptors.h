@@ -97,7 +97,7 @@ struct CompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (Serializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> void insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
 template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
 
 

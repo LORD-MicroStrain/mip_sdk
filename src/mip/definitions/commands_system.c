@@ -50,7 +50,7 @@ enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uin
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
 {
@@ -63,7 +63,7 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -88,7 +88,7 @@ enum mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

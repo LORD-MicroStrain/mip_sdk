@@ -142,54 +142,43 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_nmeamessage_format_message_id
+enum mip_nmea_message_message_id
 {
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_GGA  = 1,  ///<  GPS System Fix Data
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_GLL  = 2,  ///<  Geographic Position Lat/Lon
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_GSV  = 3,  ///<  GNSS Satellites in View
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_VTG  = 5,  ///<  Course over Ground
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_HDT  = 6,  ///<  Heading, True
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_ZDA  = 7,  ///<  Time & Date
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_PRKA = 100,  ///<  Parker proprietary Euler angles
-    MIP_NMEAMESSAGE_FORMAT_MESSAGE_ID_PRKR = 101,  ///<  Parker proprietary Angular Rate/Acceleration
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1,  ///<  GPS System Fix Data
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2,  ///<  Geographic Position Lat/Lon
+    MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3,  ///<  GNSS Satellites in View
+    MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data
+    MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5,  ///<  Course over Ground
+    MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6,  ///<  Heading, True
+    MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7,  ///<  Time & Date
+    MIP_NMEA_MESSAGE_MESSAGE_ID_PRKA = 100,  ///<  Parker proprietary Euler angles
+    MIP_NMEA_MESSAGE_MESSAGE_ID_PRKR = 101,  ///<  Parker proprietary Angular Rate/Acceleration
 };
 
-enum mip_nmeamessage_format_talker_id
+enum mip_nmea_message_talker_id
 {
-    MIP_NMEAMESSAGE_FORMAT_TALKER_ID_GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN"
-    MIP_NMEAMESSAGE_FORMAT_TALKER_ID_GPS     = 2,  ///<  NMEA message will be produced with talker id "GP"
-    MIP_NMEAMESSAGE_FORMAT_TALKER_ID_GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA"
-    MIP_NMEAMESSAGE_FORMAT_TALKER_ID_GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL"
+    MIP_NMEA_MESSAGE_TALKER_ID_GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN"
+    MIP_NMEA_MESSAGE_TALKER_ID_GPS     = 2,  ///<  NMEA message will be produced with talker id "GP"
+    MIP_NMEA_MESSAGE_TALKER_ID_GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA"
+    MIP_NMEA_MESSAGE_TALKER_ID_GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL"
 };
 
-enum mip_nmeamessage_format_source_id
+struct mip_nmea_message
 {
-    MIP_NMEAMESSAGE_FORMAT_SOURCE_ID_FILTER = 1,  ///<  Data from the Kalman filter will be used to generate the NMEA message
-    MIP_NMEAMESSAGE_FORMAT_SOURCE_ID_IMU    = 2,  ///<  Data from the IMU/IMU derived quantities will be used to generate the NMEA message
-    MIP_NMEAMESSAGE_FORMAT_SOURCE_ID_GNSS1  = 3,  ///<  Data from GNSS1 will be used to generate the NMEA message
-    MIP_NMEAMESSAGE_FORMAT_SOURCE_ID_GNSS2  = 4,  ///<  Data from GNSS2 will be used to generate the NMEA message
-};
-
-struct mip_nmeamessage_format
-{
-    enum mip_nmeamessage_format_message_id message_id;
-    enum mip_nmeamessage_format_talker_id talker_id;
-    enum mip_nmeamessage_format_source_id source_id;
+    enum mip_nmea_message_message_id message_id;
+    enum mip_nmea_message_talker_id talker_id;
+    uint8_t source_desc_set;
     uint16_t decimation;
     
 };
-void insert_mip_nmeamessage_format(struct mip_serializer* serializer, const struct mip_nmeamessage_format* self);
-void extract_mip_nmeamessage_format(struct mip_serializer* serializer, struct mip_nmeamessage_format* self);
+void insert_mip_nmea_message(struct mip_serializer* serializer, const struct mip_nmea_message* self);
+void extract_mip_nmea_message(struct mip_serializer* serializer, struct mip_nmea_message* self);
 
-void insert_mip_nmeamessage_format_message_id(struct mip_serializer* serializer, const enum mip_nmeamessage_format_message_id self);
-void extract_mip_nmeamessage_format_message_id(struct mip_serializer* serializer, enum mip_nmeamessage_format_message_id* self);
+void insert_mip_nmea_message_message_id(struct mip_serializer* serializer, const enum mip_nmea_message_message_id self);
+void extract_mip_nmea_message_message_id(struct mip_serializer* serializer, enum mip_nmea_message_message_id* self);
 
-void insert_mip_nmeamessage_format_talker_id(struct mip_serializer* serializer, const enum mip_nmeamessage_format_talker_id self);
-void extract_mip_nmeamessage_format_talker_id(struct mip_serializer* serializer, enum mip_nmeamessage_format_talker_id* self);
-
-void insert_mip_nmeamessage_format_source_id(struct mip_serializer* serializer, const enum mip_nmeamessage_format_source_id self);
-void extract_mip_nmeamessage_format_source_id(struct mip_serializer* serializer, enum mip_nmeamessage_format_source_id* self);
+void insert_mip_nmea_message_talker_id(struct mip_serializer* serializer, const enum mip_nmea_message_talker_id self);
+void extract_mip_nmea_message_talker_id(struct mip_serializer* serializer, enum mip_nmea_message_talker_id* self);
 
 enum mip_sensor_range_type
 {
@@ -553,13 +542,13 @@ struct mip_3dm_nmea_poll_data_command
 {
     bool suppress_ack;
     uint8_t count;
-    struct mip_nmeamessage_format* format_entries;
+    struct mip_nmea_message* format_entries;
     
 };
 void insert_mip_3dm_nmea_poll_data_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_poll_data_command* self);
 void extract_mip_3dm_nmea_poll_data_command(struct mip_serializer* serializer, struct mip_3dm_nmea_poll_data_command* self);
 
-enum mip_cmd_result mip_3dm_nmea_poll_data(struct mip_interface* device, bool suppress_ack, uint8_t count, const struct mip_nmeamessage_format* format_entries);
+enum mip_cmd_result mip_3dm_nmea_poll_data(struct mip_interface* device, bool suppress_ack, uint8_t count, const struct mip_nmea_message* format_entries);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -572,7 +561,7 @@ struct mip_3dm_nmea_message_format_command
 {
     enum mip_function_selector function;
     uint8_t count;
-    struct mip_nmeamessage_format* format_entries;
+    struct mip_nmea_message* format_entries;
     
 };
 void insert_mip_3dm_nmea_message_format_command(struct mip_serializer* serializer, const struct mip_3dm_nmea_message_format_command* self);
@@ -581,14 +570,14 @@ void extract_mip_3dm_nmea_message_format_command(struct mip_serializer* serializ
 struct mip_3dm_nmea_message_format_response
 {
     uint8_t count;
-    struct mip_nmeamessage_format* format_entries;
+    struct mip_nmea_message* format_entries;
     
 };
 void insert_mip_3dm_nmea_message_format_response(struct mip_serializer* serializer, const struct mip_3dm_nmea_message_format_response* self);
 void extract_mip_3dm_nmea_message_format_response(struct mip_serializer* serializer, struct mip_3dm_nmea_message_format_response* self);
 
-enum mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* device, uint8_t count, const struct mip_nmeamessage_format* format_entries);
-enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* device, uint8_t* count_out, uint8_t count_out_max, struct mip_nmeamessage_format* format_entries_out);
+enum mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* device, uint8_t count, const struct mip_nmea_message* format_entries);
+enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* device, uint8_t* count_out, uint8_t count_out_max, struct mip_nmea_message* format_entries_out);
 enum mip_cmd_result mip_3dm_save_nmea_message_format(struct mip_interface* device);
 enum mip_cmd_result mip_3dm_load_nmea_message_format(struct mip_interface* device);
 enum mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device);

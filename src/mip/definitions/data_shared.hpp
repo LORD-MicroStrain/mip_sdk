@@ -155,7 +155,7 @@ struct GpsTimestamp
         uint16_t value = NONE;
         
         ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value(val) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
         ValidFlags& operator=(int val) { value = val; return *this; }
@@ -292,7 +292,7 @@ struct ExternalTimestamp
         uint16_t value = NONE;
         
         ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value(val) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
         ValidFlags& operator=(int val) { value = val; return *this; }
@@ -344,7 +344,7 @@ struct ExternalTimeDelta
         uint16_t value = NONE;
         
         ValidFlags() : value(NONE) {}
-        ValidFlags(int val) : value(val) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
         ValidFlags& operator=(int val) { value = val; return *this; }

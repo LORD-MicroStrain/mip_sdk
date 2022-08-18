@@ -295,7 +295,7 @@ CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut)
 {
@@ -308,7 +308,7 @@ CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOu
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, mip_serializer_length(&serializer), REPLY_COMM_SPEED, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -334,7 +334,7 @@ CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
@@ -346,7 +346,7 @@ CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
@@ -358,7 +358,7 @@ CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const GpsTimeUpdate& self)
 {
@@ -387,7 +387,7 @@ CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GPS_TIME_BROADCAST_NEW, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GPS_TIME_BROADCAST_NEW, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const SoftReset& self)
 {
