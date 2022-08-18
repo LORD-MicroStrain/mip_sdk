@@ -12,7 +12,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents the status of a MIP command.
 ///
-/// Values that start with MIP_STATUS_ are status codes from this library.
+/// Values that start with MIP_STATUS are status codes from this library.
 /// Values that start with MIP_(N)ACK represent replies from the device.
 ///
 enum mip_cmd_result
@@ -49,12 +49,12 @@ struct CmdResult
 {
     enum
     {
-        STATUS_ERROR          = C::MIP_STATUS_ERROR,
-        STATUS_CANCELLED      = C::MIP_STATUS_CANCELLED,
-        STATUS_TIMEDOUT       = C::MIP_STATUS_TIMEDOUT,
-        STATUS_WAITING        = C::MIP_STATUS_WAITING,
-        STATUS_PENDING        = C::MIP_STATUS_PENDING,
-        STATUS_NONE           = C::MIP_STATUS_NONE,
+        STATUS_ERROR             = C::MIP_STATUS_ERROR,
+        STATUS_CANCELLED         = C::MIP_STATUS_CANCELLED,
+        STATUS_TIMEDOUT          = C::MIP_STATUS_TIMEDOUT,
+        STATUS_WAITING           = C::MIP_STATUS_WAITING,
+        STATUS_QUEUED            = C::MIP_STATUS_PENDING,
+        STATUS_NONE              = C::MIP_STATUS_NONE,
 
         ACK_OK                = C::MIP_ACK_OK,
         NACK_COMMAND_UNKNOWN  = C::MIP_NACK_COMMAND_UNKNOWN,
@@ -62,6 +62,10 @@ struct CmdResult
         NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM,
         NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED,
         NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT,
+
+#ifndef _WIN32 // Avoid name conflict with windows.h
+        STATUS_PENDING = STATUS_QUEUED,
+#endif
     };
 
     C::mip_cmd_result value = C::MIP_STATUS_NONE;
