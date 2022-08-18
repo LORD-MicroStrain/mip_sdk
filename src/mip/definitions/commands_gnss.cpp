@@ -132,7 +132,7 @@ CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
 {
@@ -143,7 +143,7 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -178,7 +178,7 @@ CmdResult saveSignalConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult loadSignalConfiguration(C::mip_interface& device)
 {
@@ -188,7 +188,7 @@ CmdResult loadSignalConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult defaultSignalConfiguration(C::mip_interface& device)
 {
@@ -198,7 +198,7 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const RtkDongleConfiguration& self)
 {
@@ -231,7 +231,7 @@ CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut)
 {
@@ -242,7 +242,7 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, mip_serializer_length(&serializer), REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -268,7 +268,7 @@ CmdResult saveRtkDongleConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult loadRtkDongleConfiguration(C::mip_interface& device)
 {
@@ -278,7 +278,7 @@ CmdResult loadRtkDongleConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
 {
@@ -288,7 +288,7 @@ CmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const ReceiverSafeMode& self)
 {
@@ -316,7 +316,7 @@ CmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiverId, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RECEIVER_SAFE_MODE, buffer, mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RECEIVER_SAFE_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 } // namespace commands_gnss

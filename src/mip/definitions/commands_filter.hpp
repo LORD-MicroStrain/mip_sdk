@@ -274,7 +274,7 @@ struct EstimationControl
         uint16_t value = NONE;
         
         EnableFlags() : value(NONE) {}
-        EnableFlags(int val) : value(val) {}
+        EnableFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         EnableFlags& operator=(uint16_t val) { value = val; return *this; }
         EnableFlags& operator=(int val) { value = val; return *this; }
@@ -451,7 +451,7 @@ struct TareOrientation
         uint8_t value = NONE;
         
         MipTareAxes() : value(NONE) {}
-        MipTareAxes(int val) : value(val) {}
+        MipTareAxes(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         MipTareAxes& operator=(uint8_t val) { value = val; return *this; }
         MipTareAxes& operator=(int val) { value = val; return *this; }
@@ -1257,7 +1257,7 @@ struct InitializationConfiguration
         uint8_t value = NONE;
         
         AlignmentSelector() : value(NONE) {}
-        AlignmentSelector(int val) : value(val) {}
+        AlignmentSelector(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         AlignmentSelector& operator=(uint8_t val) { value = val; return *this; }
         AlignmentSelector& operator=(int val) { value = val; return *this; }

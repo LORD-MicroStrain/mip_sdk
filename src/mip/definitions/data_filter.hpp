@@ -155,7 +155,7 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
     uint16_t value = NONE;
     
     FilterStatusFlags() : value(NONE) {}
-    FilterStatusFlags(int val) : value(val) {}
+    FilterStatusFlags(int val) : value((uint16_t)val) {}
     operator uint16_t() const { return value; }
     FilterStatusFlags& operator=(uint16_t val) { value = val; return *this; }
     FilterStatusFlags& operator=(int val) { value = val; return *this; }
@@ -188,7 +188,7 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
     uint8_t value = NONE;
     
     FilterMeasurementIndicator() : value(NONE) {}
-    FilterMeasurementIndicator(int val) : value(val) {}
+    FilterMeasurementIndicator(int val) : value((uint8_t)val) {}
     operator uint8_t() const { return value; }
     FilterMeasurementIndicator& operator=(uint8_t val) { value = val; return *this; }
     FilterMeasurementIndicator& operator=(int val) { value = val; return *this; }
@@ -221,7 +221,7 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
     uint16_t value = NONE;
     
     GnssAidStatusFlags() : value(NONE) {}
-    GnssAidStatusFlags(int val) : value(val) {}
+    GnssAidStatusFlags(int val) : value((uint16_t)val) {}
     operator uint16_t() const { return value; }
     GnssAidStatusFlags& operator=(uint16_t val) { value = val; return *this; }
     GnssAidStatusFlags& operator=(int val) { value = val; return *this; }
@@ -1548,7 +1548,7 @@ struct GnssDualAntennaStatus
         uint16_t value = NONE;
         
         DualAntennaStatusFlags() : value(NONE) {}
-        DualAntennaStatusFlags(int val) : value(val) {}
+        DualAntennaStatusFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         DualAntennaStatusFlags& operator=(uint16_t val) { value = val; return *this; }
         DualAntennaStatusFlags& operator=(int val) { value = val; return *this; }

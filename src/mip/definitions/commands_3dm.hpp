@@ -141,7 +141,7 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-struct NMEAMessageFormat
+struct NmeaMessage
 {
     enum class MessageID : uint8_t
     {
@@ -164,22 +164,14 @@ struct NMEAMessageFormat
         GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL"
     };
     
-    enum class SourceID : uint8_t
-    {
-        FILTER = 1,  ///<  Data from the Kalman filter will be used to generate the NMEA message
-        IMU    = 2,  ///<  Data from the IMU/IMU derived quantities will be used to generate the NMEA message
-        GNSS1  = 3,  ///<  Data from GNSS1 will be used to generate the NMEA message
-        GNSS2  = 4,  ///<  Data from GNSS2 will be used to generate the NMEA message
-    };
-    
     MessageID message_id;
     TalkerID talker_id;
-    SourceID source_id;
+    uint8_t source_desc_set;
     uint16_t decimation;
     
 };
-void insert(Serializer& serializer, const NMEAMessageFormat& self);
-void extract(Serializer& serializer, NMEAMessageFormat& self);
+void insert(Serializer& serializer, const NmeaMessage& self);
+void extract(Serializer& serializer, NmeaMessage& self);
 
 enum class SensorRangeType : uint8_t
 {
@@ -666,13 +658,13 @@ struct NmeaPollData
     
     bool suppress_ack;
     uint8_t count;
-    NMEAMessageFormat* format_entries;
+    NmeaMessage* format_entries;
     
 };
 void insert(Serializer& serializer, const NmeaPollData& self);
 void extract(Serializer& serializer, NmeaPollData& self);
 
-CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NMEAMessageFormat* formatEntries);
+CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NmeaMessage* formatEntries);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -694,7 +686,7 @@ struct NmeaMessageFormat
     
     FunctionSelector function;
     uint8_t count;
-    NMEAMessageFormat* format_entries;
+    NmeaMessage* format_entries;
     
     struct Response
     {
@@ -702,7 +694,7 @@ struct NmeaMessageFormat
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         
         uint8_t count;
-        NMEAMessageFormat* format_entries;
+        NmeaMessage* format_entries;
         
     };
 };
@@ -712,8 +704,8 @@ void extract(Serializer& serializer, NmeaMessageFormat& self);
 void insert(Serializer& serializer, const NmeaMessageFormat::Response& self);
 void extract(Serializer& serializer, NmeaMessageFormat::Response& self);
 
-CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NMEAMessageFormat* formatEntries);
-CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NMEAMessageFormat* formatEntriesOut);
+CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NmeaMessage* formatEntries);
+CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NmeaMessage* formatEntriesOut);
 CmdResult saveNmeaMessageFormat(C::mip_interface& device);
 CmdResult loadNmeaMessageFormat(C::mip_interface& device);
 CmdResult defaultNmeaMessageFormat(C::mip_interface& device);
@@ -925,7 +917,7 @@ struct GnssSbasSettings
         uint16_t value = NONE;
         
         SBASOptions() : value(NONE) {}
-        SBASOptions(int val) : value(val) {}
+        SBASOptions(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         SBASOptions& operator=(uint16_t val) { value = val; return *this; }
         SBASOptions& operator=(int val) { value = val; return *this; }
@@ -1195,7 +1187,7 @@ struct GpioConfig
         uint8_t value = NONE;
         
         PinMode() : value(NONE) {}
-        PinMode(int val) : value(val) {}
+        PinMode(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         PinMode& operator=(uint8_t val) { value = val; return *this; }
         PinMode& operator=(int val) { value = val; return *this; }
@@ -1495,7 +1487,7 @@ struct GetEventTriggerStatus
         uint8_t value = NONE;
         
         Status() : value(NONE) {}
-        Status(int val) : value(val) {}
+        Status(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         Status& operator=(uint8_t val) { value = val; return *this; }
         Status& operator=(int val) { value = val; return *this; }
