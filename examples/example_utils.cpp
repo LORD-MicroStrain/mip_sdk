@@ -12,7 +12,7 @@
 mip::Timestamp getCurrentTimestamp()
 {
     using namespace std::chrono;
-    duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
+    return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
 

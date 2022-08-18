@@ -3,9 +3,9 @@
 //
 // CV7_Example.c 
 //
-// Example set-up program for the CV7
+// C Example set-up program for the CV7
 //
-// This example shows a typical setup for the CV7 sensor.  
+// This example shows a typical setup for the CV7 sensor using C.  
 // It is not an exhaustive example of all CV7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -279,7 +279,7 @@ void main(int argc, const char* argv[])
     }
 
  
-    exit_gracefully("");
+    exit_gracefully("Example Completed Successfully.");
 }
 
 

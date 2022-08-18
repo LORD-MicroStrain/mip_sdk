@@ -21,7 +21,6 @@
 #include "definitions/commands_rtk.h"
 #include "definitions/commands_system.h"
 
-
 //MIP Data
 #include "definitions/data_shared.h"
 #include "definitions/data_system.h"
@@ -29,10 +28,3 @@
 #include "definitions/data_gnss.h"
 #include "definitions/data_filter.h"
 
-
-#ifdef __cplusplus
-
-#include "mip.hpp"
-#include "mip_device.hpp"
-
-#endif // __cplusplus

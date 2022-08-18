@@ -75,13 +75,13 @@
 
 bool serial_port_open(serial_port *port, char *port_str, int baudrate)
 {
- BOOL   ready;
- DCB    dcb;
     
  if(port_str == NULL)
     return false;
 
  #ifdef _WIN32
+    BOOL   ready;
+    DCB    dcb;
 
     //Connect to the provided com port
     port->handle = CreateFile(port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
@@ -249,9 +249,7 @@ bool serial_port_write(serial_port *port, void *buffer, uint32_t num_bytes, uint
 /////////////////////////////////////////////////////////////////////////////
 
 bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint32_t *bytes_read)
-{
- DWORD  local_bytes_read;
- 
+{ 
  //Set the bytes read to zero
  *bytes_read = 0;
 
@@ -260,6 +258,7 @@ bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint3
   return false;
   
 #ifdef _WIN32 //Windows
+    DWORD  local_bytes_read;
 
     //Call the windows read function
     if(ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
@@ -289,15 +288,15 @@ bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint3
 /////////////////////////////////////////////////////////////////////////////
 
 uint32_t serial_port_read_count(serial_port *port)
-{
- COMSTAT com_status;
- DWORD   errors;
- 
+{ 
  //Check for a valid port handle
  if(!port->is_open)
   return 0;
  
 #ifdef _WIN32 //Windows
+   COMSTAT com_status;
+   DWORD   errors;
+
    //This function gets the current com status
    if(ClearCommError(port->handle, &errors, &com_status))
    {

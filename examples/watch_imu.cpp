@@ -11,6 +11,7 @@
 #include <mip/mip.hpp>
 
 #include <thread>
+#include <array>
 
 mip::data_sensor::ScaledAccel scaled_accel;
 

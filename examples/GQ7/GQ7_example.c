@@ -3,9 +3,9 @@
 //
 // GQ7_Example.c 
 //
-// Example set-up program for the GQ7
+// C Example set-up program for the GQ7
 //
-// This example shows a typical setup for the GQ7 sensor in a wheeled-vehicle application.  
+// This example shows a typical setup for the GQ7 sensor in a wheeled-vehicle application using C.  
 // It is not an exhaustive example of all GQ7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -368,7 +368,7 @@ void main(int argc, const char* argv[])
         running = !should_exit();
     }
 
-    exit_gracefully("");
+    exit_gracefully("Example Completed Successfully.");
 }
 
 
