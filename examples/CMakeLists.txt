@@ -12,6 +12,9 @@ if(WITH_SERIALPORT)
     LIST(APPEND DEVICE_SOURCES
         "${EXAMPLE_DIR}/serial_mip_device.cpp"
         "${EXAMPLE_DIR}/serial_mip_device.hpp"
+        "${EXAMPLE_DIR}/serial.c"
+        "${EXAMPLE_DIR}/serial.h"
+        "${EXAMPLE_DIR}/serial.hpp"
     )
     set(SERIAL_LIB "serial")
     set(SERIAL_DEFS "MIP_USE_SERIAL")
@@ -49,5 +52,11 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
 
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
     target_link_libraries(WatchImuC mip)
+
+    add_executable(GQ7_Example "${EXAMPLE_DIR}/GQ7/GQ7_Example.c" "${EXAMPLE_DIR}/serial.c")
+    target_link_libraries(GQ7_Example mip)
+
+    add_executable(CV7_Example "${EXAMPLE_DIR}/CV7/CV7_Example.c" "${EXAMPLE_DIR}/serial.c")
+    target_link_libraries(CV7_Example mip)
 
 endif()
