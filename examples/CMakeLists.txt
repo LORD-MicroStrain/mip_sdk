@@ -56,6 +56,10 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
         target_link_libraries(CV7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CV7_Example PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
+        add_executable(GX5_45_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GX5_45/GX5_45_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(GX5_45_Example PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+
     endif()
 
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
@@ -66,5 +70,8 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
 
     add_executable(CV7_ExampleC "${EXAMPLE_DIR}/CV7/CV7_example.c" "${EXAMPLE_DIR}/serial.c")
     target_link_libraries(CV7_ExampleC mip)
+
+    add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c" "${EXAMPLE_DIR}/serial.c")
+    target_link_libraries(GX5_45_ExampleC mip)
 
 endif()

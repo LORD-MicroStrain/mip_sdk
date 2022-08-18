@@ -46,10 +46,12 @@ int port = -1;
 uint8_t parse_buffer[1024];
 struct mip_interface device;
 
+//Sensor-to-vehicle frame transformation (Euler Angles)
+float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
+
 //GNSS antenna offsets
 float gnss1_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
 float gnss2_antenna_offset_meters[3] = {0.25, 0.0, 0.0};
-
 
 //Device data stores
 struct mip_shared_gps_timestamp_data sensor_gps_time;
@@ -226,6 +228,13 @@ int main(int argc, const char* argv[])
     if(mip_3dm_write_message_format(&device, MIP_FILTER_DATA_DESC_SET, 5, filter_descriptors) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
+
+    //
+    //Setup the sensor to vehicle transformation
+    //
+
+    if(mip_3dm_write_sensor_2_vehicle_transform_euler(&device, sensor_to_vehicle_transformation_euler[0], sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
 
     //
     //Setup the GNSS antenna offsets

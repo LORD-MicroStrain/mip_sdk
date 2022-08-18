@@ -956,6 +956,82 @@ CmdResult defaultHeadingSource(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert(Serializer& serializer, const AutoInitControl& self)
+{
+    insert(serializer, self.enable);
+    
+}
+void extract(Serializer& serializer, AutoInitControl& self)
+{
+    extract(serializer, self.enable);
+    
+}
+
+CmdResult writeAutoInitControl(C::mip_interface& device, uint8_t enable)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, enable);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readAutoInitControl(C::mip_interface& device, uint8_t* enableOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_AUTOINIT_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(enableOut);
+        extract(deserializer, *enableOut);
+        
+        if( !deserializer.isComplete() )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveAutoInitControl(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadAutoInitControl(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultAutoInitControl(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert(Serializer& serializer, const AltitudeAiding& self)
 {
     insert(serializer, self.aiding_selector);
