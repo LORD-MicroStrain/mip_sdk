@@ -40,6 +40,17 @@ void extract(Serializer& serializer, GetStatusFlags& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetStatusFlags::Response& self)
+{
+    insert(serializer, self.flags);
+    
+}
+void extract(Serializer& serializer, GetStatusFlags::Response& self)
+{
+    extract(serializer, self.flags);
+    
+}
+
 CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -68,6 +79,19 @@ void extract(Serializer& serializer, GetImei& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GetImei::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.IMEI[i]);
+    
+}
+void extract(Serializer& serializer, GetImei::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.IMEI[i]);
+    
 }
 
 CmdResult getImei(C::mip_interface& device, char* imeiOut)
@@ -101,6 +125,19 @@ void extract(Serializer& serializer, GetImsi& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetImsi::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.IMSI[i]);
+    
+}
+void extract(Serializer& serializer, GetImsi::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.IMSI[i]);
+    
+}
+
 CmdResult getImsi(C::mip_interface& device, char* imsiOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -132,6 +169,19 @@ void extract(Serializer& serializer, GetIccid& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetIccid::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ICCID[i]);
+    
+}
+void extract(Serializer& serializer, GetIccid::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ICCID[i]);
+    
+}
+
 CmdResult getIccid(C::mip_interface& device, char* iccidOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -158,6 +208,17 @@ void insert(Serializer& serializer, const ConnectedDeviceType& self)
     
 }
 void extract(Serializer& serializer, ConnectedDeviceType& self)
+{
+    extract(serializer, self.devType);
+    
+}
+
+void insert(Serializer& serializer, const ConnectedDeviceType::Response& self)
+{
+    insert(serializer, self.devType);
+    
+}
+void extract(Serializer& serializer, ConnectedDeviceType::Response& self)
 {
     extract(serializer, self.devType);
     
@@ -239,6 +300,19 @@ void extract(Serializer& serializer, GetActCode& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetActCode::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ActivationCode[i]);
+    
+}
+void extract(Serializer& serializer, GetActCode::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ActivationCode[i]);
+    
+}
+
 CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -270,6 +344,19 @@ void extract(Serializer& serializer, GetModemFirmwareVersion& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ModemFirmwareVersion[i]);
+    
+}
+void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ModemFirmwareVersion[i]);
+    
+}
+
 CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -299,6 +386,25 @@ void extract(Serializer& serializer, GetRssi& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GetRssi::Response& self)
+{
+    insert(serializer, self.valid);
+    
+    insert(serializer, self.rssi);
+    
+    insert(serializer, self.signalQuality);
+    
+}
+void extract(Serializer& serializer, GetRssi::Response& self)
+{
+    extract(serializer, self.valid);
+    
+    extract(serializer, self.rssi);
+    
+    extract(serializer, self.signalQuality);
+    
 }
 
 CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut)
@@ -338,6 +444,29 @@ void extract(Serializer& serializer, ServiceStatus& self)
     extract(serializer, self.reserved1);
     
     extract(serializer, self.reserved2);
+    
+}
+
+void insert(Serializer& serializer, const ServiceStatus::Response& self)
+{
+    insert(serializer, self.flags);
+    
+    insert(serializer, self.recievedBytes);
+    
+    insert(serializer, self.lastBytes);
+    
+    insert(serializer, self.lastBytesTime);
+    
+}
+void extract(Serializer& serializer, ServiceStatus::Response& self)
+{
+    extract(serializer, self.flags);
+    
+    extract(serializer, self.recievedBytes);
+    
+    extract(serializer, self.lastBytes);
+    
+    extract(serializer, self.lastBytesTime);
     
 }
 

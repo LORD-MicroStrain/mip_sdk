@@ -220,6 +220,21 @@ void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, stru
     
 }
 
+void insert_mip_base_comm_speed_response(struct mip_serializer* serializer, const struct mip_base_comm_speed_response* self)
+{
+    insert_u8(serializer, self->port);
+    
+    insert_u32(serializer, self->baud);
+    
+}
+void extract_mip_base_comm_speed_response(struct mip_serializer* serializer, struct mip_base_comm_speed_response* self)
+{
+    extract_u8(serializer, &self->port);
+    
+    extract_u32(serializer, &self->baud);
+    
+}
+
 enum mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud)
 {
     struct mip_serializer serializer;

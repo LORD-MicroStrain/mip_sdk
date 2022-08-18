@@ -179,6 +179,22 @@ void extract(Serializer& serializer, ImuMessageFormat& self)
     
 }
 
+void insert(Serializer& serializer, const ImuMessageFormat::Response& self)
+{
+    insert(serializer, self.num_descriptors);
+    
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, ImuMessageFormat::Response& self)
+{
+    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        extract(serializer, self.descriptors[i]);
+    
+}
+
 CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -260,6 +276,22 @@ void insert(Serializer& serializer, const GpsMessageFormat& self)
     
 }
 void extract(Serializer& serializer, GpsMessageFormat& self)
+{
+    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        extract(serializer, self.descriptors[i]);
+    
+}
+
+void insert(Serializer& serializer, const GpsMessageFormat::Response& self)
+{
+    insert(serializer, self.num_descriptors);
+    
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, GpsMessageFormat::Response& self)
 {
     C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
@@ -355,6 +387,22 @@ void extract(Serializer& serializer, FilterMessageFormat& self)
     
 }
 
+void insert(Serializer& serializer, const FilterMessageFormat::Response& self)
+{
+    insert(serializer, self.num_descriptors);
+    
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, FilterMessageFormat::Response& self)
+{
+    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        extract(serializer, self.descriptors[i]);
+    
+}
+
 CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -438,6 +486,17 @@ void extract(Serializer& serializer, ImuGetBaseRate& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const ImuGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, ImuGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
+}
+
 CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -468,6 +527,17 @@ void extract(Serializer& serializer, GpsGetBaseRate& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GpsGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, GpsGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
+}
+
 CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -496,6 +566,17 @@ void extract(Serializer& serializer, FilterGetBaseRate& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const FilterGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, FilterGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
 }
 
 CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
@@ -571,6 +652,21 @@ void extract(Serializer& serializer, GetBaseRate& self)
     
 }
 
+void insert(Serializer& serializer, const GetBaseRate::Response& self)
+{
+    insert(serializer, self.desc_set);
+    
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, GetBaseRate::Response& self)
+{
+    extract(serializer, self.desc_set);
+    
+    extract(serializer, self.rate);
+    
+}
+
 CmdResult getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -608,6 +704,26 @@ void insert(Serializer& serializer, const MessageFormat& self)
     
 }
 void extract(Serializer& serializer, MessageFormat& self)
+{
+    extract(serializer, self.desc_set);
+    
+    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        extract(serializer, self.descriptors[i]);
+    
+}
+
+void insert(Serializer& serializer, const MessageFormat::Response& self)
+{
+    insert(serializer, self.desc_set);
+    
+    insert(serializer, self.num_descriptors);
+    
+    for(unsigned int i=0; i < self.num_descriptors; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, MessageFormat::Response& self)
 {
     extract(serializer, self.desc_set);
     
@@ -754,6 +870,22 @@ void extract(Serializer& serializer, NmeaMessageFormat& self)
     
 }
 
+void insert(Serializer& serializer, const NmeaMessageFormat::Response& self)
+{
+    insert(serializer, self.count);
+    
+    for(unsigned int i=0; i < self.count; i++)
+        insert(serializer, self.format_entries[i]);
+    
+}
+void extract(Serializer& serializer, NmeaMessageFormat::Response& self)
+{
+    C::extract_count(&serializer, &self.count, self.count);
+    for(unsigned int i=0; i < self.count; i++)
+        extract(serializer, self.format_entries[i]);
+    
+}
+
 CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NmeaMessage* formatEntries)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -878,6 +1010,17 @@ void extract(Serializer& serializer, UartBaudrate& self)
     
 }
 
+void insert(Serializer& serializer, const UartBaudrate::Response& self)
+{
+    insert(serializer, self.baud);
+    
+}
+void extract(Serializer& serializer, UartBaudrate::Response& self)
+{
+    extract(serializer, self.baud);
+    
+}
+
 CmdResult writeUartBaudrate(C::mip_interface& device, uint32_t baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -986,6 +1129,21 @@ void extract(Serializer& serializer, DatastreamControl& self)
     
 }
 
+void insert(Serializer& serializer, const DatastreamControl::Response& self)
+{
+    insert(serializer, self.desc_set);
+    
+    insert(serializer, self.enabled);
+    
+}
+void extract(Serializer& serializer, DatastreamControl::Response& self)
+{
+    extract(serializer, self.desc_set);
+    
+    extract(serializer, self.enabled);
+    
+}
+
 CmdResult writeDatastreamControl(C::mip_interface& device, uint8_t descSet, bool enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1076,6 +1234,30 @@ void insert(Serializer& serializer, const GnssSbasSettings& self)
     
 }
 void extract(Serializer& serializer, GnssSbasSettings& self)
+{
+    extract(serializer, self.enable_sbas);
+    
+    extract(serializer, self.sbas_options);
+    
+    C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+    for(unsigned int i=0; i < self.num_included_prns; i++)
+        extract(serializer, self.included_prns[i]);
+    
+}
+
+void insert(Serializer& serializer, const GnssSbasSettings::Response& self)
+{
+    insert(serializer, self.enable_sbas);
+    
+    insert(serializer, self.sbas_options);
+    
+    insert(serializer, self.num_included_prns);
+    
+    for(unsigned int i=0; i < self.num_included_prns; i++)
+        insert(serializer, self.included_prns[i]);
+    
+}
+void extract(Serializer& serializer, GnssSbasSettings::Response& self)
 {
     extract(serializer, self.enable_sbas);
     
@@ -1188,6 +1370,25 @@ void extract(Serializer& serializer, GnssTimeAssistance& self)
     
 }
 
+void insert(Serializer& serializer, const GnssTimeAssistance::Response& self)
+{
+    insert(serializer, self.tow);
+    
+    insert(serializer, self.week_number);
+    
+    insert(serializer, self.accuracy);
+    
+}
+void extract(Serializer& serializer, GnssTimeAssistance::Response& self)
+{
+    extract(serializer, self.tow);
+    
+    extract(serializer, self.week_number);
+    
+    extract(serializer, self.accuracy);
+    
+}
+
 CmdResult writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t weekNumber, float accuracy)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1247,6 +1448,33 @@ void insert(Serializer& serializer, const AdvLowpassFilter& self)
     
 }
 void extract(Serializer& serializer, AdvLowpassFilter& self)
+{
+    extract(serializer, self.target_descriptor);
+    
+    extract(serializer, self.enable);
+    
+    extract(serializer, self.manual);
+    
+    extract(serializer, self.frequency);
+    
+    extract(serializer, self.reserved);
+    
+}
+
+void insert(Serializer& serializer, const AdvLowpassFilter::Response& self)
+{
+    insert(serializer, self.target_descriptor);
+    
+    insert(serializer, self.enable);
+    
+    insert(serializer, self.manual);
+    
+    insert(serializer, self.frequency);
+    
+    insert(serializer, self.reserved);
+    
+}
+void extract(Serializer& serializer, AdvLowpassFilter::Response& self)
 {
     extract(serializer, self.target_descriptor);
     
@@ -1363,6 +1591,17 @@ void extract(Serializer& serializer, PpsSource& self)
     
 }
 
+void insert(Serializer& serializer, const PpsSource::Response& self)
+{
+    insert(serializer, self.source);
+    
+}
+void extract(Serializer& serializer, PpsSource::Response& self)
+{
+    extract(serializer, self.source);
+    
+}
+
 CmdResult writePpsSource(C::mip_interface& device, PpsSource::Source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1440,6 +1679,29 @@ void insert(Serializer& serializer, const GpioConfig& self)
     
 }
 void extract(Serializer& serializer, GpioConfig& self)
+{
+    extract(serializer, self.pin);
+    
+    extract(serializer, self.feature);
+    
+    extract(serializer, self.behavior);
+    
+    extract(serializer, self.pin_mode);
+    
+}
+
+void insert(Serializer& serializer, const GpioConfig::Response& self)
+{
+    insert(serializer, self.pin);
+    
+    insert(serializer, self.feature);
+    
+    insert(serializer, self.behavior);
+    
+    insert(serializer, self.pin_mode);
+    
+}
+void extract(Serializer& serializer, GpioConfig::Response& self)
 {
     extract(serializer, self.pin);
     
@@ -1553,6 +1815,21 @@ void extract(Serializer& serializer, GpioState& self)
     
 }
 
+void insert(Serializer& serializer, const GpioState::Response& self)
+{
+    insert(serializer, self.pin);
+    
+    insert(serializer, self.state);
+    
+}
+void extract(Serializer& serializer, GpioState::Response& self)
+{
+    extract(serializer, self.pin);
+    
+    extract(serializer, self.state);
+    
+}
+
 CmdResult writeGpioState(C::mip_interface& device, uint8_t pin, bool state)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1604,6 +1881,25 @@ void insert(Serializer& serializer, const Odometer& self)
     
 }
 void extract(Serializer& serializer, Odometer& self)
+{
+    extract(serializer, self.mode);
+    
+    extract(serializer, self.scaling);
+    
+    extract(serializer, self.uncertainty);
+    
+}
+
+void insert(Serializer& serializer, const Odometer::Response& self)
+{
+    insert(serializer, self.mode);
+    
+    insert(serializer, self.scaling);
+    
+    insert(serializer, self.uncertainty);
+    
+}
+void extract(Serializer& serializer, Odometer::Response& self)
 {
     extract(serializer, self.mode);
     
@@ -1699,6 +1995,30 @@ void extract(Serializer& serializer, GetEventSupport& self)
     
 }
 
+void insert(Serializer& serializer, const GetEventSupport::Response& self)
+{
+    insert(serializer, self.query);
+    
+    insert(serializer, self.max_instances);
+    
+    insert(serializer, self.num_entries);
+    
+    for(unsigned int i=0; i < self.num_entries; i++)
+        insert(serializer, self.entries[i]);
+    
+}
+void extract(Serializer& serializer, GetEventSupport::Response& self)
+{
+    extract(serializer, self.query);
+    
+    extract(serializer, self.max_instances);
+    
+    C::extract_count(&serializer, &self.num_entries, self.num_entries);
+    for(unsigned int i=0; i < self.num_entries; i++)
+        extract(serializer, self.entries[i]);
+    
+}
+
 void insert(Serializer& serializer, const GetEventSupport::Info& self)
 {
     insert(serializer, self.type);
@@ -1754,6 +2074,21 @@ void insert(Serializer& serializer, const EventControl& self)
     
 }
 void extract(Serializer& serializer, EventControl& self)
+{
+    extract(serializer, self.instance);
+    
+    extract(serializer, self.mode);
+    
+}
+
+void insert(Serializer& serializer, const EventControl::Response& self)
+{
+    insert(serializer, self.instance);
+    
+    insert(serializer, self.mode);
+    
+}
+void extract(Serializer& serializer, EventControl::Response& self)
 {
     extract(serializer, self.instance);
     
@@ -1854,6 +2189,22 @@ void extract(Serializer& serializer, GetEventTriggerStatus& self)
     
 }
 
+void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self)
+{
+    insert(serializer, self.count);
+    
+    for(unsigned int i=0; i < self.count; i++)
+        insert(serializer, self.triggers[i]);
+    
+}
+void extract(Serializer& serializer, GetEventTriggerStatus::Response& self)
+{
+    C::extract_count(&serializer, &self.count, self.count);
+    for(unsigned int i=0; i < self.count; i++)
+        extract(serializer, self.triggers[i]);
+    
+}
+
 void insert(Serializer& serializer, const GetEventTriggerStatus::Entry& self)
 {
     insert(serializer, self.type);
@@ -1913,6 +2264,22 @@ void extract(Serializer& serializer, GetEventActionStatus& self)
     C::extract_count(&serializer, &self.requested_count, self.requested_count);
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
+    
+}
+
+void insert(Serializer& serializer, const GetEventActionStatus::Response& self)
+{
+    insert(serializer, self.count);
+    
+    for(unsigned int i=0; i < self.count; i++)
+        insert(serializer, self.actions[i]);
+    
+}
+void extract(Serializer& serializer, GetEventActionStatus::Response& self)
+{
+    C::extract_count(&serializer, &self.count, self.count);
+    for(unsigned int i=0; i < self.count; i++)
+        extract(serializer, self.actions[i]);
     
 }
 
@@ -1985,6 +2352,51 @@ void insert(Serializer& serializer, const EventTrigger& self)
     }
 }
 void extract(Serializer& serializer, EventTrigger& self)
+{
+    extract(serializer, self.instance);
+    
+    extract(serializer, self.type);
+    
+    if( self.type == EventTrigger::Type::GPIO )
+    {
+        extract(serializer, self.parameters.gpio);
+        
+    }
+    if( self.type == EventTrigger::Type::THRESHOLD )
+    {
+        extract(serializer, self.parameters.threshold);
+        
+    }
+    if( self.type == EventTrigger::Type::COMBINATION )
+    {
+        extract(serializer, self.parameters.combination);
+        
+    }
+}
+
+void insert(Serializer& serializer, const EventTrigger::Response& self)
+{
+    insert(serializer, self.instance);
+    
+    insert(serializer, self.type);
+    
+    if( self.type == EventTrigger::Type::GPIO )
+    {
+        insert(serializer, self.parameters.gpio);
+        
+    }
+    if( self.type == EventTrigger::Type::THRESHOLD )
+    {
+        insert(serializer, self.parameters.threshold);
+        
+    }
+    if( self.type == EventTrigger::Type::COMBINATION )
+    {
+        insert(serializer, self.parameters.combination);
+        
+    }
+}
+void extract(Serializer& serializer, EventTrigger::Response& self)
 {
     extract(serializer, self.instance);
     
@@ -2248,6 +2660,45 @@ void extract(Serializer& serializer, EventAction& self)
     }
 }
 
+void insert(Serializer& serializer, const EventAction::Response& self)
+{
+    insert(serializer, self.instance);
+    
+    insert(serializer, self.trigger);
+    
+    insert(serializer, self.type);
+    
+    if( self.type == EventAction::Type::GPIO )
+    {
+        insert(serializer, self.parameters.gpio);
+        
+    }
+    if( self.type == EventAction::Type::MESSAGE )
+    {
+        insert(serializer, self.parameters.message);
+        
+    }
+}
+void extract(Serializer& serializer, EventAction::Response& self)
+{
+    extract(serializer, self.instance);
+    
+    extract(serializer, self.trigger);
+    
+    extract(serializer, self.type);
+    
+    if( self.type == EventAction::Type::GPIO )
+    {
+        extract(serializer, self.parameters.gpio);
+        
+    }
+    if( self.type == EventAction::Type::MESSAGE )
+    {
+        extract(serializer, self.parameters.message);
+        
+    }
+}
+
 void insert(Serializer& serializer, const EventAction::GpioParams& self)
 {
     insert(serializer, self.pin);
@@ -2402,6 +2853,19 @@ void extract(Serializer& serializer, AccelBias& self)
     
 }
 
+void insert(Serializer& serializer, const AccelBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.bias[i]);
+    
+}
+void extract(Serializer& serializer, AccelBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.bias[i]);
+    
+}
+
 CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2477,6 +2941,19 @@ void insert(Serializer& serializer, const GyroBias& self)
     
 }
 void extract(Serializer& serializer, GyroBias& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.bias[i]);
+    
+}
+
+void insert(Serializer& serializer, const GyroBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.bias[i]);
+    
+}
+void extract(Serializer& serializer, GyroBias::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -2562,6 +3039,19 @@ void extract(Serializer& serializer, CaptureGyroBias& self)
     
 }
 
+void insert(Serializer& serializer, const CaptureGyroBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.bias[i]);
+    
+}
+void extract(Serializer& serializer, CaptureGyroBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.bias[i]);
+    
+}
+
 CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2594,6 +3084,19 @@ void insert(Serializer& serializer, const MagHardIronOffset& self)
     
 }
 void extract(Serializer& serializer, MagHardIronOffset& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.offset[i]);
+    
+}
+
+void insert(Serializer& serializer, const MagHardIronOffset::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.offset[i]);
+    
+}
+void extract(Serializer& serializer, MagHardIronOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
@@ -2681,6 +3184,19 @@ void extract(Serializer& serializer, MagSoftIronMatrix& self)
     
 }
 
+void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        insert(serializer, self.offset[i]);
+    
+}
+void extract(Serializer& serializer, MagSoftIronMatrix::Response& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        extract(serializer, self.offset[i]);
+    
+}
+
 CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2759,6 +3275,25 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformEuler& self)
     
 }
 void extract(Serializer& serializer, Sensor2VehicleTransformEuler& self)
+{
+    extract(serializer, self.roll);
+    
+    extract(serializer, self.pitch);
+    
+    extract(serializer, self.yaw);
+    
+}
+
+void insert(Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self)
+{
+    insert(serializer, self.roll);
+    
+    insert(serializer, self.pitch);
+    
+    insert(serializer, self.yaw);
+    
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformEuler::Response& self)
 {
     extract(serializer, self.roll);
     
@@ -2856,6 +3391,19 @@ void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self)
     
 }
 
+void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self)
+{
+    for(unsigned int i=0; i < 4; i++)
+        insert(serializer, self.q[i]);
+    
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self)
+{
+    for(unsigned int i=0; i < 4; i++)
+        extract(serializer, self.q[i]);
+    
+}
+
 CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2931,6 +3479,19 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformDcm& self)
     
 }
 void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        extract(serializer, self.dcm[i]);
+    
+}
+
+void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        insert(serializer, self.dcm[i]);
+    
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.dcm[i]);
@@ -3017,6 +3578,29 @@ void insert(Serializer& serializer, const ComplementaryFilter& self)
     
 }
 void extract(Serializer& serializer, ComplementaryFilter& self)
+{
+    extract(serializer, self.pitch_roll_enable);
+    
+    extract(serializer, self.heading_enable);
+    
+    extract(serializer, self.pitch_roll_time_constant);
+    
+    extract(serializer, self.heading_time_constant);
+    
+}
+
+void insert(Serializer& serializer, const ComplementaryFilter::Response& self)
+{
+    insert(serializer, self.pitch_roll_enable);
+    
+    insert(serializer, self.heading_enable);
+    
+    insert(serializer, self.pitch_roll_time_constant);
+    
+    insert(serializer, self.heading_time_constant);
+    
+}
+void extract(Serializer& serializer, ComplementaryFilter::Response& self)
 {
     extract(serializer, self.pitch_roll_enable);
     
@@ -3123,6 +3707,21 @@ void extract(Serializer& serializer, SensorRange& self)
     
 }
 
+void insert(Serializer& serializer, const SensorRange::Response& self)
+{
+    insert(serializer, self.sensor);
+    
+    insert(serializer, self.setting);
+    
+}
+void extract(Serializer& serializer, SensorRange::Response& self)
+{
+    extract(serializer, self.sensor);
+    
+    extract(serializer, self.setting);
+    
+}
+
 CmdResult writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3208,6 +3807,26 @@ void insert(Serializer& serializer, const CalibratedSensorRanges& self)
 void extract(Serializer& serializer, CalibratedSensorRanges& self)
 {
     extract(serializer, self.sensor);
+    
+}
+
+void insert(Serializer& serializer, const CalibratedSensorRanges::Response& self)
+{
+    insert(serializer, self.sensor);
+    
+    insert(serializer, self.num_ranges);
+    
+    for(unsigned int i=0; i < self.num_ranges; i++)
+        insert(serializer, self.ranges[i]);
+    
+}
+void extract(Serializer& serializer, CalibratedSensorRanges::Response& self)
+{
+    extract(serializer, self.sensor);
+    
+    C::extract_count(&serializer, &self.num_ranges, self.num_ranges);
+    for(unsigned int i=0; i < self.num_ranges; i++)
+        extract(serializer, self.ranges[i]);
     
 }
 

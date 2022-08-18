@@ -165,6 +165,17 @@ void extract_mip_rtk_connected_device_type_command(struct mip_serializer* serial
     
 }
 
+void insert_mip_rtk_connected_device_type_response(struct mip_serializer* serializer, const struct mip_rtk_connected_device_type_response* self)
+{
+    insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
+    
+}
+void extract_mip_rtk_connected_device_type_response(struct mip_serializer* serializer, struct mip_rtk_connected_device_type_response* self)
+{
+    extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
+    
+}
+
 void insert_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, const enum mip_rtk_connected_device_type_command_type self)
 {
     return insert_u8(serializer, (uint8_t)(self));
@@ -332,6 +343,29 @@ void extract_mip_rtk_service_status_command(struct mip_serializer* serializer, s
     extract_u32(serializer, &self->reserved1);
     
     extract_u32(serializer, &self->reserved2);
+    
+}
+
+void insert_mip_rtk_service_status_response(struct mip_serializer* serializer, const struct mip_rtk_service_status_response* self)
+{
+    insert_mip_rtk_service_status_command_service_flags(serializer, self->flags);
+    
+    insert_u32(serializer, self->recievedBytes);
+    
+    insert_u32(serializer, self->lastBytes);
+    
+    insert_u64(serializer, self->lastBytesTime);
+    
+}
+void extract_mip_rtk_service_status_response(struct mip_serializer* serializer, struct mip_rtk_service_status_response* self)
+{
+    extract_mip_rtk_service_status_command_service_flags(serializer, &self->flags);
+    
+    extract_u32(serializer, &self->recievedBytes);
+    
+    extract_u32(serializer, &self->lastBytes);
+    
+    extract_u64(serializer, &self->lastBytesTime);
     
 }
 

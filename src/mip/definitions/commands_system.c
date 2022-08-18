@@ -38,6 +38,17 @@ void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, str
     
 }
 
+void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self)
+{
+    insert_u8(serializer, self->mode);
+    
+}
+void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, struct mip_system_comm_mode_response* self)
+{
+    extract_u8(serializer, &self->mode);
+    
+}
+
 enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
 {
     struct mip_serializer serializer;

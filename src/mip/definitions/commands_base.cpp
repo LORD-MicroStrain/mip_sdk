@@ -111,6 +111,17 @@ void extract(Serializer& serializer, GetDeviceInfo& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetDeviceInfo::Response& self)
+{
+    insert(serializer, self.device_info);
+    
+}
+void extract(Serializer& serializer, GetDeviceInfo::Response& self)
+{
+    extract(serializer, self.device_info);
+    
+}
+
 CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -139,6 +150,19 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self)
+{
+    for(unsigned int i=0; i < self.descriptors_count; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, GetDeviceDescriptors::Response& self)
+{
+    for(unsigned int i=0; i < self.descriptors_count; i++)
+        extract(serializer, self.descriptors[i]);
+    
 }
 
 CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
@@ -170,6 +194,17 @@ void extract(Serializer& serializer, BuiltInTest& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const BuiltInTest::Response& self)
+{
+    insert(serializer, self.result);
+    
+}
+void extract(Serializer& serializer, BuiltInTest::Response& self)
+{
+    extract(serializer, self.result);
+    
 }
 
 CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut)
@@ -217,6 +252,19 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self)
+{
+    for(unsigned int i=0; i < self.descriptors_count; i++)
+        insert(serializer, self.descriptors[i]);
+    
+}
+void extract(Serializer& serializer, GetExtendedDescriptors::Response& self)
+{
+    for(unsigned int i=0; i < self.descriptors_count; i++)
+        extract(serializer, self.descriptors[i]);
+    
+}
+
 CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -248,6 +296,19 @@ void extract(Serializer& serializer, ContinuousBit& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const ContinuousBit::Response& self)
+{
+    for(unsigned int i=0; i < 16; i++)
+        insert(serializer, self.result[i]);
+    
+}
+void extract(Serializer& serializer, ContinuousBit::Response& self)
+{
+    for(unsigned int i=0; i < 16; i++)
+        extract(serializer, self.result[i]);
+    
+}
+
 CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -276,6 +337,21 @@ void insert(Serializer& serializer, const CommSpeed& self)
     
 }
 void extract(Serializer& serializer, CommSpeed& self)
+{
+    extract(serializer, self.port);
+    
+    extract(serializer, self.baud);
+    
+}
+
+void insert(Serializer& serializer, const CommSpeed::Response& self)
+{
+    insert(serializer, self.port);
+    
+    insert(serializer, self.baud);
+    
+}
+void extract(Serializer& serializer, CommSpeed::Response& self)
 {
     extract(serializer, self.port);
     

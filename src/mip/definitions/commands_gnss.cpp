@@ -40,6 +40,22 @@ void extract(Serializer& serializer, ReceiverInfo& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const ReceiverInfo::Response& self)
+{
+    insert(serializer, self.num_receivers);
+    
+    for(unsigned int i=0; i < self.num_receivers; i++)
+        insert(serializer, self.receiver_info[i]);
+    
+}
+void extract(Serializer& serializer, ReceiverInfo::Response& self)
+{
+    C::extract_count(&serializer, &self.num_receivers, self.num_receivers);
+    for(unsigned int i=0; i < self.num_receivers; i++)
+        extract(serializer, self.receiver_info[i]);
+    
+}
+
 void insert(Serializer& serializer, const ReceiverInfo::Info& self)
 {
     insert(serializer, self.receiver_id);
@@ -98,6 +114,35 @@ void insert(Serializer& serializer, const SignalConfiguration& self)
     
 }
 void extract(Serializer& serializer, SignalConfiguration& self)
+{
+    extract(serializer, self.gps_enable);
+    
+    extract(serializer, self.glonass_enable);
+    
+    extract(serializer, self.galileo_enable);
+    
+    extract(serializer, self.beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        extract(serializer, self.reserved[i]);
+    
+}
+
+void insert(Serializer& serializer, const SignalConfiguration::Response& self)
+{
+    insert(serializer, self.gps_enable);
+    
+    insert(serializer, self.glonass_enable);
+    
+    insert(serializer, self.galileo_enable);
+    
+    insert(serializer, self.beidou_enable);
+    
+    for(unsigned int i=0; i < 4; i++)
+        insert(serializer, self.reserved[i]);
+    
+}
+void extract(Serializer& serializer, SignalConfiguration::Response& self)
 {
     extract(serializer, self.gps_enable);
     
@@ -209,6 +254,23 @@ void insert(Serializer& serializer, const RtkDongleConfiguration& self)
     
 }
 void extract(Serializer& serializer, RtkDongleConfiguration& self)
+{
+    extract(serializer, self.enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.reserved[i]);
+    
+}
+
+void insert(Serializer& serializer, const RtkDongleConfiguration::Response& self)
+{
+    insert(serializer, self.enable);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.reserved[i]);
+    
+}
+void extract(Serializer& serializer, RtkDongleConfiguration::Response& self)
 {
     extract(serializer, self.enable);
     
