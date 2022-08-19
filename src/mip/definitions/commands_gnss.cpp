@@ -101,6 +101,8 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
 }
 void insert(Serializer& serializer, const SignalConfiguration& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.gps_enable);
     
     insert(serializer, self.glonass_enable);
@@ -115,6 +117,8 @@ void insert(Serializer& serializer, const SignalConfiguration& self)
 }
 void extract(Serializer& serializer, SignalConfiguration& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.gps_enable);
     
     extract(serializer, self.glonass_enable);
@@ -247,6 +251,8 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const RtkDongleConfiguration& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
     for(unsigned int i=0; i < 3; i++)
@@ -255,6 +261,8 @@ void insert(Serializer& serializer, const RtkDongleConfiguration& self)
 }
 void extract(Serializer& serializer, RtkDongleConfiguration& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
     for(unsigned int i=0; i < 3; i++)

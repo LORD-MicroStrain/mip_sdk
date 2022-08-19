@@ -331,6 +331,8 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut)
 }
 void insert(Serializer& serializer, const CommSpeed& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.port);
     
     insert(serializer, self.baud);
@@ -338,6 +340,8 @@ void insert(Serializer& serializer, const CommSpeed& self)
 }
 void extract(Serializer& serializer, CommSpeed& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.port);
     
     extract(serializer, self.baud);
@@ -438,6 +442,8 @@ CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
 }
 void insert(Serializer& serializer, const GpsTimeUpdate& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.field_id);
     
     insert(serializer, self.value);
@@ -445,6 +451,8 @@ void insert(Serializer& serializer, const GpsTimeUpdate& self)
 }
 void extract(Serializer& serializer, GpsTimeUpdate& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.field_id);
     
     extract(serializer, self.value);

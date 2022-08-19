@@ -204,11 +204,15 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut)
 }
 void insert(Serializer& serializer, const ConnectedDeviceType& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.devType);
     
 }
 void extract(Serializer& serializer, ConnectedDeviceType& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.devType);
     
 }

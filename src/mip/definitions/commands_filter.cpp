@@ -80,11 +80,15 @@ CmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, 
 }
 void insert(Serializer& serializer, const EstimationControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
 }
 void extract(Serializer& serializer, EstimationControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
 }
@@ -323,11 +327,15 @@ CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime
 }
 void insert(Serializer& serializer, const TareOrientation& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.axes);
     
 }
 void extract(Serializer& serializer, TareOrientation& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.axes);
     
 }
@@ -410,6 +418,8 @@ CmdResult defaultTareOrientation(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.roll);
     
     insert(serializer, self.pitch);
@@ -419,6 +429,8 @@ void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self)
 }
 void extract(Serializer& serializer, SensorToVehicleRotationEuler& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.roll);
     
     extract(serializer, self.pitch);
@@ -523,12 +535,16 @@ CmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const SensorToVehicleRotationDcm& self)
 {
+    insert(serializer, self.function);
+    
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.dcm[i]);
     
 }
 void extract(Serializer& serializer, SensorToVehicleRotationDcm& self)
 {
+    extract(serializer, self.function);
+    
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.dcm[i]);
     
@@ -617,12 +633,16 @@ CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion& self)
 {
+    insert(serializer, self.function);
+    
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.quat[i]);
     
 }
 void extract(Serializer& serializer, SensorToVehicleRotationQuaternion& self)
 {
+    extract(serializer, self.function);
+    
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.quat[i]);
     
@@ -711,12 +731,16 @@ CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const SensorToVehicleOffset& self)
 {
+    insert(serializer, self.function);
+    
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
     
 }
 void extract(Serializer& serializer, SensorToVehicleOffset& self)
 {
+    extract(serializer, self.function);
+    
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
     
@@ -805,12 +829,16 @@ CmdResult defaultSensorToVehicleOffset(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AntennaOffset& self)
 {
+    insert(serializer, self.function);
+    
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
     
 }
 void extract(Serializer& serializer, AntennaOffset& self)
 {
+    extract(serializer, self.function);
+    
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
     
@@ -899,11 +927,15 @@ CmdResult defaultAntennaOffset(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GnssSource& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.source);
     
 }
 void extract(Serializer& serializer, GnssSource& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.source);
     
 }
@@ -986,11 +1018,15 @@ CmdResult defaultGnssSource(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const HeadingSource& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.source);
     
 }
 void extract(Serializer& serializer, HeadingSource& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.source);
     
 }
@@ -1073,11 +1109,15 @@ CmdResult defaultHeadingSource(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AutoInitControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
 }
 void extract(Serializer& serializer, AutoInitControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
 }
@@ -1160,11 +1200,15 @@ CmdResult defaultAutoInitControl(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AltitudeAiding& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.aiding_selector);
     
 }
 void extract(Serializer& serializer, AltitudeAiding& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.aiding_selector);
     
 }
@@ -1247,6 +1291,8 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AutoZupt& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
     insert(serializer, self.threshold);
@@ -1254,6 +1300,8 @@ void insert(Serializer& serializer, const AutoZupt& self)
 }
 void extract(Serializer& serializer, AutoZupt& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
     extract(serializer, self.threshold);
@@ -1347,6 +1395,8 @@ CmdResult defaultAutoZupt(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AutoAngularZupt& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
     insert(serializer, self.threshold);
@@ -1354,6 +1404,8 @@ void insert(Serializer& serializer, const AutoAngularZupt& self)
 }
 void extract(Serializer& serializer, AutoAngularZupt& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
     extract(serializer, self.threshold);
@@ -1477,6 +1529,8 @@ CmdResult commandedAngularZupt(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AidingMeasurementEnable& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.aiding_source);
     
     insert(serializer, self.enable);
@@ -1484,6 +1538,8 @@ void insert(Serializer& serializer, const AidingMeasurementEnable& self)
 }
 void extract(Serializer& serializer, AidingMeasurementEnable& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.aiding_source);
     
     extract(serializer, self.enable);
@@ -1599,6 +1655,8 @@ CmdResult run(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const KinematicConstraint& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.acceleration_constraint_selection);
     
     insert(serializer, self.velocity_constraint_selection);
@@ -1608,6 +1666,8 @@ void insert(Serializer& serializer, const KinematicConstraint& self)
 }
 void extract(Serializer& serializer, KinematicConstraint& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.acceleration_constraint_selection);
     
     extract(serializer, self.velocity_constraint_selection);
@@ -1712,6 +1772,8 @@ CmdResult defaultKinematicConstraint(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const InitializationConfiguration& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.wait_for_run_command);
     
     insert(serializer, self.initial_cond_src);
@@ -1735,6 +1797,8 @@ void insert(Serializer& serializer, const InitializationConfiguration& self)
 }
 void extract(Serializer& serializer, InitializationConfiguration& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.wait_for_run_command);
     
     extract(serializer, self.initial_cond_src);
@@ -1917,6 +1981,8 @@ CmdResult defaultInitializationConfiguration(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const AdaptiveFilterOptions& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.level);
     
     insert(serializer, self.time_limit);
@@ -1924,6 +1990,8 @@ void insert(Serializer& serializer, const AdaptiveFilterOptions& self)
 }
 void extract(Serializer& serializer, AdaptiveFilterOptions& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.level);
     
     extract(serializer, self.time_limit);
@@ -2017,6 +2085,8 @@ CmdResult defaultAdaptiveFilterOptions(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const MultiAntennaOffset& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.receiver_id);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2025,6 +2095,8 @@ void insert(Serializer& serializer, const MultiAntennaOffset& self)
 }
 void extract(Serializer& serializer, MultiAntennaOffset& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.receiver_id);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2131,6 +2203,8 @@ CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId
 }
 void insert(Serializer& serializer, const RelPosConfiguration& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.source);
     
     insert(serializer, self.reference_frame_selector);
@@ -2141,6 +2215,8 @@ void insert(Serializer& serializer, const RelPosConfiguration& self)
 }
 void extract(Serializer& serializer, RelPosConfiguration& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.source);
     
     extract(serializer, self.reference_frame_selector);
@@ -2251,6 +2327,8 @@ CmdResult defaultRelPosConfiguration(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const RefPointLeverArm& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.ref_point_sel);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2259,6 +2337,8 @@ void insert(Serializer& serializer, const RefPointLeverArm& self)
 }
 void extract(Serializer& serializer, RefPointLeverArm& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.ref_point_sel);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2398,6 +2478,8 @@ CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeO
 }
 void insert(Serializer& serializer, const SpeedLeverArm& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.source);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2406,6 +2488,8 @@ void insert(Serializer& serializer, const SpeedLeverArm& self)
 }
 void extract(Serializer& serializer, SpeedLeverArm& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.source);
     
     for(unsigned int i=0; i < 3; i++)
@@ -2512,11 +2596,15 @@ CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source)
 }
 void insert(Serializer& serializer, const WheeledVehicleConstraintControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
 }
 void extract(Serializer& serializer, WheeledVehicleConstraintControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
 }
@@ -2599,11 +2687,15 @@ CmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const VerticalGyroConstraintControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
 }
 void extract(Serializer& serializer, VerticalGyroConstraintControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
 }
@@ -2686,6 +2778,8 @@ CmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GnssAntennaCalControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.enable);
     
     insert(serializer, self.max_offset);
@@ -2693,6 +2787,8 @@ void insert(Serializer& serializer, const GnssAntennaCalControl& self)
 }
 void extract(Serializer& serializer, GnssAntennaCalControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.enable);
     
     extract(serializer, self.max_offset);
@@ -2786,6 +2882,8 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const MagneticDeclinationSource& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.source);
     
     insert(serializer, self.declination);
@@ -2793,6 +2891,8 @@ void insert(Serializer& serializer, const MagneticDeclinationSource& self)
 }
 void extract(Serializer& serializer, MagneticDeclinationSource& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.source);
     
     extract(serializer, self.declination);
