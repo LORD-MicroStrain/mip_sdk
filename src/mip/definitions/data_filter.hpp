@@ -247,10 +247,10 @@ struct PositionLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double latitude;
-    double longitude;
-    double ellipsoid_height;
-    uint16_t valid_flags;
+    double latitude = 0;
+    double longitude = 0;
+    double ellipsoid_height = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const PositionLlh& self);
@@ -271,10 +271,10 @@ struct VelocityNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north = 0;
+    float east = 0;
+    float down = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const VelocityNed& self);
@@ -303,8 +303,8 @@ struct AttitudeQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4];
-    uint16_t valid_flags;
+    float q[4] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AttitudeQuaternion& self);
@@ -335,8 +335,8 @@ struct AttitudeDcm
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float dcm[9];
-    uint16_t valid_flags;
+    float dcm[9] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AttitudeDcm& self);
@@ -358,10 +358,10 @@ struct EulerAngles
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll;
-    float pitch;
-    float yaw;
-    uint16_t valid_flags;
+    float roll = 0;
+    float pitch = 0;
+    float yaw = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EulerAngles& self);
@@ -382,8 +382,8 @@ struct GyroBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GyroBias& self);
@@ -404,8 +404,8 @@ struct AccelBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AccelBias& self);
@@ -426,10 +426,10 @@ struct PositionLlhUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north = 0;
+    float east = 0;
+    float down = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const PositionLlhUncertainty& self);
@@ -450,10 +450,10 @@ struct VelocityNedUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north = 0;
+    float east = 0;
+    float down = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const VelocityNedUncertainty& self);
@@ -475,10 +475,10 @@ struct EulerAnglesUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll;
-    float pitch;
-    float yaw;
-    uint16_t valid_flags;
+    float roll = 0;
+    float pitch = 0;
+    float yaw = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EulerAnglesUncertainty& self);
@@ -499,8 +499,8 @@ struct GyroBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GyroBiasUncertainty& self);
@@ -521,8 +521,8 @@ struct AccelBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AccelBiasUncertainty& self);
@@ -549,9 +549,9 @@ struct Timestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double tow;
-    uint16_t week_number;
-    uint16_t valid_flags;
+    double tow = 0;
+    uint16_t week_number = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const Timestamp& self);
@@ -572,8 +572,8 @@ struct Status
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    FilterMode filter_state;
-    FilterDynamicsMode dynamics_mode;
+    FilterMode filter_state = static_cast<FilterMode>(0);
+    FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0);
     FilterStatusFlags status_flags;
     
 };
@@ -596,8 +596,8 @@ struct LinearAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float accel[3];
-    uint16_t valid_flags;
+    float accel[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const LinearAccel& self);
@@ -618,8 +618,8 @@ struct GravityVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float gravity[3];
-    uint16_t valid_flags;
+    float gravity[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GravityVector& self);
@@ -640,8 +640,8 @@ struct CompAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float accel[3];
-    uint16_t valid_flags;
+    float accel[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const CompAccel& self);
@@ -662,8 +662,8 @@ struct CompAngularRate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float gyro[3];
-    uint16_t valid_flags;
+    float gyro[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const CompAngularRate& self);
@@ -684,8 +684,8 @@ struct QuaternionAttitudeUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4];
-    uint16_t valid_flags;
+    float q[4] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self);
@@ -706,8 +706,8 @@ struct Wgs84GravityMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float magnitude;
-    uint16_t valid_flags;
+    float magnitude = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const Wgs84GravityMag& self);
@@ -740,10 +740,10 @@ struct HeadingUpdateState
         DUAL_ANTENNA         = 8,  ///<  
     };
     
-    float heading;
-    float heading_1sigma;
-    HeadingSource source;
-    uint16_t valid_flags;
+    float heading = 0;
+    float heading_1sigma = 0;
+    HeadingSource source = static_cast<HeadingSource>(0);
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const HeadingUpdateState& self);
@@ -765,12 +765,12 @@ struct MagneticModel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float intensity_north;
-    float intensity_east;
-    float intensity_down;
-    float inclination;
-    float declination;
-    uint16_t valid_flags;
+    float intensity_north = 0;
+    float intensity_east = 0;
+    float intensity_down = 0;
+    float inclination = 0;
+    float declination = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagneticModel& self);
@@ -791,8 +791,8 @@ struct AccelScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor[3];
-    uint16_t valid_flags;
+    float scale_factor[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AccelScaleFactor& self);
@@ -813,8 +813,8 @@ struct AccelScaleFactorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_uncert[3];
-    uint16_t valid_flags;
+    float scale_factor_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self);
@@ -835,8 +835,8 @@ struct GyroScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor[3];
-    uint16_t valid_flags;
+    float scale_factor[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GyroScaleFactor& self);
@@ -857,8 +857,8 @@ struct GyroScaleFactorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_uncert[3];
-    uint16_t valid_flags;
+    float scale_factor_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self);
@@ -879,8 +879,8 @@ struct MagBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagBias& self);
@@ -901,8 +901,8 @@ struct MagBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagBiasUncertainty& self);
@@ -925,12 +925,12 @@ struct StandardAtmosphere
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float geometric_altitude;
-    float geopotential_altitude;
-    float standard_temperature;
-    float standard_pressure;
-    float standard_density;
-    uint16_t valid_flags;
+    float geometric_altitude = 0;
+    float geopotential_altitude = 0;
+    float standard_temperature = 0;
+    float standard_pressure = 0;
+    float standard_density = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const StandardAtmosphere& self);
@@ -955,8 +955,8 @@ struct PressureAltitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float pressure_altitude;
-    uint16_t valid_flags;
+    float pressure_altitude = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const PressureAltitude& self);
@@ -976,8 +976,8 @@ struct DensityAltitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float density_altitude;
-    uint16_t valid_flags;
+    float density_altitude = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const DensityAltitude& self);
@@ -1000,8 +1000,8 @@ struct AntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float offset[3];
-    uint16_t valid_flags;
+    float offset[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AntennaOffsetCorrection& self);
@@ -1022,8 +1022,8 @@ struct AntennaOffsetCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float offset_uncert[3];
-    uint16_t valid_flags;
+    float offset_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self);
@@ -1046,9 +1046,9 @@ struct MultiAntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    float offset[3];
-    uint16_t valid_flags;
+    uint8_t receiver_id = 0;
+    float offset[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self);
@@ -1069,9 +1069,9 @@ struct MultiAntennaOffsetCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    float offset_uncert[3];
-    uint16_t valid_flags;
+    uint8_t receiver_id = 0;
+    float offset_uncert[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self);
@@ -1094,8 +1094,8 @@ struct MagnetometerOffset
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float hard_iron[3];
-    uint16_t valid_flags;
+    float hard_iron[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerOffset& self);
@@ -1118,8 +1118,8 @@ struct MagnetometerMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float soft_iron[9];
-    uint16_t valid_flags;
+    float soft_iron[9] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerMatrix& self);
@@ -1140,8 +1140,8 @@ struct MagnetometerOffsetUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float hard_iron_uncertainty[3];
-    uint16_t valid_flags;
+    float hard_iron_uncertainty[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self);
@@ -1162,8 +1162,8 @@ struct MagnetometerMatrixUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float soft_iron_uncertainty[9];
-    uint16_t valid_flags;
+    float soft_iron_uncertainty[9] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self);
@@ -1183,8 +1183,8 @@ struct MagnetometerCovarianceMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float covariance[9];
-    uint16_t valid_flags;
+    float covariance[9] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self);
@@ -1205,8 +1205,8 @@ struct MagnetometerResidualVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float residual[3];
-    uint16_t valid_flags;
+    float residual[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const MagnetometerResidualVector& self);
@@ -1227,10 +1227,10 @@ struct ClockCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    float bias;
-    float bias_drift;
-    uint16_t valid_flags;
+    uint8_t receiver_id = 0;
+    float bias = 0;
+    float bias_drift = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const ClockCorrection& self);
@@ -1251,10 +1251,10 @@ struct ClockCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    float bias_uncertainty;
-    float bias_drift_uncertainty;
-    uint16_t valid_flags;
+    uint8_t receiver_id = 0;
+    float bias_uncertainty = 0;
+    float bias_drift_uncertainty = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const ClockCorrectionUncertainty& self);
@@ -1275,10 +1275,10 @@ struct GnssPosAidStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    float time_of_week;
+    uint8_t receiver_id = 0;
+    float time_of_week = 0;
     GnssAidStatusFlags status;
-    uint8_t reserved[8];
+    uint8_t reserved[8] = {0};
     
 };
 void insert(Serializer& serializer, const GnssPosAidStatus& self);
@@ -1299,9 +1299,9 @@ struct GnssAttAidStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float time_of_week;
+    float time_of_week = 0;
     GnssAidStatusFlags status;
-    uint8_t reserved[8];
+    uint8_t reserved[8] = {0};
     
 };
 void insert(Serializer& serializer, const GnssAttAidStatus& self);
@@ -1328,9 +1328,9 @@ struct HeadAidStatus
         EXTERNAL_MESSAGE = 2,  ///<  
     };
     
-    float time_of_week;
-    HeadingAidType type;
-    float reserved[2];
+    float time_of_week = 0;
+    HeadingAidType type = static_cast<HeadingAidType>(0);
+    float reserved[2] = {0};
     
 };
 void insert(Serializer& serializer, const HeadAidStatus& self);
@@ -1351,8 +1351,8 @@ struct RelPosNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double relative_position[3];
-    uint16_t valid_flags;
+    double relative_position[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const RelPosNed& self);
@@ -1373,8 +1373,8 @@ struct EcefPos
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double position_ecef[3];
-    uint16_t valid_flags;
+    double position_ecef[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EcefPos& self);
@@ -1395,8 +1395,8 @@ struct EcefVel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float velocity_ecef[3];
-    uint16_t valid_flags;
+    float velocity_ecef[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EcefVel& self);
@@ -1417,8 +1417,8 @@ struct EcefPosUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float pos_uncertainty[3];
-    uint16_t valid_flags;
+    float pos_uncertainty[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EcefPosUncertainty& self);
@@ -1439,8 +1439,8 @@ struct EcefVelUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float vel_uncertainty[3];
-    uint16_t valid_flags;
+    float vel_uncertainty[3] = {0};
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const EcefVelUncertainty& self);
@@ -1461,9 +1461,9 @@ struct AidingMeasurementSummary
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float time_of_week;
-    uint8_t source;
-    FilterAidingMeasurementType type;
+    float time_of_week = 0;
+    uint8_t source = 0;
+    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0);
     FilterMeasurementIndicator indicator;
     
 };
@@ -1485,8 +1485,8 @@ struct OdometerScaleFactorError
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_error;
-    uint16_t valid_flags;
+    float scale_factor_error = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const OdometerScaleFactorError& self);
@@ -1507,8 +1507,8 @@ struct OdometerScaleFactorErrorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_error_uncertainty;
-    uint16_t valid_flags;
+    float scale_factor_error_uncertainty = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const OdometerScaleFactorErrorUncertainty& self);
@@ -1556,12 +1556,12 @@ struct GnssDualAntennaStatus
         DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float time_of_week;
-    float heading;
-    float heading_unc;
-    FixType fix_type;
+    float time_of_week = 0;
+    float heading = 0;
+    float heading_unc = 0;
+    FixType fix_type = static_cast<FixType>(0);
     DualAntennaStatusFlags status_flags;
-    uint16_t valid_flags;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);

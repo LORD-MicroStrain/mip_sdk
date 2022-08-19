@@ -78,7 +78,7 @@ struct BuiltInTest
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t result[16];
+    uint8_t result[16] = {0};
     
 };
 void insert(Serializer& serializer, const BuiltInTest& self);
@@ -99,8 +99,8 @@ struct TimeSyncStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool time_sync;
-    uint8_t last_pps_rcvd;
+    bool time_sync = 0;
+    uint8_t last_pps_rcvd = 0;
     
 };
 void insert(Serializer& serializer, const TimeSyncStatus& self);
@@ -139,7 +139,7 @@ struct GpioState
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t states;
+    uint8_t states = 0;
     
 };
 void insert(Serializer& serializer, const GpioState& self);
@@ -161,8 +161,8 @@ struct GpioAnalogValue
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t gpio_id;
-    float value;
+    uint8_t gpio_id = 0;
+    float value = 0;
     
 };
 void insert(Serializer& serializer, const GpioAnalogValue& self);

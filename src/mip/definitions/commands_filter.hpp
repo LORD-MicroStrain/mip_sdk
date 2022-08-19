@@ -220,9 +220,9 @@ struct SetInitialAttitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll;
-    float pitch;
-    float heading;
+    float roll = 0;
+    float pitch = 0;
+    float heading = 0;
     
 };
 void insert(Serializer& serializer, const SetInitialAttitude& self);
@@ -282,7 +282,7 @@ struct EstimationControl
         EnableFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    FunctionSelector function;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
     EnableFlags enable;
     
     struct Response
@@ -324,14 +324,14 @@ struct ExternalGnssUpdate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double gps_time;
-    uint16_t gps_week;
-    double latitude;
-    double longitude;
-    double height;
-    float velocity[3];
-    float pos_uncertainty[3];
-    float vel_uncertainty[3];
+    double gps_time = 0;
+    uint16_t gps_week = 0;
+    double latitude = 0;
+    double longitude = 0;
+    double height = 0;
+    float velocity[3] = {0};
+    float pos_uncertainty[3] = {0};
+    float vel_uncertainty[3] = {0};
     
 };
 void insert(Serializer& serializer, const ExternalGnssUpdate& self);
@@ -365,9 +365,9 @@ struct ExternalHeadingUpdate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float heading;
-    float heading_uncertainty;
-    uint8_t type;
+    float heading = 0;
+    float heading_uncertainty = 0;
+    uint8_t type = 0;
     
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdate& self);
@@ -405,11 +405,11 @@ struct ExternalHeadingUpdateWithTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double gps_time;
-    uint16_t gps_week;
-    float heading;
-    float heading_uncertainty;
-    uint8_t type;
+    double gps_time = 0;
+    uint16_t gps_week = 0;
+    float heading = 0;
+    float heading_uncertainty = 0;
+    uint8_t type = 0;
     
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
@@ -459,7 +459,7 @@ struct TareOrientation
         MipTareAxes& operator&=(uint8_t val) { return *this = value & val; }
     };
     
-    FunctionSelector function;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
     MipTareAxes axes;
     
     struct Response
@@ -523,19 +523,19 @@ struct SensorToVehicleRotationEuler
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float roll;
-    float pitch;
-    float yaw;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float roll = 0;
+    float pitch = 0;
+    float yaw = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_EULER;
         
-        float roll;
-        float pitch;
-        float yaw;
+        float roll = 0;
+        float pitch = 0;
+        float yaw = 0;
         
     };
 };
@@ -597,15 +597,15 @@ struct SensorToVehicleRotationDcm
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float dcm[9];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float dcm[9] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_DCM;
         
-        float dcm[9];
+        float dcm[9] = {0};
         
     };
 };
@@ -666,15 +666,15 @@ struct SensorToVehicleRotationQuaternion
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float quat[4];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float quat[4] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION;
         
-        float quat[4];
+        float quat[4] = {0};
         
     };
 };
@@ -716,15 +716,15 @@ struct SensorToVehicleOffset
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_OFFSET;
         
-        float offset[3];
+        float offset[3] = {0};
         
     };
 };
@@ -763,15 +763,15 @@ struct AntennaOffset
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_OFFSET;
         
-        float offset[3];
+        float offset[3] = {0};
         
     };
 };
@@ -817,15 +817,15 @@ struct GnssSource
         INT_2   = 4,  ///<  Internal GNSS Receiver 2 only
     };
     
-    FunctionSelector function;
-    Source source;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    Source source = static_cast<Source>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GNSS_SOURCE_CONTROL;
         
-        Source source;
+        Source source = static_cast<Source>(0);
         
     };
 };
@@ -882,15 +882,15 @@ struct HeadingSource
         GNSS_VEL_AND_MAG_AND_EXTERNAL = 7,  ///<  
     };
     
-    FunctionSelector function;
-    Source source;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    Source source = static_cast<Source>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_HEADING_UPDATE_CONTROL;
         
-        Source source;
+        Source source = static_cast<Source>(0);
         
     };
 };
@@ -932,15 +932,15 @@ struct AutoInitControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AUTOINIT_CONTROL;
         
-        uint8_t enable;
+        uint8_t enable = 0;
         
     };
 };
@@ -985,15 +985,15 @@ struct AltitudeAiding
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t aiding_selector;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t aiding_selector = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ALTITUDE_AIDING_CONTROL;
         
-        uint8_t aiding_selector;
+        uint8_t aiding_selector = 0;
         
     };
 };
@@ -1029,17 +1029,17 @@ struct AutoZupt
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
-    float threshold;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
+    float threshold = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ZUPT_CONTROL;
         
-        uint8_t enable;
-        float threshold;
+        uint8_t enable = 0;
+        float threshold = 0;
         
     };
 };
@@ -1075,17 +1075,17 @@ struct AutoAngularZupt
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
-    float threshold;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
+    float threshold = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANGULAR_ZUPT_CONTROL;
         
-        uint8_t enable;
-        float threshold;
+        uint8_t enable = 0;
+        float threshold = 0;
         
     };
 };
@@ -1176,17 +1176,17 @@ struct AidingMeasurementEnable
         ALL              = 65535,  ///<  Save/load/reset all options
     };
     
-    FunctionSelector function;
-    AidingSource aiding_source;
-    bool enable;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    AidingSource aiding_source = static_cast<AidingSource>(0);
+    bool enable = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AIDING_MEASUREMENT_ENABLE;
         
-        AidingSource aiding_source;
-        bool enable;
+        AidingSource aiding_source = static_cast<AidingSource>(0);
+        bool enable = 0;
         
     };
 };
@@ -1245,19 +1245,19 @@ struct KinematicConstraint
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t acceleration_constraint_selection;
-    uint8_t velocity_constraint_selection;
-    uint8_t angular_constraint_selection;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t acceleration_constraint_selection = 0;
+    uint8_t velocity_constraint_selection = 0;
+    uint8_t angular_constraint_selection = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_KINEMATIC_CONSTRAINT;
         
-        uint8_t acceleration_constraint_selection;
-        uint8_t velocity_constraint_selection;
-        uint8_t angular_constraint_selection;
+        uint8_t acceleration_constraint_selection = 0;
+        uint8_t velocity_constraint_selection = 0;
+        uint8_t angular_constraint_selection = 0;
         
     };
 };
@@ -1323,31 +1323,31 @@ struct InitializationConfiguration
         MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
     };
     
-    FunctionSelector function;
-    uint8_t wait_for_run_command;
-    InitialConditionSource initial_cond_src;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t wait_for_run_command = 0;
+    InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0);
     AlignmentSelector auto_heading_alignment_selector;
-    float initial_heading;
-    float initial_pitch;
-    float initial_roll;
-    float initial_position[3];
-    float initial_velocity[3];
-    FilterReferenceFrame reference_frame_selector;
+    float initial_heading = 0;
+    float initial_pitch = 0;
+    float initial_roll = 0;
+    float initial_position[3] = {0};
+    float initial_velocity[3] = {0};
+    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INITIALIZATION_CONFIGURATION;
         
-        uint8_t wait_for_run_command;
-        InitialConditionSource initial_cond_src;
+        uint8_t wait_for_run_command = 0;
+        InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0);
         AlignmentSelector auto_heading_alignment_selector;
-        float initial_heading;
-        float initial_pitch;
-        float initial_roll;
-        float initial_position[3];
-        float initial_velocity[3];
-        FilterReferenceFrame reference_frame_selector;
+        float initial_heading = 0;
+        float initial_pitch = 0;
+        float initial_roll = 0;
+        float initial_position[3] = {0};
+        float initial_velocity[3] = {0};
+        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
         
     };
 };
@@ -1381,17 +1381,17 @@ struct AdaptiveFilterOptions
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t level;
-    uint16_t time_limit;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t level = 0;
+    uint16_t time_limit = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ADAPTIVE_FILTER_OPTIONS;
         
-        uint8_t level;
-        uint16_t time_limit;
+        uint8_t level = 0;
+        uint16_t time_limit = 0;
         
     };
 };
@@ -1427,17 +1427,17 @@ struct MultiAntennaOffset
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t receiver_id;
-    float antenna_offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t receiver_id = 0;
+    float antenna_offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MULTI_ANTENNA_OFFSET;
         
-        uint8_t receiver_id;
-        float antenna_offset[3];
+        uint8_t receiver_id = 0;
+        float antenna_offset[3] = {0};
         
     };
 };
@@ -1471,19 +1471,19 @@ struct RelPosConfiguration
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t source;
-    FilterReferenceFrame reference_frame_selector;
-    double reference_coordinates[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t source = 0;
+    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
+    double reference_coordinates[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REL_POS_CONFIGURATION;
         
-        uint8_t source;
-        FilterReferenceFrame reference_frame_selector;
-        double reference_coordinates[3];
+        uint8_t source = 0;
+        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
+        double reference_coordinates[3] = {0};
         
     };
 };
@@ -1527,17 +1527,17 @@ struct RefPointLeverArm
         VEH = 1,  ///<  Defines the origin of the vehicle
     };
     
-    FunctionSelector function;
-    ReferencePointSelector ref_point_sel;
-    float lever_arm_offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0);
+    float lever_arm_offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REF_POINT_LEVER_ARM;
         
-        ReferencePointSelector ref_point_sel;
-        float lever_arm_offset[3];
+        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0);
+        float lever_arm_offset[3] = {0};
         
     };
 };
@@ -1569,10 +1569,10 @@ struct SpeedMeasurement
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t source;
-    float time_of_week;
-    float speed;
-    float speed_uncertainty;
+    uint8_t source = 0;
+    float time_of_week = 0;
+    float speed = 0;
+    float speed_uncertainty = 0;
     
 };
 void insert(Serializer& serializer, const SpeedMeasurement& self);
@@ -1604,17 +1604,17 @@ struct SpeedLeverArm
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t source;
-    float lever_arm_offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t source = 0;
+    float lever_arm_offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SPEED_LEVER_ARM;
         
-        uint8_t source;
-        float lever_arm_offset[3];
+        uint8_t source = 0;
+        float lever_arm_offset[3] = {0};
         
     };
 };
@@ -1654,15 +1654,15 @@ struct WheeledVehicleConstraintControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_CONSTRAINT_CONTROL;
         
-        uint8_t enable;
+        uint8_t enable = 0;
         
     };
 };
@@ -1700,15 +1700,15 @@ struct VerticalGyroConstraintControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_CONSTRAINT_CONTROL;
         
-        uint8_t enable;
+        uint8_t enable = 0;
         
     };
 };
@@ -1744,17 +1744,17 @@ struct GnssAntennaCalControl
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
-    float max_offset;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
+    float max_offset = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_CALIBRATION_CONTROL;
         
-        uint8_t enable;
-        float max_offset;
+        uint8_t enable = 0;
+        float max_offset = 0;
         
     };
 };
@@ -1788,17 +1788,17 @@ struct MagneticDeclinationSource
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    FilterMagDeclinationSource source;
-    float declination;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0);
+    float declination = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_DECLINATION_SOURCE;
         
-        FilterMagDeclinationSource source;
-        float declination;
+        FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0);
+        float declination = 0;
         
     };
 };
@@ -1831,7 +1831,7 @@ struct SetInitialHeading
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float heading;
+    float heading = 0;
     
 };
 void insert(Serializer& serializer, const SetInitialHeading& self);
