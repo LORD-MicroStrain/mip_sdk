@@ -1653,6 +1653,7 @@ struct EventTrigger
     
     union Parameters
     {
+        Parameters() {}
         GpioParams gpio;
         ThresholdParams threshold;
         CombinationParams combination;
@@ -1746,6 +1747,7 @@ struct EventAction
     
     union Parameters
     {
+        Parameters() {}
         GpioParams gpio;
         MessageParams message;
     };
