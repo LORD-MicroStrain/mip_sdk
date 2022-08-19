@@ -76,11 +76,8 @@ struct CmdResult
 
     static CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
 
-    // operator bool() const { return value == C::MIP_ACK_OK; }
     operator const void*() const { return isAck() ? this : nullptr; }
     bool operator!() const { return !isAck(); }
-    operator C::mip_cmd_result&() { return value; }
-    operator C::mip_cmd_result() const { return value; }
 
     bool operator==(CmdResult other) const { return value == other.value; }
     bool operator!=(CmdResult other) const { return value != other.value; }

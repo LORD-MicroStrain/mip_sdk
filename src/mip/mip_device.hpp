@@ -508,11 +508,8 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
         return result;
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
-    size_t offset = extract(response, buffer, responseLength, 0);
-    if( offset != responseLength )
-        return C::MIP_STATUS_ERROR;
 
-    return C::MIP_ACK_OK;
+    return extract(response, buffer, responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
 }
 
 
