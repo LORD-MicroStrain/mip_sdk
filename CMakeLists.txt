@@ -23,7 +23,10 @@ include_directories(
 add_subdirectory("${EXT_DIR}")
 
 if(WITH_INTERNAL)
-    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/int")
+    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
+    if(MIP_INTERNAL_DIR)
+        add_subdirectory("${MIP_INTERNAL_DIR}")
+    endif()
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
