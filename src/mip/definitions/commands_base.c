@@ -207,6 +207,8 @@ enum mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_
 }
 void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const struct mip_base_comm_speed_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
     insert_u8(serializer, self->port);
     
     insert_u32(serializer, self->baud);
@@ -214,6 +216,8 @@ void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const
 }
 void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, struct mip_base_comm_speed_command* self)
 {
+    extract_mip_function_selector(serializer, &self->function);
+    
     extract_u8(serializer, &self->port);
     
     extract_u32(serializer, &self->baud);
@@ -325,6 +329,8 @@ enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, ui
 }
 void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, const struct mip_base_gps_time_update_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
     insert_mip_base_gps_time_update_command_field_id(serializer, self->field_id);
     
     insert_u32(serializer, self->value);
@@ -332,6 +338,8 @@ void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, 
 }
 void extract_mip_base_gps_time_update_command(struct mip_serializer* serializer, struct mip_base_gps_time_update_command* self)
 {
+    extract_mip_function_selector(serializer, &self->function);
+    
     extract_mip_base_gps_time_update_command_field_id(serializer, &self->field_id);
     
     extract_u32(serializer, &self->value);

@@ -75,6 +75,8 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
 }
 void insert_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
     insert_u8(serializer, self->gps_enable);
     
     insert_u8(serializer, self->glonass_enable);
@@ -89,6 +91,8 @@ void insert_mip_gnss_signal_configuration_command(struct mip_serializer* seriali
 }
 void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_command* self)
 {
+    extract_mip_function_selector(serializer, &self->function);
+    
     extract_u8(serializer, &self->gps_enable);
     
     extract_u8(serializer, &self->glonass_enable);
@@ -232,6 +236,8 @@ enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* 
 }
 void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
     insert_u8(serializer, self->enable);
     
     for(unsigned int i=0; i < 3; i++)
@@ -240,6 +246,8 @@ void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* ser
 }
 void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_command* self)
 {
+    extract_mip_function_selector(serializer, &self->function);
+    
     extract_u8(serializer, &self->enable);
     
     for(unsigned int i=0; i < 3; i++)

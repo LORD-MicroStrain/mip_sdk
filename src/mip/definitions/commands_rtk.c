@@ -156,11 +156,15 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
 }
 void insert_mip_rtk_connected_device_type_command(struct mip_serializer* serializer, const struct mip_rtk_connected_device_type_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
     insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
     
 }
 void extract_mip_rtk_connected_device_type_command(struct mip_serializer* serializer, struct mip_rtk_connected_device_type_command* self)
 {
+    extract_mip_function_selector(serializer, &self->function);
+    
     extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
     
 }
