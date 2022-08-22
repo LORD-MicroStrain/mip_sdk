@@ -91,7 +91,7 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
         assert(modeOut);
         extract(deserializer, *modeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

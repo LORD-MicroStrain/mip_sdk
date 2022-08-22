@@ -166,7 +166,7 @@ enum mip_cmd_result mip_filter_read_estimation_control(struct mip_interface* dev
         assert(enable_out);
         extract_mip_filter_estimation_control_command_enable_flags(&deserializer, enable_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -444,7 +444,7 @@ enum mip_cmd_result mip_filter_read_tare_orientation(struct mip_interface* devic
         assert(axes_out);
         extract_mip_filter_tare_orientation_command_mip_tare_axes(&deserializer, axes_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -578,7 +578,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_euler(struct mip_
         assert(yaw_out);
         extract_float(&deserializer, yaw_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -693,7 +693,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_in
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &dcm_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -808,7 +808,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct
         for(unsigned int i=0; i < 4; i++)
             extract_float(&deserializer, &quat_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -923,7 +923,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interfac
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1038,7 +1038,7 @@ enum mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device,
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1157,7 +1157,7 @@ enum mip_cmd_result mip_filter_read_gnss_source(struct mip_interface* device, en
         assert(source_out);
         extract_mip_filter_gnss_source_command_source(&deserializer, source_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1276,7 +1276,7 @@ enum mip_cmd_result mip_filter_read_heading_source(struct mip_interface* device,
         assert(source_out);
         extract_mip_filter_heading_source_command_source(&deserializer, source_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1384,7 +1384,7 @@ enum mip_cmd_result mip_filter_read_auto_init_control(struct mip_interface* devi
         assert(enable_out);
         extract_u8(&deserializer, enable_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1492,7 +1492,7 @@ enum mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device
         assert(aiding_selector_out);
         extract_u8(&deserializer, aiding_selector_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1613,7 +1613,7 @@ enum mip_cmd_result mip_filter_read_auto_zupt(struct mip_interface* device, uint
         assert(threshold_out);
         extract_float(&deserializer, threshold_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1734,7 +1734,7 @@ enum mip_cmd_result mip_filter_read_auto_angular_zupt(struct mip_interface* devi
         assert(threshold_out);
         extract_float(&deserializer, threshold_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1875,7 +1875,7 @@ enum mip_cmd_result mip_filter_read_aiding_measurement_enable(struct mip_interfa
         assert(enable_out);
         extract_bool(&deserializer, enable_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2019,7 +2019,7 @@ enum mip_cmd_result mip_filter_read_kinematic_constraint(struct mip_interface* d
         assert(angular_constraint_selection_out);
         extract_u8(&deserializer, angular_constraint_selection_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2267,7 +2267,7 @@ enum mip_cmd_result mip_filter_read_initialization_configuration(struct mip_inte
         assert(reference_frame_selector_out);
         extract_mip_filter_reference_frame(&deserializer, reference_frame_selector_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2388,7 +2388,7 @@ enum mip_cmd_result mip_filter_read_adaptive_filter_options(struct mip_interface
         assert(time_limit_out);
         extract_u16(&deserializer, time_limit_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2517,7 +2517,7 @@ enum mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* d
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &antenna_offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2664,7 +2664,7 @@ enum mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* 
         for(unsigned int i=0; i < 3; i++)
             extract_double(&deserializer, &reference_coordinates_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2803,7 +2803,7 @@ enum mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* de
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &lever_arm_offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2973,7 +2973,7 @@ enum mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &lever_arm_offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3087,7 +3087,7 @@ enum mip_cmd_result mip_filter_read_wheeled_vehicle_constraint_control(struct mi
         assert(enable_out);
         extract_u8(&deserializer, enable_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3195,7 +3195,7 @@ enum mip_cmd_result mip_filter_read_vertical_gyro_constraint_control(struct mip_
         assert(enable_out);
         extract_u8(&deserializer, enable_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3316,7 +3316,7 @@ enum mip_cmd_result mip_filter_read_gnss_antenna_cal_control(struct mip_interfac
         assert(max_offset_out);
         extract_float(&deserializer, max_offset_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3437,7 +3437,7 @@ enum mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_inter
         assert(declination_out);
         extract_float(&deserializer, declination_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

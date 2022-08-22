@@ -94,7 +94,7 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
         for(unsigned int i=0; i < *numReceiversOut; i++)
             extract(deserializer, receiverInfoOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -220,7 +220,7 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, reservedOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -337,7 +337,7 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, reservedOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

@@ -140,7 +140,7 @@ CmdResult readEstimationControl(C::mip_interface& device, EstimationControl::Ena
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -393,7 +393,7 @@ CmdResult readTareOrientation(C::mip_interface& device, TareOrientation::MipTare
         assert(axesOut);
         extract(deserializer, *axesOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -516,7 +516,7 @@ CmdResult readSensorToVehicleRotationEuler(C::mip_interface& device, float* roll
         assert(yawOut);
         extract(deserializer, *yawOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -620,7 +620,7 @@ CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -724,7 +724,7 @@ CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float*
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, quatOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -828,7 +828,7 @@ CmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut)
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -932,7 +932,7 @@ CmdResult readAntennaOffset(C::mip_interface& device, float* offsetOut)
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1029,7 +1029,7 @@ CmdResult readGnssSource(C::mip_interface& device, GnssSource::Source* sourceOut
         assert(sourceOut);
         extract(deserializer, *sourceOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1126,7 +1126,7 @@ CmdResult readHeadingSource(C::mip_interface& device, HeadingSource::Source* sou
         assert(sourceOut);
         extract(deserializer, *sourceOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1223,7 +1223,7 @@ CmdResult readAutoInitControl(C::mip_interface& device, uint8_t* enableOut)
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1320,7 +1320,7 @@ CmdResult readAltitudeAiding(C::mip_interface& device, uint8_t* aidingSelectorOu
         assert(aidingSelectorOut);
         extract(deserializer, *aidingSelectorOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1430,7 +1430,7 @@ CmdResult readAutoZupt(C::mip_interface& device, uint8_t* enableOut, float* thre
         assert(thresholdOut);
         extract(deserializer, *thresholdOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1540,7 +1540,7 @@ CmdResult readAutoAngularZupt(C::mip_interface& device, uint8_t* enableOut, floa
         assert(thresholdOut);
         extract(deserializer, *thresholdOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1681,7 +1681,7 @@ CmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasuremen
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1825,7 +1825,7 @@ CmdResult readKinematicConstraint(C::mip_interface& device, uint8_t* acceleratio
         assert(angularConstraintSelectionOut);
         extract(deserializer, *angularConstraintSelectionOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2040,7 +2040,7 @@ CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* wai
         assert(referenceFrameSelectorOut);
         extract(deserializer, *referenceFrameSelectorOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2150,7 +2150,7 @@ CmdResult readAdaptiveFilterOptions(C::mip_interface& device, uint8_t* levelOut,
         assert(timeLimitOut);
         extract(deserializer, *timeLimitOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2268,7 +2268,7 @@ CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, f
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, antennaOffsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2404,7 +2404,7 @@ CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, 
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, referenceCoordinatesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2521,7 +2521,7 @@ CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refer
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, leverArmOffsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2679,7 +2679,7 @@ CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lev
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, leverArmOffsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2782,7 +2782,7 @@ CmdResult readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t*
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2879,7 +2879,7 @@ CmdResult readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t* e
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2989,7 +2989,7 @@ CmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t* enableOut
         assert(maxOffsetOut);
         extract(deserializer, *maxOffsetOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3099,7 +3099,7 @@ CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDecli
         assert(declinationOut);
         extract(deserializer, *declinationOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

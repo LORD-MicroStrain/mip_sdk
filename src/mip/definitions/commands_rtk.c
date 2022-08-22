@@ -86,7 +86,7 @@ enum mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, enum 
         assert(flags_out);
         extract_mip_rtk_get_status_flags_command_status_flags(&deserializer, flags_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -107,7 +107,7 @@ enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_ou
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &imei_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -128,7 +128,7 @@ enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_ou
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &imsi_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -149,7 +149,7 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &iccid_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -232,7 +232,7 @@ enum mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* dev
         assert(dev_type_out);
         extract_mip_rtk_connected_device_type_command_type(&deserializer, dev_type_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -289,7 +289,7 @@ enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* act
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &activation_code_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -310,7 +310,7 @@ enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* dev
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &modem_firmware_version_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -336,7 +336,7 @@ enum mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_o
         assert(signal_quality_out);
         extract_s32(&deserializer, signal_quality_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -422,7 +422,7 @@ enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_
         assert(last_bytes_time_out);
         extract_u64(&deserializer, last_bytes_time_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

@@ -94,7 +94,7 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
         assert(mode_out);
         extract_u8(&deserializer, mode_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

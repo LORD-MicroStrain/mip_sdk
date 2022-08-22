@@ -68,7 +68,7 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
         for(unsigned int i=0; i < *num_receivers_out; i++)
             extract_mip_gnss_receiver_info_command_info(&deserializer, &receiver_info_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -199,7 +199,7 @@ enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* dev
         for(unsigned int i=0; i < 4; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -327,7 +327,7 @@ enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface*
         for(unsigned int i=0; i < 3; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

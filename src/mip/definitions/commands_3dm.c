@@ -298,7 +298,7 @@ enum mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -431,7 +431,7 @@ enum mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -564,7 +564,7 @@ enum mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* dev
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -620,7 +620,7 @@ enum mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -640,7 +640,7 @@ enum mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -660,7 +660,7 @@ enum mip_cmd_result mip_3dm_filter_get_base_rate(struct mip_interface* device, u
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -761,7 +761,7 @@ enum mip_cmd_result mip_3dm_get_base_rate(struct mip_interface* device, uint8_t 
         assert(rate_out);
         extract_u16(&deserializer, rate_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -872,7 +872,7 @@ enum mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, ui
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1052,7 +1052,7 @@ enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* devic
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_nmea_message(&deserializer, &format_entries_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1207,7 +1207,7 @@ enum mip_cmd_result mip_3dm_read_uart_baudrate(struct mip_interface* device, uin
         assert(baud_out);
         extract_u32(&deserializer, baud_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1369,7 +1369,7 @@ enum mip_cmd_result mip_3dm_read_datastream_control(struct mip_interface* device
         assert(enabled_out);
         extract_bool(&deserializer, enabled_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1545,7 +1545,7 @@ enum mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device
         for(unsigned int i=0; i < *num_included_prns_out; i++)
             extract_u16(&deserializer, &included_prns_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1679,7 +1679,7 @@ enum mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* devi
         assert(accuracy_out);
         extract_float(&deserializer, accuracy_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1804,7 +1804,7 @@ enum mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device
         assert(reserved_out);
         extract_u8(&deserializer, reserved_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1929,7 +1929,7 @@ enum mip_cmd_result mip_3dm_read_pps_source(struct mip_interface* device, enum m
         assert(source_out);
         extract_mip_3dm_pps_source_command_source(&deserializer, source_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2110,7 +2110,7 @@ enum mip_cmd_result mip_3dm_read_gpio_config(struct mip_interface* device, uint8
         assert(pin_mode_out);
         extract_mip_3dm_gpio_config_command_pin_mode(&deserializer, pin_mode_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2161,8 +2161,7 @@ void insert_mip_3dm_gpio_state_command(struct mip_serializer* serializer, const 
 {
     insert_mip_function_selector(serializer, self->function);
     
-    if( self->function == MIP_FUNCTION_WRITE ||
-    self->function == MIP_FUNCTION_READ )
+    if( self->function == MIP_FUNCTION_WRITE || self->function == MIP_FUNCTION_READ )
     {
         insert_u8(serializer, self->pin);
         
@@ -2177,8 +2176,7 @@ void extract_mip_3dm_gpio_state_command(struct mip_serializer* serializer, struc
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    if( self->function == MIP_FUNCTION_WRITE ||
-    self->function == MIP_FUNCTION_READ )
+    if( self->function == MIP_FUNCTION_WRITE || self->function == MIP_FUNCTION_READ )
     {
         extract_u8(serializer, &self->pin);
         
@@ -2246,7 +2244,7 @@ enum mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_
         assert(state_out);
         extract_bool(&deserializer, state_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2355,7 +2353,7 @@ enum mip_cmd_result mip_3dm_read_odometer(struct mip_interface* device, enum mip
         assert(uncertainty_out);
         extract_float(&deserializer, uncertainty_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2491,7 +2489,7 @@ enum mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, enum
         for(unsigned int i=0; i < *num_entries_out; i++)
             extract_mip_3dm_get_event_support_command_info(&deserializer, &entries_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2588,7 +2586,7 @@ enum mip_cmd_result mip_3dm_read_event_control(struct mip_interface* device, uin
         assert(mode_out);
         extract_mip_3dm_event_control_command_mode(&deserializer, mode_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2729,7 +2727,7 @@ enum mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* devic
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_trigger_status_command_entry(&deserializer, &triggers_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2817,7 +2815,7 @@ enum mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_action_status_command_entry(&deserializer, &actions_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3121,7 +3119,7 @@ enum mip_cmd_result mip_3dm_read_event_trigger(struct mip_interface* device, uin
             extract_mip_3dm_event_trigger_command_combination_params(&deserializer, &parameters_out->combination);
             
         }
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3386,7 +3384,7 @@ enum mip_cmd_result mip_3dm_read_event_action(struct mip_interface* device, uint
             extract_mip_3dm_event_action_command_message_params(&deserializer, &parameters_out->message);
             
         }
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3507,7 +3505,7 @@ enum mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float*
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3622,7 +3620,7 @@ enum mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* 
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3709,7 +3707,7 @@ enum mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3788,7 +3786,7 @@ enum mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* devi
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3903,7 +3901,7 @@ enum mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* devi
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &offset_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4037,7 +4035,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_euler(struct mip_int
         assert(yaw_out);
         extract_float(&deserializer, yaw_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4152,7 +4150,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mi
         for(unsigned int i=0; i < 4; i++)
             extract_float(&deserializer, &q_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4267,7 +4265,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_inter
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &dcm_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4414,7 +4412,7 @@ enum mip_cmd_result mip_3dm_read_complementary_filter(struct mip_interface* devi
         assert(heading_time_constant_out);
         extract_float(&deserializer, heading_time_constant_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4536,7 +4534,7 @@ enum mip_cmd_result mip_3dm_read_sensor_range(struct mip_interface* device, enum
         assert(setting_out);
         extract_u8(&deserializer, setting_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4660,7 +4658,7 @@ enum mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* devic
         for(unsigned int i=0; i < *num_ranges_out; i++)
             extract_mip_3dm_calibrated_sensor_ranges_command_entry(&deserializer, &ranges_out[i]);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

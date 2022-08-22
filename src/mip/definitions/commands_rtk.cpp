@@ -65,7 +65,7 @@ CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* 
         assert(flagsOut);
         extract(deserializer, *flagsOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -109,7 +109,7 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut)
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imeiOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -153,7 +153,7 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut)
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imsiOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -197,7 +197,7 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut)
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, iccidOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -264,7 +264,7 @@ CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType:
         assert(devtypeOut);
         extract(deserializer, *devtypeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -338,7 +338,7 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, activationcodeOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -382,7 +382,7 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, modemfirmwareversionOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -437,7 +437,7 @@ CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, in
         assert(signalqualityOut);
         extract(deserializer, *signalqualityOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -510,7 +510,7 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
         assert(lastbytestimeOut);
         extract(deserializer, *lastbytestimeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

@@ -242,7 +242,7 @@ CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -356,7 +356,7 @@ CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -470,7 +470,7 @@ CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescript
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -541,7 +541,7 @@ CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -582,7 +582,7 @@ CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -623,7 +623,7 @@ CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -718,7 +718,7 @@ CmdResult getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateO
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -816,7 +816,7 @@ CmdResult readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* 
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -973,7 +973,7 @@ CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uin
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, formatEntriesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1111,7 +1111,7 @@ CmdResult readUartBaudrate(C::mip_interface& device, uint32_t* baudOut)
         assert(baudOut);
         extract(deserializer, *baudOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1250,7 +1250,7 @@ CmdResult readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool*
         assert(enabledOut);
         extract(deserializer, *enabledOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1396,7 +1396,7 @@ CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut,
         for(unsigned int i=0; i < *numIncludedPrnsOut; i++)
             extract(deserializer, includedPrnsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1519,7 +1519,7 @@ CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint1
         assert(accuracyOut);
         extract(deserializer, *accuracyOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1639,7 +1639,7 @@ CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescripto
         assert(reservedOut);
         extract(deserializer, *reservedOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1742,7 +1742,7 @@ CmdResult readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut)
         assert(sourceOut);
         extract(deserializer, *sourceOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1879,7 +1879,7 @@ CmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feat
         assert(pinModeOut);
         extract(deserializer, *pinModeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1924,8 +1924,7 @@ void insert(Serializer& serializer, const GpioState& self)
 {
     insert(serializer, self.function);
     
-    if( self.function == FunctionSelector::WRITE ||
-    self.function == FunctionSelector::READ )
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
     {
         insert(serializer, self.pin);
         
@@ -1940,8 +1939,7 @@ void extract(Serializer& serializer, GpioState& self)
 {
     extract(serializer, self.function);
     
-    if( self.function == FunctionSelector::WRITE ||
-    self.function == FunctionSelector::READ )
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
     {
         extract(serializer, self.pin);
         
@@ -2004,7 +2002,7 @@ CmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut)
         assert(stateOut);
         extract(deserializer, *stateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2097,7 +2095,7 @@ CmdResult readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float*
         assert(uncertaintyOut);
         extract(deserializer, *uncertaintyOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2209,7 +2207,7 @@ CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query
         for(unsigned int i=0; i < *numEntriesOut; i++)
             extract(deserializer, entriesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2290,7 +2288,7 @@ CmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventCont
         assert(modeOut);
         extract(deserializer, *modeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2404,7 +2402,7 @@ CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, triggersOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2482,7 +2480,7 @@ CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount,
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, actionsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2748,7 +2746,7 @@ CmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrig
             extract(deserializer, parametersOut->combination);
             
         }
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2977,7 +2975,7 @@ CmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* t
             extract(deserializer, parametersOut->message);
             
         }
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3087,7 +3085,7 @@ CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3191,7 +3189,7 @@ CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3270,7 +3268,7 @@ CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, fl
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3344,7 +3342,7 @@ CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3448,7 +3446,7 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3571,7 +3569,7 @@ CmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float* roll
         assert(yawOut);
         extract(deserializer, *yawOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3675,7 +3673,7 @@ CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float*
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, qOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3779,7 +3777,7 @@ CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3915,7 +3913,7 @@ CmdResult readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnabl
         assert(headingTimeConstantOut);
         extract(deserializer, *headingTimeConstantOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4026,7 +4024,7 @@ CmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint
         assert(settingOut);
         extract(deserializer, *settingOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -4137,7 +4135,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
         for(unsigned int i=0; i < *numRangesOut; i++)
             extract(deserializer, rangesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
