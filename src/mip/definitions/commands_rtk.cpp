@@ -206,15 +206,21 @@ void insert(Serializer& serializer, const ConnectedDeviceType& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.devType);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.devType);
+        
+    }
 }
 void extract(Serializer& serializer, ConnectedDeviceType& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.devType);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.devType);
+        
+    }
 }
 
 void insert(Serializer& serializer, const ConnectedDeviceType::Response& self)

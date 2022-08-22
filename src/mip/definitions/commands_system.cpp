@@ -33,15 +33,21 @@ void insert(Serializer& serializer, const CommMode& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+    }
 }
 void extract(Serializer& serializer, CommMode& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+    }
 }
 
 void insert(Serializer& serializer, const CommMode::Response& self)

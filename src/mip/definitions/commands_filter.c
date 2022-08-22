@@ -92,15 +92,21 @@ void insert_mip_filter_estimation_control_command(struct mip_serializer* seriali
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_estimation_control_command_enable_flags(serializer, self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_estimation_control_command_enable_flags(serializer, self->enable);
+        
+    }
 }
 void extract_mip_filter_estimation_control_command(struct mip_serializer* serializer, struct mip_filter_estimation_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_estimation_control_command_enable_flags(serializer, &self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_estimation_control_command_enable_flags(serializer, &self->enable);
+        
+    }
 }
 
 void insert_mip_filter_estimation_control_response(struct mip_serializer* serializer, const struct mip_filter_estimation_control_response* self)
@@ -364,15 +370,21 @@ void insert_mip_filter_tare_orientation_command(struct mip_serializer* serialize
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_tare_orientation_command_mip_tare_axes(serializer, self->axes);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_tare_orientation_command_mip_tare_axes(serializer, self->axes);
+        
+    }
 }
 void extract_mip_filter_tare_orientation_command(struct mip_serializer* serializer, struct mip_filter_tare_orientation_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_tare_orientation_command_mip_tare_axes(serializer, &self->axes);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_tare_orientation_command_mip_tare_axes(serializer, &self->axes);
+        
+    }
 }
 
 void insert_mip_filter_tare_orientation_response(struct mip_serializer* serializer, const struct mip_filter_tare_orientation_response* self)
@@ -477,23 +489,29 @@ void insert_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_seria
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_float(serializer, self->roll);
-    
-    insert_float(serializer, self->pitch);
-    
-    insert_float(serializer, self->yaw);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_float(serializer, self->roll);
+        
+        insert_float(serializer, self->pitch);
+        
+        insert_float(serializer, self->yaw);
+        
+    }
 }
 void extract_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_serializer* serializer, struct mip_filter_sensor_to_vehicle_rotation_euler_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_float(serializer, &self->roll);
-    
-    extract_float(serializer, &self->pitch);
-    
-    extract_float(serializer, &self->yaw);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_float(serializer, &self->roll);
+        
+        extract_float(serializer, &self->pitch);
+        
+        extract_float(serializer, &self->yaw);
+        
+    }
 }
 
 void insert_mip_filter_sensor_to_vehicle_rotation_euler_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_rotation_euler_response* self)
@@ -605,17 +623,23 @@ void insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct mip_seriali
 {
     insert_mip_function_selector(serializer, self->function);
     
-    for(unsigned int i=0; i < 9; i++)
-        insert_float(serializer, self->dcm[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert_float(serializer, self->dcm[i]);
+        
+    }
 }
 void extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct mip_serializer* serializer, struct mip_filter_sensor_to_vehicle_rotation_dcm_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    for(unsigned int i=0; i < 9; i++)
-        extract_float(serializer, &self->dcm[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract_float(serializer, &self->dcm[i]);
+        
+    }
 }
 
 void insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_rotation_dcm_response* self)
@@ -714,17 +738,23 @@ void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct mip_
 {
     insert_mip_function_selector(serializer, self->function);
     
-    for(unsigned int i=0; i < 4; i++)
-        insert_float(serializer, self->quat[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            insert_float(serializer, self->quat[i]);
+        
+    }
 }
 void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct mip_serializer* serializer, struct mip_filter_sensor_to_vehicle_rotation_quaternion_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    for(unsigned int i=0; i < 4; i++)
-        extract_float(serializer, &self->quat[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            extract_float(serializer, &self->quat[i]);
+        
+    }
 }
 
 void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_rotation_quaternion_response* self)
@@ -823,17 +853,23 @@ void insert_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* s
 {
     insert_mip_function_selector(serializer, self->function);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->offset[i]);
+        
+    }
 }
 void extract_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* serializer, struct mip_filter_sensor_to_vehicle_offset_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->offset[i]);
+        
+    }
 }
 
 void insert_mip_filter_sensor_to_vehicle_offset_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_offset_response* self)
@@ -932,17 +968,23 @@ void insert_mip_filter_antenna_offset_command(struct mip_serializer* serializer,
 {
     insert_mip_function_selector(serializer, self->function);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->offset[i]);
+        
+    }
 }
 void extract_mip_filter_antenna_offset_command(struct mip_serializer* serializer, struct mip_filter_antenna_offset_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->offset[i]);
+        
+    }
 }
 
 void insert_mip_filter_antenna_offset_response(struct mip_serializer* serializer, const struct mip_filter_antenna_offset_response* self)
@@ -1041,15 +1083,21 @@ void insert_mip_filter_gnss_source_command(struct mip_serializer* serializer, co
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_gnss_source_command_source(serializer, self->source);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_gnss_source_command_source(serializer, self->source);
+        
+    }
 }
 void extract_mip_filter_gnss_source_command(struct mip_serializer* serializer, struct mip_filter_gnss_source_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_gnss_source_command_source(serializer, &self->source);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_gnss_source_command_source(serializer, &self->source);
+        
+    }
 }
 
 void insert_mip_filter_gnss_source_response(struct mip_serializer* serializer, const struct mip_filter_gnss_source_response* self)
@@ -1154,15 +1202,21 @@ void insert_mip_filter_heading_source_command(struct mip_serializer* serializer,
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_heading_source_command_source(serializer, self->source);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_heading_source_command_source(serializer, self->source);
+        
+    }
 }
 void extract_mip_filter_heading_source_command(struct mip_serializer* serializer, struct mip_filter_heading_source_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_heading_source_command_source(serializer, &self->source);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_heading_source_command_source(serializer, &self->source);
+        
+    }
 }
 
 void insert_mip_filter_heading_source_response(struct mip_serializer* serializer, const struct mip_filter_heading_source_response* self)
@@ -1267,15 +1321,21 @@ void insert_mip_filter_auto_init_control_command(struct mip_serializer* serializ
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+    }
 }
 void extract_mip_filter_auto_init_control_command(struct mip_serializer* serializer, struct mip_filter_auto_init_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+    }
 }
 
 void insert_mip_filter_auto_init_control_response(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_response* self)
@@ -1369,15 +1429,21 @@ void insert_mip_filter_altitude_aiding_command(struct mip_serializer* serializer
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->aiding_selector);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->aiding_selector);
+        
+    }
 }
 void extract_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, struct mip_filter_altitude_aiding_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->aiding_selector);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->aiding_selector);
+        
+    }
 }
 
 void insert_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, const struct mip_filter_altitude_aiding_response* self)
@@ -1471,19 +1537,25 @@ void insert_mip_filter_auto_zupt_command(struct mip_serializer* serializer, cons
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
-    insert_float(serializer, self->threshold);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+        insert_float(serializer, self->threshold);
+        
+    }
 }
 void extract_mip_filter_auto_zupt_command(struct mip_serializer* serializer, struct mip_filter_auto_zupt_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
-    extract_float(serializer, &self->threshold);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+        extract_float(serializer, &self->threshold);
+        
+    }
 }
 
 void insert_mip_filter_auto_zupt_response(struct mip_serializer* serializer, const struct mip_filter_auto_zupt_response* self)
@@ -1586,19 +1658,25 @@ void insert_mip_filter_auto_angular_zupt_command(struct mip_serializer* serializ
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
-    insert_float(serializer, self->threshold);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+        insert_float(serializer, self->threshold);
+        
+    }
 }
 void extract_mip_filter_auto_angular_zupt_command(struct mip_serializer* serializer, struct mip_filter_auto_angular_zupt_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
-    extract_float(serializer, &self->threshold);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+        extract_float(serializer, &self->threshold);
+        
+    }
 }
 
 void insert_mip_filter_auto_angular_zupt_response(struct mip_serializer* serializer, const struct mip_filter_auto_angular_zupt_response* self)
@@ -1711,8 +1789,11 @@ void insert_mip_filter_aiding_measurement_enable_command(struct mip_serializer* 
     
     insert_mip_filter_aiding_measurement_enable_command_aiding_source(serializer, self->aiding_source);
     
-    insert_bool(serializer, self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_bool(serializer, self->enable);
+        
+    }
 }
 void extract_mip_filter_aiding_measurement_enable_command(struct mip_serializer* serializer, struct mip_filter_aiding_measurement_enable_command* self)
 {
@@ -1720,8 +1801,11 @@ void extract_mip_filter_aiding_measurement_enable_command(struct mip_serializer*
     
     extract_mip_filter_aiding_measurement_enable_command_aiding_source(serializer, &self->aiding_source);
     
-    extract_bool(serializer, &self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_bool(serializer, &self->enable);
+        
+    }
 }
 
 void insert_mip_filter_aiding_measurement_enable_response(struct mip_serializer* serializer, const struct mip_filter_aiding_measurement_enable_response* self)
@@ -1846,23 +1930,29 @@ void insert_mip_filter_kinematic_constraint_command(struct mip_serializer* seria
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->acceleration_constraint_selection);
-    
-    insert_u8(serializer, self->velocity_constraint_selection);
-    
-    insert_u8(serializer, self->angular_constraint_selection);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->acceleration_constraint_selection);
+        
+        insert_u8(serializer, self->velocity_constraint_selection);
+        
+        insert_u8(serializer, self->angular_constraint_selection);
+        
+    }
 }
 void extract_mip_filter_kinematic_constraint_command(struct mip_serializer* serializer, struct mip_filter_kinematic_constraint_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->acceleration_constraint_selection);
-    
-    extract_u8(serializer, &self->velocity_constraint_selection);
-    
-    extract_u8(serializer, &self->angular_constraint_selection);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->acceleration_constraint_selection);
+        
+        extract_u8(serializer, &self->velocity_constraint_selection);
+        
+        extract_u8(serializer, &self->angular_constraint_selection);
+        
+    }
 }
 
 void insert_mip_filter_kinematic_constraint_response(struct mip_serializer* serializer, const struct mip_filter_kinematic_constraint_response* self)
@@ -1974,51 +2064,57 @@ void insert_mip_filter_initialization_configuration_command(struct mip_serialize
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->wait_for_run_command);
-    
-    insert_mip_filter_initialization_configuration_command_initial_condition_source(serializer, self->initial_cond_src);
-    
-    insert_mip_filter_initialization_configuration_command_alignment_selector(serializer, self->auto_heading_alignment_selector);
-    
-    insert_float(serializer, self->initial_heading);
-    
-    insert_float(serializer, self->initial_pitch);
-    
-    insert_float(serializer, self->initial_roll);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->initial_position[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->initial_velocity[i]);
-    
-    insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->wait_for_run_command);
+        
+        insert_mip_filter_initialization_configuration_command_initial_condition_source(serializer, self->initial_cond_src);
+        
+        insert_mip_filter_initialization_configuration_command_alignment_selector(serializer, self->auto_heading_alignment_selector);
+        
+        insert_float(serializer, self->initial_heading);
+        
+        insert_float(serializer, self->initial_pitch);
+        
+        insert_float(serializer, self->initial_roll);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->initial_position[i]);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->initial_velocity[i]);
+        
+        insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
+        
+    }
 }
 void extract_mip_filter_initialization_configuration_command(struct mip_serializer* serializer, struct mip_filter_initialization_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->wait_for_run_command);
-    
-    extract_mip_filter_initialization_configuration_command_initial_condition_source(serializer, &self->initial_cond_src);
-    
-    extract_mip_filter_initialization_configuration_command_alignment_selector(serializer, &self->auto_heading_alignment_selector);
-    
-    extract_float(serializer, &self->initial_heading);
-    
-    extract_float(serializer, &self->initial_pitch);
-    
-    extract_float(serializer, &self->initial_roll);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->initial_position[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->initial_velocity[i]);
-    
-    extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->wait_for_run_command);
+        
+        extract_mip_filter_initialization_configuration_command_initial_condition_source(serializer, &self->initial_cond_src);
+        
+        extract_mip_filter_initialization_configuration_command_alignment_selector(serializer, &self->auto_heading_alignment_selector);
+        
+        extract_float(serializer, &self->initial_heading);
+        
+        extract_float(serializer, &self->initial_pitch);
+        
+        extract_float(serializer, &self->initial_roll);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->initial_position[i]);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->initial_velocity[i]);
+        
+        extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
+        
+    }
 }
 
 void insert_mip_filter_initialization_configuration_response(struct mip_serializer* serializer, const struct mip_filter_initialization_configuration_response* self)
@@ -2216,19 +2312,25 @@ void insert_mip_filter_adaptive_filter_options_command(struct mip_serializer* se
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->level);
-    
-    insert_u16(serializer, self->time_limit);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->level);
+        
+        insert_u16(serializer, self->time_limit);
+        
+    }
 }
 void extract_mip_filter_adaptive_filter_options_command(struct mip_serializer* serializer, struct mip_filter_adaptive_filter_options_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->level);
-    
-    extract_u16(serializer, &self->time_limit);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->level);
+        
+        extract_u16(serializer, &self->time_limit);
+        
+    }
 }
 
 void insert_mip_filter_adaptive_filter_options_response(struct mip_serializer* serializer, const struct mip_filter_adaptive_filter_options_response* self)
@@ -2333,9 +2435,12 @@ void insert_mip_filter_multi_antenna_offset_command(struct mip_serializer* seria
     
     insert_u8(serializer, self->receiver_id);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->antenna_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->antenna_offset[i]);
+        
+    }
 }
 void extract_mip_filter_multi_antenna_offset_command(struct mip_serializer* serializer, struct mip_filter_multi_antenna_offset_command* self)
 {
@@ -2343,9 +2448,12 @@ void extract_mip_filter_multi_antenna_offset_command(struct mip_serializer* seri
     
     extract_u8(serializer, &self->receiver_id);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->antenna_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->antenna_offset[i]);
+        
+    }
 }
 
 void insert_mip_filter_multi_antenna_offset_response(struct mip_serializer* serializer, const struct mip_filter_multi_antenna_offset_response* self)
@@ -2460,25 +2568,31 @@ void insert_mip_filter_rel_pos_configuration_command(struct mip_serializer* seri
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->source);
-    
-    insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert_double(serializer, self->reference_coordinates[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->source);
+        
+        insert_mip_filter_reference_frame(serializer, self->reference_frame_selector);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_double(serializer, self->reference_coordinates[i]);
+        
+    }
 }
 void extract_mip_filter_rel_pos_configuration_command(struct mip_serializer* serializer, struct mip_filter_rel_pos_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->source);
-    
-    extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract_double(serializer, &self->reference_coordinates[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->source);
+        
+        extract_mip_filter_reference_frame(serializer, &self->reference_frame_selector);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_double(serializer, &self->reference_coordinates[i]);
+        
+    }
 }
 
 void insert_mip_filter_rel_pos_configuration_response(struct mip_serializer* serializer, const struct mip_filter_rel_pos_configuration_response* self)
@@ -2595,21 +2709,27 @@ void insert_mip_filter_ref_point_lever_arm_command(struct mip_serializer* serial
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, self->ref_point_sel);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->lever_arm_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, self->ref_point_sel);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->lever_arm_offset[i]);
+        
+    }
 }
 void extract_mip_filter_ref_point_lever_arm_command(struct mip_serializer* serializer, struct mip_filter_ref_point_lever_arm_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, &self->ref_point_sel);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->lever_arm_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(serializer, &self->ref_point_sel);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->lever_arm_offset[i]);
+        
+    }
 }
 
 void insert_mip_filter_ref_point_lever_arm_response(struct mip_serializer* serializer, const struct mip_filter_ref_point_lever_arm_response* self)
@@ -2771,9 +2891,12 @@ void insert_mip_filter_speed_lever_arm_command(struct mip_serializer* serializer
     
     insert_u8(serializer, self->source);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert_float(serializer, self->lever_arm_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->lever_arm_offset[i]);
+        
+    }
 }
 void extract_mip_filter_speed_lever_arm_command(struct mip_serializer* serializer, struct mip_filter_speed_lever_arm_command* self)
 {
@@ -2781,9 +2904,12 @@ void extract_mip_filter_speed_lever_arm_command(struct mip_serializer* serialize
     
     extract_u8(serializer, &self->source);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract_float(serializer, &self->lever_arm_offset[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->lever_arm_offset[i]);
+        
+    }
 }
 
 void insert_mip_filter_speed_lever_arm_response(struct mip_serializer* serializer, const struct mip_filter_speed_lever_arm_response* self)
@@ -2898,15 +3024,21 @@ void insert_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_ser
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+    }
 }
 void extract_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_serializer* serializer, struct mip_filter_wheeled_vehicle_constraint_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+    }
 }
 
 void insert_mip_filter_wheeled_vehicle_constraint_control_response(struct mip_serializer* serializer, const struct mip_filter_wheeled_vehicle_constraint_control_response* self)
@@ -3000,15 +3132,21 @@ void insert_mip_filter_vertical_gyro_constraint_control_command(struct mip_seria
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+    }
 }
 void extract_mip_filter_vertical_gyro_constraint_control_command(struct mip_serializer* serializer, struct mip_filter_vertical_gyro_constraint_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+    }
 }
 
 void insert_mip_filter_vertical_gyro_constraint_control_response(struct mip_serializer* serializer, const struct mip_filter_vertical_gyro_constraint_control_response* self)
@@ -3102,19 +3240,25 @@ void insert_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* s
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
-    insert_float(serializer, self->max_offset);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+        insert_float(serializer, self->max_offset);
+        
+    }
 }
 void extract_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* serializer, struct mip_filter_gnss_antenna_cal_control_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
-    extract_float(serializer, &self->max_offset);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+        extract_float(serializer, &self->max_offset);
+        
+    }
 }
 
 void insert_mip_filter_gnss_antenna_cal_control_response(struct mip_serializer* serializer, const struct mip_filter_gnss_antenna_cal_control_response* self)
@@ -3217,19 +3361,25 @@ void insert_mip_filter_magnetic_declination_source_command(struct mip_serializer
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_filter_mag_declination_source(serializer, self->source);
-    
-    insert_float(serializer, self->declination);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_mag_declination_source(serializer, self->source);
+        
+        insert_float(serializer, self->declination);
+        
+    }
 }
 void extract_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, struct mip_filter_magnetic_declination_source_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_filter_mag_declination_source(serializer, &self->source);
-    
-    extract_float(serializer, &self->declination);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_mag_declination_source(serializer, &self->source);
+        
+        extract_float(serializer, &self->declination);
+        
+    }
 }
 
 void insert_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, const struct mip_filter_magnetic_declination_source_response* self)

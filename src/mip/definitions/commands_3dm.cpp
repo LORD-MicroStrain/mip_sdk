@@ -167,20 +167,26 @@ void insert(Serializer& serializer, const ImuMessageFormat& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.num_descriptors);
-    
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        insert(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
 }
 void extract(Serializer& serializer, ImuMessageFormat& self)
 {
     extract(serializer, self.function);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        extract(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const ImuMessageFormat::Response& self)
@@ -275,20 +281,26 @@ void insert(Serializer& serializer, const GpsMessageFormat& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.num_descriptors);
-    
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        insert(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
 }
 void extract(Serializer& serializer, GpsMessageFormat& self)
 {
     extract(serializer, self.function);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        extract(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GpsMessageFormat::Response& self)
@@ -383,20 +395,26 @@ void insert(Serializer& serializer, const FilterMessageFormat& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.num_descriptors);
-    
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        insert(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
 }
 void extract(Serializer& serializer, FilterMessageFormat& self)
 {
     extract(serializer, self.function);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        extract(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const FilterMessageFormat::Response& self)
@@ -711,11 +729,14 @@ void insert(Serializer& serializer, const MessageFormat& self)
     
     insert(serializer, self.desc_set);
     
-    insert(serializer, self.num_descriptors);
-    
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        insert(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
 }
 void extract(Serializer& serializer, MessageFormat& self)
 {
@@ -723,10 +744,13 @@ void extract(Serializer& serializer, MessageFormat& self)
     
     extract(serializer, self.desc_set);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
-    for(unsigned int i=0; i < self.num_descriptors; i++)
-        extract(serializer, self.descriptors[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const MessageFormat::Response& self)
@@ -874,20 +898,26 @@ void insert(Serializer& serializer, const NmeaMessageFormat& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.count);
-    
-    for(unsigned int i=0; i < self.count; i++)
-        insert(serializer, self.format_entries[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.count);
+        
+        for(unsigned int i=0; i < self.count; i++)
+            insert(serializer, self.format_entries[i]);
+        
+    }
 }
 void extract(Serializer& serializer, NmeaMessageFormat& self)
 {
     extract(serializer, self.function);
     
-    C::extract_count(&serializer, &self.count, self.count);
-    for(unsigned int i=0; i < self.count; i++)
-        extract(serializer, self.format_entries[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.count, self.count);
+        for(unsigned int i=0; i < self.count; i++)
+            extract(serializer, self.format_entries[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const NmeaMessageFormat::Response& self)
@@ -1023,15 +1053,21 @@ void insert(Serializer& serializer, const UartBaudrate& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.baud);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.baud);
+        
+    }
 }
 void extract(Serializer& serializer, UartBaudrate& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.baud);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.baud);
+        
+    }
 }
 
 void insert(Serializer& serializer, const UartBaudrate::Response& self)
@@ -1144,8 +1180,11 @@ void insert(Serializer& serializer, const DatastreamControl& self)
     
     insert(serializer, self.desc_set);
     
-    insert(serializer, self.enable);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+    }
 }
 void extract(Serializer& serializer, DatastreamControl& self)
 {
@@ -1153,8 +1192,11 @@ void extract(Serializer& serializer, DatastreamControl& self)
     
     extract(serializer, self.desc_set);
     
-    extract(serializer, self.enable);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+    }
 }
 
 void insert(Serializer& serializer, const DatastreamControl::Response& self)
@@ -1253,28 +1295,34 @@ void insert(Serializer& serializer, const GnssSbasSettings& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.enable_sbas);
-    
-    insert(serializer, self.sbas_options);
-    
-    insert(serializer, self.num_included_prns);
-    
-    for(unsigned int i=0; i < self.num_included_prns; i++)
-        insert(serializer, self.included_prns[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable_sbas);
+        
+        insert(serializer, self.sbas_options);
+        
+        insert(serializer, self.num_included_prns);
+        
+        for(unsigned int i=0; i < self.num_included_prns; i++)
+            insert(serializer, self.included_prns[i]);
+        
+    }
 }
 void extract(Serializer& serializer, GnssSbasSettings& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.enable_sbas);
-    
-    extract(serializer, self.sbas_options);
-    
-    C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
-    for(unsigned int i=0; i < self.num_included_prns; i++)
-        extract(serializer, self.included_prns[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable_sbas);
+        
+        extract(serializer, self.sbas_options);
+        
+        C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+        for(unsigned int i=0; i < self.num_included_prns; i++)
+            extract(serializer, self.included_prns[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GnssSbasSettings::Response& self)
@@ -1387,23 +1435,29 @@ void insert(Serializer& serializer, const GnssTimeAssistance& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.tow);
-    
-    insert(serializer, self.week_number);
-    
-    insert(serializer, self.accuracy);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.tow);
+        
+        insert(serializer, self.week_number);
+        
+        insert(serializer, self.accuracy);
+        
+    }
 }
 void extract(Serializer& serializer, GnssTimeAssistance& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.tow);
-    
-    extract(serializer, self.week_number);
-    
-    extract(serializer, self.accuracy);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.tow);
+        
+        extract(serializer, self.week_number);
+        
+        extract(serializer, self.accuracy);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GnssTimeAssistance::Response& self)
@@ -1476,14 +1530,17 @@ void insert(Serializer& serializer, const AdvLowpassFilter& self)
     
     insert(serializer, self.target_descriptor);
     
-    insert(serializer, self.enable);
-    
-    insert(serializer, self.manual);
-    
-    insert(serializer, self.frequency);
-    
-    insert(serializer, self.reserved);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+        insert(serializer, self.manual);
+        
+        insert(serializer, self.frequency);
+        
+        insert(serializer, self.reserved);
+        
+    }
 }
 void extract(Serializer& serializer, AdvLowpassFilter& self)
 {
@@ -1491,14 +1548,17 @@ void extract(Serializer& serializer, AdvLowpassFilter& self)
     
     extract(serializer, self.target_descriptor);
     
-    extract(serializer, self.enable);
-    
-    extract(serializer, self.manual);
-    
-    extract(serializer, self.frequency);
-    
-    extract(serializer, self.reserved);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+        extract(serializer, self.manual);
+        
+        extract(serializer, self.frequency);
+        
+        extract(serializer, self.reserved);
+        
+    }
 }
 
 void insert(Serializer& serializer, const AdvLowpassFilter::Response& self)
@@ -1624,15 +1684,21 @@ void insert(Serializer& serializer, const PpsSource& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.source);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+    }
 }
 void extract(Serializer& serializer, PpsSource& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.source);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+    }
 }
 
 void insert(Serializer& serializer, const PpsSource::Response& self)
@@ -1717,12 +1783,15 @@ void insert(Serializer& serializer, const GpioConfig& self)
     
     insert(serializer, self.pin);
     
-    insert(serializer, self.feature);
-    
-    insert(serializer, self.behavior);
-    
-    insert(serializer, self.pin_mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.feature);
+        
+        insert(serializer, self.behavior);
+        
+        insert(serializer, self.pin_mode);
+        
+    }
 }
 void extract(Serializer& serializer, GpioConfig& self)
 {
@@ -1730,12 +1799,15 @@ void extract(Serializer& serializer, GpioConfig& self)
     
     extract(serializer, self.pin);
     
-    extract(serializer, self.feature);
-    
-    extract(serializer, self.behavior);
-    
-    extract(serializer, self.pin_mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.feature);
+        
+        extract(serializer, self.behavior);
+        
+        extract(serializer, self.pin_mode);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GpioConfig::Response& self)
@@ -1852,19 +1924,33 @@ void insert(Serializer& serializer, const GpioState& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.pin);
-    
-    insert(serializer, self.state);
-    
+    if( self.function == FunctionSelector::WRITE ||
+    self.function == FunctionSelector::READ )
+    {
+        insert(serializer, self.pin);
+        
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.state);
+        
+    }
 }
 void extract(Serializer& serializer, GpioState& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.pin);
-    
-    extract(serializer, self.state);
-    
+    if( self.function == FunctionSelector::WRITE ||
+    self.function == FunctionSelector::READ )
+    {
+        extract(serializer, self.pin);
+        
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.state);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GpioState::Response& self)
@@ -1927,23 +2013,29 @@ void insert(Serializer& serializer, const Odometer& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.mode);
-    
-    insert(serializer, self.scaling);
-    
-    insert(serializer, self.uncertainty);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+        insert(serializer, self.scaling);
+        
+        insert(serializer, self.uncertainty);
+        
+    }
 }
 void extract(Serializer& serializer, Odometer& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.mode);
-    
-    extract(serializer, self.scaling);
-    
-    extract(serializer, self.uncertainty);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+        extract(serializer, self.scaling);
+        
+        extract(serializer, self.uncertainty);
+        
+    }
 }
 
 void insert(Serializer& serializer, const Odometer::Response& self)
@@ -2128,8 +2220,11 @@ void insert(Serializer& serializer, const EventControl& self)
     
     insert(serializer, self.instance);
     
-    insert(serializer, self.mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+    }
 }
 void extract(Serializer& serializer, EventControl& self)
 {
@@ -2137,8 +2232,11 @@ void extract(Serializer& serializer, EventControl& self)
     
     extract(serializer, self.instance);
     
-    extract(serializer, self.mode);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+    }
 }
 
 void insert(Serializer& serializer, const EventControl::Response& self)
@@ -2395,22 +2493,25 @@ void insert(Serializer& serializer, const EventTrigger& self)
     
     insert(serializer, self.instance);
     
-    insert(serializer, self.type);
-    
-    if( self.type == EventTrigger::Type::GPIO )
+    if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.parameters.gpio);
+        insert(serializer, self.type);
         
-    }
-    if( self.type == EventTrigger::Type::THRESHOLD )
-    {
-        insert(serializer, self.parameters.threshold);
-        
-    }
-    if( self.type == EventTrigger::Type::COMBINATION )
-    {
-        insert(serializer, self.parameters.combination);
-        
+        if( self.type == EventTrigger::Type::GPIO )
+        {
+            insert(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventTrigger::Type::THRESHOLD )
+        {
+            insert(serializer, self.parameters.threshold);
+            
+        }
+        if( self.type == EventTrigger::Type::COMBINATION )
+        {
+            insert(serializer, self.parameters.combination);
+            
+        }
     }
 }
 void extract(Serializer& serializer, EventTrigger& self)
@@ -2419,22 +2520,25 @@ void extract(Serializer& serializer, EventTrigger& self)
     
     extract(serializer, self.instance);
     
-    extract(serializer, self.type);
-    
-    if( self.type == EventTrigger::Type::GPIO )
+    if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.parameters.gpio);
+        extract(serializer, self.type);
         
-    }
-    if( self.type == EventTrigger::Type::THRESHOLD )
-    {
-        extract(serializer, self.parameters.threshold);
-        
-    }
-    if( self.type == EventTrigger::Type::COMBINATION )
-    {
-        extract(serializer, self.parameters.combination);
-        
+        if( self.type == EventTrigger::Type::GPIO )
+        {
+            extract(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventTrigger::Type::THRESHOLD )
+        {
+            extract(serializer, self.parameters.threshold);
+            
+        }
+        if( self.type == EventTrigger::Type::COMBINATION )
+        {
+            extract(serializer, self.parameters.combination);
+            
+        }
     }
 }
 
@@ -2691,19 +2795,22 @@ void insert(Serializer& serializer, const EventAction& self)
     
     insert(serializer, self.instance);
     
-    insert(serializer, self.trigger);
-    
-    insert(serializer, self.type);
-    
-    if( self.type == EventAction::Type::GPIO )
+    if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.parameters.gpio);
+        insert(serializer, self.trigger);
         
-    }
-    if( self.type == EventAction::Type::MESSAGE )
-    {
-        insert(serializer, self.parameters.message);
+        insert(serializer, self.type);
         
+        if( self.type == EventAction::Type::GPIO )
+        {
+            insert(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventAction::Type::MESSAGE )
+        {
+            insert(serializer, self.parameters.message);
+            
+        }
     }
 }
 void extract(Serializer& serializer, EventAction& self)
@@ -2712,19 +2819,22 @@ void extract(Serializer& serializer, EventAction& self)
     
     extract(serializer, self.instance);
     
-    extract(serializer, self.trigger);
-    
-    extract(serializer, self.type);
-    
-    if( self.type == EventAction::Type::GPIO )
+    if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.parameters.gpio);
+        extract(serializer, self.trigger);
         
-    }
-    if( self.type == EventAction::Type::MESSAGE )
-    {
-        extract(serializer, self.parameters.message);
+        extract(serializer, self.type);
         
+        if( self.type == EventAction::Type::GPIO )
+        {
+            extract(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventAction::Type::MESSAGE )
+        {
+            extract(serializer, self.parameters.message);
+            
+        }
     }
 }
 
@@ -2912,17 +3022,23 @@ void insert(Serializer& serializer, const AccelBias& self)
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.bias[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.bias[i]);
+        
+    }
 }
 void extract(Serializer& serializer, AccelBias& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.bias[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.bias[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const AccelBias::Response& self)
@@ -3010,17 +3126,23 @@ void insert(Serializer& serializer, const GyroBias& self)
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.bias[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.bias[i]);
+        
+    }
 }
 void extract(Serializer& serializer, GyroBias& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.bias[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.bias[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const GyroBias::Response& self)
@@ -3157,17 +3279,23 @@ void insert(Serializer& serializer, const MagHardIronOffset& self)
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.offset[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.offset[i]);
+        
+    }
 }
 void extract(Serializer& serializer, MagHardIronOffset& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.offset[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.offset[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const MagHardIronOffset::Response& self)
@@ -3255,17 +3383,23 @@ void insert(Serializer& serializer, const MagSoftIronMatrix& self)
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 9; i++)
-        insert(serializer, self.offset[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert(serializer, self.offset[i]);
+        
+    }
 }
 void extract(Serializer& serializer, MagSoftIronMatrix& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 9; i++)
-        extract(serializer, self.offset[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract(serializer, self.offset[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self)
@@ -3353,23 +3487,29 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformEuler& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.roll);
-    
-    insert(serializer, self.pitch);
-    
-    insert(serializer, self.yaw);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.roll);
+        
+        insert(serializer, self.pitch);
+        
+        insert(serializer, self.yaw);
+        
+    }
 }
 void extract(Serializer& serializer, Sensor2VehicleTransformEuler& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.roll);
-    
-    extract(serializer, self.pitch);
-    
-    extract(serializer, self.yaw);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.roll);
+        
+        extract(serializer, self.pitch);
+        
+        extract(serializer, self.yaw);
+        
+    }
 }
 
 void insert(Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self)
@@ -3470,17 +3610,23 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion& sel
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.q[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            insert(serializer, self.q[i]);
+        
+    }
 }
 void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.q[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            extract(serializer, self.q[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self)
@@ -3568,17 +3714,23 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformDcm& self)
 {
     insert(serializer, self.function);
     
-    for(unsigned int i=0; i < 9; i++)
-        insert(serializer, self.dcm[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert(serializer, self.dcm[i]);
+        
+    }
 }
 void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self)
 {
     extract(serializer, self.function);
     
-    for(unsigned int i=0; i < 9; i++)
-        extract(serializer, self.dcm[i]);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract(serializer, self.dcm[i]);
+        
+    }
 }
 
 void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self)
@@ -3666,27 +3818,33 @@ void insert(Serializer& serializer, const ComplementaryFilter& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.pitch_roll_enable);
-    
-    insert(serializer, self.heading_enable);
-    
-    insert(serializer, self.pitch_roll_time_constant);
-    
-    insert(serializer, self.heading_time_constant);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.pitch_roll_enable);
+        
+        insert(serializer, self.heading_enable);
+        
+        insert(serializer, self.pitch_roll_time_constant);
+        
+        insert(serializer, self.heading_time_constant);
+        
+    }
 }
 void extract(Serializer& serializer, ComplementaryFilter& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.pitch_roll_enable);
-    
-    extract(serializer, self.heading_enable);
-    
-    extract(serializer, self.pitch_roll_time_constant);
-    
-    extract(serializer, self.heading_time_constant);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.pitch_roll_enable);
+        
+        extract(serializer, self.heading_enable);
+        
+        extract(serializer, self.pitch_roll_time_constant);
+        
+        extract(serializer, self.heading_time_constant);
+        
+    }
 }
 
 void insert(Serializer& serializer, const ComplementaryFilter::Response& self)
@@ -3798,8 +3956,11 @@ void insert(Serializer& serializer, const SensorRange& self)
     
     insert(serializer, self.sensor);
     
-    insert(serializer, self.setting);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.setting);
+        
+    }
 }
 void extract(Serializer& serializer, SensorRange& self)
 {
@@ -3807,8 +3968,11 @@ void extract(Serializer& serializer, SensorRange& self)
     
     extract(serializer, self.sensor);
     
-    extract(serializer, self.setting);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.setting);
+        
+    }
 }
 
 void insert(Serializer& serializer, const SensorRange::Response& self)

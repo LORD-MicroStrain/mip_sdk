@@ -158,15 +158,21 @@ void insert_mip_rtk_connected_device_type_command(struct mip_serializer* seriali
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
+        
+    }
 }
 void extract_mip_rtk_connected_device_type_command(struct mip_serializer* serializer, struct mip_rtk_connected_device_type_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
+        
+    }
 }
 
 void insert_mip_rtk_connected_device_type_response(struct mip_serializer* serializer, const struct mip_rtk_connected_device_type_response* self)

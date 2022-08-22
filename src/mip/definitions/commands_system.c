@@ -31,15 +31,21 @@ void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, cons
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->mode);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->mode);
+        
+    }
 }
 void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->mode);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->mode);
+        
+    }
 }
 
 void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self)

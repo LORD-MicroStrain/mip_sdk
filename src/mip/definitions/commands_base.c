@@ -211,8 +211,11 @@ void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const
     
     insert_u8(serializer, self->port);
     
-    insert_u32(serializer, self->baud);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u32(serializer, self->baud);
+        
+    }
 }
 void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, struct mip_base_comm_speed_command* self)
 {
@@ -220,8 +223,11 @@ void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, stru
     
     extract_u8(serializer, &self->port);
     
-    extract_u32(serializer, &self->baud);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u32(serializer, &self->baud);
+        
+    }
 }
 
 void insert_mip_base_comm_speed_response(struct mip_serializer* serializer, const struct mip_base_comm_speed_response* self)
@@ -331,19 +337,25 @@ void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, 
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_mip_base_gps_time_update_command_field_id(serializer, self->field_id);
-    
-    insert_u32(serializer, self->value);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_base_gps_time_update_command_field_id(serializer, self->field_id);
+        
+        insert_u32(serializer, self->value);
+        
+    }
 }
 void extract_mip_base_gps_time_update_command(struct mip_serializer* serializer, struct mip_base_gps_time_update_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_mip_base_gps_time_update_command_field_id(serializer, &self->field_id);
-    
-    extract_u32(serializer, &self->value);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_base_gps_time_update_command_field_id(serializer, &self->field_id);
+        
+        extract_u32(serializer, &self->value);
+        
+    }
 }
 
 void insert_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, const enum mip_base_gps_time_update_command_field_id self)

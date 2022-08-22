@@ -77,33 +77,39 @@ void insert_mip_gnss_signal_configuration_command(struct mip_serializer* seriali
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->gps_enable);
-    
-    insert_u8(serializer, self->glonass_enable);
-    
-    insert_u8(serializer, self->galileo_enable);
-    
-    insert_u8(serializer, self->beidou_enable);
-    
-    for(unsigned int i=0; i < 4; i++)
-        insert_u8(serializer, self->reserved[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->gps_enable);
+        
+        insert_u8(serializer, self->glonass_enable);
+        
+        insert_u8(serializer, self->galileo_enable);
+        
+        insert_u8(serializer, self->beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            insert_u8(serializer, self->reserved[i]);
+        
+    }
 }
 void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->gps_enable);
-    
-    extract_u8(serializer, &self->glonass_enable);
-    
-    extract_u8(serializer, &self->galileo_enable);
-    
-    extract_u8(serializer, &self->beidou_enable);
-    
-    for(unsigned int i=0; i < 4; i++)
-        extract_u8(serializer, &self->reserved[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->gps_enable);
+        
+        extract_u8(serializer, &self->glonass_enable);
+        
+        extract_u8(serializer, &self->galileo_enable);
+        
+        extract_u8(serializer, &self->beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            extract_u8(serializer, &self->reserved[i]);
+        
+    }
 }
 
 void insert_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_response* self)
@@ -238,21 +244,27 @@ void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* ser
 {
     insert_mip_function_selector(serializer, self->function);
     
-    insert_u8(serializer, self->enable);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert_u8(serializer, self->reserved[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_u8(serializer, self->reserved[i]);
+        
+    }
 }
 void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
-    extract_u8(serializer, &self->enable);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract_u8(serializer, &self->reserved[i]);
-    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_u8(serializer, &self->reserved[i]);
+        
+    }
 }
 
 void insert_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_response* self)

@@ -335,8 +335,11 @@ void insert(Serializer& serializer, const CommSpeed& self)
     
     insert(serializer, self.port);
     
-    insert(serializer, self.baud);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.baud);
+        
+    }
 }
 void extract(Serializer& serializer, CommSpeed& self)
 {
@@ -344,8 +347,11 @@ void extract(Serializer& serializer, CommSpeed& self)
     
     extract(serializer, self.port);
     
-    extract(serializer, self.baud);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.baud);
+        
+    }
 }
 
 void insert(Serializer& serializer, const CommSpeed::Response& self)
@@ -444,19 +450,25 @@ void insert(Serializer& serializer, const GpsTimeUpdate& self)
 {
     insert(serializer, self.function);
     
-    insert(serializer, self.field_id);
-    
-    insert(serializer, self.value);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.field_id);
+        
+        insert(serializer, self.value);
+        
+    }
 }
 void extract(Serializer& serializer, GpsTimeUpdate& self)
 {
     extract(serializer, self.function);
     
-    extract(serializer, self.field_id);
-    
-    extract(serializer, self.value);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.field_id);
+        
+        extract(serializer, self.value);
+        
+    }
 }
 
 CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value)
