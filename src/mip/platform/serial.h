@@ -31,7 +31,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include <mip/mip_interface.h>
 
 #define COM_PORT_BUFFER_SIZE  0x200
 
@@ -55,7 +54,7 @@ typedef struct _serial_port
 
 
 
-bool serial_port_open(serial_port *port, char *port_str, int baudrate);
+bool serial_port_open(serial_port *port, const char *port_str, int baudrate);
 bool serial_port_close(serial_port *port);
 bool serial_port_write(serial_port *port, void *buffer, uint32_t num_bytes, uint32_t *bytes_written);
 bool serial_port_read(serial_port *port, void *buffer, uint32_t num_bytes, uint32_t *bytes_read);
@@ -68,22 +67,3 @@ bool serial_port_is_open(serial_port *port);
 
 #endif
 
-
-
-
-/*
-#ifdef _WIN32
-    typedef HANDLE serial_device_interface_handle;
-#else
-    typedef int serial_device_interface_handle;
-#endif
-
-struct serial_device_interface
-{
-};
-*/
-
-bool serial_device_interface_open(serial_port* port, const char* port_str, int baudrate);
-bool serial_device_interface_close(serial_port* port);
-bool serial_device_interface_update(serial_port* port, struct mip_interface* device);
-bool serial_device_interface_send_to_device(serial_port* port, struct mip_interface* device, const uint8_t* data, size_t length);

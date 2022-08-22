@@ -73,7 +73,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-bool serial_port_open(serial_port *port, char *port_str, int baudrate)
+bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 {
  if(port_str == NULL)
     return false;

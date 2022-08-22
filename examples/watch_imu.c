@@ -11,6 +11,7 @@
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
 
+#include <mip/platform/serial_device_interface.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,13 +21,10 @@
 #ifdef WIN32
 #else
     #include <unistd.h>
-    #include <fcntl.h>
-    #include <sys/ioctl.h>
-    #include <termios.h>
 #endif
 
-int port = -1;
 uint8_t parse_buffer[1024];
+struct serial_device_interface port;
 struct mip_interface device;
 struct mip_sensor_scaled_accel_data scaled_accel;
 
@@ -108,90 +106,19 @@ timestamp_type get_current_timestamp()
 
 bool mip_interface_user_update(struct mip_interface* device)
 {
-    timestamp_type now = get_current_timestamp();
-
-    // Ensure commands can time out even if no data is received.
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), now);
-
-    uint8_t buffer[256];
-
-#ifdef WIN32
-#else
-    ssize_t bytes_read = read(port, buffer, sizeof(buffer));
-    if( bytes_read < 0 && errno != EAGAIN )
-        return false;
-#endif
-
-    mip_interface_receive_bytes(device, buffer, bytes_read, now);
-
-    return true;
+    return serial_device_interface_update(&port, device);
 }
 
 
 bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
 {
-    (void)device;
-
-#ifdef WIN32
-#else
-    if( write(port, data, length) != length )
-        return false;
-#endif
-
-    return true;
+    return serial_device_interface_send_to_device(&port, data, length);
 }
 
 
 bool open_port(const char* name, uint32_t baudrate)
 {
-#ifdef WIN32
-#else
-    speed_t speed = 0;
-    switch(baudrate)
-    {
-    case 115200: speed = B115200; break;
-    case 230400: speed = B230400; break;
-    case 460800: speed = B460800; break;
-    case 921600: speed = B921600; break;
-    default:
-        fprintf(stderr, "Unsupported baud rate %d. Must be 115200, 230400, 460800, or 921600.", baudrate);
-        return false;
-    }
-
-    port = open(name, O_RDWR | O_NOCTTY | O_NONBLOCK);
-    if(port == -1)
-    {
-        perror("Could not open port: ");
-        close(port);
-        return false;
-    }
-
-    struct termios options;
-    if(tcgetattr(port, &options) == -1)
-    {
-        perror("Failed to query port settings: ");
-        close(port);
-        return false;
-    }
-
-    options.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
-    options.c_lflag &= (tcflag_t)~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ISIG | IEXTEN);
-
-    options.c_oflag &= (tcflag_t)~(OPOST);
-    options.c_iflag &= (tcflag_t)~(INLCR | IGNCR | ICRNL | IGNBRK);
-
-    cfsetispeed(&options, speed);
-    cfsetospeed(&options, speed);
-
-    // Set no parity, 8 bits per byte, no flow control.
-    options.c_cflag = (options.c_cflag & (tcflag_t)~(CSIZE|CSTOPB|INPCK|ISTRIP|PARENB|PARODD)) | CS8;
-    options.c_iflag &= (tcflag_t) ~(IXON | IXOFF | IXANY);
-
-    if( tcsetattr(port, TCSANOW, &options) != 0 )
-        perror("Warning, failed to set port parameters: ");
-#endif
-
-    return true;
+    return serial_device_interface_open(&port, name, baudrate);
 }
 
 int usage(const char* argv0)
@@ -288,11 +215,6 @@ int main(int argc, const char* argv[])
     }
 
 done:
-
-#ifdef WIN32
-#else
-    close(port);
-#endif
-
+    serial_device_interface_close(&port);
     return result == MIP_ACK_OK ? 0 : 2;
 }

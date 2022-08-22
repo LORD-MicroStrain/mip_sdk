@@ -111,8 +111,8 @@ string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
 set(MIP_INTERFACE_SOURCES
-    "${MIP_DIR}/platform/serial.h"
-    "${MIP_DIR}/platform/serial.c"
+    "${MIP_DIR}/platform/serial_device_interface.h"
+    "${MIP_DIR}/platform/serial_device_interface.c"
 )
 
 set(ALL_MIP_SOURCES
