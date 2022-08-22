@@ -131,7 +131,7 @@ enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_complete(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_ok(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
         if( !mip_serializer_is_complete(&deserializer) )
@@ -176,7 +176,7 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(descriptors_out && descriptors_out_count);
-        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_complete(&deserializer); (*descriptors_out_count)++)
+        for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && mip_serializer_is_ok(&deserializer); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
         if( !mip_serializer_is_complete(&deserializer) )

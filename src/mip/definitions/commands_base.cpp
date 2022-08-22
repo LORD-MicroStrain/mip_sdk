@@ -154,14 +154,17 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self)
 
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self)
 {
+    assert(self.descriptors || (self.descriptors_count == 0));
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
 }
 void extract(Serializer& serializer, GetDeviceDescriptors::Response& self)
 {
-    for(unsigned int i=0; i < self.descriptors_count; i++)
-        extract(serializer, self.descriptors[i]);
+    assert(self.descriptors || (self.descriptors_count == 0));
+    uint8_t descriptorsCountMax = self.descriptors_count;
+    for(self.descriptors_count = 0; (self.descriptors_count < descriptorsCountMax) && serializer.isOk(); (self.descriptors_count)++)
+        extract(serializer, self.descriptors[self.descriptors_count]);
     
 }
 
@@ -177,7 +180,7 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOu
         Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
-        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isComplete(); (*descriptorsOutCount)++)
+        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isOk(); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
         
         if( !deserializer.isComplete() )
@@ -254,14 +257,17 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self)
 
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self)
 {
+    assert(self.descriptors || (self.descriptors_count == 0));
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
 }
 void extract(Serializer& serializer, GetExtendedDescriptors::Response& self)
 {
-    for(unsigned int i=0; i < self.descriptors_count; i++)
-        extract(serializer, self.descriptors[i]);
+    assert(self.descriptors || (self.descriptors_count == 0));
+    uint8_t descriptorsCountMax = self.descriptors_count;
+    for(self.descriptors_count = 0; (self.descriptors_count < descriptorsCountMax) && serializer.isOk(); (self.descriptors_count)++)
+        extract(serializer, self.descriptors[self.descriptors_count]);
     
 }
 
@@ -277,7 +283,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
         Serializer deserializer(buffer, responseLength);
         
         assert(descriptorsOut && descriptorsOutCount);
-        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isComplete(); (*descriptorsOutCount)++)
+        for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && deserializer.isOk(); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
         
         if( !deserializer.isComplete() )
