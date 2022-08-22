@@ -2,6 +2,7 @@
 
 // Handle type depending on OS
 #ifdef _WIN32
+#include <windows.h>
 typedef HANDLE serial_device_interface_handle;
 #else
 typedef int serial_device_interface_handle;

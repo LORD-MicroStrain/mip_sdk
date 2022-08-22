@@ -1,7 +1,4 @@
-#ifdef _WIN32
-#include <windows.h>
-
-#else
+#ifndef _WIN32
 
 #include <poll.h>
 #include <fcntl.h>
@@ -201,7 +198,7 @@ bool serial_device_interface_update(struct serial_device_interface* port, struct
     //Call the read function
 #ifdef _WIN32 //Windows
     DWORD  local_bytes_read;
-    if(!ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
+    if(!ReadFile(port->handle, buffer, sizeof(buffer), &local_bytes_read, NULL))
         return false;
     bytes_read = local_bytes_read;
 #else //Linux
