@@ -1,7 +1,7 @@
-MSCL-Embedded
-=============
+libmip
+======
 
-Welcome to the Embedded version of the MicroStrain Communication Library.
+Libmip is a library for communicating with MicroStrain inertial sensors via the MIP protocol.
 
 
 Features
@@ -13,7 +13,7 @@ Features
   * No dynamic memory allocation
   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
-  * FindMsclEmbedded.cmake is included for CMake-based projects
+  * FindMip.cmake is included for CMake-based projects
 * Can be used to parse offline binary files
 * C API for those who can't use C++
 * C++ API for safety, flexibility, and convenience.
@@ -29,8 +29,8 @@ Examples
 * Get device information [C++] - queries the device strings and prints them to stdout.
 * Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
 * Product-specific examples:
-  * GQ7 setup [] - Configures the device for typical usage.
-  * CV7 setup [] - Configures the device for typical usage.
+  * GQ7 setup [C, C++] - Configures the device for typical usage.
+  * CV7 setup [C, C++] - Configures the device for typical usage.
   * CV7 event [] - Configures a data trigger to output a message.
 
 You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
@@ -45,17 +45,19 @@ Communications Interfaces
 
 ### Serial Port
 
-A serial port library is included via git submodule. To use it, you'll have to download this additional library:
-`git submodule init`
+A basic serial port interface which works on desktop PCs is included. This enables building desktop apps and
+makes it easy to get started without needing to code any infrastructure first.
 
-Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
+Enable it in the CMake configuration with `-DWITH_SERIAL=1`. This option defaults to enabled.
+
+Use this interface for either USB or serial connections.
 
 ### TCP Client
 
-A TCP client connection is provided with MSCL-Embedded. This allows remote development over
+A TCP client connection is provided with libmip. This allows remote development over
 a network cable and makes it possible to insert other software into the communications path for debugging.
 
-Enable it in the CMake configuration with `-DWITH_SOCKETS=1`.
+Enable it in the CMake configuration with `-DWITH_SOCKETS=1`. This option defaults to enabled.
 
 
 How to Build
@@ -65,11 +67,11 @@ How to Build
 
 * CMake version 3.10 or later
 * A working C compiler
-  * C99 or later required
+  * C99 or later is required
 * A working C++ compiler
-  * For C++ API only. Define `MSCL_DISABLE_CPP=ON` if you don't want to use any C++.
-  * C++11 or later required for the mip library
-  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
+  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
+  * C++11 or later is required for the core mip library
+  * C++14 or later is requried for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
 * Doxygen, if building documentation
 
 ### Build configuration
@@ -82,7 +84,7 @@ The following options may be specified when configuring the build with CMake (e.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
 * BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* MSCL_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
+* MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 
 ### Compilation for Linux
 
@@ -105,6 +107,19 @@ Todo
 
 Implementation Notes
 --------------------
+
+### C and C++ APIs
+
+The C++ API is implemented on top of the C API to provide additional features:
+* Object-oriented interfaces
+* Improved type safety and sanity checking
+* Better clarity / reduced verbosity (e.g. with `using namespace mip`)
+* Simpler registration of data and field callbacks via the use of templates.
+
+The C++ API uses `TitleCase` for typenames and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
+everything. This makes it easy to tell which is being used when looking at the examples.
+
+The C API can be accessed directly from C++ via the `mip::C` namesace.
 
 ### User-Implemented Functions
 
@@ -131,6 +146,7 @@ Command results are divided into two categories:
 * Status codes are set by this library, e.g.:
   * General ERROR
   * TIMEDOUT
+  * CANCELLED
   * Other statuses are used while the command is still in process
 
 ### Timestamps and Timeouts
@@ -141,27 +157,23 @@ a precise timestamp or used for synchronization, and it generally cannot be used
 In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
 
 Because different applications may keep track of time differently (especially on embedded platforms), it is up to the user to provide
-the current time whenever data is received from the device. On a PC, this might come from the poxis `time()` function or from the
-`std::chrono` library. On ARM systems, it is often derived from the Systick timer.
+the current time whenever data is received from the device. On a PC, this might come from the posix `time()` function or from the
+`std::chrono` library. On ARM Cortex-M systems, it is often derived from the Systick timer.
 
-By default, timestamps are `typedef`'d to `uint32_t` and are typically in milliseconds. The value is allowed to wrap around as long
-as the time between wraparounds is longer than twice the longest timeout needed. If higher precision is needed or wraparound can't
-be tolerated by your application, define it to `uint64_t` instead.
+Typically timestamps and timeouts are specified in milliseconds, but this is not required. Any unit of time can be used as long as
+it is used consistently. It must be small enough to achieve the desired precision, but large enough to not overflow too often.
+Whole seconds may be too coarse (command timeouts may be longer than desired), but nanoseconds will overflow a `uint32_t` timestamp
+in just 4 seconds.
+
+By default, timestamps are `typedef`'d to `uint64_t` for use on a PC. This simplifies debugging because it will not overflow in this
+century, even if the unit is nanoseconds. Embedded systems may wish to use `uint32_t` instead to avoid 64-bit math. The value is
+allowed to wrap around (overflow), as long as the time taken to overflow exceeds twice the maximum command timeout used in the
+application. E.g. a `uint32_t` timestamp in milliseconds will overflow about every 50 days, and about once every 72 minutes if the
+units are microseconds.
 
 Timeouts for commands are broken down into two parts.
 * A "base reply timeout" applies to all commands. This is useful to compensate for communication latency, such as over a TCP socket.
 * "Additional time" which applies per command, because some commands may take longer to complete.
 
-Currently, only the C++ api offers a way to set the additional time parameter.
-
-### C and C++ APIs
-
-The C++ API is implemented on top of the C API to provide additional features:
-* Object-oriented interfaces
-* Improved type safety and sanity checking
-* Better clarity / reduced verbosity (e.g. with `using namespace mscl`)
-
-The C++ API uses `TitleCase` for typenames and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
-everything. This makes it easy to tell which is being used when looking at the examples.
-
-The C API can be accessed directly from C++ via the `mscl::C` namesace.
+Currently, only the C++ api offers a way to set the additional time parameter, and only when using the command `struct`s with
+`MipInterface::runCommand`.
