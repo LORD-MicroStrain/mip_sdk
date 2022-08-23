@@ -141,14 +141,14 @@ bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor)
 
 void insert_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector self)
 {
-    return insert_u8(serializer, self);
+    insert_u8(serializer, self);
 }
 
 void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector* self)
 {
     uint8_t tmp;
     extract_u8(serializer, &tmp);
-    *self = tmp;
+    *self = (enum mip_function_selector)tmp;
 }
 
 
