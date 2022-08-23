@@ -103,16 +103,11 @@ int main(int argc, const char* argv[])
     if(argc != 3)
         return usage(argv[0]);
 
-    uint32_t port     = atoi(argv[1]);
-    uint32_t baudrate = atoi(argv[2]);
+    const char* port_name = argv[1];
+    uint32_t baudrate     = atoi(argv[2]);
 
     if(baudrate == 0)
         return usage(argv[0]);
-
-    char port_name[100];
-
-    //Create the port name
-    sprintf(port_name, "\\\\.\\COM%d", port);
 
     //
     //Get the program start time
