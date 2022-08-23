@@ -116,7 +116,7 @@ enum mip_cmd_result mip_3dm_poll_imu_message(struct mip_interface* device, bool 
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -157,7 +157,7 @@ enum mip_cmd_result mip_3dm_poll_gnss_message(struct mip_interface* device, bool
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -198,7 +198,7 @@ enum mip_cmd_result mip_3dm_poll_filter_message(struct mip_interface* device, bo
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -264,7 +264,7 @@ enum mip_cmd_result mip_3dm_write_imu_message_format(struct mip_interface* devic
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -293,8 +293,7 @@ enum mip_cmd_result mip_3dm_read_imu_message_format(struct mip_interface* device
         assert(num_descriptors_out);
         extract_count(&deserializer, num_descriptors_out, num_descriptors_out_max);
         
-        assert(descriptors_out);
-        assert(num_descriptors_out);
+        assert(descriptors_out || (num_descriptors_out == 0));
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
@@ -397,7 +396,7 @@ enum mip_cmd_result mip_3dm_write_gps_message_format(struct mip_interface* devic
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -426,8 +425,7 @@ enum mip_cmd_result mip_3dm_read_gps_message_format(struct mip_interface* device
         assert(num_descriptors_out);
         extract_count(&deserializer, num_descriptors_out, num_descriptors_out_max);
         
-        assert(descriptors_out);
-        assert(num_descriptors_out);
+        assert(descriptors_out || (num_descriptors_out == 0));
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
@@ -530,7 +528,7 @@ enum mip_cmd_result mip_3dm_write_filter_message_format(struct mip_interface* de
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -559,8 +557,7 @@ enum mip_cmd_result mip_3dm_read_filter_message_format(struct mip_interface* dev
         assert(num_descriptors_out);
         extract_count(&deserializer, num_descriptors_out, num_descriptors_out_max);
         
-        assert(descriptors_out);
-        assert(num_descriptors_out);
+        assert(descriptors_out || (num_descriptors_out == 0));
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
@@ -704,7 +701,7 @@ enum mip_cmd_result mip_3dm_poll_data(struct mip_interface* device, uint8_t desc
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_u8(&serializer, descriptors[i]);
     
@@ -834,7 +831,7 @@ enum mip_cmd_result mip_3dm_write_message_format(struct mip_interface* device, u
     
     insert_u8(&serializer, num_descriptors);
     
-    assert(descriptors);
+    assert(descriptors || (num_descriptors == 0));
     for(unsigned int i=0; i < num_descriptors; i++)
         insert_mip_descriptor_rate(&serializer, &descriptors[i]);
     
@@ -867,8 +864,7 @@ enum mip_cmd_result mip_3dm_read_message_format(struct mip_interface* device, ui
         assert(num_descriptors_out);
         extract_count(&deserializer, num_descriptors_out, num_descriptors_out_max);
         
-        assert(descriptors_out);
-        assert(num_descriptors_out);
+        assert(descriptors_out || (num_descriptors_out == 0));
         for(unsigned int i=0; i < *num_descriptors_out; i++)
             extract_mip_descriptor_rate(&deserializer, &descriptors_out[i]);
         
@@ -952,7 +948,7 @@ enum mip_cmd_result mip_3dm_nmea_poll_data(struct mip_interface* device, bool su
     
     insert_u8(&serializer, count);
     
-    assert(format_entries);
+    assert(format_entries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert_mip_nmea_message(&serializer, &format_entries[i]);
     
@@ -1018,7 +1014,7 @@ enum mip_cmd_result mip_3dm_write_nmea_message_format(struct mip_interface* devi
     
     insert_u8(&serializer, count);
     
-    assert(format_entries);
+    assert(format_entries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert_mip_nmea_message(&serializer, &format_entries[i]);
     
@@ -1047,8 +1043,7 @@ enum mip_cmd_result mip_3dm_read_nmea_message_format(struct mip_interface* devic
         assert(count_out);
         extract_count(&deserializer, count_out, count_out_max);
         
-        assert(format_entries_out);
-        assert(count_out);
+        assert(format_entries_out || (count_out == 0));
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_nmea_message(&deserializer, &format_entries_out[i]);
         
@@ -1505,7 +1500,7 @@ enum mip_cmd_result mip_3dm_write_gnss_sbas_settings(struct mip_interface* devic
     
     insert_u8(&serializer, num_included_prns);
     
-    assert(included_prns);
+    assert(included_prns || (num_included_prns == 0));
     for(unsigned int i=0; i < num_included_prns; i++)
         insert_u16(&serializer, included_prns[i]);
     
@@ -1540,8 +1535,7 @@ enum mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device
         assert(num_included_prns_out);
         extract_count(&deserializer, num_included_prns_out, num_included_prns_out_max);
         
-        assert(included_prns_out);
-        assert(num_included_prns_out);
+        assert(included_prns_out || (num_included_prns_out == 0));
         for(unsigned int i=0; i < *num_included_prns_out; i++)
             extract_u16(&deserializer, &included_prns_out[i]);
         
@@ -2484,8 +2478,7 @@ enum mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, enum
         assert(num_entries_out);
         extract_count(&deserializer, num_entries_out, num_entries_out_max);
         
-        assert(entries_out);
-        assert(num_entries_out);
+        assert(entries_out || (num_entries_out == 0));
         for(unsigned int i=0; i < *num_entries_out; i++)
             extract_mip_3dm_get_event_support_command_info(&deserializer, &entries_out[i]);
         
@@ -2705,7 +2698,7 @@ enum mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* devic
     
     insert_u8(&serializer, requested_count);
     
-    assert(requested_instances);
+    assert(requested_instances || (requested_count == 0));
     for(unsigned int i=0; i < requested_count; i++)
         insert_u8(&serializer, requested_instances[i]);
     
@@ -2722,8 +2715,7 @@ enum mip_cmd_result mip_3dm_get_event_trigger_status(struct mip_interface* devic
         assert(count_out);
         extract_count(&deserializer, count_out, count_out_max);
         
-        assert(triggers_out);
-        assert(count_out);
+        assert(triggers_out || (count_out == 0));
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_trigger_status_command_entry(&deserializer, &triggers_out[i]);
         
@@ -2793,7 +2785,7 @@ enum mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device
     
     insert_u8(&serializer, requested_count);
     
-    assert(requested_instances);
+    assert(requested_instances || (requested_count == 0));
     for(unsigned int i=0; i < requested_count; i++)
         insert_u8(&serializer, requested_instances[i]);
     
@@ -2810,8 +2802,7 @@ enum mip_cmd_result mip_3dm_get_event_action_status(struct mip_interface* device
         assert(count_out);
         extract_count(&deserializer, count_out, count_out_max);
         
-        assert(actions_out);
-        assert(count_out);
+        assert(actions_out || (count_out == 0));
         for(unsigned int i=0; i < *count_out; i++)
             extract_mip_3dm_get_event_action_status_command_entry(&deserializer, &actions_out[i]);
         
@@ -3475,7 +3466,7 @@ enum mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, const
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, bias[i]);
     
@@ -3501,7 +3492,7 @@ enum mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float*
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(bias_out);
+        assert(bias_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
@@ -3590,7 +3581,7 @@ enum mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, const 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, bias[i]);
     
@@ -3616,7 +3607,7 @@ enum mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* 
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(bias_out);
+        assert(bias_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
@@ -3703,7 +3694,7 @@ enum mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(bias_out);
+        assert(bias_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &bias_out[i]);
         
@@ -3756,7 +3747,7 @@ enum mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, offset[i]);
     
@@ -3782,7 +3773,7 @@ enum mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* devi
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out);
+        assert(offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
@@ -3871,7 +3862,7 @@ enum mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset);
+    assert(offset || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert_float(&serializer, offset[i]);
     
@@ -3897,7 +3888,7 @@ enum mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* devi
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out);
+        assert(offset_out || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &offset_out[i]);
         
@@ -4120,7 +4111,7 @@ enum mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct m
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(q);
+    assert(q || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert_float(&serializer, q[i]);
     
@@ -4146,7 +4137,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mi
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(q_out);
+        assert(q_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract_float(&deserializer, &q_out[i]);
         
@@ -4235,7 +4226,7 @@ enum mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_inte
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(dcm);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert_float(&serializer, dcm[i]);
     
@@ -4261,7 +4252,7 @@ enum mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_inter
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(dcm_out);
+        assert(dcm_out || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &dcm_out[i]);
         
@@ -4653,8 +4644,7 @@ enum mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* devic
         assert(num_ranges_out);
         extract_count(&deserializer, num_ranges_out, num_ranges_out_max);
         
-        assert(ranges_out);
-        assert(num_ranges_out);
+        assert(ranges_out || (num_ranges_out == 0));
         for(unsigned int i=0; i < *num_ranges_out; i++)
             extract_mip_3dm_calibrated_sensor_ranges_command_entry(&deserializer, &ranges_out[i]);
         

@@ -154,7 +154,6 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self)
 
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self)
 {
-    assert(self.descriptors || (self.descriptors_count == 0));
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
@@ -257,7 +256,6 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self)
 
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self)
 {
-    assert(self.descriptors || (self.descriptors_count == 0));
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
@@ -326,7 +324,7 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(resultOut);
+        assert(resultOut || (16 == 0));
         for(unsigned int i=0; i < 16; i++)
             extract(deserializer, resultOut[i]);
         

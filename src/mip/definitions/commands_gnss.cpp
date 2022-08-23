@@ -89,8 +89,7 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numReceiversOut, numReceiversOutMax);
-        assert(receiverInfoOut);
-        assert(numReceiversOut);
+        assert(receiverInfoOut || (numReceiversOut == 0));
         for(unsigned int i=0; i < *numReceiversOut; i++)
             extract(deserializer, receiverInfoOut[i]);
         
@@ -181,7 +180,7 @@ CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, 
     
     insert(serializer, beidouEnable);
     
-    assert(reserved);
+    assert(reserved || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, reserved[i]);
     
@@ -216,7 +215,7 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
         assert(beidouEnableOut);
         extract(deserializer, *beidouEnableOut);
         
-        assert(reservedOut);
+        assert(reservedOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, reservedOut[i]);
         
@@ -307,7 +306,7 @@ CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
-    assert(reserved);
+    assert(reserved || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, reserved[i]);
     
@@ -333,7 +332,7 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        assert(reservedOut);
+        assert(reservedOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, reservedOut[i]);
         

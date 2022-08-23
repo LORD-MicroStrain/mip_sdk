@@ -105,7 +105,7 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(imeiOut);
+        assert(imeiOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imeiOut[i]);
         
@@ -149,7 +149,7 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(imsiOut);
+        assert(imsiOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imsiOut[i]);
         
@@ -193,7 +193,7 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(iccidOut);
+        assert(iccidOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, iccidOut[i]);
         
@@ -334,7 +334,7 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(activationcodeOut);
+        assert(activationcodeOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, activationcodeOut[i]);
         
@@ -378,7 +378,7 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(modemfirmwareversionOut);
+        assert(modemfirmwareversionOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, modemfirmwareversionOut[i]);
         
@@ -569,11 +569,11 @@ CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, cons
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
-    assert(primarycolor);
+    assert(primarycolor || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, primarycolor[i]);
     
-    assert(altcolor);
+    assert(altcolor || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, altcolor[i]);
     

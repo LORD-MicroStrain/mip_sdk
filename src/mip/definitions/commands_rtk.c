@@ -103,7 +103,7 @@ enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_ou
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(imei_out);
+        assert(imei_out || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &imei_out[i]);
         
@@ -124,7 +124,7 @@ enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_ou
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(imsi_out);
+        assert(imsi_out || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &imsi_out[i]);
         
@@ -145,7 +145,7 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(iccid_out);
+        assert(iccid_out || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &iccid_out[i]);
         
@@ -285,7 +285,7 @@ enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* act
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(activation_code_out);
+        assert(activation_code_out || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &activation_code_out[i]);
         
@@ -306,7 +306,7 @@ enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* dev
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(modem_firmware_version_out);
+        assert(modem_firmware_version_out || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract_char(&deserializer, &modem_firmware_version_out[i]);
         
@@ -483,11 +483,11 @@ enum mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
-    assert(primary_color);
+    assert(primary_color || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_u8(&serializer, primary_color[i]);
     
-    assert(alt_color);
+    assert(alt_color || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_u8(&serializer, alt_color[i]);
     

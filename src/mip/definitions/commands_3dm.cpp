@@ -81,7 +81,7 @@ CmdResult pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t num
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -118,7 +118,7 @@ CmdResult pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t nu
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -155,7 +155,7 @@ CmdResult pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -213,7 +213,7 @@ CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -237,8 +237,7 @@ CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
@@ -327,7 +326,7 @@ CmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -351,8 +350,7 @@ CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
@@ -441,7 +439,7 @@ CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescript
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -465,8 +463,7 @@ CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescript
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
@@ -663,7 +660,7 @@ CmdResult pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -783,7 +780,7 @@ CmdResult writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -811,8 +808,7 @@ CmdResult readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* 
         extract(deserializer, descSet);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
@@ -886,7 +882,7 @@ CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count
     
     insert(serializer, count);
     
-    assert(formatEntries);
+    assert(formatEntries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert(serializer, formatEntries[i]);
     
@@ -944,7 +940,7 @@ CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, count);
     
-    assert(formatEntries);
+    assert(formatEntries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert(serializer, formatEntries[i]);
     
@@ -968,8 +964,7 @@ CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uin
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(formatEntriesOut);
-        assert(countOut);
+        assert(formatEntriesOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, formatEntriesOut[i]);
         
@@ -1361,7 +1356,7 @@ CmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, Gn
     
     insert(serializer, numIncludedPrns);
     
-    assert(includedPrns);
+    assert(includedPrns || (numIncludedPrns == 0));
     for(unsigned int i=0; i < numIncludedPrns; i++)
         insert(serializer, includedPrns[i]);
     
@@ -1391,8 +1386,7 @@ CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut,
         extract(deserializer, *sbasOptionsOut);
         
         C::extract_count(&deserializer, numIncludedPrnsOut, numIncludedPrnsOutMax);
-        assert(includedPrnsOut);
-        assert(numIncludedPrnsOut);
+        assert(includedPrnsOut || (numIncludedPrnsOut == 0));
         for(unsigned int i=0; i < *numIncludedPrnsOut; i++)
             extract(deserializer, includedPrnsOut[i]);
         
@@ -2202,8 +2196,7 @@ CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query
         extract(deserializer, *maxInstancesOut);
         
         C::extract_count(&deserializer, numEntriesOut, numEntriesOutMax);
-        assert(entriesOut);
-        assert(numEntriesOut);
+        assert(entriesOut || (numEntriesOut == 0));
         for(unsigned int i=0; i < *numEntriesOut; i++)
             extract(deserializer, entriesOut[i]);
         
@@ -2383,7 +2376,7 @@ CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount
     
     insert(serializer, requestedCount);
     
-    assert(requestedInstances);
+    assert(requestedInstances || (requestedCount == 0));
     for(unsigned int i=0; i < requestedCount; i++)
         insert(serializer, requestedInstances[i]);
     
@@ -2397,8 +2390,7 @@ CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(triggersOut);
-        assert(countOut);
+        assert(triggersOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, triggersOut[i]);
         
@@ -2461,7 +2453,7 @@ CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount,
     
     insert(serializer, requestedCount);
     
-    assert(requestedInstances);
+    assert(requestedInstances || (requestedCount == 0));
     for(unsigned int i=0; i < requestedCount; i++)
         insert(serializer, requestedInstances[i]);
     
@@ -2475,8 +2467,7 @@ CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount,
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(actionsOut);
-        assert(countOut);
+        assert(actionsOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, actionsOut[i]);
         
@@ -3058,7 +3049,7 @@ CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3081,7 +3072,7 @@ CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3162,7 +3153,7 @@ CmdResult writeGyroBias(C::mip_interface& device, const float* bias)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3185,7 +3176,7 @@ CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3264,7 +3255,7 @@ CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, fl
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3315,7 +3306,7 @@ CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -3338,7 +3329,7 @@ CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3419,7 +3410,7 @@ CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, offset[i]);
     
@@ -3442,7 +3433,7 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3646,7 +3637,7 @@ CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(q);
+    assert(q || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, q[i]);
     
@@ -3669,7 +3660,7 @@ CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float*
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(qOut);
+        assert(qOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, qOut[i]);
         
@@ -3750,7 +3741,7 @@ CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float*
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(dcm);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
     
@@ -3773,7 +3764,7 @@ CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(dcmOut);
+        assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
@@ -4130,8 +4121,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
         extract(deserializer, sensor);
         
         C::extract_count(&deserializer, numRangesOut, numRangesOutMax);
-        assert(rangesOut);
-        assert(numRangesOut);
+        assert(rangesOut || (numRangesOut == 0));
         for(unsigned int i=0; i < *numRangesOut; i++)
             extract(deserializer, rangesOut[i]);
         

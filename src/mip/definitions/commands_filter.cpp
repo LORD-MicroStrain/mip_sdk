@@ -235,15 +235,15 @@ CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t 
     
     insert(serializer, height);
     
-    assert(velocity);
+    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, velocity[i]);
     
-    assert(posUncertainty);
+    assert(posUncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, posUncertainty[i]);
     
-    assert(velUncertainty);
+    assert(velUncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, velUncertainty[i]);
     
@@ -593,7 +593,7 @@ CmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, const float*
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(dcm);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
     
@@ -616,7 +616,7 @@ CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(dcmOut);
+        assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
@@ -697,7 +697,7 @@ CmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(quat);
+    assert(quat || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, quat[i]);
     
@@ -720,7 +720,7 @@ CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float*
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(quatOut);
+        assert(quatOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, quatOut[i]);
         
@@ -801,7 +801,7 @@ CmdResult writeSensorToVehicleOffset(C::mip_interface& device, const float* offs
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -824,7 +824,7 @@ CmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -905,7 +905,7 @@ CmdResult writeAntennaOffset(C::mip_interface& device, const float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -928,7 +928,7 @@ CmdResult readAntennaOffset(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -1982,11 +1982,11 @@ CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t wai
     
     insert(serializer, initialRoll);
     
-    assert(initialPosition);
+    assert(initialPosition || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, initialPosition[i]);
     
-    assert(initialVelocity);
+    assert(initialVelocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, initialVelocity[i]);
     
@@ -2029,11 +2029,11 @@ CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* wai
         assert(initialRollOut);
         extract(deserializer, *initialRollOut);
         
-        assert(initialPositionOut);
+        assert(initialPositionOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, initialPositionOut[i]);
         
-        assert(initialVelocityOut);
+        assert(initialVelocityOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, initialVelocityOut[i]);
         
@@ -2237,7 +2237,7 @@ CmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, receiverId);
     
-    assert(antennaOffset);
+    assert(antennaOffset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, antennaOffset[i]);
     
@@ -2264,7 +2264,7 @@ CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, f
         
         extract(deserializer, receiverId);
         
-        assert(antennaOffsetOut);
+        assert(antennaOffsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, antennaOffsetOut[i]);
         
@@ -2371,7 +2371,7 @@ CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, Fil
     
     insert(serializer, referenceFrameSelector);
     
-    assert(referenceCoordinates);
+    assert(referenceCoordinates || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, referenceCoordinates[i]);
     
@@ -2400,7 +2400,7 @@ CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, 
         assert(referenceFrameSelectorOut);
         extract(deserializer, *referenceFrameSelectorOut);
         
-        assert(referenceCoordinatesOut);
+        assert(referenceCoordinatesOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, referenceCoordinatesOut[i]);
         
@@ -2491,7 +2491,7 @@ CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refe
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, refPointSel);
     
-    assert(leverArmOffset);
+    assert(leverArmOffset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, leverArmOffset[i]);
     
@@ -2517,7 +2517,7 @@ CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::Refer
         assert(refPointSelOut);
         extract(deserializer, *refPointSelOut);
         
-        assert(leverArmOffsetOut);
+        assert(leverArmOffsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, leverArmOffsetOut[i]);
         
@@ -2648,7 +2648,7 @@ CmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const flo
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
     
-    assert(leverArmOffset);
+    assert(leverArmOffset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, leverArmOffset[i]);
     
@@ -2675,7 +2675,7 @@ CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* lev
         
         extract(deserializer, source);
         
-        assert(leverArmOffsetOut);
+        assert(leverArmOffsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, leverArmOffsetOut[i]);
         

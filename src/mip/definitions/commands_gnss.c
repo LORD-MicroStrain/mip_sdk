@@ -63,8 +63,7 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
         assert(num_receivers_out);
         extract_count(&deserializer, num_receivers_out, num_receivers_out_max);
         
-        assert(receiver_info_out);
-        assert(num_receivers_out);
+        assert(receiver_info_out || (num_receivers_out == 0));
         for(unsigned int i=0; i < *num_receivers_out; i++)
             extract_mip_gnss_receiver_info_command_info(&deserializer, &receiver_info_out[i]);
         
@@ -157,7 +156,7 @@ enum mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* de
     
     insert_u8(&serializer, beidou_enable);
     
-    assert(reserved);
+    assert(reserved || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert_u8(&serializer, reserved[i]);
     
@@ -195,7 +194,7 @@ enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* dev
         assert(beidou_enable_out);
         extract_u8(&deserializer, beidou_enable_out);
         
-        assert(reserved_out);
+        assert(reserved_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         
@@ -294,7 +293,7 @@ enum mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface
     
     insert_u8(&serializer, enable);
     
-    assert(reserved);
+    assert(reserved || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_u8(&serializer, reserved[i]);
     
@@ -323,7 +322,7 @@ enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface*
         assert(enable_out);
         extract_u8(&deserializer, enable_out);
         
-        assert(reserved_out);
+        assert(reserved_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         

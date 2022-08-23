@@ -268,15 +268,15 @@ enum mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device
     
     insert_double(&serializer, height);
     
-    assert(velocity);
+    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, velocity[i]);
     
-    assert(pos_uncertainty);
+    assert(pos_uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, pos_uncertainty[i]);
     
-    assert(vel_uncertainty);
+    assert(vel_uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, vel_uncertainty[i]);
     
@@ -663,7 +663,7 @@ enum mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_i
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(dcm);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert_float(&serializer, dcm[i]);
     
@@ -689,7 +689,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_in
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(dcm_out);
+        assert(dcm_out || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract_float(&deserializer, &dcm_out[i]);
         
@@ -778,7 +778,7 @@ enum mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struc
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(quat);
+    assert(quat || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert_float(&serializer, quat[i]);
     
@@ -804,7 +804,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(quat_out);
+        assert(quat_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract_float(&deserializer, &quat_out[i]);
         
@@ -893,7 +893,7 @@ enum mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interfa
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, offset[i]);
     
@@ -919,7 +919,7 @@ enum mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interfac
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out);
+        assert(offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
@@ -1008,7 +1008,7 @@ enum mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, offset[i]);
     
@@ -1034,7 +1034,7 @@ enum mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device,
         struct mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out);
+        assert(offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &offset_out[i]);
         
@@ -2206,11 +2206,11 @@ enum mip_cmd_result mip_filter_write_initialization_configuration(struct mip_int
     
     insert_float(&serializer, initial_roll);
     
-    assert(initial_position);
+    assert(initial_position || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, initial_position[i]);
     
-    assert(initial_velocity);
+    assert(initial_velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, initial_velocity[i]);
     
@@ -2256,11 +2256,11 @@ enum mip_cmd_result mip_filter_read_initialization_configuration(struct mip_inte
         assert(initial_roll_out);
         extract_float(&deserializer, initial_roll_out);
         
-        assert(initial_position_out);
+        assert(initial_position_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &initial_position_out[i]);
         
-        assert(initial_velocity_out);
+        assert(initial_velocity_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &initial_velocity_out[i]);
         
@@ -2483,7 +2483,7 @@ enum mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* 
     
     insert_u8(&serializer, receiver_id);
     
-    assert(antenna_offset);
+    assert(antenna_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, antenna_offset[i]);
     
@@ -2513,7 +2513,7 @@ enum mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* d
         
         extract_u8(&deserializer, &receiver_id);
         
-        assert(antenna_offset_out);
+        assert(antenna_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &antenna_offset_out[i]);
         
@@ -2628,7 +2628,7 @@ enum mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface*
     
     insert_mip_filter_reference_frame(&serializer, reference_frame_selector);
     
-    assert(reference_coordinates);
+    assert(reference_coordinates || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_double(&serializer, reference_coordinates[i]);
     
@@ -2660,7 +2660,7 @@ enum mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* 
         assert(reference_frame_selector_out);
         extract_mip_filter_reference_frame(&deserializer, reference_frame_selector_out);
         
-        assert(reference_coordinates_out);
+        assert(reference_coordinates_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_double(&deserializer, &reference_coordinates_out[i]);
         
@@ -2770,7 +2770,7 @@ enum mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* d
     
     insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(&serializer, ref_point_sel);
     
-    assert(lever_arm_offset);
+    assert(lever_arm_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, lever_arm_offset[i]);
     
@@ -2799,7 +2799,7 @@ enum mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* de
         assert(ref_point_sel_out);
         extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(&deserializer, ref_point_sel_out);
         
-        assert(lever_arm_offset_out);
+        assert(lever_arm_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &lever_arm_offset_out[i]);
         
@@ -2939,7 +2939,7 @@ enum mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* devic
     
     insert_u8(&serializer, source);
     
-    assert(lever_arm_offset);
+    assert(lever_arm_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, lever_arm_offset[i]);
     
@@ -2969,7 +2969,7 @@ enum mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device
         
         extract_u8(&deserializer, &source);
         
-        assert(lever_arm_offset_out);
+        assert(lever_arm_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &lever_arm_offset_out[i]);
         
