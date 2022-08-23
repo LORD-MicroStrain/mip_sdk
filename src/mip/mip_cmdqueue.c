@@ -307,7 +307,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(struct mip_pending_cmd
             // pending->_ack_code   = ack_code;
             pending->_reply_time = timestamp;  // Completion time
 
-            return ack_code;
+            return (enum mip_cmd_result)ack_code;
         }
     }
 
