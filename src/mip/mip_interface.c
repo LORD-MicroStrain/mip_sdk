@@ -135,8 +135,8 @@ bool mip_interface_update(struct mip_interface* device)
 
     assert(count <= max_count);
 
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
     mip_parser_process_written(parser, count, timestamp, 0);
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
     return true;
 }
 
