@@ -31,10 +31,31 @@ using namespace ::mip::C;
 
 void insert(Serializer& serializer, const CommMode& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+    }
+}
+void extract(Serializer& serializer, CommMode& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+    }
+}
+
+void insert(Serializer& serializer, const CommMode::Response& self)
+{
     insert(serializer, self.mode);
     
 }
-void extract(Serializer& serializer, CommMode& self)
+void extract(Serializer& serializer, CommMode::Response& self)
 {
     extract(serializer, self.mode);
     
@@ -70,7 +91,7 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
         assert(modeOut);
         extract(deserializer, *modeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

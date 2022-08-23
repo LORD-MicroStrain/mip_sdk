@@ -40,6 +40,22 @@ void extract(Serializer& serializer, ReceiverInfo& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const ReceiverInfo::Response& self)
+{
+    insert(serializer, self.num_receivers);
+    
+    for(unsigned int i=0; i < self.num_receivers; i++)
+        insert(serializer, self.receiver_info[i]);
+    
+}
+void extract(Serializer& serializer, ReceiverInfo::Response& self)
+{
+    C::extract_count(&serializer, &self.num_receivers, self.num_receivers);
+    for(unsigned int i=0; i < self.num_receivers; i++)
+        extract(serializer, self.receiver_info[i]);
+    
+}
+
 void insert(Serializer& serializer, const ReceiverInfo::Info& self)
 {
     insert(serializer, self.receiver_id);
@@ -73,17 +89,55 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numReceiversOut, numReceiversOutMax);
-        assert(receiverInfoOut);
-        assert(numReceiversOut);
+        assert(receiverInfoOut || (numReceiversOut == 0));
         for(unsigned int i=0; i < *numReceiversOut; i++)
             extract(deserializer, receiverInfoOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const SignalConfiguration& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.gps_enable);
+        
+        insert(serializer, self.glonass_enable);
+        
+        insert(serializer, self.galileo_enable);
+        
+        insert(serializer, self.beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            insert(serializer, self.reserved[i]);
+        
+    }
+}
+void extract(Serializer& serializer, SignalConfiguration& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.gps_enable);
+        
+        extract(serializer, self.glonass_enable);
+        
+        extract(serializer, self.galileo_enable);
+        
+        extract(serializer, self.beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            extract(serializer, self.reserved[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const SignalConfiguration::Response& self)
 {
     insert(serializer, self.gps_enable);
     
@@ -97,7 +151,7 @@ void insert(Serializer& serializer, const SignalConfiguration& self)
         insert(serializer, self.reserved[i]);
     
 }
-void extract(Serializer& serializer, SignalConfiguration& self)
+void extract(Serializer& serializer, SignalConfiguration::Response& self)
 {
     extract(serializer, self.gps_enable);
     
@@ -126,7 +180,7 @@ CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, 
     
     insert(serializer, beidouEnable);
     
-    assert(reserved);
+    assert(reserved || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, reserved[i]);
     
@@ -161,11 +215,11 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
         assert(beidouEnableOut);
         extract(deserializer, *beidouEnableOut);
         
-        assert(reservedOut);
+        assert(reservedOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, reservedOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -202,13 +256,40 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const RtkDongleConfiguration& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.reserved[i]);
+        
+    }
+}
+void extract(Serializer& serializer, RtkDongleConfiguration& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.reserved[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const RtkDongleConfiguration::Response& self)
+{
     insert(serializer, self.enable);
     
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.reserved[i]);
     
 }
-void extract(Serializer& serializer, RtkDongleConfiguration& self)
+void extract(Serializer& serializer, RtkDongleConfiguration::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -225,7 +306,7 @@ CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
-    assert(reserved);
+    assert(reserved || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, reserved[i]);
     
@@ -251,11 +332,11 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
         assert(enableOut);
         extract(deserializer, *enableOut);
         
-        assert(reservedOut);
+        assert(reservedOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, reservedOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

@@ -33,7 +33,7 @@ struct CmdQueue : public C::mip_cmd_queue
 
 struct PendingCmd : public C::mip_pending_cmd
 {
-    PendingCmd() { std::memset(this, 0, sizeof(C::mip_pending_cmd)); }
+    PendingCmd() { std::memset(static_cast<C::mip_pending_cmd*>(this), 0, sizeof(C::mip_pending_cmd)); }
     PendingCmd(uint8_t descriptorSet, uint8_t fieldDescriptor, Timeout additionalTime=0) { C::mip_pending_cmd_init_with_timeout(this, descriptorSet, fieldDescriptor, additionalTime); }
     PendingCmd(uint8_t descriptorSet, uint8_t fieldDescriptor, uint8_t responseDescriptor, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime) { C::mip_pending_cmd_init_full(this, descriptorSet, fieldDescriptor, responseDescriptor, responseBuffer, responseBufferSize, additionalTime); }
 
@@ -508,11 +508,8 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
         return result;
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
-    size_t offset = extract(response, buffer, responseLength, 0);
-    if( offset != responseLength )
-        return C::MIP_STATUS_ERROR;
 
-    return C::MIP_ACK_OK;
+    return extract(response, buffer, responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
 }
 
 

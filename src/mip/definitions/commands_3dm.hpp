@@ -164,10 +164,10 @@ struct NmeaMessage
         GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL"
     };
     
-    MessageID message_id;
-    TalkerID talker_id;
-    uint8_t source_desc_set;
-    uint16_t decimation;
+    MessageID message_id = static_cast<MessageID>(0);
+    TalkerID talker_id = static_cast<TalkerID>(0);
+    uint8_t source_desc_set = 0;
+    uint16_t decimation = 0;
     
 };
 void insert(Serializer& serializer, const NmeaMessage& self);
@@ -207,9 +207,9 @@ struct PollImuMessage
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool suppress_ack;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    bool suppress_ack = 0;
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
 };
 void insert(Serializer& serializer, const PollImuMessage& self);
@@ -238,9 +238,9 @@ struct PollGnssMessage
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool suppress_ack;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    bool suppress_ack = 0;
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
 };
 void insert(Serializer& serializer, const PollGnssMessage& self);
@@ -269,9 +269,9 @@ struct PollFilterMessage
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool suppress_ack;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    bool suppress_ack = 0;
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
 };
 void insert(Serializer& serializer, const PollFilterMessage& self);
@@ -299,17 +299,17 @@ struct ImuMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
         
-        uint8_t num_descriptors;
-        DescriptorRate* descriptors;
+        uint8_t num_descriptors = 0;
+        DescriptorRate* descriptors = {nullptr};
         
     };
 };
@@ -345,17 +345,17 @@ struct GpsMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
         
-        uint8_t num_descriptors;
-        DescriptorRate* descriptors;
+        uint8_t num_descriptors = 0;
+        DescriptorRate* descriptors = {nullptr};
         
     };
 };
@@ -391,17 +391,17 @@ struct FilterMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
         
-        uint8_t num_descriptors;
-        DescriptorRate* descriptors;
+        uint8_t num_descriptors = 0;
+        DescriptorRate* descriptors = {nullptr};
         
     };
 };
@@ -440,7 +440,7 @@ struct ImuGetBaseRate
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
         
-        uint16_t rate;
+        uint16_t rate = 0;
         
     };
 };
@@ -475,7 +475,7 @@ struct GpsGetBaseRate
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
         
-        uint16_t rate;
+        uint16_t rate = 0;
         
     };
 };
@@ -510,7 +510,7 @@ struct FilterGetBaseRate
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
         
-        uint16_t rate;
+        uint16_t rate = 0;
         
     };
 };
@@ -543,10 +543,10 @@ struct PollData
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t desc_set;
-    bool suppress_ack;
-    uint8_t num_descriptors;
-    uint8_t* descriptors;
+    uint8_t desc_set = 0;
+    bool suppress_ack = 0;
+    uint8_t num_descriptors = 0;
+    uint8_t* descriptors = {nullptr};
     
 };
 void insert(Serializer& serializer, const PollData& self);
@@ -568,15 +568,15 @@ struct GetBaseRate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t desc_set;
+    uint8_t desc_set = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
         
-        uint8_t desc_set;
-        uint16_t rate;
+        uint8_t desc_set = 0;
+        uint16_t rate = 0;
         
     };
 };
@@ -608,19 +608,19 @@ struct MessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t desc_set;
-    uint8_t num_descriptors;
-    DescriptorRate* descriptors;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t desc_set = 0;
+    uint8_t num_descriptors = 0;
+    DescriptorRate* descriptors = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
         
-        uint8_t desc_set;
-        uint8_t num_descriptors;
-        DescriptorRate* descriptors;
+        uint8_t desc_set = 0;
+        uint8_t num_descriptors = 0;
+        DescriptorRate* descriptors = {nullptr};
         
     };
 };
@@ -656,9 +656,9 @@ struct NmeaPollData
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool suppress_ack;
-    uint8_t count;
-    NmeaMessage* format_entries;
+    bool suppress_ack = 0;
+    uint8_t count = 0;
+    NmeaMessage* format_entries = {nullptr};
     
 };
 void insert(Serializer& serializer, const NmeaPollData& self);
@@ -684,17 +684,17 @@ struct NmeaMessageFormat
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t count;
-    NmeaMessage* format_entries;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t count = 0;
+    NmeaMessage* format_entries = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
         
-        uint8_t count;
-        NmeaMessage* format_entries;
+        uint8_t count = 0;
+        NmeaMessage* format_entries = {nullptr};
         
     };
 };
@@ -732,7 +732,7 @@ struct DeviceSettings
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
     
 };
 void insert(Serializer& serializer, const DeviceSettings& self);
@@ -774,15 +774,15 @@ struct UartBaudrate
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint32_t baud;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint32_t baud = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
         
-        uint32_t baud;
+        uint32_t baud = 0;
         
     };
 };
@@ -822,8 +822,8 @@ struct FactoryStreaming
         ADD       = 2,  ///<  Adds descriptors to the current message format(s) without changing existing descriptors. May result in duplicates.
     };
     
-    Action action;
-    uint8_t reserved;
+    Action action = static_cast<Action>(0);
+    uint8_t reserved = 0;
     
 };
 void insert(Serializer& serializer, const FactoryStreaming& self);
@@ -858,17 +858,17 @@ struct DatastreamControl
     static const uint8_t LEGACY_GNSS_STREAM = 0x02;
     static const uint8_t LEGACY_FILTER_STREAM = 0x03;
     static const uint8_t ALL_STREAMS = 0x00;
-    FunctionSelector function;
-    uint8_t desc_set;
-    bool enable;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t desc_set = 0;
+    bool enable = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
         
-        uint8_t desc_set;
-        bool enabled;
+        uint8_t desc_set = 0;
+        bool enabled = 0;
         
     };
 };
@@ -925,21 +925,21 @@ struct GnssSbasSettings
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    FunctionSelector function;
-    uint8_t enable_sbas;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable_sbas = 0;
     SBASOptions sbas_options;
-    uint8_t num_included_prns;
-    uint16_t* included_prns;
+    uint8_t num_included_prns = 0;
+    uint16_t* included_prns = {nullptr};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
         
-        uint8_t enable_sbas;
+        uint8_t enable_sbas = 0;
         SBASOptions sbas_options;
-        uint8_t num_included_prns;
-        uint16_t* included_prns;
+        uint8_t num_included_prns = 0;
+        uint16_t* included_prns = {nullptr};
         
     };
 };
@@ -976,19 +976,19 @@ struct GnssTimeAssistance
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = false;
     
-    FunctionSelector function;
-    double tow;
-    uint16_t week_number;
-    float accuracy;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    double tow = 0;
+    uint16_t week_number = 0;
+    float accuracy = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
         
-        double tow;
-        uint16_t week_number;
-        float accuracy;
+        double tow = 0;
+        uint16_t week_number = 0;
+        float accuracy = 0;
         
     };
 };
@@ -1032,23 +1032,23 @@ struct AdvLowpassFilter
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t target_descriptor;
-    bool enable;
-    bool manual;
-    uint16_t frequency;
-    uint8_t reserved;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t target_descriptor = 0;
+    bool enable = 0;
+    bool manual = 0;
+    uint16_t frequency = 0;
+    uint8_t reserved = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
         
-        uint8_t target_descriptor;
-        bool enable;
-        bool manual;
-        uint16_t frequency;
-        uint8_t reserved;
+        uint8_t target_descriptor = 0;
+        bool enable = 0;
+        bool manual = 0;
+        uint16_t frequency = 0;
+        uint8_t reserved = 0;
         
     };
 };
@@ -1091,15 +1091,15 @@ struct PpsSource
         GENERATED  = 4,  ///<  PPS is generated from the system oscillator.
     };
     
-    FunctionSelector function;
-    Source source;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    Source source = static_cast<Source>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
         
-        Source source;
+        Source source = static_cast<Source>(0);
         
     };
 };
@@ -1195,10 +1195,10 @@ struct GpioConfig
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
     };
     
-    FunctionSelector function;
-    uint8_t pin;
-    Feature feature;
-    Behavior behavior;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t pin = 0;
+    Feature feature = static_cast<Feature>(0);
+    Behavior behavior = static_cast<Behavior>(0);
     PinMode pin_mode;
     
     struct Response
@@ -1206,9 +1206,9 @@ struct GpioConfig
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
         
-        uint8_t pin;
-        Feature feature;
-        Behavior behavior;
+        uint8_t pin = 0;
+        Feature feature = static_cast<Feature>(0);
+        Behavior behavior = static_cast<Behavior>(0);
         PinMode pin_mode;
         
     };
@@ -1258,17 +1258,17 @@ struct GpioState
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = false;
     
-    FunctionSelector function;
-    uint8_t pin;
-    bool state;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t pin = 0;
+    bool state = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
         
-        uint8_t pin;
-        bool state;
+        uint8_t pin = 0;
+        bool state = 0;
         
     };
 };
@@ -1306,19 +1306,19 @@ struct Odometer
         QUADRATURE = 2,  ///<  Quadrature encoder mode.
     };
     
-    FunctionSelector function;
-    Mode mode;
-    float scaling;
-    float uncertainty;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    Mode mode = static_cast<Mode>(0);
+    float scaling = 0;
+    float uncertainty = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
         
-        Mode mode;
-        float scaling;
-        float uncertainty;
+        Mode mode = static_cast<Mode>(0);
+        float scaling = 0;
+        float uncertainty = 0;
         
     };
 };
@@ -1372,20 +1372,20 @@ struct GetEventSupport
     
     struct Info
     {
-        uint8_t type;
-        uint8_t count;
+        uint8_t type = 0;
+        uint8_t count = 0;
         
     };
-    Query query;
+    Query query = static_cast<Query>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
         
-        Query query;
-        uint8_t max_instances;
-        uint8_t num_entries;
+        Query query = static_cast<Query>(0);
+        uint8_t max_instances = 0;
+        uint8_t num_entries = 0;
         Info entries[126];
         
     };
@@ -1436,17 +1436,17 @@ struct EventControl
         TEST_PULSE = 3,  ///<  Trigger is forced to the active state for one event cycle only. After the test cycle, the mode reverts to the previous state (either enabled or disabled).
     };
     
-    FunctionSelector function;
-    uint8_t instance;
-    Mode mode;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t instance = 0;
+    Mode mode = static_cast<Mode>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
         
-        uint8_t instance;
-        Mode mode;
+        uint8_t instance = 0;
+        Mode mode = static_cast<Mode>(0);
         
     };
 };
@@ -1497,19 +1497,19 @@ struct GetEventTriggerStatus
     
     struct Entry
     {
-        uint8_t type;
+        uint8_t type = 0;
         Status status;
         
     };
-    uint8_t requested_count;
-    uint8_t requested_instances[20];
+    uint8_t requested_count = 0;
+    uint8_t requested_instances[20] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
         
-        uint8_t count;
+        uint8_t count = 0;
         Entry triggers[20];
         
     };
@@ -1540,19 +1540,19 @@ struct GetEventActionStatus
     
     struct Entry
     {
-        uint8_t action_type;
-        uint8_t trigger_id;
+        uint8_t action_type = 0;
+        uint8_t trigger_id = 0;
         
     };
-    uint8_t requested_count;
-    uint8_t requested_instances[20];
+    uint8_t requested_count = 0;
+    uint8_t requested_instances[20] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
         
-        uint8_t count;
+        uint8_t count = 0;
         Entry actions[20];
         
     };
@@ -1596,8 +1596,8 @@ struct EventTrigger
             EDGE       = 4,  ///<  Use if the pin is configured for timestamping via the 3DM Gpio Configuration command (0x0C41).
         };
         
-        uint8_t pin;
-        Mode mode;
+        uint8_t pin = 0;
+        Mode mode = static_cast<Mode>(0);
         
     };
     struct ThresholdParams
@@ -1608,10 +1608,10 @@ struct EventTrigger
             INTERVAL = 2,  ///<  Trigger at evenly-spaced intervals. Normally used with time fields to trigger periodically. Trigger is active when (value % interval) &lt;= int_thres. If the thresholds are reversed (high_thres &lt; low_thres) then the trigger is active when (value % low_thres) &gt; high_thres.
         };
         
-        uint8_t desc_set;
-        uint8_t field_desc;
-        uint8_t param_id;
-        Type type;
+        uint8_t desc_set = 0;
+        uint8_t field_desc = 0;
+        uint8_t param_id = 0;
+        Type type = static_cast<Type>(0);
         union
         {
             double low_thres;
@@ -1639,8 +1639,8 @@ struct EventTrigger
         static const uint16_t LOGIC_AND_AB = 0x8888;
         static const uint16_t LOGIC_AB_OR_C = 0xF8F8;
         static const uint16_t LOGIC_AND = 0x8000;
-        uint16_t logic_table;
-        uint8_t input_triggers[4];
+        uint16_t logic_table = 0;
+        uint8_t input_triggers[4] = {0};
         
     };
     enum class Type : uint8_t
@@ -1653,14 +1653,15 @@ struct EventTrigger
     
     union Parameters
     {
+        Parameters() {}
         GpioParams gpio;
         ThresholdParams threshold;
         CombinationParams combination;
     };
     
-    FunctionSelector function;
-    uint8_t instance;
-    Type type;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t instance = 0;
+    Type type = static_cast<Type>(0);
     Parameters parameters;
     
     struct Response
@@ -1668,8 +1669,8 @@ struct EventTrigger
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
         
-        uint8_t instance;
-        Type type;
+        uint8_t instance = 0;
+        Type type = static_cast<Type>(0);
         Parameters parameters;
         
     };
@@ -1725,16 +1726,16 @@ struct EventAction
             TOGGLE       = 7,  ///<  Pin will change to the opposite state each time the trigger activates.
         };
         
-        uint8_t pin;
-        Mode mode;
+        uint8_t pin = 0;
+        Mode mode = static_cast<Mode>(0);
         
     };
     struct MessageParams
     {
-        uint8_t desc_set;
-        uint16_t decimation;
-        uint8_t num_fields;
-        uint8_t descriptors[20];
+        uint8_t desc_set = 0;
+        uint16_t decimation = 0;
+        uint8_t num_fields = 0;
+        uint8_t descriptors[20] = {0};
         
     };
     enum class Type : uint8_t
@@ -1746,14 +1747,15 @@ struct EventAction
     
     union Parameters
     {
+        Parameters() {}
         GpioParams gpio;
         MessageParams message;
     };
     
-    FunctionSelector function;
-    uint8_t instance;
-    uint8_t trigger;
-    Type type;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t instance = 0;
+    uint8_t trigger = 0;
+    Type type = static_cast<Type>(0);
     Parameters parameters;
     
     struct Response
@@ -1761,9 +1763,9 @@ struct EventAction
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
         
-        uint8_t instance;
-        uint8_t trigger;
-        Type type;
+        uint8_t instance = 0;
+        uint8_t trigger = 0;
+        Type type = static_cast<Type>(0);
         Parameters parameters;
         
     };
@@ -1806,15 +1808,15 @@ struct AccelBias
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float bias[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float bias[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
         
-        float bias[3];
+        float bias[3] = {0};
         
     };
 };
@@ -1850,15 +1852,15 @@ struct GyroBias
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float bias[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float bias[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
-        float bias[3];
+        float bias[3] = {0};
         
     };
 };
@@ -1893,14 +1895,14 @@ struct CaptureGyroBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint16_t averaging_time_ms;
+    uint16_t averaging_time_ms = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
         
-        float bias[3];
+        float bias[3] = {0};
         
     };
 };
@@ -1936,15 +1938,15 @@ struct MagHardIronOffset
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float offset[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float offset[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
         
-        float offset[3];
+        float offset[3] = {0};
         
     };
 };
@@ -1988,15 +1990,15 @@ struct MagSoftIronMatrix
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float offset[9];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float offset[9] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
         
-        float offset[9];
+        float offset[9] = {0};
         
     };
 };
@@ -2054,19 +2056,19 @@ struct Sensor2VehicleTransformEuler
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float roll;
-    float pitch;
-    float yaw;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float roll = 0;
+    float pitch = 0;
+    float yaw = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
         
-        float roll;
-        float pitch;
-        float yaw;
+        float roll = 0;
+        float pitch = 0;
+        float yaw = 0;
         
     };
 };
@@ -2132,15 +2134,15 @@ struct Sensor2VehicleTransformQuaternion
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float q[4];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float q[4] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
         
-        float q[4];
+        float q[4] = {0};
         
     };
 };
@@ -2204,15 +2206,15 @@ struct Sensor2VehicleTransformDcm
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    float dcm[9];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float dcm[9] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
         
-        float dcm[9];
+        float dcm[9] = {0};
         
     };
 };
@@ -2250,21 +2252,21 @@ struct ComplementaryFilter
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    bool pitch_roll_enable;
-    bool heading_enable;
-    float pitch_roll_time_constant;
-    float heading_time_constant;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    bool pitch_roll_enable = 0;
+    bool heading_enable = 0;
+    float pitch_roll_time_constant = 0;
+    float heading_time_constant = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
         
-        bool pitch_roll_enable;
-        bool heading_enable;
-        float pitch_roll_time_constant;
-        float heading_time_constant;
+        bool pitch_roll_enable = 0;
+        bool heading_enable = 0;
+        float pitch_roll_time_constant = 0;
+        float heading_time_constant = 0;
         
     };
 };
@@ -2305,17 +2307,17 @@ struct SensorRange
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    SensorRangeType sensor;
-    uint8_t setting;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    SensorRangeType sensor = static_cast<SensorRangeType>(0);
+    uint8_t setting = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
         
-        SensorRangeType sensor;
-        uint8_t setting;
+        SensorRangeType sensor = static_cast<SensorRangeType>(0);
+        uint8_t setting = 0;
         
     };
 };
@@ -2350,19 +2352,19 @@ struct CalibratedSensorRanges
     
     struct Entry
     {
-        uint8_t setting;
-        float range;
+        uint8_t setting = 0;
+        float range = 0;
         
     };
-    SensorRangeType sensor;
+    SensorRangeType sensor = static_cast<SensorRangeType>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
         
-        SensorRangeType sensor;
-        uint8_t num_ranges;
+        SensorRangeType sensor = static_cast<SensorRangeType>(0);
+        uint8_t num_ranges = 0;
         Entry ranges[50];
         
     };

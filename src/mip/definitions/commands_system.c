@@ -29,10 +29,31 @@ struct mip_field;
 
 void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, const struct mip_system_comm_mode_command* self)
 {
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->mode);
+        
+    }
+}
+void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->mode);
+        
+    }
+}
+
+void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self)
+{
     insert_u8(serializer, self->mode);
     
 }
-void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self)
+void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, struct mip_system_comm_mode_response* self)
 {
     extract_u8(serializer, &self->mode);
     
@@ -73,7 +94,7 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
         assert(mode_out);
         extract_u8(&deserializer, mode_out);
         
-        if( !mip_serializer_is_complete(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;

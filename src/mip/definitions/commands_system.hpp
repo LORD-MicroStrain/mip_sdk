@@ -79,15 +79,15 @@ struct CommMode
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t mode;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t mode = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
         
-        uint8_t mode;
+        uint8_t mode = 0;
         
     };
 };

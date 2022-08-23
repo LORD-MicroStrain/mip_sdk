@@ -81,7 +81,7 @@ CmdResult pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t num
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -118,7 +118,7 @@ CmdResult pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t nu
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -155,7 +155,7 @@ CmdResult pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -165,13 +165,39 @@ CmdResult pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t 
 }
 void insert(Serializer& serializer, const ImuMessageFormat& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
+}
+void extract(Serializer& serializer, ImuMessageFormat& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const ImuMessageFormat::Response& self)
+{
     insert(serializer, self.num_descriptors);
     
     for(unsigned int i=0; i < self.num_descriptors; i++)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(Serializer& serializer, ImuMessageFormat& self)
+void extract(Serializer& serializer, ImuMessageFormat::Response& self)
 {
     C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
@@ -187,7 +213,7 @@ CmdResult writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -211,12 +237,11 @@ CmdResult readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -253,13 +278,39 @@ CmdResult defaultImuMessageFormat(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GpsMessageFormat& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
+}
+void extract(Serializer& serializer, GpsMessageFormat& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GpsMessageFormat::Response& self)
+{
     insert(serializer, self.num_descriptors);
     
     for(unsigned int i=0; i < self.num_descriptors; i++)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(Serializer& serializer, GpsMessageFormat& self)
+void extract(Serializer& serializer, GpsMessageFormat::Response& self)
 {
     C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
@@ -275,7 +326,7 @@ CmdResult writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -299,12 +350,11 @@ CmdResult readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptors
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -341,13 +391,39 @@ CmdResult defaultGpsMessageFormat(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const FilterMessageFormat& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
+}
+void extract(Serializer& serializer, FilterMessageFormat& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const FilterMessageFormat::Response& self)
+{
     insert(serializer, self.num_descriptors);
     
     for(unsigned int i=0; i < self.num_descriptors; i++)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(Serializer& serializer, FilterMessageFormat& self)
+void extract(Serializer& serializer, FilterMessageFormat::Response& self)
 {
     C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
     for(unsigned int i=0; i < self.num_descriptors; i++)
@@ -363,7 +439,7 @@ CmdResult writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescript
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -387,12 +463,11 @@ CmdResult readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescript
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -438,6 +513,17 @@ void extract(Serializer& serializer, ImuGetBaseRate& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const ImuGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, ImuGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
+}
+
 CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -452,7 +538,7 @@ CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -466,6 +552,17 @@ void extract(Serializer& serializer, GpsGetBaseRate& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GpsGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, GpsGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
 }
 
 CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
@@ -482,7 +579,7 @@ CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -496,6 +593,17 @@ void extract(Serializer& serializer, FilterGetBaseRate& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const FilterGetBaseRate::Response& self)
+{
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, FilterGetBaseRate::Response& self)
+{
+    extract(serializer, self.rate);
+    
 }
 
 CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
@@ -512,7 +620,7 @@ CmdResult filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut)
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -552,7 +660,7 @@ CmdResult pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -568,6 +676,21 @@ void insert(Serializer& serializer, const GetBaseRate& self)
 void extract(Serializer& serializer, GetBaseRate& self)
 {
     extract(serializer, self.desc_set);
+    
+}
+
+void insert(Serializer& serializer, const GetBaseRate::Response& self)
+{
+    insert(serializer, self.desc_set);
+    
+    insert(serializer, self.rate);
+    
+}
+void extract(Serializer& serializer, GetBaseRate::Response& self)
+{
+    extract(serializer, self.desc_set);
+    
+    extract(serializer, self.rate);
     
 }
 
@@ -592,12 +715,42 @@ CmdResult getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateO
         assert(rateOut);
         extract(deserializer, *rateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const MessageFormat& self)
+{
+    insert(serializer, self.function);
+    
+    insert(serializer, self.desc_set);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.num_descriptors);
+        
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            insert(serializer, self.descriptors[i]);
+        
+    }
+}
+void extract(Serializer& serializer, MessageFormat& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.desc_set);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        for(unsigned int i=0; i < self.num_descriptors; i++)
+            extract(serializer, self.descriptors[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MessageFormat::Response& self)
 {
     insert(serializer, self.desc_set);
     
@@ -607,7 +760,7 @@ void insert(Serializer& serializer, const MessageFormat& self)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(Serializer& serializer, MessageFormat& self)
+void extract(Serializer& serializer, MessageFormat::Response& self)
 {
     extract(serializer, self.desc_set);
     
@@ -627,7 +780,7 @@ CmdResult writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t 
     
     insert(serializer, numDescriptors);
     
-    assert(descriptors);
+    assert(descriptors || (numDescriptors == 0));
     for(unsigned int i=0; i < numDescriptors; i++)
         insert(serializer, descriptors[i]);
     
@@ -655,12 +808,11 @@ CmdResult readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* 
         extract(deserializer, descSet);
         
         C::extract_count(&deserializer, numDescriptorsOut, numDescriptorsOutMax);
-        assert(descriptorsOut);
-        assert(numDescriptorsOut);
+        assert(descriptorsOut || (numDescriptorsOut == 0));
         for(unsigned int i=0; i < *numDescriptorsOut; i++)
             extract(deserializer, descriptorsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -730,7 +882,7 @@ CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count
     
     insert(serializer, count);
     
-    assert(formatEntries);
+    assert(formatEntries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert(serializer, formatEntries[i]);
     
@@ -740,13 +892,39 @@ CmdResult nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count
 }
 void insert(Serializer& serializer, const NmeaMessageFormat& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.count);
+        
+        for(unsigned int i=0; i < self.count; i++)
+            insert(serializer, self.format_entries[i]);
+        
+    }
+}
+void extract(Serializer& serializer, NmeaMessageFormat& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        C::extract_count(&serializer, &self.count, self.count);
+        for(unsigned int i=0; i < self.count; i++)
+            extract(serializer, self.format_entries[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const NmeaMessageFormat::Response& self)
+{
     insert(serializer, self.count);
     
     for(unsigned int i=0; i < self.count; i++)
         insert(serializer, self.format_entries[i]);
     
 }
-void extract(Serializer& serializer, NmeaMessageFormat& self)
+void extract(Serializer& serializer, NmeaMessageFormat::Response& self)
 {
     C::extract_count(&serializer, &self.count, self.count);
     for(unsigned int i=0; i < self.count; i++)
@@ -762,7 +940,7 @@ CmdResult writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, count);
     
-    assert(formatEntries);
+    assert(formatEntries || (count == 0));
     for(unsigned int i=0; i < count; i++)
         insert(serializer, formatEntries[i]);
     
@@ -786,12 +964,11 @@ CmdResult readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uin
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(formatEntriesOut);
-        assert(countOut);
+        assert(formatEntriesOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, formatEntriesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -828,13 +1005,13 @@ CmdResult defaultNmeaMessageFormat(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const DeviceSettings& self)
 {
-    (void)serializer;
-    (void)self;
+    insert(serializer, self.function);
+    
 }
 void extract(Serializer& serializer, DeviceSettings& self)
 {
-    (void)serializer;
-    (void)self;
+    extract(serializer, self.function);
+    
 }
 
 CmdResult saveDeviceSettings(C::mip_interface& device)
@@ -869,10 +1046,31 @@ CmdResult defaultDeviceSettings(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const UartBaudrate& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.baud);
+        
+    }
+}
+void extract(Serializer& serializer, UartBaudrate& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.baud);
+        
+    }
+}
+
+void insert(Serializer& serializer, const UartBaudrate::Response& self)
+{
     insert(serializer, self.baud);
     
 }
-void extract(Serializer& serializer, UartBaudrate& self)
+void extract(Serializer& serializer, UartBaudrate::Response& self)
 {
     extract(serializer, self.baud);
     
@@ -908,7 +1106,7 @@ CmdResult readUartBaudrate(C::mip_interface& device, uint32_t* baudOut)
         assert(baudOut);
         extract(deserializer, *baudOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -973,16 +1171,41 @@ CmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action ac
 }
 void insert(Serializer& serializer, const DatastreamControl& self)
 {
+    insert(serializer, self.function);
+    
     insert(serializer, self.desc_set);
     
-    insert(serializer, self.enable);
-    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+    }
 }
 void extract(Serializer& serializer, DatastreamControl& self)
 {
+    extract(serializer, self.function);
+    
     extract(serializer, self.desc_set);
     
-    extract(serializer, self.enable);
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+    }
+}
+
+void insert(Serializer& serializer, const DatastreamControl::Response& self)
+{
+    insert(serializer, self.desc_set);
+    
+    insert(serializer, self.enabled);
+    
+}
+void extract(Serializer& serializer, DatastreamControl::Response& self)
+{
+    extract(serializer, self.desc_set);
+    
+    extract(serializer, self.enabled);
     
 }
 
@@ -1022,7 +1245,7 @@ CmdResult readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool*
         assert(enabledOut);
         extract(deserializer, *enabledOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1065,6 +1288,40 @@ CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t descSet)
 }
 void insert(Serializer& serializer, const GnssSbasSettings& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable_sbas);
+        
+        insert(serializer, self.sbas_options);
+        
+        insert(serializer, self.num_included_prns);
+        
+        for(unsigned int i=0; i < self.num_included_prns; i++)
+            insert(serializer, self.included_prns[i]);
+        
+    }
+}
+void extract(Serializer& serializer, GnssSbasSettings& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable_sbas);
+        
+        extract(serializer, self.sbas_options);
+        
+        C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+        for(unsigned int i=0; i < self.num_included_prns; i++)
+            extract(serializer, self.included_prns[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GnssSbasSettings::Response& self)
+{
     insert(serializer, self.enable_sbas);
     
     insert(serializer, self.sbas_options);
@@ -1075,7 +1332,7 @@ void insert(Serializer& serializer, const GnssSbasSettings& self)
         insert(serializer, self.included_prns[i]);
     
 }
-void extract(Serializer& serializer, GnssSbasSettings& self)
+void extract(Serializer& serializer, GnssSbasSettings::Response& self)
 {
     extract(serializer, self.enable_sbas);
     
@@ -1099,7 +1356,7 @@ CmdResult writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, Gn
     
     insert(serializer, numIncludedPrns);
     
-    assert(includedPrns);
+    assert(includedPrns || (numIncludedPrns == 0));
     for(unsigned int i=0; i < numIncludedPrns; i++)
         insert(serializer, includedPrns[i]);
     
@@ -1129,12 +1386,11 @@ CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut,
         extract(deserializer, *sbasOptionsOut);
         
         C::extract_count(&deserializer, numIncludedPrnsOut, numIncludedPrnsOutMax);
-        assert(includedPrnsOut);
-        assert(numIncludedPrnsOut);
+        assert(includedPrnsOut || (numIncludedPrnsOut == 0));
         for(unsigned int i=0; i < *numIncludedPrnsOut; i++)
             extract(deserializer, includedPrnsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1171,6 +1427,35 @@ CmdResult defaultGnssSbasSettings(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GnssTimeAssistance& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.tow);
+        
+        insert(serializer, self.week_number);
+        
+        insert(serializer, self.accuracy);
+        
+    }
+}
+void extract(Serializer& serializer, GnssTimeAssistance& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.tow);
+        
+        extract(serializer, self.week_number);
+        
+        extract(serializer, self.accuracy);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GnssTimeAssistance::Response& self)
+{
     insert(serializer, self.tow);
     
     insert(serializer, self.week_number);
@@ -1178,7 +1463,7 @@ void insert(Serializer& serializer, const GnssTimeAssistance& self)
     insert(serializer, self.accuracy);
     
 }
-void extract(Serializer& serializer, GnssTimeAssistance& self)
+void extract(Serializer& serializer, GnssTimeAssistance::Response& self)
 {
     extract(serializer, self.tow);
     
@@ -1228,12 +1513,49 @@ CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint1
         assert(accuracyOut);
         extract(deserializer, *accuracyOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const AdvLowpassFilter& self)
+{
+    insert(serializer, self.function);
+    
+    insert(serializer, self.target_descriptor);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+        insert(serializer, self.manual);
+        
+        insert(serializer, self.frequency);
+        
+        insert(serializer, self.reserved);
+        
+    }
+}
+void extract(Serializer& serializer, AdvLowpassFilter& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.target_descriptor);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+        extract(serializer, self.manual);
+        
+        extract(serializer, self.frequency);
+        
+        extract(serializer, self.reserved);
+        
+    }
+}
+
+void insert(Serializer& serializer, const AdvLowpassFilter::Response& self)
 {
     insert(serializer, self.target_descriptor);
     
@@ -1246,7 +1568,7 @@ void insert(Serializer& serializer, const AdvLowpassFilter& self)
     insert(serializer, self.reserved);
     
 }
-void extract(Serializer& serializer, AdvLowpassFilter& self)
+void extract(Serializer& serializer, AdvLowpassFilter::Response& self)
 {
     extract(serializer, self.target_descriptor);
     
@@ -1311,7 +1633,7 @@ CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescripto
         assert(reservedOut);
         extract(deserializer, *reservedOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1354,10 +1676,31 @@ CmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescri
 }
 void insert(Serializer& serializer, const PpsSource& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+    }
+}
+void extract(Serializer& serializer, PpsSource& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+    }
+}
+
+void insert(Serializer& serializer, const PpsSource::Response& self)
+{
     insert(serializer, self.source);
     
 }
-void extract(Serializer& serializer, PpsSource& self)
+void extract(Serializer& serializer, PpsSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -1393,7 +1736,7 @@ CmdResult readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut)
         assert(sourceOut);
         extract(deserializer, *sourceOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1430,6 +1773,39 @@ CmdResult defaultPpsSource(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GpioConfig& self)
 {
+    insert(serializer, self.function);
+    
+    insert(serializer, self.pin);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.feature);
+        
+        insert(serializer, self.behavior);
+        
+        insert(serializer, self.pin_mode);
+        
+    }
+}
+void extract(Serializer& serializer, GpioConfig& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.pin);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.feature);
+        
+        extract(serializer, self.behavior);
+        
+        extract(serializer, self.pin_mode);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GpioConfig::Response& self)
+{
     insert(serializer, self.pin);
     
     insert(serializer, self.feature);
@@ -1439,7 +1815,7 @@ void insert(Serializer& serializer, const GpioConfig& self)
     insert(serializer, self.pin_mode);
     
 }
-void extract(Serializer& serializer, GpioConfig& self)
+void extract(Serializer& serializer, GpioConfig::Response& self)
 {
     extract(serializer, self.pin);
     
@@ -1497,7 +1873,7 @@ CmdResult readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feat
         assert(pinModeOut);
         extract(deserializer, *pinModeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1540,12 +1916,43 @@ CmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin)
 }
 void insert(Serializer& serializer, const GpioState& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
+    {
+        insert(serializer, self.pin);
+        
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.state);
+        
+    }
+}
+void extract(Serializer& serializer, GpioState& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
+    {
+        extract(serializer, self.pin);
+        
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.state);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GpioState::Response& self)
+{
     insert(serializer, self.pin);
     
     insert(serializer, self.state);
     
 }
-void extract(Serializer& serializer, GpioState& self)
+void extract(Serializer& serializer, GpioState::Response& self)
 {
     extract(serializer, self.pin);
     
@@ -1589,12 +1996,41 @@ CmdResult readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut)
         assert(stateOut);
         extract(deserializer, *stateOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const Odometer& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+        insert(serializer, self.scaling);
+        
+        insert(serializer, self.uncertainty);
+        
+    }
+}
+void extract(Serializer& serializer, Odometer& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+        extract(serializer, self.scaling);
+        
+        extract(serializer, self.uncertainty);
+        
+    }
+}
+
+void insert(Serializer& serializer, const Odometer::Response& self)
 {
     insert(serializer, self.mode);
     
@@ -1603,7 +2039,7 @@ void insert(Serializer& serializer, const Odometer& self)
     insert(serializer, self.uncertainty);
     
 }
-void extract(Serializer& serializer, Odometer& self)
+void extract(Serializer& serializer, Odometer::Response& self)
 {
     extract(serializer, self.mode);
     
@@ -1653,7 +2089,7 @@ CmdResult readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float*
         assert(uncertaintyOut);
         extract(deserializer, *uncertaintyOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1699,6 +2135,30 @@ void extract(Serializer& serializer, GetEventSupport& self)
     
 }
 
+void insert(Serializer& serializer, const GetEventSupport::Response& self)
+{
+    insert(serializer, self.query);
+    
+    insert(serializer, self.max_instances);
+    
+    insert(serializer, self.num_entries);
+    
+    for(unsigned int i=0; i < self.num_entries; i++)
+        insert(serializer, self.entries[i]);
+    
+}
+void extract(Serializer& serializer, GetEventSupport::Response& self)
+{
+    extract(serializer, self.query);
+    
+    extract(serializer, self.max_instances);
+    
+    C::extract_count(&serializer, &self.num_entries, self.num_entries);
+    for(unsigned int i=0; i < self.num_entries; i++)
+        extract(serializer, self.entries[i]);
+    
+}
+
 void insert(Serializer& serializer, const GetEventSupport::Info& self)
 {
     insert(serializer, self.type);
@@ -1736,24 +2196,48 @@ CmdResult getEventSupport(C::mip_interface& device, GetEventSupport::Query query
         extract(deserializer, *maxInstancesOut);
         
         C::extract_count(&deserializer, numEntriesOut, numEntriesOutMax);
-        assert(entriesOut);
-        assert(numEntriesOut);
+        assert(entriesOut || (numEntriesOut == 0));
         for(unsigned int i=0; i < *numEntriesOut; i++)
             extract(deserializer, entriesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const EventControl& self)
 {
+    insert(serializer, self.function);
+    
+    insert(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+    }
+}
+void extract(Serializer& serializer, EventControl& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+    }
+}
+
+void insert(Serializer& serializer, const EventControl::Response& self)
+{
     insert(serializer, self.instance);
     
     insert(serializer, self.mode);
     
 }
-void extract(Serializer& serializer, EventControl& self)
+void extract(Serializer& serializer, EventControl::Response& self)
 {
     extract(serializer, self.instance);
     
@@ -1797,7 +2281,7 @@ CmdResult readEventControl(C::mip_interface& device, uint8_t instance, EventCont
         assert(modeOut);
         extract(deserializer, *modeOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1854,6 +2338,22 @@ void extract(Serializer& serializer, GetEventTriggerStatus& self)
     
 }
 
+void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self)
+{
+    insert(serializer, self.count);
+    
+    for(unsigned int i=0; i < self.count; i++)
+        insert(serializer, self.triggers[i]);
+    
+}
+void extract(Serializer& serializer, GetEventTriggerStatus::Response& self)
+{
+    C::extract_count(&serializer, &self.count, self.count);
+    for(unsigned int i=0; i < self.count; i++)
+        extract(serializer, self.triggers[i]);
+    
+}
+
 void insert(Serializer& serializer, const GetEventTriggerStatus::Entry& self)
 {
     insert(serializer, self.type);
@@ -1876,7 +2376,7 @@ CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount
     
     insert(serializer, requestedCount);
     
-    assert(requestedInstances);
+    assert(requestedInstances || (requestedCount == 0));
     for(unsigned int i=0; i < requestedCount; i++)
         insert(serializer, requestedInstances[i]);
     
@@ -1890,12 +2390,11 @@ CmdResult getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(triggersOut);
-        assert(countOut);
+        assert(triggersOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, triggersOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -1913,6 +2412,22 @@ void extract(Serializer& serializer, GetEventActionStatus& self)
     C::extract_count(&serializer, &self.requested_count, self.requested_count);
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
+    
+}
+
+void insert(Serializer& serializer, const GetEventActionStatus::Response& self)
+{
+    insert(serializer, self.count);
+    
+    for(unsigned int i=0; i < self.count; i++)
+        insert(serializer, self.actions[i]);
+    
+}
+void extract(Serializer& serializer, GetEventActionStatus::Response& self)
+{
+    C::extract_count(&serializer, &self.count, self.count);
+    for(unsigned int i=0; i < self.count; i++)
+        extract(serializer, self.actions[i]);
     
 }
 
@@ -1938,7 +2453,7 @@ CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount,
     
     insert(serializer, requestedCount);
     
-    assert(requestedInstances);
+    assert(requestedInstances || (requestedCount == 0));
     for(unsigned int i=0; i < requestedCount; i++)
         insert(serializer, requestedInstances[i]);
     
@@ -1952,17 +2467,71 @@ CmdResult getEventActionStatus(C::mip_interface& device, uint8_t requestedCount,
         Serializer deserializer(buffer, responseLength);
         
         C::extract_count(&deserializer, countOut, countOutMax);
-        assert(actionsOut);
-        assert(countOut);
+        assert(actionsOut || (countOut == 0));
         for(unsigned int i=0; i < *countOut; i++)
             extract(deserializer, actionsOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const EventTrigger& self)
+{
+    insert(serializer, self.function);
+    
+    insert(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.type);
+        
+        if( self.type == EventTrigger::Type::GPIO )
+        {
+            insert(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventTrigger::Type::THRESHOLD )
+        {
+            insert(serializer, self.parameters.threshold);
+            
+        }
+        if( self.type == EventTrigger::Type::COMBINATION )
+        {
+            insert(serializer, self.parameters.combination);
+            
+        }
+    }
+}
+void extract(Serializer& serializer, EventTrigger& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.type);
+        
+        if( self.type == EventTrigger::Type::GPIO )
+        {
+            extract(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventTrigger::Type::THRESHOLD )
+        {
+            extract(serializer, self.parameters.threshold);
+            
+        }
+        if( self.type == EventTrigger::Type::COMBINATION )
+        {
+            extract(serializer, self.parameters.combination);
+            
+        }
+    }
+}
+
+void insert(Serializer& serializer, const EventTrigger::Response& self)
 {
     insert(serializer, self.instance);
     
@@ -1984,7 +2553,7 @@ void insert(Serializer& serializer, const EventTrigger& self)
         
     }
 }
-void extract(Serializer& serializer, EventTrigger& self)
+void extract(Serializer& serializer, EventTrigger::Response& self)
 {
     extract(serializer, self.instance);
     
@@ -2168,7 +2737,7 @@ CmdResult readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrig
             extract(deserializer, parametersOut->combination);
             
         }
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2211,6 +2780,55 @@ CmdResult defaultEventTrigger(C::mip_interface& device, uint8_t instance)
 }
 void insert(Serializer& serializer, const EventAction& self)
 {
+    insert(serializer, self.function);
+    
+    insert(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.trigger);
+        
+        insert(serializer, self.type);
+        
+        if( self.type == EventAction::Type::GPIO )
+        {
+            insert(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventAction::Type::MESSAGE )
+        {
+            insert(serializer, self.parameters.message);
+            
+        }
+    }
+}
+void extract(Serializer& serializer, EventAction& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.instance);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.trigger);
+        
+        extract(serializer, self.type);
+        
+        if( self.type == EventAction::Type::GPIO )
+        {
+            extract(serializer, self.parameters.gpio);
+            
+        }
+        if( self.type == EventAction::Type::MESSAGE )
+        {
+            extract(serializer, self.parameters.message);
+            
+        }
+    }
+}
+
+void insert(Serializer& serializer, const EventAction::Response& self)
+{
     insert(serializer, self.instance);
     
     insert(serializer, self.trigger);
@@ -2228,7 +2846,7 @@ void insert(Serializer& serializer, const EventAction& self)
         
     }
 }
-void extract(Serializer& serializer, EventAction& self)
+void extract(Serializer& serializer, EventAction::Response& self)
 {
     extract(serializer, self.instance);
     
@@ -2348,7 +2966,7 @@ CmdResult readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* t
             extract(deserializer, parametersOut->message);
             
         }
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2391,11 +3009,34 @@ CmdResult defaultEventAction(C::mip_interface& device, uint8_t instance)
 }
 void insert(Serializer& serializer, const AccelBias& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.bias[i]);
+        
+    }
+}
+void extract(Serializer& serializer, AccelBias& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.bias[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const AccelBias::Response& self)
+{
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias[i]);
     
 }
-void extract(Serializer& serializer, AccelBias& self)
+void extract(Serializer& serializer, AccelBias::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -2408,7 +3049,7 @@ CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -2431,11 +3072,11 @@ CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2472,11 +3113,34 @@ CmdResult defaultAccelBias(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const GyroBias& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.bias[i]);
+        
+    }
+}
+void extract(Serializer& serializer, GyroBias& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.bias[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GyroBias::Response& self)
+{
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias[i]);
     
 }
-void extract(Serializer& serializer, GyroBias& self)
+void extract(Serializer& serializer, GyroBias::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -2489,7 +3153,7 @@ CmdResult writeGyroBias(C::mip_interface& device, const float* bias)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -2512,11 +3176,11 @@ CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2562,6 +3226,19 @@ void extract(Serializer& serializer, CaptureGyroBias& self)
     
 }
 
+void insert(Serializer& serializer, const CaptureGyroBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.bias[i]);
+    
+}
+void extract(Serializer& serializer, CaptureGyroBias::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.bias[i]);
+    
+}
+
 CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2578,22 +3255,45 @@ CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, fl
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut);
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const MagHardIronOffset& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.offset[i]);
+        
+    }
+}
+void extract(Serializer& serializer, MagHardIronOffset& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.offset[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagHardIronOffset::Response& self)
+{
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
     
 }
-void extract(Serializer& serializer, MagHardIronOffset& self)
+void extract(Serializer& serializer, MagHardIronOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
@@ -2606,7 +3306,7 @@ CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -2629,11 +3329,11 @@ CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2670,11 +3370,34 @@ CmdResult defaultMagHardIronOffset(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const MagSoftIronMatrix& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert(serializer, self.offset[i]);
+        
+    }
+}
+void extract(Serializer& serializer, MagSoftIronMatrix& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract(serializer, self.offset[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self)
+{
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.offset[i]);
     
 }
-void extract(Serializer& serializer, MagSoftIronMatrix& self)
+void extract(Serializer& serializer, MagSoftIronMatrix::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.offset[i]);
@@ -2687,7 +3410,7 @@ CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset);
+    assert(offset || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, offset[i]);
     
@@ -2710,11 +3433,11 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut);
+        assert(offsetOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, offsetOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2751,6 +3474,35 @@ CmdResult defaultMagSoftIronMatrix(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const Sensor2VehicleTransformEuler& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.roll);
+        
+        insert(serializer, self.pitch);
+        
+        insert(serializer, self.yaw);
+        
+    }
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformEuler& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.roll);
+        
+        extract(serializer, self.pitch);
+        
+        extract(serializer, self.yaw);
+        
+    }
+}
+
+void insert(Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self)
+{
     insert(serializer, self.roll);
     
     insert(serializer, self.pitch);
@@ -2758,7 +3510,7 @@ void insert(Serializer& serializer, const Sensor2VehicleTransformEuler& self)
     insert(serializer, self.yaw);
     
 }
-void extract(Serializer& serializer, Sensor2VehicleTransformEuler& self)
+void extract(Serializer& serializer, Sensor2VehicleTransformEuler::Response& self)
 {
     extract(serializer, self.roll);
     
@@ -2808,7 +3560,7 @@ CmdResult readSensor2VehicleTransformEuler(C::mip_interface& device, float* roll
         assert(yawOut);
         extract(deserializer, *yawOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2845,11 +3597,34 @@ CmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            insert(serializer, self.q[i]);
+        
+    }
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 4; i++)
+            extract(serializer, self.q[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self)
+{
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.q[i]);
     
 }
-void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self)
+void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.q[i]);
@@ -2862,7 +3637,7 @@ CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(q);
+    assert(q || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, q[i]);
     
@@ -2885,11 +3660,11 @@ CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float*
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(qOut);
+        assert(qOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, qOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -2926,11 +3701,34 @@ CmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const Sensor2VehicleTransformDcm& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert(serializer, self.dcm[i]);
+        
+    }
+}
+void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract(serializer, self.dcm[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self)
+{
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.dcm[i]);
     
 }
-void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self)
+void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.dcm[i]);
@@ -2943,7 +3741,7 @@ CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float*
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(dcm);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
     
@@ -2966,11 +3764,11 @@ CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(dcmOut);
+        assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3007,6 +3805,39 @@ CmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const ComplementaryFilter& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.pitch_roll_enable);
+        
+        insert(serializer, self.heading_enable);
+        
+        insert(serializer, self.pitch_roll_time_constant);
+        
+        insert(serializer, self.heading_time_constant);
+        
+    }
+}
+void extract(Serializer& serializer, ComplementaryFilter& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.pitch_roll_enable);
+        
+        extract(serializer, self.heading_enable);
+        
+        extract(serializer, self.pitch_roll_time_constant);
+        
+        extract(serializer, self.heading_time_constant);
+        
+    }
+}
+
+void insert(Serializer& serializer, const ComplementaryFilter::Response& self)
+{
     insert(serializer, self.pitch_roll_enable);
     
     insert(serializer, self.heading_enable);
@@ -3016,7 +3847,7 @@ void insert(Serializer& serializer, const ComplementaryFilter& self)
     insert(serializer, self.heading_time_constant);
     
 }
-void extract(Serializer& serializer, ComplementaryFilter& self)
+void extract(Serializer& serializer, ComplementaryFilter::Response& self)
 {
     extract(serializer, self.pitch_roll_enable);
     
@@ -3073,7 +3904,7 @@ CmdResult readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnabl
         assert(headingTimeConstantOut);
         extract(deserializer, *headingTimeConstantOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3110,12 +3941,37 @@ CmdResult defaultComplementaryFilter(C::mip_interface& device)
 }
 void insert(Serializer& serializer, const SensorRange& self)
 {
+    insert(serializer, self.function);
+    
+    insert(serializer, self.sensor);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.setting);
+        
+    }
+}
+void extract(Serializer& serializer, SensorRange& self)
+{
+    extract(serializer, self.function);
+    
+    extract(serializer, self.sensor);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.setting);
+        
+    }
+}
+
+void insert(Serializer& serializer, const SensorRange::Response& self)
+{
     insert(serializer, self.sensor);
     
     insert(serializer, self.setting);
     
 }
-void extract(Serializer& serializer, SensorRange& self)
+void extract(Serializer& serializer, SensorRange::Response& self)
 {
     extract(serializer, self.sensor);
     
@@ -3159,7 +4015,7 @@ CmdResult readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint
         assert(settingOut);
         extract(deserializer, *settingOut);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -3211,6 +4067,26 @@ void extract(Serializer& serializer, CalibratedSensorRanges& self)
     
 }
 
+void insert(Serializer& serializer, const CalibratedSensorRanges::Response& self)
+{
+    insert(serializer, self.sensor);
+    
+    insert(serializer, self.num_ranges);
+    
+    for(unsigned int i=0; i < self.num_ranges; i++)
+        insert(serializer, self.ranges[i]);
+    
+}
+void extract(Serializer& serializer, CalibratedSensorRanges::Response& self)
+{
+    extract(serializer, self.sensor);
+    
+    C::extract_count(&serializer, &self.num_ranges, self.num_ranges);
+    for(unsigned int i=0; i < self.num_ranges; i++)
+        extract(serializer, self.ranges[i]);
+    
+}
+
 void insert(Serializer& serializer, const CalibratedSensorRanges::Entry& self)
 {
     insert(serializer, self.setting);
@@ -3245,12 +4121,11 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
         extract(deserializer, sensor);
         
         C::extract_count(&deserializer, numRangesOut, numRangesOutMax);
-        assert(rangesOut);
-        assert(numRangesOut);
+        assert(rangesOut || (numRangesOut == 0));
         for(unsigned int i=0; i < *numRangesOut; i++)
             extract(deserializer, rangesOut[i]);
         
-        if( !deserializer.isComplete() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
