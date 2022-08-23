@@ -10,7 +10,9 @@
 #include <mip/definitions/data_sensor.hpp>
 #include <mip/mip.hpp>
 
+#include <stdexcept>
 #include <thread>
+#include <array>
 
 mip::data_sensor::ScaledAccel scaled_accel;
 

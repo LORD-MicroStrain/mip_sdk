@@ -1,4 +1,5 @@
 #include <vector>
+#include <stdexcept>
 
 #include "example_utils.hpp"
 

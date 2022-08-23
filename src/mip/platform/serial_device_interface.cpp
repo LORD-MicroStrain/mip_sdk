@@ -1,5 +1,6 @@
 #include "serial_device_interface.hpp"
 
+#include <stdexcept>
 #include <chrono>
 #include <cstdio>
 
