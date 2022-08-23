@@ -70,7 +70,7 @@ struct EventSource
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t trigger_id;
+    uint8_t trigger_id = 0;
     
 };
 void insert(Serializer& serializer, const EventSource& self);
@@ -94,7 +94,7 @@ struct Ticks
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t ticks;
+    uint32_t ticks = 0;
     
 };
 void insert(Serializer& serializer, const Ticks& self);
@@ -119,7 +119,7 @@ struct DeltaTicks
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t ticks;
+    uint32_t ticks = 0;
     
 };
 void insert(Serializer& serializer, const DeltaTicks& self);
@@ -154,14 +154,17 @@ struct GpsTimestamp
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow;
-    uint16_t week_number;
+    double tow = 0;
+    uint16_t week_number = 0;
     ValidFlags valid_flags;
     
 };
@@ -192,7 +195,7 @@ struct DeltaTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double seconds;
+    double seconds = 0;
     
 };
 void insert(Serializer& serializer, const DeltaTime& self);
@@ -220,7 +223,7 @@ struct ReferenceTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint64_t nanoseconds;
+    uint64_t nanoseconds = 0;
     
 };
 void insert(Serializer& serializer, const ReferenceTimestamp& self);
@@ -250,7 +253,7 @@ struct ReferenceTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint64_t dt_nanos;
+    uint64_t dt_nanos = 0;
     
 };
 void insert(Serializer& serializer, const ReferenceTimeDelta& self);
@@ -288,13 +291,16 @@ struct ExternalTimestamp
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint64_t nanoseconds;
+    uint64_t nanoseconds = 0;
     ValidFlags valid_flags;
     
 };
@@ -337,13 +343,16 @@ struct ExternalTimeDelta
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint64_t dt_nanos;
+    uint64_t dt_nanos = 0;
     ValidFlags valid_flags;
     
 };

@@ -11,28 +11,20 @@
 #include "definitions/descriptors.h"
 
 //MIP Utils
-#include "serialization.h"
+#include "utils/serialization.h"
 
 //MIP Commands
-#include "commands_base.h"
-#include "commands_3dm.h"
-#include "commands_filter.h"
-#include "commands_gnss.h"
-#include "commands_rtk.h"
-#include "commands_system.h"
-
+#include "definitions/commands_base.h"
+#include "definitions/commands_3dm.h"
+#include "definitions/commands_filter.h"
+#include "definitions/commands_gnss.h"
+#include "definitions/commands_rtk.h"
+#include "definitions/commands_system.h"
 
 //MIP Data
-#include "data_shared.h"
-#include "data_system.h"
-#include "data_sensor.h"
-#include "data_gnss.h"
-#include "data_filter.h"
+#include "definitions/data_shared.h"
+#include "definitions/data_system.h"
+#include "definitions/data_sensor.h"
+#include "definitions/data_gnss.h"
+#include "definitions/data_filter.h"
 
-
-#ifdef __cplusplus
-
-#include "mip.hpp"
-#include "mip_device.hpp"
-
-#endif // __cplusplus

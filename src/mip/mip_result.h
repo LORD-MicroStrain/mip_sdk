@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 namespace mip {
@@ -12,7 +13,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents the status of a MIP command.
 ///
-/// Values that start with MIP_STATUS_ are status codes from this library.
+/// Values that start with MIP_STATUS are status codes from this library.
 /// Values that start with MIP_(N)ACK represent replies from the device.
 ///
 enum mip_cmd_result
@@ -47,22 +48,23 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 
 struct CmdResult
 {
-    enum
-    {
-        STATUS_ERROR          = C::MIP_STATUS_ERROR,
-        STATUS_CANCELLED      = C::MIP_STATUS_CANCELLED,
-        STATUS_TIMEDOUT       = C::MIP_STATUS_TIMEDOUT,
-        STATUS_WAITING        = C::MIP_STATUS_WAITING,
-        STATUS_PENDING        = C::MIP_STATUS_PENDING,
-        STATUS_NONE           = C::MIP_STATUS_NONE,
+    static constexpr C::mip_cmd_result STATUS_ERROR     = C::MIP_STATUS_ERROR;
+    static constexpr C::mip_cmd_result STATUS_CANCELLED = C::MIP_STATUS_CANCELLED;
+    static constexpr C::mip_cmd_result STATUS_TIMEDOUT  = C::MIP_STATUS_TIMEDOUT;
+    static constexpr C::mip_cmd_result STATUS_WAITING   = C::MIP_STATUS_WAITING;
+    static constexpr C::mip_cmd_result STATUS_QUEUED    = C::MIP_STATUS_PENDING;
+    static constexpr C::mip_cmd_result STATUS_NONE      = C::MIP_STATUS_NONE;
 
-        ACK_OK                = C::MIP_ACK_OK,
-        NACK_COMMAND_UNKNOWN  = C::MIP_NACK_COMMAND_UNKNOWN,
-        NACK_INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM,
-        NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM,
-        NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED,
-        NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT,
-    };
+    static constexpr C::mip_cmd_result ACK_OK                = C::MIP_ACK_OK;
+    static constexpr C::mip_cmd_result NACK_COMMAND_UNKNOWN  = C::MIP_NACK_COMMAND_UNKNOWN;
+    static constexpr C::mip_cmd_result NACK_INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM;
+    static constexpr C::mip_cmd_result NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM;
+    static constexpr C::mip_cmd_result NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED;
+    static constexpr C::mip_cmd_result NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT;
+
+#ifndef _WIN32 // Avoid name conflict with windows.h
+    static constexpr C::mip_cmd_result STATUS_PENDING = STATUS_QUEUED;
+#endif
 
     C::mip_cmd_result value = C::MIP_STATUS_NONE;
 
@@ -72,11 +74,10 @@ struct CmdResult
     CmdResult& operator=(const CmdResult& other) = default;
     CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
-    // operator bool() const { return value == C::MIP_ACK_OK; }
+    static CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
+
     operator const void*() const { return isAck() ? this : nullptr; }
     bool operator!() const { return !isAck(); }
-    operator C::mip_cmd_result&() { return value; }
-    operator C::mip_cmd_result() const { return value; }
 
     bool operator==(CmdResult other) const { return value == other.value; }
     bool operator!=(CmdResult other) const { return value != other.value; }

@@ -61,12 +61,12 @@ enum
 
 struct BaseDeviceInfo
 {
-    uint16_t firmware_version;
-    char model_name[16];
-    char model_number[16];
-    char serial_number[16];
-    char lot_number[16];
-    char device_options[16];
+    uint16_t firmware_version = 0;
+    char model_name[16] = {0};
+    char model_number[16] = {0};
+    char serial_number[16] = {0};
+    char lot_number[16] = {0};
+    char device_options[16] = {0};
     
 };
 void insert(Serializer& serializer, const BaseDeviceInfo& self);
@@ -112,8 +112,11 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
     };
     uint32_t value = NONE;
     
+    CommandedTestBitsGq7() : value(NONE) {}
+    CommandedTestBitsGq7(int val) : value((uint32_t)val) {}
     operator uint32_t() const { return value; }
     CommandedTestBitsGq7& operator=(uint32_t val) { value = val; return *this; }
+    CommandedTestBitsGq7& operator=(int val) { value = val; return *this; }
     CommandedTestBitsGq7& operator|=(uint32_t val) { return *this = value | val; }
     CommandedTestBitsGq7& operator&=(uint32_t val) { return *this = value & val; }
 };
@@ -227,8 +230,8 @@ struct GetDeviceDescriptors
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
         
-        uint8_t descriptors_count;
-        uint16_t* descriptors;
+        uint8_t descriptors_count = 0;
+        uint16_t* descriptors = {nullptr};
         
     };
 };
@@ -265,7 +268,7 @@ struct BuiltInTest
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_BUILT_IN_TEST;
         
-        uint32_t result;
+        uint32_t result = 0;
         
     };
 };
@@ -323,8 +326,8 @@ struct GetExtendedDescriptors
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         
-        uint8_t descriptors_count;
-        uint16_t* descriptors;
+        uint8_t descriptors_count = 0;
+        uint16_t* descriptors = {nullptr};
         
     };
 };
@@ -358,7 +361,7 @@ struct ContinuousBit
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_CONTINUOUS_BIT;
         
-        uint8_t result[16];
+        uint8_t result[16] = {0};
         
     };
 };
@@ -402,17 +405,17 @@ struct CommSpeed
     static const bool HAS_RESET_FUNCTION = true;
     
     static const uint32_t ALL_PORTS = 0;
-    FunctionSelector function;
-    uint8_t port;
-    uint32_t baud;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t port = 0;
+    uint32_t baud = 0;
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_COMM_SPEED;
         
-        uint8_t port;
-        uint32_t baud;
+        uint8_t port = 0;
+        uint32_t baud = 0;
         
     };
 };
@@ -454,9 +457,9 @@ struct GpsTimeUpdate
         TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
     };
     
-    FunctionSelector function;
-    FieldId field_id;
-    uint32_t value;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    FieldId field_id = static_cast<FieldId>(0);
+    uint32_t value = 0;
     
 };
 void insert(Serializer& serializer, const GpsTimeUpdate& self);

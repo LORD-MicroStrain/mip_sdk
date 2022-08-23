@@ -246,7 +246,7 @@ remaining_count mip_packet_remaining_space(const struct mip_packet* packet)
 ///
 bool mip_packet_is_data(const struct mip_packet* packet)
 {
-    return is_data_descriptor_set(mip_packet_descriptor_set(packet));
+    return mip_is_data_descriptor_set(mip_packet_descriptor_set(packet));
 }
 
 //

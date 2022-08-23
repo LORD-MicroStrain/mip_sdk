@@ -23,7 +23,10 @@ include_directories(
 add_subdirectory("${EXT_DIR}")
 
 if(WITH_INTERNAL)
-    add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/int")
+    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
+    if(MIP_INTERNAL_DIR)
+        add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+    endif()
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -33,7 +36,7 @@ set(MIP_DIR "${SRC_DIR}/mip")
 # Build options
 #
 
-option(MSCL_TIMESTAMP_TYPE, "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 
 #
@@ -74,6 +77,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
+    "${MIP_DIR}/mip_all.h"
 )
 
 set(MIPDEV_SOURCES
@@ -128,8 +132,8 @@ set(ALL_MIP_SOURCES
 )
 
 
-option(MSCL_DISABLE_CPP "Excludes all C++ files from the project." OFF)
-if(MSCL_DISABLE_CPP)
+option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
@@ -137,8 +141,8 @@ endif()
 add_library(mip ${ALL_MIP_SOURCES})
 
 
-if(${MSCL_TIMESTAMP_TYPE})
-    add_compile_definitions("MSCL_TIMESTAMP_TYPE=${MSCL_TIMESTAMP_TYPE}")
+if(${MIP_TIMESTAMP_TYPE})
+    add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
 endif()
 
 if(MSVC)
@@ -164,7 +168,7 @@ endif()
 # EXAMPLES
 #
 
-option(BUILD_EXAMPLES "Builds the example programs." OFF)
+option(BUILD_EXAMPLES "Builds the example programs." ON)
 
 if(BUILD_EXAMPLES)
     add_subdirectory("examples")

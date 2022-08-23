@@ -63,17 +63,55 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
         assert(num_receivers_out);
         extract_count(&deserializer, num_receivers_out, num_receivers_out_max);
         
-        assert(receiver_info_out);
-        assert(num_receivers_out);
+        assert(receiver_info_out || (num_receivers_out == 0));
         for(unsigned int i=0; i < *num_receivers_out; i++)
             extract_mip_gnss_receiver_info_command_info(&deserializer, &receiver_info_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->gps_enable);
+        
+        insert_u8(serializer, self->glonass_enable);
+        
+        insert_u8(serializer, self->galileo_enable);
+        
+        insert_u8(serializer, self->beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            insert_u8(serializer, self->reserved[i]);
+        
+    }
+}
+void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->gps_enable);
+        
+        extract_u8(serializer, &self->glonass_enable);
+        
+        extract_u8(serializer, &self->galileo_enable);
+        
+        extract_u8(serializer, &self->beidou_enable);
+        
+        for(unsigned int i=0; i < 4; i++)
+            extract_u8(serializer, &self->reserved[i]);
+        
+    }
+}
+
+void insert_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_response* self)
 {
     insert_u8(serializer, self->gps_enable);
     
@@ -87,7 +125,7 @@ void insert_mip_gnss_signal_configuration_command(struct mip_serializer* seriali
         insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_command* self)
+void extract_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_response* self)
 {
     extract_u8(serializer, &self->gps_enable);
     
@@ -118,13 +156,13 @@ enum mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* de
     
     insert_u8(&serializer, beidou_enable);
     
-    assert(reserved);
+    assert(reserved || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert_u8(&serializer, reserved[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable_out, uint8_t* glonass_enable_out, uint8_t* galileo_enable_out, uint8_t* beidou_enable_out, uint8_t* reserved_out)
 {
@@ -134,10 +172,10 @@ enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset, MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -156,11 +194,11 @@ enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* dev
         assert(beidou_enable_out);
         extract_u8(&deserializer, beidou_enable_out);
         
-        assert(reserved_out);
+        assert(reserved_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -173,9 +211,9 @@ enum mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device)
 {
@@ -185,9 +223,9 @@ enum mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device)
 {
@@ -197,11 +235,38 @@ enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u8(serializer, self->enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            insert_u8(serializer, self->reserved[i]);
+        
+    }
+}
+void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u8(serializer, &self->enable);
+        
+        for(unsigned int i=0; i < 3; i++)
+            extract_u8(serializer, &self->reserved[i]);
+        
+    }
+}
+
+void insert_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_response* self)
 {
     insert_u8(serializer, self->enable);
     
@@ -209,7 +274,7 @@ void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* ser
         insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_command* self)
+void extract_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_response* self)
 {
     extract_u8(serializer, &self->enable);
     
@@ -228,13 +293,13 @@ enum mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface
     
     insert_u8(&serializer, enable);
     
-    assert(reserved);
+    assert(reserved || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert_u8(&serializer, reserved[i]);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable_out, uint8_t* reserved_out)
 {
@@ -244,10 +309,10 @@ enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface*
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset, MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -257,11 +322,11 @@ enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface*
         assert(enable_out);
         extract_u8(&deserializer, enable_out);
         
-        assert(reserved_out);
+        assert(reserved_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_u8(&deserializer, &reserved_out[i]);
         
-        if( !mip_serializer_ok(&deserializer) )
+        if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -274,9 +339,9 @@ enum mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface*
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device)
 {
@@ -286,9 +351,9 @@ enum mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface*
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device)
 {
@@ -298,9 +363,9 @@ enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interfa
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, const struct mip_gnss_receiver_safe_mode_command* self)
 {
@@ -327,9 +392,9 @@ enum mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, ui
     
     insert_u8(&serializer, enable);
     
-    assert(mip_serializer_ok(&serializer));
+    assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, serializer.offset);
+    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

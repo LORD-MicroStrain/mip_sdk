@@ -40,6 +40,17 @@ void extract(Serializer& serializer, GetStatusFlags& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetStatusFlags::Response& self)
+{
+    insert(serializer, self.flags);
+    
+}
+void extract(Serializer& serializer, GetStatusFlags::Response& self)
+{
+    extract(serializer, self.flags);
+    
+}
+
 CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -54,7 +65,7 @@ CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* 
         assert(flagsOut);
         extract(deserializer, *flagsOut);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -70,6 +81,19 @@ void extract(Serializer& serializer, GetImei& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetImei::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.IMEI[i]);
+    
+}
+void extract(Serializer& serializer, GetImei::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.IMEI[i]);
+    
+}
+
 CmdResult getImei(C::mip_interface& device, char* imeiOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -81,11 +105,11 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(imeiOut);
+        assert(imeiOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imeiOut[i]);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -101,6 +125,19 @@ void extract(Serializer& serializer, GetImsi& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetImsi::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.IMSI[i]);
+    
+}
+void extract(Serializer& serializer, GetImsi::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.IMSI[i]);
+    
+}
+
 CmdResult getImsi(C::mip_interface& device, char* imsiOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -112,11 +149,11 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(imsiOut);
+        assert(imsiOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, imsiOut[i]);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -132,6 +169,19 @@ void extract(Serializer& serializer, GetIccid& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetIccid::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ICCID[i]);
+    
+}
+void extract(Serializer& serializer, GetIccid::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ICCID[i]);
+    
+}
+
 CmdResult getIccid(C::mip_interface& device, char* iccidOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -143,21 +193,42 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(iccidOut);
+        assert(iccidOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, iccidOut[i]);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
 void insert(Serializer& serializer, const ConnectedDeviceType& self)
 {
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.devType);
+        
+    }
+}
+void extract(Serializer& serializer, ConnectedDeviceType& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.devType);
+        
+    }
+}
+
+void insert(Serializer& serializer, const ConnectedDeviceType::Response& self)
+{
     insert(serializer, self.devType);
     
 }
-void extract(Serializer& serializer, ConnectedDeviceType& self)
+void extract(Serializer& serializer, ConnectedDeviceType::Response& self)
 {
     extract(serializer, self.devType);
     
@@ -173,7 +244,7 @@ CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut)
 {
@@ -184,7 +255,7 @@ CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType:
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset, REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -193,7 +264,7 @@ CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType:
         assert(devtypeOut);
         extract(deserializer, *devtypeOut);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -206,7 +277,7 @@ CmdResult saveConnectedDeviceType(C::mip_interface& device)
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult loadConnectedDeviceType(C::mip_interface& device)
 {
@@ -216,7 +287,7 @@ CmdResult loadConnectedDeviceType(C::mip_interface& device)
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 CmdResult defaultConnectedDeviceType(C::mip_interface& device)
 {
@@ -226,7 +297,7 @@ CmdResult defaultConnectedDeviceType(C::mip_interface& device)
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const GetActCode& self)
 {
@@ -237,6 +308,19 @@ void extract(Serializer& serializer, GetActCode& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GetActCode::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ActivationCode[i]);
+    
+}
+void extract(Serializer& serializer, GetActCode::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ActivationCode[i]);
+    
 }
 
 CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
@@ -250,11 +334,11 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(activationcodeOut);
+        assert(activationcodeOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, activationcodeOut[i]);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -270,6 +354,19 @@ void extract(Serializer& serializer, GetModemFirmwareVersion& self)
     (void)self;
 }
 
+void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        insert(serializer, self.ModemFirmwareVersion[i]);
+    
+}
+void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self)
+{
+    for(unsigned int i=0; i < 32; i++)
+        extract(serializer, self.ModemFirmwareVersion[i]);
+    
+}
+
 CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -281,11 +378,11 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(modemfirmwareversionOut);
+        assert(modemfirmwareversionOut || (32 == 0));
         for(unsigned int i=0; i < 32; i++)
             extract(deserializer, modemfirmwareversionOut[i]);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -299,6 +396,25 @@ void extract(Serializer& serializer, GetRssi& self)
 {
     (void)serializer;
     (void)self;
+}
+
+void insert(Serializer& serializer, const GetRssi::Response& self)
+{
+    insert(serializer, self.valid);
+    
+    insert(serializer, self.rssi);
+    
+    insert(serializer, self.signalQuality);
+    
+}
+void extract(Serializer& serializer, GetRssi::Response& self)
+{
+    extract(serializer, self.valid);
+    
+    extract(serializer, self.rssi);
+    
+    extract(serializer, self.signalQuality);
+    
 }
 
 CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut)
@@ -321,7 +437,7 @@ CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, in
         assert(signalqualityOut);
         extract(deserializer, *signalqualityOut);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -341,6 +457,29 @@ void extract(Serializer& serializer, ServiceStatus& self)
     
 }
 
+void insert(Serializer& serializer, const ServiceStatus::Response& self)
+{
+    insert(serializer, self.flags);
+    
+    insert(serializer, self.recievedBytes);
+    
+    insert(serializer, self.lastBytes);
+    
+    insert(serializer, self.lastBytesTime);
+    
+}
+void extract(Serializer& serializer, ServiceStatus::Response& self)
+{
+    extract(serializer, self.flags);
+    
+    extract(serializer, self.recievedBytes);
+    
+    extract(serializer, self.lastBytes);
+    
+    extract(serializer, self.lastBytesTime);
+    
+}
+
 CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* recievedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -353,7 +492,7 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, serializer.offset, REPLY_SERVICE_STATUS, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SERVICE_STATUS, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SERVICE_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -371,7 +510,7 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
         assert(lastbytestimeOut);
         extract(deserializer, *lastbytestimeOut);
         
-        if( !deserializer.isOk() )
+        if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -396,7 +535,7 @@ CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PROD_ERASE_STORAGE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const LedControl& self)
 {
@@ -430,11 +569,11 @@ CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, cons
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
-    assert(primarycolor);
+    assert(primarycolor || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, primarycolor[i]);
     
-    assert(altcolor);
+    assert(altcolor || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, altcolor[i]);
     
@@ -444,7 +583,7 @@ CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, cons
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, serializer.offset);
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const ModemHardReset& self)
 {

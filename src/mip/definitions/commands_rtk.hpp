@@ -108,8 +108,11 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
+        StatusFlagsLegacy() : value(NONE) {}
+        StatusFlagsLegacy(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
         StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlagsLegacy& operator=(int val) { value = val; return *this; }
         StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
     };
@@ -134,8 +137,11 @@ struct GetStatusFlags
         };
         uint32_t value = NONE;
         
+        StatusFlags() : value(NONE) {}
+        StatusFlags(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
         StatusFlags& operator=(uint32_t val) { value = val; return *this; }
+        StatusFlags& operator=(int val) { value = val; return *this; }
         StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
     };
@@ -177,7 +183,7 @@ struct GetImei
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
         
-        char IMEI[32];
+        char IMEI[32] = {0};
         
     };
 };
@@ -208,7 +214,7 @@ struct GetImsi
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
         
-        char IMSI[32];
+        char IMSI[32] = {0};
         
     };
 };
@@ -239,7 +245,7 @@ struct GetIccid
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
         
-        char ICCID[32];
+        char ICCID[32] = {0};
         
     };
 };
@@ -274,15 +280,15 @@ struct ConnectedDeviceType
         GQ7     = 1,  ///<  
     };
     
-    FunctionSelector function;
-    Type devType;
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    Type devType = static_cast<Type>(0);
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
         
-        Type devType;
+        Type devType = static_cast<Type>(0);
         
     };
 };
@@ -317,7 +323,7 @@ struct GetActCode
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
         
-        char ActivationCode[32];
+        char ActivationCode[32] = {0};
         
     };
 };
@@ -348,7 +354,7 @@ struct GetModemFirmwareVersion
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
         
-        char ModemFirmwareVersion[32];
+        char ModemFirmwareVersion[32] = {0};
         
     };
 };
@@ -380,9 +386,9 @@ struct GetRssi
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
         
-        bool valid;
-        int32_t rssi;
-        int32_t signalQuality;
+        bool valid = 0;
+        int32_t rssi = 0;
+        int32_t signalQuality = 0;
         
     };
 };
@@ -419,14 +425,17 @@ struct ServiceStatus
         };
         uint8_t value = NONE;
         
+        ServiceFlags() : value(NONE) {}
+        ServiceFlags(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
+        ServiceFlags& operator=(int val) { value = val; return *this; }
         ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
         ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
     };
     
-    uint32_t reserved1;
-    uint32_t reserved2;
+    uint32_t reserved1 = 0;
+    uint32_t reserved2 = 0;
     
     struct Response
     {
@@ -434,9 +443,9 @@ struct ServiceStatus
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
         
         ServiceFlags flags;
-        uint32_t recievedBytes;
-        uint32_t lastBytes;
-        uint64_t lastBytesTime;
+        uint32_t recievedBytes = 0;
+        uint32_t lastBytes = 0;
+        uint64_t lastBytesTime = 0;
         
     };
 };
@@ -463,7 +472,7 @@ struct ProdEraseStorage
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    MediaSelector media;
+    MediaSelector media = static_cast<MediaSelector>(0);
     
 };
 void insert(Serializer& serializer, const ProdEraseStorage& self);
@@ -485,10 +494,10 @@ struct LedControl
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t primaryColor[3];
-    uint8_t altColor[3];
-    LedAction act;
-    uint32_t period;
+    uint8_t primaryColor[3] = {0};
+    uint8_t altColor[3] = {0};
+    LedAction act = static_cast<LedAction>(0);
+    uint32_t period = 0;
     
 };
 void insert(Serializer& serializer, const LedControl& self);

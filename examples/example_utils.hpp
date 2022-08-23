@@ -1,10 +1,10 @@
 
 #pragma once
 
-#ifdef MSCL_USE_SERIAL
+#ifdef MIP_USE_SERIAL
     #include "mip/platform/serial_device_interface.hpp"
 #endif
-#ifdef MSCL_USE_SOCKETS
+#ifdef MIP_USE_SOCKETS
     #include "tcp_mip_device.hpp"
 #endif
 

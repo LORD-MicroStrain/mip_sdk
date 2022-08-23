@@ -79,13 +79,13 @@ public:
     bool isData() const { return isDataDescriptorSet(descriptorSet()); }
 
     ///@brief Determines if the field holds a command.
-    bool isCommand() const { return isCommandSet() && isCommandDescriptor(fieldDescriptor()); }
+    bool isCommand() const { return isCommandSet() && isCommandFieldDescriptor(fieldDescriptor()); }
 
     ///@brief Determines if the field holds command response data.
-    bool isResponse() const { return isCommandSet() && isResponseDescriptor(fieldDescriptor()); }
+    bool isResponse() const { return isCommandSet() && isResponseFieldDescriptor(fieldDescriptor()); }
 
     ///@brief Determines if the field holds an ack/nack reply code.
-    bool isReply() const { return isCommandSet() && isReplyDescriptor(fieldDescriptor()) && payloadLength()==2; }
+    bool isReply() const { return isCommandSet() && isReplyFieldDescriptor(fieldDescriptor()) && payloadLength()==2; }
 };
 
 
@@ -164,7 +164,7 @@ public:
         size_t available = allocField(fieldDescriptor, 0, &payload);
         Serializer serializer(payload, available);
         insert(serializer, field);
-        return reallocLastField(payload, serializer.offset) >= 0;
+        return reallocLastField(payload, serializer.length()) >= 0;
     }
 
     template<class Field>

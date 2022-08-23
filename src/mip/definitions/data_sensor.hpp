@@ -83,7 +83,7 @@ struct RawAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_accel[3];
+    float raw_accel[3] = {0};
     
 };
 void insert(Serializer& serializer, const RawAccel& self);
@@ -105,7 +105,7 @@ struct RawGyro
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_gyro[3];
+    float raw_gyro[3] = {0};
     
 };
 void insert(Serializer& serializer, const RawGyro& self);
@@ -127,7 +127,7 @@ struct RawMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_mag[3];
+    float raw_mag[3] = {0};
     
 };
 void insert(Serializer& serializer, const RawMag& self);
@@ -149,7 +149,7 @@ struct RawPressure
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_pressure;
+    float raw_pressure = 0;
     
 };
 void insert(Serializer& serializer, const RawPressure& self);
@@ -171,7 +171,7 @@ struct ScaledAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_accel[3];
+    float scaled_accel[3] = {0};
     
 };
 void insert(Serializer& serializer, const ScaledAccel& self);
@@ -193,7 +193,7 @@ struct ScaledGyro
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_gyro[3];
+    float scaled_gyro[3] = {0};
     
 };
 void insert(Serializer& serializer, const ScaledGyro& self);
@@ -215,7 +215,7 @@ struct ScaledMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_mag[3];
+    float scaled_mag[3] = {0};
     
 };
 void insert(Serializer& serializer, const ScaledMag& self);
@@ -236,7 +236,7 @@ struct ScaledPressure
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_pressure;
+    float scaled_pressure = 0;
     
 };
 void insert(Serializer& serializer, const ScaledPressure& self);
@@ -258,7 +258,7 @@ struct DeltaTheta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float delta_theta[3];
+    float delta_theta[3] = {0};
     
 };
 void insert(Serializer& serializer, const DeltaTheta& self);
@@ -280,7 +280,7 @@ struct DeltaVelocity
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float delta_velocity[3];
+    float delta_velocity[3] = {0};
     
 };
 void insert(Serializer& serializer, const DeltaVelocity& self);
@@ -311,7 +311,7 @@ struct CompOrientationMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float m[9];
+    float m[9] = {0};
     
 };
 void insert(Serializer& serializer, const CompOrientationMatrix& self);
@@ -340,7 +340,7 @@ struct CompQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4];
+    float q[4] = {0};
     
 };
 void insert(Serializer& serializer, const CompQuaternion& self);
@@ -362,9 +362,9 @@ struct CompEulerAngles
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll;
-    float pitch;
-    float yaw;
+    float roll = 0;
+    float pitch = 0;
+    float yaw = 0;
     
 };
 void insert(Serializer& serializer, const CompEulerAngles& self);
@@ -385,7 +385,7 @@ struct CompOrientationUpdateMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float m[9];
+    float m[9] = {0};
     
 };
 void insert(Serializer& serializer, const CompOrientationUpdateMatrix& self);
@@ -406,7 +406,7 @@ struct OrientationRawTemp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint16_t raw_temp[4];
+    uint16_t raw_temp[4] = {0};
     
 };
 void insert(Serializer& serializer, const OrientationRawTemp& self);
@@ -427,7 +427,7 @@ struct InternalTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t counts;
+    uint32_t counts = 0;
     
 };
 void insert(Serializer& serializer, const InternalTimestamp& self);
@@ -448,8 +448,8 @@ struct PpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t seconds;
-    uint32_t useconds;
+    uint32_t seconds = 0;
+    uint32_t useconds = 0;
     
 };
 void insert(Serializer& serializer, const PpsTimestamp& self);
@@ -489,14 +489,17 @@ struct GpsTimestamp
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow;
-    uint16_t week_number;
+    double tow = 0;
+    uint16_t week_number = 0;
     ValidFlags valid_flags;
     
 };
@@ -522,9 +525,9 @@ struct TemperatureAbs
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float min_temp;
-    float max_temp;
-    float mean_temp;
+    float min_temp = 0;
+    float max_temp = 0;
+    float mean_temp = 0;
     
 };
 void insert(Serializer& serializer, const TemperatureAbs& self);
@@ -551,7 +554,7 @@ struct UpVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float up[3];
+    float up[3] = {0};
     
 };
 void insert(Serializer& serializer, const UpVector& self);
@@ -575,7 +578,7 @@ struct NorthVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north[3];
+    float north[3] = {0};
     
 };
 void insert(Serializer& serializer, const NorthVector& self);
@@ -613,8 +616,11 @@ struct OverrangeStatus
         };
         uint16_t value = NONE;
         
+        Status() : value(NONE) {}
+        Status(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         Status& operator=(uint16_t val) { value = val; return *this; }
+        Status& operator=(int val) { value = val; return *this; }
         Status& operator|=(uint16_t val) { return *this = value | val; }
         Status& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -639,9 +645,9 @@ struct OdometerData
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float speed;
-    float uncertainty;
-    uint16_t valid_flags;
+    float speed = 0;
+    float uncertainty = 0;
+    uint16_t valid_flags = 0;
     
 };
 void insert(Serializer& serializer, const OdometerData& self);

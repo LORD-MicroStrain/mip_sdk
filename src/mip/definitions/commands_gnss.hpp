@@ -74,9 +74,9 @@ struct ReceiverInfo
     
     struct Info
     {
-        uint8_t receiver_id;
-        uint8_t mip_data_descriptor_set;
-        char description[32];
+        uint8_t receiver_id = 0;
+        uint8_t mip_data_descriptor_set = 0;
+        char description[32] = {0};
         
     };
     
@@ -85,8 +85,8 @@ struct ReceiverInfo
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
         
-        uint8_t num_receivers;
-        Info* receiver_info;
+        uint8_t num_receivers = 0;
+        Info* receiver_info = {nullptr};
         
     };
 };
@@ -120,23 +120,23 @@ struct SignalConfiguration
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t gps_enable;
-    uint8_t glonass_enable;
-    uint8_t galileo_enable;
-    uint8_t beidou_enable;
-    uint8_t reserved[4];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t gps_enable = 0;
+    uint8_t glonass_enable = 0;
+    uint8_t galileo_enable = 0;
+    uint8_t beidou_enable = 0;
+    uint8_t reserved[4] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
         
-        uint8_t gps_enable;
-        uint8_t glonass_enable;
-        uint8_t galileo_enable;
-        uint8_t beidou_enable;
-        uint8_t reserved[4];
+        uint8_t gps_enable = 0;
+        uint8_t glonass_enable = 0;
+        uint8_t galileo_enable = 0;
+        uint8_t beidou_enable = 0;
+        uint8_t reserved[4] = {0};
         
     };
 };
@@ -171,17 +171,17 @@ struct RtkDongleConfiguration
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
     
-    FunctionSelector function;
-    uint8_t enable;
-    uint8_t reserved[3];
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t enable = 0;
+    uint8_t reserved[3] = {0};
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
         
-        uint8_t enable;
-        uint8_t reserved[3];
+        uint8_t enable = 0;
+        uint8_t reserved[3] = {0};
         
     };
 };
@@ -213,8 +213,8 @@ struct ReceiverSafeMode
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id;
-    uint8_t enable;
+    uint8_t receiver_id = 0;
+    uint8_t enable = 0;
     
 };
 void insert(Serializer& serializer, const ReceiverSafeMode& self);

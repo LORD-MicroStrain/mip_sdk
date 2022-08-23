@@ -21,7 +21,7 @@ RUN set -ex \
 # Add some python dependencies
 RUN set -ex && yum -y install python2-devel || yum -y install python-devel
 
-# We need CMake 3 for MSCL, so install that here
+# We need CMake 3 for MIP, so install that here
 ARG CMAKE_VERSION="3.23.0"
 RUN set -ex \
     && yum -y install epel-release \

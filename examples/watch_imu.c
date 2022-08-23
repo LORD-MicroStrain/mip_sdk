@@ -50,12 +50,8 @@ void handleAccel(void* user, const struct mip_field* field, timestamp_type times
 {
     (void)user;
     struct mip_sensor_scaled_accel_data data;
-    struct mip_serializer serializer;
 
-    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
-    extract_mip_sensor_scaled_accel_data(&serializer, &data);
-
-    if(mip_serializer_ok(&serializer))
+    if(extract_mip_sensor_scaled_accel_data_from_field(field, &data))
     {
         // Compute delta from last packet (the extractor runs after this, so the data is one packet behind).
         float delta[3] = {
@@ -71,12 +67,8 @@ void handleGyro(void* user, const struct mip_field* field, timestamp_type timest
 {
     (void)user;
     struct mip_sensor_scaled_gyro_data data;
-    struct mip_serializer serializer;
-    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
 
-    extract_mip_sensor_scaled_gyro_data(&serializer, &data);
-
-    if(mip_serializer_ok(&serializer))
+    if(extract_mip_sensor_scaled_gyro_data_from_field(field, &data))
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
@@ -84,12 +76,8 @@ void handleMag(void* user, const struct mip_field* field, timestamp_type timesta
 {
     (void)user;
     struct mip_sensor_scaled_mag_data data;
-    struct mip_serializer serializer;
 
-    mip_serializer_init_extraction(&serializer, mip_field_payload(field), mip_field_payload_length(field));
-    extract_mip_sensor_scaled_mag_data(&serializer, &data);
-
-    if(mip_serializer_ok(&serializer))
+    if(extract_mip_sensor_scaled_mag_data_from_field(field, &data))
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }
 
@@ -199,7 +187,7 @@ int main(int argc, const char* argv[])
     // Register some callbacks.
     struct mip_dispatch_handler packet_handler;
     struct mip_dispatch_handler data_handlers[4];
-    mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_DESCSET_DATA, false, &handlePacket, NULL);
+    mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_ANY_DATA_SET, false, &handlePacket, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);
     mip_interface_register_field_callback(&device, &data_handlers[2], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED  , &handleMag  , NULL);

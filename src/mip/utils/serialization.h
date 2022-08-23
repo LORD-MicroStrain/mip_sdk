@@ -22,16 +22,21 @@ struct mip_field;
 
 struct mip_serializer
 {
-    uint8_t* buffer;
-    size_t   buffer_size;
-    size_t   offset;
+    uint8_t* _buffer;        ///<@private Pointer to data for serialization.
+    size_t   _buffer_size;   ///<@private Size of the buffer.
+    size_t   _offset;        ///<@private Current offset into the buffer (can exceed buffer_size!).
 };
 
 void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_from_field(struct mip_serializer* serializer, const struct mip_field* field);
-bool mip_serializer_ok(const struct mip_serializer* serializer);
-bool mip_serializer_finished(const struct mip_serializer* serializer, size_t expected_length);
+
+size_t          mip_serializer_capacity(const struct mip_serializer* serializer);
+size_t          mip_serializer_length(const struct mip_serializer* serializer);
+remaining_count mip_serializer_remaining(const struct mip_serializer* serializer);
+
+bool mip_serializer_is_ok(const struct mip_serializer* serializer);
+bool mip_serializer_is_complete(const struct mip_serializer* serializer);
 
 
 void insert_bool(struct mip_serializer* serializer, bool value);
@@ -79,12 +84,15 @@ void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_
 class Serializer : public C::mip_serializer
 {
 public:
-    Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_insertion(this, buffer, size); this->offset = offset; }
-    Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->offset = offset; }
+    Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
+    Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
 
-    bool isOk() const { return C::mip_serializer_ok(this); }
-    bool isFinished() const { return isFinished(this->buffer_size); }
-    bool isFinished(size_t expectedLength) const { return C::mip_serializer_finished(this, expectedLength); }
+    size_t capacity() const { return C::mip_serializer_capacity(this); }
+    size_t length() const { return C::mip_serializer_length(this); }
+    RemainingCount remaining() const { return C::mip_serializer_remaining(this); }
+
+    bool isOk() const { return C::mip_serializer_is_ok(this); }
+    bool isComplete() const { return C::mip_serializer_is_complete(this); }
 
     operator const void*() const { return isOk() ? this : nullptr; }
     bool operator!() const { return !isOk(); }
@@ -161,7 +169,7 @@ bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offs
 {
     Serializer serializer(buffer, bufferSize, offset);
     extract(serializer, value_out);
-    return exact_size ? serializer.isFinished() : serializer.isOk();
+    return exact_size ? serializer.isComplete() : serializer.isOk();
 }
 
 } // namespace mip

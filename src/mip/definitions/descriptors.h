@@ -26,18 +26,21 @@ enum {
     MIP_REPLY_DESCRIPTOR          = 0xF1,
     MIP_RESERVED_DESCRIPTOR_START = 0xF0,
     MIP_RESPONSE_DESCRIPTOR_START = 0x80,
+
+    MIP_SHARED_DATA_FIELD_DESCRIPTOR_START = 0xD0,
 };
 
-bool is_valid_descriptor_set(uint8_t descriptor_set);
-bool is_data_descriptor_set(uint8_t descriptor_set);
-bool is_cmd_descriptor_set(uint8_t descriptor_set);
-bool is_reserved_descriptor_set(uint8_t descriptor_set);
+bool mip_is_valid_descriptor_set(uint8_t descriptor_set);
+bool mip_is_data_descriptor_set(uint8_t descriptor_set);
+bool mip_is_cmd_descriptor_set(uint8_t descriptor_set);
+bool mip_is_reserved_descriptor_set(uint8_t descriptor_set);
 
-bool is_valid_descriptor(uint8_t field_descriptor);
-bool is_command_descriptor(uint8_t field_descriptor);
-bool is_reply_descriptor(uint8_t field_descriptor);
-bool is_response_descriptor(uint8_t field_descriptor);
-bool is_reserved_descriptor(uint8_t field_descriptor);
+bool mip_is_valid_field_descriptor(uint8_t field_descriptor);
+bool mip_is_command_field_descriptor(uint8_t field_descriptor);
+bool mip_is_reply_field_descriptor(uint8_t field_descriptor);
+bool mip_is_response_field_descriptor(uint8_t field_descriptor);
+bool mip_is_reserved_cmd_field_descriptor(uint8_t field_descriptor);
+bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor);
 
 
 struct mip_serializer;
@@ -94,8 +97,8 @@ struct CompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (Serializer& serializer, Bitfield<Derived> bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
-template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { insert(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
 
 
 enum class FunctionSelector : uint8_t
@@ -109,14 +112,17 @@ enum class FunctionSelector : uint8_t
 
 using DescriptorRate = C::mip_descriptor_rate;
 
-inline bool isDataDescriptorSet   (uint8_t descriptorSet)  { return C::is_data_descriptor_set(descriptorSet); }
-inline bool isCommandDescriptorSet(uint8_t descriptorSet)  { return C::is_cmd_descriptor_set(descriptorSet); }
-inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::is_reserved_descriptor_set(descriptorSet); }
+inline bool isValidDescriptorSet   (uint8_t descriptorSet) { return C::mip_is_valid_descriptor_set(descriptorSet); }
+inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_data_descriptor_set(descriptorSet); }
+inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }
+inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
 
-inline bool isCommandDescriptor (uint8_t fieldDescriptor) { return C::is_command_descriptor(fieldDescriptor); }
-inline bool isReplyDescriptor   (uint8_t fieldDescriptor) { return C::is_reply_descriptor(fieldDescriptor); }
-inline bool isResponseDescriptor(uint8_t fieldDescriptor) { return C::is_response_descriptor(fieldDescriptor); }
-inline bool isReservedDescriptor(uint8_t fieldDescriptor) { return C::is_reserved_descriptor(fieldDescriptor); }
+inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
+inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_command_field_descriptor(fieldDescriptor); }
+inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_reply_field_descriptor(fieldDescriptor); }
+inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
+inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
+inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
 
 
 inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }

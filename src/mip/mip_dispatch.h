@@ -46,23 +46,19 @@ typedef void (*mip_dispatch_field_callback )(void* context, const struct mip_fie
 ///@param field A valid mip_field.
 ///@param ptr   A pointer to the destination field structure.
 ///
-typedef void (*mip_dispatch_extractor)(const struct mip_field* field, void* ptr);
+typedef bool (*mip_dispatch_extractor)(const struct mip_field* field, void* ptr);
 
 
 enum {
-    /// Field descriptor for packet callbacks. Never matches a field descriptor.
-    /// 0x00 is not a valid MIP field descriptor.
-    MIP_DISPATCH_FIELDDESC_NONE      = 0x00,
+    /// Wildcard descriptor set which only includes data packets.
+    ///
+    ///@note This is the same value as shared data descriptor set, but the shared
+    /// data descriptor set is not real and will never be sent by the device.
+    MIP_DISPATCH_ANY_DATA_SET = 0xFF,
 
-    /// Descriptor set for packet callbacks similar to the wildcard but
-    /// only processing data packets.
-    /// 0x00 is not a valid MIP descriptor set.
-    MIP_DISPATCH_DESCSET_DATA        = 0x00,
-
-    /// Descriptor set wildcard, meaning any descriptor set, or field descriptor
-    /// wildcard, meaning any field within the descriptor set.
-    /// 0xFF is not a valid MIP descriptor.
-    MIP_DISPATCH_DESCRIPTOR_WILDCARD = 0xFF,
+    /// Any descriptor set or field descriptor.
+    /// This is not a valid MIP descriptor.
+    MIP_DISPATCH_ANY_DESCRIPTOR = 0x00,
 };
 
 ////////////////////////////////////////////////////////////////////////////////

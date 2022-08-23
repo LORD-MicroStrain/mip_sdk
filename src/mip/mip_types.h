@@ -25,9 +25,9 @@ typedef int_least16_t remaining_count;
 /// days, so the parser should be invoked at least every 25 days. Failure to observe
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
-#ifdef MSCL_TIMESTAMP_TYPE
-    typedef MSCL_TYPESTAMP_TYPE timestamp_type;
-    static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MSCL_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
+#ifdef MIP_TIMESTAMP_TYPE
+    typedef MIP_TIMESTAMP_TYPE timestamp_type;
+    static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
 #else
     typedef uint64_t timestamp_type;
 #endif

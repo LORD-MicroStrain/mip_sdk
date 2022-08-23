@@ -194,18 +194,21 @@ struct PosLlh
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double latitude;
-    double longitude;
-    double ellipsoid_height;
-    double msl_height;
-    float horizontal_accuracy;
-    float vertical_accuracy;
+    double latitude = 0;
+    double longitude = 0;
+    double ellipsoid_height = 0;
+    double msl_height = 0;
+    float horizontal_accuracy = 0;
+    float vertical_accuracy = 0;
     ValidFlags valid_flags;
     
 };
@@ -238,14 +241,17 @@ struct PosEcef
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double x[3];
-    float x_accuracy;
+    double x[3] = {0};
+    float x_accuracy = 0;
     ValidFlags valid_flags;
     
 };
@@ -282,18 +288,21 @@ struct VelNed
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float v[3];
-    float speed;
-    float ground_speed;
-    float heading;
-    float speed_accuracy;
-    float heading_accuracy;
+    float v[3] = {0};
+    float speed = 0;
+    float ground_speed = 0;
+    float heading = 0;
+    float speed_accuracy = 0;
+    float heading_accuracy = 0;
     ValidFlags valid_flags;
     
 };
@@ -326,14 +335,17 @@ struct VelEcef
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float v[3];
-    float v_accuracy;
+    float v[3] = {0};
+    float v_accuracy = 0;
     ValidFlags valid_flags;
     
 };
@@ -371,19 +383,22 @@ struct Dop
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float gdop;
-    float pdop;
-    float hdop;
-    float vdop;
-    float tdop;
-    float ndop;
-    float edop;
+    float gdop = 0;
+    float pdop = 0;
+    float hdop = 0;
+    float vdop = 0;
+    float tdop = 0;
+    float ndop = 0;
+    float edop = 0;
     ValidFlags valid_flags;
     
 };
@@ -416,19 +431,22 @@ struct UtcTime
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint16_t year;
-    uint8_t month;
-    uint8_t day;
-    uint8_t hour;
-    uint8_t min;
-    uint8_t sec;
-    uint32_t msec;
+    uint16_t year = 0;
+    uint8_t month = 0;
+    uint8_t day = 0;
+    uint8_t hour = 0;
+    uint8_t min = 0;
+    uint8_t sec = 0;
+    uint32_t msec = 0;
     ValidFlags valid_flags;
     
 };
@@ -461,14 +479,17 @@ struct GpsTime
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow;
-    uint16_t week_number;
+    double tow = 0;
+    uint16_t week_number = 0;
     ValidFlags valid_flags;
     
 };
@@ -502,15 +523,18 @@ struct ClockInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double bias;
-    double drift;
-    double accuracy_estimate;
+    double bias = 0;
+    double drift = 0;
+    double accuracy_estimate = 0;
     ValidFlags valid_flags;
     
 };
@@ -553,8 +577,11 @@ struct FixInfo
         };
         uint16_t value = NONE;
         
+        FixFlags() : value(NONE) {}
+        FixFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         FixFlags& operator=(uint16_t val) { value = val; return *this; }
+        FixFlags& operator=(int val) { value = val; return *this; }
         FixFlags& operator|=(uint16_t val) { return *this = value | val; }
         FixFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -571,14 +598,17 @@ struct FixInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    FixType fix_type;
-    uint8_t num_sv;
+    FixType fix_type = static_cast<FixType>(0);
+    uint8_t num_sv = 0;
     FixFlags fix_flags;
     ValidFlags valid_flags;
     
@@ -613,8 +643,11 @@ struct SvInfo
         };
         uint16_t value = NONE;
         
+        SVFlags() : value(NONE) {}
+        SVFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         SVFlags& operator=(uint16_t val) { value = val; return *this; }
+        SVFlags& operator=(int val) { value = val; return *this; }
         SVFlags& operator|=(uint16_t val) { return *this = value | val; }
         SVFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -634,17 +667,20 @@ struct SvInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t channel;
-    uint8_t sv_id;
-    uint16_t carrier_noise_ratio;
-    int16_t azimuth;
-    int16_t elevation;
+    uint8_t channel = 0;
+    uint8_t sv_id = 0;
+    uint16_t carrier_noise_ratio = 0;
+    int16_t azimuth = 0;
+    int16_t elevation = 0;
     SVFlags sv_flags;
     ValidFlags valid_flags;
     
@@ -702,15 +738,18 @@ struct HwStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    ReceiverState receiver_state;
-    AntennaState antenna_state;
-    AntennaPower antenna_power;
+    ReceiverState receiver_state = static_cast<ReceiverState>(0);
+    AntennaState antenna_state = static_cast<AntennaState>(0);
+    AntennaPower antenna_power = static_cast<AntennaPower>(0);
     ValidFlags valid_flags;
     
 };
@@ -757,16 +796,19 @@ struct DgpsInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t sv_id;
-    float age;
-    float range_correction;
-    float range_rate_correction;
+    uint8_t sv_id = 0;
+    float age = 0;
+    float range_correction = 0;
+    float range_rate_correction = 0;
     ValidFlags valid_flags;
     
 };
@@ -803,16 +845,19 @@ struct DgpsChannel
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t sv_id;
-    float age;
-    float range_correction;
-    float range_rate_correction;
+    uint8_t sv_id = 0;
+    float age = 0;
+    float range_correction = 0;
+    float range_rate_correction = 0;
     ValidFlags valid_flags;
     
 };
@@ -849,16 +894,19 @@ struct ClockInfo2
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double bias;
-    double drift;
-    double bias_accuracy_estimate;
-    double drift_accuracy_estimate;
+    double bias = 0;
+    double drift = 0;
+    double bias_accuracy_estimate = 0;
+    double drift_accuracy_estimate = 0;
     ValidFlags valid_flags;
     
 };
@@ -889,13 +937,16 @@ struct GpsLeapSeconds
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t leap_seconds;
+    uint8_t leap_seconds = 0;
     ValidFlags valid_flags;
     
 };
@@ -929,8 +980,11 @@ struct SbasInfo
         };
         uint8_t value = NONE;
         
+        SbasStatus() : value(NONE) {}
+        SbasStatus(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         SbasStatus& operator=(uint8_t val) { value = val; return *this; }
+        SbasStatus& operator=(int val) { value = val; return *this; }
         SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
         SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
     };
@@ -950,17 +1004,20 @@ struct SbasInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week;
-    uint16_t week_number;
-    SbasSystem sbas_system;
-    uint8_t sbas_id;
-    uint8_t count;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    SbasSystem sbas_system = static_cast<SbasSystem>(0);
+    uint8_t sbas_id = 0;
+    uint8_t count = 0;
     SbasStatus sbas_status;
     ValidFlags valid_flags;
     
@@ -1017,21 +1074,24 @@ struct SbasCorrection
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    GnssConstellationId gnss_id;
-    uint8_t sv_id;
-    uint8_t udrei;
-    float pseudorange_correction;
-    float iono_correction;
+    uint8_t index = 0;
+    uint8_t count = 0;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
+    uint8_t sv_id = 0;
+    uint8_t udrei = 0;
+    float pseudorange_correction = 0;
+    float iono_correction = 0;
     ValidFlags valid_flags;
     
 };
@@ -1089,16 +1149,19 @@ struct RfErrorDetection
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    RFBand rf_band;
-    JammingState jamming_state;
-    SpoofingState spoofing_state;
-    uint8_t reserved[4];
+    RFBand rf_band = static_cast<RFBand>(0);
+    JammingState jamming_state = static_cast<JammingState>(0);
+    SpoofingState spoofing_state = static_cast<SpoofingState>(0);
+    uint8_t reserved[4] = {0};
     ValidFlags valid_flags;
     
 };
@@ -1139,8 +1202,11 @@ struct BaseStationInfo
         };
         uint16_t value = NONE;
         
+        IndicatorFlags() : value(NONE) {}
+        IndicatorFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         IndicatorFlags& operator=(uint16_t val) { value = val; return *this; }
+        IndicatorFlags& operator=(int val) { value = val; return *this; }
         IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
         IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1160,17 +1226,20 @@ struct BaseStationInfo
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week;
-    uint16_t week_number;
-    double ecef_pos[3];
-    float height;
-    uint16_t station_id;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    double ecef_pos[3] = {0};
+    float height = 0;
+    uint16_t station_id = 0;
     IndicatorFlags indicators;
     ValidFlags valid_flags;
     
@@ -1209,8 +1278,11 @@ struct RtkCorrectionsStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
@@ -1232,21 +1304,24 @@ struct RtkCorrectionsStatus
         };
         uint16_t value = NONE;
         
+        EpochStatus() : value(NONE) {}
+        EpochStatus(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         EpochStatus& operator=(uint16_t val) { value = val; return *this; }
+        EpochStatus& operator=(int val) { value = val; return *this; }
         EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week;
-    uint16_t week_number;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
     EpochStatus epoch_status;
-    uint32_t dongle_status;
-    float gps_correction_latency;
-    float glonass_correction_latency;
-    float galileo_correction_latency;
-    float beidou_correction_latency;
-    uint32_t reserved[4];
+    uint32_t dongle_status = 0;
+    float gps_correction_latency = 0;
+    float glonass_correction_latency = 0;
+    float galileo_correction_latency = 0;
+    float beidou_correction_latency = 0;
+    uint32_t reserved[4] = {0};
     ValidFlags valid_flags;
     
 };
@@ -1284,21 +1359,24 @@ struct SatelliteStatus
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    GnssConstellationId gnss_id;
-    uint8_t satellite_id;
-    float elevation;
-    float azimuth;
-    bool health;
+    uint8_t index = 0;
+    uint8_t count = 0;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
+    uint8_t satellite_id = 0;
+    float elevation = 0;
+    float azimuth = 0;
+    bool health = 0;
     ValidFlags valid_flags;
     
 };
@@ -1355,30 +1433,33 @@ struct Raw
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint16_t receiver_id;
-    uint8_t tracking_channel;
-    GnssConstellationId gnss_id;
-    uint8_t satellite_id;
-    GnssSignalId signal_id;
-    float signal_strength;
-    GnssSignalQuality quality;
-    double pseudorange;
-    double carrier_phase;
-    float doppler;
-    float range_uncert;
-    float phase_uncert;
-    float doppler_uncert;
-    float lock_time;
+    uint8_t index = 0;
+    uint8_t count = 0;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    uint16_t receiver_id = 0;
+    uint8_t tracking_channel = 0;
+    GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
+    uint8_t satellite_id = 0;
+    GnssSignalId signal_id = static_cast<GnssSignalId>(0);
+    float signal_strength = 0;
+    GnssSignalQuality quality = static_cast<GnssSignalQuality>(0);
+    double pseudorange = 0;
+    double carrier_phase = 0;
+    float doppler = 0;
+    float range_uncert = 0;
+    float phase_uncert = 0;
+    float doppler_uncert = 0;
+    float lock_time = 0;
     ValidFlags valid_flags;
     
 };
@@ -1411,45 +1492,48 @@ struct GpsEphemeris
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint8_t satellite_id;
-    uint8_t health;
-    uint8_t iodc;
-    uint8_t iode;
-    double t_oc;
-    double af0;
-    double af1;
-    double af2;
-    double t_gd;
-    double ISC_L1CA;
-    double ISC_L2C;
-    double t_oe;
-    double a;
-    double a_dot;
-    double mean_anomaly;
-    double delta_mean_motion;
-    double delta_mean_motion_dot;
-    double eccentricity;
-    double argument_of_perigee;
-    double omega;
-    double omega_dot;
-    double inclination;
-    double inclination_dot;
-    double c_ic;
-    double c_is;
-    double c_uc;
-    double c_us;
-    double c_rc;
-    double c_rs;
+    uint8_t index = 0;
+    uint8_t count = 0;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    uint8_t satellite_id = 0;
+    uint8_t health = 0;
+    uint8_t iodc = 0;
+    uint8_t iode = 0;
+    double t_oc = 0;
+    double af0 = 0;
+    double af1 = 0;
+    double af2 = 0;
+    double t_gd = 0;
+    double ISC_L1CA = 0;
+    double ISC_L2C = 0;
+    double t_oe = 0;
+    double a = 0;
+    double a_dot = 0;
+    double mean_anomaly = 0;
+    double delta_mean_motion = 0;
+    double delta_mean_motion_dot = 0;
+    double eccentricity = 0;
+    double argument_of_perigee = 0;
+    double omega = 0;
+    double omega_dot = 0;
+    double inclination = 0;
+    double inclination_dot = 0;
+    double c_ic = 0;
+    double c_is = 0;
+    double c_uc = 0;
+    double c_us = 0;
+    double c_rc = 0;
+    double c_rs = 0;
     ValidFlags valid_flags;
     
 };
@@ -1481,36 +1565,39 @@ struct GloEphemeris
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint8_t satellite_id;
-    int8_t freq_number;
-    uint32_t tk;
-    uint32_t tb;
-    uint8_t sat_type;
-    double gamma;
-    double tau_n;
-    double x[3];
-    float v[3];
-    float a[3];
-    uint8_t health;
-    uint8_t P;
-    uint8_t NT;
-    float delta_tau_n;
-    uint8_t Ft;
-    uint8_t En;
-    uint8_t P1;
-    uint8_t P2;
-    uint8_t P3;
-    uint8_t P4;
+    uint8_t index = 0;
+    uint8_t count = 0;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    uint8_t satellite_id = 0;
+    int8_t freq_number = 0;
+    uint32_t tk = 0;
+    uint32_t tb = 0;
+    uint8_t sat_type = 0;
+    double gamma = 0;
+    double tau_n = 0;
+    double x[3] = {0};
+    float v[3] = {0};
+    float a[3] = {0};
+    uint8_t health = 0;
+    uint8_t P = 0;
+    uint8_t NT = 0;
+    float delta_tau_n = 0;
+    uint8_t Ft = 0;
+    uint8_t En = 0;
+    uint8_t P1 = 0;
+    uint8_t P2 = 0;
+    uint8_t P3 = 0;
+    uint8_t P4 = 0;
     ValidFlags valid_flags;
     
 };
@@ -1545,16 +1632,19 @@ struct GpsIonoCorr
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week;
-    uint16_t week_number;
-    double alpha[4];
-    double beta[4];
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    double alpha[4] = {0};
+    double beta[4] = {0};
     ValidFlags valid_flags;
     
 };
@@ -1589,16 +1679,19 @@ struct GalileoIonoCorr
         };
         uint16_t value = NONE;
         
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week;
-    uint16_t week_number;
-    double alpha[3];
-    uint8_t disturbance_flags;
+    double time_of_week = 0;
+    uint16_t week_number = 0;
+    double alpha[3] = {0};
+    uint8_t disturbance_flags = 0;
     ValidFlags valid_flags;
     
 };
