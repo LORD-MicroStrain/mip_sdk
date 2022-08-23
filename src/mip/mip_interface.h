@@ -20,42 +20,6 @@ extern "C" {
 ///- Sending commands
 ///- Receiving Data
 ///
-/// There are two ways to handle input data:
-/// 1. Call mip_interface_receive_bytes (and/or mip_interface/process_unparsed_packets)
-///    from mip_interface_user_update(), or
-/// 2. Run a separate thread which feeds data from the port into
-///    mip_interface_receive_bytes(). mip_interface_user_update() would then just do
-///    nothing or sleep/yield.
-///
-/// Example of the first approach:
-///@code{.c}
-/// bool mip_interface_user_update(struct mip_interface* device)
-/// {
-///     size_t count;
-///     uint8_t buffer[N];
-///     if( user_read_port(buffer, sizeof(buffer), &count) == ERROR )
-///         return false;  // Abort further processing if the port is closed.
-///
-///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
-/// }
-///@endcode
-///
-/// Example of the second approach:
-///@code{.c}
-/// bool mip_interface_user_update(struct mip_interface* device)
-/// {
-///     user_sleep();
-///     return true;
-/// }
-///
-/// // In another thread
-/// for(;;)
-/// {
-///     user_wait_for_data();
-///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
-/// }
-///@endcode
-///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
