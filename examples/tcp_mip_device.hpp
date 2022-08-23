@@ -15,7 +15,7 @@ class TcpMipDevice : public mip::DeviceInterface
 public:
     TcpMipDevice(const std::string& hostname, uint16_t port);
 
-    bool update() final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, mip::Timestamp* timestamp) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
 private:

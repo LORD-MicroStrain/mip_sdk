@@ -1,24 +1,9 @@
-#ifndef _WIN32
 
-#include <poll.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-#include <termios.h>
-#include <sys/ioctl.h>
-
-#endif
-
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-#include "mip/mip_interface.h"
-#include "mip/platform/serial_device_interface.h"
+#include "serial_port.h"
 
 #define COM_PORT_BUFFER_SIZE  0x200
 
-#ifndef _WIN32 //Linux only
+#ifndef WIN32 //Linux only
 speed_t baud_rate_to_speed(int baud_rate)
 {
     switch(baud_rate)
@@ -65,12 +50,12 @@ speed_t baud_rate_to_speed(int baud_rate)
 }
 #endif
 
-bool serial_device_interface_open(struct serial_device_interface* port, const char* port_str, int baudrate)
+bool serial_port_open(struct serial_port *port, const char *port_str, int baudrate)
 {
     if(port_str == NULL)
         return false;
 
-#ifdef _WIN32
+#ifdef WIN32
     BOOL   ready;
     DCB    dcb;
 
@@ -126,8 +111,9 @@ bool serial_device_interface_open(struct serial_device_interface* port, const ch
         CloseHandle(port->handle);
         return false;
     }
-        
+    
 #else //Linux
+
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
 
     if (port->handle < 0)
@@ -159,6 +145,7 @@ bool serial_device_interface_open(struct serial_device_interface* port, const ch
     
     // Flush any waiting data
     tcflush(port->handle, TCIOFLUSH);
+
 #endif
 
     //Success
@@ -166,14 +153,16 @@ bool serial_device_interface_open(struct serial_device_interface* port, const ch
     return true;
 }
 
-bool serial_device_interface_close(struct serial_device_interface* port)
+bool serial_port_close(struct serial_port *port)
 {
     if(!port->is_open)
         return false;
 
+#ifdef WIN32 //Windows
+
     //Close the serial port
-#ifdef _WIN32 //Windows
     CloseHandle(port->handle);
+
 #else //Linux
     close(port->handle);
 #endif
@@ -182,52 +171,94 @@ bool serial_device_interface_close(struct serial_device_interface* port)
     return true;
 }
 
-bool serial_device_interface_update(struct serial_device_interface* port, struct mip_interface* device)
+bool serial_port_write(struct serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written)
 {
-    uint8_t buffer[256];
-    size_t bytes_read;
-    timestamp_type now = get_current_timestamp();
-
-    // Ensure commands can time out even if no data is received.
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), now);
+ 
+    *bytes_written = 0;
 
     //Check for a valid port handle
     if(!port->is_open)
         return false;
     
-    //Call the read function
-#ifdef _WIN32 //Windows
-    DWORD  local_bytes_read;
-    if(!ReadFile(port->handle, buffer, sizeof(buffer), &local_bytes_read, NULL))
-        return false;
-    bytes_read = local_bytes_read;
-#else //Linux
-    bytes_read = read(port->handle, buffer, sizeof(buffer));
-    if(bytes_read <= 0)
-        return false;
-#endif
-
-    mip_interface_receive_bytes(device, buffer, bytes_read, now);
-    return true;
-}
-
-bool serial_device_interface_send_to_device(struct serial_device_interface* port, const uint8_t* data, size_t num_bytes)
-{
-    //Check for a valid port handle
-    if(!port->is_open)
-        return false;
-    
-    //Call the write function
-#ifdef _WIN32 //Windows
+#ifdef WIN32 //Windows
     DWORD  local_bytes_written;
-    if(WriteFile(port->handle, data, num_bytes, &local_bytes_written, NULL))
-        if(local_bytes_written == num_bytes)
+
+    //Call the windows write function
+    if(WriteFile(port->handle, buffer, num_bytes, &local_bytes_written, NULL))
+    {
+        *bytes_written = local_bytes_written;
+    
+        if(*bytes_written == num_bytes)
             return true;
+    }
+
 #else //Linux
-    const uint32_t out_length = write(port->handle, data, num_bytes);
-    if(out_length == num_bytes)
+    *bytes_written = write(port->handle, buffer, num_bytes);
+
+    if(*bytes_written == num_bytes)
         return true;
+    
 #endif
 
     return false;
+}
+
+bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, size_t *bytes_read)
+{
+ 
+    //Set the bytes read to zero
+    *bytes_read = 0;
+
+    //Check for a valid port handle
+    if(!port->is_open)
+        return false;
+  
+#ifdef WIN32 //Windows
+    DWORD  local_bytes_read;
+
+    //Call the windows read function
+    if(!ReadFile(port->handle, buffer, num_bytes, &local_bytes_read, NULL))
+        return false;
+    *bytes_read = local_bytes_read;
+
+ #else //Linux
+    *bytes_read = read(port->handle, buffer, num_bytes);
+
+    if(*bytes_read == (size_t)-1 && errno != EAGAIN)
+        return false;
+
+#endif
+
+    return true;
+}
+
+uint32_t serial_port_read_count(struct serial_port *port)
+{
+    //Check for a valid port handle
+    if(!port->is_open)
+        return 0;
+ 
+#ifdef WIN32 //Windows
+    COMSTAT com_status;
+    DWORD   errors;
+    
+    //This function gets the current com status
+    if(ClearCommError(port->handle, &errors, &com_status))
+    {
+        return com_status.cbInQue;
+    }
+    
+#else //Linux
+    int bytes_available;
+    ioctl(port->handle, FIONREAD, &bytes_available);
+
+    return bytes_available;
+#endif
+
+    return 0;
+}
+
+bool serial_port_is_open(struct serial_port *port)
+{
+    return port->is_open;
 }

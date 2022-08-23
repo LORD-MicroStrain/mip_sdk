@@ -8,14 +8,7 @@ set(DEVICE_SOURCES
 )
 
 if(WITH_SERIALPORT)
-
-    LIST(APPEND DEVICE_SOURCES
-        "${EXAMPLE_DIR}/serial_mip_device.cpp"
-        "${EXAMPLE_DIR}/serial_mip_device.hpp"
-    )
-    set(SERIAL_LIB "serial")
     set(SERIAL_DEFS "MSCL_USE_SERIAL")
-
 endif()
 
 if(WITH_SOCKETS)

@@ -48,6 +48,8 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
     "${UTILS_DIR}/enum_wrapper.hpp"
+    "${UTILS_DIR}/serial_port.c"
+    "${UTILS_DIR}/serial_port.h"
 )
 
 #
@@ -111,8 +113,8 @@ string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
 set(MIP_INTERFACE_SOURCES
-    "${MIP_DIR}/platform/serial_device_interface.h"
-    "${MIP_DIR}/platform/serial_device_interface.c"
+    "${MIP_DIR}/platform/serial_device_interface.hpp"
+    "${MIP_DIR}/platform/serial_device_interface.cpp"
 )
 
 set(ALL_MIP_SOURCES

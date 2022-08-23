@@ -11,25 +11,19 @@ TcpMipDevice::TcpMipDevice(const std::string& hostname, uint16_t port) :
 {
 }
 
-bool TcpMipDevice::update()
+bool TcpMipDevice::recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, mip::Timestamp* timestamp)
 {
     try
     {
-        mip::Timestamp now = getCurrentTimestamp();
-        mip::C::mip_cmd_queue_update(&cmdQueue(), now);
-
-        return parseFromSource( [this](uint8_t* buffer, size_t maxCount, size_t* count_out, mip::Timestamp* timestamp_out)->bool
-        {
-            *count_out = mSocket.recv(buffer, maxCount);
-            *timestamp_out = getCurrentTimestamp();
-            return true;
-        });
+        *timestamp = getCurrentTimestamp();
+        *length_out = mSocket.recv(buffer, max_length);
     }
     catch(const std::exception& e)
     {
         fprintf(stderr, "Error reading from port: %s\n", e.what());
         return false;
     }
+    return true;
 }
 
 bool TcpMipDevice::sendToDevice(const uint8_t* data, size_t length)

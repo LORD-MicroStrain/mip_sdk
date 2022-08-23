@@ -7,6 +7,7 @@
 
 #include <assert.h>
 
+#include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Wrapper around mip_interface_receive_packet for use with mip_parser.
@@ -90,9 +91,6 @@ unsigned int mip_interface_max_packets_per_update(const struct mip_interface* de
 ///@note Make sure the parsing buffer is large enough to hold the
 ///      data in between receive calls.
 ///
-///@note Make sure mip_interface_user_update() executes the parser even when no new
-///      input data is available so that unparsed data is pushed through.
-///
 ///@param device
 ///
 ///@param max_packets
@@ -124,7 +122,20 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 ///
 bool mip_interface_update(struct mip_interface* device)
 {
-    return mip_interface_user_update(device);
+    uint8_t* ptr;
+    struct mip_parser* parser = mip_interface_parser(device);
+    size_t max_count = mip_parser_get_write_ptr(parser, &ptr);
+
+    size_t count;
+    timestamp_type timestamp;
+    if ( !mip_interface_user_recv_from_device(device, ptr, max_count, &count, &timestamp) )
+        return false;
+
+    assert(count <= max_count);
+
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
+    mip_parser_process_written(parser, count, timestamp, 0);
+    return true;
 }
 
 
@@ -148,10 +159,6 @@ bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* d
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Receive data from the port (i.e. the physical device) into the parser.
-///
-/// Call this when data has been received. In some applications, this will be
-/// from the mip_interface_user_update() function, while in others a dedicated
-/// thread will manage receiving data.
 ///
 ///@param device
 ///

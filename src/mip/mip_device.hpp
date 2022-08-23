@@ -103,7 +103,8 @@ public:
     virtual bool   sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
 
-    virtual bool   update() = 0; // Must be implemented by a derived class. Called by mip_interface_user_update().
+    bool           update() { return C::mip_interface_update(this); }
+    virtual bool   recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
 
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 

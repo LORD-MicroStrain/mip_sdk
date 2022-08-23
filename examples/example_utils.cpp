@@ -1,4 +1,4 @@
-
+#include <vector>
 
 #include "example_utils.hpp"
 
@@ -12,7 +12,7 @@
 mip::Timestamp getCurrentTimestamp()
 {
     using namespace std::chrono;
-    duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
+    return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
 
@@ -43,7 +43,7 @@ std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port
         if( baud == 0 )
             throw std::runtime_error("Serial baud rate must be a decimal integer greater than 0.");
 
-        return std::make_unique<SerialMipDevice>(port_or_hostname, baud);
+        return std::make_unique<mip::platform::SerialDeviceInterface>(port_or_hostname, baud);
 #else  // MSCL_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMSCL_USE_SERIAL=1.\n");
 #endif // MSCL_USE_SERIAL
@@ -53,24 +53,8 @@ std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port
 
 std::unique_ptr<mip::DeviceInterface> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
-#ifdef MSCL_USE_SERIAL
-    if( argc == 1 )
-    {
-        printf("Available serial ports:\n");
-        std::vector<serial::PortInfo> ports = serial::list_ports();
-
-        for(const serial::PortInfo& port : ports)
-        {
-            printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
-        }
-        exit(0);
-    }
-    else if( argc < 3 || argc > maxArgs )
-    {
-#else  // MSCL_USE_SERIAL
     if( argc < 3 || argc > maxArgs )
     {
-#endif // MSCL_USE_SERIAL
         throw std::underflow_error("Usage error");
     }
 

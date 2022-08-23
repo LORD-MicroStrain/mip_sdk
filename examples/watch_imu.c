@@ -11,7 +11,7 @@
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
 
-#include <mip/platform/serial_device_interface.h>
+#include <mip/utils/serial_port.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,11 +20,14 @@
 
 #ifdef WIN32
 #else
-    #include <unistd.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <termios.h>
 #endif
 
+struct serial_port port;
 uint8_t parse_buffer[1024];
-struct serial_device_interface port;
 struct mip_interface device;
 struct mip_sensor_scaled_accel_data scaled_accel;
 
@@ -104,21 +107,33 @@ timestamp_type get_current_timestamp()
 }
 
 
-bool mip_interface_user_update(struct mip_interface* device)
+bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
 {
-    return serial_device_interface_update(&port, device);
+    (void)device;
+
+    *timestamp_out = get_current_timestamp();
+    if( !serial_port_read(&port, buffer, max_length, out_length) )
+        return false;
+
+    return true;
 }
 
 
 bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
 {
-    return serial_device_interface_send_to_device(&port, data, length);
+    (void)device;
+
+    size_t bytes_written;
+    if (!serial_port_write(&port, data, length, &bytes_written))
+        return false;
+
+    return true;
 }
 
 
 bool open_port(const char* name, uint32_t baudrate)
 {
-    return serial_device_interface_open(&port, name, baudrate);
+    return serial_port_open(&port, name, baudrate);
 }
 
 int usage(const char* argv0)
@@ -215,6 +230,7 @@ int main(int argc, const char* argv[])
     }
 
 done:
-    serial_device_interface_close(&port);
+
+    serial_port_close(&port);
     return result == MIP_ACK_OK ? 0 : 2;
 }

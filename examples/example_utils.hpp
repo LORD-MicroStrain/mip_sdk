@@ -2,7 +2,7 @@
 #pragma once
 
 #ifdef MSCL_USE_SERIAL
-    #include "serial_mip_device.hpp"
+    #include "mip/platform/serial_device_interface.hpp"
 #endif
 #ifdef MSCL_USE_SOCKETS
     #include "tcp_mip_device.hpp"

@@ -120,24 +120,31 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup UserFunctions  User-implemented callback functions
+///@brief Receives new data from the device. Called repeatedly
+///       by mip_interface_update()
 ///
-///@{
-
-////////////////////////////////////////////////////////////////////////////////
-///@copydoc mip_interface_update
+///@param device        The mip interface object
+///@param buffer        Buffer to fill with data. Should be allocated before 
+///                     calling this function
+///@param max_lengh     Max number of bytes that can be read into the buffer.
+///@param out_length    Number of bytes actually read into the buffer
+///@param timestamp_out Timestamp that the data was received
 ///
-///@note If a limit is placed on the max number of packets to parse at once,
-///      Make sure to call mip_interface_receive_bytes(), or at least
-///      pip_parser_parse_one_packet_from_ring() on the parser, even if no data is
-///      available. Otherwise command replies and data may not get through the
-///      system quickly enough.
+///@returns true if operation should continue, or false if the device cannot be
+///         updateed (e.g. if the serial port is not open)
+///
+///@note
+///      - On systems where it makes sense, this is a good place to call sleep
+///        or enter a low-power state until data arrives at the port. Typically
+///        this function will wait at most a few milliseconds before returning.
+///      - This function is called in a loop, so returning true even when no bytes
+///        have been received is always safe.
 ///
 ///@warning Do not block indefinitely as this will stall the system beyond the
 ///         normal command timeout. Use a sensible timeout (i.e. 1/10th of the
 ///         base reply timeout) or only sleep for a minimal amount of time.
 ///
-extern bool mip_interface_user_update(struct mip_interface* device);
+extern bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out);
 
 
 ////////////////////////////////////////////////////////////////////////////////
