@@ -29,7 +29,7 @@ std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port
         if( port < 1024 || port > 65535 )
             throw std::runtime_error("Invalid TCP port (must be between 1024 and 65535.");
 
-        return std::make_unique<TcpMipDevice>(port_or_hostname, port);
+        return std::make_unique<mip::platform::TcpDeviceInterface>(port_or_hostname, port);
 
 #else  // MIP_USE_SOCKETS
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_SOCKETS=1");

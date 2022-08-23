@@ -12,18 +12,8 @@ if(WITH_SERIALPORT)
 endif()
 
 if(WITH_SOCKETS)
-
-    LIST(APPEND DEVICE_SOURCES
-        "${EXAMPLE_DIR}/tcp_mip_device.cpp"
-        "${EXAMPLE_DIR}/tcp_mip_device.hpp"
-    )
-    set(SOCKET_LIB "socket")
     set(SOCKET_DEFS "MIP_USE_SOCKETS")
-
 endif()
-
-add_subdirectory("${EXAMPLE_DIR}/socket")
-
 
 
 if(WITH_SERIALPORT OR WITH_SOCKETS)

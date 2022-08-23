@@ -5,7 +5,7 @@
     #include "mip/platform/serial_device_interface.hpp"
 #endif
 #ifdef MIP_USE_SOCKETS
-    #include "tcp_mip_device.hpp"
+    #include "mip/platform/tcp_device_interface.hpp"
 #endif
 
 #include <mip/mip_device.hpp>

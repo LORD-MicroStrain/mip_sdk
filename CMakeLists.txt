@@ -20,8 +20,6 @@ include_directories(
     "${SRC_DIR}"
 )
 
-add_subdirectory("${EXT_DIR}")
-
 if(WITH_INTERNAL)
     set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     if(MIP_INTERNAL_DIR)
@@ -53,6 +51,8 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/enum_wrapper.hpp"
     "${UTILS_DIR}/serial_port.c"
     "${UTILS_DIR}/serial_port.h"
+    "${UTILS_DIR}/tcp_socket.c"
+    "${UTILS_DIR}/tcp_socket.h"
 )
 
 #
@@ -119,6 +119,8 @@ string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 set(MIP_INTERFACE_SOURCES
     "${MIP_DIR}/platform/serial_device_interface.hpp"
     "${MIP_DIR}/platform/serial_device_interface.cpp"
+    "${MIP_DIR}/platform/tcp_device_interface.hpp"
+    "${MIP_DIR}/platform/tcp_device_interface.cpp"
 )
 
 set(ALL_MIP_SOURCES
