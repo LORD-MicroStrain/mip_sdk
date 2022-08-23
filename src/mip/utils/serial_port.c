@@ -3,7 +3,7 @@
 
 #define COM_PORT_BUFFER_SIZE  0x200
 
-#ifndef WIN32 //Linux only
+#ifndef WIN32 //Unix only
 speed_t baud_rate_to_speed(int baud_rate)
 {
     switch(baud_rate)
@@ -20,6 +20,7 @@ speed_t baud_rate_to_speed(int baud_rate)
         return B115200;
     case 230400:
         return B230400;
+#ifdef __linux__ //Linux onnly baudrates
     case 460800:
         return B460800;
     case 500000:
@@ -44,6 +45,7 @@ speed_t baud_rate_to_speed(int baud_rate)
         return B3500000;
     case 4000000:
         return B4000000;
+#endif
     default:
         return -1;
     }
