@@ -108,7 +108,7 @@ public:
 
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
-    CmdResult   waitForReply(const C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
+    CmdResult      waitForReply(const C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
 
     template<class Function>

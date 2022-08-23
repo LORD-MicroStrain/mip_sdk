@@ -1,5 +1,5 @@
-MSCL-Embedded
-=============
+libmip
+======
 
 Welcome to the Embedded version of the MicroStrain Communication Library.
 
