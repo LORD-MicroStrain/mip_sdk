@@ -62,7 +62,7 @@ data_filter::PositionLlh  filter_position_llh;
 data_filter::VelocityNed  filter_velocity_ned;
 data_filter::EulerAngles  filter_euler_angles;
 
-bool filter_state_full_nav = false;
+bool filter_state_running = false;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ int main(int argc, const char* argv[])
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
     std::array<DescriptorRate, 5> filter_descriptors = {{
-        { data_shared::DATA_GPS_TIME,         filter_decimation },
+        { data_filter::DATA_FILTER_TIMESTAMP, filter_decimation },
         { data_filter::DATA_FILTER_STATUS,    filter_decimation },
         { data_filter::DATA_POS_LLH,          filter_decimation },
         { data_filter::DATA_VEL_NED,          filter_decimation },
@@ -196,6 +196,15 @@ int main(int argc, const char* argv[])
 
     if(commands_filter::writeHeadingSource(*device, commands_filter::HeadingSource::Source::GNSS_VEL_AND_MAG) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter heading update control!");
+
+
+    //
+    //Enable filter auto-initialization
+    //
+
+    if(commands_filter::writeAutoInitControl(*device, 1) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set filter autoinit control!");
+
 
 
     //
@@ -247,7 +256,7 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
+    printf("Sensor is configured... waiting for filter to enter running mode.\n");
 
     while(running)
     {
@@ -262,14 +271,14 @@ int main(int argc, const char* argv[])
         }
  
         //Check Filter State
-        if((!filter_state_full_nav) && ((filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
+        if((!filter_state_running) && ((filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == data_filter::FilterMode::GX5_RUN_SOLUTION_VALID)))
         {
-            printf("NOTE: Filter has entered full navigation mode.\n");
-            filter_state_full_nav = true;
+            printf("NOTE: Filter has entered running mode.\n");
+            filter_state_running = true;
         }
 
-        //Once in full nav, print out data at 1 Hz
-        if(filter_state_full_nav)
+        //Once in running mode, print out data at 1 Hz
+        if(filter_state_running)
         {
            mip::Timestamp curr_timestamp = getCurrentTimestamp();
 

@@ -68,7 +68,7 @@ struct mip_filter_position_llh_data  filter_position_llh;
 struct mip_filter_velocity_ned_data  filter_velocity_ned;
 struct mip_filter_euler_angles_data  filter_euler_angles;
 
-bool filter_state_full_nav = false;
+bool filter_state_running = false;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,6 +249,14 @@ int main(int argc, const char* argv[])
 
 
     //
+    //Enable filter auto-initialization
+    //
+
+    if(mip_filter_write_auto_init_control(&device, 1) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set filter autoinit control!");
+
+
+    //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
@@ -297,7 +305,7 @@ int main(int argc, const char* argv[])
     bool running = true;
     timestamp_type prev_print_timestamp = 0;
 
-    printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
+    printf("Sensor is configured... waiting for filter to enter running mode.\n");
 
     while(running)
     {
@@ -313,14 +321,14 @@ int main(int argc, const char* argv[])
         }
  
         //Check Filter State
-        if((!filter_state_full_nav) && (filter_status.filter_state == MIP_FILTER_MODE_FULL_NAV))
+        if((!filter_state_running) && ((filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)))
         {
-            printf("NOTE: Filter has entered full navigation mode.\n");
-            filter_state_full_nav = true;
+            printf("NOTE: Filter has entered running mode.\n");
+            filter_state_running = true;
         }
 
-        //Once in full nav, print out data at 1 Hz
-        if(filter_state_full_nav)
+        //Once in running mode, print out data at 1 Hz
+        if(filter_state_running)
         {
            timestamp_type curr_time = get_current_timestamp();
 

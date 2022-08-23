@@ -61,6 +61,9 @@ struct mip_filter_euler_angles_data  filter_euler_angles;
 
 bool filter_state_ahrs = false;
 
+const uint8_t FILTER_ROLL_EVENT_ACTION_ID  = 1;
+const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
@@ -77,6 +80,8 @@ int usage(const char* argv0);
 
 void exit_gracefully(const char *message);
 bool should_exit();
+
+void handle_filter_event_source(void* user, const struct mip_field* field, timestamp_type timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -201,6 +206,59 @@ int main(int argc, const char* argv[])
 
 
     //
+    // Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
+    // (Note 1: we are reusing the event and action structs, since the settings for pitch/roll are so similar)
+    // (Note 2: we are using the same value for event and action ids.  This is not necessary, but done here for convenience)
+    //
+
+    //EVENTS
+    
+    //Roll
+    union mip_3dm_event_trigger_command_parameters event_params;
+    event_params.threshold.type       = MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW;
+    event_params.threshold.desc_set   = MIP_FILTER_DATA_DESC_SET;
+    event_params.threshold.field_desc = MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES;
+    event_params.threshold.param_id   = 1;
+    event_params.threshold.high_thres = -0.7853981;
+    event_params.threshold.low_thres  = 0.7853981;
+
+    if(mip_3dm_write_event_trigger(&device, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, &event_params) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set pitch event parameters!");
+
+    //Pitch 
+    event_params.threshold.param_id = 2;
+
+    if(mip_3dm_write_event_trigger(&device, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, &event_params) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set roll event parameters!");
+
+    //ACTIONS
+
+    //Roll 
+    union mip_3dm_event_action_command_parameters event_action;
+    event_action.message.desc_set       = MIP_FILTER_DATA_DESC_SET;
+    event_action.message.num_fields     = 1;
+    event_action.message.descriptors[0] = MIP_DATA_DESC_SHARED_EVENT_SOURCE;
+    event_action.message.decimation     = 0;
+
+    if(mip_3dm_write_event_action(&device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, &event_action) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set roll action parameters!");
+
+    //Pitch 
+    if(mip_3dm_write_event_action(&device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, &event_action) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not set pitch action parameters!");
+
+    //ENABLE EVENTS
+
+    //Roll
+    if(mip_3dm_write_event_control(&device, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not enable roll event!");
+    
+    //Pitch
+    if(mip_3dm_write_event_control(&device, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED) != MIP_ACK_OK)
+        exit_gracefully("ERROR: Could not enable pitch event!");
+
+
+    //
     //Setup the sensor to vehicle transformation
     //
 
@@ -237,12 +295,13 @@ int main(int argc, const char* argv[])
     mip_interface_register_extractor(&device, &sensor_data_handlers[3], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED,   extract_mip_sensor_scaled_mag_data_from_field,    &sensor_mag);
 
     //Filter Data
-    struct mip_dispatch_handler filter_data_handlers[3];
+    struct mip_dispatch_handler filter_data_handlers[4];
 
     mip_interface_register_extractor(&device, &filter_data_handlers[0], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_SHARED_GPS_TIME,         extract_mip_shared_gps_timestamp_data_from_field, &filter_gps_time);
     mip_interface_register_extractor(&device, &filter_data_handlers[1], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_FILTER_STATUS,    extract_mip_filter_status_data_from_field,        &filter_status);
     mip_interface_register_extractor(&device, &filter_data_handlers[2], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, extract_mip_filter_euler_angles_data_from_field,  &filter_euler_angles);
 
+    mip_interface_register_field_callback(&device, &filter_data_handlers[3], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_SHARED_EVENT_SOURCE, handle_filter_event_source,  NULL);
 
     //
     //Resume the device
@@ -291,6 +350,24 @@ int main(int argc, const char* argv[])
 
 
     exit_gracefully("Example Completed Successfully.");
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Filter Event Source Field Handler
+////////////////////////////////////////////////////////////////////////////////
+
+void handle_filter_event_source(void* user, const struct mip_field* field, timestamp_type timestamp)
+{
+    struct mip_shared_event_source_data data;
+
+    if(extract_mip_shared_event_source_data_from_field(field, &data))
+    {
+      if(data.trigger_id == FILTER_ROLL_EVENT_ACTION_ID)
+        printf("WARNING: Roll event triggered!\n");
+      else if(data.trigger_id == FILTER_PITCH_EVENT_ACTION_ID)
+        printf("WARNING: Pitch event triggered!\n");
+    }
 }
 
 
