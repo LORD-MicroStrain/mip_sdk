@@ -108,19 +108,13 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 ///@brief Polls the port for new data. Called repeatedly while waiting for
 ///       acknowledgements to pending commands.
 ///
+/// When streaming data and not sending commands, this function must be called
+/// periodically to read and parse data from the device.
+///
 ///@param device The mip_interface object.
 ///
 ///@returns true if operation should continue, or false if the device cannot be
-///         updateed (e.g. if the serial port is not open)
-///
-/// Data from the port should be read and pushed into
-/// mip_interface_receive_bytes() for parsing. On systems where it makes
-/// sense, this is a good place to call sleep or enter a low-power state until
-/// data arrives at the port. Typically this function will wait at most a few
-/// milliseconds before returning.
-///
-/// This function is called in a loop, so returning true even when no bytes
-/// have been received is always safe.
+///         updated (e.g. if the serial port is not open)
 ///
 bool mip_interface_update(struct mip_interface* device)
 {

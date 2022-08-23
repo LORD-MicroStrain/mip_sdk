@@ -85,24 +85,25 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Receives new data from the device. Called repeatedly
-///       by mip_interface_update()
+///       by mip_interface_update() while waiting for command responses.
 ///
 ///@param device        The mip interface object
-///@param buffer        Buffer to fill with data. Should be allocated before 
+///@param buffer        Buffer to fill with data. Should be allocated before
 ///                     calling this function
 ///@param max_lengh     Max number of bytes that can be read into the buffer.
-///@param out_length    Number of bytes actually read into the buffer
-///@param timestamp_out Timestamp that the data was received
+///@param out_length    Number of bytes actually read into the buffer.
+///@param timestamp_out Timestamp of the data was received.
 ///
 ///@returns true if operation should continue, or false if the device cannot be
-///         updateed (e.g. if the serial port is not open)
+///         updated (e.g. if the serial port is not open).
 ///
-///@note
-///      - On systems where it makes sense, this is a good place to call sleep
-///        or enter a low-power state until data arrives at the port. Typically
-///        this function will wait at most a few milliseconds before returning.
-///      - This function is called in a loop, so returning true even when no bytes
-///        have been received is always safe.
+///@note Except in case of error (i.e. returning false), the timestamp must be
+///      set even if no data is received. This is required to allow commands
+///      to time out.
+///
+///@note On systems where it makes sense, this is a good place to call sleep
+///      or enter a low-power state until data arrives at the port. Typically
+///      this function will wait at most a few milliseconds before returning.
 ///
 ///@warning Do not block indefinitely as this will stall the system beyond the
 ///         normal command timeout. Use a sensible timeout (i.e. 1/10th of the
