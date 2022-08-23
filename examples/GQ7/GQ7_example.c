@@ -28,18 +28,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.h>
+#include <mip/utils/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
-#include "../serial.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-serial_port device_port;
+struct serial_port device_port;
 clock_t start_time;
 
 int port = -1;
@@ -80,7 +80,7 @@ bool filter_state_full_nav = false;
 //Required MIP interface user-defined functions
 timestamp_type get_current_timestamp();
 
-bool mip_interface_user_update(struct mip_interface* device);
+bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out);
 bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
@@ -104,16 +104,11 @@ int main(int argc, const char* argv[])
     if(argc != 3)
         return usage(argv[0]);
 
-    uint32_t port     = atoi(argv[1]);
-    uint32_t baudrate = atoi(argv[2]);
+    const char* port_name = argv[1];
+    uint32_t baudrate     = atoi(argv[2]);
 
     if(baudrate == 0)
         return usage(argv[0]);
-
-    char port_name[100];
-
-    //Create the port name
-    sprintf(port_name, "\\\\.\\COM%d", port);
 
     //
     //Get the program start time
@@ -395,32 +390,13 @@ timestamp_type get_current_timestamp()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// MIP Interface User Update Function
+// MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_update(struct mip_interface* device)
+bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
 {
-    timestamp_type now = get_current_timestamp();
-
-    // Ensure commands can time out even if no data is received.
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), now);
-
-    uint8_t buffer[256];
-    uint32_t bytes_read;
-
-    uint32_t count = serial_port_read_count(&device_port);
-
-    if(count > 256)
-        count = 256;
-
-    if(count > 0)
-    {
-       serial_port_read(&device_port, buffer, count, &bytes_read);
-
-       mip_interface_receive_bytes(device, buffer, bytes_read, now);
-    }
-
-    return true;
+    *timestamp_out = get_current_timestamp();
+    return serial_port_read(&device_port, buffer, max_length, out_length);
 }
 
 
@@ -430,7 +406,7 @@ bool mip_interface_user_update(struct mip_interface* device)
 
 bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
 {
-    uint32_t bytes_written;
+    size_t bytes_written;
 
     return serial_port_write(&device_port, data, length, &bytes_written);
 }

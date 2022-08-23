@@ -1,4 +1,5 @@
-
+#include <vector>
+#include <stdexcept>
 
 #include "example_utils.hpp"
 
@@ -28,7 +29,7 @@ std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port
         if( port < 1024 || port > 65535 )
             throw std::runtime_error("Invalid TCP port (must be between 1024 and 65535.");
 
-        return std::make_unique<TcpMipDevice>(port_or_hostname, port);
+        return std::make_unique<mip::platform::TcpDeviceInterface>(port_or_hostname, port);
 
 #else  // MIP_USE_SOCKETS
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_SOCKETS=1");
@@ -43,34 +44,17 @@ std::unique_ptr<mip::DeviceInterface> openDeviceFromArgs(const std::string& port
         if( baud == 0 )
             throw std::runtime_error("Serial baud rate must be a decimal integer greater than 0.");
 
-        return std::make_unique<SerialMipDevice>(port_or_hostname, baud);
+        return std::make_unique<mip::platform::SerialDeviceInterface>(port_or_hostname, baud);
 #else  // MIP_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
-#endif // MIP_USE_SERIAL
-
+#endif //MIP_USE_SERIAL
     }
 }
 
 std::unique_ptr<mip::DeviceInterface> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
-#ifdef MIP_USE_SERIAL
-    if( argc == 1 )
-    {
-        printf("Available serial ports:\n");
-        std::vector<serial::PortInfo> ports = serial::list_ports();
-
-        for(const serial::PortInfo& port : ports)
-        {
-            printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
-        }
-        exit(0);
-    }
-    else if( argc < 3 || argc > maxArgs )
-    {
-#else  // MIP_USE_SERIAL
     if( argc < 3 || argc > maxArgs )
     {
-#endif // MIP_USE_SERIAL
         throw std::underflow_error("Usage error");
     }
 

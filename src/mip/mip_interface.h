@@ -20,42 +20,6 @@ extern "C" {
 ///- Sending commands
 ///- Receiving Data
 ///
-/// There are two ways to handle input data:
-/// 1. Call mip_interface_receive_bytes (and/or mip_interface/process_unparsed_packets)
-///    from mip_interface_user_update(), or
-/// 2. Run a separate thread which feeds data from the port into
-///    mip_interface_receive_bytes(). mip_interface_user_update() would then just do
-///    nothing or sleep/yield.
-///
-/// Example of the first approach:
-///@code{.c}
-/// bool mip_interface_user_update(struct mip_interface* device)
-/// {
-///     size_t count;
-///     uint8_t buffer[N];
-///     if( user_read_port(buffer, sizeof(buffer), &count) == ERROR )
-///         return false;  // Abort further processing if the port is closed.
-///
-///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
-/// }
-///@endcode
-///
-/// Example of the second approach:
-///@code{.c}
-/// bool mip_interface_user_update(struct mip_interface* device)
-/// {
-///     user_sleep();
-///     return true;
-/// }
-///
-/// // In another thread
-/// for(;;)
-/// {
-///     user_wait_for_data();
-///     mip_interface_receive_bytes(device, buffer, count, user_get_time(), MIPPARSER_UNLIMITED_PACKETS);
-/// }
-///@endcode
-///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,24 +84,32 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup UserFunctions  User-implemented callback functions
+///@brief Receives new data from the device. Called repeatedly
+///       by mip_interface_update() while waiting for command responses.
 ///
-///@{
-
-////////////////////////////////////////////////////////////////////////////////
-///@copydoc mip_interface_update
+///@param device        The mip interface object
+///@param buffer        Buffer to fill with data. Should be allocated before
+///                     calling this function
+///@param max_lengh     Max number of bytes that can be read into the buffer.
+///@param out_length    Number of bytes actually read into the buffer.
+///@param timestamp_out Timestamp of the data was received.
 ///
-///@note If a limit is placed on the max number of packets to parse at once,
-///      Make sure to call mip_interface_receive_bytes(), or at least
-///      pip_parser_parse_one_packet_from_ring() on the parser, even if no data is
-///      available. Otherwise command replies and data may not get through the
-///      system quickly enough.
+///@returns true if operation should continue, or false if the device cannot be
+///         updated (e.g. if the serial port is not open).
+///
+///@note Except in case of error (i.e. returning false), the timestamp must be
+///      set even if no data is received. This is required to allow commands
+///      to time out.
+///
+///@note On systems where it makes sense, this is a good place to call sleep
+///      or enter a low-power state until data arrives at the port. Typically
+///      this function will wait at most a few milliseconds before returning.
 ///
 ///@warning Do not block indefinitely as this will stall the system beyond the
 ///         normal command timeout. Use a sensible timeout (i.e. 1/10th of the
 ///         base reply timeout) or only sleep for a minimal amount of time.
 ///
-extern bool mip_interface_user_update(struct mip_interface* device);
+extern bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out);
 
 
 ////////////////////////////////////////////////////////////////////////////////

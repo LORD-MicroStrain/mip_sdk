@@ -110,9 +110,8 @@ Implementation Notes
 
 There are two C functions which the user must implement to use this library.
 
-The first, `mip_interface_user_update()`, must fetch raw data bytes from the connected MIP device. Typically this means reading from
-a serial port or TCP socket. Once the data is read, it should be passed to `mip_interface_receive_bytes()` along with the associated
-timestamp.
+The first, `mip_interface_user_recv_from_device()`, must fetch raw data bytes from the connected MIP device. Typically this means reading from
+a serial port or TCP socket.
 
 The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
 

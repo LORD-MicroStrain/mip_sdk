@@ -4,6 +4,7 @@
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_filter.hpp>
 
+#include <stdexcept>
 #include <vector>
 #include <cstring>
 #include <stdio.h>

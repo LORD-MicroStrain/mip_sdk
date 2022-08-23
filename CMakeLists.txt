@@ -20,8 +20,6 @@ include_directories(
     "${SRC_DIR}"
 )
 
-add_subdirectory("${EXT_DIR}")
-
 if(WITH_INTERNAL)
     set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     if(MIP_INTERNAL_DIR)
@@ -51,6 +49,10 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
     "${UTILS_DIR}/enum_wrapper.hpp"
+    "${UTILS_DIR}/serial_port.c"
+    "${UTILS_DIR}/serial_port.h"
+    "${UTILS_DIR}/tcp_socket.c"
+    "${UTILS_DIR}/tcp_socket.h"
 )
 
 #
@@ -110,10 +112,26 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_system.h"
     ${INTDEF_SOURCES}
 )
+
 string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-set(ALL_MIP_SOURCES ${MIPDEF_SOURCES} ${MIPDEF_CPP_SOURCES} ${MIPDEV_SOURCES} ${MIP_SOURCES} ${UTILS_SOURCES} ${MIP_CPP_HEADERS})
+set(MIP_INTERFACE_SOURCES
+    "${MIP_DIR}/platform/serial_device_interface.hpp"
+    "${MIP_DIR}/platform/serial_device_interface.cpp"
+    "${MIP_DIR}/platform/tcp_device_interface.hpp"
+    "${MIP_DIR}/platform/tcp_device_interface.cpp"
+)
+
+set(ALL_MIP_SOURCES
+    ${MIPDEF_SOURCES}
+    ${MIPDEF_CPP_SOURCES}
+    ${MIPDEV_SOURCES}
+    ${MIP_SOURCES}
+    ${UTILS_SOURCES}
+    ${MIP_CPP_HEADERS}
+    ${MIP_INTERFACE_SOURCES}
+)
 
 
 option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
