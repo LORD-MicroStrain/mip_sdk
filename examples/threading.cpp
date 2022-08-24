@@ -24,6 +24,8 @@ void device_thread_loop(mip::DeviceInterface* device)
     {
         if( !device->update() )
             break;
+
+        std::this_thread::yield();
     }
 }
 
@@ -67,6 +69,9 @@ int main(int argc, const char* argv[])
                 std::putchar(' ');
 
             std::printf("] %.0f%%\r", progress * 100);
+
+            for(unsigned int i=0; i<10; i++)
+                mip::commands_base::ping(*device);
 
         } while(count < maxSamples);
 
