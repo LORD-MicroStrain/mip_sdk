@@ -44,6 +44,7 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
+    device->_update_function = &mip_interface_default_update;
 
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 
@@ -104,6 +105,41 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 }
 
 
+static bool call_mip_interface_update_function(struct mip_interface* device, bool synchronous)
+{
+    if( !device->_update_function )
+        return false;
+
+    return device->_update_function(device, synchronous);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Called to update the device when not waiting on a command reply.
+///
+/// Call this periodically to process received data.
+///
+bool mip_interface_update(struct mip_interface* device)
+{
+    return call_mip_interface_update_function(device, false);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Called repeatedly while waiting for replies to pending commands.
+///
+/// When streaming data and not sending commands, this function must be called
+/// periodically to read and parse data from the device.
+///
+///@param device The mip_interface object.
+///
+///@returns true if operation should continue, or false if the device cannot be
+///         updated (e.g. if the serial port is not open). This will fail
+///         the current pending command.
+///
+bool mip_interface_update_synchronous(struct mip_interface* device)
+{
+    return call_mip_interface_update_function(device, true);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Polls the port for new data. Called repeatedly while waiting for
 ///       acknowledgements to pending commands.
@@ -116,8 +152,10 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 ///@returns true if operation should continue, or false if the device cannot be
 ///         updated (e.g. if the serial port is not open)
 ///
-bool mip_interface_update(struct mip_interface* device)
+bool mip_interface_default_update(struct mip_interface* device, bool synchronous)
 {
+    (void)synchronous;
+
     uint8_t* ptr;
     struct mip_parser* parser = mip_interface_parser(device);
     size_t max_count = mip_parser_get_write_ptr(parser, &ptr);

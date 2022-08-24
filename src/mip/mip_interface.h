@@ -22,6 +22,20 @@ extern "C" {
 ///
 ///@{
 
+struct mip_interface;
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Callback function typedef for custom update behavior.
+///
+///@param device      The mip_interface object being updated.
+///@param synchronous Determines if the update is a synchronous update. @see mip_interface_update().
+///
+///@returns MIP_UPDATE_CONTINUE if the update function should proceed as normal.
+///@returns MIP_UPDATE_OVERRIDE if the update function has been implemented by the user.
+///@returns MIP_UPDATE_FAIL if the update has failed.
+///
+typedef bool (*mip_update_callback)(struct mip_interface* device, bool synchronous);
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief State of the interface for communicating with a MIP device.
 ///
@@ -31,6 +45,7 @@ struct mip_interface
     struct mip_cmd_queue  _queue;           ///<@private Queue for checking command replies.
     struct mip_dispatcher _dispatcher;      ///<@private Dispatcher for data callbacks.
     unsigned int          _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
+    mip_update_callback   _update_function; ///<@private Optional function to call during updates.
     void*                 _user_pointer;    ///<@private Optional user-specified data pointer.
 };
 
@@ -44,6 +59,8 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
 remaining_count mip_interface_receive_bytes(struct mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp);
 void mip_interface_process_unparsed_packets(struct mip_interface* device);
 bool mip_interface_update(struct mip_interface* device);
+bool mip_interface_update_synchronous(struct mip_interface* device);
+bool mip_interface_default_update(struct mip_interface* device, bool synchronous);
 
 bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
 
