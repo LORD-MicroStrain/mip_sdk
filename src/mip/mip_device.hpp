@@ -11,6 +11,14 @@ namespace mip
 
 using DispatchHandler = C::mip_dispatch_handler;
 
+struct Dispatcher : public C::mip_dispatcher
+{
+    enum : uint8_t {
+        ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
+        ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
+    };
+};
+
 
 struct CmdQueue : public C::mip_cmd_queue
 {
