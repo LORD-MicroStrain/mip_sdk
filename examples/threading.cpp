@@ -35,24 +35,32 @@ int main(int argc, const char* argv[])
     {
         std::unique_ptr<mip::DeviceInterface> device = handleCommonArgs(argc, argv);
 
+        // Disable all streaming channels.
         mip::commands_base::setIdle(*device);
         mip::commands_3dm::writeDatastreamControl(*device, 0x00, false);
 
+        // Register a sensor data packet callback.
         mip::DispatchHandler dispatchHandler;
         device->registerPacketCallback<&packet_callback>(dispatchHandler, mip::data_sensor::DESCRIPTOR_SET, false);
 
+        // Set the message format to stream scaled accel at 1/100th the base rate (around a few Hz).
         mip::DescriptorRate descriptor{ mip::data_sensor::DATA_ACCEL_SCALED, 100 };
         mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, 1, &descriptor);
 
+        // Enable streaming.
         mip::commands_3dm::writeDatastreamControl(*device, mip::data_sensor::DESCRIPTOR_SET, true);
         mip::commands_base::resume(*device);
 
+        // Start the updater thread.
         std::thread deviceThread( &device_thread_loop, device.get() );
 
         unsigned int count = 0;
         do
         {
+            // Update the display every ~10 ms.
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+            // Display progress.
 
             std::printf("Progress: [");
 
@@ -70,6 +78,8 @@ int main(int argc, const char* argv[])
 
             std::printf("] %.0f%%\r", progress * 100);
 
+            // Ping the device a bunch (stress test to trigger race condition).
+            // This can crash the program due to servicing two update calls at once.
             for(unsigned int i=0; i<10; i++)
                 mip::commands_base::ping(*device);
 
