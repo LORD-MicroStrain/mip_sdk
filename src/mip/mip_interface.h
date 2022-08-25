@@ -54,7 +54,7 @@ extern "C" {
 /// until either an ack/nack is received or the command times out.
 /// Once the device acknowledges the command, control is returned to the
 /// application which then registers some data or packet callbacks. It finally
-/// goes into a loop collecting data. Inside this loop, the update function
+/// goes into a loop in collect_data(). Inside this loop, the update function
 /// is called to process data packets.
 ///
 /// Notice that the same update function is called from both the command
