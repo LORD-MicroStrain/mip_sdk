@@ -207,7 +207,7 @@ int main(int argc, const char* argv[])
     //
 
     //EVENTS
-    
+
     //Roll
     union mip_3dm_event_trigger_command_parameters event_params;
     event_params.threshold.type       = MIP_3DM_EVENT_TRIGGER_COMMAND_THRESHOLD_PARAMS_TYPE_WINDOW;
@@ -220,7 +220,7 @@ int main(int argc, const char* argv[])
     if(mip_3dm_write_event_trigger(&device, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, &event_params) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set pitch event parameters!");
 
-    //Pitch 
+    //Pitch
     event_params.threshold.param_id = 2;
 
     if(mip_3dm_write_event_trigger(&device, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_TRIGGER_COMMAND_TYPE_THRESHOLD, &event_params) != MIP_ACK_OK)
@@ -228,7 +228,7 @@ int main(int argc, const char* argv[])
 
     //ACTIONS
 
-    //Roll 
+    //Roll
     union mip_3dm_event_action_command_parameters event_action;
     event_action.message.desc_set       = MIP_FILTER_DATA_DESC_SET;
     event_action.message.num_fields     = 1;
@@ -238,7 +238,7 @@ int main(int argc, const char* argv[])
     if(mip_3dm_write_event_action(&device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, &event_action) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set roll action parameters!");
 
-    //Pitch 
+    //Pitch
     if(mip_3dm_write_event_action(&device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_ACTION_COMMAND_TYPE_MESSAGE, &event_action) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set pitch action parameters!");
 
@@ -247,7 +247,7 @@ int main(int argc, const char* argv[])
     //Roll
     if(mip_3dm_write_event_control(&device, FILTER_ROLL_EVENT_ACTION_ID, MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not enable roll event!");
-    
+
     //Pitch
     if(mip_3dm_write_event_control(&device, FILTER_PITCH_EVENT_ACTION_ID, MIP_3DM_EVENT_CONTROL_COMMAND_MODE_ENABLED) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not enable pitch event!");
@@ -317,7 +317,7 @@ int main(int argc, const char* argv[])
 
     while(running)
     {
-        mip_interface_update(&device);
+        mip_interface_update(&device, false);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == MIP_FILTER_MODE_AHRS))

@@ -44,10 +44,44 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
+    device->_update_function = &mip_interface_default_update;
 
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 
     mip_dispatcher_init(&device->_dispatcher);
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the update function.
+///
+/// By default, the update function is mip_interface_default_update.
+///
+///@see mip_update_callback
+///@see mip_interface_update
+///
+///@param device
+///
+///@param function
+///       Update function to call when polling the device for data.
+///       If this is NULL, then update calls will fail and no data or
+///       or command replies will be received.
+///
+void mip_interface_set_update_function(struct mip_interface* device, mip_update_callback function)
+{
+    device->_update_function = function;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the update function pointer.
+///
+///@returns The update function. Defaults to mip_interface_default_update. May
+///         be NULL.
+///
+mip_update_callback mip_interface_update_function(struct mip_interface* device)
+{
+    return device->_update_function;
 }
 
 
@@ -104,20 +138,49 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Polls the port for new data. Called repeatedly while waiting for
-///       acknowledgements to pending commands.
+///@brief Call to process data from the device.
 ///
-/// When streaming data and not sending commands, this function must be called
-/// periodically to read and parse data from the device.
+/// This function is also called while waiting for command replies.
 ///
-///@param device The mip_interface object.
+/// Call this periodically to process packets received from the device. It
+/// should be called at a suitably-high rate to prevent the connection buffers
+/// from overflowing. The update rate affects the reception timestamp resolution.
+///
+///@param device
+///
+///@param blocking
+///       This is true when called from within a blocking command function.
+///       Applications should generally set this to false, e.g. when calling
+///       this to process incoming data packets.
 ///
 ///@returns true if operation should continue, or false if the device cannot be
-///         updated (e.g. if the serial port is not open)
+///         updated (e.g. if the serial port is not open).
 ///
-bool mip_interface_update(struct mip_interface* device)
+bool mip_interface_update(struct mip_interface* device, bool blocking)
 {
+    if( !device->_update_function )
+        return false;
+
+    return device->_update_function(device, blocking);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Polls the port for new data or command replies.
+///
+/// This is the default choice for the user update function. It ignores the
+/// blocking flag and always reads data from the device.
+///
+///@param device The mip_interface object.
+///@param blocking Ignored.
+///
+///@returns The value returned by mip_interface_user_recv_from_device.
+///
+bool mip_interface_default_update(struct mip_interface* device, bool blocking)
+{
+    (void)blocking;
+
     uint8_t* ptr;
     struct mip_parser* parser = mip_interface_parser(device);
     size_t max_count = mip_parser_get_write_ptr(parser, &ptr);
@@ -177,7 +240,7 @@ remaining_count mip_interface_receive_bytes(struct mip_interface* device, const 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Process more packets from the internal buffer.
 ///
-/// This is an alternative to mip_pinterface_receive_bytes() for the case when
+/// This is an alternative to mip_interface_receive_bytes() for the case when
 /// no new input data is available and max_packets is nonzero. The timestamp is
 /// reused from the last call to receive_bytes.
 ///
@@ -238,7 +301,7 @@ enum mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, c
     enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
     {
-        if( !mip_interface_update(device) )
+        if( !mip_interface_update(device, true) )
             return MIP_STATUS_ERROR;
     }
     return status;
