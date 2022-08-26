@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
-    libmip
+    "MIP SDK"
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
@@ -206,7 +206,7 @@ if(BUILD_DOCUMENTATION)
     endif()
 
     doxygen_add_docs(docs
-        "${SRC_DIR}"
+        "${SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
         COMMENT "Generating documentation."
     )
 
