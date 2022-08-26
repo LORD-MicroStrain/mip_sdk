@@ -28,6 +28,10 @@ if(WITH_SERIALPORT OR WITH_SOCKETS)
         target_link_libraries(WatchImu mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(WatchImu PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
 
+        add_executable(ThreadingDemo "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/threading.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(ThreadingDemo mip "${SERIAL_LIB}" "${SOCKET_LIB}" "pthread")
+        target_compile_definitions(ThreadingDemo PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")
+
         add_executable(GQ7_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GQ7/GQ7_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(GQ7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(GQ7_Example PUBLIC "${SERIAL_DEFS}" "${SOCKET_DEFS}")

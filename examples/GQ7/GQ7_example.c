@@ -330,7 +330,7 @@ int main(int argc, const char* argv[])
 
     while(running)
     {
-        mip_interface_update(&device);
+        mip_interface_update(&device, false);
 
 
         //Check GNSS fixes and alert the user when they become valid

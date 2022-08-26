@@ -152,7 +152,7 @@ public:
     /// Returns a sentry object representing the end of fields in the packet.
     ///@internal
 #if __cpp_range_based_for >= 201603
-    nullptr_t     end() const { return nullptr; }
+    std::nullptr_t     end() const { return nullptr; }
 #else
     FieldIterator end() const { return Field(); }
 #endif

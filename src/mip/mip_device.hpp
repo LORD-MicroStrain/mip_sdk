@@ -11,6 +11,14 @@ namespace mip
 
 using DispatchHandler = C::mip_dispatch_handler;
 
+struct Dispatcher : public C::mip_dispatcher
+{
+    enum : uint8_t {
+        ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
+        ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
+    };
+};
+
 
 struct CmdQueue : public C::mip_cmd_queue
 {
@@ -61,6 +69,20 @@ template<class Cmd> CmdResult runCommand(C::mip_interface& device, const Cmd& cm
 template<class Cmd, class... Args> CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout additionalTime);
 template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime);
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_interface Mip Device Interface
+///@{
+///
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Represents a connected MIP device.
+///
+/// The following methods are pure virtual and must be implemented by a derived
+/// class. These functions map to the corresponding C functions.
+///@li `bool sendToDevice(const uint8_t* data, size_t length)` - corresponds to mip_interface_user_send_to_device.
+///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, size_t* lengthOut, Timestamp* timestampOut)` - corresponds to mip_interface_user_recv_from_device.
+///
 class DeviceInterface : public C::mip_interface
 {
 public:
@@ -79,6 +101,12 @@ public:
     //
     // Accessors
     //
+
+    ///@copydoc mip_interface_set_update_function
+    void setUpdateFunction(C::mip_update_callback function) { C::mip_interface_set_update_function(this, function); }
+
+    template<bool (*Function)(DeviceInterface&,bool)>
+    void setUpdateFunction();
 
     void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
     unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
@@ -103,16 +131,17 @@ public:
     virtual bool   sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
 
-    bool           update() { return C::mip_interface_update(this); }
+    bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
     virtual bool   recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
 
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
     CmdResult      waitForReply(const C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
+    bool           defaultUpdate(bool blocking=false) { return C::mip_interface_default_update(this, blocking); }
 
-    template<class Function>
-    bool parseFromSource(Function function, unsigned int maxPackets=MIPPARSER_UNLIMITED_PACKETS) { return parseMipDataFromSource(parser(), function, maxPackets); }
+    // template<class Function>
+    // bool parseFromSource(Function function, unsigned int maxPackets=MIPPARSER_UNLIMITED_PACKETS) { return parseMipDataFromSource(parser(), function, maxPackets); }
 
     //
     // These must be implemented by a derived class
@@ -173,6 +202,30 @@ public:
 //    template<class Cmd>
 //    bool startCommand(PendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return mscl::startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the update function to a function taking a MipDevice reference.
+///
+///@code{.cpp}
+/// bool updateDevice(DeviceInterface& device, bool blocking)
+/// {
+///     return device.defaultUpdate(blocking);
+/// }
+///
+/// device.setUpdateFunction<&updateDevice>();
+///@endcode
+///
+template<bool (*Function)(DeviceInterface&,bool)>
+void DeviceInterface::setUpdateFunction()
+{
+    setUpdateFunction(
+        [](C::mip_interface* device, bool blocking)->bool
+        {
+            return Function(*static_cast<DeviceInterface*>(device), blocking);
+        }
+    );
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -537,4 +590,7 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
 //}
 
 
-} // namespace mscl
+///@}
+////////////////////////////////////////////////////////////////////////////////
+
+} // namespace mip
