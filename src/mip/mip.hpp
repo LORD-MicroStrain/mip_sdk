@@ -16,12 +16,12 @@
 
 ///@addtogroup CppApi
 ///
-///@see mscl namespace
+///@see mip namespace
 ///
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief A collection of C++ classes and functions covering the full
-/// mscl-embedded api.
+/// mip api.
 ///
 namespace mip
 {
