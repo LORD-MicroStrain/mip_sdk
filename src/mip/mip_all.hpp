@@ -12,7 +12,6 @@
 
 //MIP Utils
 #include "utils/serialization.h"
-#include "utils/enum_wrapper.hpp"
 
 //MIP Commands
 #include "definitions/commands_base.hpp"

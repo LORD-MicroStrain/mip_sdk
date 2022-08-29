@@ -7,7 +7,6 @@
 #ifdef __cplusplus
 
 #include "../utils/serialization.h"
-#include "../utils/enum_wrapper.hpp"
 
 #include <tuple>
 #include <type_traits>
