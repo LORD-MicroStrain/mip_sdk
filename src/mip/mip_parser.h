@@ -12,10 +12,29 @@ namespace C {
 extern "C" {
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c  MIP C API
+///
+///@brief This module contains all of the C submodules.
+///
+///@{
+
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_parser mip_parser - Functions for parsing MIP packets
+///@defgroup mip_parser_c mip_parser [C]
+///
+///@brief Functions for parsing MIP packets
+///
 ///@{
+///
+/// See @ref parsing_packets
+///
+/// Typical usage:
+///@li Declare a mip_parser struct
+///@li Declare a uint8_t buffer of some size which is at least 512 and a power of 2.
+///@li Determine the packet timeout, e.g. with mip_timeout_from_baudrate().
+///@li Call mip_parser_init(), passing the struct, buffer, buffer size, timeout, and callback function.
+///@li Periodically call mip_parser_parse().
 ///
 
 
@@ -78,6 +97,7 @@ timestamp_type mip_parser_last_packet_timestamp(const struct mip_parser* parser)
 
 timeout_type mip_timeout_from_baudrate(uint32_t baudrate);
 
+///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 

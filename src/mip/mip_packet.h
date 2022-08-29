@@ -9,9 +9,14 @@ extern "C" {
 #endif
 
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_packet mip_packet - Functions for handling MIP packets.
+///@defgroup mip_packet_c Mip Packet [C]
+///
+///@brief Functions for handling MIP packets.
 ///
 /// A MIP Packet is represented by the mip_packet struct.
 ///
@@ -43,7 +48,9 @@ struct mip_packet
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PacketBuilding  Packet Building - Functions for building new MIP packets.
+///@defgroup PacketBuilding  Packet Building [C]
+///
+///@brief Functions for building new MIP packets.
 ///
 /// Use these functions to create a new packet, add fields, and write the
 /// checksum.
@@ -96,6 +103,7 @@ remaining_count mip_packet_remaining_space(const struct mip_packet* packet);
 
 bool            mip_packet_is_data(const struct mip_packet* packet);
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

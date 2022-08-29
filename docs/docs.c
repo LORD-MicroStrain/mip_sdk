@@ -1,10 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///@mainpage MIP SDK
 ///
-///@section Intro
+/// Welcome to the official MIP Software Development Kit.
 ///
 ///
-///@ref mip_interface - A high-level interface to an abstract MIP device.
+///@par Main Features
+///
+///@li MIP packet creation
+///@li Send commands using a single function
+///@li Packet parsing and field iteration
+///@li Data field deserialization
+///@li Simple interface requires only two functions to be defined
+///@li Can be used to parse offline binary files
+///@li Dual C and C++ API for maximum usability, safety, flexibility, and convenience.
+///@li Suitable for bare-metal microcontrollers (Minimal code size and memory footprint, No dynamic memory allocation, No dependence on any RTOS or threading)
+///
+///
+/// See @ref mip_interface for details on how to get started.
+///
 ///
 ///@section quickref_cpp Quick Reference [C++]
 ///
@@ -15,8 +28,10 @@
 ///
 ///@section quickref_c Quick Reference [C]
 ///
-///@ref mip_interface Mip Interface
-///
+///@li @ref mip_interface_c
+///@li @ref mip_packet_c
+///@li @ref mip_field_c
+///@li @ref mip_parser_c
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,7 +176,7 @@
 /// a high enough rate to avoid overflowing the connection buffers. The
 /// precision of the reception timestamp is dependent on the update rate.
 ///
-/// The command functions in @ref MipCommands (e.g. mip_write_message_format() / writeMessageFormat())
+/// The command functions in @ref MipCommands_c / @ref MipCommands_cpp (e.g. mip_write_message_format() / mip::writeMessageFormat())
 /// will block execution until the command completes. Either the device will
 /// respond with an ack/nack code, or the command will time out. During this
 /// time, the system must be able to receive data from the device in order for
@@ -261,7 +276,7 @@
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@page mip_parser Mip Parser
+///@page parsing_packets Mip Parser
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// The MIP Parser takes in bytes from the device connection or recorded binary

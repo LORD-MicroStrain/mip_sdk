@@ -5,6 +5,15 @@
 
 #include "../mip_types.h"
 
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup mip_serialization  MIP Serialization
+///
+///@brief Serialization Functions for reading and writing to byte buffers.
+///@{
+///@defgroup mip_serialization_c   MIP Serialization [C]
+///@defgroup mip_serialization_cpp MIP Serialization [CPP]
+///@}
+
 #ifdef __cplusplus
 #include <type_traits>
 
@@ -16,10 +25,19 @@ extern "C" {
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup Serialization Functions for reading and writing to byte buffers.
+///@addtogroup mip_serialization_c
+///
+///@brief (De)serialization in C.
 ///
 ///@{
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Structure used for serialization.
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
+///
 struct mip_serializer
 {
     uint8_t* _buffer;        ///<@private Pointer to data for serialization.
@@ -81,6 +99,46 @@ void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_
 } // extern "C"
 } // namespace C
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_serialization_cpp
+///
+///@brief (De)serialization in C++.
+///
+/// There are two overloaded functions defined in the mip namespace, insert and
+/// extract. The signature for each is as follows:
+///@code{.cpp}
+/// void mip::insert(Serializer& serializer, Type value);
+/// voie mip::extract(Serializer& serializer, Type value);
+///@endcode
+/// Where `Type` is a struct or numeric type.
+///
+/// There are overloads for all of the MIP definition types:
+///@li Command, response, and data fields
+///@li Enums, bitfields, and nested structs for commands
+///
+/// Additionally, there are overloads with a different signature which allow
+/// one to avoid creating a Serializer object every time. These overloads
+/// create a serializer internally and pass it on to the regular version.
+///@code{.cpp}
+/// template<typename T> bool mip::insert(const T& value, uint8_t* buffer, size_t bufferSize);
+/// template<typename T> bool mip::Field::extract(T& value);
+///@endcode
+/// This makes it easy to extract data from a field:
+///@code{.cpp}
+/// data_sensor::ScaledAccel accel;
+/// MipField field(...);
+/// if( field.extract(accel) )
+/// {
+///   // Do something with accel data
+///   printf("Accel X=%f\n", accel.scaled_accel[0]);
+/// }
+///@endcode
+///
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Serialization class.
+///
 class Serializer : public C::mip_serializer
 {
 public:
@@ -99,6 +157,7 @@ public:
 };
 
 
+
 inline void insert(Serializer& serializer, bool value)     { return C::insert_bool  (&serializer, value); }
 inline void insert(Serializer& serializer, char value)     { return C::insert_char  (&serializer, value); }
 inline void insert(Serializer& serializer, uint8_t  value) { return C::insert_u8    (&serializer, value); }
@@ -112,10 +171,30 @@ inline void insert(Serializer& serializer, int64_t value)  { return C::insert_s6
 inline void insert(Serializer& serializer, float  value)   { return C::insert_float (&serializer, value); }
 inline void insert(Serializer& serializer, double value)   { return C::insert_double(&serializer, value); }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Inserts an enum into the buffer.
+///
+///@tparam Enum The type of the enum to serialize. Must be a c++ typed enum.
+///
+///@param serializer The serialization instance.
+///@param value      The enum to insert.
+///
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ insert(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Insert the given value into the buffer.
+///
+/// If the buffer has insufficient space, this function returns false and the
+/// contents of buffer may be partially modified.
+///
+///@param value      Value to insert.
+///@param buffer     Buffer to udpate with the value.
+///@param bufferSize Size of the buffer.
+///
+///@returns true if sufficient space was available, false otherwise.
+///
 template<typename T>
 bool insert(const T& value, uint8_t* buffer, size_t bufferSize)
 {
@@ -137,6 +216,14 @@ inline void extract(Serializer& serializer, int64_t& value)  { return C::extract
 inline void extract(Serializer& serializer, float&  value)   { return C::extract_float (&serializer, &value); }
 inline void extract(Serializer& serializer, double& value)   { return C::extract_double(&serializer, &value); }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Extract an enum from the buffer.
+///
+///@tparam Enum The type of the enum to deserialize. Must be a c++ typed enum.
+///
+///@param serializer The serialization instance.
+///@param[out] value The enum to populate.
+///
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ extract(Serializer& serializer, Enum& value) {
@@ -162,7 +249,8 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 ///
 ///@returns True if the extraction was successful, false otherwise. "Success"
 ///         means the supplied data was sufficient. If exact_size is true, then
-///         exactly bufferSize data must be used.
+///         this function only returns true if exactly bufferSize bytes were
+///         consumed.
 ///
 template<typename T>
 bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
@@ -172,5 +260,11 @@ bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offs
     return exact_size ? serializer.isComplete() : serializer.isOk();
 }
 
+///@}
+///@}
+////////////////////////////////////////////////////////////////////////////////
+
 } // namespace mip
 #endif // __cplusplus
+
+////////////////////////////////////////////////////////////////////////////////

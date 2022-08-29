@@ -12,20 +12,29 @@ namespace C {
 extern "C" {
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipCommandHandling MIP Command Handling - Functions for handling command responses.
+///@defgroup MipCommandQueue_c Mip Command Queue [C]
+///
+///@brief Functions for handling command responses.
 ///
 ///@{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PendingCommand  mip_pending_cmd functions
+///@defgroup PendingCommand  mip_pending_cmd functions [C]
 ///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a command awaiting a reply from the device.
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
 ///
 struct mip_pending_cmd
 {
@@ -60,7 +69,11 @@ bool mip_pending_cmd_check_timeout(const struct mip_pending_cmd* cmd, timestamp_
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup CommandQueue  mip_cmd_queue functions
+///@defgroup CommandQueue  mip_cmd_queue functions [C]
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
 ///
 ///@{
 
@@ -84,6 +97,7 @@ struct mip_packet;
 void mip_cmd_queue_process_packet(struct mip_cmd_queue* queue, const struct mip_packet* packet, timestamp_type timestamp);
 
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

@@ -10,7 +10,7 @@ namespace mip
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_interface
+///@addtogroup mip_cpp
 ///@{
 
 using DispatchHandler = C::mip_dispatch_handler;
@@ -107,10 +107,10 @@ struct PendingCmd : public C::mip_pending_cmd
     ///
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
-    ///@copydoc mip_pending_cmd_response
+    ///@copydoc mip::C::mip_pending_cmd_response
     const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
 
-    ///@copydoc mip_pending_cmd_response_length
+    ///@copydoc mip::C::mip_pending_cmd_response_length
     uint8_t responseLength() const { return C::mip_pending_cmd_response_length(this); }
 };
 
@@ -123,7 +123,7 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_interface Mip Device Interface
+///@addtogroup mip_interface_cpp  Mip Device Interface [C++]
 ///@{
 ///
 
@@ -142,7 +142,7 @@ public:
     // Constructors
     //
 
-    ///@copydoc mip_interface_init
+    ///@copydoc mip::C::mip_interface_init
     DeviceInterface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) { C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout); }
 
     DeviceInterface(const DeviceInterface&) = delete;
@@ -154,7 +154,7 @@ public:
     // Accessors
     //
 
-    ///@copydoc mip_interface_set_update_function
+    ///@copydoc C::mip_interface_set_update_function
     void setUpdateFunction(C::mip_update_callback function) { C::mip_interface_set_update_function(this, function); }
 
     template<bool (*Function)(DeviceInterface&,bool)>

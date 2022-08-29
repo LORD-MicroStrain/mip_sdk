@@ -4,7 +4,7 @@
 #include "../utils/serialization.h"
 
 #ifdef __cplusplus
-namespace mscl {
+namespace mip {
 extern "C" {
 #endif // __cplusplus
 
@@ -166,6 +166,6 @@ void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_d
 
 
 #ifdef __cplusplus
-} // namespace mscl
+} // namespace mip
 } // extern "C"
 #endif // __cplusplus

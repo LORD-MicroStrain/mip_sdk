@@ -108,8 +108,8 @@ void mip_field_init_empty(struct mip_field* field)
 ///       than the field (i.e. if it's the packet payload length) then
 ///       mip_field_next() may be used to iterate fields.
 ///@param descriptor_set
-///       The descriptor set for the packet containing this field._ May be 0x00
-///       if not used by any function handling the field._
+///       The descriptor set for the packet containing this field. May be 0x00
+///       if not used by any function handling the field.
 ///
 ///@returns a mip_field struct with the field data.
 ///

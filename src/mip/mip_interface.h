@@ -14,15 +14,16 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_interface Mip Device Interface
+///@addtogroup mip_c
 ///@{
-///
-/// This module contains functions and classes for communicating with a MIP
-/// device.
-///
-///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_mip_interface  High-level C functions for controlling a MIP device.
+///@defgroup mip_interface_c  Mip Interface [C]
+///
+///@brief High-level C functions for controlling a MIP device.
+///
+/// This module contains functions and classes for communicating with a
+/// MIP device in C.
+///
 ///
 ///@li Sending commands
 ///@li Receiving Data
@@ -108,8 +109,9 @@ struct mip_parser*    mip_interface_parser(struct mip_interface* device);
 struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 
 ///@}
+///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup user_callbacks User callback functions
+///@defgroup user_callbacks  User callback functions [C/C++]
 ///
 ///@{
 
@@ -153,7 +155,6 @@ extern bool mip_interface_user_recv_from_device(struct mip_interface* device, ui
 extern bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
 
 
-///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 

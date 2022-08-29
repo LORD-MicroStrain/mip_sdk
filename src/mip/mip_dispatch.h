@@ -14,9 +14,15 @@ namespace C {
 struct mip_packet;
 struct mip_field;
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
+
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatch System for issuing callbacks from MIP packets or fields
+///@defgroup MipDispatch_c  Mip Dispatch [C]
+///
+///@brief System for issuing callbacks from MIP packets or fields.
 ///
 ///@{
 
@@ -125,6 +131,7 @@ void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self);
 
 void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mip_packet* packet, timestamp_type timestamp);
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
