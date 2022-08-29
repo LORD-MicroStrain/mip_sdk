@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_c
 ///@{
-///@defgroup filter_data_c  FILTERData
+///@defgroup filter_data_c_c  Filter Data_c [C]
 ///
 ///@{
 
@@ -218,17 +218,17 @@ void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, enum m
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_position_llh  LLH Position
+///@defgroup c_filter_position_llh  Position Llh
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
 
 struct mip_filter_position_llh_data
 {
-    double latitude;
-    double longitude;
-    double ellipsoid_height;
-    uint16_t valid_flags;
+    double latitude; ///< [degrees]
+    double longitude; ///< [degrees]
+    double ellipsoid_height; ///< [meters]
+    uint16_t valid_flags; ///< 0 - Invalid, 1 - valid
     
 };
 void insert_mip_filter_position_llh_data(struct mip_serializer* serializer, const struct mip_filter_position_llh_data* self);
@@ -238,17 +238,17 @@ bool extract_mip_filter_position_llh_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_velocity_ned  None
+///@defgroup c_filter_velocity_ned  Velocity Ned
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
 
 struct mip_filter_velocity_ned_data
 {
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north; ///< [meters/second]
+    float east; ///< [meters/second]
+    float down; ///< [meters/second]
+    uint16_t valid_flags; ///< 0 - Invalid, 1 - valid
     
 };
 void insert_mip_filter_velocity_ned_data(struct mip_serializer* serializer, const struct mip_filter_velocity_ned_data* self);
@@ -258,7 +258,7 @@ bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_attitude_quaternion  None
+///@defgroup c_filter_attitude_quaternion  Attitude Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -273,8 +273,8 @@ bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* fie
 
 struct mip_filter_attitude_quaternion_data
 {
-    float q[4];
-    uint16_t valid_flags;
+    float q[4]; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_attitude_quaternion_data(struct mip_serializer* serializer, const struct mip_filter_attitude_quaternion_data* self);
@@ -284,7 +284,7 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_attitude_dcm  None
+///@defgroup c_filter_attitude_dcm  Attitude Dcm
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -301,8 +301,8 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const struct mip_fie
 
 struct mip_filter_attitude_dcm_data
 {
-    float dcm[9];
-    uint16_t valid_flags;
+    float dcm[9]; ///< Matrix elements in row-major order.
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_attitude_dcm_data(struct mip_serializer* serializer, const struct mip_filter_attitude_dcm_data* self);
@@ -312,7 +312,7 @@ bool extract_mip_filter_attitude_dcm_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_euler_angles  None
+///@defgroup c_filter_euler_angles  Euler Angles
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -320,10 +320,10 @@ bool extract_mip_filter_attitude_dcm_data_from_field(const struct mip_field* fie
 
 struct mip_filter_euler_angles_data
 {
-    float roll;
-    float pitch;
-    float yaw;
-    uint16_t valid_flags;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_euler_angles_data(struct mip_serializer* serializer, const struct mip_filter_euler_angles_data* self);
@@ -333,15 +333,15 @@ bool extract_mip_filter_euler_angles_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gyro_bias  None
+///@defgroup c_filter_gyro_bias  Gyro Bias
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_gyro_bias_data
 {
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3]; ///< (x, y, z) [radians/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gyro_bias_data(struct mip_serializer* serializer, const struct mip_filter_gyro_bias_data* self);
@@ -351,15 +351,15 @@ bool extract_mip_filter_gyro_bias_data_from_field(const struct mip_field* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_accel_bias  None
+///@defgroup c_filter_accel_bias  Accel Bias
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_accel_bias_data
 {
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3]; ///< (x, y, z) [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_accel_bias_data(struct mip_serializer* serializer, const struct mip_filter_accel_bias_data* self);
@@ -369,17 +369,17 @@ bool extract_mip_filter_accel_bias_data_from_field(const struct mip_field* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_position_llh_uncertainty  LLH Position Uncertainty
+///@defgroup c_filter_position_llh_uncertainty  Position Llh Uncertainty
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
 
 struct mip_filter_position_llh_uncertainty_data
 {
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north; ///< [meters]
+    float east; ///< [meters]
+    float down; ///< [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_position_llh_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_position_llh_uncertainty_data* self);
@@ -389,17 +389,17 @@ bool extract_mip_filter_position_llh_uncertainty_data_from_field(const struct mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_velocity_ned_uncertainty  NED Velocity Uncertainty
+///@defgroup c_filter_velocity_ned_uncertainty  Velocity Ned Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
 
 struct mip_filter_velocity_ned_uncertainty_data
 {
-    float north;
-    float east;
-    float down;
-    uint16_t valid_flags;
+    float north; ///< [meters/second]
+    float east; ///< [meters/second]
+    float down; ///< [meters/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_velocity_ned_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_velocity_ned_uncertainty_data* self);
@@ -409,7 +409,7 @@ bool extract_mip_filter_velocity_ned_uncertainty_data_from_field(const struct mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_euler_angles_uncertainty  None
+///@defgroup c_filter_euler_angles_uncertainty  Euler Angles Uncertainty
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -417,10 +417,10 @@ bool extract_mip_filter_velocity_ned_uncertainty_data_from_field(const struct mi
 
 struct mip_filter_euler_angles_uncertainty_data
 {
-    float roll;
-    float pitch;
-    float yaw;
-    uint16_t valid_flags;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_euler_angles_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_euler_angles_uncertainty_data* self);
@@ -430,15 +430,15 @@ bool extract_mip_filter_euler_angles_uncertainty_data_from_field(const struct mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gyro_bias_uncertainty  None
+///@defgroup c_filter_gyro_bias_uncertainty  Gyro Bias Uncertainty
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_gyro_bias_uncertainty_data
 {
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3]; ///< (x,y,z) [radians/sec]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gyro_bias_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_gyro_bias_uncertainty_data* self);
@@ -448,15 +448,15 @@ bool extract_mip_filter_gyro_bias_uncertainty_data_from_field(const struct mip_f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_accel_bias_uncertainty  None
+///@defgroup c_filter_accel_bias_uncertainty  Accel Bias Uncertainty
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_accel_bias_uncertainty_data
 {
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3]; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_accel_bias_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_accel_bias_uncertainty_data* self);
@@ -466,7 +466,7 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const struct mip_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_timestamp  None
+///@defgroup c_filter_timestamp  Timestamp
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -479,9 +479,9 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const struct mip_
 
 struct mip_filter_timestamp_data
 {
-    double tow;
-    uint16_t week_number;
-    uint16_t valid_flags;
+    double tow; ///< GPS Time of Week [seconds]
+    uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_timestamp_data(struct mip_serializer* serializer, const struct mip_filter_timestamp_data* self);
@@ -491,16 +491,16 @@ bool extract_mip_filter_timestamp_data_from_field(const struct mip_field* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_status  None
+///@defgroup c_filter_status  Status
 /// Device-specific filter status indicators.
 ///
 ///@{
 
 struct mip_filter_status_data
 {
-    enum mip_filter_mode filter_state;
-    enum mip_filter_dynamics_mode dynamics_mode;
-    enum mip_filter_status_flags status_flags;
+    enum mip_filter_mode filter_state; ///< Device-specific filter state.  Please consult the user manual for definition.
+    enum mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode.  Please consult the user manual for definition.
+    enum mip_filter_status_flags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
     
 };
 void insert_mip_filter_status_data(struct mip_serializer* serializer, const struct mip_filter_status_data* self);
@@ -510,7 +510,7 @@ bool extract_mip_filter_status_data_from_field(const struct mip_field* field, vo
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_linear_accel  None
+///@defgroup c_filter_linear_accel  Linear Accel
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -518,8 +518,8 @@ bool extract_mip_filter_status_data_from_field(const struct mip_field* field, vo
 
 struct mip_filter_linear_accel_data
 {
-    float accel[3];
-    uint16_t valid_flags;
+    float accel[3]; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_linear_accel_data(struct mip_serializer* serializer, const struct mip_filter_linear_accel_data* self);
@@ -529,15 +529,15 @@ bool extract_mip_filter_linear_accel_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gravity_vector  None
+///@defgroup c_filter_gravity_vector  Gravity Vector
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
 
 struct mip_filter_gravity_vector_data
 {
-    float gravity[3];
-    uint16_t valid_flags;
+    float gravity[3]; ///< (x, y, z) [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gravity_vector_data(struct mip_serializer* serializer, const struct mip_filter_gravity_vector_data* self);
@@ -547,15 +547,15 @@ bool extract_mip_filter_gravity_vector_data_from_field(const struct mip_field* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_comp_accel  Compensated Acceleration
+///@defgroup c_filter_comp_accel  Comp Accel
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
 
 struct mip_filter_comp_accel_data
 {
-    float accel[3];
-    uint16_t valid_flags;
+    float accel[3]; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_comp_accel_data(struct mip_serializer* serializer, const struct mip_filter_comp_accel_data* self);
@@ -565,15 +565,15 @@ bool extract_mip_filter_comp_accel_data_from_field(const struct mip_field* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_comp_angular_rate  None
+///@defgroup c_filter_comp_angular_rate  Comp Angular Rate
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
 
 struct mip_filter_comp_angular_rate_data
 {
-    float gyro[3];
-    uint16_t valid_flags;
+    float gyro[3]; ///< (x, y, z) [radians/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_comp_angular_rate_data(struct mip_serializer* serializer, const struct mip_filter_comp_angular_rate_data* self);
@@ -583,15 +583,15 @@ bool extract_mip_filter_comp_angular_rate_data_from_field(const struct mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_quaternion_attitude_uncertainty  None
+///@defgroup c_filter_quaternion_attitude_uncertainty  Quaternion Attitude Uncertainty
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
 
 struct mip_filter_quaternion_attitude_uncertainty_data
 {
-    float q[4];
-    uint16_t valid_flags;
+    float q[4]; ///< [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_quaternion_attitude_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_quaternion_attitude_uncertainty_data* self);
@@ -601,15 +601,15 @@ bool extract_mip_filter_quaternion_attitude_uncertainty_data_from_field(const st
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_wgs84_gravity_mag  None
+///@defgroup c_filter_wgs84_gravity_mag  Wgs84 Gravity Mag
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
 
 struct mip_filter_wgs84_gravity_mag_data
 {
-    float magnitude;
-    uint16_t valid_flags;
+    float magnitude; ///< [meters/second^2]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_wgs84_gravity_mag_data(struct mip_serializer* serializer, const struct mip_filter_wgs84_gravity_mag_data* self);
@@ -619,7 +619,7 @@ bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const struct mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_heading_update_state  None
+///@defgroup c_filter_heading_update_state  Heading Update State
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -638,10 +638,10 @@ enum mip_filter_heading_update_state_data_heading_source
 
 struct mip_filter_heading_update_state_data
 {
-    float heading;
-    float heading_1sigma;
+    float heading; ///< [radians]
+    float heading_1sigma; ///< [radians]
     enum mip_filter_heading_update_state_data_heading_source source;
-    uint16_t valid_flags;
+    uint16_t valid_flags; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
     
 };
 void insert_mip_filter_heading_update_state_data(struct mip_serializer* serializer, const struct mip_filter_heading_update_state_data* self);
@@ -654,7 +654,7 @@ void extract_mip_filter_heading_update_state_data_heading_source(struct mip_seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetic_model  None
+///@defgroup c_filter_magnetic_model  Magnetic Model
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -662,12 +662,12 @@ void extract_mip_filter_heading_update_state_data_heading_source(struct mip_seri
 
 struct mip_filter_magnetic_model_data
 {
-    float intensity_north;
-    float intensity_east;
-    float intensity_down;
-    float inclination;
-    float declination;
-    uint16_t valid_flags;
+    float intensity_north; ///< [Gauss]
+    float intensity_east; ///< [Gauss]
+    float intensity_down; ///< [Gauss]
+    float inclination; ///< [radians]
+    float declination; ///< [radians]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetic_model_data(struct mip_serializer* serializer, const struct mip_filter_magnetic_model_data* self);
@@ -677,15 +677,15 @@ bool extract_mip_filter_magnetic_model_data_from_field(const struct mip_field* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_accel_scale_factor  None
+///@defgroup c_filter_accel_scale_factor  Accel Scale Factor
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_accel_scale_factor_data
 {
-    float scale_factor[3];
-    uint16_t valid_flags;
+    float scale_factor[3]; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_accel_scale_factor_data(struct mip_serializer* serializer, const struct mip_filter_accel_scale_factor_data* self);
@@ -695,15 +695,15 @@ bool extract_mip_filter_accel_scale_factor_data_from_field(const struct mip_fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_accel_scale_factor_uncertainty  None
+///@defgroup c_filter_accel_scale_factor_uncertainty  Accel Scale Factor Uncertainty
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_accel_scale_factor_uncertainty_data
 {
-    float scale_factor_uncert[3];
-    uint16_t valid_flags;
+    float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_accel_scale_factor_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_accel_scale_factor_uncertainty_data* self);
@@ -713,15 +713,15 @@ bool extract_mip_filter_accel_scale_factor_uncertainty_data_from_field(const str
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gyro_scale_factor  None
+///@defgroup c_filter_gyro_scale_factor  Gyro Scale Factor
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_gyro_scale_factor_data
 {
-    float scale_factor[3];
-    uint16_t valid_flags;
+    float scale_factor[3]; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gyro_scale_factor_data(struct mip_serializer* serializer, const struct mip_filter_gyro_scale_factor_data* self);
@@ -731,15 +731,15 @@ bool extract_mip_filter_gyro_scale_factor_data_from_field(const struct mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gyro_scale_factor_uncertainty  None
+///@defgroup c_filter_gyro_scale_factor_uncertainty  Gyro Scale Factor Uncertainty
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_gyro_scale_factor_uncertainty_data
 {
-    float scale_factor_uncert[3];
-    uint16_t valid_flags;
+    float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gyro_scale_factor_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_gyro_scale_factor_uncertainty_data* self);
@@ -749,15 +749,15 @@ bool extract_mip_filter_gyro_scale_factor_uncertainty_data_from_field(const stru
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_mag_bias  None
+///@defgroup c_filter_mag_bias  Mag Bias
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_mag_bias_data
 {
-    float bias[3];
-    uint16_t valid_flags;
+    float bias[3]; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_mag_bias_data(struct mip_serializer* serializer, const struct mip_filter_mag_bias_data* self);
@@ -767,15 +767,15 @@ bool extract_mip_filter_mag_bias_data_from_field(const struct mip_field* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_mag_bias_uncertainty  None
+///@defgroup c_filter_mag_bias_uncertainty  Mag Bias Uncertainty
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
 
 struct mip_filter_mag_bias_uncertainty_data
 {
-    float bias_uncert[3];
-    uint16_t valid_flags;
+    float bias_uncert[3]; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_mag_bias_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_mag_bias_uncertainty_data* self);
@@ -785,7 +785,7 @@ bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const struct mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_standard_atmosphere  None
+///@defgroup c_filter_standard_atmosphere  Standard Atmosphere
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -794,12 +794,12 @@ bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const struct mip_fi
 
 struct mip_filter_standard_atmosphere_data
 {
-    float geometric_altitude;
-    float geopotential_altitude;
-    float standard_temperature;
-    float standard_pressure;
-    float standard_density;
-    uint16_t valid_flags;
+    float geometric_altitude; ///< Input into calculation [meters]
+    float geopotential_altitude; ///< [meters]
+    float standard_temperature; ///< [degC]
+    float standard_pressure; ///< [milliBar]
+    float standard_density; ///< [kilogram/meter^3]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_standard_atmosphere_data(struct mip_serializer* serializer, const struct mip_filter_standard_atmosphere_data* self);
@@ -809,7 +809,7 @@ bool extract_mip_filter_standard_atmosphere_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_pressure_altitude  None
+///@defgroup c_filter_pressure_altitude  Pressure Altitude
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -820,8 +820,8 @@ bool extract_mip_filter_standard_atmosphere_data_from_field(const struct mip_fie
 
 struct mip_filter_pressure_altitude_data
 {
-    float pressure_altitude;
-    uint16_t valid_flags;
+    float pressure_altitude; ///< [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_pressure_altitude_data(struct mip_serializer* serializer, const struct mip_filter_pressure_altitude_data* self);
@@ -831,14 +831,14 @@ bool extract_mip_filter_pressure_altitude_data_from_field(const struct mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_density_altitude  None
+///@defgroup c_filter_density_altitude  Density Altitude
 ///
 ///@{
 
 struct mip_filter_density_altitude_data
 {
-    float density_altitude;
-    uint16_t valid_flags;
+    float density_altitude; ///< m
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_density_altitude_data(struct mip_serializer* serializer, const struct mip_filter_density_altitude_data* self);
@@ -848,7 +848,7 @@ bool extract_mip_filter_density_altitude_data_from_field(const struct mip_field*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_antenna_offset_correction  None
+///@defgroup c_filter_antenna_offset_correction  Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -857,8 +857,8 @@ bool extract_mip_filter_density_altitude_data_from_field(const struct mip_field*
 
 struct mip_filter_antenna_offset_correction_data
 {
-    float offset[3];
-    uint16_t valid_flags;
+    float offset[3]; ///< (x,y,z) [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_antenna_offset_correction_data(struct mip_serializer* serializer, const struct mip_filter_antenna_offset_correction_data* self);
@@ -868,15 +868,15 @@ bool extract_mip_filter_antenna_offset_correction_data_from_field(const struct m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_antenna_offset_correction_uncertainty  None
+///@defgroup c_filter_antenna_offset_correction_uncertainty  Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
 
 struct mip_filter_antenna_offset_correction_uncertainty_data
 {
-    float offset_uncert[3];
-    uint16_t valid_flags;
+    float offset_uncert[3]; ///< (x,y,z) [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_antenna_offset_correction_uncertainty_data* self);
@@ -886,7 +886,7 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_multi_antenna_offset_correction  None
+///@defgroup c_filter_multi_antenna_offset_correction  Multi Antenna Offset Correction
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -895,9 +895,9 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 
 struct mip_filter_multi_antenna_offset_correction_data
 {
-    uint8_t receiver_id;
-    float offset[3];
-    uint16_t valid_flags;
+    uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
+    float offset[3]; ///< (x,y,z) [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_multi_antenna_offset_correction_data(struct mip_serializer* serializer, const struct mip_filter_multi_antenna_offset_correction_data* self);
@@ -907,16 +907,16 @@ bool extract_mip_filter_multi_antenna_offset_correction_data_from_field(const st
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_multi_antenna_offset_correction_uncertainty  None
+///@defgroup c_filter_multi_antenna_offset_correction_uncertainty  Multi Antenna Offset Correction Uncertainty
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
 
 struct mip_filter_multi_antenna_offset_correction_uncertainty_data
 {
-    uint8_t receiver_id;
-    float offset_uncert[3];
-    uint16_t valid_flags;
+    uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
+    float offset_uncert[3]; ///< (x,y,z) [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_multi_antenna_offset_correction_uncertainty_data* self);
@@ -926,7 +926,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_offset  None
+///@defgroup c_filter_magnetometer_offset  Magnetometer Offset
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -935,8 +935,8 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 
 struct mip_filter_magnetometer_offset_data
 {
-    float hard_iron[3];
-    uint16_t valid_flags;
+    float hard_iron[3]; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_offset_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_offset_data* self);
@@ -946,7 +946,7 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_matrix  None
+///@defgroup c_filter_magnetometer_matrix  Magnetometer Matrix
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -955,8 +955,8 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const struct mip_fie
 
 struct mip_filter_magnetometer_matrix_data
 {
-    float soft_iron[9];
-    uint16_t valid_flags;
+    float soft_iron[9]; ///< Row-major [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_matrix_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_matrix_data* self);
@@ -966,15 +966,15 @@ bool extract_mip_filter_magnetometer_matrix_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_offset_uncertainty  None
+///@defgroup c_filter_magnetometer_offset_uncertainty  Magnetometer Offset Uncertainty
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
 
 struct mip_filter_magnetometer_offset_uncertainty_data
 {
-    float hard_iron_uncertainty[3];
-    uint16_t valid_flags;
+    float hard_iron_uncertainty[3]; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_offset_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_offset_uncertainty_data* self);
@@ -984,15 +984,15 @@ bool extract_mip_filter_magnetometer_offset_uncertainty_data_from_field(const st
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_matrix_uncertainty  None
+///@defgroup c_filter_magnetometer_matrix_uncertainty  Magnetometer Matrix Uncertainty
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
 
 struct mip_filter_magnetometer_matrix_uncertainty_data
 {
-    float soft_iron_uncertainty[9];
-    uint16_t valid_flags;
+    float soft_iron_uncertainty[9]; ///< Row-major [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_matrix_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_matrix_uncertainty_data* self);
@@ -1002,14 +1002,14 @@ bool extract_mip_filter_magnetometer_matrix_uncertainty_data_from_field(const st
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_covariance_matrix  None
+///@defgroup c_filter_magnetometer_covariance_matrix  Magnetometer Covariance Matrix
 ///
 ///@{
 
 struct mip_filter_magnetometer_covariance_matrix_data
 {
     float covariance[9];
-    uint16_t valid_flags;
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_covariance_matrix_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_covariance_matrix_data* self);
@@ -1019,15 +1019,15 @@ bool extract_mip_filter_magnetometer_covariance_matrix_data_from_field(const str
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetometer_residual_vector  None
+///@defgroup c_filter_magnetometer_residual_vector  Magnetometer Residual Vector
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
 
 struct mip_filter_magnetometer_residual_vector_data
 {
-    float residual[3];
-    uint16_t valid_flags;
+    float residual[3]; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_magnetometer_residual_vector_data(struct mip_serializer* serializer, const struct mip_filter_magnetometer_residual_vector_data* self);
@@ -1037,17 +1037,17 @@ bool extract_mip_filter_magnetometer_residual_vector_data_from_field(const struc
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_clock_correction  None
+///@defgroup c_filter_clock_correction  Clock Correction
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
 
 struct mip_filter_clock_correction_data
 {
-    uint8_t receiver_id;
-    float bias;
-    float bias_drift;
-    uint16_t valid_flags;
+    uint8_t receiver_id; ///< 1, 2, etc.
+    float bias; ///< [seconds]
+    float bias_drift; ///< [seconds/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_clock_correction_data(struct mip_serializer* serializer, const struct mip_filter_clock_correction_data* self);
@@ -1057,17 +1057,17 @@ bool extract_mip_filter_clock_correction_data_from_field(const struct mip_field*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_clock_correction_uncertainty  None
+///@defgroup c_filter_clock_correction_uncertainty  Clock Correction Uncertainty
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
 
 struct mip_filter_clock_correction_uncertainty_data
 {
-    uint8_t receiver_id;
-    float bias_uncertainty;
-    float bias_drift_uncertainty;
-    uint16_t valid_flags;
+    uint8_t receiver_id; ///< 1, 2, etc.
+    float bias_uncertainty; ///< [seconds]
+    float bias_drift_uncertainty; ///< [seconds/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_clock_correction_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_clock_correction_uncertainty_data* self);
@@ -1077,7 +1077,7 @@ bool extract_mip_filter_clock_correction_uncertainty_data_from_field(const struc
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_pos_aid_status  GNSS Position Aiding Status
+///@defgroup c_filter_gnss_pos_aid_status  Gnss Pos Aid Status
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -1085,8 +1085,8 @@ bool extract_mip_filter_clock_correction_uncertainty_data_from_field(const struc
 struct mip_filter_gnss_pos_aid_status_data
 {
     uint8_t receiver_id;
-    float time_of_week;
-    enum mip_gnss_aid_status_flags status;
+    float time_of_week; ///< Last GNSS aiding measurement time of week [seconds]
+    enum mip_gnss_aid_status_flags status; ///< Aiding measurement status bitfield
     uint8_t reserved[8];
     
 };
@@ -1097,15 +1097,15 @@ bool extract_mip_filter_gnss_pos_aid_status_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_att_aid_status  GNSS Attitude Aiding Status
+///@defgroup c_filter_gnss_att_aid_status  Gnss Att Aid Status
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
 
 struct mip_filter_gnss_att_aid_status_data
 {
-    float time_of_week;
-    enum mip_gnss_aid_status_flags status;
+    float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    enum mip_gnss_aid_status_flags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8];
     
 };
@@ -1116,7 +1116,7 @@ bool extract_mip_filter_gnss_att_aid_status_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_head_aid_status  None
+///@defgroup c_filter_head_aid_status  Head Aid Status
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -1129,8 +1129,8 @@ enum mip_filter_head_aid_status_data_heading_aid_type
 
 struct mip_filter_head_aid_status_data
 {
-    float time_of_week;
-    enum mip_filter_head_aid_status_data_heading_aid_type type;
+    float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    enum mip_filter_head_aid_status_data_heading_aid_type type; ///< 1 - Dual antenna, 2 - External heading message (user supplied)
     float reserved[2];
     
 };
@@ -1144,15 +1144,15 @@ void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_seriali
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rel_pos_ned  NED Relative Position
+///@defgroup c_filter_rel_pos_ned  Rel Pos Ned
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
 
 struct mip_filter_rel_pos_ned_data
 {
-    double relative_position[3];
-    uint16_t valid_flags;
+    double relative_position[3]; ///< [meters, NED]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_rel_pos_ned_data(struct mip_serializer* serializer, const struct mip_filter_rel_pos_ned_data* self);
@@ -1162,15 +1162,15 @@ bool extract_mip_filter_rel_pos_ned_data_from_field(const struct mip_field* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ecef_pos  ECEF Position
+///@defgroup c_filter_ecef_pos  Ecef Pos
 /// Filter reported ECEF position
 ///
 ///@{
 
 struct mip_filter_ecef_pos_data
 {
-    double position_ecef[3];
-    uint16_t valid_flags;
+    double position_ecef[3]; ///< [meters, ECEF]
+    uint16_t valid_flags; ///< 0 - invalid, 1 valid
     
 };
 void insert_mip_filter_ecef_pos_data(struct mip_serializer* serializer, const struct mip_filter_ecef_pos_data* self);
@@ -1180,15 +1180,15 @@ bool extract_mip_filter_ecef_pos_data_from_field(const struct mip_field* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ecef_vel  ECEF Velocity
+///@defgroup c_filter_ecef_vel  Ecef Vel
 /// Filter reported ECEF velocity
 ///
 ///@{
 
 struct mip_filter_ecef_vel_data
 {
-    float velocity_ecef[3];
-    uint16_t valid_flags;
+    float velocity_ecef[3]; ///< [meters/second, ECEF]
+    uint16_t valid_flags; ///< 0 - invalid, 1 valid
     
 };
 void insert_mip_filter_ecef_vel_data(struct mip_serializer* serializer, const struct mip_filter_ecef_vel_data* self);
@@ -1198,15 +1198,15 @@ bool extract_mip_filter_ecef_vel_data_from_field(const struct mip_field* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ecef_pos_uncertainty  ECEF Position Uncertainty
+///@defgroup c_filter_ecef_pos_uncertainty  Ecef Pos Uncertainty
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
 
 struct mip_filter_ecef_pos_uncertainty_data
 {
-    float pos_uncertainty[3];
-    uint16_t valid_flags;
+    float pos_uncertainty[3]; ///< [meters]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_ecef_pos_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_ecef_pos_uncertainty_data* self);
@@ -1216,15 +1216,15 @@ bool extract_mip_filter_ecef_pos_uncertainty_data_from_field(const struct mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ecef_vel_uncertainty  ECEF Velocity Uncertainty
+///@defgroup c_filter_ecef_vel_uncertainty  Ecef Vel Uncertainty
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
 
 struct mip_filter_ecef_vel_uncertainty_data
 {
-    float vel_uncertainty[3];
-    uint16_t valid_flags;
+    float vel_uncertainty[3]; ///< [meters/second]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_ecef_vel_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_ecef_vel_uncertainty_data* self);
@@ -1234,16 +1234,16 @@ bool extract_mip_filter_ecef_vel_uncertainty_data_from_field(const struct mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_measurement_summary  None
+///@defgroup c_filter_aiding_measurement_summary  Aiding Measurement Summary
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
 
 struct mip_filter_aiding_measurement_summary_data
 {
-    float time_of_week;
+    float time_of_week; ///< [seconds]
     uint8_t source;
-    enum mip_filter_aiding_measurement_type type;
+    enum mip_filter_aiding_measurement_type type; ///< (see product manual for supported types)
     enum mip_filter_measurement_indicator indicator;
     
 };
@@ -1254,15 +1254,15 @@ bool extract_mip_filter_aiding_measurement_summary_data_from_field(const struct 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_odometer_scale_factor_error  Odometer Scale Factor Error
+///@defgroup c_filter_odometer_scale_factor_error  Odometer Scale Factor Error
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
 
 struct mip_filter_odometer_scale_factor_error_data
 {
-    float scale_factor_error;
-    uint16_t valid_flags;
+    float scale_factor_error; ///< [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_odometer_scale_factor_error_data(struct mip_serializer* serializer, const struct mip_filter_odometer_scale_factor_error_data* self);
@@ -1272,15 +1272,15 @@ bool extract_mip_filter_odometer_scale_factor_error_data_from_field(const struct
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
+///@defgroup c_filter_odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
 
 struct mip_filter_odometer_scale_factor_error_uncertainty_data
 {
-    float scale_factor_error_uncertainty;
-    uint16_t valid_flags;
+    float scale_factor_error_uncertainty; ///< [dimensionless]
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_odometer_scale_factor_error_uncertainty_data(struct mip_serializer* serializer, const struct mip_filter_odometer_scale_factor_error_uncertainty_data* self);
@@ -1290,7 +1290,7 @@ bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dual_antenna_status  GNSS Dual Antenna Status
+///@defgroup c_filter_gnss_dual_antenna_status  Gnss Dual Antenna Status
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{
@@ -1312,12 +1312,12 @@ enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags
 
 struct mip_filter_gnss_dual_antenna_status_data
 {
-    float time_of_week;
-    float heading;
-    float heading_unc;
-    enum mip_filter_gnss_dual_antenna_status_data_fix_type fix_type;
+    float time_of_week; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
+    float heading; ///< [radians]
+    float heading_unc; ///< [radians]
+    enum mip_filter_gnss_dual_antenna_status_data_fix_type fix_type; ///< Fix type indicator
     enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags status_flags;
-    uint16_t valid_flags;
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
 void insert_mip_filter_gnss_dual_antenna_status_data(struct mip_serializer* serializer, const struct mip_filter_gnss_dual_antenna_status_data* self);

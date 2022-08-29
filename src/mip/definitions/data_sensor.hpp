@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_sensor {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup sensor_data_cpp  SENSORData
+///@defgroup sensor_data_cpp_cpp  Sensor Data_cpp [CPP]
 ///
 ///@{
 
@@ -70,7 +70,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_raw_accel  None
+///@defgroup cpp_sensor_raw_accel  Raw Accel
 /// Three element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -83,7 +83,7 @@ struct RawAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_accel[3] = {0};
+    float raw_accel[3] = {0}; ///< Native sensor counts
     
 };
 void insert(Serializer& serializer, const RawAccel& self);
@@ -92,7 +92,7 @@ void extract(Serializer& serializer, RawAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_raw_gyro  None
+///@defgroup cpp_sensor_raw_gyro  Raw Gyro
 /// Three element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -105,7 +105,7 @@ struct RawGyro
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_gyro[3] = {0};
+    float raw_gyro[3] = {0}; ///< Native sensor counts
     
 };
 void insert(Serializer& serializer, const RawGyro& self);
@@ -114,7 +114,7 @@ void extract(Serializer& serializer, RawGyro& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_raw_mag  None
+///@defgroup cpp_sensor_raw_mag  Raw Mag
 /// Three element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -127,7 +127,7 @@ struct RawMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_mag[3] = {0};
+    float raw_mag[3] = {0}; ///< Native sensor counts
     
 };
 void insert(Serializer& serializer, const RawMag& self);
@@ -136,7 +136,7 @@ void extract(Serializer& serializer, RawMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_raw_pressure  None
+///@defgroup cpp_sensor_raw_pressure  Raw Pressure
 /// Scalar value representing the sensed ambient pressure.
 /// This quantity is temperature compensated.
 ///
@@ -149,7 +149,7 @@ struct RawPressure
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float raw_pressure = 0;
+    float raw_pressure = 0; ///< Native sensor counts
     
 };
 void insert(Serializer& serializer, const RawPressure& self);
@@ -158,7 +158,7 @@ void extract(Serializer& serializer, RawPressure& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_scaled_accel  None
+///@defgroup cpp_sensor_scaled_accel  Scaled Accel
 /// 3-element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -171,7 +171,7 @@ struct ScaledAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_accel[3] = {0};
+    float scaled_accel[3] = {0}; ///< (x, y, z)[g]
     
 };
 void insert(Serializer& serializer, const ScaledAccel& self);
@@ -180,7 +180,7 @@ void extract(Serializer& serializer, ScaledAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_scaled_gyro  None
+///@defgroup cpp_sensor_scaled_gyro  Scaled Gyro
 /// 3-element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -193,7 +193,7 @@ struct ScaledGyro
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_gyro[3] = {0};
+    float scaled_gyro[3] = {0}; ///< (x, y, z) [radians/second]
     
 };
 void insert(Serializer& serializer, const ScaledGyro& self);
@@ -202,7 +202,7 @@ void extract(Serializer& serializer, ScaledGyro& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_scaled_mag  None
+///@defgroup cpp_sensor_scaled_mag  Scaled Mag
 /// 3-element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -215,7 +215,7 @@ struct ScaledMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_mag[3] = {0};
+    float scaled_mag[3] = {0}; ///< (x, y, z) [Gauss]
     
 };
 void insert(Serializer& serializer, const ScaledMag& self);
@@ -224,7 +224,7 @@ void extract(Serializer& serializer, ScaledMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_scaled_pressure  None
+///@defgroup cpp_sensor_scaled_pressure  Scaled Pressure
 /// Scalar value representing the sensed ambient pressure.
 ///
 ///@{
@@ -236,7 +236,7 @@ struct ScaledPressure
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scaled_pressure = 0;
+    float scaled_pressure = 0; ///< [mBar]
     
 };
 void insert(Serializer& serializer, const ScaledPressure& self);
@@ -245,7 +245,7 @@ void extract(Serializer& serializer, ScaledPressure& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_delta_theta  None
+///@defgroup cpp_sensor_delta_theta  Delta Theta
 /// 3-element vector representing the time integral of angular rate.
 /// This quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -258,7 +258,7 @@ struct DeltaTheta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float delta_theta[3] = {0};
+    float delta_theta[3] = {0}; ///< (x, y, z) [radians]
     
 };
 void insert(Serializer& serializer, const DeltaTheta& self);
@@ -267,7 +267,7 @@ void extract(Serializer& serializer, DeltaTheta& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_delta_velocity  None
+///@defgroup cpp_sensor_delta_velocity  Delta Velocity
 /// 3-element vector representing the time integral of acceleration.
 /// This quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -280,7 +280,7 @@ struct DeltaVelocity
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float delta_velocity[3] = {0};
+    float delta_velocity[3] = {0}; ///< (x, y, z) [g*sec]
     
 };
 void insert(Serializer& serializer, const DeltaVelocity& self);
@@ -289,7 +289,7 @@ void extract(Serializer& serializer, DeltaVelocity& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_orientation_matrix  Complementary Filter Orientation Matrix
+///@defgroup cpp_sensor_comp_orientation_matrix  Comp Orientation Matrix
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -311,7 +311,7 @@ struct CompOrientationMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float m[9] = {0};
+    float m[9] = {0}; ///< Matrix elements in row-major order.
     
 };
 void insert(Serializer& serializer, const CompOrientationMatrix& self);
@@ -320,7 +320,7 @@ void extract(Serializer& serializer, CompOrientationMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_quaternion  Complementary Filter Quaternion
+///@defgroup cpp_sensor_comp_quaternion  Comp Quaternion
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -340,7 +340,7 @@ struct CompQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4] = {0};
+    float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     
 };
 void insert(Serializer& serializer, const CompQuaternion& self);
@@ -349,7 +349,7 @@ void extract(Serializer& serializer, CompQuaternion& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_euler_angles  Complementary Filter Euler Angles
+///@defgroup cpp_sensor_comp_euler_angles  Comp Euler Angles
 /// Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -362,9 +362,9 @@ struct CompEulerAngles
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll = 0;
-    float pitch = 0;
-    float yaw = 0;
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float yaw = 0; ///< [radians]
     
 };
 void insert(Serializer& serializer, const CompEulerAngles& self);
@@ -373,7 +373,7 @@ void extract(Serializer& serializer, CompEulerAngles& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_orientation_update_matrix  Complementary Filter Orientation Update Matrix
+///@defgroup cpp_sensor_comp_orientation_update_matrix  Comp Orientation Update Matrix
 /// DEPRECATED!
 ///
 ///@{
@@ -394,7 +394,7 @@ void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_orientation_raw_temp  None
+///@defgroup cpp_sensor_orientation_raw_temp  Orientation Raw Temp
 /// DEPRECATED!
 ///
 ///@{
@@ -415,7 +415,7 @@ void extract(Serializer& serializer, OrientationRawTemp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_internal_timestamp  None
+///@defgroup cpp_sensor_internal_timestamp  Internal Timestamp
 /// DEPRECATED!
 ///
 ///@{
@@ -436,7 +436,7 @@ void extract(Serializer& serializer, InternalTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_pps_timestamp  PPS Timestamp
+///@defgroup cpp_sensor_pps_timestamp  Pps Timestamp
 /// DEPRECATED!
 ///
 ///@{
@@ -458,7 +458,7 @@ void extract(Serializer& serializer, PpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_timestamp  None
+///@defgroup cpp_sensor_gps_timestamp  Gps Timestamp
 /// GPS timestamp of the SENSOR data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -498,8 +498,8 @@ struct GpsTimestamp
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow = 0;
-    uint16_t week_number = 0;
+    double tow = 0; ///< GPS Time of Week [seconds]
+    uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
 };
@@ -509,7 +509,7 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_temperature_abs  Temperature Statistics
+///@defgroup cpp_sensor_temperature_abs  Temperature Abs
 /// SENSOR reported temperature statistics
 /// 
 /// Temperature may originate from the MEMS sensors, or be calculated in combination with board temperature sensors.
@@ -525,9 +525,9 @@ struct TemperatureAbs
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float min_temp = 0;
-    float max_temp = 0;
-    float mean_temp = 0;
+    float min_temp = 0; ///< [degC]
+    float max_temp = 0; ///< [degC]
+    float mean_temp = 0; ///< [degC]
     
 };
 void insert(Serializer& serializer, const TemperatureAbs& self);
@@ -536,7 +536,7 @@ void extract(Serializer& serializer, TemperatureAbs& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_up_vector  None
+///@defgroup cpp_sensor_up_vector  Up Vector
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -554,7 +554,7 @@ struct UpVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float up[3] = {0};
+    float up[3] = {0}; ///< [Gs]
     
 };
 void insert(Serializer& serializer, const UpVector& self);
@@ -563,7 +563,7 @@ void extract(Serializer& serializer, UpVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_north_vector  None
+///@defgroup cpp_sensor_north_vector  North Vector
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -578,7 +578,7 @@ struct NorthVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north[3] = {0};
+    float north[3] = {0}; ///< [Gauss]
     
 };
 void insert(Serializer& serializer, const NorthVector& self);
@@ -587,7 +587,7 @@ void extract(Serializer& serializer, NorthVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_overrange_status  None
+///@defgroup cpp_sensor_overrange_status  Overrange Status
 ///
 ///@{
 
@@ -634,7 +634,7 @@ void extract(Serializer& serializer, OverrangeStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_odometer_data  None
+///@defgroup cpp_sensor_odometer_data  Odometer Data
 ///
 ///@{
 
@@ -645,9 +645,9 @@ struct OdometerData
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float speed = 0;
-    float uncertainty = 0;
-    uint16_t valid_flags = 0;
+    float speed = 0; ///< Average speed over the time interval [m/s]. Can be negative for quadrature encoders.
+    float uncertainty = 0; ///< Uncertainty of velocity [m/s].
+    uint16_t valid_flags = 0; ///< If odometer is configured, bit 0 will be set to 1.
     
 };
 void insert(Serializer& serializer, const OdometerData& self);

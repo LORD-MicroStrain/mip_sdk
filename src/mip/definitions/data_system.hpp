@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_system {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_cpp
 ///@{
-///@defgroup system_data_cpp  SYSTEMData
+///@defgroup system_data_cpp_cpp  System Data_cpp [CPP]
 ///
 ///@{
 
@@ -48,7 +48,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_built_in_test  None
+///@defgroup cpp_system_built_in_test  Built In Test
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -78,7 +78,7 @@ struct BuiltInTest
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t result[16] = {0};
+    uint8_t result[16] = {0}; ///< Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
     
 };
 void insert(Serializer& serializer, const BuiltInTest& self);
@@ -87,7 +87,7 @@ void extract(Serializer& serializer, BuiltInTest& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_time_sync_status  None
+///@defgroup cpp_system_time_sync_status  Time Sync Status
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
@@ -99,8 +99,8 @@ struct TimeSyncStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    bool time_sync = 0;
-    uint8_t last_pps_rcvd = 0;
+    bool time_sync = 0; ///< True if sync with the PPS signal is currently valid. False if PPS feature is disabled or a PPS signal is not detected.
+    uint8_t last_pps_rcvd = 0; ///< Elapsed time in seconds since last PPS was received, with a maximum value of 255.
     
 };
 void insert(Serializer& serializer, const TimeSyncStatus& self);
@@ -109,7 +109,7 @@ void extract(Serializer& serializer, TimeSyncStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gpio_state  None
+///@defgroup cpp_system_gpio_state  Gpio State
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -139,7 +139,7 @@ struct GpioState
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t states = 0;
+    uint8_t states = 0; ///< Bitfield containing the states for each GPIO pin.<br/> Bit 0 (0x01): pin 1<br/> Bit 1 (0x02): pin 2<br/> Bit 2 (0x04): pin 3<br/> Bit 3 (0x08): pin 4<br/> Bits for pins that don't exist will read as 0.
     
 };
 void insert(Serializer& serializer, const GpioState& self);
@@ -148,7 +148,7 @@ void extract(Serializer& serializer, GpioState& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gpio_analog_value  None
+///@defgroup cpp_system_gpio_analog_value  Gpio Analog Value
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///
@@ -161,8 +161,8 @@ struct GpioAnalogValue
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t gpio_id = 0;
-    float value = 0;
+    uint8_t gpio_id = 0; ///< GPIO pin number starting with 1.
+    float value = 0; ///< Value of the GPIO line in scaled volts.
     
 };
 void insert(Serializer& serializer, const GpioAnalogValue& self);

@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup system_commands_c  SYSTEMCommands
+///@defgroup system_commands_c_c  System Commands_c [C]
 ///
 ///@{
 
@@ -56,7 +56,7 @@ enum { MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_comm_mode  None
+///@defgroup c_system_comm_mode  Comm Mode
 /// Advanced specialized communication modes.
 /// 
 /// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)

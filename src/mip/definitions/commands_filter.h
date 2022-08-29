@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup filter_commands_c  FILTERCommands
+///@defgroup filter_commands_c_c  Filter Commands_c [C]
 ///
 ///@{
 
@@ -180,7 +180,7 @@ void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_reset  Reset Navigation Filter
+///@defgroup c_filter_reset  Reset
 /// Resets the filter to the initialization state.
 /// 
 /// If the auto-initialization feature is disabled, the initial attitude or heading must be set in
@@ -192,7 +192,7 @@ enum mip_cmd_result mip_filter_reset(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_set_initial_attitude  Set Initial Attitude
+///@defgroup c_filter_set_initial_attitude  Set Initial Attitude
 /// Set the sensor initial attitude.
 /// 
 /// This command can only be issued in the "Init" state and should be used with a good
@@ -210,9 +210,9 @@ enum mip_cmd_result mip_filter_reset(struct mip_interface* device);
 
 struct mip_filter_set_initial_attitude_command
 {
-    float roll;
-    float pitch;
-    float heading;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float heading; ///< [radians]
     
 };
 void insert_mip_filter_set_initial_attitude_command(struct mip_serializer* serializer, const struct mip_filter_set_initial_attitude_command* self);
@@ -222,7 +222,7 @@ enum mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_estimation_control  Estimation Control Flags
+///@defgroup c_filter_estimation_control  Estimation Control
 /// Estimation Control Flags
 /// 
 /// Controls which parameters are estimated by the Kalman Filter.
@@ -252,7 +252,7 @@ enum mip_filter_estimation_control_command_enable_flags
 struct mip_filter_estimation_control_command
 {
     enum mip_function_selector function;
-    enum mip_filter_estimation_control_command_enable_flags enable;
+    enum mip_filter_estimation_control_command_enable_flags enable; ///< See above
     
 };
 void insert_mip_filter_estimation_control_command(struct mip_serializer* serializer, const struct mip_filter_estimation_control_command* self);
@@ -263,7 +263,7 @@ void extract_mip_filter_estimation_control_command_enable_flags(struct mip_seria
 
 struct mip_filter_estimation_control_response
 {
-    enum mip_filter_estimation_control_command_enable_flags enable;
+    enum mip_filter_estimation_control_command_enable_flags enable; ///< See above
     
 };
 void insert_mip_filter_estimation_control_response(struct mip_serializer* serializer, const struct mip_filter_estimation_control_response* self);
@@ -277,7 +277,7 @@ enum mip_cmd_result mip_filter_default_estimation_control(struct mip_interface* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_gnss_update  External GNSS Update
+///@defgroup c_filter_external_gnss_update  External Gnss Update
 /// Provide a filter measurement from an external GNSS
 /// 
 /// The GNSS source control must be set to "external" for this command to succeed, otherwise it will be NACK'd.
@@ -288,14 +288,14 @@ enum mip_cmd_result mip_filter_default_estimation_control(struct mip_interface* 
 
 struct mip_filter_external_gnss_update_command
 {
-    double gps_time;
-    uint16_t gps_week;
-    double latitude;
-    double longitude;
-    double height;
-    float velocity[3];
-    float pos_uncertainty[3];
-    float vel_uncertainty[3];
+    double gps_time; ///< [seconds]
+    uint16_t gps_week; ///< [GPS week number, not modulus 1024]
+    double latitude; ///< [degrees]
+    double longitude; ///< [degrees]
+    double height; ///< Above WGS84 ellipsoid [meters]
+    float velocity[3]; ///< NED Frame [meters/second]
+    float pos_uncertainty[3]; ///< NED Frame, 1-sigma [meters]
+    float vel_uncertainty[3]; ///< NED Frame, 1-sigma [meters/second]
     
 };
 void insert_mip_filter_external_gnss_update_command(struct mip_serializer* serializer, const struct mip_filter_external_gnss_update_command* self);
@@ -305,7 +305,7 @@ enum mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_heading_update  External Heading Update
+///@defgroup c_filter_external_heading_update  External Heading Update
 /// Provide a filter measurement from an external heading source
 /// 
 /// The heading must be the sensor frame with respect to the NED frame.
@@ -324,9 +324,9 @@ enum mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device
 
 struct mip_filter_external_heading_update_command
 {
-    float heading;
-    float heading_uncertainty;
-    uint8_t type;
+    float heading; ///< Bounded by +-PI [radians]
+    float heading_uncertainty; ///< 1-sigma [radians]
+    uint8_t type; ///< 1 - True, 2 - Magnetic
     
 };
 void insert_mip_filter_external_heading_update_command(struct mip_serializer* serializer, const struct mip_filter_external_heading_update_command* self);
@@ -336,7 +336,7 @@ enum mip_cmd_result mip_filter_external_heading_update(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_heading_update_with_time  External Heading Update With Time
+///@defgroup c_filter_external_heading_update_with_time  External Heading Update With Time
 /// Provide a filter measurement from an external heading source at a specific GPS time
 /// 
 /// This is more accurate than the External Heading Update (0x0D, 0x17) and should be used in applications
@@ -359,11 +359,11 @@ enum mip_cmd_result mip_filter_external_heading_update(struct mip_interface* dev
 
 struct mip_filter_external_heading_update_with_time_command
 {
-    double gps_time;
-    uint16_t gps_week;
-    float heading;
-    float heading_uncertainty;
-    uint8_t type;
+    double gps_time; ///< [seconds]
+    uint16_t gps_week; ///< [GPS week number, not modulus 1024]
+    float heading; ///< Relative to true north, bounded by +-PI [radians]
+    float heading_uncertainty; ///< 1-sigma [radians]
+    uint8_t type; ///< 1 - True, 2 - Magnetic
     
 };
 void insert_mip_filter_external_heading_update_with_time_command(struct mip_serializer* serializer, const struct mip_filter_external_heading_update_with_time_command* self);
@@ -373,7 +373,7 @@ enum mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_inte
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_tare_orientation  Tare Sensor Orientation
+///@defgroup c_filter_tare_orientation  Tare Orientation
 /// Tare the device orientation.
 /// 
 /// This function uses the current device orientation relative to the NED frame as the current sensor to vehicle transformation.
@@ -393,7 +393,7 @@ enum mip_filter_tare_orientation_command_mip_tare_axes
 struct mip_filter_tare_orientation_command
 {
     enum mip_function_selector function;
-    enum mip_filter_tare_orientation_command_mip_tare_axes axes;
+    enum mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
     
 };
 void insert_mip_filter_tare_orientation_command(struct mip_serializer* serializer, const struct mip_filter_tare_orientation_command* self);
@@ -404,7 +404,7 @@ void extract_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serial
 
 struct mip_filter_tare_orientation_response
 {
-    enum mip_filter_tare_orientation_command_mip_tare_axes axes;
+    enum mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
     
 };
 void insert_mip_filter_tare_orientation_response(struct mip_serializer* serializer, const struct mip_filter_tare_orientation_response* self);
@@ -418,7 +418,7 @@ enum mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_to_vehicle_rotation_euler  Sensor to Vehicle Frame Rotation Euler
+///@defgroup c_filter_sensor_to_vehicle_rotation_euler  Sensor To Vehicle Rotation Euler
 /// Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -448,9 +448,9 @@ enum mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* de
 struct mip_filter_sensor_to_vehicle_rotation_euler_command
 {
     enum mip_function_selector function;
-    float roll;
-    float pitch;
-    float yaw;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
     
 };
 void insert_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_rotation_euler_command* self);
@@ -458,9 +458,9 @@ void extract_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_seri
 
 struct mip_filter_sensor_to_vehicle_rotation_euler_response
 {
-    float roll;
-    float pitch;
-    float yaw;
+    float roll; ///< [radians]
+    float pitch; ///< [radians]
+    float yaw; ///< [radians]
     
 };
 void insert_mip_filter_sensor_to_vehicle_rotation_euler_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_rotation_euler_response* self);
@@ -474,7 +474,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_to_vehicle_rotation_dcm  Sensor to Vehicle Frame Rotation DCM
+///@defgroup c_filter_sensor_to_vehicle_rotation_dcm  Sensor To Vehicle Rotation Dcm
 /// Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -532,7 +532,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_to_vehicle_rotation_quaternion  Sensor to Vehicle Frame Rotation Quaternion
+///@defgroup c_filter_sensor_to_vehicle_rotation_quaternion  Sensor To Vehicle Rotation Quaternion
 /// Set the sensor to vehicle frame rotation using a quaternion.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -589,7 +589,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(str
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_to_vehicle_offset  Sensor to Vehicle Frame Offset
+///@defgroup c_filter_sensor_to_vehicle_offset  Sensor To Vehicle Offset
 /// Set the sensor to vehicle frame offset, expressed in the sensor frame.
 /// 
 /// This is a simple offset, not a lever arm.  It does not compensate for inertial effects experienced from being offset from the center of gravity/rotation of the vehicle.
@@ -605,7 +605,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(str
 struct mip_filter_sensor_to_vehicle_offset_command
 {
     enum mip_function_selector function;
-    float offset[3];
+    float offset[3]; ///< [meters]
     
 };
 void insert_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_offset_command* self);
@@ -613,7 +613,7 @@ void extract_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* 
 
 struct mip_filter_sensor_to_vehicle_offset_response
 {
-    float offset[3];
+    float offset[3]; ///< [meters]
     
 };
 void insert_mip_filter_sensor_to_vehicle_offset_response(struct mip_serializer* serializer, const struct mip_filter_sensor_to_vehicle_offset_response* self);
@@ -627,7 +627,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_inter
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_antenna_offset  GNSS Antenna Offset Control
+///@defgroup c_filter_antenna_offset  Antenna Offset
 /// Set the sensor to GNSS antenna offset.
 /// 
 /// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
@@ -640,7 +640,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_inter
 struct mip_filter_antenna_offset_command
 {
     enum mip_function_selector function;
-    float offset[3];
+    float offset[3]; ///< [meters]
     
 };
 void insert_mip_filter_antenna_offset_command(struct mip_serializer* serializer, const struct mip_filter_antenna_offset_command* self);
@@ -648,7 +648,7 @@ void extract_mip_filter_antenna_offset_command(struct mip_serializer* serializer
 
 struct mip_filter_antenna_offset_response
 {
-    float offset[3];
+    float offset[3]; ///< [meters]
     
 };
 void insert_mip_filter_antenna_offset_response(struct mip_serializer* serializer, const struct mip_filter_antenna_offset_response* self);
@@ -662,7 +662,7 @@ enum mip_cmd_result mip_filter_default_antenna_offset(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_source  GNSS Aiding Source Control
+///@defgroup c_filter_gnss_source  Gnss Source
 /// Control the source of GNSS information used to update the Kalman Filter.
 /// 
 /// Changing the GNSS source while the sensor is in the "running" state may temporarily place
@@ -707,7 +707,7 @@ enum mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device)
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_heading_source  Heading Aiding Source Control
+///@defgroup c_filter_heading_source  Heading Source
 /// Control the source of heading information used to update the Kalman Filter.
 /// 
 /// 1. To use internal GNSS velocity vector for heading updates, the target application
@@ -763,7 +763,7 @@ enum mip_cmd_result mip_filter_default_heading_source(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_auto_init_control  Auto-initialization Control
+///@defgroup c_filter_auto_init_control  Auto Init Control
 /// Filter Auto-initialization Control
 /// 
 /// Enable/Disable automatic initialization upon device startup.
@@ -779,7 +779,7 @@ enum mip_cmd_result mip_filter_default_heading_source(struct mip_interface* devi
 struct mip_filter_auto_init_control_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
+    uint8_t enable; ///< See above
     
 };
 void insert_mip_filter_auto_init_control_command(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_command* self);
@@ -787,7 +787,7 @@ void extract_mip_filter_auto_init_control_command(struct mip_serializer* seriali
 
 struct mip_filter_auto_init_control_response
 {
-    uint8_t enable;
+    uint8_t enable; ///< See above
     
 };
 void insert_mip_filter_auto_init_control_response(struct mip_serializer* serializer, const struct mip_filter_auto_init_control_response* self);
@@ -801,7 +801,7 @@ enum mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_altitude_aiding  Altitude Aiding Control
+///@defgroup c_filter_altitude_aiding  Altitude Aiding
 /// Altitude Aiding Control
 /// 
 /// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
@@ -820,7 +820,7 @@ enum mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* d
 struct mip_filter_altitude_aiding_command
 {
     enum mip_function_selector function;
-    uint8_t aiding_selector;
+    uint8_t aiding_selector; ///< See above
     
 };
 void insert_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, const struct mip_filter_altitude_aiding_command* self);
@@ -828,7 +828,7 @@ void extract_mip_filter_altitude_aiding_command(struct mip_serializer* serialize
 
 struct mip_filter_altitude_aiding_response
 {
-    uint8_t aiding_selector;
+    uint8_t aiding_selector; ///< See above
     
 };
 void insert_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, const struct mip_filter_altitude_aiding_response* self);
@@ -842,7 +842,7 @@ enum mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_auto_zupt  Zero Velocity Update Control
+///@defgroup c_filter_auto_zupt  Auto Zupt
 /// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -852,8 +852,8 @@ enum mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* dev
 struct mip_filter_auto_zupt_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
-    float threshold;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float threshold; ///< [meters/second]
     
 };
 void insert_mip_filter_auto_zupt_command(struct mip_serializer* serializer, const struct mip_filter_auto_zupt_command* self);
@@ -861,8 +861,8 @@ void extract_mip_filter_auto_zupt_command(struct mip_serializer* serializer, str
 
 struct mip_filter_auto_zupt_response
 {
-    uint8_t enable;
-    float threshold;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float threshold; ///< [meters/second]
     
 };
 void insert_mip_filter_auto_zupt_response(struct mip_serializer* serializer, const struct mip_filter_auto_zupt_response* self);
@@ -876,7 +876,7 @@ enum mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_auto_angular_zupt  Zero Angular Rate Update Control
+///@defgroup c_filter_auto_angular_zupt  Auto Angular Zupt
 /// Zero Angular Rate Update
 /// The ZUPT is triggered when the scalar magnitude of the angular rate vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -886,8 +886,8 @@ enum mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device);
 struct mip_filter_auto_angular_zupt_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
-    float threshold;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float threshold; ///< [radians/second]
     
 };
 void insert_mip_filter_auto_angular_zupt_command(struct mip_serializer* serializer, const struct mip_filter_auto_angular_zupt_command* self);
@@ -895,8 +895,8 @@ void extract_mip_filter_auto_angular_zupt_command(struct mip_serializer* seriali
 
 struct mip_filter_auto_angular_zupt_response
 {
-    uint8_t enable;
-    float threshold;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float threshold; ///< [radians/second]
     
 };
 void insert_mip_filter_auto_angular_zupt_response(struct mip_serializer* serializer, const struct mip_filter_auto_angular_zupt_response* self);
@@ -910,7 +910,7 @@ enum mip_cmd_result mip_filter_default_auto_angular_zupt(struct mip_interface* d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_commanded_zupt  Commanded Zero Veloicty Update
+///@defgroup c_filter_commanded_zupt  Commanded Zupt
 /// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -920,7 +920,7 @@ enum mip_cmd_result mip_filter_commanded_zupt(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_commanded_angular_zupt  Commanded Zero Angular Rate Update
+///@defgroup c_filter_commanded_angular_zupt  Commanded Angular Zupt
 /// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -930,7 +930,7 @@ enum mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_measurement_enable  Aiding Measurement Control
+///@defgroup c_filter_aiding_measurement_enable  Aiding Measurement Enable
 /// Enables / disables the specified aiding measurement source.
 /// 
 /// 
@@ -951,8 +951,8 @@ enum mip_filter_aiding_measurement_enable_command_aiding_source
 struct mip_filter_aiding_measurement_enable_command
 {
     enum mip_function_selector function;
-    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source;
-    bool enable;
+    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
+    bool enable; ///< Controls the aiding sorce
     
 };
 void insert_mip_filter_aiding_measurement_enable_command(struct mip_serializer* serializer, const struct mip_filter_aiding_measurement_enable_command* self);
@@ -963,8 +963,8 @@ void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct m
 
 struct mip_filter_aiding_measurement_enable_response
 {
-    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source;
-    bool enable;
+    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
+    bool enable; ///< Controls the aiding sorce
     
 };
 void insert_mip_filter_aiding_measurement_enable_response(struct mip_serializer* serializer, const struct mip_filter_aiding_measurement_enable_response* self);
@@ -978,7 +978,7 @@ enum mip_cmd_result mip_filter_default_aiding_measurement_enable(struct mip_inte
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_run  Run Navigation Filter
+///@defgroup c_filter_run  Run
 /// Manual run command.
 /// 
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
@@ -989,7 +989,7 @@ enum mip_cmd_result mip_filter_run(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_kinematic_constraint  Kinematic Constraint Control
+///@defgroup c_filter_kinematic_constraint  Kinematic Constraint
 /// Controls kinematic constraint model selection for the navigation filter.
 /// 
 /// See manual for explanation of how the kinematic constraints are applied.
@@ -999,9 +999,9 @@ enum mip_cmd_result mip_filter_run(struct mip_interface* device);
 struct mip_filter_kinematic_constraint_command
 {
     enum mip_function_selector function;
-    uint8_t acceleration_constraint_selection;
-    uint8_t velocity_constraint_selection;
-    uint8_t angular_constraint_selection;
+    uint8_t acceleration_constraint_selection; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+    uint8_t velocity_constraint_selection; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+    uint8_t angular_constraint_selection; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
     
 };
 void insert_mip_filter_kinematic_constraint_command(struct mip_serializer* serializer, const struct mip_filter_kinematic_constraint_command* self);
@@ -1009,9 +1009,9 @@ void extract_mip_filter_kinematic_constraint_command(struct mip_serializer* seri
 
 struct mip_filter_kinematic_constraint_response
 {
-    uint8_t acceleration_constraint_selection;
-    uint8_t velocity_constraint_selection;
-    uint8_t angular_constraint_selection;
+    uint8_t acceleration_constraint_selection; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+    uint8_t velocity_constraint_selection; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+    uint8_t angular_constraint_selection; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
     
 };
 void insert_mip_filter_kinematic_constraint_response(struct mip_serializer* serializer, const struct mip_filter_kinematic_constraint_response* self);
@@ -1025,7 +1025,7 @@ enum mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_initialization_configuration  Navigation Filter Initialization
+///@defgroup c_filter_initialization_configuration  Initialization Configuration
 /// Controls the source and values used for initial conditions of the navigation solution.
 /// 
 /// Notes: Initial conditions are the position, velocity, and attitude of the platform used when the filter starts running or is reset.
@@ -1053,15 +1053,15 @@ enum mip_filter_initialization_configuration_command_initial_condition_source
 struct mip_filter_initialization_configuration_command
 {
     enum mip_function_selector function;
-    uint8_t wait_for_run_command;
-    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src;
-    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector;
-    float initial_heading;
-    float initial_pitch;
-    float initial_roll;
-    float initial_position[3];
-    float initial_velocity[3];
-    enum mip_filter_reference_frame reference_frame_selector;
+    uint8_t wait_for_run_command; ///< Initialize filter only after receiving "run" command
+    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
+    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    float initial_heading; ///< User-specified initial platform heading (degrees).
+    float initial_pitch; ///< User-specified initial platform pitch (degrees)
+    float initial_roll; ///< User-specified initial platform roll (degrees)
+    float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    enum mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
 void insert_mip_filter_initialization_configuration_command(struct mip_serializer* serializer, const struct mip_filter_initialization_configuration_command* self);
@@ -1075,15 +1075,15 @@ void extract_mip_filter_initialization_configuration_command_initial_condition_s
 
 struct mip_filter_initialization_configuration_response
 {
-    uint8_t wait_for_run_command;
-    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src;
-    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector;
-    float initial_heading;
-    float initial_pitch;
-    float initial_roll;
-    float initial_position[3];
-    float initial_velocity[3];
-    enum mip_filter_reference_frame reference_frame_selector;
+    uint8_t wait_for_run_command; ///< Initialize filter only after receiving "run" command
+    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
+    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    float initial_heading; ///< User-specified initial platform heading (degrees).
+    float initial_pitch; ///< User-specified initial platform pitch (degrees)
+    float initial_roll; ///< User-specified initial platform roll (degrees)
+    float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    enum mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
 void insert_mip_filter_initialization_configuration_response(struct mip_serializer* serializer, const struct mip_filter_initialization_configuration_response* self);
@@ -1097,7 +1097,7 @@ enum mip_cmd_result mip_filter_default_initialization_configuration(struct mip_i
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_adaptive_filter_options  Adaptive Filter Control
+///@defgroup c_filter_adaptive_filter_options  Adaptive Filter Options
 /// Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
 ///
 ///@{
@@ -1105,8 +1105,8 @@ enum mip_cmd_result mip_filter_default_initialization_configuration(struct mip_i
 struct mip_filter_adaptive_filter_options_command
 {
     enum mip_function_selector function;
-    uint8_t level;
-    uint16_t time_limit;
+    uint8_t level; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+    uint16_t time_limit; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     
 };
 void insert_mip_filter_adaptive_filter_options_command(struct mip_serializer* serializer, const struct mip_filter_adaptive_filter_options_command* self);
@@ -1114,8 +1114,8 @@ void extract_mip_filter_adaptive_filter_options_command(struct mip_serializer* s
 
 struct mip_filter_adaptive_filter_options_response
 {
-    uint8_t level;
-    uint16_t time_limit;
+    uint8_t level; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+    uint16_t time_limit; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     
 };
 void insert_mip_filter_adaptive_filter_options_response(struct mip_serializer* serializer, const struct mip_filter_adaptive_filter_options_response* self);
@@ -1129,7 +1129,7 @@ enum mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_multi_antenna_offset  GNSS Multi-Antenna Offset Control
+///@defgroup c_filter_multi_antenna_offset  Multi Antenna Offset
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
@@ -1139,8 +1139,8 @@ enum mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interf
 struct mip_filter_multi_antenna_offset_command
 {
     enum mip_function_selector function;
-    uint8_t receiver_id;
-    float antenna_offset[3];
+    uint8_t receiver_id; ///< Receiver: 1, 2, etc...
+    float antenna_offset[3]; ///< Antenna lever arm offset vector in the vehicle frame (m)
     
 };
 void insert_mip_filter_multi_antenna_offset_command(struct mip_serializer* serializer, const struct mip_filter_multi_antenna_offset_command* self);
@@ -1163,7 +1163,7 @@ enum mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rel_pos_configuration  Relative Position Configuration
+///@defgroup c_filter_rel_pos_configuration  Rel Pos Configuration
 /// Configure the reference location for filter relative positioning outputs
 ///
 ///@{
@@ -1171,9 +1171,9 @@ enum mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface
 struct mip_filter_rel_pos_configuration_command
 {
     enum mip_function_selector function;
-    uint8_t source;
-    enum mip_filter_reference_frame reference_frame_selector;
-    double reference_coordinates[3];
+    uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
+    enum mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
+    double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
     
 };
 void insert_mip_filter_rel_pos_configuration_command(struct mip_serializer* serializer, const struct mip_filter_rel_pos_configuration_command* self);
@@ -1181,9 +1181,9 @@ void extract_mip_filter_rel_pos_configuration_command(struct mip_serializer* ser
 
 struct mip_filter_rel_pos_configuration_response
 {
-    uint8_t source;
-    enum mip_filter_reference_frame reference_frame_selector;
-    double reference_coordinates[3];
+    uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
+    enum mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
+    double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
     
 };
 void insert_mip_filter_rel_pos_configuration_response(struct mip_serializer* serializer, const struct mip_filter_rel_pos_configuration_response* self);
@@ -1197,7 +1197,7 @@ enum mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interfac
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ref_point_lever_arm  Reference point lever arm
+///@defgroup c_filter_ref_point_lever_arm  Ref Point Lever Arm
 /// Lever arm offset with respect to the sensor for the indicated point of reference.
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
@@ -1215,8 +1215,8 @@ enum mip_filter_ref_point_lever_arm_command_reference_point_selector
 struct mip_filter_ref_point_lever_arm_command
 {
     enum mip_function_selector function;
-    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel;
-    float lever_arm_offset[3];
+    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
+    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 void insert_mip_filter_ref_point_lever_arm_command(struct mip_serializer* serializer, const struct mip_filter_ref_point_lever_arm_command* self);
@@ -1227,8 +1227,8 @@ void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(str
 
 struct mip_filter_ref_point_lever_arm_response
 {
-    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel;
-    float lever_arm_offset[3];
+    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
+    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 void insert_mip_filter_ref_point_lever_arm_response(struct mip_serializer* serializer, const struct mip_filter_ref_point_lever_arm_response* self);
@@ -1242,7 +1242,7 @@ enum mip_cmd_result mip_filter_default_ref_point_lever_arm(struct mip_interface*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_speed_measurement  Input speed measurement
+///@defgroup c_filter_speed_measurement  Speed Measurement
 /// Speed aiding measurement, where speed is defined as rate of motion along the vehicle's x-axis direction.
 /// Can be used by an external odometer/speedometer, for example.
 /// This command cannot be used if the internal odometer is configured.
@@ -1251,10 +1251,10 @@ enum mip_cmd_result mip_filter_default_ref_point_lever_arm(struct mip_interface*
 
 struct mip_filter_speed_measurement_command
 {
-    uint8_t source;
-    float time_of_week;
-    float speed;
-    float speed_uncertainty;
+    uint8_t source; ///< Reserved, must be 1.
+    float time_of_week; ///< GPS time of week when speed was sampled
+    float speed; ///< Estimated speed along vehicle's x-axis (may be positive or negative) [meters/second]
+    float speed_uncertainty; ///< Estimated uncertainty in the speed measurement (1-sigma value) [meters/second]
     
 };
 void insert_mip_filter_speed_measurement_command(struct mip_serializer* serializer, const struct mip_filter_speed_measurement_command* self);
@@ -1264,7 +1264,7 @@ enum mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, u
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_speed_lever_arm  Measurement speed lever arm
+///@defgroup c_filter_speed_lever_arm  Speed Lever Arm
 /// Lever arm offset for speed measurements.
 /// This is used to compensate for an off-center measurement point
 /// having a different speed due to rotation of the vehicle.
@@ -1278,8 +1278,8 @@ enum mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, u
 struct mip_filter_speed_lever_arm_command
 {
     enum mip_function_selector function;
-    uint8_t source;
-    float lever_arm_offset[3];
+    uint8_t source; ///< Reserved, must be 1.
+    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 void insert_mip_filter_speed_lever_arm_command(struct mip_serializer* serializer, const struct mip_filter_speed_lever_arm_command* self);
@@ -1287,8 +1287,8 @@ void extract_mip_filter_speed_lever_arm_command(struct mip_serializer* serialize
 
 struct mip_filter_speed_lever_arm_response
 {
-    uint8_t source;
-    float lever_arm_offset[3];
+    uint8_t source; ///< Reserved, must be 1.
+    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 void insert_mip_filter_speed_lever_arm_response(struct mip_serializer* serializer, const struct mip_filter_speed_lever_arm_response* self);
@@ -1302,7 +1302,7 @@ enum mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
+///@defgroup c_filter_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
 /// Configure the wheeled vehicle kinematic constraint.
 /// 
 /// When enabled, the filter uses the assumption that velocity is constrained to the primary vehicle axis.
@@ -1316,7 +1316,7 @@ enum mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* dev
 struct mip_filter_wheeled_vehicle_constraint_control_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
 void insert_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_serializer* serializer, const struct mip_filter_wheeled_vehicle_constraint_control_command* self);
@@ -1324,7 +1324,7 @@ void extract_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_se
 
 struct mip_filter_wheeled_vehicle_constraint_control_response
 {
-    uint8_t enable;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
 void insert_mip_filter_wheeled_vehicle_constraint_control_response(struct mip_serializer* serializer, const struct mip_filter_wheeled_vehicle_constraint_control_response* self);
@@ -1338,7 +1338,7 @@ enum mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
+///@defgroup c_filter_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
 /// Configure the vertical gyro kinematic constraint.
 /// 
 /// When enabled and no valid GNSS measurements are available, the filter uses the accelerometers to track pitch
@@ -1350,7 +1350,7 @@ enum mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct
 struct mip_filter_vertical_gyro_constraint_control_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
 void insert_mip_filter_vertical_gyro_constraint_control_command(struct mip_serializer* serializer, const struct mip_filter_vertical_gyro_constraint_control_command* self);
@@ -1358,7 +1358,7 @@ void extract_mip_filter_vertical_gyro_constraint_control_command(struct mip_seri
 
 struct mip_filter_vertical_gyro_constraint_control_response
 {
-    uint8_t enable;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
 void insert_mip_filter_vertical_gyro_constraint_control_response(struct mip_serializer* serializer, const struct mip_filter_vertical_gyro_constraint_control_response* self);
@@ -1372,7 +1372,7 @@ enum mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_antenna_cal_control  GNSS Antenna Offset Calibration Control
+///@defgroup c_filter_gnss_antenna_cal_control  Gnss Antenna Cal Control
 /// Configure the GNSS antenna lever arm calibration.
 /// 
 /// When enabled, the filter will enable lever arm error tracking, up to the maximum offset specified.
@@ -1382,8 +1382,8 @@ enum mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct m
 struct mip_filter_gnss_antenna_cal_control_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
-    float max_offset;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float max_offset; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     
 };
 void insert_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* serializer, const struct mip_filter_gnss_antenna_cal_control_command* self);
@@ -1391,8 +1391,8 @@ void extract_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* 
 
 struct mip_filter_gnss_antenna_cal_control_response
 {
-    uint8_t enable;
-    float max_offset;
+    uint8_t enable; ///< 0 - Disable, 1 - Enable
+    float max_offset; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     
 };
 void insert_mip_filter_gnss_antenna_cal_control_response(struct mip_serializer* serializer, const struct mip_filter_gnss_antenna_cal_control_response* self);
@@ -1406,7 +1406,7 @@ enum mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_inter
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_magnetic_declination_source  Magnetic Field Declination Source Control
+///@defgroup c_filter_magnetic_declination_source  Magnetic Declination Source
 /// Source for magnetic declination angle, and user supplied value for manual selection.
 ///
 ///@{
@@ -1414,8 +1414,8 @@ enum mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_inter
 struct mip_filter_magnetic_declination_source_command
 {
     enum mip_function_selector function;
-    enum mip_filter_mag_declination_source source;
-    float declination;
+    enum mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
+    float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     
 };
 void insert_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, const struct mip_filter_magnetic_declination_source_command* self);
@@ -1423,8 +1423,8 @@ void extract_mip_filter_magnetic_declination_source_command(struct mip_serialize
 
 struct mip_filter_magnetic_declination_source_response
 {
-    enum mip_filter_mag_declination_source source;
-    float declination;
+    enum mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
+    float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     
 };
 void insert_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, const struct mip_filter_magnetic_declination_source_response* self);
@@ -1438,7 +1438,7 @@ enum mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_in
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_set_initial_heading  Set Initial Heading Control
+///@defgroup c_filter_set_initial_heading  Set Initial Heading
 /// Set the initial heading angle.
 /// 
 /// The estimation filter will reset the heading estimate to provided value. If the product supports magnetometer aiding and this feature has been enabled, the heading
@@ -1448,7 +1448,7 @@ enum mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_in
 
 struct mip_filter_set_initial_heading_command
 {
-    float heading;
+    float heading; ///< Initial heading in radians [-pi, pi]
     
 };
 void insert_mip_filter_set_initial_heading_command(struct mip_serializer* serializer, const struct mip_filter_set_initial_heading_command* self);
