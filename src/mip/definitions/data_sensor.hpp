@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_sensor {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup sensor_data_cpp_cpp  Sensor Data_cpp [CPP]
+///@defgroup sensor_data_cpp  Sensor Data [CPP]
 ///
 ///@{
 
@@ -70,7 +70,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_accel  Raw Accel
+///@defgroup cpp_sensor_raw_accel  (0x80,0x01) Raw Accel [CPP]
 /// Three element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -92,7 +92,7 @@ void extract(Serializer& serializer, RawAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_gyro  Raw Gyro
+///@defgroup cpp_sensor_raw_gyro  (0x80,0x02) Raw Gyro [CPP]
 /// Three element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -114,7 +114,7 @@ void extract(Serializer& serializer, RawGyro& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_mag  Raw Mag
+///@defgroup cpp_sensor_raw_mag  (0x80,0x03) Raw Mag [CPP]
 /// Three element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -136,7 +136,7 @@ void extract(Serializer& serializer, RawMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_raw_pressure  Raw Pressure
+///@defgroup cpp_sensor_raw_pressure  (0x80,0x16) Raw Pressure [CPP]
 /// Scalar value representing the sensed ambient pressure.
 /// This quantity is temperature compensated.
 ///
@@ -158,7 +158,7 @@ void extract(Serializer& serializer, RawPressure& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_accel  Scaled Accel
+///@defgroup cpp_sensor_scaled_accel  (0x80,0x04) Scaled Accel [CPP]
 /// 3-element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -180,7 +180,7 @@ void extract(Serializer& serializer, ScaledAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_gyro  Scaled Gyro
+///@defgroup cpp_sensor_scaled_gyro  (0x80,0x05) Scaled Gyro [CPP]
 /// 3-element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -202,7 +202,7 @@ void extract(Serializer& serializer, ScaledGyro& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_mag  Scaled Mag
+///@defgroup cpp_sensor_scaled_mag  (0x80,0x06) Scaled Mag [CPP]
 /// 3-element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -224,7 +224,7 @@ void extract(Serializer& serializer, ScaledMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_scaled_pressure  Scaled Pressure
+///@defgroup cpp_sensor_scaled_pressure  (0x80,0x17) Scaled Pressure [CPP]
 /// Scalar value representing the sensed ambient pressure.
 ///
 ///@{
@@ -245,7 +245,7 @@ void extract(Serializer& serializer, ScaledPressure& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_delta_theta  Delta Theta
+///@defgroup cpp_sensor_delta_theta  (0x80,0x07) Delta Theta [CPP]
 /// 3-element vector representing the time integral of angular rate.
 /// This quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -267,7 +267,7 @@ void extract(Serializer& serializer, DeltaTheta& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_delta_velocity  Delta Velocity
+///@defgroup cpp_sensor_delta_velocity  (0x80,0x08) Delta Velocity [CPP]
 /// 3-element vector representing the time integral of acceleration.
 /// This quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -289,7 +289,7 @@ void extract(Serializer& serializer, DeltaVelocity& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_orientation_matrix  Comp Orientation Matrix
+///@defgroup cpp_sensor_comp_orientation_matrix  (0x80,0x09) Comp Orientation Matrix [CPP]
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -320,7 +320,7 @@ void extract(Serializer& serializer, CompOrientationMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_quaternion  Comp Quaternion
+///@defgroup cpp_sensor_comp_quaternion  (0x80,0x0A) Comp Quaternion [CPP]
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -349,7 +349,7 @@ void extract(Serializer& serializer, CompQuaternion& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_euler_angles  Comp Euler Angles
+///@defgroup cpp_sensor_comp_euler_angles  (0x80,0x0C) Comp Euler Angles [CPP]
 /// Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -373,7 +373,7 @@ void extract(Serializer& serializer, CompEulerAngles& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_comp_orientation_update_matrix  Comp Orientation Update Matrix
+///@defgroup cpp_sensor_comp_orientation_update_matrix  (0x80,0x0B) Comp Orientation Update Matrix [CPP]
 /// DEPRECATED!
 ///
 ///@{
@@ -394,7 +394,7 @@ void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_orientation_raw_temp  Orientation Raw Temp
+///@defgroup cpp_sensor_orientation_raw_temp  (0x80,0x0D) Orientation Raw Temp [CPP]
 /// DEPRECATED!
 ///
 ///@{
@@ -415,7 +415,7 @@ void extract(Serializer& serializer, OrientationRawTemp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_internal_timestamp  Internal Timestamp
+///@defgroup cpp_sensor_internal_timestamp  (0x80,0x0E) Internal Timestamp [CPP]
 /// DEPRECATED!
 ///
 ///@{
@@ -436,7 +436,7 @@ void extract(Serializer& serializer, InternalTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_pps_timestamp  Pps Timestamp
+///@defgroup cpp_sensor_pps_timestamp  (0x80,0x0F) Pps Timestamp [CPP]
 /// DEPRECATED!
 ///
 ///@{
@@ -458,7 +458,7 @@ void extract(Serializer& serializer, PpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_gps_timestamp  Gps Timestamp
+///@defgroup cpp_sensor_gps_timestamp  (0x80,0x12) Gps Timestamp [CPP]
 /// GPS timestamp of the SENSOR data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -509,7 +509,7 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_temperature_abs  Temperature Abs
+///@defgroup cpp_sensor_temperature_abs  (0x80,0x14) Temperature Abs [CPP]
 /// SENSOR reported temperature statistics
 /// 
 /// Temperature may originate from the MEMS sensors, or be calculated in combination with board temperature sensors.
@@ -536,7 +536,7 @@ void extract(Serializer& serializer, TemperatureAbs& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_up_vector  Up Vector
+///@defgroup cpp_sensor_up_vector  (0x80,0x11) Up Vector [CPP]
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -563,7 +563,7 @@ void extract(Serializer& serializer, UpVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_north_vector  North Vector
+///@defgroup cpp_sensor_north_vector  (0x80,0x10) North Vector [CPP]
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -587,7 +587,7 @@ void extract(Serializer& serializer, NorthVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_overrange_status  Overrange Status
+///@defgroup cpp_sensor_overrange_status  (0x80,0x18) Overrange Status [CPP]
 ///
 ///@{
 
@@ -634,7 +634,7 @@ void extract(Serializer& serializer, OverrangeStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_odometer_data  Odometer Data
+///@defgroup cpp_sensor_odometer_data  (0x80,0x40) Odometer Data [CPP]
 ///
 ///@{
 

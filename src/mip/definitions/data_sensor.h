@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c
+///@addtogroup MipData_c  MIP Data [C]
 ///@{
-///@defgroup sensor_data_c_c  Sensor Data_c [C]
+///@defgroup sensor_data_c  Sensor Data [C]
 ///
 ///@{
 
@@ -71,7 +71,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_raw_accel  Raw Accel
+///@defgroup c_sensor_raw_accel  (0x80,0x01) Raw Accel [C]
 /// Three element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -89,7 +89,7 @@ bool extract_mip_sensor_raw_accel_data_from_field(const struct mip_field* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_raw_gyro  Raw Gyro
+///@defgroup c_sensor_raw_gyro  (0x80,0x02) Raw Gyro [C]
 /// Three element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the sensor body frame.
 ///
@@ -107,7 +107,7 @@ bool extract_mip_sensor_raw_gyro_data_from_field(const struct mip_field* field, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_raw_mag  Raw Mag
+///@defgroup c_sensor_raw_mag  (0x80,0x03) Raw Mag [C]
 /// Three element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -125,7 +125,7 @@ bool extract_mip_sensor_raw_mag_data_from_field(const struct mip_field* field, v
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_raw_pressure  Raw Pressure
+///@defgroup c_sensor_raw_pressure  (0x80,0x16) Raw Pressure [C]
 /// Scalar value representing the sensed ambient pressure.
 /// This quantity is temperature compensated.
 ///
@@ -143,7 +143,7 @@ bool extract_mip_sensor_raw_pressure_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_scaled_accel  Scaled Accel
+///@defgroup c_sensor_scaled_accel  (0x80,0x04) Scaled Accel [C]
 /// 3-element vector representing the sensed acceleration.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -161,7 +161,7 @@ bool extract_mip_sensor_scaled_accel_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_scaled_gyro  Scaled Gyro
+///@defgroup c_sensor_scaled_gyro  (0x80,0x05) Scaled Gyro [C]
 /// 3-element vector representing the sensed angular rate.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -179,7 +179,7 @@ bool extract_mip_sensor_scaled_gyro_data_from_field(const struct mip_field* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_scaled_mag  Scaled Mag
+///@defgroup c_sensor_scaled_mag  (0x80,0x06) Scaled Mag [C]
 /// 3-element vector representing the sensed magnetic field.
 /// This quantity is temperature compensated and expressed in the vehicle frame.
 ///
@@ -197,7 +197,7 @@ bool extract_mip_sensor_scaled_mag_data_from_field(const struct mip_field* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_scaled_pressure  Scaled Pressure
+///@defgroup c_sensor_scaled_pressure  (0x80,0x17) Scaled Pressure [C]
 /// Scalar value representing the sensed ambient pressure.
 ///
 ///@{
@@ -214,7 +214,7 @@ bool extract_mip_sensor_scaled_pressure_data_from_field(const struct mip_field* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_delta_theta  Delta Theta
+///@defgroup c_sensor_delta_theta  (0x80,0x07) Delta Theta [C]
 /// 3-element vector representing the time integral of angular rate.
 /// This quantity is the integral of sensed angular rate over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -232,7 +232,7 @@ bool extract_mip_sensor_delta_theta_data_from_field(const struct mip_field* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_delta_velocity  Delta Velocity
+///@defgroup c_sensor_delta_velocity  (0x80,0x08) Delta Velocity [C]
 /// 3-element vector representing the time integral of acceleration.
 /// This quantity is the integral of sensed acceleration over the period set by the IMU message format.  It is expressed in the vehicle frame.
 ///
@@ -250,7 +250,7 @@ bool extract_mip_sensor_delta_velocity_data_from_field(const struct mip_field* f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_comp_orientation_matrix  Comp Orientation Matrix
+///@defgroup c_sensor_comp_orientation_matrix  (0x80,0x09) Comp Orientation Matrix [C]
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -277,7 +277,7 @@ bool extract_mip_sensor_comp_orientation_matrix_data_from_field(const struct mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_comp_quaternion  Comp Quaternion
+///@defgroup c_sensor_comp_quaternion  (0x80,0x0A) Comp Quaternion [C]
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -302,7 +302,7 @@ bool extract_mip_sensor_comp_quaternion_data_from_field(const struct mip_field* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_comp_euler_angles  Comp Euler Angles
+///@defgroup c_sensor_comp_euler_angles  (0x80,0x0C) Comp Euler Angles [C]
 /// Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -322,7 +322,7 @@ bool extract_mip_sensor_comp_euler_angles_data_from_field(const struct mip_field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_comp_orientation_update_matrix  Comp Orientation Update Matrix
+///@defgroup c_sensor_comp_orientation_update_matrix  (0x80,0x0B) Comp Orientation Update Matrix [C]
 /// DEPRECATED!
 ///
 ///@{
@@ -339,7 +339,7 @@ bool extract_mip_sensor_comp_orientation_update_matrix_data_from_field(const str
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_orientation_raw_temp  Orientation Raw Temp
+///@defgroup c_sensor_orientation_raw_temp  (0x80,0x0D) Orientation Raw Temp [C]
 /// DEPRECATED!
 ///
 ///@{
@@ -356,7 +356,7 @@ bool extract_mip_sensor_orientation_raw_temp_data_from_field(const struct mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_internal_timestamp  Internal Timestamp
+///@defgroup c_sensor_internal_timestamp  (0x80,0x0E) Internal Timestamp [C]
 /// DEPRECATED!
 ///
 ///@{
@@ -373,7 +373,7 @@ bool extract_mip_sensor_internal_timestamp_data_from_field(const struct mip_fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_pps_timestamp  Pps Timestamp
+///@defgroup c_sensor_pps_timestamp  (0x80,0x0F) Pps Timestamp [C]
 /// DEPRECATED!
 ///
 ///@{
@@ -391,7 +391,7 @@ bool extract_mip_sensor_pps_timestamp_data_from_field(const struct mip_field* fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_gps_timestamp  Gps Timestamp
+///@defgroup c_sensor_gps_timestamp  (0x80,0x12) Gps Timestamp [C]
 /// GPS timestamp of the SENSOR data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -429,7 +429,7 @@ void extract_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_temperature_abs  Temperature Abs
+///@defgroup c_sensor_temperature_abs  (0x80,0x14) Temperature Abs [C]
 /// SENSOR reported temperature statistics
 /// 
 /// Temperature may originate from the MEMS sensors, or be calculated in combination with board temperature sensors.
@@ -452,7 +452,7 @@ bool extract_mip_sensor_temperature_abs_data_from_field(const struct mip_field* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_up_vector  Up Vector
+///@defgroup c_sensor_up_vector  (0x80,0x11) Up Vector [C]
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimated vertical direction.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -475,7 +475,7 @@ bool extract_mip_sensor_up_vector_data_from_field(const struct mip_field* field,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_north_vector  North Vector
+///@defgroup c_sensor_north_vector  (0x80,0x10) North Vector [C]
 /// Gyro-stabilized 3-element vector representing the complementary filter's estimate of magnetic north.
 /// This quantity is expressed in the vehicle frame.
 /// 
@@ -495,7 +495,7 @@ bool extract_mip_sensor_north_vector_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_overrange_status  Overrange Status
+///@defgroup c_sensor_overrange_status  (0x80,0x18) Overrange Status [C]
 ///
 ///@{
 
@@ -529,7 +529,7 @@ void extract_mip_sensor_overrange_status_data_status(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sensor_odometer_data  Odometer Data
+///@defgroup c_sensor_odometer_data  (0x80,0x40) Odometer Data [C]
 ///
 ///@{
 

@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp
+///@addtogroup MipCommands_cpp  MIP Commands [CPP]
 ///@{
-///@defgroup gnss_commands_cpp_cpp  Gnss Commands_cpp [CPP]
+///@defgroup gnss_commands_cpp  Gnss Commands [CPP]
 ///
 ///@{
 
@@ -59,7 +59,7 @@ static const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_receiver_info  Receiver Info
+///@defgroup cpp_gnss_receiver_info  (0x0E,0x01) Receiver Info [CPP]
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -103,7 +103,7 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_signal_configuration  Signal Configuration
+///@defgroup cpp_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [CPP]
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -154,7 +154,7 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rtk_dongle_configuration  Rtk Dongle Configuration
+///@defgroup cpp_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [CPP]
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
@@ -199,7 +199,7 @@ CmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_receiver_safe_mode  Receiver Safe Mode
+///@defgroup cpp_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [CPP]
 /// Enable/disable safe mode for the provided receiver ID.
 /// Note: Receivers in safe mode will not output valid GNSS data.
 /// 

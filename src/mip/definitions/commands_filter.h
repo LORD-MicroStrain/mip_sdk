@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c
+///@addtogroup MipCommands_c  MIP Commands [C]
 ///@{
-///@defgroup filter_commands_c_c  Filter Commands_c [C]
+///@defgroup filter_commands_c  Filter Commands [C]
 ///
 ///@{
 
@@ -180,7 +180,7 @@ void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_reset  Reset
+///@defgroup c_filter_reset  (0x0D,0x01) Reset [C]
 /// Resets the filter to the initialization state.
 /// 
 /// If the auto-initialization feature is disabled, the initial attitude or heading must be set in
@@ -192,7 +192,7 @@ enum mip_cmd_result mip_filter_reset(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_set_initial_attitude  Set Initial Attitude
+///@defgroup c_filter_set_initial_attitude  (0x0D,0x02) Set Initial Attitude [C]
 /// Set the sensor initial attitude.
 /// 
 /// This command can only be issued in the "Init" state and should be used with a good
@@ -222,7 +222,7 @@ enum mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_estimation_control  Estimation Control
+///@defgroup c_filter_estimation_control  (0x0D,0x14) Estimation Control [C]
 /// Estimation Control Flags
 /// 
 /// Controls which parameters are estimated by the Kalman Filter.
@@ -277,7 +277,7 @@ enum mip_cmd_result mip_filter_default_estimation_control(struct mip_interface* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_external_gnss_update  External Gnss Update
+///@defgroup c_filter_external_gnss_update  (0x0D,0x16) External Gnss Update [C]
 /// Provide a filter measurement from an external GNSS
 /// 
 /// The GNSS source control must be set to "external" for this command to succeed, otherwise it will be NACK'd.
@@ -305,7 +305,7 @@ enum mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_external_heading_update  External Heading Update
+///@defgroup c_filter_external_heading_update  (0x0D,0x17) External Heading Update [C]
 /// Provide a filter measurement from an external heading source
 /// 
 /// The heading must be the sensor frame with respect to the NED frame.
@@ -336,7 +336,7 @@ enum mip_cmd_result mip_filter_external_heading_update(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_external_heading_update_with_time  External Heading Update With Time
+///@defgroup c_filter_external_heading_update_with_time  (0x0D,0x1F) External Heading Update With Time [C]
 /// Provide a filter measurement from an external heading source at a specific GPS time
 /// 
 /// This is more accurate than the External Heading Update (0x0D, 0x17) and should be used in applications
@@ -373,7 +373,7 @@ enum mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_inte
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_tare_orientation  Tare Orientation
+///@defgroup c_filter_tare_orientation  (0x0D,0x21) Tare Orientation [C]
 /// Tare the device orientation.
 /// 
 /// This function uses the current device orientation relative to the NED frame as the current sensor to vehicle transformation.
@@ -418,7 +418,7 @@ enum mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* de
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_sensor_to_vehicle_rotation_euler  Sensor To Vehicle Rotation Euler
+///@defgroup c_filter_sensor_to_vehicle_rotation_euler  (0x0D,0x11) Sensor To Vehicle Rotation Euler [C]
 /// Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -474,7 +474,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_sensor_to_vehicle_rotation_dcm  Sensor To Vehicle Rotation Dcm
+///@defgroup c_filter_sensor_to_vehicle_rotation_dcm  (0x0D,0x4E) Sensor To Vehicle Rotation Dcm [C]
 /// Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -532,7 +532,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_sensor_to_vehicle_rotation_quaternion  Sensor To Vehicle Rotation Quaternion
+///@defgroup c_filter_sensor_to_vehicle_rotation_quaternion  (0x0D,0x4F) Sensor To Vehicle Rotation Quaternion [C]
 /// Set the sensor to vehicle frame rotation using a quaternion.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -589,7 +589,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(str
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_sensor_to_vehicle_offset  Sensor To Vehicle Offset
+///@defgroup c_filter_sensor_to_vehicle_offset  (0x0D,0x12) Sensor To Vehicle Offset [C]
 /// Set the sensor to vehicle frame offset, expressed in the sensor frame.
 /// 
 /// This is a simple offset, not a lever arm.  It does not compensate for inertial effects experienced from being offset from the center of gravity/rotation of the vehicle.
@@ -627,7 +627,7 @@ enum mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_inter
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_antenna_offset  Antenna Offset
+///@defgroup c_filter_antenna_offset  (0x0D,0x13) Antenna Offset [C]
 /// Set the sensor to GNSS antenna offset.
 /// 
 /// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
@@ -662,7 +662,7 @@ enum mip_cmd_result mip_filter_default_antenna_offset(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gnss_source  Gnss Source
+///@defgroup c_filter_gnss_source  (0x0D,0x15) Gnss Source [C]
 /// Control the source of GNSS information used to update the Kalman Filter.
 /// 
 /// Changing the GNSS source while the sensor is in the "running" state may temporarily place
@@ -707,7 +707,7 @@ enum mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device)
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_heading_source  Heading Source
+///@defgroup c_filter_heading_source  (0x0D,0x18) Heading Source [C]
 /// Control the source of heading information used to update the Kalman Filter.
 /// 
 /// 1. To use internal GNSS velocity vector for heading updates, the target application
@@ -763,7 +763,7 @@ enum mip_cmd_result mip_filter_default_heading_source(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_auto_init_control  Auto Init Control
+///@defgroup c_filter_auto_init_control  (0x0D,0x19) Auto Init Control [C]
 /// Filter Auto-initialization Control
 /// 
 /// Enable/Disable automatic initialization upon device startup.
@@ -801,7 +801,7 @@ enum mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_altitude_aiding  Altitude Aiding
+///@defgroup c_filter_altitude_aiding  (0x0D,0x47) Altitude Aiding [C]
 /// Altitude Aiding Control
 /// 
 /// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
@@ -842,7 +842,7 @@ enum mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_auto_zupt  Auto Zupt
+///@defgroup c_filter_auto_zupt  (0x0D,0x1E) Auto Zupt [C]
 /// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -876,7 +876,7 @@ enum mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_auto_angular_zupt  Auto Angular Zupt
+///@defgroup c_filter_auto_angular_zupt  (0x0D,0x20) Auto Angular Zupt [C]
 /// Zero Angular Rate Update
 /// The ZUPT is triggered when the scalar magnitude of the angular rate vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -910,7 +910,7 @@ enum mip_cmd_result mip_filter_default_auto_angular_zupt(struct mip_interface* d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_commanded_zupt  Commanded Zupt
+///@defgroup c_filter_commanded_zupt  (0x0D,0x22) Commanded Zupt [C]
 /// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -920,7 +920,7 @@ enum mip_cmd_result mip_filter_commanded_zupt(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_commanded_angular_zupt  Commanded Angular Zupt
+///@defgroup c_filter_commanded_angular_zupt  (0x0D,0x23) Commanded Angular Zupt [C]
 /// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -930,7 +930,7 @@ enum mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_aiding_measurement_enable  Aiding Measurement Enable
+///@defgroup c_filter_aiding_measurement_enable  (0x0D,0x50) Aiding Measurement Enable [C]
 /// Enables / disables the specified aiding measurement source.
 /// 
 /// 
@@ -978,7 +978,7 @@ enum mip_cmd_result mip_filter_default_aiding_measurement_enable(struct mip_inte
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_run  Run
+///@defgroup c_filter_run  (0x0D,0x05) Run [C]
 /// Manual run command.
 /// 
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
@@ -989,7 +989,7 @@ enum mip_cmd_result mip_filter_run(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_kinematic_constraint  Kinematic Constraint
+///@defgroup c_filter_kinematic_constraint  (0x0D,0x51) Kinematic Constraint [C]
 /// Controls kinematic constraint model selection for the navigation filter.
 /// 
 /// See manual for explanation of how the kinematic constraints are applied.
@@ -1025,7 +1025,7 @@ enum mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_initialization_configuration  Initialization Configuration
+///@defgroup c_filter_initialization_configuration  (0x0D,0x52) Initialization Configuration [C]
 /// Controls the source and values used for initial conditions of the navigation solution.
 /// 
 /// Notes: Initial conditions are the position, velocity, and attitude of the platform used when the filter starts running or is reset.
@@ -1097,7 +1097,7 @@ enum mip_cmd_result mip_filter_default_initialization_configuration(struct mip_i
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_adaptive_filter_options  Adaptive Filter Options
+///@defgroup c_filter_adaptive_filter_options  (0x0D,0x53) Adaptive Filter Options [C]
 /// Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
 ///
 ///@{
@@ -1129,7 +1129,7 @@ enum mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interf
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_multi_antenna_offset  Multi Antenna Offset
+///@defgroup c_filter_multi_antenna_offset  (0x0D,0x54) Multi Antenna Offset [C]
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
@@ -1163,7 +1163,7 @@ enum mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_rel_pos_configuration  Rel Pos Configuration
+///@defgroup c_filter_rel_pos_configuration  (0x0D,0x55) Rel Pos Configuration [C]
 /// Configure the reference location for filter relative positioning outputs
 ///
 ///@{
@@ -1197,7 +1197,7 @@ enum mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interfac
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_ref_point_lever_arm  Ref Point Lever Arm
+///@defgroup c_filter_ref_point_lever_arm  (0x0D,0x56) Ref Point Lever Arm [C]
 /// Lever arm offset with respect to the sensor for the indicated point of reference.
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
@@ -1242,7 +1242,7 @@ enum mip_cmd_result mip_filter_default_ref_point_lever_arm(struct mip_interface*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_speed_measurement  Speed Measurement
+///@defgroup c_filter_speed_measurement  (0x0D,0x60) Speed Measurement [C]
 /// Speed aiding measurement, where speed is defined as rate of motion along the vehicle's x-axis direction.
 /// Can be used by an external odometer/speedometer, for example.
 /// This command cannot be used if the internal odometer is configured.
@@ -1264,7 +1264,7 @@ enum mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, u
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_speed_lever_arm  Speed Lever Arm
+///@defgroup c_filter_speed_lever_arm  (0x0D,0x61) Speed Lever Arm [C]
 /// Lever arm offset for speed measurements.
 /// This is used to compensate for an off-center measurement point
 /// having a different speed due to rotation of the vehicle.
@@ -1302,7 +1302,7 @@ enum mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
+///@defgroup c_filter_wheeled_vehicle_constraint_control  (0x0D,0x63) Wheeled Vehicle Constraint Control [C]
 /// Configure the wheeled vehicle kinematic constraint.
 /// 
 /// When enabled, the filter uses the assumption that velocity is constrained to the primary vehicle axis.
@@ -1338,7 +1338,7 @@ enum mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
+///@defgroup c_filter_vertical_gyro_constraint_control  (0x0D,0x62) Vertical Gyro Constraint Control [C]
 /// Configure the vertical gyro kinematic constraint.
 /// 
 /// When enabled and no valid GNSS measurements are available, the filter uses the accelerometers to track pitch
@@ -1372,7 +1372,7 @@ enum mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct m
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_gnss_antenna_cal_control  Gnss Antenna Cal Control
+///@defgroup c_filter_gnss_antenna_cal_control  (0x0D,0x64) Gnss Antenna Cal Control [C]
 /// Configure the GNSS antenna lever arm calibration.
 /// 
 /// When enabled, the filter will enable lever arm error tracking, up to the maximum offset specified.
@@ -1406,7 +1406,7 @@ enum mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_inter
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetic_declination_source  Magnetic Declination Source
+///@defgroup c_filter_magnetic_declination_source  (0x0D,0x43) Magnetic Declination Source [C]
 /// Source for magnetic declination angle, and user supplied value for manual selection.
 ///
 ///@{
@@ -1438,7 +1438,7 @@ enum mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_in
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_set_initial_heading  Set Initial Heading
+///@defgroup c_filter_set_initial_heading  (0x0D,0x03) Set Initial Heading [C]
 /// Set the initial heading angle.
 /// 
 /// The estimation filter will reset the heading estimate to provided value. If the product supports magnetometer aiding and this feature has been enabled, the heading

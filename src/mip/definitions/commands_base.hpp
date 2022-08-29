@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_base {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp
+///@addtogroup MipCommands_cpp  MIP Commands [CPP]
 ///@{
-///@defgroup base_commands_cpp_cpp  Base Commands_cpp [CPP]
+///@defgroup base_commands_cpp  Base Commands [CPP]
 ///
 ///@{
 
@@ -127,7 +127,7 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_ping  Ping
+///@defgroup cpp_base_ping  (0x01,0x01) Ping [CPP]
 /// Test Communications with a device.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -152,7 +152,7 @@ CmdResult ping(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_set_idle  Set Idle
+///@defgroup cpp_base_set_idle  (0x01,0x02) Set Idle [CPP]
 /// Turn off all device data streams.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -177,7 +177,7 @@ CmdResult setIdle(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_get_device_info  Get Device Info
+///@defgroup cpp_base_get_device_info  (0x01,0x03) Get Device Info [CPP]
 /// Get the device ID strings and firmware version number.
 ///
 ///@{
@@ -209,7 +209,7 @@ CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_get_device_descriptors  Get Device Descriptors
+///@defgroup cpp_base_get_device_descriptors  (0x01,0x04) Get Device Descriptors [CPP]
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -245,7 +245,7 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_built_in_test  Built In Test
+///@defgroup cpp_base_built_in_test  (0x01,0x05) Built In Test [CPP]
 /// Run the device Built-In Test (BIT).
 /// 
 /// The Built-In Test command always returns a 32 bit value.
@@ -282,7 +282,7 @@ CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_resume  Resume
+///@defgroup cpp_base_resume  (0x01,0x06) Resume [CPP]
 /// Take the device out of idle mode.
 /// 
 /// The device responds with ACK upon success.
@@ -305,7 +305,7 @@ CmdResult resume(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_get_extended_descriptors  Get Extended Descriptors
+///@defgroup cpp_base_get_extended_descriptors  (0x01,0x07) Get Extended Descriptors [CPP]
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -341,7 +341,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_continuous_bit  Continuous Bit
+///@defgroup cpp_base_continuous_bit  (0x01,0x08) Continuous Bit [CPP]
 /// Report result of continous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
@@ -375,7 +375,7 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_comm_speed  Comm Speed
+///@defgroup cpp_base_comm_speed  (0x01,0x09) Comm Speed [CPP]
 /// Controls the baud rate of a specific port on the device.
 /// 
 /// Please see the device user manual for supported baud rates on each port.
@@ -433,7 +433,7 @@ CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_gps_time_update  Gps Time Update
+///@defgroup cpp_base_gps_time_update  (0x01,0x72) Gps Time Update [CPP]
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
@@ -469,7 +469,7 @@ CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_soft_reset  Soft Reset
+///@defgroup cpp_base_soft_reset  (0x01,0x7E) Soft Reset [CPP]
 /// Resets the device.
 /// 
 /// Device responds with ACK and immediately resets.

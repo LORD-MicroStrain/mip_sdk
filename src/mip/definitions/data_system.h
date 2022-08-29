@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c
+///@addtogroup MipData_c  MIP Data [C]
 ///@{
-///@defgroup system_data_c_c  System Data_c [C]
+///@defgroup system_data_c  System Data [C]
 ///
 ///@{
 
@@ -49,7 +49,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_built_in_test  Built In Test
+///@defgroup c_system_built_in_test  (0xA0,0x01) Built In Test [C]
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -84,7 +84,7 @@ bool extract_mip_system_built_in_test_data_from_field(const struct mip_field* fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_time_sync_status  Time Sync Status
+///@defgroup c_system_time_sync_status  (0xA0,0x02) Time Sync Status [C]
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
@@ -102,7 +102,7 @@ bool extract_mip_system_time_sync_status_data_from_field(const struct mip_field*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_gpio_state  Gpio State
+///@defgroup c_system_gpio_state  (0xA0,0x03) Gpio State [C]
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -137,7 +137,7 @@ bool extract_mip_system_gpio_state_data_from_field(const struct mip_field* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_system_gpio_analog_value  Gpio Analog Value
+///@defgroup c_system_gpio_analog_value  (0xA0,0x04) Gpio Analog Value [C]
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///

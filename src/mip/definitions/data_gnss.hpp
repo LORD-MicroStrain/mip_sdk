@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup gnss_data_cpp_cpp  Gnss Data_cpp [CPP]
+///@defgroup gnss_data_cpp  Gnss Data [CPP]
 ///
 ///@{
 
@@ -168,7 +168,7 @@ static const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_pos_llh  Pos Llh
+///@defgroup cpp_gnss_pos_llh  (0x81,0x03) Pos Llh [CPP]
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -218,7 +218,7 @@ void extract(Serializer& serializer, PosLlh& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_pos_ecef  Pos Ecef
+///@defgroup cpp_gnss_pos_ecef  (0x81,0x04) Pos Ecef [CPP]
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -261,7 +261,7 @@ void extract(Serializer& serializer, PosEcef& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_vel_ned  Vel Ned
+///@defgroup cpp_gnss_vel_ned  (0x81,0x05) Vel Ned [CPP]
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -312,7 +312,7 @@ void extract(Serializer& serializer, VelNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_vel_ecef  Vel Ecef
+///@defgroup cpp_gnss_vel_ecef  (0x81,0x06) Vel Ecef [CPP]
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -355,7 +355,7 @@ void extract(Serializer& serializer, VelEcef& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dop  Dop
+///@defgroup cpp_gnss_dop  (0x81,0x07) Dop [CPP]
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -408,7 +408,7 @@ void extract(Serializer& serializer, Dop& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_utc_time  Utc Time
+///@defgroup cpp_gnss_utc_time  (0x81,0x08) Utc Time [CPP]
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -456,7 +456,7 @@ void extract(Serializer& serializer, UtcTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_time  Gps Time
+///@defgroup cpp_gnss_gps_time  (0x81,0x09) Gps Time [CPP]
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -499,7 +499,7 @@ void extract(Serializer& serializer, GpsTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_clock_info  Clock Info
+///@defgroup cpp_gnss_clock_info  (0x81,0x0A) Clock Info [CPP]
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -544,7 +544,7 @@ void extract(Serializer& serializer, ClockInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_fix_info  Fix Info
+///@defgroup cpp_gnss_fix_info  (0x81,0x0B) Fix Info [CPP]
 /// GNSS reported position fix type
 ///
 ///@{
@@ -619,7 +619,7 @@ void extract(Serializer& serializer, FixInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sv_info  Sv Info
+///@defgroup cpp_gnss_sv_info  (0x81,0x0C) Sv Info [CPP]
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -691,7 +691,7 @@ void extract(Serializer& serializer, SvInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_hw_status  Hw Status
+///@defgroup cpp_gnss_hw_status  (0x81,0x0D) Hw Status [CPP]
 /// GNSS reported hardware status
 ///
 ///@{
@@ -759,7 +759,7 @@ void extract(Serializer& serializer, HwStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dgps_info  Dgps Info
+///@defgroup cpp_gnss_dgps_info  (0x81,0x0E) Dgps Info [CPP]
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -818,7 +818,7 @@ void extract(Serializer& serializer, DgpsInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dgps_channel  Dgps Channel
+///@defgroup cpp_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [CPP]
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -867,7 +867,7 @@ void extract(Serializer& serializer, DgpsChannel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_clock_info_2  Clock Info 2
+///@defgroup cpp_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [CPP]
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -916,7 +916,7 @@ void extract(Serializer& serializer, ClockInfo2& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_leap_seconds  Gps Leap Seconds
+///@defgroup cpp_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [CPP]
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -956,7 +956,7 @@ void extract(Serializer& serializer, GpsLeapSeconds& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sbas_info  Sbas Info
+///@defgroup cpp_gnss_sbas_info  (0x81,0x12) Sbas Info [CPP]
 /// GNSS SBAS status
 ///
 ///@{
@@ -1028,7 +1028,7 @@ void extract(Serializer& serializer, SbasInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_sbas_correction  Sbas Correction
+///@defgroup cpp_gnss_sbas_correction  (0x81,0x13) Sbas Correction [CPP]
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -1101,7 +1101,7 @@ void extract(Serializer& serializer, SbasCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rf_error_detection  Rf Error Detection
+///@defgroup cpp_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [CPP]
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -1171,7 +1171,7 @@ void extract(Serializer& serializer, RfErrorDetection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_base_station_info  Base Station Info
+///@defgroup cpp_gnss_base_station_info  (0x81,0x30) Base Station Info [CPP]
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -1250,7 +1250,7 @@ void extract(Serializer& serializer, BaseStationInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_rtk_corrections_status  Rtk Corrections Status
+///@defgroup cpp_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [CPP]
 ///
 ///@{
 
@@ -1331,7 +1331,7 @@ void extract(Serializer& serializer, RtkCorrectionsStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_satellite_status  Satellite Status
+///@defgroup cpp_gnss_satellite_status  (0x81,0x20) Satellite Status [CPP]
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -1386,7 +1386,7 @@ void extract(Serializer& serializer, SatelliteStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_raw  Raw
+///@defgroup cpp_gnss_raw  (0x81,0x22) Raw [CPP]
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1469,7 +1469,7 @@ void extract(Serializer& serializer, Raw& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_ephemeris  Gps Ephemeris
+///@defgroup cpp_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [CPP]
 /// GPS/Galileo Ephemeris Data
 ///
 ///@{
@@ -1543,7 +1543,7 @@ void extract(Serializer& serializer, GpsEphemeris& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_glo_ephemeris  Glo Ephemeris
+///@defgroup cpp_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [CPP]
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1607,7 +1607,7 @@ void extract(Serializer& serializer, GloEphemeris& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_gps_iono_corr  Gps Iono Corr
+///@defgroup cpp_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [CPP]
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1654,7 +1654,7 @@ void extract(Serializer& serializer, GpsIonoCorr& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_galileo_iono_corr  Galileo Iono Corr
+///@defgroup cpp_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [CPP]
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{

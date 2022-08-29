@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_c
+///@addtogroup MipData_c  MIP Data [C]
 ///@{
-///@defgroup gnss_data_c_c  Gnss Data_c [C]
+///@defgroup gnss_data_c  Gnss Data [C]
 ///
 ///@{
 
@@ -178,7 +178,7 @@ enum { MIP_GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_pos_llh  Pos Llh
+///@defgroup c_gnss_pos_llh  (0x81,0x03) Pos Llh [C]
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -215,7 +215,7 @@ void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_pos_ecef  Pos Ecef
+///@defgroup c_gnss_pos_ecef  (0x81,0x04) Pos Ecef [C]
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -245,7 +245,7 @@ void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_vel_ned  Vel Ned
+///@defgroup c_gnss_vel_ned  (0x81,0x05) Vel Ned [C]
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -283,7 +283,7 @@ void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_vel_ecef  Vel Ecef
+///@defgroup c_gnss_vel_ecef  (0x81,0x06) Vel Ecef [C]
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -313,7 +313,7 @@ void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dop  Dop
+///@defgroup c_gnss_dop  (0x81,0x07) Dop [C]
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -353,7 +353,7 @@ void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, en
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_utc_time  Utc Time
+///@defgroup c_gnss_utc_time  (0x81,0x08) Utc Time [C]
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -388,7 +388,7 @@ void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_time  Gps Time
+///@defgroup c_gnss_gps_time  (0x81,0x09) Gps Time [C]
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -418,7 +418,7 @@ void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_clock_info  Clock Info
+///@defgroup c_gnss_clock_info  (0x81,0x0A) Clock Info [C]
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -450,7 +450,7 @@ void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* seriali
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_fix_info  Fix Info
+///@defgroup c_gnss_fix_info  (0x81,0x0B) Fix Info [C]
 /// GNSS reported position fix type
 ///
 ///@{
@@ -506,7 +506,7 @@ void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sv_info  Sv Info
+///@defgroup c_gnss_sv_info  (0x81,0x0C) Sv Info [C]
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -556,7 +556,7 @@ void extract_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_hw_status  Hw Status
+///@defgroup c_gnss_hw_status  (0x81,0x0D) Hw Status [C]
 /// GNSS reported hardware status
 ///
 ///@{
@@ -620,7 +620,7 @@ void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dgps_info  Dgps Info
+///@defgroup c_gnss_dgps_info  (0x81,0x0E) Dgps Info [C]
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -666,7 +666,7 @@ void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_dgps_channel  Dgps Channel
+///@defgroup c_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [C]
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -702,7 +702,7 @@ void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* seria
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_clock_info_2  Clock Info 2
+///@defgroup c_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [C]
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -738,7 +738,7 @@ void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* seria
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_leap_seconds  Gps Leap Seconds
+///@defgroup c_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [C]
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -765,7 +765,7 @@ void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sbas_info  Sbas Info
+///@defgroup c_gnss_sbas_info  (0x81,0x12) Sbas Info [C]
 /// GNSS SBAS status
 ///
 ///@{
@@ -815,7 +815,7 @@ void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_sbas_correction  Sbas Correction
+///@defgroup c_gnss_sbas_correction  (0x81,0x13) Sbas Correction [C]
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -875,7 +875,7 @@ void extract_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rf_error_detection  Rf Error Detection
+///@defgroup c_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [C]
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -941,7 +941,7 @@ void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_base_station_info  Base Station Info
+///@defgroup c_gnss_base_station_info  (0x81,0x30) Base Station Info [C]
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -998,7 +998,7 @@ void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rtk_corrections_status  Rtk Corrections Status
+///@defgroup c_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [C]
 ///
 ///@{
 
@@ -1057,7 +1057,7 @@ void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serial
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_satellite_status  Satellite Status
+///@defgroup c_gnss_satellite_status  (0x81,0x20) Satellite Status [C]
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -1099,7 +1099,7 @@ void extract_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_raw  Raw
+///@defgroup c_gnss_raw  (0x81,0x22) Raw [C]
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1172,7 +1172,7 @@ void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, en
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_ephemeris  Gps Ephemeris
+///@defgroup c_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [C]
 /// GPS/Galileo Ephemeris Data
 ///
 ///@{
@@ -1233,7 +1233,7 @@ void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_glo_ephemeris  Glo Ephemeris
+///@defgroup c_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [C]
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1284,7 +1284,7 @@ void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_gps_iono_corr  Gps Iono Corr
+///@defgroup c_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [C]
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1318,7 +1318,7 @@ void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_galileo_iono_corr  Galileo Iono Corr
+///@defgroup c_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [C]
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{
