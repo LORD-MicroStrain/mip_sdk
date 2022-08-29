@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup filter_data_cpp_cpp  Filter Data_cpp [CPP]
+///@defgroup filter_data_cpp  Filter Data [CPP]
 ///
 ///@{
 
@@ -235,7 +235,7 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_position_llh  Position Llh
+///@defgroup cpp_filter_position_llh  (0x82,0x01) Position Llh [CPP]
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
@@ -259,7 +259,7 @@ void extract(Serializer& serializer, PositionLlh& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_velocity_ned  Velocity Ned
+///@defgroup cpp_filter_velocity_ned  (0x82,0x02) Velocity Ned [CPP]
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
@@ -283,7 +283,7 @@ void extract(Serializer& serializer, VelocityNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_attitude_quaternion  Attitude Quaternion
+///@defgroup cpp_filter_attitude_quaternion  (0x82,0x03) Attitude Quaternion [CPP]
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -313,7 +313,7 @@ void extract(Serializer& serializer, AttitudeQuaternion& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_attitude_dcm  Attitude Dcm
+///@defgroup cpp_filter_attitude_dcm  (0x82,0x04) Attitude Dcm [CPP]
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -345,7 +345,7 @@ void extract(Serializer& serializer, AttitudeDcm& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_euler_angles  Euler Angles
+///@defgroup cpp_filter_euler_angles  (0x82,0x05) Euler Angles [CPP]
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -370,7 +370,7 @@ void extract(Serializer& serializer, EulerAngles& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_bias  Gyro Bias
+///@defgroup cpp_filter_gyro_bias  (0x82,0x06) Gyro Bias [CPP]
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
@@ -392,7 +392,7 @@ void extract(Serializer& serializer, GyroBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_bias  Accel Bias
+///@defgroup cpp_filter_accel_bias  (0x82,0x07) Accel Bias [CPP]
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -414,7 +414,7 @@ void extract(Serializer& serializer, AccelBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_position_llh_uncertainty  Position Llh Uncertainty
+///@defgroup cpp_filter_position_llh_uncertainty  (0x82,0x08) Position Llh Uncertainty [CPP]
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
@@ -438,7 +438,7 @@ void extract(Serializer& serializer, PositionLlhUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_velocity_ned_uncertainty  Velocity Ned Uncertainty
+///@defgroup cpp_filter_velocity_ned_uncertainty  (0x82,0x09) Velocity Ned Uncertainty [CPP]
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
@@ -462,7 +462,7 @@ void extract(Serializer& serializer, VelocityNedUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_euler_angles_uncertainty  Euler Angles Uncertainty
+///@defgroup cpp_filter_euler_angles_uncertainty  (0x82,0x0A) Euler Angles Uncertainty [CPP]
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -487,7 +487,7 @@ void extract(Serializer& serializer, EulerAnglesUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_bias_uncertainty  Gyro Bias Uncertainty
+///@defgroup cpp_filter_gyro_bias_uncertainty  (0x82,0x0B) Gyro Bias Uncertainty [CPP]
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -509,7 +509,7 @@ void extract(Serializer& serializer, GyroBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_bias_uncertainty  Accel Bias Uncertainty
+///@defgroup cpp_filter_accel_bias_uncertainty  (0x82,0x0C) Accel Bias Uncertainty [CPP]
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -531,7 +531,7 @@ void extract(Serializer& serializer, AccelBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_timestamp  Timestamp
+///@defgroup cpp_filter_timestamp  (0x82,0x11) Timestamp [CPP]
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -560,7 +560,7 @@ void extract(Serializer& serializer, Timestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_status  Status
+///@defgroup cpp_filter_status  (0x82,0x10) Status [CPP]
 /// Device-specific filter status indicators.
 ///
 ///@{
@@ -583,7 +583,7 @@ void extract(Serializer& serializer, Status& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_linear_accel  Linear Accel
+///@defgroup cpp_filter_linear_accel  (0x82,0x0D) Linear Accel [CPP]
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -606,7 +606,7 @@ void extract(Serializer& serializer, LinearAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gravity_vector  Gravity Vector
+///@defgroup cpp_filter_gravity_vector  (0x82,0x13) Gravity Vector [CPP]
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
@@ -628,7 +628,7 @@ void extract(Serializer& serializer, GravityVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_comp_accel  Comp Accel
+///@defgroup cpp_filter_comp_accel  (0x82,0x1C) Comp Accel [CPP]
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
@@ -650,7 +650,7 @@ void extract(Serializer& serializer, CompAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_comp_angular_rate  Comp Angular Rate
+///@defgroup cpp_filter_comp_angular_rate  (0x82,0x0E) Comp Angular Rate [CPP]
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
@@ -672,7 +672,7 @@ void extract(Serializer& serializer, CompAngularRate& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_quaternion_attitude_uncertainty  Quaternion Attitude Uncertainty
+///@defgroup cpp_filter_quaternion_attitude_uncertainty  (0x82,0x12) Quaternion Attitude Uncertainty [CPP]
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
@@ -694,7 +694,7 @@ void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_wgs84_gravity_mag  Wgs84 Gravity Mag
+///@defgroup cpp_filter_wgs84_gravity_mag  (0x82,0x0F) Wgs84 Gravity Mag [CPP]
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
@@ -716,7 +716,7 @@ void extract(Serializer& serializer, Wgs84GravityMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_heading_update_state  Heading Update State
+///@defgroup cpp_filter_heading_update_state  (0x82,0x14) Heading Update State [CPP]
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -752,7 +752,7 @@ void extract(Serializer& serializer, HeadingUpdateState& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetic_model  Magnetic Model
+///@defgroup cpp_filter_magnetic_model  (0x82,0x15) Magnetic Model [CPP]
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -779,7 +779,7 @@ void extract(Serializer& serializer, MagneticModel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_scale_factor  Accel Scale Factor
+///@defgroup cpp_filter_accel_scale_factor  (0x82,0x17) Accel Scale Factor [CPP]
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -801,7 +801,7 @@ void extract(Serializer& serializer, AccelScaleFactor& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_accel_scale_factor_uncertainty  Accel Scale Factor Uncertainty
+///@defgroup cpp_filter_accel_scale_factor_uncertainty  (0x82,0x19) Accel Scale Factor Uncertainty [CPP]
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -823,7 +823,7 @@ void extract(Serializer& serializer, AccelScaleFactorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_scale_factor  Gyro Scale Factor
+///@defgroup cpp_filter_gyro_scale_factor  (0x82,0x16) Gyro Scale Factor [CPP]
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -845,7 +845,7 @@ void extract(Serializer& serializer, GyroScaleFactor& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gyro_scale_factor_uncertainty  Gyro Scale Factor Uncertainty
+///@defgroup cpp_filter_gyro_scale_factor_uncertainty  (0x82,0x18) Gyro Scale Factor Uncertainty [CPP]
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -867,7 +867,7 @@ void extract(Serializer& serializer, GyroScaleFactorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_mag_bias  Mag Bias
+///@defgroup cpp_filter_mag_bias  (0x82,0x1A) Mag Bias [CPP]
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -889,7 +889,7 @@ void extract(Serializer& serializer, MagBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_mag_bias_uncertainty  Mag Bias Uncertainty
+///@defgroup cpp_filter_mag_bias_uncertainty  (0x82,0x1B) Mag Bias Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -911,7 +911,7 @@ void extract(Serializer& serializer, MagBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_standard_atmosphere  Standard Atmosphere
+///@defgroup cpp_filter_standard_atmosphere  (0x82,0x20) Standard Atmosphere [CPP]
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -939,7 +939,7 @@ void extract(Serializer& serializer, StandardAtmosphere& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_pressure_altitude  Pressure Altitude
+///@defgroup cpp_filter_pressure_altitude  (0x82,0x21) Pressure Altitude [CPP]
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -965,7 +965,7 @@ void extract(Serializer& serializer, PressureAltitude& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_density_altitude  Density Altitude
+///@defgroup cpp_filter_density_altitude  (0x82,0x22) Density Altitude [CPP]
 ///
 ///@{
 
@@ -986,7 +986,7 @@ void extract(Serializer& serializer, DensityAltitude& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_antenna_offset_correction  Antenna Offset Correction
+///@defgroup cpp_filter_antenna_offset_correction  (0x82,0x30) Antenna Offset Correction [CPP]
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1010,7 +1010,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_antenna_offset_correction_uncertainty  Antenna Offset Correction Uncertainty
+///@defgroup cpp_filter_antenna_offset_correction_uncertainty  (0x82,0x31) Antenna Offset Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1032,7 +1032,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_multi_antenna_offset_correction  Multi Antenna Offset Correction
+///@defgroup cpp_filter_multi_antenna_offset_correction  (0x82,0x34) Multi Antenna Offset Correction [CPP]
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1057,7 +1057,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_multi_antenna_offset_correction_uncertainty  Multi Antenna Offset Correction Uncertainty
+///@defgroup cpp_filter_multi_antenna_offset_correction_uncertainty  (0x82,0x35) Multi Antenna Offset Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1080,7 +1080,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_offset  Magnetometer Offset
+///@defgroup cpp_filter_magnetometer_offset  (0x82,0x25) Magnetometer Offset [CPP]
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -1104,7 +1104,7 @@ void extract(Serializer& serializer, MagnetometerOffset& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_matrix  Magnetometer Matrix
+///@defgroup cpp_filter_magnetometer_matrix  (0x82,0x26) Magnetometer Matrix [CPP]
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -1128,7 +1128,7 @@ void extract(Serializer& serializer, MagnetometerMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_offset_uncertainty  Magnetometer Offset Uncertainty
+///@defgroup cpp_filter_magnetometer_offset_uncertainty  (0x82,0x28) Magnetometer Offset Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
@@ -1150,7 +1150,7 @@ void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_matrix_uncertainty  Magnetometer Matrix Uncertainty
+///@defgroup cpp_filter_magnetometer_matrix_uncertainty  (0x82,0x29) Magnetometer Matrix Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
@@ -1172,7 +1172,7 @@ void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_covariance_matrix  Magnetometer Covariance Matrix
+///@defgroup cpp_filter_magnetometer_covariance_matrix  (0x82,0x2A) Magnetometer Covariance Matrix [CPP]
 ///
 ///@{
 
@@ -1193,7 +1193,7 @@ void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetometer_residual_vector  Magnetometer Residual Vector
+///@defgroup cpp_filter_magnetometer_residual_vector  (0x82,0x2C) Magnetometer Residual Vector [CPP]
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
@@ -1215,7 +1215,7 @@ void extract(Serializer& serializer, MagnetometerResidualVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_clock_correction  Clock Correction
+///@defgroup cpp_filter_clock_correction  (0x82,0x32) Clock Correction [CPP]
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1239,7 +1239,7 @@ void extract(Serializer& serializer, ClockCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_clock_correction_uncertainty  Clock Correction Uncertainty
+///@defgroup cpp_filter_clock_correction_uncertainty  (0x82,0x33) Clock Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1263,7 +1263,7 @@ void extract(Serializer& serializer, ClockCorrectionUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_pos_aid_status  Gnss Pos Aid Status
+///@defgroup cpp_filter_gnss_pos_aid_status  (0x82,0x43) Gnss Pos Aid Status [CPP]
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -1287,7 +1287,7 @@ void extract(Serializer& serializer, GnssPosAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_att_aid_status  Gnss Att Aid Status
+///@defgroup cpp_filter_gnss_att_aid_status  (0x82,0x44) Gnss Att Aid Status [CPP]
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
@@ -1310,7 +1310,7 @@ void extract(Serializer& serializer, GnssAttAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_head_aid_status  Head Aid Status
+///@defgroup cpp_filter_head_aid_status  (0x82,0x45) Head Aid Status [CPP]
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -1339,7 +1339,7 @@ void extract(Serializer& serializer, HeadAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_rel_pos_ned  Rel Pos Ned
+///@defgroup cpp_filter_rel_pos_ned  (0x82,0x42) Rel Pos Ned [CPP]
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
@@ -1361,7 +1361,7 @@ void extract(Serializer& serializer, RelPosNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_pos  Ecef Pos
+///@defgroup cpp_filter_ecef_pos  (0x82,0x40) Ecef Pos [CPP]
 /// Filter reported ECEF position
 ///
 ///@{
@@ -1383,7 +1383,7 @@ void extract(Serializer& serializer, EcefPos& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_vel  Ecef Vel
+///@defgroup cpp_filter_ecef_vel  (0x82,0x41) Ecef Vel [CPP]
 /// Filter reported ECEF velocity
 ///
 ///@{
@@ -1405,7 +1405,7 @@ void extract(Serializer& serializer, EcefVel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_pos_uncertainty  Ecef Pos Uncertainty
+///@defgroup cpp_filter_ecef_pos_uncertainty  (0x82,0x36) Ecef Pos Uncertainty [CPP]
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
@@ -1427,7 +1427,7 @@ void extract(Serializer& serializer, EcefPosUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ecef_vel_uncertainty  Ecef Vel Uncertainty
+///@defgroup cpp_filter_ecef_vel_uncertainty  (0x82,0x37) Ecef Vel Uncertainty [CPP]
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
@@ -1449,7 +1449,7 @@ void extract(Serializer& serializer, EcefVelUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_aiding_measurement_summary  Aiding Measurement Summary
+///@defgroup cpp_filter_aiding_measurement_summary  (0x82,0x46) Aiding Measurement Summary [CPP]
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
@@ -1473,7 +1473,7 @@ void extract(Serializer& serializer, AidingMeasurementSummary& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_odometer_scale_factor_error  Odometer Scale Factor Error
+///@defgroup cpp_filter_odometer_scale_factor_error  (0x82,0x47) Odometer Scale Factor Error [CPP]
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
@@ -1495,7 +1495,7 @@ void extract(Serializer& serializer, OdometerScaleFactorError& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
+///@defgroup cpp_filter_odometer_scale_factor_error_uncertainty  (0x82,0x48) Odometer Scale Factor Error Uncertainty [CPP]
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
@@ -1517,7 +1517,7 @@ void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_dual_antenna_status  Gnss Dual Antenna Status
+///@defgroup cpp_filter_gnss_dual_antenna_status  (0x82,0x49) Gnss Dual Antenna Status [CPP]
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{

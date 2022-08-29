@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_system {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp
+///@addtogroup MipCommands_cpp  MIP Commands [CPP]
 ///@{
-///@defgroup system_commands_cpp_cpp  System Commands_cpp [CPP]
+///@defgroup system_commands_cpp  System Commands [CPP]
 ///
 ///@{
 
@@ -55,7 +55,7 @@ static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_system_comm_mode  Comm Mode
+///@defgroup cpp_system_comm_mode  (0x7F,0x10) Comm Mode [CPP]
 /// Advanced specialized communication modes.
 /// 
 /// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)

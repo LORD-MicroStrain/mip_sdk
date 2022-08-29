@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_cpp
+///@addtogroup MipCommands_cpp  MIP Commands [CPP]
 ///@{
-///@defgroup filter_commands_cpp_cpp  Filter Commands_cpp [CPP]
+///@defgroup filter_commands_cpp  Filter Commands [CPP]
 ///
 ///@{
 
@@ -173,7 +173,7 @@ enum class FilterMagDeclinationSource : uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_reset  Reset
+///@defgroup cpp_filter_reset  (0x0D,0x01) Reset [CPP]
 /// Resets the filter to the initialization state.
 /// 
 /// If the auto-initialization feature is disabled, the initial attitude or heading must be set in
@@ -197,7 +197,7 @@ CmdResult reset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_set_initial_attitude  Set Initial Attitude
+///@defgroup cpp_filter_set_initial_attitude  (0x0D,0x02) Set Initial Attitude [CPP]
 /// Set the sensor initial attitude.
 /// 
 /// This command can only be issued in the "Init" state and should be used with a good
@@ -232,7 +232,7 @@ CmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_estimation_control  Estimation Control
+///@defgroup cpp_filter_estimation_control  (0x0D,0x14) Estimation Control [CPP]
 /// Estimation Control Flags
 /// 
 /// Controls which parameters are estimated by the Kalman Filter.
@@ -308,7 +308,7 @@ CmdResult defaultEstimationControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_external_gnss_update  External Gnss Update
+///@defgroup cpp_filter_external_gnss_update  (0x0D,0x16) External Gnss Update [CPP]
 /// Provide a filter measurement from an external GNSS
 /// 
 /// The GNSS source control must be set to "external" for this command to succeed, otherwise it will be NACK'd.
@@ -341,7 +341,7 @@ CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_external_heading_update  External Heading Update
+///@defgroup cpp_filter_external_heading_update  (0x0D,0x17) External Heading Update [CPP]
 /// Provide a filter measurement from an external heading source
 /// 
 /// The heading must be the sensor frame with respect to the NED frame.
@@ -377,7 +377,7 @@ CmdResult externalHeadingUpdate(C::mip_interface& device, float heading, float h
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_external_heading_update_with_time  External Heading Update With Time
+///@defgroup cpp_filter_external_heading_update_with_time  (0x0D,0x1F) External Heading Update With Time [CPP]
 /// Provide a filter measurement from an external heading source at a specific GPS time
 /// 
 /// This is more accurate than the External Heading Update (0x0D, 0x17) and should be used in applications
@@ -419,7 +419,7 @@ CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_tare_orientation  Tare Orientation
+///@defgroup cpp_filter_tare_orientation  (0x0D,0x21) Tare Orientation [CPP]
 /// Tare the device orientation.
 /// 
 /// This function uses the current device orientation relative to the NED frame as the current sensor to vehicle transformation.
@@ -485,7 +485,7 @@ CmdResult defaultTareOrientation(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_sensor_to_vehicle_rotation_euler  Sensor To Vehicle Rotation Euler
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_euler  (0x0D,0x11) Sensor To Vehicle Rotation Euler [CPP]
 /// Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -553,7 +553,7 @@ CmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_sensor_to_vehicle_rotation_dcm  Sensor To Vehicle Rotation Dcm
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_dcm  (0x0D,0x4E) Sensor To Vehicle Rotation Dcm [CPP]
 /// Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -623,7 +623,7 @@ CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_sensor_to_vehicle_rotation_quaternion  Sensor To Vehicle Rotation Quaternion
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_quaternion  (0x0D,0x4F) Sensor To Vehicle Rotation Quaternion [CPP]
 /// Set the sensor to vehicle frame rotation using a quaternion.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -692,7 +692,7 @@ CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_sensor_to_vehicle_offset  Sensor To Vehicle Offset
+///@defgroup cpp_filter_sensor_to_vehicle_offset  (0x0D,0x12) Sensor To Vehicle Offset [CPP]
 /// Set the sensor to vehicle frame offset, expressed in the sensor frame.
 /// 
 /// This is a simple offset, not a lever arm.  It does not compensate for inertial effects experienced from being offset from the center of gravity/rotation of the vehicle.
@@ -742,7 +742,7 @@ CmdResult defaultSensorToVehicleOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_antenna_offset  Antenna Offset
+///@defgroup cpp_filter_antenna_offset  (0x0D,0x13) Antenna Offset [CPP]
 /// Set the sensor to GNSS antenna offset.
 /// 
 /// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
@@ -789,7 +789,7 @@ CmdResult defaultAntennaOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_source  Gnss Source
+///@defgroup cpp_filter_gnss_source  (0x0D,0x15) Gnss Source [CPP]
 /// Control the source of GNSS information used to update the Kalman Filter.
 /// 
 /// Changing the GNSS source while the sensor is in the "running" state may temporarily place
@@ -843,7 +843,7 @@ CmdResult defaultGnssSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_heading_source  Heading Source
+///@defgroup cpp_filter_heading_source  (0x0D,0x18) Heading Source [CPP]
 /// Control the source of heading information used to update the Kalman Filter.
 /// 
 /// 1. To use internal GNSS velocity vector for heading updates, the target application
@@ -908,7 +908,7 @@ CmdResult defaultHeadingSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_auto_init_control  Auto Init Control
+///@defgroup cpp_filter_auto_init_control  (0x0D,0x19) Auto Init Control [CPP]
 /// Filter Auto-initialization Control
 /// 
 /// Enable/Disable automatic initialization upon device startup.
@@ -958,7 +958,7 @@ CmdResult defaultAutoInitControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_altitude_aiding  Altitude Aiding
+///@defgroup cpp_filter_altitude_aiding  (0x0D,0x47) Altitude Aiding [CPP]
 /// Altitude Aiding Control
 /// 
 /// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
@@ -1011,7 +1011,7 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_auto_zupt  Auto Zupt
+///@defgroup cpp_filter_auto_zupt  (0x0D,0x1E) Auto Zupt [CPP]
 /// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -1057,7 +1057,7 @@ CmdResult defaultAutoZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_auto_angular_zupt  Auto Angular Zupt
+///@defgroup cpp_filter_auto_angular_zupt  (0x0D,0x20) Auto Angular Zupt [CPP]
 /// Zero Angular Rate Update
 /// The ZUPT is triggered when the scalar magnitude of the angular rate vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -1103,7 +1103,7 @@ CmdResult defaultAutoAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_commanded_zupt  Commanded Zupt
+///@defgroup cpp_filter_commanded_zupt  (0x0D,0x22) Commanded Zupt [CPP]
 /// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -1125,7 +1125,7 @@ CmdResult commandedZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_commanded_angular_zupt  Commanded Angular Zupt
+///@defgroup cpp_filter_commanded_angular_zupt  (0x0D,0x23) Commanded Angular Zupt [CPP]
 /// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -1147,7 +1147,7 @@ CmdResult commandedAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_aiding_measurement_enable  Aiding Measurement Enable
+///@defgroup cpp_filter_aiding_measurement_enable  (0x0D,0x50) Aiding Measurement Enable [CPP]
 /// Enables / disables the specified aiding measurement source.
 /// 
 /// 
@@ -1204,7 +1204,7 @@ CmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasure
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_run  Run
+///@defgroup cpp_filter_run  (0x0D,0x05) Run [CPP]
 /// Manual run command.
 /// 
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
@@ -1227,7 +1227,7 @@ CmdResult run(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_kinematic_constraint  Kinematic Constraint
+///@defgroup cpp_filter_kinematic_constraint  (0x0D,0x51) Kinematic Constraint [CPP]
 /// Controls kinematic constraint model selection for the navigation filter.
 /// 
 /// See manual for explanation of how the kinematic constraints are applied.
@@ -1275,7 +1275,7 @@ CmdResult defaultKinematicConstraint(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_initialization_configuration  Initialization Configuration
+///@defgroup cpp_filter_initialization_configuration  (0x0D,0x52) Initialization Configuration [CPP]
 /// Controls the source and values used for initial conditions of the navigation solution.
 /// 
 /// Notes: Initial conditions are the position, velocity, and attitude of the platform used when the filter starts running or is reset.
@@ -1365,7 +1365,7 @@ CmdResult defaultInitializationConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_adaptive_filter_options  Adaptive Filter Options
+///@defgroup cpp_filter_adaptive_filter_options  (0x0D,0x53) Adaptive Filter Options [CPP]
 /// Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
 ///
 ///@{
@@ -1409,7 +1409,7 @@ CmdResult defaultAdaptiveFilterOptions(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_multi_antenna_offset  Multi Antenna Offset
+///@defgroup cpp_filter_multi_antenna_offset  (0x0D,0x54) Multi Antenna Offset [CPP]
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
@@ -1455,7 +1455,7 @@ CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_rel_pos_configuration  Rel Pos Configuration
+///@defgroup cpp_filter_rel_pos_configuration  (0x0D,0x55) Rel Pos Configuration [CPP]
 /// Configure the reference location for filter relative positioning outputs
 ///
 ///@{
@@ -1501,7 +1501,7 @@ CmdResult defaultRelPosConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_ref_point_lever_arm  Ref Point Lever Arm
+///@defgroup cpp_filter_ref_point_lever_arm  (0x0D,0x56) Ref Point Lever Arm [CPP]
 /// Lever arm offset with respect to the sensor for the indicated point of reference.
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
@@ -1555,7 +1555,7 @@ CmdResult defaultRefPointLeverArm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_speed_measurement  Speed Measurement
+///@defgroup cpp_filter_speed_measurement  (0x0D,0x60) Speed Measurement [CPP]
 /// Speed aiding measurement, where speed is defined as rate of motion along the vehicle's x-axis direction.
 /// Can be used by an external odometer/speedometer, for example.
 /// This command cannot be used if the internal odometer is configured.
@@ -1582,7 +1582,7 @@ CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeO
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_speed_lever_arm  Speed Lever Arm
+///@defgroup cpp_filter_speed_lever_arm  (0x0D,0x61) Speed Lever Arm [CPP]
 /// Lever arm offset for speed measurements.
 /// This is used to compensate for an off-center measurement point
 /// having a different speed due to rotation of the vehicle.
@@ -1632,7 +1632,7 @@ CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
+///@defgroup cpp_filter_wheeled_vehicle_constraint_control  (0x0D,0x63) Wheeled Vehicle Constraint Control [CPP]
 /// Configure the wheeled vehicle kinematic constraint.
 /// 
 /// When enabled, the filter uses the assumption that velocity is constrained to the primary vehicle axis.
@@ -1680,7 +1680,7 @@ CmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
+///@defgroup cpp_filter_vertical_gyro_constraint_control  (0x0D,0x62) Vertical Gyro Constraint Control [CPP]
 /// Configure the vertical gyro kinematic constraint.
 /// 
 /// When enabled and no valid GNSS measurements are available, the filter uses the accelerometers to track pitch
@@ -1726,7 +1726,7 @@ CmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_gnss_antenna_cal_control  Gnss Antenna Cal Control
+///@defgroup cpp_filter_gnss_antenna_cal_control  (0x0D,0x64) Gnss Antenna Cal Control [CPP]
 /// Configure the GNSS antenna lever arm calibration.
 /// 
 /// When enabled, the filter will enable lever arm error tracking, up to the maximum offset specified.
@@ -1772,7 +1772,7 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_magnetic_declination_source  Magnetic Declination Source
+///@defgroup cpp_filter_magnetic_declination_source  (0x0D,0x43) Magnetic Declination Source [CPP]
 /// Source for magnetic declination angle, and user supplied value for manual selection.
 ///
 ///@{
@@ -1816,7 +1816,7 @@ CmdResult defaultMagneticDeclinationSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_set_initial_heading  Set Initial Heading
+///@defgroup cpp_filter_set_initial_heading  (0x0D,0x03) Set Initial Heading [CPP]
 /// Set the initial heading angle.
 /// 
 /// The estimation filter will reset the heading estimate to provided value. If the product supports magnetometer aiding and this feature has been enabled, the heading

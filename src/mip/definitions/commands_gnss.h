@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands_c
+///@addtogroup MipCommands_c  MIP Commands [C]
 ///@{
-///@defgroup gnss_commands_c_c  Gnss Commands_c [C]
+///@defgroup gnss_commands_c  Gnss Commands [C]
 ///
 ///@{
 
@@ -60,7 +60,7 @@ enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_receiver_info  Receiver Info
+///@defgroup c_gnss_receiver_info  (0x0E,0x01) Receiver Info [C]
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -89,7 +89,7 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_signal_configuration  Signal Configuration
+///@defgroup c_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [C]
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -128,7 +128,7 @@ enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_rtk_dongle_configuration  Rtk Dongle Configuration
+///@defgroup c_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [C]
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
@@ -161,7 +161,7 @@ enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interfa
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_receiver_safe_mode  Receiver Safe Mode
+///@defgroup c_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [C]
 /// Enable/disable safe mode for the provided receiver ID.
 /// Note: Receivers in safe mode will not output valid GNSS data.
 /// 

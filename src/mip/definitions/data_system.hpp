@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_system {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup system_data_cpp_cpp  System Data_cpp [CPP]
+///@defgroup system_data_cpp  System Data [CPP]
 ///
 ///@{
 
@@ -48,7 +48,7 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_system_built_in_test  Built In Test
+///@defgroup cpp_system_built_in_test  (0xA0,0x01) Built In Test [CPP]
 /// Contains the continuous built-in-test (BIT) results.
 /// 
 /// Due to the large size of this field, it is recommended to stream it at
@@ -87,7 +87,7 @@ void extract(Serializer& serializer, BuiltInTest& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_system_time_sync_status  Time Sync Status
+///@defgroup cpp_system_time_sync_status  (0xA0,0x02) Time Sync Status [CPP]
 /// Indicates whether a sync has been achieved using the PPS signal.
 ///
 ///@{
@@ -109,7 +109,7 @@ void extract(Serializer& serializer, TimeSyncStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_system_gpio_state  Gpio State
+///@defgroup cpp_system_gpio_state  (0xA0,0x03) Gpio State [CPP]
 /// Indicates the state of all of the user GPIO pins.
 /// 
 /// This message can be used to correlate external signals
@@ -148,7 +148,7 @@ void extract(Serializer& serializer, GpioState& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_system_gpio_analog_value  Gpio Analog Value
+///@defgroup cpp_system_gpio_analog_value  (0xA0,0x04) Gpio Analog Value [CPP]
 /// Indicates the analog value of the given user GPIO.
 /// The pin must be configured for analog input.
 ///

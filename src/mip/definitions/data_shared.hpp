@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_shared {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData_cpp
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup shared_data_cpp_cpp  Shared Data_cpp [CPP]
+///@defgroup shared_data_cpp  Shared Data [CPP]
 ///
 ///@{
 
@@ -55,7 +55,7 @@ static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_event_source  Event Source
+///@defgroup cpp_shared_event_source  (0xFF,0xD0) Event Source [CPP]
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -79,7 +79,7 @@ void extract(Serializer& serializer, EventSource& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_ticks  Ticks
+///@defgroup cpp_shared_ticks  (0xFF,0xD1) Ticks [CPP]
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -103,7 +103,7 @@ void extract(Serializer& serializer, Ticks& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_delta_ticks  Delta Ticks
+///@defgroup cpp_shared_delta_ticks  (0xFF,0xD2) Delta Ticks [CPP]
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -128,7 +128,7 @@ void extract(Serializer& serializer, DeltaTicks& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_gps_timestamp  Gps Timestamp
+///@defgroup cpp_shared_gps_timestamp  (0xFF,0xD3) Gps Timestamp [CPP]
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -174,7 +174,7 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_delta_time  Delta Time
+///@defgroup cpp_shared_delta_time  (0xFF,0xD4) Delta Time [CPP]
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -204,7 +204,7 @@ void extract(Serializer& serializer, DeltaTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_reference_timestamp  Reference Timestamp
+///@defgroup cpp_shared_reference_timestamp  (0xFF,0xD5) Reference Timestamp [CPP]
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -232,7 +232,7 @@ void extract(Serializer& serializer, ReferenceTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_reference_time_delta  Reference Time Delta
+///@defgroup cpp_shared_reference_time_delta  (0xFF,0xD6) Reference Time Delta [CPP]
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -262,7 +262,7 @@ void extract(Serializer& serializer, ReferenceTimeDelta& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_external_timestamp  External Timestamp
+///@defgroup cpp_shared_external_timestamp  (0xFF,0xD7) External Timestamp [CPP]
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -310,7 +310,7 @@ void extract(Serializer& serializer, ExternalTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_shared_external_time_delta  External Time Delta
+///@defgroup cpp_shared_external_time_delta  (0xFF,0xD8) External Time Delta [CPP]
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,
