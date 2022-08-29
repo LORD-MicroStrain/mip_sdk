@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_cpp
 ///@{
-///@defgroup filter_commands_cpp  FILTERCommands
+///@defgroup filter_commands_cpp_cpp  Filter Commands_cpp [CPP]
 ///
 ///@{
 
@@ -173,7 +173,7 @@ enum class FilterMagDeclinationSource : uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_reset  Reset Navigation Filter
+///@defgroup cpp_filter_reset  Reset
 /// Resets the filter to the initialization state.
 /// 
 /// If the auto-initialization feature is disabled, the initial attitude or heading must be set in
@@ -197,7 +197,7 @@ CmdResult reset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_set_initial_attitude  Set Initial Attitude
+///@defgroup cpp_filter_set_initial_attitude  Set Initial Attitude
 /// Set the sensor initial attitude.
 /// 
 /// This command can only be issued in the "Init" state and should be used with a good
@@ -220,9 +220,9 @@ struct SetInitialAttitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll = 0;
-    float pitch = 0;
-    float heading = 0;
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float heading = 0; ///< [radians]
     
 };
 void insert(Serializer& serializer, const SetInitialAttitude& self);
@@ -232,7 +232,7 @@ CmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_estimation_control  Estimation Control Flags
+///@defgroup cpp_filter_estimation_control  Estimation Control
 /// Estimation Control Flags
 /// 
 /// Controls which parameters are estimated by the Kalman Filter.
@@ -283,14 +283,14 @@ struct EstimationControl
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    EnableFlags enable;
+    EnableFlags enable; ///< See above
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ESTIMATION_CONTROL_FLAGS;
         
-        EnableFlags enable;
+        EnableFlags enable; ///< See above
         
     };
 };
@@ -308,7 +308,7 @@ CmdResult defaultEstimationControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_external_gnss_update  External GNSS Update
+///@defgroup cpp_filter_external_gnss_update  External Gnss Update
 /// Provide a filter measurement from an external GNSS
 /// 
 /// The GNSS source control must be set to "external" for this command to succeed, otherwise it will be NACK'd.
@@ -324,14 +324,14 @@ struct ExternalGnssUpdate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double gps_time = 0;
-    uint16_t gps_week = 0;
-    double latitude = 0;
-    double longitude = 0;
-    double height = 0;
-    float velocity[3] = {0};
-    float pos_uncertainty[3] = {0};
-    float vel_uncertainty[3] = {0};
+    double gps_time = 0; ///< [seconds]
+    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
+    double latitude = 0; ///< [degrees]
+    double longitude = 0; ///< [degrees]
+    double height = 0; ///< Above WGS84 ellipsoid [meters]
+    float velocity[3] = {0}; ///< NED Frame [meters/second]
+    float pos_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters]
+    float vel_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters/second]
     
 };
 void insert(Serializer& serializer, const ExternalGnssUpdate& self);
@@ -341,7 +341,7 @@ CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_external_heading_update  External Heading Update
+///@defgroup cpp_filter_external_heading_update  External Heading Update
 /// Provide a filter measurement from an external heading source
 /// 
 /// The heading must be the sensor frame with respect to the NED frame.
@@ -365,9 +365,9 @@ struct ExternalHeadingUpdate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float heading = 0;
-    float heading_uncertainty = 0;
-    uint8_t type = 0;
+    float heading = 0; ///< Bounded by +-PI [radians]
+    float heading_uncertainty = 0; ///< 1-sigma [radians]
+    uint8_t type = 0; ///< 1 - True, 2 - Magnetic
     
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdate& self);
@@ -377,7 +377,7 @@ CmdResult externalHeadingUpdate(C::mip_interface& device, float heading, float h
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_external_heading_update_with_time  External Heading Update With Time
+///@defgroup cpp_filter_external_heading_update_with_time  External Heading Update With Time
 /// Provide a filter measurement from an external heading source at a specific GPS time
 /// 
 /// This is more accurate than the External Heading Update (0x0D, 0x17) and should be used in applications
@@ -405,11 +405,11 @@ struct ExternalHeadingUpdateWithTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double gps_time = 0;
-    uint16_t gps_week = 0;
-    float heading = 0;
-    float heading_uncertainty = 0;
-    uint8_t type = 0;
+    double gps_time = 0; ///< [seconds]
+    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
+    float heading = 0; ///< Relative to true north, bounded by +-PI [radians]
+    float heading_uncertainty = 0; ///< 1-sigma [radians]
+    uint8_t type = 0; ///< 1 - True, 2 - Magnetic
     
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
@@ -419,7 +419,7 @@ CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_tare_orientation  Tare Sensor Orientation
+///@defgroup cpp_filter_tare_orientation  Tare Orientation
 /// Tare the device orientation.
 /// 
 /// This function uses the current device orientation relative to the NED frame as the current sensor to vehicle transformation.
@@ -460,14 +460,14 @@ struct TareOrientation
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    MipTareAxes axes;
+    MipTareAxes axes; ///< Axes to tare
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_TARE_ORIENTATION;
         
-        MipTareAxes axes;
+        MipTareAxes axes; ///< Axes to tare
         
     };
 };
@@ -485,7 +485,7 @@ CmdResult defaultTareOrientation(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_to_vehicle_rotation_euler  Sensor to Vehicle Frame Rotation Euler
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_euler  Sensor To Vehicle Rotation Euler
 /// Set the sensor to vehicle frame rotation using Yaw, Pitch, Roll Euler angles.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -524,18 +524,18 @@ struct SensorToVehicleRotationEuler
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float roll = 0;
-    float pitch = 0;
-    float yaw = 0;
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float yaw = 0; ///< [radians]
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_EULER;
         
-        float roll = 0;
-        float pitch = 0;
-        float yaw = 0;
+        float roll = 0; ///< [radians]
+        float pitch = 0; ///< [radians]
+        float yaw = 0; ///< [radians]
         
     };
 };
@@ -553,7 +553,7 @@ CmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_to_vehicle_rotation_dcm  Sensor to Vehicle Frame Rotation DCM
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_dcm  Sensor To Vehicle Rotation Dcm
 /// Set the sensor to vehicle frame rotation using a row-major direction cosine matrix.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -623,7 +623,7 @@ CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_to_vehicle_rotation_quaternion  Sensor to Vehicle Frame Rotation Quaternion
+///@defgroup cpp_filter_sensor_to_vehicle_rotation_quaternion  Sensor To Vehicle Rotation Quaternion
 /// Set the sensor to vehicle frame rotation using a quaternion.
 /// 
 /// Note: This is the rotation, the inverse of the transformation.
@@ -692,7 +692,7 @@ CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sensor_to_vehicle_offset  Sensor to Vehicle Frame Offset
+///@defgroup cpp_filter_sensor_to_vehicle_offset  Sensor To Vehicle Offset
 /// Set the sensor to vehicle frame offset, expressed in the sensor frame.
 /// 
 /// This is a simple offset, not a lever arm.  It does not compensate for inertial effects experienced from being offset from the center of gravity/rotation of the vehicle.
@@ -717,14 +717,14 @@ struct SensorToVehicleOffset
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float offset[3] = {0};
+    float offset[3] = {0}; ///< [meters]
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_OFFSET;
         
-        float offset[3] = {0};
+        float offset[3] = {0}; ///< [meters]
         
     };
 };
@@ -742,7 +742,7 @@ CmdResult defaultSensorToVehicleOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_antenna_offset  GNSS Antenna Offset Control
+///@defgroup cpp_filter_antenna_offset  Antenna Offset
 /// Set the sensor to GNSS antenna offset.
 /// 
 /// This is expressed in the sensor frame, from the sensor origin to the GNSS antenna RF center.
@@ -764,14 +764,14 @@ struct AntennaOffset
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float offset[3] = {0};
+    float offset[3] = {0}; ///< [meters]
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_OFFSET;
         
-        float offset[3] = {0};
+        float offset[3] = {0}; ///< [meters]
         
     };
 };
@@ -789,7 +789,7 @@ CmdResult defaultAntennaOffset(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_source  GNSS Aiding Source Control
+///@defgroup cpp_filter_gnss_source  Gnss Source
 /// Control the source of GNSS information used to update the Kalman Filter.
 /// 
 /// Changing the GNSS source while the sensor is in the "running" state may temporarily place
@@ -843,7 +843,7 @@ CmdResult defaultGnssSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_heading_source  Heading Aiding Source Control
+///@defgroup cpp_filter_heading_source  Heading Source
 /// Control the source of heading information used to update the Kalman Filter.
 /// 
 /// 1. To use internal GNSS velocity vector for heading updates, the target application
@@ -908,7 +908,7 @@ CmdResult defaultHeadingSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_auto_init_control  Auto-initialization Control
+///@defgroup cpp_filter_auto_init_control  Auto Init Control
 /// Filter Auto-initialization Control
 /// 
 /// Enable/Disable automatic initialization upon device startup.
@@ -933,14 +933,14 @@ struct AutoInitControl
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
+    uint8_t enable = 0; ///< See above
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AUTOINIT_CONTROL;
         
-        uint8_t enable = 0;
+        uint8_t enable = 0; ///< See above
         
     };
 };
@@ -958,7 +958,7 @@ CmdResult defaultAutoInitControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_altitude_aiding  Altitude Aiding Control
+///@defgroup cpp_filter_altitude_aiding  Altitude Aiding
 /// Altitude Aiding Control
 /// 
 /// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
@@ -986,14 +986,14 @@ struct AltitudeAiding
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t aiding_selector = 0;
+    uint8_t aiding_selector = 0; ///< See above
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ALTITUDE_AIDING_CONTROL;
         
-        uint8_t aiding_selector = 0;
+        uint8_t aiding_selector = 0; ///< See above
         
     };
 };
@@ -1011,7 +1011,7 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_auto_zupt  Zero Velocity Update Control
+///@defgroup cpp_filter_auto_zupt  Auto Zupt
 /// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -1030,16 +1030,16 @@ struct AutoZupt
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
-    float threshold = 0;
+    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+    float threshold = 0; ///< [meters/second]
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ZUPT_CONTROL;
         
-        uint8_t enable = 0;
-        float threshold = 0;
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float threshold = 0; ///< [meters/second]
         
     };
 };
@@ -1057,7 +1057,7 @@ CmdResult defaultAutoZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_auto_angular_zupt  Zero Angular Rate Update Control
+///@defgroup cpp_filter_auto_angular_zupt  Auto Angular Zupt
 /// Zero Angular Rate Update
 /// The ZUPT is triggered when the scalar magnitude of the angular rate vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
@@ -1076,16 +1076,16 @@ struct AutoAngularZupt
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
-    float threshold = 0;
+    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+    float threshold = 0; ///< [radians/second]
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANGULAR_ZUPT_CONTROL;
         
-        uint8_t enable = 0;
-        float threshold = 0;
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float threshold = 0; ///< [radians/second]
         
     };
 };
@@ -1103,7 +1103,7 @@ CmdResult defaultAutoAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_commanded_zupt  Commanded Zero Veloicty Update
+///@defgroup cpp_filter_commanded_zupt  Commanded Zupt
 /// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -1125,7 +1125,7 @@ CmdResult commandedZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_commanded_angular_zupt  Commanded Zero Angular Rate Update
+///@defgroup cpp_filter_commanded_angular_zupt  Commanded Angular Zupt
 /// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
@@ -1147,7 +1147,7 @@ CmdResult commandedAngularZupt(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_measurement_enable  Aiding Measurement Control
+///@defgroup cpp_filter_aiding_measurement_enable  Aiding Measurement Enable
 /// Enables / disables the specified aiding measurement source.
 /// 
 /// 
@@ -1177,16 +1177,16 @@ struct AidingMeasurementEnable
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    AidingSource aiding_source = static_cast<AidingSource>(0);
-    bool enable = 0;
+    AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
+    bool enable = 0; ///< Controls the aiding sorce
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AIDING_MEASUREMENT_ENABLE;
         
-        AidingSource aiding_source = static_cast<AidingSource>(0);
-        bool enable = 0;
+        AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
+        bool enable = 0; ///< Controls the aiding sorce
         
     };
 };
@@ -1204,7 +1204,7 @@ CmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasure
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_run  Run Navigation Filter
+///@defgroup cpp_filter_run  Run
 /// Manual run command.
 /// 
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
@@ -1227,7 +1227,7 @@ CmdResult run(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_kinematic_constraint  Kinematic Constraint Control
+///@defgroup cpp_filter_kinematic_constraint  Kinematic Constraint
 /// Controls kinematic constraint model selection for the navigation filter.
 /// 
 /// See manual for explanation of how the kinematic constraints are applied.
@@ -1246,18 +1246,18 @@ struct KinematicConstraint
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t acceleration_constraint_selection = 0;
-    uint8_t velocity_constraint_selection = 0;
-    uint8_t angular_constraint_selection = 0;
+    uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+    uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+    uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_KINEMATIC_CONSTRAINT;
         
-        uint8_t acceleration_constraint_selection = 0;
-        uint8_t velocity_constraint_selection = 0;
-        uint8_t angular_constraint_selection = 0;
+        uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+        uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+        uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
         
     };
 };
@@ -1275,7 +1275,7 @@ CmdResult defaultKinematicConstraint(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_initialization_configuration  Navigation Filter Initialization
+///@defgroup cpp_filter_initialization_configuration  Initialization Configuration
 /// Controls the source and values used for initial conditions of the navigation solution.
 /// 
 /// Notes: Initial conditions are the position, velocity, and attitude of the platform used when the filter starts running or is reset.
@@ -1324,30 +1324,30 @@ struct InitializationConfiguration
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t wait_for_run_command = 0;
-    InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0);
-    AlignmentSelector auto_heading_alignment_selector;
-    float initial_heading = 0;
-    float initial_pitch = 0;
-    float initial_roll = 0;
-    float initial_position[3] = {0};
-    float initial_velocity[3] = {0};
-    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
+    uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
+    InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
+    AlignmentSelector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    float initial_heading = 0; ///< User-specified initial platform heading (degrees).
+    float initial_pitch = 0; ///< User-specified initial platform pitch (degrees)
+    float initial_roll = 0; ///< User-specified initial platform roll (degrees)
+    float initial_position[3] = {0}; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    float initial_velocity[3] = {0}; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INITIALIZATION_CONFIGURATION;
         
-        uint8_t wait_for_run_command = 0;
-        InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0);
-        AlignmentSelector auto_heading_alignment_selector;
-        float initial_heading = 0;
-        float initial_pitch = 0;
-        float initial_roll = 0;
-        float initial_position[3] = {0};
-        float initial_velocity[3] = {0};
-        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
+        uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
+        InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
+        AlignmentSelector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+        float initial_heading = 0; ///< User-specified initial platform heading (degrees).
+        float initial_pitch = 0; ///< User-specified initial platform pitch (degrees)
+        float initial_roll = 0; ///< User-specified initial platform roll (degrees)
+        float initial_position[3] = {0}; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+        float initial_velocity[3] = {0}; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
         
     };
 };
@@ -1365,7 +1365,7 @@ CmdResult defaultInitializationConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_adaptive_filter_options  Adaptive Filter Control
+///@defgroup cpp_filter_adaptive_filter_options  Adaptive Filter Options
 /// Configures the basic setup for auto-adaptive filtering. See product manual for a detailed description of this feature.
 ///
 ///@{
@@ -1382,16 +1382,16 @@ struct AdaptiveFilterOptions
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t level = 0;
-    uint16_t time_limit = 0;
+    uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+    uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ADAPTIVE_FILTER_OPTIONS;
         
-        uint8_t level = 0;
-        uint16_t time_limit = 0;
+        uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+        uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
         
     };
 };
@@ -1409,7 +1409,7 @@ CmdResult defaultAdaptiveFilterOptions(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_multi_antenna_offset  GNSS Multi-Antenna Offset Control
+///@defgroup cpp_filter_multi_antenna_offset  Multi Antenna Offset
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
@@ -1428,8 +1428,8 @@ struct MultiAntennaOffset
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t receiver_id = 0;
-    float antenna_offset[3] = {0};
+    uint8_t receiver_id = 0; ///< Receiver: 1, 2, etc...
+    float antenna_offset[3] = {0}; ///< Antenna lever arm offset vector in the vehicle frame (m)
     
     struct Response
     {
@@ -1455,7 +1455,7 @@ CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rel_pos_configuration  Relative Position Configuration
+///@defgroup cpp_filter_rel_pos_configuration  Rel Pos Configuration
 /// Configure the reference location for filter relative positioning outputs
 ///
 ///@{
@@ -1472,18 +1472,18 @@ struct RelPosConfiguration
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t source = 0;
-    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
-    double reference_coordinates[3] = {0};
+    uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
+    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
+    double reference_coordinates[3] = {0}; ///< reference coordinates, units determined by source selection
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REL_POS_CONFIGURATION;
         
-        uint8_t source = 0;
-        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0);
-        double reference_coordinates[3] = {0};
+        uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
+        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
+        double reference_coordinates[3] = {0}; ///< reference coordinates, units determined by source selection
         
     };
 };
@@ -1501,7 +1501,7 @@ CmdResult defaultRelPosConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ref_point_lever_arm  Reference point lever arm
+///@defgroup cpp_filter_ref_point_lever_arm  Ref Point Lever Arm
 /// Lever arm offset with respect to the sensor for the indicated point of reference.
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
@@ -1528,16 +1528,16 @@ struct RefPointLeverArm
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0);
-    float lever_arm_offset[3] = {0};
+    ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
+    float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REF_POINT_LEVER_ARM;
         
-        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0);
-        float lever_arm_offset[3] = {0};
+        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
+        float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
         
     };
 };
@@ -1555,7 +1555,7 @@ CmdResult defaultRefPointLeverArm(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_speed_measurement  Input speed measurement
+///@defgroup cpp_filter_speed_measurement  Speed Measurement
 /// Speed aiding measurement, where speed is defined as rate of motion along the vehicle's x-axis direction.
 /// Can be used by an external odometer/speedometer, for example.
 /// This command cannot be used if the internal odometer is configured.
@@ -1569,10 +1569,10 @@ struct SpeedMeasurement
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t source = 0;
-    float time_of_week = 0;
-    float speed = 0;
-    float speed_uncertainty = 0;
+    uint8_t source = 0; ///< Reserved, must be 1.
+    float time_of_week = 0; ///< GPS time of week when speed was sampled
+    float speed = 0; ///< Estimated speed along vehicle's x-axis (may be positive or negative) [meters/second]
+    float speed_uncertainty = 0; ///< Estimated uncertainty in the speed measurement (1-sigma value) [meters/second]
     
 };
 void insert(Serializer& serializer, const SpeedMeasurement& self);
@@ -1582,7 +1582,7 @@ CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeO
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_speed_lever_arm  Measurement speed lever arm
+///@defgroup cpp_filter_speed_lever_arm  Speed Lever Arm
 /// Lever arm offset for speed measurements.
 /// This is used to compensate for an off-center measurement point
 /// having a different speed due to rotation of the vehicle.
@@ -1605,16 +1605,16 @@ struct SpeedLeverArm
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t source = 0;
-    float lever_arm_offset[3] = {0};
+    uint8_t source = 0; ///< Reserved, must be 1.
+    float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SPEED_LEVER_ARM;
         
-        uint8_t source = 0;
-        float lever_arm_offset[3] = {0};
+        uint8_t source = 0; ///< Reserved, must be 1.
+        float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
         
     };
 };
@@ -1632,7 +1632,7 @@ CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
+///@defgroup cpp_filter_wheeled_vehicle_constraint_control  Wheeled Vehicle Constraint Control
 /// Configure the wheeled vehicle kinematic constraint.
 /// 
 /// When enabled, the filter uses the assumption that velocity is constrained to the primary vehicle axis.
@@ -1655,14 +1655,14 @@ struct WheeledVehicleConstraintControl
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
+    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_CONSTRAINT_CONTROL;
         
-        uint8_t enable = 0;
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
         
     };
 };
@@ -1680,7 +1680,7 @@ CmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
+///@defgroup cpp_filter_vertical_gyro_constraint_control  Vertical Gyro Constraint Control
 /// Configure the vertical gyro kinematic constraint.
 /// 
 /// When enabled and no valid GNSS measurements are available, the filter uses the accelerometers to track pitch
@@ -1701,14 +1701,14 @@ struct VerticalGyroConstraintControl
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
+    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_CONSTRAINT_CONTROL;
         
-        uint8_t enable = 0;
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
         
     };
 };
@@ -1726,7 +1726,7 @@ CmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_antenna_cal_control  GNSS Antenna Offset Calibration Control
+///@defgroup cpp_filter_gnss_antenna_cal_control  Gnss Antenna Cal Control
 /// Configure the GNSS antenna lever arm calibration.
 /// 
 /// When enabled, the filter will enable lever arm error tracking, up to the maximum offset specified.
@@ -1745,16 +1745,16 @@ struct GnssAntennaCalControl
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
-    float max_offset = 0;
+    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+    float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_CALIBRATION_CONTROL;
         
-        uint8_t enable = 0;
-        float max_offset = 0;
+        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+        float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
         
     };
 };
@@ -1772,7 +1772,7 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetic_declination_source  Magnetic Field Declination Source Control
+///@defgroup cpp_filter_magnetic_declination_source  Magnetic Declination Source
 /// Source for magnetic declination angle, and user supplied value for manual selection.
 ///
 ///@{
@@ -1789,16 +1789,16 @@ struct MagneticDeclinationSource
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0);
-    float declination = 0;
+    FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
+    float declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_DECLINATION_SOURCE;
         
-        FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0);
-        float declination = 0;
+        FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
+        float declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
         
     };
 };
@@ -1816,7 +1816,7 @@ CmdResult defaultMagneticDeclinationSource(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_set_initial_heading  Set Initial Heading Control
+///@defgroup cpp_filter_set_initial_heading  Set Initial Heading
 /// Set the initial heading angle.
 /// 
 /// The estimation filter will reset the heading estimate to provided value. If the product supports magnetometer aiding and this feature has been enabled, the heading
@@ -1831,7 +1831,7 @@ struct SetInitialHeading
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float heading = 0;
+    float heading = 0; ///< Initial heading in radians [-pi, pi]
     
 };
 void insert(Serializer& serializer, const SetInitialHeading& self);

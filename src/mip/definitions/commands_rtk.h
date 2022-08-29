@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_c
 ///@{
-///@defgroup rtk_commands_c  RTKCommands
+///@defgroup rtk_commands_c_c  Rtk Commands_c [C]
 ///
 ///@{
 
@@ -85,7 +85,7 @@ void extract_mip_led_action(struct mip_serializer* serializer, enum mip_led_acti
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_status_flags  Get RTK Device Status Flags
+///@defgroup c_rtk_get_status_flags  Get Status Flags
 ///
 ///@{
 
@@ -130,7 +130,7 @@ void extract_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer
 
 struct mip_rtk_get_status_flags_response
 {
-    enum mip_rtk_get_status_flags_command_status_flags flags;
+    enum mip_rtk_get_status_flags_command_status_flags flags; ///< Model number dependent. See above structures.
     
 };
 void insert_mip_rtk_get_status_flags_response(struct mip_serializer* serializer, const struct mip_rtk_get_status_flags_response* self);
@@ -140,7 +140,7 @@ enum mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, enum 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_imei  Get RTK Device IMEI (International Mobile Equipment Identifier)
+///@defgroup c_rtk_get_imei  Get Imei
 ///
 ///@{
 
@@ -156,7 +156,7 @@ enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_ou
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_imsi  Get RTK Device IMSI (International Mobile Subscriber Identifier)
+///@defgroup c_rtk_get_imsi  Get Imsi
 ///
 ///@{
 
@@ -172,7 +172,7 @@ enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_ou
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_iccid  Get RTK Device ICCID (Integrated Circuit Card Identification [SIM Number])
+///@defgroup c_rtk_get_iccid  Get Iccid
 ///
 ///@{
 
@@ -188,7 +188,7 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_connected_device_type  Configure or read the type of the connected device
+///@defgroup c_rtk_connected_device_type  Connected Device Type
 ///
 ///@{
 
@@ -226,7 +226,7 @@ enum mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_act_code  Get RTK Device Activation Code
+///@defgroup c_rtk_get_act_code  Get Act Code
 ///
 ///@{
 
@@ -242,7 +242,7 @@ enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* act
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_modem_firmware_version  Get RTK Device's Cell Modem Firmware version number
+///@defgroup c_rtk_get_modem_firmware_version  Get Modem Firmware Version
 ///
 ///@{
 
@@ -258,7 +258,7 @@ enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* dev
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_rssi  None
+///@defgroup c_rtk_get_rssi  Get Rssi
 /// Get the RSSI and connected/disconnected status of modem
 ///
 ///@{
@@ -277,7 +277,7 @@ enum mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_o
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_service_status  None
+///@defgroup c_rtk_service_status  Service Status
 /// The 3DMRTK will send this message to the server to indicate that the connection should remain open. The Server will respond with information and status.
 ///
 ///@{
@@ -317,7 +317,7 @@ enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_prod_erase_storage  None
+///@defgroup c_rtk_prod_erase_storage  Prod Erase Storage
 /// This command will erase the selected media to a raw and unitialized state. ALL DATA WILL BE LOST.
 /// This command is only available in calibration mode.
 ///
@@ -335,7 +335,7 @@ enum mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, enu
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_led_control  None
+///@defgroup c_rtk_led_control  Led Control
 /// This command allows direct control of the LED on the 3DM RTK. This command is only available in calibration mode or Production Test Mode.
 ///
 ///@{
@@ -355,7 +355,7 @@ enum mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_modem_hard_reset  None
+///@defgroup c_rtk_modem_hard_reset  Modem Hard Reset
 /// This command will clear the modem flash.  THIS MUST NOT BE DONE OFTEN AS IT CAN DAMAGE THE FLASH!
 /// This command is only available in calibration mode.
 ///
