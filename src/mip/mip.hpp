@@ -255,24 +255,16 @@ public:
 /// {
 ///     void handlePacket(const Packet& packet, Timeout timeout);
 /// };
-///
-/// Parser parser<MyClass, &MyClass::handlePacket>(buffer, bufferSize, timeout, myInstance);
+/// MyClass myInstance;
+/// Parser parser<MyClass, &MyClass::handlePacket>(myInstance);
 ///@endcode
 ///
 ///@tparam T Class type containing the member function to be called.
 ///@tparam Callback A pointer to a member function on a T to be called when a
 ///        packet is parsed.
 ///
-///@param buffer
-///       Scratch space for the parser to use internally; input data is consumed
-///       and fed to this buffer. Cannot be NULL.
-///@param bufferSize
-///       Size of buffer, in bytes.
 ///@param object
 ///       Instance of T to call the callback.
-///@param timeout
-///       The timeout for receiving one packet. Depends on the serial baud rate
-///       and is typically 100 milliseconds.
 ///
 template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
 void Parser::setCallback(T& object)

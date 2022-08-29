@@ -111,7 +111,7 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup user_callbacks  User callback functions [C/C++]
+///@defgroup user_callbacks  User callback functions [C/CPP]
 ///
 ///@{
 
@@ -122,7 +122,7 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device);
 ///@param device        The mip interface object
 ///@param buffer        Buffer to fill with data. Should be allocated before
 ///                     calling this function
-///@param max_lengh     Max number of bytes that can be read into the buffer.
+///@param max_length    Max number of bytes that can be read into the buffer.
 ///@param out_length    Number of bytes actually read into the buffer.
 ///@param timestamp_out Timestamp of the data was received.
 ///

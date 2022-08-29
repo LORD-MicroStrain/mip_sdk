@@ -123,11 +123,6 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_interface_cpp  Mip Device Interface [C++]
-///@{
-///
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a connected MIP device.
 ///
 /// The following methods are pure virtual and must be implemented by a derived
@@ -278,6 +273,7 @@ void DeviceInterface::setUpdateFunction()
 ///
 ///@param handler
 ///@param descriptorSet
+///@param afterFields
 ///@param userData
 ///
 /// Example usage:
@@ -319,6 +315,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///
 ///@param handler
 ///@param descriptorSet
+///@param afterFields
 ///@param object
 ///
 /// Example usage:
@@ -632,7 +629,6 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
 //}
 
 
-///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 

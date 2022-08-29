@@ -40,7 +40,7 @@ struct mip_pending_cmd
 {
     struct mip_pending_cmd*     _next;                 ///<@private Next command in the queue.
     uint8_t*                    _response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
-    union {
+    union {                                            ///<@private
         timeout_type            _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
         timestamp_type          _timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
         timestamp_type          _reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
@@ -51,7 +51,7 @@ struct mip_pending_cmd
     union {
         uint8_t                 _response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
         uint8_t                 _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
-    };
+    };                                                 ///<@private
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 };
 
@@ -77,10 +77,19 @@ bool mip_pending_cmd_check_timeout(const struct mip_pending_cmd* cmd, timestamp_
 ///
 ///@{
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Holds a list of pending commands.
+///
+/// Currently only one command may be pending at a time.
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
+///
 struct mip_cmd_queue
 {
-    struct mip_pending_cmd* _first_pending_cmd;
-    timeout_type            _base_timeout;
+    struct mip_pending_cmd* _first_pending_cmd;  ///<@private First pending command in the queue, or NULL.
+    timeout_type            _base_timeout;       ///<@private Base reply timeout.
 };
 
 void mip_cmd_queue_init(struct mip_cmd_queue* queue, timeout_type base_reply_timeout);

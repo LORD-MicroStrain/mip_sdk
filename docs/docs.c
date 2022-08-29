@@ -15,11 +15,12 @@
 ///@li Dual C and C++ API for maximum usability, safety, flexibility, and convenience.
 ///@li Suitable for bare-metal microcontrollers (Minimal code size and memory footprint, No dynamic memory allocation, No dependence on any RTOS or threading)
 ///
-///
 /// See @ref mip_interface for details on how to get started.
 ///
-///
 ///@section quickref_cpp Quick Reference [C++]
+///
+/// All C++ functions and classes reside within the mip namespace.
+/// The C functions can be accessed via the mip::C namespace.
 ///
 ///@li @ref mip::DeviceInterface Top-level MIP interface class.
 ///@li @ref mip::Packet          A class representing a MIP packet for either transmission or reception.
@@ -27,6 +28,11 @@
 ///@li @ref mip::Parser          MIP parser class for converting received bytes into packets.
 ///
 ///@section quickref_c Quick Reference [C]
+///
+/// C does not support the equivalent of C++ namespaces, so all definitions are
+/// global. Most names start with `mip_` to avoid conflicts.
+/// In these documentation pages, objects are referred to by their fully-
+/// qualified C++ names for clarity.
 ///
 ///@li @ref mip_interface_c
 ///@li @ref mip_packet_c
@@ -166,7 +172,7 @@
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@section update The update function
+///@section update The Update Function
 ///
 /// The application should call mip_interface_update() periodically to process
 /// data sent by the device. This update function will call
