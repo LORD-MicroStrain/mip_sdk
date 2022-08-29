@@ -185,8 +185,8 @@ bool mip_interface_default_update(struct mip_interface* device, bool blocking)
     struct mip_parser* parser = mip_interface_parser(device);
     size_t max_count = mip_parser_get_write_ptr(parser, &ptr);
 
-    size_t count;
-    timestamp_type timestamp;
+    size_t count = 0;
+    timestamp_type timestamp = 0;
     if ( !mip_interface_user_recv_from_device(device, ptr, max_count, &count, &timestamp) )
         return false;
 
