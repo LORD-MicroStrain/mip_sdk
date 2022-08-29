@@ -53,7 +53,6 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 } // extern "C"
 } // namespace C
 
-///@}
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents the status of a MIP command.
 ///
