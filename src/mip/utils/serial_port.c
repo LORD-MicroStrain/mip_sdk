@@ -235,7 +235,7 @@ bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, 
 
         if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
             return false;
-        if(local_bytes_read > 0)
+        if(local_bytes_read >= 0)
             *bytes_read = local_bytes_read;
     }
 
