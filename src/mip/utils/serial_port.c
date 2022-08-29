@@ -231,11 +231,12 @@ bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, 
     // Keep reading and polling while there is still data available
     if (poll_status > 0 && poll_fd.revents & POLLIN)
     {
-        size_t local_bytes_read = read(port->handle, buffer, num_bytes);
+        ssize_t local_bytes_read = read(port->handle, buffer, num_bytes);
 
-        if(local_bytes_read == (size_t)-1 && errno != EAGAIN)
+        if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
             return false;
-        *bytes_read = local_bytes_read;
+        if(local_bytes_read > 0)
+            *bytes_read = local_bytes_read;
     }
 
 #endif
