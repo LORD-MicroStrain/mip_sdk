@@ -369,8 +369,8 @@ void mip_parser_process_written(struct mip_parser* parser, size_t count, timesta
 ///
 ///@param baudrate Serial baud rate in bits per second
 ///
-///@return A timeout value representing the time it would take to transmit a
-///        single mip packet of maximum size at the given baud rate, plus some
+///@return A timeout value in ms representing the time it would take to transmit
+///        a single mip packet of maximum size at the given baud rate, plus some
 ///        tolerance.
 ///
 timeout_type mip_timeout_from_baudrate(uint32_t baudrate)
