@@ -12,7 +12,13 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_field  mip_field - Functions for processing received MIP fields.
+///@addtogroup mip_c
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup mip_field_c  Mip Fields [C]
+///
+///@brief Functions for processing received MIP fields.
 ///
 ///~~~
 /// ---------------+------------+------------+-----/ /-----+------------+
@@ -56,7 +62,10 @@ typedef struct mip_field
 void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup FieldAccess  Field Accessors - Functions for inspecting a MIP field.
+///@defgroup FieldAccess  Field Accessors [C]
+///
+///@brief Functions for inspecting a MIP field.
+///
 ///@{
 
 uint8_t mip_field_descriptor_set(const mip_field* field);
@@ -68,7 +77,9 @@ bool mip_field_is_valid(const mip_field* field);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup FieldIteration  Field Iteration - Functions for iterating over fields in a MIP packet.
+///@defgroup FieldIteration_c  Field Iteration [C]
+///
+///@brief Functions for iterating over fields in a MIP packet.
 ///
 /// Use these functions to iterate over the fields in a MIP packet.
 ///
@@ -101,6 +112,7 @@ bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet);
 
 // bool mip_field_is_at_end(const struct mip_field* field);
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

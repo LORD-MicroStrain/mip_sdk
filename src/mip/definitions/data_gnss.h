@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_c  MIP Data [C]
 ///@{
-///@defgroup gnss_data_c  GNSSData
+///@defgroup gnss_data_c  Gnss Data [C]
 ///
 ///@{
 
@@ -178,7 +178,7 @@ enum { MIP_GNSS_SV_INFO_MAX_SV_NUMBER = 32 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_pos_llh  GNSS LLH Position
+///@defgroup c_gnss_pos_llh  (0x81,0x03) Pos Llh [C]
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -196,12 +196,12 @@ enum mip_gnss_pos_llh_data_valid_flags
 
 struct mip_gnss_pos_llh_data
 {
-    double latitude;
-    double longitude;
-    double ellipsoid_height;
-    double msl_height;
-    float horizontal_accuracy;
-    float vertical_accuracy;
+    double latitude; ///< [degrees]
+    double longitude; ///< [degrees]
+    double ellipsoid_height; ///< [meters]
+    double msl_height; ///< [meters]
+    float horizontal_accuracy; ///< [meters]
+    float vertical_accuracy; ///< [meters]
     enum mip_gnss_pos_llh_data_valid_flags valid_flags;
     
 };
@@ -215,7 +215,7 @@ void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_pos_ecef  GNSS ECEF Position
+///@defgroup c_gnss_pos_ecef  (0x81,0x04) Pos Ecef [C]
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -230,8 +230,8 @@ enum mip_gnss_pos_ecef_data_valid_flags
 
 struct mip_gnss_pos_ecef_data
 {
-    double x[3];
-    float x_accuracy;
+    double x[3]; ///< [meters]
+    float x_accuracy; ///< [meters]
     enum mip_gnss_pos_ecef_data_valid_flags valid_flags;
     
 };
@@ -245,7 +245,7 @@ void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_vel_ned  NED Velocity
+///@defgroup c_gnss_vel_ned  (0x81,0x05) Vel Ned [C]
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -264,12 +264,12 @@ enum mip_gnss_vel_ned_data_valid_flags
 
 struct mip_gnss_vel_ned_data
 {
-    float v[3];
-    float speed;
-    float ground_speed;
-    float heading;
-    float speed_accuracy;
-    float heading_accuracy;
+    float v[3]; ///< [meters/second]
+    float speed; ///< [meters/second]
+    float ground_speed; ///< [meters/second]
+    float heading; ///< [degrees]
+    float speed_accuracy; ///< [meters/second]
+    float heading_accuracy; ///< [degrees]
     enum mip_gnss_vel_ned_data_valid_flags valid_flags;
     
 };
@@ -283,7 +283,7 @@ void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_vel_ecef  GNSS ECEF Velocity
+///@defgroup c_gnss_vel_ecef  (0x81,0x06) Vel Ecef [C]
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -298,8 +298,8 @@ enum mip_gnss_vel_ecef_data_valid_flags
 
 struct mip_gnss_vel_ecef_data
 {
-    float v[3];
-    float v_accuracy;
+    float v[3]; ///< [meters/second]
+    float v_accuracy; ///< [meters/second]
     enum mip_gnss_vel_ecef_data_valid_flags valid_flags;
     
 };
@@ -313,7 +313,7 @@ void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_dop  None
+///@defgroup c_gnss_dop  (0x81,0x07) Dop [C]
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -333,13 +333,13 @@ enum mip_gnss_dop_data_valid_flags
 
 struct mip_gnss_dop_data
 {
-    float gdop;
-    float pdop;
-    float hdop;
-    float vdop;
-    float tdop;
-    float ndop;
-    float edop;
+    float gdop; ///< Geometric DOP
+    float pdop; ///< Position DOP
+    float hdop; ///< Horizontal DOP
+    float vdop; ///< Vertical DOP
+    float tdop; ///< Time DOP
+    float ndop; ///< Northing DOP
+    float edop; ///< Easting DOP
     enum mip_gnss_dop_data_valid_flags valid_flags;
     
 };
@@ -353,7 +353,7 @@ void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, en
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_utc_time  None
+///@defgroup c_gnss_utc_time  (0x81,0x08) Utc Time [C]
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -374,7 +374,7 @@ struct mip_gnss_utc_time_data
     uint8_t hour;
     uint8_t min;
     uint8_t sec;
-    uint32_t msec;
+    uint32_t msec; ///< [Milliseconds]
     enum mip_gnss_utc_time_data_valid_flags valid_flags;
     
 };
@@ -388,7 +388,7 @@ void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_time  None
+///@defgroup c_gnss_gps_time  (0x81,0x09) Gps Time [C]
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -403,8 +403,8 @@ enum mip_gnss_gps_time_data_valid_flags
 
 struct mip_gnss_gps_time_data
 {
-    double tow;
-    uint16_t week_number;
+    double tow; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
     enum mip_gnss_gps_time_data_valid_flags valid_flags;
     
 };
@@ -418,7 +418,7 @@ void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_clock_info  None
+///@defgroup c_gnss_clock_info  (0x81,0x0A) Clock Info [C]
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -434,9 +434,9 @@ enum mip_gnss_clock_info_data_valid_flags
 
 struct mip_gnss_clock_info_data
 {
-    double bias;
-    double drift;
-    double accuracy_estimate;
+    double bias; ///< [seconds]
+    double drift; ///< [seconds/second]
+    double accuracy_estimate; ///< [seconds]
     enum mip_gnss_clock_info_data_valid_flags valid_flags;
     
 };
@@ -450,7 +450,7 @@ void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* seriali
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_fix_info  None
+///@defgroup c_gnss_fix_info  (0x81,0x0B) Fix Info [C]
 /// GNSS reported position fix type
 ///
 ///@{
@@ -506,7 +506,7 @@ void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sv_info  None
+///@defgroup c_gnss_sv_info  (0x81,0x0C) Sv Info [C]
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -534,11 +534,11 @@ enum mip_gnss_sv_info_data_valid_flags
 
 struct mip_gnss_sv_info_data
 {
-    uint8_t channel;
-    uint8_t sv_id;
-    uint16_t carrier_noise_ratio;
-    int16_t azimuth;
-    int16_t elevation;
+    uint8_t channel; ///< Receiver channel number
+    uint8_t sv_id; ///< GNSS Satellite ID
+    uint16_t carrier_noise_ratio; ///< [dBHz]
+    int16_t azimuth; ///< [deg]
+    int16_t elevation; ///< [deg]
     enum mip_gnss_sv_info_data_svflags sv_flags;
     enum mip_gnss_sv_info_data_valid_flags valid_flags;
     
@@ -556,7 +556,7 @@ void extract_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_hw_status  GNSS Hardware Status
+///@defgroup c_gnss_hw_status  (0x81,0x0D) Hw Status [C]
 /// GNSS reported hardware status
 ///
 ///@{
@@ -620,7 +620,7 @@ void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_dgps_info  None
+///@defgroup c_gnss_dgps_info  (0x81,0x0E) Dgps Info [C]
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -666,7 +666,7 @@ void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_dgps_channel  None
+///@defgroup c_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [C]
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -686,9 +686,9 @@ enum mip_gnss_dgps_channel_data_valid_flags
 struct mip_gnss_dgps_channel_data
 {
     uint8_t sv_id;
-    float age;
-    float range_correction;
-    float range_rate_correction;
+    float age; ///< [s]
+    float range_correction; ///< [m]
+    float range_rate_correction; ///< [m/s]
     enum mip_gnss_dgps_channel_data_valid_flags valid_flags;
     
 };
@@ -702,7 +702,7 @@ void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* seria
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_clock_info_2  None
+///@defgroup c_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [C]
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -738,7 +738,7 @@ void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* seria
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_leap_seconds  None
+///@defgroup c_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [C]
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -751,7 +751,7 @@ enum mip_gnss_gps_leap_seconds_data_valid_flags
 
 struct mip_gnss_gps_leap_seconds_data
 {
-    uint8_t leap_seconds;
+    uint8_t leap_seconds; ///< [s]
     enum mip_gnss_gps_leap_seconds_data_valid_flags valid_flags;
     
 };
@@ -765,7 +765,7 @@ void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sbas_info  None
+///@defgroup c_gnss_sbas_info  (0x81,0x12) Sbas Info [C]
 /// GNSS SBAS status
 ///
 ///@{
@@ -793,12 +793,12 @@ enum mip_gnss_sbas_info_data_valid_flags
 
 struct mip_gnss_sbas_info_data
 {
-    double time_of_week;
-    uint16_t week_number;
-    enum mip_sbas_system sbas_system;
-    uint8_t sbas_id;
-    uint8_t count;
-    enum mip_gnss_sbas_info_data_sbas_status sbas_status;
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    enum mip_sbas_system sbas_system; ///< SBAS system id
+    uint8_t sbas_id; ///< SBAS satellite id.
+    uint8_t count; ///< Number of SBAS corrections
+    enum mip_gnss_sbas_info_data_sbas_status sbas_status; ///< Status of the SBAS service
     enum mip_gnss_sbas_info_data_valid_flags valid_flags;
     
 };
@@ -815,7 +815,7 @@ void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializ
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_sbas_correction  None
+///@defgroup c_gnss_sbas_correction  (0x81,0x13) Sbas Correction [C]
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -853,15 +853,15 @@ enum mip_gnss_sbas_correction_data_valid_flags
 
 struct mip_gnss_sbas_correction_data
 {
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    enum mip_gnss_constellation_id gnss_id;
-    uint8_t sv_id;
-    uint8_t udrei;
-    float pseudorange_correction;
-    float iono_correction;
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week the message was received [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    enum mip_gnss_constellation_id gnss_id; ///< GNSS constellation id
+    uint8_t sv_id; ///< GNSS satellite id within the constellation.
+    uint8_t udrei; ///< [See above 0-13 usable, 14 not monitored, 15 - do not use]
+    float pseudorange_correction; ///< Pseudorange correction [meters].
+    float iono_correction; ///< Ionospheric correction [meters].
     enum mip_gnss_sbas_correction_data_valid_flags valid_flags;
     
 };
@@ -875,7 +875,7 @@ void extract_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rf_error_detection  None
+///@defgroup c_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [C]
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -915,10 +915,10 @@ enum mip_gnss_rf_error_detection_data_valid_flags
 
 struct mip_gnss_rf_error_detection_data
 {
-    enum mip_gnss_rf_error_detection_data_rfband rf_band;
-    enum mip_gnss_rf_error_detection_data_jamming_state jamming_state;
-    enum mip_gnss_rf_error_detection_data_spoofing_state spoofing_state;
-    uint8_t reserved[4];
+    enum mip_gnss_rf_error_detection_data_rfband rf_band; ///< RF Band of the reported information
+    enum mip_gnss_rf_error_detection_data_jamming_state jamming_state; ///< GNSS Jamming State (as reported by the GNSS module)
+    enum mip_gnss_rf_error_detection_data_spoofing_state spoofing_state; ///< GNSS Spoofing State (as reported by the GNSS module)
+    uint8_t reserved[4]; ///< Reserved for future use
     enum mip_gnss_rf_error_detection_data_valid_flags valid_flags;
     
 };
@@ -941,7 +941,7 @@ void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer*
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_base_station_info  None
+///@defgroup c_gnss_base_station_info  (0x81,0x30) Base Station Info [C]
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -976,12 +976,12 @@ enum mip_gnss_base_station_info_data_valid_flags
 
 struct mip_gnss_base_station_info_data
 {
-    double time_of_week;
-    uint16_t week_number;
-    double ecef_pos[3];
-    float height;
-    uint16_t station_id;
-    enum mip_gnss_base_station_info_data_indicator_flags indicators;
+    double time_of_week; ///< GPS Time of week the message was received [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    double ecef_pos[3]; ///< Earth-centered, Earth-fixed [m]
+    float height; ///< Antenna Height above the marker used in the survey [m]
+    uint16_t station_id; ///< Range: 0-4095
+    enum mip_gnss_base_station_info_data_indicator_flags indicators; ///< Bitfield
     enum mip_gnss_base_station_info_data_valid_flags valid_flags;
     
 };
@@ -998,7 +998,7 @@ void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_corrections_status  None
+///@defgroup c_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [C]
 ///
 ///@{
 
@@ -1032,15 +1032,15 @@ enum mip_gnss_rtk_corrections_status_data_epoch_status
 
 struct mip_gnss_rtk_corrections_status_data
 {
-    double time_of_week;
-    uint16_t week_number;
-    enum mip_gnss_rtk_corrections_status_data_epoch_status epoch_status;
-    uint32_t dongle_status;
-    float gps_correction_latency;
-    float glonass_correction_latency;
-    float galileo_correction_latency;
-    float beidou_correction_latency;
-    uint32_t reserved[4];
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    enum mip_gnss_rtk_corrections_status_data_epoch_status epoch_status; ///< Status of the corrections received during this epoch
+    uint32_t dongle_status; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see MIP_CMD_DESC_RTK_GET_STATUS_FLAGS for details)
+    float gps_correction_latency; ///< Latency of last GPS correction [seconds]
+    float glonass_correction_latency; ///< Latency of last GLONASS correction [seconds]
+    float galileo_correction_latency; ///< Latency of last Galileo correction [seconds]
+    float beidou_correction_latency; ///< Latency of last Beidou correction [seconds]
+    uint32_t reserved[4]; ///< Reserved for future use
     enum mip_gnss_rtk_corrections_status_data_valid_flags valid_flags;
     
 };
@@ -1057,7 +1057,7 @@ void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serial
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_satellite_status  None
+///@defgroup c_gnss_satellite_status  (0x81,0x20) Satellite Status [C]
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -1077,15 +1077,15 @@ enum mip_gnss_satellite_status_data_valid_flags
 
 struct mip_gnss_satellite_status_data
 {
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
     enum mip_gnss_constellation_id gnss_id;
-    uint8_t satellite_id;
-    float elevation;
-    float azimuth;
-    bool health;
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation
+    float elevation; ///< Elevation of the satellite relative to the rover [degrees]
+    float azimuth; ///< Azimuth of the satellite relative to the rover [degrees]
+    bool health; ///< True if the satellite is healthy.
     enum mip_gnss_satellite_status_data_valid_flags valid_flags;
     
 };
@@ -1099,7 +1099,7 @@ void extract_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* s
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_raw  None
+///@defgroup c_gnss_raw  (0x81,0x22) Raw [C]
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1138,24 +1138,24 @@ enum mip_gnss_raw_data_valid_flags
 
 struct mip_gnss_raw_data
 {
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint16_t receiver_id;
-    uint8_t tracking_channel;
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    uint16_t receiver_id; ///< When the measurement comes from RTCM, this will be the reference station ID; otherwise, it's the receiver number (1,2,...)
+    uint8_t tracking_channel; ///< Channel the receiver is using to track this satellite.
     enum mip_gnss_constellation_id gnss_id;
-    uint8_t satellite_id;
-    enum mip_gnss_signal_id signal_id;
-    float signal_strength;
-    enum mip_gnss_raw_data_gnss_signal_quality quality;
-    double pseudorange;
-    double carrier_phase;
-    float doppler;
-    float range_uncert;
-    float phase_uncert;
-    float doppler_uncert;
-    float lock_time;
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation.
+    enum mip_gnss_signal_id signal_id; ///< Signal identifier for the satellite.
+    float signal_strength; ///< Carrier to noise ratio [dBHz].
+    enum mip_gnss_raw_data_gnss_signal_quality quality; ///< Indicator of signal quality.
+    double pseudorange; ///< Pseudorange measurement [meters].
+    double carrier_phase; ///< Carrier phase measurement [Carrier periods].
+    float doppler; ///< Measured doppler shift [Hz].
+    float range_uncert; ///< Uncertainty of the pseudorange measurement [m].
+    float phase_uncert; ///< Uncertainty of the phase measurement [Carrier periods].
+    float doppler_uncert; ///< Uncertainty of the measured doppler shift [Hz].
+    float lock_time; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
     enum mip_gnss_raw_data_valid_flags valid_flags;
     
 };
@@ -1172,7 +1172,7 @@ void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, en
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_ephemeris  None
+///@defgroup c_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [C]
 /// GPS/Galileo Ephemeris Data
 ///
 ///@{
@@ -1187,39 +1187,39 @@ enum mip_gnss_gps_ephemeris_data_valid_flags
 
 struct mip_gnss_gps_ephemeris_data
 {
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint8_t satellite_id;
-    uint8_t health;
-    uint8_t iodc;
-    uint8_t iode;
-    double t_oc;
-    double af0;
-    double af1;
-    double af2;
-    double t_gd;
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation.
+    uint8_t health; ///< Satellite and signal health
+    uint8_t iodc; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode; ///< Issue of Data Ephemeris.
+    double t_oc; ///< Reference time for clock data.
+    double af0; ///< Clock bias in [s].
+    double af1; ///< Clock drift in [s/s].
+    double af2; ///< Clock drift rate in [s/s^2].
+    double t_gd; ///< T Group Delay [s].
     double ISC_L1CA;
     double ISC_L2C;
-    double t_oe;
-    double a;
-    double a_dot;
-    double mean_anomaly;
-    double delta_mean_motion;
-    double delta_mean_motion_dot;
+    double t_oe; ///< Reference time for ephemeris in [s].
+    double a; ///< Semi-major axis [m].
+    double a_dot; ///< Semi-matjor axis rate [m/s].
+    double mean_anomaly; ///< [rad].
+    double delta_mean_motion; ///< [rad].
+    double delta_mean_motion_dot; ///< [rad/s].
     double eccentricity;
-    double argument_of_perigee;
-    double omega;
-    double omega_dot;
-    double inclination;
-    double inclination_dot;
-    double c_ic;
-    double c_is;
-    double c_uc;
-    double c_us;
-    double c_rc;
-    double c_rs;
+    double argument_of_perigee; ///< [rad].
+    double omega; ///< Longitude of Ascending Node [rad].
+    double omega_dot; ///< Rate of Right Ascention [rad/s].
+    double inclination; ///< Inclination angle [rad].
+    double inclination_dot; ///< Inclination angle rate of change [rad/s].
+    double c_ic; ///< Harmonic Correction Term.
+    double c_is; ///< Harmonic Correction Term.
+    double c_uc; ///< Harmonic Correction Term.
+    double c_us; ///< Harmonic Correction Term.
+    double c_rc; ///< Harmonic Correction Term.
+    double c_rs; ///< Harmonic Correction Term.
     enum mip_gnss_gps_ephemeris_data_valid_flags valid_flags;
     
 };
@@ -1233,7 +1233,7 @@ void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_glo_ephemeris  Glonass Ephemeris
+///@defgroup c_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [C]
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1247,30 +1247,30 @@ enum mip_gnss_glo_ephemeris_data_valid_flags
 
 struct mip_gnss_glo_ephemeris_data
 {
-    uint8_t index;
-    uint8_t count;
-    double time_of_week;
-    uint16_t week_number;
-    uint8_t satellite_id;
-    int8_t freq_number;
-    uint32_t tk;
-    uint32_t tb;
-    uint8_t sat_type;
-    double gamma;
-    double tau_n;
-    double x[3];
-    float v[3];
-    float a[3];
-    uint8_t health;
-    uint8_t P;
-    uint8_t NT;
-    float delta_tau_n;
-    uint8_t Ft;
-    uint8_t En;
-    uint8_t P1;
-    uint8_t P2;
-    uint8_t P3;
-    uint8_t P4;
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation.
+    int8_t freq_number; ///< GLONASS frequency number (-7 to 24)
+    uint32_t tk; ///< Frame start time within current day [seconds]
+    uint32_t tb; ///< Ephemeris reference time [seconds]
+    uint8_t sat_type; ///< Type of satellite (M) GLONASS = 0, GLONASS-M = 1
+    double gamma; ///< Relative deviation of carrier frequency from nominal [dimesnionless]
+    double tau_n; ///< Time correction relative to GLONASS Time [seconds]
+    double x[3]; ///< Satellite PE-90 position [m]
+    float v[3]; ///< Satellite PE-90 velocity [m/s]
+    float a[3]; ///< Satellite PE-90 acceleration due to pertubations [m/s^2]
+    uint8_t health; ///< Satellite Health (Bn), Non-zero indicates satellite malfunction
+    uint8_t P; ///< Satellite operation mode (See GLONASS ICD)
+    uint8_t NT; ///< Day number within a 4 year period.
+    float delta_tau_n; ///< Time difference between L1 and L2[m/s]
+    uint8_t Ft; ///< User Range Accuracy (See GLONASS ICD)
+    uint8_t En; ///< Age of current information [days]
+    uint8_t P1; ///< Time interval between adjacent values of tb [minutes]
+    uint8_t P2; ///< Oddness "1" or evenness "0" of the value of tb.
+    uint8_t P3; ///< Number of satellites in almanac for this frame
+    uint8_t P4; ///< Flag indicating ephemeris parameters are present
     enum mip_gnss_glo_ephemeris_data_valid_flags valid_flags;
     
 };
@@ -1284,7 +1284,7 @@ void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_iono_corr  GPS Ionospheric Correction
+///@defgroup c_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [C]
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1301,10 +1301,10 @@ enum mip_gnss_gps_iono_corr_data_valid_flags
 
 struct mip_gnss_gps_iono_corr_data
 {
-    double time_of_week;
-    uint16_t week_number;
-    double alpha[4];
-    double beta[4];
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    double alpha[4]; ///< Ionospheric Correction Terms.
+    double beta[4]; ///< Ionospheric Correction Terms.
     enum mip_gnss_gps_iono_corr_data_valid_flags valid_flags;
     
 };
@@ -1318,7 +1318,7 @@ void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* seri
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_galileo_iono_corr  Galileo Ionospheric Correction
+///@defgroup c_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [C]
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{
@@ -1335,10 +1335,10 @@ enum mip_gnss_galileo_iono_corr_data_valid_flags
 
 struct mip_gnss_galileo_iono_corr_data
 {
-    double time_of_week;
-    uint16_t week_number;
-    double alpha[3];
-    uint8_t disturbance_flags;
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    double alpha[3]; ///< Coefficients for the model.
+    uint8_t disturbance_flags; ///< Region disturbance flags (bits 1-5).
     enum mip_gnss_galileo_iono_corr_data_valid_flags valid_flags;
     
 };

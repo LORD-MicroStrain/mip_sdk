@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_c  MIP Data [C]
 ///@{
-///@defgroup shared_data_c  SHAREDData
+///@defgroup shared_data_c  Shared Data [C]
 ///
 ///@{
 
@@ -56,7 +56,7 @@ enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_event_source  None
+///@defgroup c_shared_event_source  (0xFF,0xD0) Event Source [C]
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -66,7 +66,7 @@ enum { MIP_DATA_DESC_SHARED_START = 0xD0 };
 
 struct mip_shared_event_source_data
 {
-    uint8_t trigger_id;
+    uint8_t trigger_id; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
     
 };
 void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const struct mip_shared_event_source_data* self);
@@ -76,7 +76,7 @@ bool extract_mip_shared_event_source_data_from_field(const struct mip_field* fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ticks  None
+///@defgroup c_shared_ticks  (0xFF,0xD1) Ticks [C]
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -86,7 +86,7 @@ bool extract_mip_shared_event_source_data_from_field(const struct mip_field* fie
 
 struct mip_shared_ticks_data
 {
-    uint32_t ticks;
+    uint32_t ticks; ///< Ticks since powerup.
     
 };
 void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const struct mip_shared_ticks_data* self);
@@ -96,7 +96,7 @@ bool extract_mip_shared_ticks_data_from_field(const struct mip_field* field, voi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_delta_ticks  None
+///@defgroup c_shared_delta_ticks  (0xFF,0xD2) Delta Ticks [C]
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -107,7 +107,7 @@ bool extract_mip_shared_ticks_data_from_field(const struct mip_field* field, voi
 
 struct mip_shared_delta_ticks_data
 {
-    uint32_t ticks;
+    uint32_t ticks; ///< Ticks since last output.
     
 };
 void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const struct mip_shared_delta_ticks_data* self);
@@ -117,7 +117,7 @@ bool extract_mip_shared_delta_ticks_data_from_field(const struct mip_field* fiel
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_timestamp  None
+///@defgroup c_shared_gps_timestamp  (0xFF,0xD3) Gps Timestamp [C]
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -135,8 +135,8 @@ enum mip_shared_gps_timestamp_data_valid_flags
 
 struct mip_shared_gps_timestamp_data
 {
-    double tow;
-    uint16_t week_number;
+    double tow; ///< GPS Time of Week [seconds]
+    uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
     enum mip_shared_gps_timestamp_data_valid_flags valid_flags;
     
 };
@@ -150,7 +150,7 @@ void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_delta_time  None
+///@defgroup c_shared_delta_time  (0xFF,0xD4) Delta Time [C]
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -166,7 +166,7 @@ void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* se
 
 struct mip_shared_delta_time_data
 {
-    double seconds;
+    double seconds; ///< Seconds since last output.
     
 };
 void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const struct mip_shared_delta_time_data* self);
@@ -176,7 +176,7 @@ bool extract_mip_shared_delta_time_data_from_field(const struct mip_field* field
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_reference_timestamp  None
+///@defgroup c_shared_reference_timestamp  (0xFF,0xD5) Reference Timestamp [C]
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -190,7 +190,7 @@ bool extract_mip_shared_delta_time_data_from_field(const struct mip_field* field
 
 struct mip_shared_reference_timestamp_data
 {
-    uint64_t nanoseconds;
+    uint64_t nanoseconds; ///< Nanoseconds since initialization.
     
 };
 void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const struct mip_shared_reference_timestamp_data* self);
@@ -200,7 +200,7 @@ bool extract_mip_shared_reference_timestamp_data_from_field(const struct mip_fie
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_reference_time_delta  None
+///@defgroup c_shared_reference_time_delta  (0xFF,0xD6) Reference Time Delta [C]
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -216,7 +216,7 @@ bool extract_mip_shared_reference_timestamp_data_from_field(const struct mip_fie
 
 struct mip_shared_reference_time_delta_data
 {
-    uint64_t dt_nanos;
+    uint64_t dt_nanos; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     
 };
 void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const struct mip_shared_reference_time_delta_data* self);
@@ -226,7 +226,7 @@ bool extract_mip_shared_reference_time_delta_data_from_field(const struct mip_fi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_timestamp  None
+///@defgroup c_shared_external_timestamp  (0xFF,0xD7) External Timestamp [C]
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -261,7 +261,7 @@ void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serialize
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_external_time_delta  None
+///@defgroup c_shared_external_time_delta  (0xFF,0xD8) External Time Delta [C]
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,
@@ -286,7 +286,7 @@ enum mip_shared_external_time_delta_data_valid_flags
 
 struct mip_shared_external_time_delta_data
 {
-    uint64_t dt_nanos;
+    uint64_t dt_nanos; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     enum mip_shared_external_time_delta_data_valid_flags valid_flags;
     
 };

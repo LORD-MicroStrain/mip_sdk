@@ -7,8 +7,6 @@
 
 #ifdef __cplusplus
 
-#include "../utils/enum_wrapper.hpp"
-
 #include <tuple>
 #include <type_traits>
 

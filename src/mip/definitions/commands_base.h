@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_c  MIP Commands [C]
 ///@{
-///@defgroup base_commands_c  BASECommands
+///@defgroup base_commands_c  Base Commands [C]
 ///
 ///@{
 
@@ -122,7 +122,7 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, enum
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_ping  Ping
+///@defgroup c_base_ping  (0x01,0x01) Ping [C]
 /// Test Communications with a device.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -135,7 +135,7 @@ enum mip_cmd_result mip_base_ping(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_set_idle  Set to idle
+///@defgroup c_base_set_idle  (0x01,0x02) Set Idle [C]
 /// Turn off all device data streams.
 /// 
 /// The Device will respond with an ACK, if present and operating correctly.
@@ -148,7 +148,7 @@ enum mip_cmd_result mip_base_set_idle(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_device_info  Get device information
+///@defgroup c_base_get_device_info  (0x01,0x03) Get Device Info [C]
 /// Get the device ID strings and firmware version number.
 ///
 ///@{
@@ -165,7 +165,7 @@ enum mip_cmd_result mip_base_get_device_info(struct mip_interface* device, struc
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_device_descriptors  Get device descriptors
+///@defgroup c_base_get_device_descriptors  (0x01,0x04) Get Device Descriptors [C]
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -186,7 +186,7 @@ enum mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_built_in_test  Built in test
+///@defgroup c_base_built_in_test  (0x01,0x05) Built In Test [C]
 /// Run the device Built-In Test (BIT).
 /// 
 /// The Built-In Test command always returns a 32 bit value.
@@ -208,7 +208,7 @@ enum mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_resume  Resume
+///@defgroup c_base_resume  (0x01,0x06) Resume [C]
 /// Take the device out of idle mode.
 /// 
 /// The device responds with ACK upon success.
@@ -219,7 +219,7 @@ enum mip_cmd_result mip_base_resume(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_get_extended_descriptors  Get device descriptors (extended)
+///@defgroup c_base_get_extended_descriptors  (0x01,0x07) Get Extended Descriptors [C]
 /// Get the command and data descriptors supported by the device.
 /// 
 /// Reply has two fields: "ACK/NACK" and "Descriptors". The "Descriptors" field is an array of 16 bit values.
@@ -240,7 +240,7 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_continuous_bit  Continuous built-in test
+///@defgroup c_base_continuous_bit  (0x01,0x08) Continuous Bit [C]
 /// Report result of continous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
@@ -249,7 +249,7 @@ enum mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* devi
 
 struct mip_base_continuous_bit_response
 {
-    uint8_t result[16];
+    uint8_t result[16]; ///< Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
     
 };
 void insert_mip_base_continuous_bit_response(struct mip_serializer* serializer, const struct mip_base_continuous_bit_response* self);
@@ -259,7 +259,7 @@ enum mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_comm_speed  Comm Port Speed
+///@defgroup c_base_comm_speed  (0x01,0x09) Comm Speed [C]
 /// Controls the baud rate of a specific port on the device.
 /// 
 /// Please see the device user manual for supported baud rates on each port.
@@ -281,8 +281,8 @@ enum { MIP_BASE_COMM_SPEED_COMMAND_ALL_PORTS = 0 };
 struct mip_base_comm_speed_command
 {
     enum mip_function_selector function;
-    uint8_t port;
-    uint32_t baud;
+    uint8_t port; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+    uint32_t baud; ///< Port baud rate. Must be a supported rate.
     
 };
 void insert_mip_base_comm_speed_command(struct mip_serializer* serializer, const struct mip_base_comm_speed_command* self);
@@ -290,8 +290,8 @@ void extract_mip_base_comm_speed_command(struct mip_serializer* serializer, stru
 
 struct mip_base_comm_speed_response
 {
-    uint8_t port;
-    uint32_t baud;
+    uint8_t port; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+    uint32_t baud; ///< Port baud rate. Must be a supported rate.
     
 };
 void insert_mip_base_comm_speed_response(struct mip_serializer* serializer, const struct mip_base_comm_speed_response* self);
@@ -305,7 +305,7 @@ enum mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, ui
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gps_time_update  Time Broadcast Command
+///@defgroup c_base_gps_time_update  (0x01,0x72) Gps Time Update [C]
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
@@ -321,8 +321,8 @@ enum mip_base_gps_time_update_command_field_id
 struct mip_base_gps_time_update_command
 {
     enum mip_function_selector function;
-    enum mip_base_gps_time_update_command_field_id field_id;
-    uint32_t value;
+    enum mip_base_gps_time_update_command_field_id field_id; ///< Determines how to interpret value.
+    uint32_t value; ///< Week number or time of week, depending on the field_id.
     
 };
 void insert_mip_base_gps_time_update_command(struct mip_serializer* serializer, const struct mip_base_gps_time_update_command* self);
@@ -335,7 +335,7 @@ enum mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device,
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_soft_reset  Reset device
+///@defgroup c_base_soft_reset  (0x01,0x7E) Soft Reset [C]
 /// Resets the device.
 /// 
 /// Device responds with ACK and immediately resets.

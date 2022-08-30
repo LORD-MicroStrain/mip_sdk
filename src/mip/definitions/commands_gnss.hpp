@@ -17,9 +17,9 @@ struct mip_interface;
 namespace commands_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_cpp  MIP Commands [CPP]
 ///@{
-///@defgroup gnss_commands_cpp  GNSSCommands
+///@defgroup gnss_commands_cpp  Gnss Commands [CPP]
 ///
 ///@{
 
@@ -59,7 +59,7 @@ static const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_receiver_info  None
+///@defgroup cpp_gnss_receiver_info  (0x0E,0x01) Receiver Info [CPP]
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -74,9 +74,9 @@ struct ReceiverInfo
     
     struct Info
     {
-        uint8_t receiver_id = 0;
-        uint8_t mip_data_descriptor_set = 0;
-        char description[32] = {0};
+        uint8_t receiver_id = 0; ///< Receiver id: e.g. 1, 2, etc.
+        uint8_t mip_data_descriptor_set = 0; ///< MIP descriptor set associated with this receiver
+        char description[32] = {0}; ///< Ascii description of receiver
         
     };
     
@@ -85,7 +85,7 @@ struct ReceiverInfo
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
         
-        uint8_t num_receivers = 0;
+        uint8_t num_receivers = 0; ///< Number of physical receivers in the device
         Info* receiver_info = {nullptr};
         
     };
@@ -103,7 +103,7 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_signal_configuration  None
+///@defgroup cpp_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [CPP]
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -121,10 +121,10 @@ struct SignalConfiguration
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t gps_enable = 0;
-    uint8_t glonass_enable = 0;
-    uint8_t galileo_enable = 0;
-    uint8_t beidou_enable = 0;
+    uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
+    uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
+    uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
     uint8_t reserved[4] = {0};
     
     struct Response
@@ -132,10 +132,10 @@ struct SignalConfiguration
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
         
-        uint8_t gps_enable = 0;
-        uint8_t glonass_enable = 0;
-        uint8_t galileo_enable = 0;
-        uint8_t beidou_enable = 0;
+        uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+        uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
+        uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
+        uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
         uint8_t reserved[4] = {0};
         
     };
@@ -154,7 +154,7 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_dongle_configuration  None
+///@defgroup cpp_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [CPP]
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
@@ -172,7 +172,7 @@ struct RtkDongleConfiguration
     static const bool HAS_RESET_FUNCTION = true;
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0;
+    uint8_t enable = 0; ///< 0 - Disabled, 1- Enabled
     uint8_t reserved[3] = {0};
     
     struct Response
@@ -199,7 +199,7 @@ CmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_receiver_safe_mode  GNSS Receiver Safe Mode
+///@defgroup cpp_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [CPP]
 /// Enable/disable safe mode for the provided receiver ID.
 /// Note: Receivers in safe mode will not output valid GNSS data.
 /// 
@@ -213,8 +213,8 @@ struct ReceiverSafeMode
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id = 0;
-    uint8_t enable = 0;
+    uint8_t receiver_id = 0; ///< Receiver id: e.g. 1, 2, etc.
+    uint8_t enable = 0; ///< 0 - Disabled, 1- Enabled
     
 };
 void insert(Serializer& serializer, const ReceiverSafeMode& self);

@@ -18,9 +18,9 @@ struct mip_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipCommands
+///@addtogroup MipCommands_c  MIP Commands [C]
 ///@{
-///@defgroup gnss_commands_c  GNSSCommands
+///@defgroup gnss_commands_c  Gnss Commands [C]
 ///
 ///@{
 
@@ -60,7 +60,7 @@ enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_receiver_info  None
+///@defgroup c_gnss_receiver_info  (0x0E,0x01) Receiver Info [C]
 /// Return information about the GNSS receivers in the device.
 /// 
 ///
@@ -68,9 +68,9 @@ enum { MIP_GNSS_BEIDOU_ENABLE_B2 = 0x0002 };
 
 struct mip_gnss_receiver_info_command_info
 {
-    uint8_t receiver_id;
-    uint8_t mip_data_descriptor_set;
-    char description[32];
+    uint8_t receiver_id; ///< Receiver id: e.g. 1, 2, etc.
+    uint8_t mip_data_descriptor_set; ///< MIP descriptor set associated with this receiver
+    char description[32]; ///< Ascii description of receiver
     
 };
 void insert_mip_gnss_receiver_info_command_info(struct mip_serializer* serializer, const struct mip_gnss_receiver_info_command_info* self);
@@ -78,7 +78,7 @@ void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializ
 
 struct mip_gnss_receiver_info_response
 {
-    uint8_t num_receivers;
+    uint8_t num_receivers; ///< Number of physical receivers in the device
     struct mip_gnss_receiver_info_command_info* receiver_info;
     
 };
@@ -89,7 +89,7 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_signal_configuration  None
+///@defgroup c_gnss_signal_configuration  (0x0E,0x02) Signal Configuration [C]
 /// Configure the GNSS signals used by the device.
 /// 
 ///
@@ -98,10 +98,10 @@ enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t
 struct mip_gnss_signal_configuration_command
 {
     enum mip_function_selector function;
-    uint8_t gps_enable;
-    uint8_t glonass_enable;
-    uint8_t galileo_enable;
-    uint8_t beidou_enable;
+    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t glonass_enable; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
+    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B
+    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2
     uint8_t reserved[4];
     
 };
@@ -110,10 +110,10 @@ void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serial
 
 struct mip_gnss_signal_configuration_response
 {
-    uint8_t gps_enable;
-    uint8_t glonass_enable;
-    uint8_t galileo_enable;
-    uint8_t beidou_enable;
+    uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
+    uint8_t glonass_enable; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
+    uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B
+    uint8_t beidou_enable; ///< Bitfield 0: Enable B1,   1: Enable B2
     uint8_t reserved[4];
     
 };
@@ -128,7 +128,7 @@ enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_rtk_dongle_configuration  None
+///@defgroup c_gnss_rtk_dongle_configuration  (0x0E,0x10) Rtk Dongle Configuration [C]
 /// Configure the communications with the RTK Dongle connected to the device.
 /// 
 ///
@@ -137,7 +137,7 @@ enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* 
 struct mip_gnss_rtk_dongle_configuration_command
 {
     enum mip_function_selector function;
-    uint8_t enable;
+    uint8_t enable; ///< 0 - Disabled, 1- Enabled
     uint8_t reserved[3];
     
 };
@@ -161,7 +161,7 @@ enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interfa
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_receiver_safe_mode  GNSS Receiver Safe Mode
+///@defgroup c_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [C]
 /// Enable/disable safe mode for the provided receiver ID.
 /// Note: Receivers in safe mode will not output valid GNSS data.
 /// 
@@ -170,8 +170,8 @@ enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interfa
 
 struct mip_gnss_receiver_safe_mode_command
 {
-    uint8_t receiver_id;
-    uint8_t enable;
+    uint8_t receiver_id; ///< Receiver id: e.g. 1, 2, etc.
+    uint8_t enable; ///< 0 - Disabled, 1- Enabled
     
 };
 void insert_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, const struct mip_gnss_receiver_safe_mode_command* self);

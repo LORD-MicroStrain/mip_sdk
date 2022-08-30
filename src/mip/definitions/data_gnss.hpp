@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_gnss {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup gnss_data_cpp  GNSSData
+///@defgroup gnss_data_cpp  Gnss Data [CPP]
 ///
 ///@{
 
@@ -168,7 +168,7 @@ static const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_pos_llh  GNSS LLH Position
+///@defgroup cpp_gnss_pos_llh  (0x81,0x03) Pos Llh [CPP]
 /// GNSS reported position in the WGS84 geodetic frame
 ///
 ///@{
@@ -203,12 +203,12 @@ struct PosLlh
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double latitude = 0;
-    double longitude = 0;
-    double ellipsoid_height = 0;
-    double msl_height = 0;
-    float horizontal_accuracy = 0;
-    float vertical_accuracy = 0;
+    double latitude = 0; ///< [degrees]
+    double longitude = 0; ///< [degrees]
+    double ellipsoid_height = 0; ///< [meters]
+    double msl_height = 0; ///< [meters]
+    float horizontal_accuracy = 0; ///< [meters]
+    float vertical_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
 };
@@ -218,7 +218,7 @@ void extract(Serializer& serializer, PosLlh& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_pos_ecef  GNSS ECEF Position
+///@defgroup cpp_gnss_pos_ecef  (0x81,0x04) Pos Ecef [CPP]
 /// GNSS reported position in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -250,8 +250,8 @@ struct PosEcef
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double x[3] = {0};
-    float x_accuracy = 0;
+    double x[3] = {0}; ///< [meters]
+    float x_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
 };
@@ -261,7 +261,7 @@ void extract(Serializer& serializer, PosEcef& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_vel_ned  NED Velocity
+///@defgroup cpp_gnss_vel_ned  (0x81,0x05) Vel Ned [CPP]
 /// GNSS reported velocity in the NED frame
 ///
 ///@{
@@ -297,12 +297,12 @@ struct VelNed
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float v[3] = {0};
-    float speed = 0;
-    float ground_speed = 0;
-    float heading = 0;
-    float speed_accuracy = 0;
-    float heading_accuracy = 0;
+    float v[3] = {0}; ///< [meters/second]
+    float speed = 0; ///< [meters/second]
+    float ground_speed = 0; ///< [meters/second]
+    float heading = 0; ///< [degrees]
+    float speed_accuracy = 0; ///< [meters/second]
+    float heading_accuracy = 0; ///< [degrees]
     ValidFlags valid_flags;
     
 };
@@ -312,7 +312,7 @@ void extract(Serializer& serializer, VelNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_vel_ecef  GNSS ECEF Velocity
+///@defgroup cpp_gnss_vel_ecef  (0x81,0x06) Vel Ecef [CPP]
 /// GNSS reported velocity in the Earth-centered, Earth-Fixed (ECEF) frame
 ///
 ///@{
@@ -344,8 +344,8 @@ struct VelEcef
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float v[3] = {0};
-    float v_accuracy = 0;
+    float v[3] = {0}; ///< [meters/second]
+    float v_accuracy = 0; ///< [meters/second]
     ValidFlags valid_flags;
     
 };
@@ -355,7 +355,7 @@ void extract(Serializer& serializer, VelEcef& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_dop  None
+///@defgroup cpp_gnss_dop  (0x81,0x07) Dop [CPP]
 /// GNSS reported dilution of precision information.
 ///
 ///@{
@@ -392,13 +392,13 @@ struct Dop
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float gdop = 0;
-    float pdop = 0;
-    float hdop = 0;
-    float vdop = 0;
-    float tdop = 0;
-    float ndop = 0;
-    float edop = 0;
+    float gdop = 0; ///< Geometric DOP
+    float pdop = 0; ///< Position DOP
+    float hdop = 0; ///< Horizontal DOP
+    float vdop = 0; ///< Vertical DOP
+    float tdop = 0; ///< Time DOP
+    float ndop = 0; ///< Northing DOP
+    float edop = 0; ///< Easting DOP
     ValidFlags valid_flags;
     
 };
@@ -408,7 +408,7 @@ void extract(Serializer& serializer, Dop& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_utc_time  None
+///@defgroup cpp_gnss_utc_time  (0x81,0x08) Utc Time [CPP]
 /// GNSS reported Coordinated Universal Time
 ///
 ///@{
@@ -446,7 +446,7 @@ struct UtcTime
     uint8_t hour = 0;
     uint8_t min = 0;
     uint8_t sec = 0;
-    uint32_t msec = 0;
+    uint32_t msec = 0; ///< [Milliseconds]
     ValidFlags valid_flags;
     
 };
@@ -456,7 +456,7 @@ void extract(Serializer& serializer, UtcTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_time  None
+///@defgroup cpp_gnss_gps_time  (0x81,0x09) Gps Time [CPP]
 /// GNSS reported GPS Time
 ///
 ///@{
@@ -488,8 +488,8 @@ struct GpsTime
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow = 0;
-    uint16_t week_number = 0;
+    double tow = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     ValidFlags valid_flags;
     
 };
@@ -499,7 +499,7 @@ void extract(Serializer& serializer, GpsTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_clock_info  None
+///@defgroup cpp_gnss_clock_info  (0x81,0x0A) Clock Info [CPP]
 /// GNSS reported receiver clock parameters
 ///
 ///@{
@@ -532,9 +532,9 @@ struct ClockInfo
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double bias = 0;
-    double drift = 0;
-    double accuracy_estimate = 0;
+    double bias = 0; ///< [seconds]
+    double drift = 0; ///< [seconds/second]
+    double accuracy_estimate = 0; ///< [seconds]
     ValidFlags valid_flags;
     
 };
@@ -544,7 +544,7 @@ void extract(Serializer& serializer, ClockInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_fix_info  None
+///@defgroup cpp_gnss_fix_info  (0x81,0x0B) Fix Info [CPP]
 /// GNSS reported position fix type
 ///
 ///@{
@@ -619,7 +619,7 @@ void extract(Serializer& serializer, FixInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sv_info  None
+///@defgroup cpp_gnss_sv_info  (0x81,0x0C) Sv Info [CPP]
 /// GNSS reported space vehicle information
 /// 
 /// When enabled, these fields will arrive in separate MIP packets
@@ -676,11 +676,11 @@ struct SvInfo
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t channel = 0;
-    uint8_t sv_id = 0;
-    uint16_t carrier_noise_ratio = 0;
-    int16_t azimuth = 0;
-    int16_t elevation = 0;
+    uint8_t channel = 0; ///< Receiver channel number
+    uint8_t sv_id = 0; ///< GNSS Satellite ID
+    uint16_t carrier_noise_ratio = 0; ///< [dBHz]
+    int16_t azimuth = 0; ///< [deg]
+    int16_t elevation = 0; ///< [deg]
     SVFlags sv_flags;
     ValidFlags valid_flags;
     
@@ -691,7 +691,7 @@ void extract(Serializer& serializer, SvInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_hw_status  GNSS Hardware Status
+///@defgroup cpp_gnss_hw_status  (0x81,0x0D) Hw Status [CPP]
 /// GNSS reported hardware status
 ///
 ///@{
@@ -759,7 +759,7 @@ void extract(Serializer& serializer, HwStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_dgps_info  None
+///@defgroup cpp_gnss_dgps_info  (0x81,0x0E) Dgps Info [CPP]
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
@@ -818,7 +818,7 @@ void extract(Serializer& serializer, DgpsInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_dgps_channel  None
+///@defgroup cpp_gnss_dgps_channel  (0x81,0x0F) Dgps Channel [CPP]
 /// GNSS reported DGPS Channel Status status
 /// 
 /// When enabled, a separate field for each active space vehicle will be sent in the packet.
@@ -855,9 +855,9 @@ struct DgpsChannel
     };
     
     uint8_t sv_id = 0;
-    float age = 0;
-    float range_correction = 0;
-    float range_rate_correction = 0;
+    float age = 0; ///< [s]
+    float range_correction = 0; ///< [m]
+    float range_rate_correction = 0; ///< [m/s]
     ValidFlags valid_flags;
     
 };
@@ -867,7 +867,7 @@ void extract(Serializer& serializer, DgpsChannel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_clock_info_2  None
+///@defgroup cpp_gnss_clock_info_2  (0x81,0x10) Clock Info 2 [CPP]
 /// GNSS reported receiver clock parameters
 /// 
 /// This supersedes MIP_DATA_DESC_GNSS_CLOCK_INFO with additional information.
@@ -916,7 +916,7 @@ void extract(Serializer& serializer, ClockInfo2& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_leap_seconds  None
+///@defgroup cpp_gnss_gps_leap_seconds  (0x81,0x11) Gps Leap Seconds [CPP]
 /// GNSS reported leap seconds (difference between GPS and UTC Time)
 ///
 ///@{
@@ -946,7 +946,7 @@ struct GpsLeapSeconds
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t leap_seconds = 0;
+    uint8_t leap_seconds = 0; ///< [s]
     ValidFlags valid_flags;
     
 };
@@ -956,7 +956,7 @@ void extract(Serializer& serializer, GpsLeapSeconds& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sbas_info  None
+///@defgroup cpp_gnss_sbas_info  (0x81,0x12) Sbas Info [CPP]
 /// GNSS SBAS status
 ///
 ///@{
@@ -1013,12 +1013,12 @@ struct SbasInfo
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    SbasSystem sbas_system = static_cast<SbasSystem>(0);
-    uint8_t sbas_id = 0;
-    uint8_t count = 0;
-    SbasStatus sbas_status;
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    SbasSystem sbas_system = static_cast<SbasSystem>(0); ///< SBAS system id
+    uint8_t sbas_id = 0; ///< SBAS satellite id.
+    uint8_t count = 0; ///< Number of SBAS corrections
+    SbasStatus sbas_status; ///< Status of the SBAS service
     ValidFlags valid_flags;
     
 };
@@ -1028,7 +1028,7 @@ void extract(Serializer& serializer, SbasInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_sbas_correction  None
+///@defgroup cpp_gnss_sbas_correction  (0x81,0x13) Sbas Correction [CPP]
 /// GNSS calculated SBAS Correction
 /// 
 /// UDREI - the variance of a normal distribution associated with the user differential range errors for a
@@ -1083,15 +1083,15 @@ struct SbasCorrection
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index = 0;
-    uint8_t count = 0;
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
-    uint8_t sv_id = 0;
-    uint8_t udrei = 0;
-    float pseudorange_correction = 0;
-    float iono_correction = 0;
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week the message was received [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0); ///< GNSS constellation id
+    uint8_t sv_id = 0; ///< GNSS satellite id within the constellation.
+    uint8_t udrei = 0; ///< [See above 0-13 usable, 14 not monitored, 15 - do not use]
+    float pseudorange_correction = 0; ///< Pseudorange correction [meters].
+    float iono_correction = 0; ///< Ionospheric correction [meters].
     ValidFlags valid_flags;
     
 };
@@ -1101,7 +1101,7 @@ void extract(Serializer& serializer, SbasCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rf_error_detection  None
+///@defgroup cpp_gnss_rf_error_detection  (0x81,0x14) Rf Error Detection [CPP]
 /// GNSS Error Detection subsystem status
 ///
 ///@{
@@ -1158,10 +1158,10 @@ struct RfErrorDetection
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    RFBand rf_band = static_cast<RFBand>(0);
-    JammingState jamming_state = static_cast<JammingState>(0);
-    SpoofingState spoofing_state = static_cast<SpoofingState>(0);
-    uint8_t reserved[4] = {0};
+    RFBand rf_band = static_cast<RFBand>(0); ///< RF Band of the reported information
+    JammingState jamming_state = static_cast<JammingState>(0); ///< GNSS Jamming State (as reported by the GNSS module)
+    SpoofingState spoofing_state = static_cast<SpoofingState>(0); ///< GNSS Spoofing State (as reported by the GNSS module)
+    uint8_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
 };
@@ -1171,7 +1171,7 @@ void extract(Serializer& serializer, RfErrorDetection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_base_station_info  None
+///@defgroup cpp_gnss_base_station_info  (0x81,0x30) Base Station Info [CPP]
 /// RTCM reported base station information (sourced from RTCM Message 1005 or 1006)
 /// 
 /// Valid Flag Mapping:
@@ -1235,12 +1235,12 @@ struct BaseStationInfo
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    double ecef_pos[3] = {0};
-    float height = 0;
-    uint16_t station_id = 0;
-    IndicatorFlags indicators;
+    double time_of_week = 0; ///< GPS Time of week the message was received [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    double ecef_pos[3] = {0}; ///< Earth-centered, Earth-fixed [m]
+    float height = 0; ///< Antenna Height above the marker used in the survey [m]
+    uint16_t station_id = 0; ///< Range: 0-4095
+    IndicatorFlags indicators; ///< Bitfield
     ValidFlags valid_flags;
     
 };
@@ -1250,7 +1250,7 @@ void extract(Serializer& serializer, BaseStationInfo& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rtk_corrections_status  None
+///@defgroup cpp_gnss_rtk_corrections_status  (0x81,0x31) Rtk Corrections Status [CPP]
 ///
 ///@{
 
@@ -1313,15 +1313,15 @@ struct RtkCorrectionsStatus
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    EpochStatus epoch_status;
-    uint32_t dongle_status = 0;
-    float gps_correction_latency = 0;
-    float glonass_correction_latency = 0;
-    float galileo_correction_latency = 0;
-    float beidou_correction_latency = 0;
-    uint32_t reserved[4] = {0};
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    EpochStatus epoch_status; ///< Status of the corrections received during this epoch
+    uint32_t dongle_status = 0; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see MIP_CMD_DESC_RTK_GET_STATUS_FLAGS for details)
+    float gps_correction_latency = 0; ///< Latency of last GPS correction [seconds]
+    float glonass_correction_latency = 0; ///< Latency of last GLONASS correction [seconds]
+    float galileo_correction_latency = 0; ///< Latency of last Galileo correction [seconds]
+    float beidou_correction_latency = 0; ///< Latency of last Beidou correction [seconds]
+    uint32_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
 };
@@ -1331,7 +1331,7 @@ void extract(Serializer& serializer, RtkCorrectionsStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_satellite_status  None
+///@defgroup cpp_gnss_satellite_status  (0x81,0x20) Satellite Status [CPP]
 /// Status information for a GNSS satellite.
 ///
 ///@{
@@ -1368,15 +1368,15 @@ struct SatelliteStatus
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index = 0;
-    uint8_t count = 0;
-    double time_of_week = 0;
-    uint16_t week_number = 0;
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
-    uint8_t satellite_id = 0;
-    float elevation = 0;
-    float azimuth = 0;
-    bool health = 0;
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation
+    float elevation = 0; ///< Elevation of the satellite relative to the rover [degrees]
+    float azimuth = 0; ///< Azimuth of the satellite relative to the rover [degrees]
+    bool health = 0; ///< True if the satellite is healthy.
     ValidFlags valid_flags;
     
 };
@@ -1386,7 +1386,7 @@ void extract(Serializer& serializer, SatelliteStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_raw  None
+///@defgroup cpp_gnss_raw  (0x81,0x22) Raw [CPP]
 /// GNSS Raw observation.
 ///
 ///@{
@@ -1442,24 +1442,24 @@ struct Raw
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index = 0;
-    uint8_t count = 0;
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    uint16_t receiver_id = 0;
-    uint8_t tracking_channel = 0;
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    uint16_t receiver_id = 0; ///< When the measurement comes from RTCM, this will be the reference station ID; otherwise, it's the receiver number (1,2,...)
+    uint8_t tracking_channel = 0; ///< Channel the receiver is using to track this satellite.
     GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0);
-    uint8_t satellite_id = 0;
-    GnssSignalId signal_id = static_cast<GnssSignalId>(0);
-    float signal_strength = 0;
-    GnssSignalQuality quality = static_cast<GnssSignalQuality>(0);
-    double pseudorange = 0;
-    double carrier_phase = 0;
-    float doppler = 0;
-    float range_uncert = 0;
-    float phase_uncert = 0;
-    float doppler_uncert = 0;
-    float lock_time = 0;
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation.
+    GnssSignalId signal_id = static_cast<GnssSignalId>(0); ///< Signal identifier for the satellite.
+    float signal_strength = 0; ///< Carrier to noise ratio [dBHz].
+    GnssSignalQuality quality = static_cast<GnssSignalQuality>(0); ///< Indicator of signal quality.
+    double pseudorange = 0; ///< Pseudorange measurement [meters].
+    double carrier_phase = 0; ///< Carrier phase measurement [Carrier periods].
+    float doppler = 0; ///< Measured doppler shift [Hz].
+    float range_uncert = 0; ///< Uncertainty of the pseudorange measurement [m].
+    float phase_uncert = 0; ///< Uncertainty of the phase measurement [Carrier periods].
+    float doppler_uncert = 0; ///< Uncertainty of the measured doppler shift [Hz].
+    float lock_time = 0; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
     ValidFlags valid_flags;
     
 };
@@ -1469,7 +1469,7 @@ void extract(Serializer& serializer, Raw& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_ephemeris  None
+///@defgroup cpp_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [CPP]
 /// GPS/Galileo Ephemeris Data
 ///
 ///@{
@@ -1501,39 +1501,39 @@ struct GpsEphemeris
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index = 0;
-    uint8_t count = 0;
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    uint8_t satellite_id = 0;
-    uint8_t health = 0;
-    uint8_t iodc = 0;
-    uint8_t iode = 0;
-    double t_oc = 0;
-    double af0 = 0;
-    double af1 = 0;
-    double af2 = 0;
-    double t_gd = 0;
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation.
+    uint8_t health = 0; ///< Satellite and signal health
+    uint8_t iodc = 0; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode = 0; ///< Issue of Data Ephemeris.
+    double t_oc = 0; ///< Reference time for clock data.
+    double af0 = 0; ///< Clock bias in [s].
+    double af1 = 0; ///< Clock drift in [s/s].
+    double af2 = 0; ///< Clock drift rate in [s/s^2].
+    double t_gd = 0; ///< T Group Delay [s].
     double ISC_L1CA = 0;
     double ISC_L2C = 0;
-    double t_oe = 0;
-    double a = 0;
-    double a_dot = 0;
-    double mean_anomaly = 0;
-    double delta_mean_motion = 0;
-    double delta_mean_motion_dot = 0;
+    double t_oe = 0; ///< Reference time for ephemeris in [s].
+    double a = 0; ///< Semi-major axis [m].
+    double a_dot = 0; ///< Semi-matjor axis rate [m/s].
+    double mean_anomaly = 0; ///< [rad].
+    double delta_mean_motion = 0; ///< [rad].
+    double delta_mean_motion_dot = 0; ///< [rad/s].
     double eccentricity = 0;
-    double argument_of_perigee = 0;
-    double omega = 0;
-    double omega_dot = 0;
-    double inclination = 0;
-    double inclination_dot = 0;
-    double c_ic = 0;
-    double c_is = 0;
-    double c_uc = 0;
-    double c_us = 0;
-    double c_rc = 0;
-    double c_rs = 0;
+    double argument_of_perigee = 0; ///< [rad].
+    double omega = 0; ///< Longitude of Ascending Node [rad].
+    double omega_dot = 0; ///< Rate of Right Ascention [rad/s].
+    double inclination = 0; ///< Inclination angle [rad].
+    double inclination_dot = 0; ///< Inclination angle rate of change [rad/s].
+    double c_ic = 0; ///< Harmonic Correction Term.
+    double c_is = 0; ///< Harmonic Correction Term.
+    double c_uc = 0; ///< Harmonic Correction Term.
+    double c_us = 0; ///< Harmonic Correction Term.
+    double c_rc = 0; ///< Harmonic Correction Term.
+    double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
 };
@@ -1543,7 +1543,7 @@ void extract(Serializer& serializer, GpsEphemeris& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_glo_ephemeris  Glonass Ephemeris
+///@defgroup cpp_gnss_glo_ephemeris  (0x81,0x62) Glo Ephemeris [CPP]
 /// Glonass Ephemeris Data
 ///
 ///@{
@@ -1574,30 +1574,30 @@ struct GloEphemeris
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint8_t index = 0;
-    uint8_t count = 0;
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    uint8_t satellite_id = 0;
-    int8_t freq_number = 0;
-    uint32_t tk = 0;
-    uint32_t tb = 0;
-    uint8_t sat_type = 0;
-    double gamma = 0;
-    double tau_n = 0;
-    double x[3] = {0};
-    float v[3] = {0};
-    float a[3] = {0};
-    uint8_t health = 0;
-    uint8_t P = 0;
-    uint8_t NT = 0;
-    float delta_tau_n = 0;
-    uint8_t Ft = 0;
-    uint8_t En = 0;
-    uint8_t P1 = 0;
-    uint8_t P2 = 0;
-    uint8_t P3 = 0;
-    uint8_t P4 = 0;
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation.
+    int8_t freq_number = 0; ///< GLONASS frequency number (-7 to 24)
+    uint32_t tk = 0; ///< Frame start time within current day [seconds]
+    uint32_t tb = 0; ///< Ephemeris reference time [seconds]
+    uint8_t sat_type = 0; ///< Type of satellite (M) GLONASS = 0, GLONASS-M = 1
+    double gamma = 0; ///< Relative deviation of carrier frequency from nominal [dimesnionless]
+    double tau_n = 0; ///< Time correction relative to GLONASS Time [seconds]
+    double x[3] = {0}; ///< Satellite PE-90 position [m]
+    float v[3] = {0}; ///< Satellite PE-90 velocity [m/s]
+    float a[3] = {0}; ///< Satellite PE-90 acceleration due to pertubations [m/s^2]
+    uint8_t health = 0; ///< Satellite Health (Bn), Non-zero indicates satellite malfunction
+    uint8_t P = 0; ///< Satellite operation mode (See GLONASS ICD)
+    uint8_t NT = 0; ///< Day number within a 4 year period.
+    float delta_tau_n = 0; ///< Time difference between L1 and L2[m/s]
+    uint8_t Ft = 0; ///< User Range Accuracy (See GLONASS ICD)
+    uint8_t En = 0; ///< Age of current information [days]
+    uint8_t P1 = 0; ///< Time interval between adjacent values of tb [minutes]
+    uint8_t P2 = 0; ///< Oddness "1" or evenness "0" of the value of tb.
+    uint8_t P3 = 0; ///< Number of satellites in almanac for this frame
+    uint8_t P4 = 0; ///< Flag indicating ephemeris parameters are present
     ValidFlags valid_flags;
     
 };
@@ -1607,7 +1607,7 @@ void extract(Serializer& serializer, GloEphemeris& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_iono_corr  GPS Ionospheric Correction
+///@defgroup cpp_gnss_gps_iono_corr  (0x81,0x71) Gps Iono Corr [CPP]
 /// Ionospheric Correction Terms for GNSS
 ///
 ///@{
@@ -1641,10 +1641,10 @@ struct GpsIonoCorr
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    double alpha[4] = {0};
-    double beta[4] = {0};
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    double alpha[4] = {0}; ///< Ionospheric Correction Terms.
+    double beta[4] = {0}; ///< Ionospheric Correction Terms.
     ValidFlags valid_flags;
     
 };
@@ -1654,7 +1654,7 @@ void extract(Serializer& serializer, GpsIonoCorr& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_galileo_iono_corr  Galileo Ionospheric Correction
+///@defgroup cpp_gnss_galileo_iono_corr  (0x81,0x73) Galileo Iono Corr [CPP]
 /// Ionospheric Correction Terms for Galileo
 ///
 ///@{
@@ -1688,10 +1688,10 @@ struct GalileoIonoCorr
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double time_of_week = 0;
-    uint16_t week_number = 0;
-    double alpha[3] = {0};
-    uint8_t disturbance_flags = 0;
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    double alpha[3] = {0}; ///< Coefficients for the model.
+    uint8_t disturbance_flags = 0; ///< Region disturbance flags (bits 1-5).
     ValidFlags valid_flags;
     
 };

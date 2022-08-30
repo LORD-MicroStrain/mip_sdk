@@ -11,6 +11,10 @@ extern "C" {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents the status of a MIP command.
 ///
 /// Values that start with MIP_STATUS are status codes from this library.
@@ -30,7 +34,7 @@ enum mip_cmd_result
     MIP_NACK_INVALID_CHECKSUM = 0x02,  ///< Reserved.
     MIP_NACK_INVALID_PARAM    = 0x03,  ///< A parameter was not a supported value.
     MIP_NACK_COMMAND_FAILED   = 0x04,  ///< The device could not complete the command.
-    MIP_NACK_COMMAND_TIMEOUT  = 0x05,  ///< Internal device timeout.
+    MIP_NACK_COMMAND_TIMEOUT  = 0x05,  ///< Internal device timeout. Use MIP_STATUS_TIMEDOUT for command timeouts.
 };
 
 const char* mip_cmd_result_to_string(enum mip_cmd_result result);
@@ -42,25 +46,38 @@ bool mip_cmd_result_is_status(enum mip_cmd_result result);
 
 bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 
+///@}
+////////////////////////////////////////////////////////////////////////////////
+
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Represents the status of a MIP command.
+///
+/// This is the same as the mip_cmd_result C enum, but with member functions
+/// and some operator overloads.
+///
+/// CmdResult is convertible to bool, allowing code like the following:
+///@code{.cpp}
+///@endcode
+///
 struct CmdResult
 {
-    static constexpr C::mip_cmd_result STATUS_ERROR     = C::MIP_STATUS_ERROR;
-    static constexpr C::mip_cmd_result STATUS_CANCELLED = C::MIP_STATUS_CANCELLED;
-    static constexpr C::mip_cmd_result STATUS_TIMEDOUT  = C::MIP_STATUS_TIMEDOUT;
-    static constexpr C::mip_cmd_result STATUS_WAITING   = C::MIP_STATUS_WAITING;
-    static constexpr C::mip_cmd_result STATUS_QUEUED    = C::MIP_STATUS_PENDING;
-    static constexpr C::mip_cmd_result STATUS_NONE      = C::MIP_STATUS_NONE;
+    static constexpr C::mip_cmd_result STATUS_ERROR     = C::MIP_STATUS_ERROR;       ///<@copydoc mip::C::MIP_STATUS_ERROR
+    static constexpr C::mip_cmd_result STATUS_CANCELLED = C::MIP_STATUS_CANCELLED;   ///<@copydoc mip::C::MIP_STATUS_CANCELLED
+    static constexpr C::mip_cmd_result STATUS_TIMEDOUT  = C::MIP_STATUS_TIMEDOUT;    ///<@copydoc mip::C::MIP_STATUS_TIMEDOUT
+    static constexpr C::mip_cmd_result STATUS_WAITING   = C::MIP_STATUS_WAITING;     ///<@copydoc mip::C::MIP_STATUS_WAITING
+    static constexpr C::mip_cmd_result STATUS_QUEUED    = C::MIP_STATUS_PENDING;     ///<@copydoc mip::C::MIP_STATUS_PENDING
+    static constexpr C::mip_cmd_result STATUS_NONE      = C::MIP_STATUS_NONE;        ///<@copydoc mip::C::MIP_STATUS_NONE
 
-    static constexpr C::mip_cmd_result ACK_OK                = C::MIP_ACK_OK;
-    static constexpr C::mip_cmd_result NACK_COMMAND_UNKNOWN  = C::MIP_NACK_COMMAND_UNKNOWN;
-    static constexpr C::mip_cmd_result NACK_INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM;
-    static constexpr C::mip_cmd_result NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM;
-    static constexpr C::mip_cmd_result NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED;
-    static constexpr C::mip_cmd_result NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT;
+    static constexpr C::mip_cmd_result ACK_OK                = C::MIP_ACK_OK;                ///<@copydoc C::MIP_ACK_OK
+    static constexpr C::mip_cmd_result NACK_COMMAND_UNKNOWN  = C::MIP_NACK_COMMAND_UNKNOWN;  ///<@copydoc C::MIP_NACK_COMMAND_UNKNOWN
+    static constexpr C::mip_cmd_result NACK_INVALID_CHECKSUM = C::MIP_NACK_INVALID_CHECKSUM; ///<@copydoc C::MIP_NACK_INVALID_CHECKSUM
+    static constexpr C::mip_cmd_result NACK_INVALID_PARAM    = C::MIP_NACK_INVALID_PARAM;    ///<@copydoc C::MIP_NACK_INVALID_PARAM
+    static constexpr C::mip_cmd_result NACK_COMMAND_FAILED   = C::MIP_NACK_COMMAND_FAILED;   ///<@copydoc C::MIP_NACK_COMMAND_FAILED
+    static constexpr C::mip_cmd_result NACK_COMMAND_TIMEOUT  = C::MIP_NACK_COMMAND_TIMEOUT;  ///<@copydoc C::MIP_NACK_COMMAND_TIMEOUT
 
 #ifndef _WIN32 // Avoid name conflict with windows.h
     static constexpr C::mip_cmd_result STATUS_PENDING = STATUS_QUEUED;
@@ -94,6 +111,9 @@ struct CmdResult
 };
 
 // using Ack = C::mip_ack;
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 } // namespace mip
 #endif // __cplusplus

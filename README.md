@@ -1,7 +1,7 @@
-libmip
-======
+MIP SDK
+=======
 
-Welcome to the Embedded version of the MicroStrain Communication Library.
+Welcome to the official MIP Software Development Kit.
 
 
 Features

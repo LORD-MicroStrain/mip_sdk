@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
-    libmip
+    "MIP SDK"
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
@@ -48,7 +48,6 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.h"
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
-    "${UTILS_DIR}/enum_wrapper.hpp"
     "${UTILS_DIR}/serial_port.c"
     "${UTILS_DIR}/serial_port.h"
     "${UTILS_DIR}/tcp_socket.c"
@@ -191,10 +190,19 @@ if(BUILD_DOCUMENTATION)
     endif()
 
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/documentation")
+    set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/docs")
+
+    set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
+
+    if(NOT MIP_DISABLE_CPP)
+        set(DOXYGEN_PREDEFINED "__cplusplus")
+    endif()
+
+    set(DOXYGEN_EXTRACT_ALL YES)
 
     if(BUILD_DOCUMENTATION_FULL)
         set(DOXYGEN_INTERNAL_DOCS YES)
-        set(DOXYGEN_WARN_AS_ERROR YES)
+        # set(DOXYGEN_WARN_AS_ERROR YES)
     else()
         set(DOXYGEN_HIDE_UNDOC_MEMBERS YES)
         set(DOXYGEN_HIDE_UNDOC_CLASSES YES)
@@ -205,7 +213,7 @@ if(BUILD_DOCUMENTATION)
     endif()
 
     doxygen_add_docs(docs
-        "${SRC_DIR}"
+        "${SRC_DIR}" "${CMAKE_CURRENT_LIST_DIR}/docs"
         COMMENT "Generating documentation."
     )
 

@@ -15,7 +15,14 @@ namespace C {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipDispatch System for issuing callbacks from MIP packets or fields
+///@addtogroup mip_c
+///@{
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup MipDispatch_c  Mip Dispatch [C]
+///
+///@brief System for issuing callbacks from MIP packets or fields.
 ///
 ///@{
 
@@ -124,6 +131,7 @@ void mip_dispatcher_remove_all_handlers(mip_dispatcher* self);
 
 void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp);
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

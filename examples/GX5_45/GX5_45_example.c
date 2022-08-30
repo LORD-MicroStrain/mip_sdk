@@ -233,7 +233,7 @@ int main(int argc, const char* argv[])
 
     if(mip_filter_write_antenna_offset(&device, gnss_antenna_offset_meters) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set GNSS1 antenna offset!");
-   
+
 
     //
     //Setup heading update control
@@ -275,7 +275,7 @@ int main(int argc, const char* argv[])
     mip_dispatch_handler gnss_data_handlers[1];
 
     mip_interface_register_extractor(&device, &gnss_data_handlers[0], MIP_GNSS1_DATA_DESC_SET, MIP_DATA_DESC_GNSS_FIX_INFO, extract_mip_gnss_fix_info_data_from_field, &gnss_fix_info);
- 
+
     //Filter Data
     mip_dispatch_handler filter_data_handlers[5];
 
@@ -304,7 +304,7 @@ int main(int argc, const char* argv[])
 
     while(running)
     {
-        mip_interface_update(&device);
+        mip_interface_update(&device, false);
 
 
         //Check GNSS fixes and alert the user when they become valid
@@ -314,7 +314,7 @@ int main(int argc, const char* argv[])
             printf("NOTE: GNSS fix info valid.\n");
             gnss_fix_info_valid = true;
         }
- 
+
         //Check Filter State
         if((!filter_state_running) && ((filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR) || (filter_status.filter_state == MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID)))
         {

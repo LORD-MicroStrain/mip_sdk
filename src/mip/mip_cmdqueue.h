@@ -13,26 +13,36 @@ namespace C {
 extern "C" {
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_c
+///@{
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup MipCommandHandling MIP Command Handling - Functions for handling command responses.
+///@defgroup MipCommandQueue_c Mip Command Queue [C]
+///
+///@brief Functions for handling command responses.
 ///
 ///@{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup PendingCommand  mip_pending_cmd functions
+///@defgroup PendingCommand  mip_pending_cmd functions [C]
 ///
 ///@{
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a command awaiting a reply from the device.
 ///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
+///
+
 typedef struct mip_pending_cmd
 {
     struct mip_pending_cmd*     _next;                 ///<@private Next command in the queue.
     uint8_t*                    _response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
-    union {
+    union {                                            ///<@private
         timeout_type            _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
         timestamp_type          _timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
         timestamp_type          _reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
@@ -43,7 +53,7 @@ typedef struct mip_pending_cmd
     union {
         uint8_t                 _response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
         uint8_t                 _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
-    };
+    };                                                 ///<@private
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 }mip_pending_cmd;
 
@@ -61,9 +71,23 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup CommandQueue  mip_cmd_queue functions
+///@defgroup CommandQueue  mip_cmd_queue functions [C]
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
 ///
 ///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Holds a list of pending commands.
+///
+/// Currently only one command may be pending at a time.
+///
+///@note This should be considered an "opaque" structure; its members should be
+/// considered an internal implementation detail. Avoid accessing them directly
+/// as they are subject to change in future versions of this software.
+///
 
 typedef struct mip_cmd_queue
 {
@@ -83,6 +107,7 @@ timeout_type mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue);
 void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, timestamp_type timestamp);
 
 
+///@}
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

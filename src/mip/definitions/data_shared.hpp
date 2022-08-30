@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_shared {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup shared_data_cpp  SHAREDData
+///@defgroup shared_data_cpp  Shared Data [CPP]
 ///
 ///@{
 
@@ -55,7 +55,7 @@ static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_event_source  None
+///@defgroup cpp_shared_event_source  (0xFF,0xD0) Event Source [CPP]
 /// Identifies which event trigger caused this packet to be emitted.
 /// 
 /// Generally this is used to determine whether a packet was emitted
@@ -70,7 +70,7 @@ struct EventSource
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t trigger_id = 0;
+    uint8_t trigger_id = 0; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
     
 };
 void insert(Serializer& serializer, const EventSource& self);
@@ -79,7 +79,7 @@ void extract(Serializer& serializer, EventSource& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ticks  None
+///@defgroup cpp_shared_ticks  (0xFF,0xD1) Ticks [CPP]
 /// Time since powerup in multiples of the base rate.
 /// 
 /// The counter will wrap around to 0 after approximately 50 days.
@@ -94,7 +94,7 @@ struct Ticks
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t ticks = 0;
+    uint32_t ticks = 0; ///< Ticks since powerup.
     
 };
 void insert(Serializer& serializer, const Ticks& self);
@@ -103,7 +103,7 @@ void extract(Serializer& serializer, Ticks& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_delta_ticks  None
+///@defgroup cpp_shared_delta_ticks  (0xFF,0xD2) Delta Ticks [CPP]
 /// Ticks since the last output of this field.
 /// 
 /// This field can be used to track the amount of time passed between
@@ -119,7 +119,7 @@ struct DeltaTicks
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint32_t ticks = 0;
+    uint32_t ticks = 0; ///< Ticks since last output.
     
 };
 void insert(Serializer& serializer, const DeltaTicks& self);
@@ -128,7 +128,7 @@ void extract(Serializer& serializer, DeltaTicks& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gps_timestamp  None
+///@defgroup cpp_shared_gps_timestamp  (0xFF,0xD3) Gps Timestamp [CPP]
 /// Outputs the current GPS system time in time-of-week and week number format.
 /// 
 /// For events, this is the time of the event trigger.
@@ -163,8 +163,8 @@ struct GpsTimestamp
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    double tow = 0;
-    uint16_t week_number = 0;
+    double tow = 0; ///< GPS Time of Week [seconds]
+    uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
 };
@@ -174,7 +174,7 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_delta_time  None
+///@defgroup cpp_shared_delta_time  (0xFF,0xD4) Delta Time [CPP]
 /// Time in the synchronized clock domain since the last output of this field within the same descriptor set and event instance.
 /// 
 /// This can be used to track the amount of time passed between
@@ -195,7 +195,7 @@ struct DeltaTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double seconds = 0;
+    double seconds = 0; ///< Seconds since last output.
     
 };
 void insert(Serializer& serializer, const DeltaTime& self);
@@ -204,7 +204,7 @@ void extract(Serializer& serializer, DeltaTime& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_reference_timestamp  None
+///@defgroup cpp_shared_reference_timestamp  (0xFF,0xD5) Reference Timestamp [CPP]
 /// Internal reference timestamp.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -223,7 +223,7 @@ struct ReferenceTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint64_t nanoseconds = 0;
+    uint64_t nanoseconds = 0; ///< Nanoseconds since initialization.
     
 };
 void insert(Serializer& serializer, const ReferenceTimestamp& self);
@@ -232,7 +232,7 @@ void extract(Serializer& serializer, ReferenceTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_reference_time_delta  None
+///@defgroup cpp_shared_reference_time_delta  (0xFF,0xD6) Reference Time Delta [CPP]
 /// Delta time since the last packet.
 /// 
 /// Difference between the time as reported by the shared reference time field, 0xD5,
@@ -253,7 +253,7 @@ struct ReferenceTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint64_t dt_nanos = 0;
+    uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     
 };
 void insert(Serializer& serializer, const ReferenceTimeDelta& self);
@@ -262,7 +262,7 @@ void extract(Serializer& serializer, ReferenceTimeDelta& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_external_timestamp  None
+///@defgroup cpp_shared_external_timestamp  (0xFF,0xD7) External Timestamp [CPP]
 /// External timestamp in nanoseconds.
 /// 
 /// This timestamp represents the time at which the corresponding
@@ -310,7 +310,7 @@ void extract(Serializer& serializer, ExternalTimestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_external_time_delta  None
+///@defgroup cpp_shared_external_time_delta  (0xFF,0xD8) External Time Delta [CPP]
 /// Delta time since the last packet containing delta external (0xFF,0xD4) or delta gps time (0xFF,0xD8).
 /// 
 /// Difference between the time as reported by the shared external time field, 0xD7,
@@ -352,7 +352,7 @@ struct ExternalTimeDelta
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    uint64_t dt_nanos = 0;
+    uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     ValidFlags valid_flags;
     
 };

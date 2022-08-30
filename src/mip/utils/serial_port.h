@@ -21,7 +21,14 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup Simple implementation for reading and writing to a serial port
+///@addtogroup mip_extras  Extra utilities
+///
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup mip_serial  Serial Port
+///
+///@brief A simple implementation for reading and writing to/from a serial port.
 ///
 ///@{
 
@@ -43,6 +50,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t 
 uint32_t serial_port_read_count(serial_port *port);
 bool serial_port_is_open(serial_port *port);
 
+///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 

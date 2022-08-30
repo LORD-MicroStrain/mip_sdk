@@ -224,10 +224,20 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t 
     *bytes_read = local_bytes_read;
 
  #else //Linux
-    *bytes_read = read(port->handle, buffer, num_bytes);
+    // Poll the device before attempting to read any data, so we will only block for 10ms if there is no data available
+    struct pollfd poll_fd = { .fd = port->handle, .events = POLLIN };
+    int poll_status = poll(&poll_fd, 1, 10);
 
-    if(*bytes_read == (size_t)-1 && errno != EAGAIN)
-        return false;
+    // Keep reading and polling while there is still data available
+    if (poll_status > 0 && poll_fd.revents & POLLIN)
+    {
+        ssize_t local_bytes_read = read(port->handle, buffer, num_bytes);
+
+        if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
+            return false;
+        if(local_bytes_read >= 0)
+            *bytes_read = local_bytes_read;
+    }
 
 #endif
 

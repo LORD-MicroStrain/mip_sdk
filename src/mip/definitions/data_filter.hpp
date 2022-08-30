@@ -17,9 +17,9 @@ struct mip_interface;
 namespace data_filter {
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup MipData
+///@addtogroup MipData_cpp  MIP Data [CPP]
 ///@{
-///@defgroup filter_data_cpp  FILTERData
+///@defgroup filter_data_cpp  Filter Data [CPP]
 ///
 ///@{
 
@@ -235,7 +235,7 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_position_llh  LLH Position
+///@defgroup cpp_filter_position_llh  (0x82,0x01) Position Llh [CPP]
 /// Filter reported position in the WGS84 geodetic frame.
 ///
 ///@{
@@ -247,10 +247,10 @@ struct PositionLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double latitude = 0;
-    double longitude = 0;
-    double ellipsoid_height = 0;
-    uint16_t valid_flags = 0;
+    double latitude = 0; ///< [degrees]
+    double longitude = 0; ///< [degrees]
+    double ellipsoid_height = 0; ///< [meters]
+    uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const PositionLlh& self);
@@ -259,7 +259,7 @@ void extract(Serializer& serializer, PositionLlh& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_velocity_ned  None
+///@defgroup cpp_filter_velocity_ned  (0x82,0x02) Velocity Ned [CPP]
 /// Filter reported velocity in the NED local-level frame.
 ///
 ///@{
@@ -271,10 +271,10 @@ struct VelocityNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north = 0;
-    float east = 0;
-    float down = 0;
-    uint16_t valid_flags = 0;
+    float north = 0; ///< [meters/second]
+    float east = 0; ///< [meters/second]
+    float down = 0; ///< [meters/second]
+    uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const VelocityNed& self);
@@ -283,7 +283,7 @@ void extract(Serializer& serializer, VelocityNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_attitude_quaternion  None
+///@defgroup cpp_filter_attitude_quaternion  (0x82,0x03) Attitude Quaternion [CPP]
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
 /// 
@@ -303,8 +303,8 @@ struct AttitudeQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4] = {0};
-    uint16_t valid_flags = 0;
+    float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AttitudeQuaternion& self);
@@ -313,7 +313,7 @@ void extract(Serializer& serializer, AttitudeQuaternion& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_attitude_dcm  None
+///@defgroup cpp_filter_attitude_dcm  (0x82,0x04) Attitude Dcm [CPP]
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
 /// 
@@ -335,8 +335,8 @@ struct AttitudeDcm
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float dcm[9] = {0};
-    uint16_t valid_flags = 0;
+    float dcm[9] = {0}; ///< Matrix elements in row-major order.
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AttitudeDcm& self);
@@ -345,7 +345,7 @@ void extract(Serializer& serializer, AttitudeDcm& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_euler_angles  None
+///@defgroup cpp_filter_euler_angles  (0x82,0x05) Euler Angles [CPP]
 /// Filter reported Euler angles describing the orientation of the device with respect to the NED local-level frame.
 /// The Euler angles are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -358,10 +358,10 @@ struct EulerAngles
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll = 0;
-    float pitch = 0;
-    float yaw = 0;
-    uint16_t valid_flags = 0;
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float yaw = 0; ///< [radians]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const EulerAngles& self);
@@ -370,7 +370,7 @@ void extract(Serializer& serializer, EulerAngles& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gyro_bias  None
+///@defgroup cpp_filter_gyro_bias  (0x82,0x06) Gyro Bias [CPP]
 /// Filter reported gyro bias expressed in the sensor frame.
 ///
 ///@{
@@ -382,8 +382,8 @@ struct GyroBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias[3] = {0}; ///< (x, y, z) [radians/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GyroBias& self);
@@ -392,7 +392,7 @@ void extract(Serializer& serializer, GyroBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_accel_bias  None
+///@defgroup cpp_filter_accel_bias  (0x82,0x07) Accel Bias [CPP]
 /// Filter reported accelerometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -404,8 +404,8 @@ struct AccelBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias[3] = {0}; ///< (x, y, z) [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AccelBias& self);
@@ -414,7 +414,7 @@ void extract(Serializer& serializer, AccelBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_position_llh_uncertainty  LLH Position Uncertainty
+///@defgroup cpp_filter_position_llh_uncertainty  (0x82,0x08) Position Llh Uncertainty [CPP]
 /// Filter reported 1-sigma position uncertainty in the NED local-level frame.
 ///
 ///@{
@@ -426,10 +426,10 @@ struct PositionLlhUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north = 0;
-    float east = 0;
-    float down = 0;
-    uint16_t valid_flags = 0;
+    float north = 0; ///< [meters]
+    float east = 0; ///< [meters]
+    float down = 0; ///< [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const PositionLlhUncertainty& self);
@@ -438,7 +438,7 @@ void extract(Serializer& serializer, PositionLlhUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_velocity_ned_uncertainty  NED Velocity Uncertainty
+///@defgroup cpp_filter_velocity_ned_uncertainty  (0x82,0x09) Velocity Ned Uncertainty [CPP]
 /// Filter reported 1-sigma velocity uncertainties in the NED local-level frame.
 ///
 ///@{
@@ -450,10 +450,10 @@ struct VelocityNedUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float north = 0;
-    float east = 0;
-    float down = 0;
-    uint16_t valid_flags = 0;
+    float north = 0; ///< [meters/second]
+    float east = 0; ///< [meters/second]
+    float down = 0; ///< [meters/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const VelocityNedUncertainty& self);
@@ -462,7 +462,7 @@ void extract(Serializer& serializer, VelocityNedUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_euler_angles_uncertainty  None
+///@defgroup cpp_filter_euler_angles_uncertainty  (0x82,0x0A) Euler Angles Uncertainty [CPP]
 /// Filter reported 1-sigma Euler angle uncertainties.
 /// The uncertainties are reported in 3-2-1 (Yaw-Pitch-Roll, AKA Aircraft) order.
 ///
@@ -475,10 +475,10 @@ struct EulerAnglesUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float roll = 0;
-    float pitch = 0;
-    float yaw = 0;
-    uint16_t valid_flags = 0;
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float yaw = 0; ///< [radians]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const EulerAnglesUncertainty& self);
@@ -487,7 +487,7 @@ void extract(Serializer& serializer, EulerAnglesUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gyro_bias_uncertainty  None
+///@defgroup cpp_filter_gyro_bias_uncertainty  (0x82,0x0B) Gyro Bias Uncertainty [CPP]
 /// Filter reported 1-sigma gyro bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -499,8 +499,8 @@ struct GyroBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias_uncert[3] = {0}; ///< (x,y,z) [radians/sec]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GyroBiasUncertainty& self);
@@ -509,7 +509,7 @@ void extract(Serializer& serializer, GyroBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_accel_bias_uncertainty  None
+///@defgroup cpp_filter_accel_bias_uncertainty  (0x82,0x0C) Accel Bias Uncertainty [CPP]
 /// Filter reported 1-sigma accelerometer bias uncertainties expressed in the sensor frame.
 ///
 ///@{
@@ -521,8 +521,8 @@ struct AccelBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias_uncert[3] = {0}; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AccelBiasUncertainty& self);
@@ -531,7 +531,7 @@ void extract(Serializer& serializer, AccelBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_timestamp  None
+///@defgroup cpp_filter_timestamp  (0x82,0x11) Timestamp [CPP]
 /// GPS timestamp of the Filter data
 /// 
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
@@ -549,9 +549,9 @@ struct Timestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double tow = 0;
-    uint16_t week_number = 0;
-    uint16_t valid_flags = 0;
+    double tow = 0; ///< GPS Time of Week [seconds]
+    uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const Timestamp& self);
@@ -560,7 +560,7 @@ void extract(Serializer& serializer, Timestamp& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_status  None
+///@defgroup cpp_filter_status  (0x82,0x10) Status [CPP]
 /// Device-specific filter status indicators.
 ///
 ///@{
@@ -572,9 +572,9 @@ struct Status
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    FilterMode filter_state = static_cast<FilterMode>(0);
-    FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0);
-    FilterStatusFlags status_flags;
+    FilterMode filter_state = static_cast<FilterMode>(0); ///< Device-specific filter state.  Please consult the user manual for definition.
+    FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0); ///< Device-specific dynamics mode.  Please consult the user manual for definition.
+    FilterStatusFlags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
     
 };
 void insert(Serializer& serializer, const Status& self);
@@ -583,7 +583,7 @@ void extract(Serializer& serializer, Status& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_linear_accel  None
+///@defgroup cpp_filter_linear_accel  (0x82,0x0D) Linear Accel [CPP]
 /// Filter-compensated linear acceleration expressed in the vehicle frame.
 /// Note: The estimated gravity has been removed from this data leaving only linear acceleration.
 ///
@@ -596,8 +596,8 @@ struct LinearAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float accel[3] = {0};
-    uint16_t valid_flags = 0;
+    float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const LinearAccel& self);
@@ -606,7 +606,7 @@ void extract(Serializer& serializer, LinearAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gravity_vector  None
+///@defgroup cpp_filter_gravity_vector  (0x82,0x13) Gravity Vector [CPP]
 /// Filter reported gravity vector expressed in the vehicle frame.
 ///
 ///@{
@@ -618,8 +618,8 @@ struct GravityVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float gravity[3] = {0};
-    uint16_t valid_flags = 0;
+    float gravity[3] = {0}; ///< (x, y, z) [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GravityVector& self);
@@ -628,7 +628,7 @@ void extract(Serializer& serializer, GravityVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_accel  Compensated Acceleration
+///@defgroup cpp_filter_comp_accel  (0x82,0x1C) Comp Accel [CPP]
 /// Filter-compensated acceleration expressed in the vehicle frame.
 ///
 ///@{
@@ -640,8 +640,8 @@ struct CompAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float accel[3] = {0};
-    uint16_t valid_flags = 0;
+    float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const CompAccel& self);
@@ -650,7 +650,7 @@ void extract(Serializer& serializer, CompAccel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_comp_angular_rate  None
+///@defgroup cpp_filter_comp_angular_rate  (0x82,0x0E) Comp Angular Rate [CPP]
 /// Filter-compensated angular rate expressed in the vehicle frame.
 ///
 ///@{
@@ -662,8 +662,8 @@ struct CompAngularRate
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float gyro[3] = {0};
-    uint16_t valid_flags = 0;
+    float gyro[3] = {0}; ///< (x, y, z) [radians/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const CompAngularRate& self);
@@ -672,7 +672,7 @@ void extract(Serializer& serializer, CompAngularRate& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_quaternion_attitude_uncertainty  None
+///@defgroup cpp_filter_quaternion_attitude_uncertainty  (0x82,0x12) Quaternion Attitude Uncertainty [CPP]
 /// Filter reported quaternion uncertainties.
 ///
 ///@{
@@ -684,8 +684,8 @@ struct QuaternionAttitudeUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float q[4] = {0};
-    uint16_t valid_flags = 0;
+    float q[4] = {0}; ///< [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self);
@@ -694,7 +694,7 @@ void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_wgs84_gravity_mag  None
+///@defgroup cpp_filter_wgs84_gravity_mag  (0x82,0x0F) Wgs84 Gravity Mag [CPP]
 /// Filter reported WGS84 gravity magnitude.
 ///
 ///@{
@@ -706,8 +706,8 @@ struct Wgs84GravityMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float magnitude = 0;
-    uint16_t valid_flags = 0;
+    float magnitude = 0; ///< [meters/second^2]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const Wgs84GravityMag& self);
@@ -716,7 +716,7 @@ void extract(Serializer& serializer, Wgs84GravityMag& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_heading_update_state  None
+///@defgroup cpp_filter_heading_update_state  (0x82,0x14) Heading Update State [CPP]
 /// Filter reported heading update state.
 /// 
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
@@ -740,10 +740,10 @@ struct HeadingUpdateState
         DUAL_ANTENNA         = 8,  ///<  
     };
     
-    float heading = 0;
-    float heading_1sigma = 0;
+    float heading = 0; ///< [radians]
+    float heading_1sigma = 0; ///< [radians]
     HeadingSource source = static_cast<HeadingSource>(0);
-    uint16_t valid_flags = 0;
+    uint16_t valid_flags = 0; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
     
 };
 void insert(Serializer& serializer, const HeadingUpdateState& self);
@@ -752,7 +752,7 @@ void extract(Serializer& serializer, HeadingUpdateState& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetic_model  None
+///@defgroup cpp_filter_magnetic_model  (0x82,0x15) Magnetic Model [CPP]
 /// The World Magnetic Model is used for this data. Please refer to the device user manual for the current version of the model.
 /// A valid GNSS location is required for the model to be valid.
 ///
@@ -765,12 +765,12 @@ struct MagneticModel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float intensity_north = 0;
-    float intensity_east = 0;
-    float intensity_down = 0;
-    float inclination = 0;
-    float declination = 0;
-    uint16_t valid_flags = 0;
+    float intensity_north = 0; ///< [Gauss]
+    float intensity_east = 0; ///< [Gauss]
+    float intensity_down = 0; ///< [Gauss]
+    float inclination = 0; ///< [radians]
+    float declination = 0; ///< [radians]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagneticModel& self);
@@ -779,7 +779,7 @@ void extract(Serializer& serializer, MagneticModel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_accel_scale_factor  None
+///@defgroup cpp_filter_accel_scale_factor  (0x82,0x17) Accel Scale Factor [CPP]
 /// Filter reported accelerometer scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -791,8 +791,8 @@ struct AccelScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor[3] = {0};
-    uint16_t valid_flags = 0;
+    float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AccelScaleFactor& self);
@@ -801,7 +801,7 @@ void extract(Serializer& serializer, AccelScaleFactor& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_accel_scale_factor_uncertainty  None
+///@defgroup cpp_filter_accel_scale_factor_uncertainty  (0x82,0x19) Accel Scale Factor Uncertainty [CPP]
 /// Filter reported 1-sigma accelerometer scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -813,8 +813,8 @@ struct AccelScaleFactorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self);
@@ -823,7 +823,7 @@ void extract(Serializer& serializer, AccelScaleFactorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gyro_scale_factor  None
+///@defgroup cpp_filter_gyro_scale_factor  (0x82,0x16) Gyro Scale Factor [CPP]
 /// Filter reported gyro scale factor expressed in the sensor frame.
 ///
 ///@{
@@ -835,8 +835,8 @@ struct GyroScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor[3] = {0};
-    uint16_t valid_flags = 0;
+    float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GyroScaleFactor& self);
@@ -845,7 +845,7 @@ void extract(Serializer& serializer, GyroScaleFactor& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gyro_scale_factor_uncertainty  None
+///@defgroup cpp_filter_gyro_scale_factor_uncertainty  (0x82,0x18) Gyro Scale Factor Uncertainty [CPP]
 /// Filter reported 1-sigma gyro scale factor uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -857,8 +857,8 @@ struct GyroScaleFactorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self);
@@ -867,7 +867,7 @@ void extract(Serializer& serializer, GyroScaleFactorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_mag_bias  None
+///@defgroup cpp_filter_mag_bias  (0x82,0x1A) Mag Bias [CPP]
 /// Filter reported magnetometer bias expressed in the sensor frame.
 ///
 ///@{
@@ -879,8 +879,8 @@ struct MagBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagBias& self);
@@ -889,7 +889,7 @@ void extract(Serializer& serializer, MagBias& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_mag_bias_uncertainty  None
+///@defgroup cpp_filter_mag_bias_uncertainty  (0x82,0x1B) Mag Bias Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer bias uncertainty expressed in the sensor frame.
 ///
 ///@{
@@ -901,8 +901,8 @@ struct MagBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float bias_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float bias_uncert[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagBiasUncertainty& self);
@@ -911,7 +911,7 @@ void extract(Serializer& serializer, MagBiasUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_standard_atmosphere  None
+///@defgroup cpp_filter_standard_atmosphere  (0x82,0x20) Standard Atmosphere [CPP]
 /// Filter reported standard atmosphere parameters.
 /// 
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
@@ -925,12 +925,12 @@ struct StandardAtmosphere
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float geometric_altitude = 0;
-    float geopotential_altitude = 0;
-    float standard_temperature = 0;
-    float standard_pressure = 0;
-    float standard_density = 0;
-    uint16_t valid_flags = 0;
+    float geometric_altitude = 0; ///< Input into calculation [meters]
+    float geopotential_altitude = 0; ///< [meters]
+    float standard_temperature = 0; ///< [degC]
+    float standard_pressure = 0; ///< [milliBar]
+    float standard_density = 0; ///< [kilogram/meter^3]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const StandardAtmosphere& self);
@@ -939,7 +939,7 @@ void extract(Serializer& serializer, StandardAtmosphere& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_pressure_altitude  None
+///@defgroup cpp_filter_pressure_altitude  (0x82,0x21) Pressure Altitude [CPP]
 /// Filter reported pressure altitude.
 /// 
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
@@ -955,8 +955,8 @@ struct PressureAltitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float pressure_altitude = 0;
-    uint16_t valid_flags = 0;
+    float pressure_altitude = 0; ///< [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const PressureAltitude& self);
@@ -965,7 +965,7 @@ void extract(Serializer& serializer, PressureAltitude& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_density_altitude  None
+///@defgroup cpp_filter_density_altitude  (0x82,0x22) Density Altitude [CPP]
 ///
 ///@{
 
@@ -976,8 +976,8 @@ struct DensityAltitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float density_altitude = 0;
-    uint16_t valid_flags = 0;
+    float density_altitude = 0; ///< m
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const DensityAltitude& self);
@@ -986,7 +986,7 @@ void extract(Serializer& serializer, DensityAltitude& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_antenna_offset_correction  None
+///@defgroup cpp_filter_antenna_offset_correction  (0x82,0x30) Antenna Offset Correction [CPP]
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1000,8 +1000,8 @@ struct AntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float offset[3] = {0};
-    uint16_t valid_flags = 0;
+    float offset[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AntennaOffsetCorrection& self);
@@ -1010,7 +1010,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_antenna_offset_correction_uncertainty  None
+///@defgroup cpp_filter_antenna_offset_correction_uncertainty  (0x82,0x31) Antenna Offset Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1022,8 +1022,8 @@ struct AntennaOffsetCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float offset_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self);
@@ -1032,7 +1032,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_multi_antenna_offset_correction  None
+///@defgroup cpp_filter_multi_antenna_offset_correction  (0x82,0x34) Multi Antenna Offset Correction [CPP]
 /// Filter reported GNSS antenna offset in vehicle frame.
 /// 
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
@@ -1046,9 +1046,9 @@ struct MultiAntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id = 0;
-    float offset[3] = {0};
-    uint16_t valid_flags = 0;
+    uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
+    float offset[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self);
@@ -1057,7 +1057,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_multi_antenna_offset_correction_uncertainty  None
+///@defgroup cpp_filter_multi_antenna_offset_correction_uncertainty  (0x82,0x35) Multi Antenna Offset Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS antenna offset uncertainties in vehicle frame.
 ///
 ///@{
@@ -1069,9 +1069,9 @@ struct MultiAntennaOffsetCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id = 0;
-    float offset_uncert[3] = {0};
-    uint16_t valid_flags = 0;
+    uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
+    float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self);
@@ -1080,7 +1080,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_offset  None
+///@defgroup cpp_filter_magnetometer_offset  (0x82,0x25) Magnetometer Offset [CPP]
 /// Filter reported magnetometer hard iron offset in sensor frame.
 /// 
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
@@ -1094,8 +1094,8 @@ struct MagnetometerOffset
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float hard_iron[3] = {0};
-    uint16_t valid_flags = 0;
+    float hard_iron[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerOffset& self);
@@ -1104,7 +1104,7 @@ void extract(Serializer& serializer, MagnetometerOffset& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_matrix  None
+///@defgroup cpp_filter_magnetometer_matrix  (0x82,0x26) Magnetometer Matrix [CPP]
 /// Filter reported magnetometer soft iron matrix in sensor frame.
 /// 
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
@@ -1118,8 +1118,8 @@ struct MagnetometerMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float soft_iron[9] = {0};
-    uint16_t valid_flags = 0;
+    float soft_iron[9] = {0}; ///< Row-major [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerMatrix& self);
@@ -1128,7 +1128,7 @@ void extract(Serializer& serializer, MagnetometerMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_offset_uncertainty  None
+///@defgroup cpp_filter_magnetometer_offset_uncertainty  (0x82,0x28) Magnetometer Offset Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer hard iron offset uncertainties in sensor frame.
 ///
 ///@{
@@ -1140,8 +1140,8 @@ struct MagnetometerOffsetUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float hard_iron_uncertainty[3] = {0};
-    uint16_t valid_flags = 0;
+    float hard_iron_uncertainty[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self);
@@ -1150,7 +1150,7 @@ void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_matrix_uncertainty  None
+///@defgroup cpp_filter_magnetometer_matrix_uncertainty  (0x82,0x29) Magnetometer Matrix Uncertainty [CPP]
 /// Filter reported 1-sigma magnetometer soft iron matrix uncertainties in sensor frame.
 ///
 ///@{
@@ -1162,8 +1162,8 @@ struct MagnetometerMatrixUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float soft_iron_uncertainty[9] = {0};
-    uint16_t valid_flags = 0;
+    float soft_iron_uncertainty[9] = {0}; ///< Row-major [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self);
@@ -1172,7 +1172,7 @@ void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_covariance_matrix  None
+///@defgroup cpp_filter_magnetometer_covariance_matrix  (0x82,0x2A) Magnetometer Covariance Matrix [CPP]
 ///
 ///@{
 
@@ -1184,7 +1184,7 @@ struct MagnetometerCovarianceMatrix
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     float covariance[9] = {0};
-    uint16_t valid_flags = 0;
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self);
@@ -1193,7 +1193,7 @@ void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_magnetometer_residual_vector  None
+///@defgroup cpp_filter_magnetometer_residual_vector  (0x82,0x2C) Magnetometer Residual Vector [CPP]
 /// Filter reported magnetometer measurement residuals in vehicle frame.
 ///
 ///@{
@@ -1205,8 +1205,8 @@ struct MagnetometerResidualVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float residual[3] = {0};
-    uint16_t valid_flags = 0;
+    float residual[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const MagnetometerResidualVector& self);
@@ -1215,7 +1215,7 @@ void extract(Serializer& serializer, MagnetometerResidualVector& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_clock_correction  None
+///@defgroup cpp_filter_clock_correction  (0x82,0x32) Clock Correction [CPP]
 /// Filter reported GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1227,10 +1227,10 @@ struct ClockCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id = 0;
-    float bias = 0;
-    float bias_drift = 0;
-    uint16_t valid_flags = 0;
+    uint8_t receiver_id = 0; ///< 1, 2, etc.
+    float bias = 0; ///< [seconds]
+    float bias_drift = 0; ///< [seconds/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const ClockCorrection& self);
@@ -1239,7 +1239,7 @@ void extract(Serializer& serializer, ClockCorrection& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_clock_correction_uncertainty  None
+///@defgroup cpp_filter_clock_correction_uncertainty  (0x82,0x33) Clock Correction Uncertainty [CPP]
 /// Filter reported 1-sigma GNSS receiver clock error parameters.
 ///
 ///@{
@@ -1251,10 +1251,10 @@ struct ClockCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    uint8_t receiver_id = 0;
-    float bias_uncertainty = 0;
-    float bias_drift_uncertainty = 0;
-    uint16_t valid_flags = 0;
+    uint8_t receiver_id = 0; ///< 1, 2, etc.
+    float bias_uncertainty = 0; ///< [seconds]
+    float bias_drift_uncertainty = 0; ///< [seconds/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const ClockCorrectionUncertainty& self);
@@ -1263,7 +1263,7 @@ void extract(Serializer& serializer, ClockCorrectionUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_pos_aid_status  GNSS Position Aiding Status
+///@defgroup cpp_filter_gnss_pos_aid_status  (0x82,0x43) Gnss Pos Aid Status [CPP]
 /// Filter reported GNSS position aiding status
 ///
 ///@{
@@ -1276,8 +1276,8 @@ struct GnssPosAidStatus
     static const bool HAS_FUNCTION_SELECTOR = false;
     
     uint8_t receiver_id = 0;
-    float time_of_week = 0;
-    GnssAidStatusFlags status;
+    float time_of_week = 0; ///< Last GNSS aiding measurement time of week [seconds]
+    GnssAidStatusFlags status; ///< Aiding measurement status bitfield
     uint8_t reserved[8] = {0};
     
 };
@@ -1287,7 +1287,7 @@ void extract(Serializer& serializer, GnssPosAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_att_aid_status  GNSS Attitude Aiding Status
+///@defgroup cpp_filter_gnss_att_aid_status  (0x82,0x44) Gnss Att Aid Status [CPP]
 /// Filter reported dual antenna GNSS attitude aiding status
 ///
 ///@{
@@ -1299,8 +1299,8 @@ struct GnssAttAidStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float time_of_week = 0;
-    GnssAidStatusFlags status;
+    float time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    GnssAidStatusFlags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8] = {0};
     
 };
@@ -1310,7 +1310,7 @@ void extract(Serializer& serializer, GnssAttAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_head_aid_status  None
+///@defgroup cpp_filter_head_aid_status  (0x82,0x45) Head Aid Status [CPP]
 /// Filter reported GNSS heading aiding status
 ///
 ///@{
@@ -1328,8 +1328,8 @@ struct HeadAidStatus
         EXTERNAL_MESSAGE = 2,  ///<  
     };
     
-    float time_of_week = 0;
-    HeadingAidType type = static_cast<HeadingAidType>(0);
+    float time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    HeadingAidType type = static_cast<HeadingAidType>(0); ///< 1 - Dual antenna, 2 - External heading message (user supplied)
     float reserved[2] = {0};
     
 };
@@ -1339,7 +1339,7 @@ void extract(Serializer& serializer, HeadAidStatus& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_rel_pos_ned  NED Relative Position
+///@defgroup cpp_filter_rel_pos_ned  (0x82,0x42) Rel Pos Ned [CPP]
 /// Filter reported relative position, with respect to configured reference position
 ///
 ///@{
@@ -1351,8 +1351,8 @@ struct RelPosNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double relative_position[3] = {0};
-    uint16_t valid_flags = 0;
+    double relative_position[3] = {0}; ///< [meters, NED]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const RelPosNed& self);
@@ -1361,7 +1361,7 @@ void extract(Serializer& serializer, RelPosNed& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ecef_pos  ECEF Position
+///@defgroup cpp_filter_ecef_pos  (0x82,0x40) Ecef Pos [CPP]
 /// Filter reported ECEF position
 ///
 ///@{
@@ -1373,8 +1373,8 @@ struct EcefPos
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    double position_ecef[3] = {0};
-    uint16_t valid_flags = 0;
+    double position_ecef[3] = {0}; ///< [meters, ECEF]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
     
 };
 void insert(Serializer& serializer, const EcefPos& self);
@@ -1383,7 +1383,7 @@ void extract(Serializer& serializer, EcefPos& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ecef_vel  ECEF Velocity
+///@defgroup cpp_filter_ecef_vel  (0x82,0x41) Ecef Vel [CPP]
 /// Filter reported ECEF velocity
 ///
 ///@{
@@ -1395,8 +1395,8 @@ struct EcefVel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float velocity_ecef[3] = {0};
-    uint16_t valid_flags = 0;
+    float velocity_ecef[3] = {0}; ///< [meters/second, ECEF]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
     
 };
 void insert(Serializer& serializer, const EcefVel& self);
@@ -1405,7 +1405,7 @@ void extract(Serializer& serializer, EcefVel& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ecef_pos_uncertainty  ECEF Position Uncertainty
+///@defgroup cpp_filter_ecef_pos_uncertainty  (0x82,0x36) Ecef Pos Uncertainty [CPP]
 /// Filter reported 1-sigma position uncertainty in the ECEF frame.
 ///
 ///@{
@@ -1417,8 +1417,8 @@ struct EcefPosUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float pos_uncertainty[3] = {0};
-    uint16_t valid_flags = 0;
+    float pos_uncertainty[3] = {0}; ///< [meters]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const EcefPosUncertainty& self);
@@ -1427,7 +1427,7 @@ void extract(Serializer& serializer, EcefPosUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_ecef_vel_uncertainty  ECEF Velocity Uncertainty
+///@defgroup cpp_filter_ecef_vel_uncertainty  (0x82,0x37) Ecef Vel Uncertainty [CPP]
 /// Filter reported 1-sigma velocity uncertainties in the ECEF frame.
 ///
 ///@{
@@ -1439,8 +1439,8 @@ struct EcefVelUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float vel_uncertainty[3] = {0};
-    uint16_t valid_flags = 0;
+    float vel_uncertainty[3] = {0}; ///< [meters/second]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const EcefVelUncertainty& self);
@@ -1449,7 +1449,7 @@ void extract(Serializer& serializer, EcefVelUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_measurement_summary  None
+///@defgroup cpp_filter_aiding_measurement_summary  (0x82,0x46) Aiding Measurement Summary [CPP]
 /// Filter reported aiding measurement summary. This message contains a summary of the specified aiding measurement over the previous measurement interval ending at the specified time.
 ///
 ///@{
@@ -1461,9 +1461,9 @@ struct AidingMeasurementSummary
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float time_of_week = 0;
+    float time_of_week = 0; ///< [seconds]
     uint8_t source = 0;
-    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0);
+    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types)
     FilterMeasurementIndicator indicator;
     
 };
@@ -1473,7 +1473,7 @@ void extract(Serializer& serializer, AidingMeasurementSummary& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_odometer_scale_factor_error  Odometer Scale Factor Error
+///@defgroup cpp_filter_odometer_scale_factor_error  (0x82,0x47) Odometer Scale Factor Error [CPP]
 /// Filter reported odometer scale factor error. The total scale factor estimate is the user indicated scale factor, plus the user indicated scale factor times the scale factor error.
 ///
 ///@{
@@ -1485,8 +1485,8 @@ struct OdometerScaleFactorError
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_error = 0;
-    uint16_t valid_flags = 0;
+    float scale_factor_error = 0; ///< [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const OdometerScaleFactorError& self);
@@ -1495,7 +1495,7 @@ void extract(Serializer& serializer, OdometerScaleFactorError& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_odometer_scale_factor_error_uncertainty  Odometer Scale Factor Error Uncertainty
+///@defgroup cpp_filter_odometer_scale_factor_error_uncertainty  (0x82,0x48) Odometer Scale Factor Error Uncertainty [CPP]
 /// Filter reported odometer scale factor error uncertainty.
 ///
 ///@{
@@ -1507,8 +1507,8 @@ struct OdometerScaleFactorErrorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
-    float scale_factor_error_uncertainty = 0;
-    uint16_t valid_flags = 0;
+    float scale_factor_error_uncertainty = 0; ///< [dimensionless]
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const OdometerScaleFactorErrorUncertainty& self);
@@ -1517,7 +1517,7 @@ void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_dual_antenna_status  GNSS Dual Antenna Status
+///@defgroup cpp_filter_gnss_dual_antenna_status  (0x82,0x49) Gnss Dual Antenna Status [CPP]
 /// Summary information for status of GNSS dual antenna heading estimate.
 ///
 ///@{
@@ -1556,12 +1556,12 @@ struct GnssDualAntennaStatus
         DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
     
-    float time_of_week = 0;
-    float heading = 0;
-    float heading_unc = 0;
-    FixType fix_type = static_cast<FixType>(0);
+    float time_of_week = 0; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
+    float heading = 0; ///< [radians]
+    float heading_unc = 0; ///< [radians]
+    FixType fix_type = static_cast<FixType>(0); ///< Fix type indicator
     DualAntennaStatusFlags status_flags;
-    uint16_t valid_flags = 0;
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
 };
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);

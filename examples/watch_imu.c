@@ -207,7 +207,7 @@ int main(int argc, const char* argv[])
 #else
         usleep(100000);
 #endif
-        mip_interface_update(&device);
+        mip_interface_update(&device, false);
     }
 
     result = mip_base_set_idle(&device);
