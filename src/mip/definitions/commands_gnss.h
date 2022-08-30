@@ -73,8 +73,9 @@ struct mip_gnss_receiver_info_command_info
     char description[32]; ///< Ascii description of receiver
     
 };
-void insert_mip_gnss_receiver_info_command_info(struct mip_serializer* serializer, const struct mip_gnss_receiver_info_command_info* self);
-void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializer, struct mip_gnss_receiver_info_command_info* self);
+typedef struct mip_gnss_receiver_info_command_info mip_gnss_receiver_info_command_info;
+void insert_mip_gnss_receiver_info_command_info(struct mip_serializer* serializer, const mip_gnss_receiver_info_command_info* self);
+void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializer, mip_gnss_receiver_info_command_info* self);
 
 struct mip_gnss_receiver_info_response
 {
@@ -82,10 +83,11 @@ struct mip_gnss_receiver_info_response
     struct mip_gnss_receiver_info_command_info* receiver_info;
     
 };
-void insert_mip_gnss_receiver_info_response(struct mip_serializer* serializer, const struct mip_gnss_receiver_info_response* self);
-void extract_mip_gnss_receiver_info_response(struct mip_serializer* serializer, struct mip_gnss_receiver_info_response* self);
+typedef struct mip_gnss_receiver_info_response mip_gnss_receiver_info_response;
+void insert_mip_gnss_receiver_info_response(struct mip_serializer* serializer, const mip_gnss_receiver_info_response* self);
+void extract_mip_gnss_receiver_info_response(struct mip_serializer* serializer, mip_gnss_receiver_info_response* self);
 
-enum mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, struct mip_gnss_receiver_info_command_info* receiver_info_out);
+mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, mip_gnss_receiver_info_command_info* receiver_info_out);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,8 +107,9 @@ struct mip_gnss_signal_configuration_command
     uint8_t reserved[4];
     
 };
-void insert_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_command* self);
-void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_command* self);
+typedef struct mip_gnss_signal_configuration_command mip_gnss_signal_configuration_command;
+void insert_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, const mip_gnss_signal_configuration_command* self);
+void extract_mip_gnss_signal_configuration_command(struct mip_serializer* serializer, mip_gnss_signal_configuration_command* self);
 
 struct mip_gnss_signal_configuration_response
 {
@@ -117,14 +120,15 @@ struct mip_gnss_signal_configuration_response
     uint8_t reserved[4];
     
 };
-void insert_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_signal_configuration_response* self);
-void extract_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, struct mip_gnss_signal_configuration_response* self);
+typedef struct mip_gnss_signal_configuration_response mip_gnss_signal_configuration_response;
+void insert_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, const mip_gnss_signal_configuration_response* self);
+void extract_mip_gnss_signal_configuration_response(struct mip_serializer* serializer, mip_gnss_signal_configuration_response* self);
 
-enum mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved);
-enum mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable_out, uint8_t* glonass_enable_out, uint8_t* galileo_enable_out, uint8_t* beidou_enable_out, uint8_t* reserved_out);
-enum mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device);
-enum mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device);
-enum mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved);
+mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable_out, uint8_t* glonass_enable_out, uint8_t* galileo_enable_out, uint8_t* beidou_enable_out, uint8_t* reserved_out);
+mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,8 +145,9 @@ struct mip_gnss_rtk_dongle_configuration_command
     uint8_t reserved[3];
     
 };
-void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_command* self);
-void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_command* self);
+typedef struct mip_gnss_rtk_dongle_configuration_command mip_gnss_rtk_dongle_configuration_command;
+void insert_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, const mip_gnss_rtk_dongle_configuration_command* self);
+void extract_mip_gnss_rtk_dongle_configuration_command(struct mip_serializer* serializer, mip_gnss_rtk_dongle_configuration_command* self);
 
 struct mip_gnss_rtk_dongle_configuration_response
 {
@@ -150,14 +155,15 @@ struct mip_gnss_rtk_dongle_configuration_response
     uint8_t reserved[3];
     
 };
-void insert_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, const struct mip_gnss_rtk_dongle_configuration_response* self);
-void extract_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, struct mip_gnss_rtk_dongle_configuration_response* self);
+typedef struct mip_gnss_rtk_dongle_configuration_response mip_gnss_rtk_dongle_configuration_response;
+void insert_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self);
+void extract_mip_gnss_rtk_dongle_configuration_response(struct mip_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self);
 
-enum mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved);
-enum mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable_out, uint8_t* reserved_out);
-enum mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device);
-enum mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device);
-enum mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved);
+mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable_out, uint8_t* reserved_out);
+mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device);
+mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -174,10 +180,11 @@ struct mip_gnss_receiver_safe_mode_command
     uint8_t enable; ///< 0 - Disabled, 1- Enabled
     
 };
-void insert_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, const struct mip_gnss_receiver_safe_mode_command* self);
-void extract_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, struct mip_gnss_receiver_safe_mode_command* self);
+typedef struct mip_gnss_receiver_safe_mode_command mip_gnss_receiver_safe_mode_command;
+void insert_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, const mip_gnss_receiver_safe_mode_command* self);
+void extract_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, mip_gnss_receiver_safe_mode_command* self);
 
-enum mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable);
+mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable);
 ///@}
 ///
 

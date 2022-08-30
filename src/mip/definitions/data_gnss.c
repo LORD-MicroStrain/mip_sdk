@@ -22,33 +22,33 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_gnss_constellation_id(struct mip_serializer* serializer, const enum mip_gnss_constellation_id self)
+void insert_mip_gnss_constellation_id(struct mip_serializer* serializer, const mip_gnss_constellation_id self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_constellation_id(struct mip_serializer* serializer, enum mip_gnss_constellation_id* self)
+void extract_mip_gnss_constellation_id(struct mip_serializer* serializer, mip_gnss_constellation_id* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_signal_id(struct mip_serializer* serializer, const enum mip_gnss_signal_id self)
+void insert_mip_gnss_signal_id(struct mip_serializer* serializer, const mip_gnss_signal_id self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_signal_id(struct mip_serializer* serializer, enum mip_gnss_signal_id* self)
+void extract_mip_gnss_signal_id(struct mip_serializer* serializer, mip_gnss_signal_id* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_sbas_system(struct mip_serializer* serializer, const enum mip_sbas_system self)
+void insert_mip_sbas_system(struct mip_serializer* serializer, const mip_sbas_system self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_sbas_system(struct mip_serializer* serializer, enum mip_sbas_system* self)
+void extract_mip_sbas_system(struct mip_serializer* serializer, mip_sbas_system* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
@@ -60,7 +60,7 @@ void extract_mip_sbas_system(struct mip_serializer* serializer, enum mip_sbas_sy
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_gnss_pos_llh_data(struct mip_serializer* serializer, const struct mip_gnss_pos_llh_data* self)
+void insert_mip_gnss_pos_llh_data(mip_serializer* serializer, const mip_gnss_pos_llh_data* self)
 {
     insert_double(serializer, self->latitude);
     
@@ -77,7 +77,7 @@ void insert_mip_gnss_pos_llh_data(struct mip_serializer* serializer, const struc
     insert_mip_gnss_pos_llh_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_pos_llh_data(struct mip_serializer* serializer, struct mip_gnss_pos_llh_data* self)
+void extract_mip_gnss_pos_llh_data(mip_serializer* serializer, mip_gnss_pos_llh_data* self)
 {
     extract_double(serializer, &self->latitude);
     
@@ -94,28 +94,28 @@ void extract_mip_gnss_pos_llh_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_pos_llh_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_pos_llh_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_pos_llh_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_pos_llh_data* self = ptr;
+    mip_gnss_pos_llh_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_pos_llh_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_pos_llh_data_valid_flags self)
+void insert_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_pos_llh_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_pos_llh_data_valid_flags* self)
+void extract_mip_gnss_pos_llh_data_valid_flags(struct mip_serializer* serializer, mip_gnss_pos_llh_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, const struct mip_gnss_pos_ecef_data* self)
+void insert_mip_gnss_pos_ecef_data(mip_serializer* serializer, const mip_gnss_pos_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert_double(serializer, self->x[i]);
@@ -125,7 +125,7 @@ void insert_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, const stru
     insert_mip_gnss_pos_ecef_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, struct mip_gnss_pos_ecef_data* self)
+void extract_mip_gnss_pos_ecef_data(mip_serializer* serializer, mip_gnss_pos_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract_double(serializer, &self->x[i]);
@@ -135,28 +135,28 @@ void extract_mip_gnss_pos_ecef_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_pos_ecef_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_pos_ecef_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_pos_ecef_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_pos_ecef_data* self = ptr;
+    mip_gnss_pos_ecef_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_pos_ecef_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_pos_ecef_data_valid_flags self)
+void insert_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_pos_ecef_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_pos_ecef_data_valid_flags* self)
+void extract_mip_gnss_pos_ecef_data_valid_flags(struct mip_serializer* serializer, mip_gnss_pos_ecef_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_vel_ned_data(struct mip_serializer* serializer, const struct mip_gnss_vel_ned_data* self)
+void insert_mip_gnss_vel_ned_data(mip_serializer* serializer, const mip_gnss_vel_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert_float(serializer, self->v[i]);
@@ -174,7 +174,7 @@ void insert_mip_gnss_vel_ned_data(struct mip_serializer* serializer, const struc
     insert_mip_gnss_vel_ned_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_vel_ned_data(struct mip_serializer* serializer, struct mip_gnss_vel_ned_data* self)
+void extract_mip_gnss_vel_ned_data(mip_serializer* serializer, mip_gnss_vel_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->v[i]);
@@ -192,28 +192,28 @@ void extract_mip_gnss_vel_ned_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_vel_ned_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_vel_ned_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_vel_ned_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_vel_ned_data* self = ptr;
+    mip_gnss_vel_ned_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_vel_ned_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_vel_ned_data_valid_flags self)
+void insert_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_vel_ned_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_vel_ned_data_valid_flags* self)
+void extract_mip_gnss_vel_ned_data_valid_flags(struct mip_serializer* serializer, mip_gnss_vel_ned_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, const struct mip_gnss_vel_ecef_data* self)
+void insert_mip_gnss_vel_ecef_data(mip_serializer* serializer, const mip_gnss_vel_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert_float(serializer, self->v[i]);
@@ -223,7 +223,7 @@ void insert_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, const stru
     insert_mip_gnss_vel_ecef_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, struct mip_gnss_vel_ecef_data* self)
+void extract_mip_gnss_vel_ecef_data(mip_serializer* serializer, mip_gnss_vel_ecef_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->v[i]);
@@ -233,28 +233,28 @@ void extract_mip_gnss_vel_ecef_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_vel_ecef_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_vel_ecef_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_vel_ecef_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_vel_ecef_data* self = ptr;
+    mip_gnss_vel_ecef_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_vel_ecef_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_vel_ecef_data_valid_flags self)
+void insert_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_vel_ecef_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_vel_ecef_data_valid_flags* self)
+void extract_mip_gnss_vel_ecef_data_valid_flags(struct mip_serializer* serializer, mip_gnss_vel_ecef_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_dop_data(struct mip_serializer* serializer, const struct mip_gnss_dop_data* self)
+void insert_mip_gnss_dop_data(mip_serializer* serializer, const mip_gnss_dop_data* self)
 {
     insert_float(serializer, self->gdop);
     
@@ -273,7 +273,7 @@ void insert_mip_gnss_dop_data(struct mip_serializer* serializer, const struct mi
     insert_mip_gnss_dop_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_dop_data(struct mip_serializer* serializer, struct mip_gnss_dop_data* self)
+void extract_mip_gnss_dop_data(mip_serializer* serializer, mip_gnss_dop_data* self)
 {
     extract_float(serializer, &self->gdop);
     
@@ -292,28 +292,28 @@ void extract_mip_gnss_dop_data(struct mip_serializer* serializer, struct mip_gns
     extract_mip_gnss_dop_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dop_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_dop_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_dop_data* self = ptr;
+    mip_gnss_dop_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_dop_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dop_data_valid_flags self)
+void insert_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_dop_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dop_data_valid_flags* self)
+void extract_mip_gnss_dop_data_valid_flags(struct mip_serializer* serializer, mip_gnss_dop_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_utc_time_data(struct mip_serializer* serializer, const struct mip_gnss_utc_time_data* self)
+void insert_mip_gnss_utc_time_data(mip_serializer* serializer, const mip_gnss_utc_time_data* self)
 {
     insert_u16(serializer, self->year);
     
@@ -332,7 +332,7 @@ void insert_mip_gnss_utc_time_data(struct mip_serializer* serializer, const stru
     insert_mip_gnss_utc_time_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_utc_time_data(struct mip_serializer* serializer, struct mip_gnss_utc_time_data* self)
+void extract_mip_gnss_utc_time_data(mip_serializer* serializer, mip_gnss_utc_time_data* self)
 {
     extract_u16(serializer, &self->year);
     
@@ -351,28 +351,28 @@ void extract_mip_gnss_utc_time_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_utc_time_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_utc_time_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_utc_time_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_utc_time_data* self = ptr;
+    mip_gnss_utc_time_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_utc_time_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_utc_time_data_valid_flags self)
+void insert_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_utc_time_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_utc_time_data_valid_flags* self)
+void extract_mip_gnss_utc_time_data_valid_flags(struct mip_serializer* serializer, mip_gnss_utc_time_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_gps_time_data(struct mip_serializer* serializer, const struct mip_gnss_gps_time_data* self)
+void insert_mip_gnss_gps_time_data(mip_serializer* serializer, const mip_gnss_gps_time_data* self)
 {
     insert_double(serializer, self->tow);
     
@@ -381,7 +381,7 @@ void insert_mip_gnss_gps_time_data(struct mip_serializer* serializer, const stru
     insert_mip_gnss_gps_time_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_gps_time_data(struct mip_serializer* serializer, struct mip_gnss_gps_time_data* self)
+void extract_mip_gnss_gps_time_data(mip_serializer* serializer, mip_gnss_gps_time_data* self)
 {
     extract_double(serializer, &self->tow);
     
@@ -390,28 +390,28 @@ void extract_mip_gnss_gps_time_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_gps_time_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_time_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_time_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_gps_time_data* self = ptr;
+    mip_gnss_gps_time_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_gps_time_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_time_data_valid_flags self)
+void insert_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_gps_time_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_time_data_valid_flags* self)
+void extract_mip_gnss_gps_time_data_valid_flags(struct mip_serializer* serializer, mip_gnss_gps_time_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_clock_info_data(struct mip_serializer* serializer, const struct mip_gnss_clock_info_data* self)
+void insert_mip_gnss_clock_info_data(mip_serializer* serializer, const mip_gnss_clock_info_data* self)
 {
     insert_double(serializer, self->bias);
     
@@ -422,7 +422,7 @@ void insert_mip_gnss_clock_info_data(struct mip_serializer* serializer, const st
     insert_mip_gnss_clock_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_clock_info_data(struct mip_serializer* serializer, struct mip_gnss_clock_info_data* self)
+void extract_mip_gnss_clock_info_data(mip_serializer* serializer, mip_gnss_clock_info_data* self)
 {
     extract_double(serializer, &self->bias);
     
@@ -433,28 +433,28 @@ void extract_mip_gnss_clock_info_data(struct mip_serializer* serializer, struct 
     extract_mip_gnss_clock_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_clock_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_clock_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_clock_info_data* self = ptr;
+    mip_gnss_clock_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_clock_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_clock_info_data_valid_flags self)
+void insert_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_clock_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_clock_info_data_valid_flags* self)
+void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_clock_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_fix_info_data(struct mip_serializer* serializer, const struct mip_gnss_fix_info_data* self)
+void insert_mip_gnss_fix_info_data(mip_serializer* serializer, const mip_gnss_fix_info_data* self)
 {
     insert_mip_gnss_fix_info_data_fix_type(serializer, self->fix_type);
     
@@ -465,7 +465,7 @@ void insert_mip_gnss_fix_info_data(struct mip_serializer* serializer, const stru
     insert_mip_gnss_fix_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_fix_info_data(struct mip_serializer* serializer, struct mip_gnss_fix_info_data* self)
+void extract_mip_gnss_fix_info_data(mip_serializer* serializer, mip_gnss_fix_info_data* self)
 {
     extract_mip_gnss_fix_info_data_fix_type(serializer, &self->fix_type);
     
@@ -476,50 +476,50 @@ void extract_mip_gnss_fix_info_data(struct mip_serializer* serializer, struct mi
     extract_mip_gnss_fix_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_fix_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_fix_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_fix_info_data* self = ptr;
+    mip_gnss_fix_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_fix_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_fix_type self)
+void insert_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, const mip_gnss_fix_info_data_fix_type self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_fix_type* self)
+void extract_mip_gnss_fix_info_data_fix_type(struct mip_serializer* serializer, mip_gnss_fix_info_data_fix_type* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_fix_flags self)
+void insert_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, const mip_gnss_fix_info_data_fix_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_fix_flags* self)
+void extract_mip_gnss_fix_info_data_fix_flags(struct mip_serializer* serializer, mip_gnss_fix_info_data_fix_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_fix_info_data_valid_flags self)
+void insert_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_fix_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_fix_info_data_valid_flags* self)
+void extract_mip_gnss_fix_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_fix_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_sv_info_data(struct mip_serializer* serializer, const struct mip_gnss_sv_info_data* self)
+void insert_mip_gnss_sv_info_data(mip_serializer* serializer, const mip_gnss_sv_info_data* self)
 {
     insert_u8(serializer, self->channel);
     
@@ -536,7 +536,7 @@ void insert_mip_gnss_sv_info_data(struct mip_serializer* serializer, const struc
     insert_mip_gnss_sv_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_sv_info_data(struct mip_serializer* serializer, struct mip_gnss_sv_info_data* self)
+void extract_mip_gnss_sv_info_data(mip_serializer* serializer, mip_gnss_sv_info_data* self)
 {
     extract_u8(serializer, &self->channel);
     
@@ -553,39 +553,39 @@ void extract_mip_gnss_sv_info_data(struct mip_serializer* serializer, struct mip
     extract_mip_gnss_sv_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sv_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_sv_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_sv_info_data* self = ptr;
+    mip_gnss_sv_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_sv_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, const enum mip_gnss_sv_info_data_svflags self)
+void insert_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, const mip_gnss_sv_info_data_svflags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, enum mip_gnss_sv_info_data_svflags* self)
+void extract_mip_gnss_sv_info_data_svflags(struct mip_serializer* serializer, mip_gnss_sv_info_data_svflags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sv_info_data_valid_flags self)
+void insert_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_sv_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sv_info_data_valid_flags* self)
+void extract_mip_gnss_sv_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_sv_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_hw_status_data(struct mip_serializer* serializer, const struct mip_gnss_hw_status_data* self)
+void insert_mip_gnss_hw_status_data(mip_serializer* serializer, const mip_gnss_hw_status_data* self)
 {
     insert_mip_gnss_hw_status_data_receiver_state(serializer, self->receiver_state);
     
@@ -596,7 +596,7 @@ void insert_mip_gnss_hw_status_data(struct mip_serializer* serializer, const str
     insert_mip_gnss_hw_status_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_hw_status_data(struct mip_serializer* serializer, struct mip_gnss_hw_status_data* self)
+void extract_mip_gnss_hw_status_data(mip_serializer* serializer, mip_gnss_hw_status_data* self)
 {
     extract_mip_gnss_hw_status_data_receiver_state(serializer, &self->receiver_state);
     
@@ -607,61 +607,61 @@ void extract_mip_gnss_hw_status_data(struct mip_serializer* serializer, struct m
     extract_mip_gnss_hw_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_hw_status_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_hw_status_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_hw_status_data* self = ptr;
+    mip_gnss_hw_status_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_hw_status_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_receiver_state self)
+void insert_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, const mip_gnss_hw_status_data_receiver_state self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_receiver_state* self)
+void extract_mip_gnss_hw_status_data_receiver_state(struct mip_serializer* serializer, mip_gnss_hw_status_data_receiver_state* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_antenna_state self)
+void insert_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, const mip_gnss_hw_status_data_antenna_state self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_antenna_state* self)
+void extract_mip_gnss_hw_status_data_antenna_state(struct mip_serializer* serializer, mip_gnss_hw_status_data_antenna_state* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_antenna_power self)
+void insert_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, const mip_gnss_hw_status_data_antenna_power self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_antenna_power* self)
+void extract_mip_gnss_hw_status_data_antenna_power(struct mip_serializer* serializer, mip_gnss_hw_status_data_antenna_power* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_hw_status_data_valid_flags self)
+void insert_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_hw_status_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_hw_status_data_valid_flags* self)
+void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializer, mip_gnss_hw_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_dgps_info_data(struct mip_serializer* serializer, const struct mip_gnss_dgps_info_data* self)
+void insert_mip_gnss_dgps_info_data(mip_serializer* serializer, const mip_gnss_dgps_info_data* self)
 {
     insert_u8(serializer, self->sv_id);
     
@@ -674,7 +674,7 @@ void insert_mip_gnss_dgps_info_data(struct mip_serializer* serializer, const str
     insert_mip_gnss_dgps_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_dgps_info_data(struct mip_serializer* serializer, struct mip_gnss_dgps_info_data* self)
+void extract_mip_gnss_dgps_info_data(mip_serializer* serializer, mip_gnss_dgps_info_data* self)
 {
     extract_u8(serializer, &self->sv_id);
     
@@ -687,28 +687,28 @@ void extract_mip_gnss_dgps_info_data(struct mip_serializer* serializer, struct m
     extract_mip_gnss_dgps_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dgps_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_dgps_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_dgps_info_data* self = ptr;
+    mip_gnss_dgps_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_dgps_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dgps_info_data_valid_flags self)
+void insert_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_dgps_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dgps_info_data_valid_flags* self)
+void extract_mip_gnss_dgps_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_dgps_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, const struct mip_gnss_dgps_channel_data* self)
+void insert_mip_gnss_dgps_channel_data(mip_serializer* serializer, const mip_gnss_dgps_channel_data* self)
 {
     insert_u8(serializer, self->sv_id);
     
@@ -721,7 +721,7 @@ void insert_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, const 
     insert_mip_gnss_dgps_channel_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, struct mip_gnss_dgps_channel_data* self)
+void extract_mip_gnss_dgps_channel_data(mip_serializer* serializer, mip_gnss_dgps_channel_data* self)
 {
     extract_u8(serializer, &self->sv_id);
     
@@ -734,28 +734,28 @@ void extract_mip_gnss_dgps_channel_data(struct mip_serializer* serializer, struc
     extract_mip_gnss_dgps_channel_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dgps_channel_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_dgps_channel_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_dgps_channel_data* self = ptr;
+    mip_gnss_dgps_channel_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_dgps_channel_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_dgps_channel_data_valid_flags self)
+void insert_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_dgps_channel_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_dgps_channel_data_valid_flags* self)
+void extract_mip_gnss_dgps_channel_data_valid_flags(struct mip_serializer* serializer, mip_gnss_dgps_channel_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, const struct mip_gnss_clock_info_2_data* self)
+void insert_mip_gnss_clock_info_2_data(mip_serializer* serializer, const mip_gnss_clock_info_2_data* self)
 {
     insert_double(serializer, self->bias);
     
@@ -768,7 +768,7 @@ void insert_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, const 
     insert_mip_gnss_clock_info_2_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, struct mip_gnss_clock_info_2_data* self)
+void extract_mip_gnss_clock_info_2_data(mip_serializer* serializer, mip_gnss_clock_info_2_data* self)
 {
     extract_double(serializer, &self->bias);
     
@@ -781,63 +781,63 @@ void extract_mip_gnss_clock_info_2_data(struct mip_serializer* serializer, struc
     extract_mip_gnss_clock_info_2_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_clock_info_2_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_clock_info_2_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_clock_info_2_data* self = ptr;
+    mip_gnss_clock_info_2_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_clock_info_2_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_clock_info_2_data_valid_flags self)
+void insert_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_clock_info_2_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_clock_info_2_data_valid_flags* self)
+void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* serializer, mip_gnss_clock_info_2_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_gps_leap_seconds_data(struct mip_serializer* serializer, const struct mip_gnss_gps_leap_seconds_data* self)
+void insert_mip_gnss_gps_leap_seconds_data(mip_serializer* serializer, const mip_gnss_gps_leap_seconds_data* self)
 {
     insert_u8(serializer, self->leap_seconds);
     
     insert_mip_gnss_gps_leap_seconds_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_gps_leap_seconds_data(struct mip_serializer* serializer, struct mip_gnss_gps_leap_seconds_data* self)
+void extract_mip_gnss_gps_leap_seconds_data(mip_serializer* serializer, mip_gnss_gps_leap_seconds_data* self)
 {
     extract_u8(serializer, &self->leap_seconds);
     
     extract_mip_gnss_gps_leap_seconds_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_leap_seconds_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_leap_seconds_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_gps_leap_seconds_data* self = ptr;
+    mip_gnss_gps_leap_seconds_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_gps_leap_seconds_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_leap_seconds_data_valid_flags self)
+void insert_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_gps_leap_seconds_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_leap_seconds_data_valid_flags* self)
+void extract_mip_gnss_gps_leap_seconds_data_valid_flags(struct mip_serializer* serializer, mip_gnss_gps_leap_seconds_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_sbas_info_data(struct mip_serializer* serializer, const struct mip_gnss_sbas_info_data* self)
+void insert_mip_gnss_sbas_info_data(mip_serializer* serializer, const mip_gnss_sbas_info_data* self)
 {
     insert_double(serializer, self->time_of_week);
     
@@ -854,7 +854,7 @@ void insert_mip_gnss_sbas_info_data(struct mip_serializer* serializer, const str
     insert_mip_gnss_sbas_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_sbas_info_data(struct mip_serializer* serializer, struct mip_gnss_sbas_info_data* self)
+void extract_mip_gnss_sbas_info_data(mip_serializer* serializer, mip_gnss_sbas_info_data* self)
 {
     extract_double(serializer, &self->time_of_week);
     
@@ -871,39 +871,39 @@ void extract_mip_gnss_sbas_info_data(struct mip_serializer* serializer, struct m
     extract_mip_gnss_sbas_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sbas_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_sbas_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_sbas_info_data* self = ptr;
+    mip_gnss_sbas_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_sbas_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, const enum mip_gnss_sbas_info_data_sbas_status self)
+void insert_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, const mip_gnss_sbas_info_data_sbas_status self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, enum mip_gnss_sbas_info_data_sbas_status* self)
+void extract_mip_gnss_sbas_info_data_sbas_status(struct mip_serializer* serializer, mip_gnss_sbas_info_data_sbas_status* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sbas_info_data_valid_flags self)
+void insert_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_sbas_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sbas_info_data_valid_flags* self)
+void extract_mip_gnss_sbas_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_sbas_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, const struct mip_gnss_sbas_correction_data* self)
+void insert_mip_gnss_sbas_correction_data(mip_serializer* serializer, const mip_gnss_sbas_correction_data* self)
 {
     insert_u8(serializer, self->index);
     
@@ -926,7 +926,7 @@ void insert_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, con
     insert_mip_gnss_sbas_correction_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, struct mip_gnss_sbas_correction_data* self)
+void extract_mip_gnss_sbas_correction_data(mip_serializer* serializer, mip_gnss_sbas_correction_data* self)
 {
     extract_u8(serializer, &self->index);
     
@@ -949,28 +949,28 @@ void extract_mip_gnss_sbas_correction_data(struct mip_serializer* serializer, st
     extract_mip_gnss_sbas_correction_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sbas_correction_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_sbas_correction_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_sbas_correction_data* self = ptr;
+    mip_gnss_sbas_correction_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_sbas_correction_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_sbas_correction_data_valid_flags self)
+void insert_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_sbas_correction_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_sbas_correction_data_valid_flags* self)
+void extract_mip_gnss_sbas_correction_data_valid_flags(struct mip_serializer* serializer, mip_gnss_sbas_correction_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer, const struct mip_gnss_rf_error_detection_data* self)
+void insert_mip_gnss_rf_error_detection_data(mip_serializer* serializer, const mip_gnss_rf_error_detection_data* self)
 {
     insert_mip_gnss_rf_error_detection_data_rfband(serializer, self->rf_band);
     
@@ -984,7 +984,7 @@ void insert_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer, 
     insert_mip_gnss_rf_error_detection_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer, struct mip_gnss_rf_error_detection_data* self)
+void extract_mip_gnss_rf_error_detection_data(mip_serializer* serializer, mip_gnss_rf_error_detection_data* self)
 {
     extract_mip_gnss_rf_error_detection_data_rfband(serializer, &self->rf_band);
     
@@ -998,61 +998,61 @@ void extract_mip_gnss_rf_error_detection_data(struct mip_serializer* serializer,
     extract_mip_gnss_rf_error_detection_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_rf_error_detection_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_rf_error_detection_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_rf_error_detection_data* self = ptr;
+    mip_gnss_rf_error_detection_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_rf_error_detection_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_rfband self)
+void insert_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, const mip_gnss_rf_error_detection_data_rfband self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_rfband* self)
+void extract_mip_gnss_rf_error_detection_data_rfband(struct mip_serializer* serializer, mip_gnss_rf_error_detection_data_rfband* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_jamming_state self)
+void insert_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, const mip_gnss_rf_error_detection_data_jamming_state self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_jamming_state* self)
+void extract_mip_gnss_rf_error_detection_data_jamming_state(struct mip_serializer* serializer, mip_gnss_rf_error_detection_data_jamming_state* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_spoofing_state self)
+void insert_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, const mip_gnss_rf_error_detection_data_spoofing_state self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_spoofing_state* self)
+void extract_mip_gnss_rf_error_detection_data_spoofing_state(struct mip_serializer* serializer, mip_gnss_rf_error_detection_data_spoofing_state* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_rf_error_detection_data_valid_flags self)
+void insert_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_rf_error_detection_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_rf_error_detection_data_valid_flags* self)
+void extract_mip_gnss_rf_error_detection_data_valid_flags(struct mip_serializer* serializer, mip_gnss_rf_error_detection_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_base_station_info_data(struct mip_serializer* serializer, const struct mip_gnss_base_station_info_data* self)
+void insert_mip_gnss_base_station_info_data(mip_serializer* serializer, const mip_gnss_base_station_info_data* self)
 {
     insert_double(serializer, self->time_of_week);
     
@@ -1070,7 +1070,7 @@ void insert_mip_gnss_base_station_info_data(struct mip_serializer* serializer, c
     insert_mip_gnss_base_station_info_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_base_station_info_data(struct mip_serializer* serializer, struct mip_gnss_base_station_info_data* self)
+void extract_mip_gnss_base_station_info_data(mip_serializer* serializer, mip_gnss_base_station_info_data* self)
 {
     extract_double(serializer, &self->time_of_week);
     
@@ -1088,39 +1088,39 @@ void extract_mip_gnss_base_station_info_data(struct mip_serializer* serializer, 
     extract_mip_gnss_base_station_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_base_station_info_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_base_station_info_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_base_station_info_data* self = ptr;
+    mip_gnss_base_station_info_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_base_station_info_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, const enum mip_gnss_base_station_info_data_indicator_flags self)
+void insert_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, const mip_gnss_base_station_info_data_indicator_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, enum mip_gnss_base_station_info_data_indicator_flags* self)
+void extract_mip_gnss_base_station_info_data_indicator_flags(struct mip_serializer* serializer, mip_gnss_base_station_info_data_indicator_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_base_station_info_data_valid_flags self)
+void insert_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_base_station_info_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_base_station_info_data_valid_flags* self)
+void extract_mip_gnss_base_station_info_data_valid_flags(struct mip_serializer* serializer, mip_gnss_base_station_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rtk_corrections_status_data(struct mip_serializer* serializer, const struct mip_gnss_rtk_corrections_status_data* self)
+void insert_mip_gnss_rtk_corrections_status_data(mip_serializer* serializer, const mip_gnss_rtk_corrections_status_data* self)
 {
     insert_double(serializer, self->time_of_week);
     
@@ -1144,7 +1144,7 @@ void insert_mip_gnss_rtk_corrections_status_data(struct mip_serializer* serializ
     insert_mip_gnss_rtk_corrections_status_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_rtk_corrections_status_data(struct mip_serializer* serializer, struct mip_gnss_rtk_corrections_status_data* self)
+void extract_mip_gnss_rtk_corrections_status_data(mip_serializer* serializer, mip_gnss_rtk_corrections_status_data* self)
 {
     extract_double(serializer, &self->time_of_week);
     
@@ -1168,39 +1168,39 @@ void extract_mip_gnss_rtk_corrections_status_data(struct mip_serializer* seriali
     extract_mip_gnss_rtk_corrections_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_rtk_corrections_status_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_rtk_corrections_status_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_rtk_corrections_status_data* self = ptr;
+    mip_gnss_rtk_corrections_status_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_rtk_corrections_status_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_rtk_corrections_status_data_valid_flags self)
+void insert_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_rtk_corrections_status_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_rtk_corrections_status_data_valid_flags* self)
+void extract_mip_gnss_rtk_corrections_status_data_valid_flags(struct mip_serializer* serializer, mip_gnss_rtk_corrections_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, const enum mip_gnss_rtk_corrections_status_data_epoch_status self)
+void insert_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, const mip_gnss_rtk_corrections_status_data_epoch_status self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, enum mip_gnss_rtk_corrections_status_data_epoch_status* self)
+void extract_mip_gnss_rtk_corrections_status_data_epoch_status(struct mip_serializer* serializer, mip_gnss_rtk_corrections_status_data_epoch_status* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_satellite_status_data(struct mip_serializer* serializer, const struct mip_gnss_satellite_status_data* self)
+void insert_mip_gnss_satellite_status_data(mip_serializer* serializer, const mip_gnss_satellite_status_data* self)
 {
     insert_u8(serializer, self->index);
     
@@ -1223,7 +1223,7 @@ void insert_mip_gnss_satellite_status_data(struct mip_serializer* serializer, co
     insert_mip_gnss_satellite_status_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_satellite_status_data(struct mip_serializer* serializer, struct mip_gnss_satellite_status_data* self)
+void extract_mip_gnss_satellite_status_data(mip_serializer* serializer, mip_gnss_satellite_status_data* self)
 {
     extract_u8(serializer, &self->index);
     
@@ -1246,28 +1246,28 @@ void extract_mip_gnss_satellite_status_data(struct mip_serializer* serializer, s
     extract_mip_gnss_satellite_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_satellite_status_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_satellite_status_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_satellite_status_data* self = ptr;
+    mip_gnss_satellite_status_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_satellite_status_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_satellite_status_data_valid_flags self)
+void insert_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_satellite_status_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_satellite_status_data_valid_flags* self)
+void extract_mip_gnss_satellite_status_data_valid_flags(struct mip_serializer* serializer, mip_gnss_satellite_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_raw_data(struct mip_serializer* serializer, const struct mip_gnss_raw_data* self)
+void insert_mip_gnss_raw_data(mip_serializer* serializer, const mip_gnss_raw_data* self)
 {
     insert_u8(serializer, self->index);
     
@@ -1308,7 +1308,7 @@ void insert_mip_gnss_raw_data(struct mip_serializer* serializer, const struct mi
     insert_mip_gnss_raw_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_raw_data(struct mip_serializer* serializer, struct mip_gnss_raw_data* self)
+void extract_mip_gnss_raw_data(mip_serializer* serializer, mip_gnss_raw_data* self)
 {
     extract_u8(serializer, &self->index);
     
@@ -1349,39 +1349,39 @@ void extract_mip_gnss_raw_data(struct mip_serializer* serializer, struct mip_gns
     extract_mip_gnss_raw_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_raw_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_raw_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_raw_data* self = ptr;
+    mip_gnss_raw_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_raw_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, const enum mip_gnss_raw_data_gnss_signal_quality self)
+void insert_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, const mip_gnss_raw_data_gnss_signal_quality self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, enum mip_gnss_raw_data_gnss_signal_quality* self)
+void extract_mip_gnss_raw_data_gnss_signal_quality(struct mip_serializer* serializer, mip_gnss_raw_data_gnss_signal_quality* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_raw_data_valid_flags self)
+void insert_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_raw_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_raw_data_valid_flags* self)
+void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, mip_gnss_raw_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, const struct mip_gnss_gps_ephemeris_data* self)
+void insert_mip_gnss_gps_ephemeris_data(mip_serializer* serializer, const mip_gnss_gps_ephemeris_data* self)
 {
     insert_u8(serializer, self->index);
     
@@ -1452,7 +1452,7 @@ void insert_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, const
     insert_mip_gnss_gps_ephemeris_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, struct mip_gnss_gps_ephemeris_data* self)
+void extract_mip_gnss_gps_ephemeris_data(mip_serializer* serializer, mip_gnss_gps_ephemeris_data* self)
 {
     extract_u8(serializer, &self->index);
     
@@ -1523,28 +1523,28 @@ void extract_mip_gnss_gps_ephemeris_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_gps_ephemeris_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_ephemeris_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_ephemeris_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_gps_ephemeris_data* self = ptr;
+    mip_gnss_gps_ephemeris_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_gps_ephemeris_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_ephemeris_data_valid_flags self)
+void insert_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_gps_ephemeris_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_ephemeris_data_valid_flags* self)
+void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, mip_gnss_gps_ephemeris_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, const struct mip_gnss_glo_ephemeris_data* self)
+void insert_mip_gnss_glo_ephemeris_data(mip_serializer* serializer, const mip_gnss_glo_ephemeris_data* self)
 {
     insert_u8(serializer, self->index);
     
@@ -1600,7 +1600,7 @@ void insert_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, const
     insert_mip_gnss_glo_ephemeris_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, struct mip_gnss_glo_ephemeris_data* self)
+void extract_mip_gnss_glo_ephemeris_data(mip_serializer* serializer, mip_gnss_glo_ephemeris_data* self)
 {
     extract_u8(serializer, &self->index);
     
@@ -1656,28 +1656,28 @@ void extract_mip_gnss_glo_ephemeris_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_glo_ephemeris_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_glo_ephemeris_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_glo_ephemeris_data* self = ptr;
+    mip_gnss_glo_ephemeris_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_glo_ephemeris_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_glo_ephemeris_data_valid_flags self)
+void insert_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_glo_ephemeris_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_glo_ephemeris_data_valid_flags* self)
+void extract_mip_gnss_glo_ephemeris_data_valid_flags(struct mip_serializer* serializer, mip_gnss_glo_ephemeris_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, const struct mip_gnss_gps_iono_corr_data* self)
+void insert_mip_gnss_gps_iono_corr_data(mip_serializer* serializer, const mip_gnss_gps_iono_corr_data* self)
 {
     insert_double(serializer, self->time_of_week);
     
@@ -1692,7 +1692,7 @@ void insert_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, const
     insert_mip_gnss_gps_iono_corr_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, struct mip_gnss_gps_iono_corr_data* self)
+void extract_mip_gnss_gps_iono_corr_data(mip_serializer* serializer, mip_gnss_gps_iono_corr_data* self)
 {
     extract_double(serializer, &self->time_of_week);
     
@@ -1707,28 +1707,28 @@ void extract_mip_gnss_gps_iono_corr_data(struct mip_serializer* serializer, stru
     extract_mip_gnss_gps_iono_corr_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_iono_corr_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_iono_corr_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_gps_iono_corr_data* self = ptr;
+    mip_gnss_gps_iono_corr_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_gps_iono_corr_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_gps_iono_corr_data_valid_flags self)
+void insert_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_gps_iono_corr_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_gps_iono_corr_data_valid_flags* self)
+void extract_mip_gnss_gps_iono_corr_data_valid_flags(struct mip_serializer* serializer, mip_gnss_gps_iono_corr_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, const struct mip_gnss_galileo_iono_corr_data* self)
+void insert_mip_gnss_galileo_iono_corr_data(mip_serializer* serializer, const mip_gnss_galileo_iono_corr_data* self)
 {
     insert_double(serializer, self->time_of_week);
     
@@ -1742,7 +1742,7 @@ void insert_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, c
     insert_mip_gnss_galileo_iono_corr_data_valid_flags(serializer, self->valid_flags);
     
 }
-void extract_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, struct mip_gnss_galileo_iono_corr_data* self)
+void extract_mip_gnss_galileo_iono_corr_data(mip_serializer* serializer, mip_gnss_galileo_iono_corr_data* self)
 {
     extract_double(serializer, &self->time_of_week);
     
@@ -1756,21 +1756,21 @@ void extract_mip_gnss_galileo_iono_corr_data(struct mip_serializer* serializer, 
     extract_mip_gnss_galileo_iono_corr_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_galileo_iono_corr_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_gnss_galileo_iono_corr_data* self = ptr;
+    mip_gnss_galileo_iono_corr_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_gnss_galileo_iono_corr_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, const enum mip_gnss_galileo_iono_corr_data_valid_flags self)
+void insert_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_galileo_iono_corr_data_valid_flags self)
 {
     return insert_u16(serializer, (uint16_t)(self));
 }
-void extract_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, enum mip_gnss_galileo_iono_corr_data_valid_flags* self)
+void extract_mip_gnss_galileo_iono_corr_data_valid_flags(struct mip_serializer* serializer, mip_gnss_galileo_iono_corr_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     extract_u16(serializer, &tmp);

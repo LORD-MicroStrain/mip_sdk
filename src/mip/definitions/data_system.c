@@ -27,90 +27,90 @@ struct mip_field;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, const struct mip_system_built_in_test_data* self)
+void insert_mip_system_built_in_test_data(mip_serializer* serializer, const mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         insert_u8(serializer, self->result[i]);
     
 }
-void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, struct mip_system_built_in_test_data* self)
+void extract_mip_system_built_in_test_data(mip_serializer* serializer, mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         extract_u8(serializer, &self->result[i]);
     
 }
-bool extract_mip_system_built_in_test_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_system_built_in_test_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_system_built_in_test_data* self = ptr;
+    mip_system_built_in_test_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_system_built_in_test_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const struct mip_system_time_sync_status_data* self)
+void insert_mip_system_time_sync_status_data(mip_serializer* serializer, const mip_system_time_sync_status_data* self)
 {
     insert_bool(serializer, self->time_sync);
     
     insert_u8(serializer, self->last_pps_rcvd);
     
 }
-void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, struct mip_system_time_sync_status_data* self)
+void extract_mip_system_time_sync_status_data(mip_serializer* serializer, mip_system_time_sync_status_data* self)
 {
     extract_bool(serializer, &self->time_sync);
     
     extract_u8(serializer, &self->last_pps_rcvd);
     
 }
-bool extract_mip_system_time_sync_status_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_system_time_sync_status_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_system_time_sync_status_data* self = ptr;
+    mip_system_time_sync_status_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_system_time_sync_status_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const struct mip_system_gpio_state_data* self)
+void insert_mip_system_gpio_state_data(mip_serializer* serializer, const mip_system_gpio_state_data* self)
 {
     insert_u8(serializer, self->states);
     
 }
-void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, struct mip_system_gpio_state_data* self)
+void extract_mip_system_gpio_state_data(mip_serializer* serializer, mip_system_gpio_state_data* self)
 {
     extract_u8(serializer, &self->states);
     
 }
-bool extract_mip_system_gpio_state_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_system_gpio_state_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_system_gpio_state_data* self = ptr;
+    mip_system_gpio_state_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_system_gpio_state_data(&serializer, self);
     return mip_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const struct mip_system_gpio_analog_value_data* self)
+void insert_mip_system_gpio_analog_value_data(mip_serializer* serializer, const mip_system_gpio_analog_value_data* self)
 {
     insert_u8(serializer, self->gpio_id);
     
     insert_float(serializer, self->value);
     
 }
-void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, struct mip_system_gpio_analog_value_data* self)
+void extract_mip_system_gpio_analog_value_data(mip_serializer* serializer, mip_system_gpio_analog_value_data* self)
 {
     extract_u8(serializer, &self->gpio_id);
     
     extract_float(serializer, &self->value);
     
 }
-bool extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field* field, void* ptr)
+bool extract_mip_system_gpio_analog_value_data_from_field(const mip_field* field, void* ptr)
 {
     assert(ptr);
-    struct mip_system_gpio_analog_value_data* self = ptr;
+    mip_system_gpio_analog_value_data* self = ptr;
     struct mip_serializer serializer;
     mip_serializer_init_from_field(&serializer, field);
     extract_mip_system_gpio_analog_value_data(&serializer, self);

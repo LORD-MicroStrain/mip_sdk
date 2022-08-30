@@ -75,20 +75,22 @@ struct mip_system_comm_mode_command
     uint8_t mode;
     
 };
-void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, const struct mip_system_comm_mode_command* self);
-void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self);
+typedef struct mip_system_comm_mode_command mip_system_comm_mode_command;
+void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, const mip_system_comm_mode_command* self);
+void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, mip_system_comm_mode_command* self);
 
 struct mip_system_comm_mode_response
 {
     uint8_t mode;
     
 };
-void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self);
-void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, struct mip_system_comm_mode_response* self);
+typedef struct mip_system_comm_mode_response mip_system_comm_mode_response;
+void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const mip_system_comm_mode_response* self);
+void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, mip_system_comm_mode_response* self);
 
-enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
-enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);
-enum mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
+mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
+mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);
+mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
 ///@}
 ///
 

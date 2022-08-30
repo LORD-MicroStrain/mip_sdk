@@ -27,7 +27,7 @@ struct mip_field;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, const struct mip_system_comm_mode_command* self)
+void insert_mip_system_comm_mode_command(mip_serializer* serializer, const mip_system_comm_mode_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -37,7 +37,7 @@ void insert_mip_system_comm_mode_command(struct mip_serializer* serializer, cons
         
     }
 }
-void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, struct mip_system_comm_mode_command* self)
+void extract_mip_system_comm_mode_command(mip_serializer* serializer, mip_system_comm_mode_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -48,20 +48,20 @@ void extract_mip_system_comm_mode_command(struct mip_serializer* serializer, str
     }
 }
 
-void insert_mip_system_comm_mode_response(struct mip_serializer* serializer, const struct mip_system_comm_mode_response* self)
+void insert_mip_system_comm_mode_response(mip_serializer* serializer, const mip_system_comm_mode_response* self)
 {
     insert_u8(serializer, self->mode);
     
 }
-void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, struct mip_system_comm_mode_response* self)
+void extract_mip_system_comm_mode_response(mip_serializer* serializer, mip_system_comm_mode_response* self)
 {
     extract_u8(serializer, &self->mode);
     
 }
 
-enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
+mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -73,9 +73,9 @@ enum mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uin
     
     return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
+mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -84,11 +84,11 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(mode_out);
@@ -99,9 +99,9 @@ enum mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint
     }
     return result;
 }
-enum mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
+mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     

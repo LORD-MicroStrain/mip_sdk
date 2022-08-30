@@ -22,22 +22,22 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_media_selector(struct mip_serializer* serializer, const enum mip_media_selector self)
+void insert_mip_media_selector(struct mip_serializer* serializer, const mip_media_selector self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_media_selector(struct mip_serializer* serializer, enum mip_media_selector* self)
+void extract_mip_media_selector(struct mip_serializer* serializer, mip_media_selector* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_led_action(struct mip_serializer* serializer, const enum mip_led_action self)
+void insert_mip_led_action(struct mip_serializer* serializer, const mip_led_action self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_led_action(struct mip_serializer* serializer, enum mip_led_action* self)
+void extract_mip_led_action(struct mip_serializer* serializer, mip_led_action* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
@@ -49,38 +49,38 @@ void extract_mip_led_action(struct mip_serializer* serializer, enum mip_led_acti
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, const enum mip_rtk_get_status_flags_command_status_flags_legacy self)
+void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
 {
     return insert_u32(serializer, (uint32_t)(self));
 }
-void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, enum mip_rtk_get_status_flags_command_status_flags_legacy* self)
+void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
 {
     uint32_t tmp = 0;
     extract_u32(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, const enum mip_rtk_get_status_flags_command_status_flags self)
+void insert_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
 {
     return insert_u32(serializer, (uint32_t)(self));
 }
-void extract_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, enum mip_rtk_get_status_flags_command_status_flags* self)
+void extract_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
 {
     uint32_t tmp = 0;
     extract_u32(serializer, &tmp);
     *self = tmp;
 }
 
-enum mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, enum mip_rtk_get_status_flags_command_status_flags* flags_out)
+mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, mip_rtk_get_status_flags_command_status_flags* flags_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_STATUS_FLAGS, NULL, 0, MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_STATUS_FLAGS, NULL, 0, MIP_REPLY_DESC_RTK_GET_STATUS_FLAGS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(flags_out);
@@ -91,16 +91,16 @@ enum mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, enum 
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_out)
+mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_IMEI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMEI, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_IMEI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMEI, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(imei_out || (32 == 0));
@@ -112,16 +112,16 @@ enum mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_ou
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_out)
+mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_IMSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMSI, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_IMSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_IMSI, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(imsi_out || (32 == 0));
@@ -133,16 +133,16 @@ enum mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_ou
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_out)
+mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_ICCID, NULL, 0, MIP_REPLY_DESC_RTK_GET_ICCID, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_ICCID, NULL, 0, MIP_REPLY_DESC_RTK_GET_ICCID, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(iccid_out || (32 == 0));
@@ -154,7 +154,7 @@ enum mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_
     }
     return result;
 }
-void insert_mip_rtk_connected_device_type_command(struct mip_serializer* serializer, const struct mip_rtk_connected_device_type_command* self)
+void insert_mip_rtk_connected_device_type_command(mip_serializer* serializer, const mip_rtk_connected_device_type_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -164,7 +164,7 @@ void insert_mip_rtk_connected_device_type_command(struct mip_serializer* seriali
         
     }
 }
-void extract_mip_rtk_connected_device_type_command(struct mip_serializer* serializer, struct mip_rtk_connected_device_type_command* self)
+void extract_mip_rtk_connected_device_type_command(mip_serializer* serializer, mip_rtk_connected_device_type_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -175,31 +175,31 @@ void extract_mip_rtk_connected_device_type_command(struct mip_serializer* serial
     }
 }
 
-void insert_mip_rtk_connected_device_type_response(struct mip_serializer* serializer, const struct mip_rtk_connected_device_type_response* self)
+void insert_mip_rtk_connected_device_type_response(mip_serializer* serializer, const mip_rtk_connected_device_type_response* self)
 {
     insert_mip_rtk_connected_device_type_command_type(serializer, self->devType);
     
 }
-void extract_mip_rtk_connected_device_type_response(struct mip_serializer* serializer, struct mip_rtk_connected_device_type_response* self)
+void extract_mip_rtk_connected_device_type_response(mip_serializer* serializer, mip_rtk_connected_device_type_response* self)
 {
     extract_mip_rtk_connected_device_type_command_type(serializer, &self->devType);
     
 }
 
-void insert_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, const enum mip_rtk_connected_device_type_command_type self)
+void insert_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, enum mip_rtk_connected_device_type_command_type* self)
+void extract_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-enum mip_cmd_result mip_rtk_write_connected_device_type(struct mip_interface* device, enum mip_rtk_connected_device_type_command_type dev_type)
+mip_cmd_result mip_rtk_write_connected_device_type(struct mip_interface* device, mip_rtk_connected_device_type_command_type dev_type)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -211,9 +211,9 @@ enum mip_cmd_result mip_rtk_write_connected_device_type(struct mip_interface* de
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* device, enum mip_rtk_connected_device_type_command_type* dev_type_out)
+mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* device, mip_rtk_connected_device_type_command_type* dev_type_out)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -222,11 +222,11 @@ enum mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* dev
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(dev_type_out);
@@ -237,9 +237,9 @@ enum mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* dev
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_save_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_save_connected_device_type(struct mip_interface* device)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -249,9 +249,9 @@ enum mip_cmd_result mip_rtk_save_connected_device_type(struct mip_interface* dev
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_rtk_load_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_load_connected_device_type(struct mip_interface* device)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -261,9 +261,9 @@ enum mip_cmd_result mip_rtk_load_connected_device_type(struct mip_interface* dev
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* device)
+mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* device)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -273,16 +273,16 @@ enum mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* 
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_CONNECTED_DEVICE_TYPE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* activation_code_out)
+mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* activation_code_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_ACT_CODE, NULL, 0, MIP_REPLY_DESC_RTK_GET_ACT_CODE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_ACT_CODE, NULL, 0, MIP_REPLY_DESC_RTK_GET_ACT_CODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(activation_code_out || (32 == 0));
@@ -294,16 +294,16 @@ enum mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* act
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* device, char* modem_firmware_version_out)
+mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* device, char* modem_firmware_version_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, NULL, 0, MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, NULL, 0, MIP_REPLY_DESC_RTK_GET_MODEM_FIRMWARE_VERSION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(modem_firmware_version_out || (32 == 0));
@@ -315,16 +315,16 @@ enum mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* dev
     }
     return result;
 }
-enum mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_out, int32_t* rssi_out, int32_t* signal_quality_out)
+mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_out, int32_t* rssi_out, int32_t* signal_quality_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_RSSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_RSSI, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_GET_RSSI, NULL, 0, MIP_REPLY_DESC_RTK_GET_RSSI, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(valid_out);
@@ -341,14 +341,14 @@ enum mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_o
     }
     return result;
 }
-void insert_mip_rtk_service_status_command(struct mip_serializer* serializer, const struct mip_rtk_service_status_command* self)
+void insert_mip_rtk_service_status_command(mip_serializer* serializer, const mip_rtk_service_status_command* self)
 {
     insert_u32(serializer, self->reserved1);
     
     insert_u32(serializer, self->reserved2);
     
 }
-void extract_mip_rtk_service_status_command(struct mip_serializer* serializer, struct mip_rtk_service_status_command* self)
+void extract_mip_rtk_service_status_command(mip_serializer* serializer, mip_rtk_service_status_command* self)
 {
     extract_u32(serializer, &self->reserved1);
     
@@ -356,7 +356,7 @@ void extract_mip_rtk_service_status_command(struct mip_serializer* serializer, s
     
 }
 
-void insert_mip_rtk_service_status_response(struct mip_serializer* serializer, const struct mip_rtk_service_status_response* self)
+void insert_mip_rtk_service_status_response(mip_serializer* serializer, const mip_rtk_service_status_response* self)
 {
     insert_mip_rtk_service_status_command_service_flags(serializer, self->flags);
     
@@ -367,7 +367,7 @@ void insert_mip_rtk_service_status_response(struct mip_serializer* serializer, c
     insert_u64(serializer, self->lastBytesTime);
     
 }
-void extract_mip_rtk_service_status_response(struct mip_serializer* serializer, struct mip_rtk_service_status_response* self)
+void extract_mip_rtk_service_status_response(mip_serializer* serializer, mip_rtk_service_status_response* self)
 {
     extract_mip_rtk_service_status_command_service_flags(serializer, &self->flags);
     
@@ -379,20 +379,20 @@ void extract_mip_rtk_service_status_response(struct mip_serializer* serializer, 
     
 }
 
-void insert_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, const enum mip_rtk_service_status_command_service_flags self)
+void insert_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
 {
     return insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, enum mip_rtk_service_status_command_service_flags* self)
+void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, enum mip_rtk_service_status_command_service_flags* flags_out, uint32_t* recieved_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out)
+mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* recieved_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -403,11 +403,11 @@ enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    enum mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_SERVICE_STATUS, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_RTK_SERVICE_STATUS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        struct mip_serializer deserializer;
+        mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(flags_out);
@@ -427,20 +427,20 @@ enum mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_
     }
     return result;
 }
-void insert_mip_rtk_prod_erase_storage_command(struct mip_serializer* serializer, const struct mip_rtk_prod_erase_storage_command* self)
+void insert_mip_rtk_prod_erase_storage_command(mip_serializer* serializer, const mip_rtk_prod_erase_storage_command* self)
 {
     insert_mip_media_selector(serializer, self->media);
     
 }
-void extract_mip_rtk_prod_erase_storage_command(struct mip_serializer* serializer, struct mip_rtk_prod_erase_storage_command* self)
+void extract_mip_rtk_prod_erase_storage_command(mip_serializer* serializer, mip_rtk_prod_erase_storage_command* self)
 {
     extract_mip_media_selector(serializer, &self->media);
     
 }
 
-enum mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, enum mip_media_selector media)
+mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, mip_media_selector media)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -450,7 +450,7 @@ enum mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, enu
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_PROD_ERASE_STORAGE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert_mip_rtk_led_control_command(struct mip_serializer* serializer, const struct mip_rtk_led_control_command* self)
+void insert_mip_rtk_led_control_command(mip_serializer* serializer, const mip_rtk_led_control_command* self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert_u8(serializer, self->primaryColor[i]);
@@ -463,7 +463,7 @@ void insert_mip_rtk_led_control_command(struct mip_serializer* serializer, const
     insert_u32(serializer, self->period);
     
 }
-void extract_mip_rtk_led_control_command(struct mip_serializer* serializer, struct mip_rtk_led_control_command* self)
+void extract_mip_rtk_led_control_command(mip_serializer* serializer, mip_rtk_led_control_command* self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract_u8(serializer, &self->primaryColor[i]);
@@ -477,9 +477,9 @@ void extract_mip_rtk_led_control_command(struct mip_serializer* serializer, stru
     
 }
 
-enum mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint8_t* primary_color, const uint8_t* alt_color, enum mip_led_action act, uint32_t period)
+mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint8_t* primary_color, const uint8_t* alt_color, mip_led_action act, uint32_t period)
 {
-    struct mip_serializer serializer;
+    mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
@@ -499,7 +499,7 @@ enum mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint
     
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_LED_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-enum mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device)
+mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device)
 {
     return mip_interface_run_command(device, MIP_RTK_CMD_DESC_SET, MIP_CMD_DESC_RTK_MODEM_HARD_RESET, NULL, 0);
 }
