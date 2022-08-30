@@ -98,7 +98,7 @@ typedef struct mip_dispatch_handler
     uint8_t _descriptor_set;                            ///<@private MIP descriptor set for this callback.
     uint8_t _field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
     uint8_t _enabled;                                   ///<@private If false, the handler will be ignored. (Using u8 for better struct packing.)
-}mip_dispatch_handler;
+} mip_dispatch_handler;
 
 
 void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void* context);
@@ -121,7 +121,7 @@ bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
 typedef struct mip_dispatcher
 {
     mip_dispatch_handler* _first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
-}mip_dispatcher;
+} mip_dispatcher;
 
 
 void mip_dispatcher_init(mip_dispatcher* self);

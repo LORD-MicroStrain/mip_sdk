@@ -39,13 +39,13 @@ extern "C" {
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-/// 
+///
 typedef struct mip_serializer
 {
     uint8_t* _buffer;        ///<@private Pointer to data for serialization.
     size_t   _buffer_size;   ///<@private Size of the buffer.
     size_t   _offset;        ///<@private Current offset into the buffer (can exceed buffer_size!).
-}mip_serializer;
+} mip_serializer;
 
 void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);

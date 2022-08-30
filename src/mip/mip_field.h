@@ -56,7 +56,7 @@ typedef struct mip_field
     uint8_t _field_descriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
     uint8_t _descriptor_set;    ///<@private MIP descriptor set (from the packet)
     uint8_t _remaining_length;  ///<@private Remaining space after this field.
-}mip_field;
+} mip_field;
 
 
 void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);

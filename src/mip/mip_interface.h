@@ -56,7 +56,7 @@ typedef struct mip_interface
     unsigned int         _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
     mip_update_callback  _update_function; ///<@private Optional function to call during updates.
     void*                _user_pointer;    ///<@private Optional user-specified data pointer.
-}mip_interface;
+} mip_interface;
 
 void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout);
 

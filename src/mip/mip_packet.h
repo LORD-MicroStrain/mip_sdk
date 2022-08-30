@@ -44,7 +44,7 @@ typedef struct mip_packet
 {
     uint8_t*       _buffer;        ///<@private Pointer to the packet data.
     uint_least16_t _buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
-}mip_packet;
+} mip_packet;
 
 
 ////////////////////////////////////////////////////////////////////////////////

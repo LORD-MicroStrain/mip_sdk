@@ -55,7 +55,7 @@ typedef struct mip_descriptor_rate
 {
     uint8_t  descriptor;
     uint16_t decimation;
-}mip_descriptor_rate;
+} mip_descriptor_rate;
 
 void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self);
 void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);

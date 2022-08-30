@@ -61,7 +61,7 @@ typedef struct mip_parser
     byte_ring_state     _ring;                                 ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
     mip_packet_callback _callback;                             ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*               _callback_object;                      ///<@private User-specified pointer passed to the callback function.
-}mip_parser;
+} mip_parser;
 
 
 

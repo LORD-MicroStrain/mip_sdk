@@ -10,7 +10,7 @@ typedef struct byte_ring_state
     size_t   size;
     size_t   head;
     size_t   tail;
-}byte_ring_state;
+} byte_ring_state;
 
 void byte_ring_init(byte_ring_state* state, uint8_t* buffer, size_t size);
 void byte_ring_clear(byte_ring_state* state);

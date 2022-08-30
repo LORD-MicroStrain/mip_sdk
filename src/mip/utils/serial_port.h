@@ -40,7 +40,7 @@ typedef struct serial_port
 #else //Linux
     int handle;
 #endif
-}serial_port;
+} serial_port;
 
 
 bool serial_port_open(serial_port *port, const char *port_str, int baudrate);

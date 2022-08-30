@@ -55,7 +55,7 @@ typedef struct mip_pending_cmd
         uint8_t                 _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
     };                                                 ///<@private
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
-}mip_pending_cmd;
+} mip_pending_cmd;
 
 void mip_pending_cmd_init(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor);
 void mip_pending_cmd_init_with_timeout(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, timeout_type additional_time);
@@ -93,7 +93,7 @@ typedef struct mip_cmd_queue
 {
     mip_pending_cmd* _first_pending_cmd;
     timeout_type     _base_timeout;
-}mip_cmd_queue;
+} mip_cmd_queue;
 
 void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout);
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd);

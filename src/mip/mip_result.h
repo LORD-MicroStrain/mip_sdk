@@ -20,7 +20,7 @@ extern "C" {
 /// Values that start with MIP_STATUS are status codes from this library.
 /// Values that start with MIP_(N)ACK represent replies from the device.
 ///
-enum mip_cmd_result
+typedef enum mip_cmd_result
 {
     MIP_STATUS_ERROR     = -6,  ///< Command could not be executed (error sending/receiving)
     MIP_STATUS_CANCELLED = -5,  ///< Command was canceled in software.
@@ -35,7 +35,7 @@ enum mip_cmd_result
     MIP_NACK_INVALID_PARAM    = 0x03,  ///< A parameter was not a supported value.
     MIP_NACK_COMMAND_FAILED   = 0x04,  ///< The device could not complete the command.
     MIP_NACK_COMMAND_TIMEOUT  = 0x05,  ///< Internal device timeout. Use MIP_STATUS_TIMEDOUT for command timeouts.
-};
+} mip_cmd_result;
 
 const char* mip_cmd_result_to_string(enum mip_cmd_result result);
 
