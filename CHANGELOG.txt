@@ -1,0 +1,17 @@
+======================================================================================================
+MIP SDK Change Log - update with each release
+
+The version number scheme in MIP SDK is as follows:
+MAJOR.MINOR.PATCH
+
+The MAJOR version is incremented when changes are made (to the public interface) that are not backwards compatible.
+The MINOR version is incremented when a new feature is added (to the public interface) or a current feature is improved upon.
+The PATCH version is incremented when a bug is fixed or a small change is made.
+
+Major revisions will specify what caused the non-backwards compatible change. These will be specified like so:
+CHANGED - A non-backwards compatible change was made to an existing function/class.
+RENAMED - A function/class has been renamed.
+REMOVED - A function/class has been removed.
+======================================================================================================
+
+Forthcoming
