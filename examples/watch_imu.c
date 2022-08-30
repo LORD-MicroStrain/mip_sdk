@@ -26,18 +26,18 @@
 #include <termios.h>
 #endif
 
-struct serial_port port;
+serial_port port;
 uint8_t parse_buffer[1024];
-struct mip_interface device;
+mip_interface device;
 struct mip_sensor_scaled_accel_data scaled_accel;
 
-void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type timestamp)
+void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
     (void)unused;
 
     printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
-    struct mip_field field;
+    mip_field field;
     mip_field_init_empty(&field);
     while( mip_field_next_in_packet(&field, packet) )
     {
@@ -46,7 +46,7 @@ void handlePacket(void* unused, const struct mip_packet* packet, timestamp_type 
     printf("\n");
 }
 
-void handleAccel(void* user, const struct mip_field* field, timestamp_type timestamp)
+void handleAccel(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
     struct mip_sensor_scaled_accel_data data;
@@ -63,7 +63,7 @@ void handleAccel(void* user, const struct mip_field* field, timestamp_type times
     }
 }
 
-void handleGyro(void* user, const struct mip_field* field, timestamp_type timestamp)
+void handleGyro(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
     struct mip_sensor_scaled_gyro_data data;
@@ -72,7 +72,7 @@ void handleGyro(void* user, const struct mip_field* field, timestamp_type timest
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void* user, const struct mip_field* field, timestamp_type timestamp)
+void handleMag(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
     struct mip_sensor_scaled_mag_data data;
@@ -95,7 +95,7 @@ timestamp_type get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
 {
     (void)device;
 
@@ -107,7 +107,7 @@ bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* 
 }
 
 
-bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
 {
     (void)device;
 
@@ -165,7 +165,7 @@ int main(int argc, const char* argv[])
     const uint16_t sample_rate = 100; // Hz
     const uint16_t decimation = base_rate / sample_rate;
 
-    const struct mip_descriptor_rate descriptors[3] = {
+    const mip_descriptor_rate descriptors[3] = {
         { MIP_DATA_DESC_SENSOR_ACCEL_SCALED, decimation },
         { MIP_DATA_DESC_SENSOR_GYRO_SCALED,  decimation },
         { MIP_DATA_DESC_SENSOR_MAG_SCALED,   decimation },
@@ -185,8 +185,8 @@ int main(int argc, const char* argv[])
     }
 
     // Register some callbacks.
-    struct mip_dispatch_handler packet_handler;
-    struct mip_dispatch_handler data_handlers[4];
+    mip_dispatch_handler packet_handler;
+    mip_dispatch_handler data_handlers[4];
     mip_interface_register_packet_callback(&device, &packet_handler, MIP_DISPATCH_ANY_DATA_SET, false, &handlePacket, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED, &handleAccel, NULL);
     mip_interface_register_field_callback(&device, &data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_GYRO_SCALED , &handleGyro , NULL);

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../mip_types.h"
+#include "../mip_field.h"
 
 #ifdef __cplusplus
 #include <type_traits>
@@ -13,66 +14,65 @@ namespace C {
 extern "C" {
 #endif // __cplusplus
 
-struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup Serialization Functions for reading and writing to byte buffers.
 ///
 ///@{
 
-struct mip_serializer
+typedef struct mip_serializer
 {
     uint8_t* _buffer;        ///<@private Pointer to data for serialization.
     size_t   _buffer_size;   ///<@private Size of the buffer.
     size_t   _offset;        ///<@private Current offset into the buffer (can exceed buffer_size!).
-};
+}mip_serializer;
 
-void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
-void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
-void mip_serializer_init_from_field(struct mip_serializer* serializer, const struct mip_field* field);
+void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
+void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
+void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field* field);
 
-size_t          mip_serializer_capacity(const struct mip_serializer* serializer);
-size_t          mip_serializer_length(const struct mip_serializer* serializer);
-remaining_count mip_serializer_remaining(const struct mip_serializer* serializer);
+size_t          mip_serializer_capacity(const mip_serializer* serializer);
+size_t          mip_serializer_length(const mip_serializer* serializer);
+remaining_count mip_serializer_remaining(const mip_serializer* serializer);
 
-bool mip_serializer_is_ok(const struct mip_serializer* serializer);
-bool mip_serializer_is_complete(const struct mip_serializer* serializer);
-
-
-void insert_bool(struct mip_serializer* serializer, bool value);
-void insert_char(struct mip_serializer* serializer, char value);
-
-void insert_u8 (struct mip_serializer* serializer, uint8_t  value);
-void insert_u16(struct mip_serializer* serializer, uint16_t value);
-void insert_u32(struct mip_serializer* serializer, uint32_t value);
-void insert_u64(struct mip_serializer* serializer, uint64_t value);
-
-void insert_s8 (struct mip_serializer* serializer, int8_t  value);
-void insert_s16(struct mip_serializer* serializer, int16_t value);
-void insert_s32(struct mip_serializer* serializer, int32_t value);
-void insert_s64(struct mip_serializer* serializer, int64_t value);
-
-void insert_float (struct mip_serializer* serializer, float  value);
-void insert_double(struct mip_serializer* serializer, double value);
+bool mip_serializer_is_ok(const mip_serializer* serializer);
+bool mip_serializer_is_complete(const mip_serializer* serializer);
 
 
-void extract_bool(struct mip_serializer* serializer, bool* value);
-void extract_char(struct mip_serializer* serializer, char* value);
+void insert_bool(mip_serializer* serializer, bool value);
+void insert_char(mip_serializer* serializer, char value);
 
-void extract_u8 (struct mip_serializer* serializer, uint8_t* value);
-void extract_u16(struct mip_serializer* serializer, uint16_t* value);
-void extract_u32(struct mip_serializer* serializer, uint32_t* value);
-void extract_u64(struct mip_serializer* serializer, uint64_t* value);
+void insert_u8 (mip_serializer* serializer, uint8_t  value);
+void insert_u16(mip_serializer* serializer, uint16_t value);
+void insert_u32(mip_serializer* serializer, uint32_t value);
+void insert_u64(mip_serializer* serializer, uint64_t value);
 
-void extract_s8 (struct mip_serializer* serializer, int8_t* value);
-void extract_s16(struct mip_serializer* serializer, int16_t* value);
-void extract_s32(struct mip_serializer* serializer, int32_t* value);
-void extract_s64(struct mip_serializer* serializer, int64_t* value);
+void insert_s8 (mip_serializer* serializer, int8_t  value);
+void insert_s16(mip_serializer* serializer, int16_t value);
+void insert_s32(mip_serializer* serializer, int32_t value);
+void insert_s64(mip_serializer* serializer, int64_t value);
 
-void extract_float (struct mip_serializer* serializer, float* value);
-void extract_double(struct mip_serializer* serializer, double* value);
+void insert_float (mip_serializer* serializer, float  value);
+void insert_double(mip_serializer* serializer, double value);
 
-void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_t max_count);
+
+void extract_bool(mip_serializer* serializer, bool* value);
+void extract_char(mip_serializer* serializer, char* value);
+
+void extract_u8 (mip_serializer* serializer, uint8_t* value);
+void extract_u16(mip_serializer* serializer, uint16_t* value);
+void extract_u32(mip_serializer* serializer, uint32_t* value);
+void extract_u64(mip_serializer* serializer, uint64_t* value);
+
+void extract_s8 (mip_serializer* serializer, int8_t* value);
+void extract_s16(mip_serializer* serializer, int16_t* value);
+void extract_s32(mip_serializer* serializer, int32_t* value);
+void extract_s64(mip_serializer* serializer, int64_t* value);
+
+void extract_float (mip_serializer* serializer, float* value);
+void extract_double(mip_serializer* serializer, double* value);
+
+void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_count);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

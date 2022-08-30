@@ -52,7 +52,7 @@ speed_t baud_rate_to_speed(int baud_rate)
 }
 #endif
 
-bool serial_port_open(struct serial_port *port, const char *port_str, int baudrate)
+bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 {
     if(port_str == NULL)
         return false;
@@ -155,7 +155,7 @@ bool serial_port_open(struct serial_port *port, const char *port_str, int baudra
     return true;
 }
 
-bool serial_port_close(struct serial_port *port)
+bool serial_port_close(serial_port *port)
 {
     if(!port->is_open)
         return false;
@@ -173,7 +173,7 @@ bool serial_port_close(struct serial_port *port)
     return true;
 }
 
-bool serial_port_write(struct serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written)
+bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written)
 {
  
     *bytes_written = 0;
@@ -205,7 +205,7 @@ bool serial_port_write(struct serial_port *port, const void *buffer, size_t num_
     return false;
 }
 
-bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, size_t *bytes_read)
+bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t *bytes_read)
 {
  
     //Set the bytes read to zero
@@ -234,7 +234,7 @@ bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, 
     return true;
 }
 
-uint32_t serial_port_read_count(struct serial_port *port)
+uint32_t serial_port_read_count(serial_port *port)
 {
     //Check for a valid port handle
     if(!port->is_open)
@@ -260,7 +260,7 @@ uint32_t serial_port_read_count(struct serial_port *port)
     return 0;
 }
 
-bool serial_port_is_open(struct serial_port *port)
+bool serial_port_is_open(serial_port *port)
 {
     return port->is_open;
 }

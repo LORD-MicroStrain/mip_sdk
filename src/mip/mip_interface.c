@@ -18,7 +18,7 @@
 ///
 ///@returns True
 ///
-bool mip_interface_parse_callback(void* device, const struct mip_packet* packet, timestamp_type timestamp)
+bool mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp)
 {
     mip_interface_receive_packet(device, packet, timestamp);
 
@@ -39,7 +39,7 @@ bool mip_interface_parse_callback(void* device, const struct mip_packet* packet,
 ///@param base_reply_timeout
 ///       Minimum time for all commands. See mip_cmd_queue_init().
 ///
-void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
+void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
 {
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
@@ -57,7 +57,7 @@ void mip_interface_init(struct mip_interface* device, uint8_t* parse_buffer, siz
 ///@param device
 ///@param pointer
 ///
-void mip_interface_set_user_pointer(struct mip_interface* device, void* pointer)
+void mip_interface_set_user_pointer(mip_interface* device, void* pointer)
 {
     device->_user_pointer = pointer;
 }
@@ -69,7 +69,7 @@ void mip_interface_set_user_pointer(struct mip_interface* device, void* pointer)
 ///
 ///@returns The pointer value.
 ///
-void* mip_interface_user_pointer(const struct mip_interface* device)
+void* mip_interface_user_pointer(const mip_interface* device)
 {
     return device->_user_pointer;
 }
@@ -78,7 +78,7 @@ void* mip_interface_user_pointer(const struct mip_interface* device)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the maximum number of packets to parser per update call.
 ///
-unsigned int mip_interface_max_packets_per_update(const struct mip_interface* device)
+unsigned int mip_interface_max_packets_per_update(const mip_interface* device)
 {
     return device->_max_update_pkts;
 }
@@ -98,7 +98,7 @@ unsigned int mip_interface_max_packets_per_update(const struct mip_interface* de
 ///@param max_packets
 ///       Maximum number of packets to parse at once.
 ///
-void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsigned int max_packets)
+void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets)
 {
     device->_max_update_pkts = max_packets;
 }
@@ -116,11 +116,11 @@ void mip_interface_set_max_packets_per_update(struct mip_interface* device, unsi
 ///@returns true if operation should continue, or false if the device cannot be
 ///         updated (e.g. if the serial port is not open)
 ///
-bool mip_interface_update(struct mip_interface* device)
+bool mip_interface_update(mip_interface* device)
 {
     uint8_t* ptr;
-    struct mip_parser* parser = mip_interface_parser(device);
-    size_t max_count = mip_parser_get_write_ptr(parser, &ptr);
+    mip_parser* parser = mip_interface_parser(device);
+    size_t max_count   = mip_parser_get_write_ptr(parser, &ptr);
 
     size_t count;
     timestamp_type timestamp;
@@ -147,7 +147,7 @@ bool mip_interface_update(struct mip_interface* device)
 ///
 /// This is called whenever bytes must be sent to the physical device.
 ///
-bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
 {
     return mip_interface_user_send_to_device(device, data, length);
 }
@@ -168,7 +168,7 @@ bool mip_interface_send_to_device(struct mip_interface* device, const uint8_t* d
 ///@returns The amount of data which couldn't be processed due to the limit on
 ///         number of packets per parse call. Normally the result is 0.
 ///
-remaining_count mip_interface_receive_bytes(struct mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
+remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
 {
     return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
 }
@@ -186,7 +186,7 @@ remaining_count mip_interface_receive_bytes(struct mip_interface* device, const 
 ///@note Calling this function when max_packets_per_update is zero is unnecessary
 ///      and has no effect.
 ///
-void mip_interface_process_unparsed_packets(struct mip_interface* device)
+void mip_interface_process_unparsed_packets(mip_interface* device)
 {
     mip_parser_parse(&device->_parser, NULL, 0, device->_max_update_pkts, mip_parser_last_packet_timestamp(&device->_parser));
 }
@@ -201,7 +201,7 @@ void mip_interface_process_unparsed_packets(struct mip_interface* device)
 ///@param timestamp
 ///       timestamp_type of the received MIP packet.
 ///
-void mip_interface_receive_packet(struct mip_interface* device, const struct mip_packet* packet, timestamp_type timestamp)
+void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
@@ -211,7 +211,7 @@ void mip_interface_receive_packet(struct mip_interface* device, const struct mip
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the MIP parser for the device.
 ///
-struct mip_parser* mip_interface_parser(struct mip_interface* device)
+mip_parser* mip_interface_parser(mip_interface* device)
 {
     return &device->_parser;
 }
@@ -219,7 +219,7 @@ struct mip_parser* mip_interface_parser(struct mip_interface* device)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the commmand queue for the device.
 ///
-struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device)
+mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
 {
     return &device->_queue;
 }
@@ -233,7 +233,7 @@ struct mip_cmd_queue* mip_interface_cmd_queue(struct mip_interface* device)
 ///
 ///@returns The final status of the command.
 ///
-enum mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, const struct mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mip_pending_cmd* cmd)
 {
     enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
@@ -262,7 +262,7 @@ enum mip_cmd_result mip_interface_wait_for_reply(struct mip_interface* device, c
 ///        MIP_NACK_* - Device rejected the command.
 ///        MIP_STATUS_* - An error occured (e.g. timeout).
 ///
-enum mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length)
+enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length)
 {
     return mip_interface_run_command_with_response(device, descriptor_set, cmd_descriptor, cmd_data, cmd_length, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
 }
@@ -274,7 +274,7 @@ enum mip_cmd_result mip_interface_run_command(struct mip_interface* device, uint
 ///       Descriptor of the response data. May be MIP_INVALID_FIELD_DESCRIPTOR
 ///       if no response is expected.
 ///
-enum mip_cmd_result mip_interface_run_command_with_response(struct mip_interface* device,
+enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device,
     uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length,
     uint8_t response_descriptor, uint8_t* response_buffer, uint8_t* response_length_inout)
 {
@@ -282,12 +282,12 @@ enum mip_cmd_result mip_interface_run_command_with_response(struct mip_interface
 
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
-    struct mip_packet packet;
+    mip_packet packet;
     mip_packet_create(&packet, buffer, sizeof(buffer), descriptor_set);
     mip_packet_add_field(&packet, cmd_descriptor, cmd_data, cmd_length);
     mip_packet_finalize(&packet);
 
-    struct mip_pending_cmd cmd;
+    mip_pending_cmd cmd;
     const uint8_t response_length = response_length_inout ? *response_length_inout : 0;
     mip_pending_cmd_init_with_response(&cmd, descriptor_set, cmd_descriptor, response_descriptor, response_buffer, response_length);
 
@@ -309,7 +309,7 @@ enum mip_cmd_result mip_interface_run_command_with_response(struct mip_interface
 ///@param cmd
 ///       The command status tracker. No lifetime requirement.
 ///
-enum mip_cmd_result mip_interface_run_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
 {
     if( !mip_interface_start_command_packet(device, packet, cmd) )
         return MIP_STATUS_ERROR;
@@ -330,7 +330,7 @@ enum mip_cmd_result mip_interface_run_command_packet(struct mip_interface* devic
 ///@returns False on error sending the packet. No cleanup is necessary and cmd
 ///         can be destroyed immediately afterward in this case.
 ///
-bool mip_interface_start_command_packet(struct mip_interface* device, const struct mip_packet* packet, struct mip_pending_cmd* cmd)
+bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
 {
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
@@ -358,7 +358,7 @@ bool mip_interface_start_command_packet(struct mip_interface* device, const stru
 ///@see mip_dispatch_handler_init_packet_handler for details.
 ///
 void mip_interface_register_packet_callback(
-    struct mip_interface* device, struct mip_dispatch_handler* handler,
+    mip_interface* device, mip_dispatch_handler* handler,
     uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void* user_data)
 {
     mip_dispatch_handler_init_packet_handler(handler, descriptor_set, after_fields, callback, user_data);
@@ -381,7 +381,7 @@ void mip_interface_register_packet_callback(
 ///@see mip_dispatch_handler_init_field_handler for details.
 ///
 void mip_interface_register_field_callback(
-    struct mip_interface* device, struct mip_dispatch_handler* handler,
+    mip_interface* device, mip_dispatch_handler* handler,
     uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
 {
     mip_dispatch_handler_init_field_handler(handler, descriptor_set, field_descriptor, callback, user_data);
@@ -403,7 +403,7 @@ void mip_interface_register_field_callback(
 ///@see mip_dispatch_handler_init_extract_handler for details.
 ///
 void mip_interface_register_extractor(
-    struct mip_interface* device, struct mip_dispatch_handler* handler,
+    mip_interface* device, mip_dispatch_handler* handler,
     uint8_t descriptor_set, uint8_t field_descriptor,
     mip_dispatch_extractor extractor, void* field_ptr)
 {

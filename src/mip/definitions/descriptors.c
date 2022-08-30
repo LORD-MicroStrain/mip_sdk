@@ -139,12 +139,12 @@ bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor)
 }
 
 
-void insert_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector self)
+void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self)
 {
     insert_u8(serializer, self);
 }
 
-void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector* self)
+void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self)
 {
     uint8_t tmp;
     extract_u8(serializer, &tmp);
@@ -152,13 +152,13 @@ void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_f
 }
 
 
-void insert_mip_descriptor_rate(struct mip_serializer* serializer, const struct mip_descriptor_rate* self)
+void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self)
 {
     insert_u8(serializer, self->descriptor);
     insert_u16(serializer, self->decimation);
 }
 
-void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_descriptor_rate* self)
+void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self)
 {
     extract_u8(serializer, &self->descriptor);
     extract_u16(serializer, &self->decimation);

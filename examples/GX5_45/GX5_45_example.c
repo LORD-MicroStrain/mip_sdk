@@ -39,12 +39,12 @@
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-struct serial_port device_port;
+serial_port device_port;
 clock_t start_time;
 
 int port = -1;
 uint8_t parse_buffer[1024];
-struct mip_interface device;
+mip_interface device;
 
 //Sensor-to-vehicle frame rotation (Euler Angles)
 float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
@@ -79,8 +79,8 @@ bool filter_state_running = false;
 //Required MIP interface user-defined functions
 timestamp_type get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out);
-bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length);
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out);
+bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
 
@@ -171,7 +171,7 @@ int main(int argc, const char* argv[])
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    const struct mip_descriptor_rate sensor_descriptors[4] = {
+    const mip_descriptor_rate sensor_descriptors[4] = {
         { MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS, sensor_decimation },
         { MIP_DATA_DESC_SENSOR_ACCEL_SCALED,   sensor_decimation },
         { MIP_DATA_DESC_SENSOR_GYRO_SCALED,    sensor_decimation },
@@ -186,7 +186,7 @@ int main(int argc, const char* argv[])
     //Setup GNSS data format to 4 Hz (decimation of 1)
     //
 
-    const struct mip_descriptor_rate gnss_descriptors[1] = {
+    const mip_descriptor_rate gnss_descriptors[1] = {
         { MIP_DATA_DESC_GNSS_FIX_INFO, 1 }
      };
 
@@ -207,7 +207,7 @@ int main(int argc, const char* argv[])
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
-    const struct mip_descriptor_rate filter_descriptors[5] = {
+    const mip_descriptor_rate filter_descriptors[5] = {
         { MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, filter_decimation },
         { MIP_DATA_DESC_FILTER_FILTER_STATUS,    filter_decimation },
         { MIP_DATA_DESC_FILTER_POS_LLH,          filter_decimation },
@@ -264,7 +264,7 @@ int main(int argc, const char* argv[])
     //
 
     //Sensor Data
-    struct mip_dispatch_handler sensor_data_handlers[4];
+    mip_dispatch_handler sensor_data_handlers[4];
 
     mip_interface_register_extractor(&device, &sensor_data_handlers[0], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS, extract_mip_sensor_gps_timestamp_data_from_field,    &sensor_gps_time);
     mip_interface_register_extractor(&device, &sensor_data_handlers[1], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_ACCEL_SCALED,   extract_mip_sensor_scaled_accel_data_from_field, &sensor_accel);
@@ -272,12 +272,12 @@ int main(int argc, const char* argv[])
     mip_interface_register_extractor(&device, &sensor_data_handlers[3], MIP_SENSOR_DATA_DESC_SET, MIP_DATA_DESC_SENSOR_MAG_SCALED,     extract_mip_sensor_scaled_mag_data_from_field,   &sensor_mag);
 
     //GNSS Data
-    struct mip_dispatch_handler gnss_data_handlers[1];
+    mip_dispatch_handler gnss_data_handlers[1];
 
     mip_interface_register_extractor(&device, &gnss_data_handlers[0], MIP_GNSS1_DATA_DESC_SET, MIP_DATA_DESC_GNSS_FIX_INFO, extract_mip_gnss_fix_info_data_from_field, &gnss_fix_info);
  
     //Filter Data
-    struct mip_dispatch_handler filter_data_handlers[5];
+    mip_dispatch_handler filter_data_handlers[5];
 
     mip_interface_register_extractor(&device, &filter_data_handlers[0], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, extract_mip_filter_timestamp_data_from_field,     &filter_gps_time);
     mip_interface_register_extractor(&device, &filter_data_handlers[1], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_FILTER_STATUS,    extract_mip_filter_status_data_from_field,        &filter_status);
@@ -362,7 +362,7 @@ timestamp_type get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
 {
     *timestamp_out = get_current_timestamp();
     return serial_port_read(&device_port, buffer, max_length, out_length);
@@ -373,7 +373,7 @@ bool mip_interface_user_recv_from_device(struct mip_interface* device, uint8_t* 
 // MIP Interface User Send Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_send_to_device(struct mip_interface* device, const uint8_t* data, size_t length)
+bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
 {
     size_t bytes_written;
 

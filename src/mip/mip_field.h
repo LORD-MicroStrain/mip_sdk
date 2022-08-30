@@ -2,15 +2,13 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "mip_packet.h"
 
 #ifdef __cplusplus
 namespace mip{
 namespace C {
 extern "C" {
 #endif
-
-
-struct mip_packet;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,28 +43,28 @@ struct mip_packet;
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-struct mip_field
+typedef struct mip_field
 {
     const uint8_t* _payload;    ///<@private The field payload, excluding the header.
     uint8_t _payload_length;    ///<@private The length of the payload, excluding the header.
     uint8_t _field_descriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
     uint8_t _descriptor_set;    ///<@private MIP descriptor set (from the packet)
     uint8_t _remaining_length;  ///<@private Remaining space after this field.
-};
+}mip_field;
 
 
-void mip_field_init(struct mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup FieldAccess  Field Accessors - Functions for inspecting a MIP field.
 ///@{
 
-uint8_t mip_field_descriptor_set(const struct mip_field* field);
-uint8_t mip_field_field_descriptor(const struct mip_field* field);
-uint8_t mip_field_payload_length(const struct mip_field* field);
-const uint8_t* mip_field_payload(const struct mip_field* field);
+uint8_t mip_field_descriptor_set(const mip_field* field);
+uint8_t mip_field_field_descriptor(const mip_field* field);
+uint8_t mip_field_payload_length(const mip_field* field);
+const uint8_t* mip_field_payload(const mip_field* field);
 
-bool mip_field_is_valid(const struct mip_field* field);
+bool mip_field_is_valid(const mip_field* field);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +76,7 @@ bool mip_field_is_valid(const struct mip_field* field);
 ///~~~{.c}
 /// // Iterate over fields, starting with the first in the packet.
 /// // Continue as long as a valid field is found.
-/// for(struct mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
+/// for(mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
 /// {
 ///     // Check the field descriptor for what kind of data it holds.
 ///     switch( mip_field_field_desriptor(&field) )
@@ -91,15 +89,15 @@ bool mip_field_is_valid(const struct mip_field* field);
 ///
 ///@{
 
-void mip_field_init_empty(struct mip_field* field);
+void mip_field_init_empty(mip_field* field);
 
-struct mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
+mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
 
-struct mip_field mip_field_first_from_packet(const struct mip_packet* packet);
-struct mip_field mip_field_next_after(const struct mip_field* field);
-bool mip_field_next(struct mip_field* field);
+mip_field mip_field_first_from_packet(const mip_packet* packet);
+mip_field mip_field_next_after(const mip_field* field);
+bool mip_field_next(mip_field* field);
 
-bool mip_field_next_in_packet(struct mip_field* field, const struct mip_packet* packet);
+bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet);
 
 // bool mip_field_is_at_end(const struct mip_field* field);
 

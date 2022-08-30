@@ -25,7 +25,7 @@ extern "C" {
 ///
 ///@{
 
-struct serial_port
+typedef struct serial_port
 {
     bool is_open;
 #ifdef WIN32 //Windows
@@ -33,15 +33,15 @@ struct serial_port
 #else //Linux
     int handle;
 #endif
-};
+}serial_port;
 
 
-bool serial_port_open(struct serial_port *port, const char *port_str, int baudrate);
-bool serial_port_close(struct serial_port *port);
-bool serial_port_write(struct serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written);
-bool serial_port_read(struct serial_port *port, void *buffer, size_t num_bytes, size_t *bytes_read);
-uint32_t serial_port_read_count(struct serial_port *port);
-bool serial_port_is_open(struct serial_port *port);
+bool serial_port_open(serial_port *port, const char *port_str, int baudrate);
+bool serial_port_close(serial_port *port);
+bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, size_t *bytes_written);
+bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t *bytes_read);
+uint32_t serial_port_read_count(serial_port *port);
+bool serial_port_is_open(serial_port *port);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ namespace mip {
 ///@param buffer_size
 ///       Size of the buffer. Data will not be written beyond this size.
 ///
-void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* buffer, size_t buffer_size)
+void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, size_t buffer_size)
 {
     serializer->_buffer      = buffer;
     serializer->_buffer_size = buffer_size;
@@ -34,7 +34,7 @@ void mip_serializer_init_insertion(struct mip_serializer* serializer, uint8_t* b
 ///@param buffer_size
 ///       Maximum number of bytes to be read from the buffer.
 ///
-void mip_serializer_init_extraction(struct mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size)
+void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size)
 {
     serializer->_buffer      = (uint8_t*)buffer;
     serializer->_buffer_size = buffer_size;
@@ -47,7 +47,7 @@ void mip_serializer_init_extraction(struct mip_serializer* serializer, const uin
 ///@param serializer
 ///@param field
 ///
-void mip_serializer_init_from_field(struct mip_serializer* serializer, const struct mip_field* field)
+void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field* field)
 {
     mip_serializer_init_extraction(serializer, mip_field_payload(field), mip_field_payload_length(field));
 }
@@ -59,7 +59,7 @@ void mip_serializer_init_from_field(struct mip_serializer* serializer, const str
 ///
 ///@returns The buffer size.
 ///
-size_t mip_serializer_capacity(const struct mip_serializer* serializer)
+size_t mip_serializer_capacity(const mip_serializer* serializer)
 {
     return serializer->_buffer_size;
 }
@@ -75,7 +75,7 @@ size_t mip_serializer_capacity(const struct mip_serializer* serializer)
 ///@note This may exceed the buffer size. Check mip_serializer_is_ok() before using
 ///      the data.
 ///
-size_t mip_serializer_length(const struct mip_serializer* serializer)
+size_t mip_serializer_length(const mip_serializer* serializer)
 {
     return serializer->_offset;
 }
@@ -92,7 +92,7 @@ size_t mip_serializer_length(const struct mip_serializer* serializer)
 ///      or read more data than contained in the buffer. This is not a bug and
 ///      it can be detected with the mip_serializer_is_ok() function.
 ///
-remaining_count mip_serializer_remaining(const struct mip_serializer* serializer)
+remaining_count mip_serializer_remaining(const mip_serializer* serializer)
 {
     return mip_serializer_capacity(serializer) - mip_serializer_length(serializer);
 }
@@ -109,7 +109,7 @@ remaining_count mip_serializer_remaining(const struct mip_serializer* serializer
 ///
 ///@returns true if mip_serializer_remaining() >= 0.
 ///
-bool mip_serializer_is_ok(const struct mip_serializer* serializer)
+bool mip_serializer_is_ok(const mip_serializer* serializer)
 {
     return mip_serializer_length(serializer) <= mip_serializer_capacity(serializer);
 }
@@ -124,7 +124,7 @@ bool mip_serializer_is_ok(const struct mip_serializer* serializer)
 ///
 ///@returns true if mip_serializer_remaining() == 0.
 ///
-bool mip_serializer_is_complete(const struct mip_serializer* serializer)
+bool mip_serializer_is_complete(const mip_serializer* serializer)
 {
     return serializer->_offset == serializer->_buffer_size;
 }
@@ -137,7 +137,7 @@ static void pack(uint8_t* buffer, const void* value, size_t size)
 }
 
 #define INSERT_MACRO(name, type) \
-void insert_##name(struct mip_serializer* serializer, type value) \
+void insert_##name(mip_serializer* serializer, type value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -168,7 +168,7 @@ static void unpack(const uint8_t* buffer, void* value, size_t size)
 
 
 #define EXTRACT_MACRO(name, type) \
-void extract_##name(struct mip_serializer* serializer, type* value) \
+void extract_##name(mip_serializer* serializer, type* value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -203,7 +203,7 @@ EXTRACT_MACRO(double, double  )
 ///       The maximum value of the counter. If the count exceeds this, it is
 ///       set to 0 and the serializer is put into an error state.
 ///
-void extract_count(struct mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
+void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
 {
     *count_out = 0;  // Default to zero if extraction fails.
     extract_u8(serializer, count_out);

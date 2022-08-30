@@ -46,7 +46,7 @@ enum mip_dispatch_type
 ///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, bool post_callback, mip_dispatch_packet_callback callback, void* user_data)
+void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool post_callback, mip_dispatch_packet_callback callback, void* user_data)
 {
     handler->_next             = NULL;
     handler->_packet_callback  = callback;
@@ -81,7 +81,7 @@ void mip_dispatch_handler_init_packet_handler(struct mip_dispatch_handler* handl
 ///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
+void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
 {
     handler->_next             = NULL;
     handler->_field_callback   = callback;
@@ -126,7 +126,7 @@ void mip_dispatch_handler_init_field_handler(struct mip_dispatch_handler* handle
 ///         Otherwise, the behavior is undefined and your program may experience
 ///         memory corruption or process crash.
 ///
-void mip_dispatch_handler_init_extractor(struct mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr)
+void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr)
 {
     // The only wildcard allowed is MIP_DISPATCH_ANY_DATA_SET when field_descriptor is from the shared data set.
     assert(descriptor_set != MIP_DISPATCH_ANY_DESCRIPTOR);
@@ -151,7 +151,7 @@ void mip_dispatch_handler_init_extractor(struct mip_dispatch_handler* handler, u
 ///@param handler
 ///@param enable If true, the callback is enabled. If false, it will not be called.
 ///
-void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool enable)
+void mip_dispatch_handler_set_enabled(mip_dispatch_handler* handler, bool enable)
 {
     handler->_enabled = enable;
 }
@@ -161,7 +161,7 @@ void mip_dispatch_handler_set_enabled(struct mip_dispatch_handler* handler, bool
 ///
 ///@returns true if the handler is enabled, false otherwise.
 ///
-bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler)
+bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler)
 {
     return handler->_enabled;
 }
@@ -173,7 +173,7 @@ bool mip_dispatch_handler_is_enabled(struct mip_dispatch_handler* handler)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initializes the mip_dispatcher object.
 ///
-void mip_dispatcher_init(struct mip_dispatcher* self)
+void mip_dispatcher_init(mip_dispatcher* self)
 {
     self->_first_handler = NULL;
 }
@@ -184,13 +184,13 @@ void mip_dispatcher_init(struct mip_dispatcher* self)
 ///
 /// This is necessary for the handler function to be executed.
 ///
-void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
+void mip_dispatcher_add_handler(mip_dispatcher* self, mip_dispatch_handler* handler)
 {
     if( self->_first_handler == NULL )
         self->_first_handler = handler;
     else
     {
-        struct mip_dispatch_handler* last = self->_first_handler;
+        mip_dispatch_handler* last = self->_first_handler;
 
         while(last->_next != NULL)
             last = last->_next;
@@ -205,12 +205,12 @@ void mip_dispatcher_add_handler(struct mip_dispatcher* self, struct mip_dispatch
 ///
 /// This will prevent the handler from being executed.
 ///
-void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispatch_handler* handler)
+void mip_dispatcher_remove_handler(mip_dispatcher* self, mip_dispatch_handler* handler)
 {
     if( self->_first_handler == NULL )
         return;
 
-    struct mip_dispatch_handler* query = self->_first_handler;
+    mip_dispatch_handler* query = self->_first_handler;
 
     if( query == handler )
     {
@@ -234,16 +234,16 @@ void mip_dispatcher_remove_handler(struct mip_dispatcher* self, struct mip_dispa
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes all handlers from the dispatcher.
 ///
-void mip_dispatcher_remove_all_handlers(struct mip_dispatcher* self)
+void mip_dispatcher_remove_all_handlers(mip_dispatcher* self)
 {
-    struct mip_dispatch_handler* query = self->_first_handler;
+    mip_dispatch_handler* query = self->_first_handler;
 
     self->_first_handler = NULL;
 
     // Break the chain (technically not necessary, but aids debugging)
     while(query)
     {
-        struct mip_dispatch_handler* next = query->_next;
+        mip_dispatch_handler* next = query->_next;
         query->_next = NULL;
         query = next;
     }
@@ -267,12 +267,12 @@ static bool mip_dispatch_is_descriptor_set_match(uint8_t desc_set, uint8_t handl
 ///@param timestamp Packet parse time.
 ///@param post      If true, this is called after field iteration. Otherwise before.
 ///
-static void mip_dispatcher_call_packet_callbacks(struct mip_dispatcher* self, const struct mip_packet* packet, timestamp_type timestamp, bool post)
+static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp, bool post)
 {
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
 
     // Iterate all packet handlers for this packet.
-    for(struct mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
+    for(mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
     {
         switch(handler->_type)
         {
@@ -312,13 +312,13 @@ static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_des
 ///@param field     Valid MIP field.
 ///@param timestamp Packet parse time.
 ///
-static void mip_dispatcher_call_field_callbacks(struct mip_dispatcher* self, const struct mip_field* field, timestamp_type timestamp)
+static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_field* field, timestamp_type timestamp)
 {
     const uint8_t descriptor_set   = mip_field_descriptor_set(field);
     const uint8_t field_descriptor = mip_field_field_descriptor(field);
 
     // Iterate all field handlers for this field.
-    for(struct mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
+    for(mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
     {
         if(handler->_type == MIP_DISPATCH_TYPE_FIELD)
         {
@@ -348,11 +348,11 @@ static void mip_dispatcher_call_field_callbacks(struct mip_dispatcher* self, con
 ///@param timestamp
 ///        The approximate parse time of the packet.
 ///
-void mip_dispatcher_dispatch_packet(struct mip_dispatcher* self, const struct mip_packet* packet, timestamp_type timestamp)
+void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp)
 {
     mip_dispatcher_call_packet_callbacks(self, packet, timestamp, false);
 
-    struct mip_field field;
+    mip_field field;
     mip_field_init_empty(&field);
     while( mip_field_next_in_packet(&field, packet) )
     {

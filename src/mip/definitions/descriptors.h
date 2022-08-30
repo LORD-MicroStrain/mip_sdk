@@ -3,10 +3,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "../utils/serialization.h"
 
 #ifdef __cplusplus
 
-#include "../utils/serialization.h"
 #include "../utils/enum_wrapper.hpp"
 
 #include <tuple>
@@ -42,9 +42,6 @@ bool mip_is_response_field_descriptor(uint8_t field_descriptor);
 bool mip_is_reserved_cmd_field_descriptor(uint8_t field_descriptor);
 bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor);
 
-
-struct mip_serializer;
-
 enum mip_function_selector
 {
     MIP_FUNCTION_WRITE = 0x01,
@@ -53,16 +50,17 @@ enum mip_function_selector
     MIP_FUNCTION_LOAD  = 0x04,
     MIP_FUNCTION_RESET = 0x05,
 };
-void insert_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector self);
-void extract_mip_function_selector(struct mip_serializer* serializer, enum mip_function_selector* self);
+void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self);
+void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self);
 
-struct mip_descriptor_rate
+typedef struct mip_descriptor_rate
 {
     uint8_t  descriptor;
     uint16_t decimation;
-};
-void insert_mip_descriptor_rate(struct mip_serializer* serializer, const struct mip_descriptor_rate* self);
-void extract_mip_descriptor_rate(struct mip_serializer* serializer, struct mip_descriptor_rate* self);
+}mip_descriptor_rate;
+
+void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self);
+void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
 
 #ifdef __cplusplus
 
