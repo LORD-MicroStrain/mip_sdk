@@ -218,6 +218,12 @@ if(BUILD_DOCUMENTATION)
         COMMENT "Generating documentation."
     )
 
+    # Add a target to enable users to zip up the docs
+    add_custom_target(package_docs
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation
+        DEPENDS docs
+        COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MIP_GIT_VERSION}_Documentation.zip" --format=zip "."
+    )
 endif(BUILD_DOCUMENTATION)
 
 #
@@ -416,13 +422,4 @@ if(BUILD_PACKAGE)
         DESCRIPTION "MIP SDK static library and header files"
         GROUP mip
     )
-
-    # If building both documentation and packages, zip up the docs
-    if(BUILD_DOCUMENTATION)
-        add_custom_target(package_docs
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation
-            DEPENDS docs
-            COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MIP_GIT_VERSION}_Documentation.zip" --format=zip "."
-        )
-    endif()
 endif()
