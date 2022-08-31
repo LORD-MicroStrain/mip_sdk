@@ -37,7 +37,7 @@ using namespace mip;
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<mip::DeviceInterface> device;
+std::shared_ptr<mip::DeviceInterface> device;
 
 //Sensor-to-vehicle frame transformation (Euler Angles)
 float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
@@ -78,7 +78,8 @@ void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp time
 int main(int argc, const char* argv[])
 {
 
-    device = handleCommonArgs(argc, argv);
+    std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
+    device = utils->device;
 
     //
     //Ping the device (note: this is good to do to make sure the device is present)
