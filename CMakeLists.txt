@@ -299,7 +299,14 @@ else()
 endif()
 
 # Try to determine what architecture we are building for based on the compiler output
-if(UNIX)
+if(MSVC)
+    # Detect if this is a x64 or x86 build
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(MIP_ARCH "x64")
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(MIP_ARCH "x86")
+    endif()
+elseif(UNIX)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         # The dumpmachine command from gcc should contain information on the architecture
         execute_process(
