@@ -38,7 +38,6 @@ pipeline {
                     -DBUILD_PACKAGE=ON
                 cmake --build . -j
                 cmake --build . --target package
-                cmake --build . --target package_docs
             """
             archiveArtifacts artifacts: 'build_x64/mipsdk_*'
           }
@@ -49,6 +48,7 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
+            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
             archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
           }
@@ -59,7 +59,8 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
+            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
+            sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
           }
         }

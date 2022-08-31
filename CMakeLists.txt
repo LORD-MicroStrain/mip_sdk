@@ -29,6 +29,29 @@ endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
 
+# Use Git to find the version
+find_package(Git)
+set(DEFAULT_MIP_GIT_VERSION "v0.0.0")
+if(NOT GIT_FOUND)
+  message(STATUS "Unable to find git, will build with unknown version")
+  set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
+else()
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
+    ERROR_VARIABLE MIP_GIT_VERSION_ERR
+    RESULT_VARIABLE MIP_GIT_VERSION_RET
+  )
+  if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
+    message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
+    set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
+  else()
+    set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
+    string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
+    message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
+  endif()
+endif()
 
 #
 # Build options
@@ -279,30 +302,6 @@ install(FILES
     COMPONENT mip
     DESTINATION "${CONFIG_EXPORT_DIR}"
 )
-
-# Use Git to find the version of this repo
-find_package(Git)
-set(DEFAULT_MIP_GIT_VERSION "v0.0.0")
-if(NOT GIT_FOUND)
-  message(STATUS "Unable to find git, will build with unknown version")
-  set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
-else()
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
-    ERROR_VARIABLE MIP_GIT_VERSION_ERR
-    RESULT_VARIABLE MIP_GIT_VERSION_RET
-  )
-  if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
-    message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
-    set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
-  else()
-    set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
-    string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
-    message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
-  endif()
-endif()
 
 # Try to determine what architecture we are building for based on the compiler output
 if(MSVC)
