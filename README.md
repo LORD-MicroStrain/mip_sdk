@@ -83,6 +83,7 @@ The following options may be specified when configuring the build with CMake (e.
 * BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
 * MSCL_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
+* BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
 
 ### Compilation for Linux
 
