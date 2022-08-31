@@ -37,8 +37,6 @@ using namespace mip;
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<mip::DeviceInterface> device;
-
 //Sensor-to-vehicle frame transformation (Euler Angles)
 float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
 
@@ -79,7 +77,7 @@ int main(int argc, const char* argv[])
 {
 
     std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-    device = utils->device;
+    std::unique_ptr<mip::DeviceInterface>& device = utils->device;
 
     //
     //Ping the device (note: this is good to do to make sure the device is present)

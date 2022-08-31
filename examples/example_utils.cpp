@@ -19,7 +19,7 @@ mip::Timestamp getCurrentTimestamp()
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port)
 {
-    auto example_utils = std::make_unique<ExampleUtils>();
+    auto example_utils = std::unique_ptr<ExampleUtils>(new ExampleUtils());
     if(port_or_hostname.find(PORT_KEY) == std::string::npos)  // Not a serial port
     {
 
@@ -28,8 +28,8 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         if( port < 1024 || port > 65535 )
             throw std::runtime_error("Invalid TCP port (must be between 1024 and 65535.");
 
-        example_utils->connection = std::make_shared<mip::platform::TcpConnection>(port_or_hostname, port);
-        example_utils->device = std::make_shared<mip::DeviceInterface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000);
+        example_utils->connection = std::unique_ptr<mip::platform::TcpConnection>(new mip::platform::TcpConnection(port_or_hostname, port));
+        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
 #else  // MIP_USE_TCP
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
 #endif // MIP_USE_TCP
@@ -43,8 +43,8 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         if( baud == 0 )
             throw std::runtime_error("Serial baud rate must be a decimal integer greater than 0.");
 
-        example_utils->connection = std::make_shared<mip::platform::SerialConnection>(port_or_hostname, baud);
-        example_utils->device = std::make_shared<mip::DeviceInterface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500);
+        example_utils->connection = std::unique_ptr<mip::platform::SerialConnection>(new mip::platform::SerialConnection(port_or_hostname, baud));
+        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
 #else  // MIP_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
 #endif //MIP_USE_SERIAL

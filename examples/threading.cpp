@@ -73,7 +73,7 @@ int main(int argc, const char* argv[])
     try
     {
         std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-        std::shared_ptr<mip::DeviceInterface> device = utils->device;
+        std::unique_ptr<mip::DeviceInterface>& device = utils->device;
 
         // Disable all streaming channels.
         mip::commands_base::setIdle(*device);

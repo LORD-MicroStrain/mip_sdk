@@ -16,8 +16,8 @@
 
 struct ExampleUtils
 {
-    std::shared_ptr<mip::Connection> connection;
-    std::shared_ptr<mip::DeviceInterface> device;
+    std::unique_ptr<mip::Connection> connection;
+    std::unique_ptr<mip::DeviceInterface> device;
     uint8_t buffer[1024];
 };
 
