@@ -53,20 +53,20 @@ float sensor_to_vehicle_rotation_euler[3] = {0.0, 0.0, 0.0};
 float gnss_antenna_offset_meters[3] = {-0.25, 0.0, 0.0};
 
 //Device data stores
-struct mip_sensor_gps_timestamp_data sensor_gps_time;
-struct mip_sensor_scaled_accel_data  sensor_accel;
-struct mip_sensor_scaled_gyro_data   sensor_gyro;
-struct mip_sensor_scaled_mag_data    sensor_mag;
+mip_sensor_gps_timestamp_data sensor_gps_time;
+mip_sensor_scaled_accel_data  sensor_accel;
+mip_sensor_scaled_gyro_data   sensor_gyro;
+mip_sensor_scaled_mag_data    sensor_mag;
 
-struct mip_gnss_fix_info_data        gnss_fix_info;
+mip_gnss_fix_info_data        gnss_fix_info;
 
 bool gnss_fix_info_valid = false;
 
-struct mip_filter_timestamp_data     filter_gps_time;
-struct mip_filter_status_data        filter_status;
-struct mip_filter_position_llh_data  filter_position_llh;
-struct mip_filter_velocity_ned_data  filter_velocity_ned;
-struct mip_filter_euler_angles_data  filter_euler_angles;
+mip_filter_timestamp_data     filter_gps_time;
+mip_filter_status_data        filter_status;
+mip_filter_position_llh_data  filter_position_llh;
+mip_filter_velocity_ned_data  filter_velocity_ned;
+mip_filter_euler_angles_data  filter_euler_angles;
 
 bool filter_state_running = false;
 

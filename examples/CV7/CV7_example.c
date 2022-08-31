@@ -50,14 +50,14 @@ mip_interface device;
 float sensor_to_vehicle_transformation_euler[3] = {0.0, 0.0, 0.0};
 
 //Device data stores
-struct mip_shared_gps_timestamp_data sensor_gps_time;
-struct mip_sensor_scaled_accel_data  sensor_accel;
-struct mip_sensor_scaled_gyro_data   sensor_gyro;
-struct mip_sensor_scaled_mag_data    sensor_mag;
+mip_shared_gps_timestamp_data sensor_gps_time;
+mip_sensor_scaled_accel_data  sensor_accel;
+mip_sensor_scaled_gyro_data   sensor_gyro;
+mip_sensor_scaled_mag_data    sensor_mag;
 
-struct mip_shared_gps_timestamp_data filter_gps_time;
-struct mip_filter_status_data        filter_status;
-struct mip_filter_euler_angles_data  filter_euler_angles;
+mip_shared_gps_timestamp_data filter_gps_time;
+mip_filter_status_data        filter_status;
+mip_filter_euler_angles_data  filter_euler_angles;
 
 bool filter_state_ahrs = false;
 
@@ -354,7 +354,7 @@ int main(int argc, const char* argv[])
 
 void handle_filter_event_source(void* user, const mip_field* field, timestamp_type timestamp)
 {
-    struct mip_shared_event_source_data data;
+    mip_shared_event_source_data data;
 
     if(extract_mip_shared_event_source_data_from_field(field, &data))
     {

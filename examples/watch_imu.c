@@ -29,7 +29,7 @@
 serial_port port;
 uint8_t parse_buffer[1024];
 mip_interface device;
-struct mip_sensor_scaled_accel_data scaled_accel;
+mip_sensor_scaled_accel_data scaled_accel;
 
 void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
@@ -49,7 +49,7 @@ void handlePacket(void* unused, const mip_packet* packet, timestamp_type timesta
 void handleAccel(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct mip_sensor_scaled_accel_data data;
+    mip_sensor_scaled_accel_data data;
 
     if(extract_mip_sensor_scaled_accel_data_from_field(field, &data))
     {
@@ -66,7 +66,7 @@ void handleAccel(void* user, const mip_field* field, timestamp_type timestamp)
 void handleGyro(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct mip_sensor_scaled_gyro_data data;
+    mip_sensor_scaled_gyro_data data;
 
     if(extract_mip_sensor_scaled_gyro_data_from_field(field, &data))
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
@@ -75,7 +75,7 @@ void handleGyro(void* user, const mip_field* field, timestamp_type timestamp)
 void handleMag(void* user, const mip_field* field, timestamp_type timestamp)
 {
     (void)user;
-    struct mip_sensor_scaled_mag_data data;
+    mip_sensor_scaled_mag_data data;
 
     if(extract_mip_sensor_scaled_mag_data_from_field(field, &data))
         printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
