@@ -21,7 +21,7 @@ add_mip_test(TestMipRandom         "${TEST_DIR}/mip/test_mip_random.c" TestMipRa
 add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFields)
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
 
-if(WITH_SERIALPORT)
+if(WITH_SERIAL)
     add_executable(TestSerial "${TEST_DIR}/test_serial.cpp")
     target_include_directories(TestSerial PUBLIC "${SERIAL_INCLUDE_DIRS}")
     target_link_libraries(TestSerial PUBLIC "serial")
