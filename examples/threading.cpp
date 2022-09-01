@@ -9,6 +9,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
+#include <stdexcept>
 
 const unsigned int maxSamples = 50;
 volatile unsigned int numSamples = 0;
