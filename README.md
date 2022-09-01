@@ -55,7 +55,7 @@ Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
 A TCP client connection is provided with MSCL-Embedded. This allows remote development over
 a network cable and makes it possible to insert other software into the communications path for debugging.
 
-Enable it in the CMake configuration with `-DWITH_SOCKETS=1`.
+Enable it in the CMake configuration with `-DWITH_TCP=1`.
 
 
 How to Build
@@ -76,7 +76,7 @@ How to Build
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
 * WITH_SERIAL - Builds the included serial port library (default enabled).
-* WITH_SOCKETS - Builds the included socket library (default enabled).
+* WITH_TCP - Builds the included socket library (default enabled).
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.

@@ -123,12 +123,23 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Represents a connected MIP device.
+///@brief Represents a type of connection to a MIP device.
 ///
 /// The following methods are pure virtual and must be implemented by a derived
 /// class. These functions map to the corresponding C functions.
 ///@li `bool sendToDevice(const uint8_t* data, size_t length)` - corresponds to mip_interface_user_send_to_device.
 ///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, size_t* lengthOut, Timestamp* timestampOut)` - corresponds to mip_interface_user_recv_from_device.
+///
+class Connection
+{
+public:
+    virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
+    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Represents a connected MIP device.
 ///
 class DeviceInterface : public C::mip_interface
 {
@@ -138,7 +149,8 @@ public:
     //
 
     ///@copydoc mip::C::mip_interface_init
-    DeviceInterface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) { C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout); }
+    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
+    DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) : mConnection(connection) { C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout); }
 
     DeviceInterface(const DeviceInterface&) = delete;
     DeviceInterface& operator=(const DeviceInterface&) = delete;
@@ -167,6 +179,9 @@ public:
     const Parser&   parser()   const   { return const_cast<DeviceInterface*>(this)->parser(); }
     const CmdQueue& cmdQueue() const { return const_cast<DeviceInterface*>(this)->cmdQueue(); }
 
+    const Connection* connection() const { return mConnection; }
+    void setConnection(Connection* connection) { mConnection = connection; }
+
     //
     // Communications
     //
@@ -175,11 +190,11 @@ public:
 
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
 
-    virtual bool   sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
+    bool           sendToDevice(const uint8_t* data, size_t length) { return mConnection->sendToDevice(data, length); }
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
 
     bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
-    virtual bool   recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
+    bool           recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) { return mConnection->recvFromDevice(buffer, max_length, length_out, timestamp); }
 
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
@@ -238,6 +253,9 @@ public:
 
 //    template<class Cmd>
 //    bool startCommand(PendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return mip::startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }
+
+private:
+    Connection* mConnection;
 };
 
 

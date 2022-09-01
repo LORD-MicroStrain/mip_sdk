@@ -57,6 +57,9 @@ endif()
 # Build options
 #
 
+option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
+option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
+
 set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
@@ -72,10 +75,6 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.h"
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
-    "${UTILS_DIR}/serial_port.c"
-    "${UTILS_DIR}/serial_port.h"
-    "${UTILS_DIR}/tcp_socket.c"
-    "${UTILS_DIR}/tcp_socket.h"
 )
 
 #
@@ -139,12 +138,26 @@ set(MIPDEF_SOURCES
 string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-set(MIP_INTERFACE_SOURCES
-    "${MIP_DIR}/platform/serial_device_interface.hpp"
-    "${MIP_DIR}/platform/serial_device_interface.cpp"
-    "${MIP_DIR}/platform/tcp_device_interface.hpp"
-    "${MIP_DIR}/platform/tcp_device_interface.cpp"
-)
+if(WITH_SERIAL)
+    list(APPEND UTILS_SOURCES
+        "${UTILS_DIR}/serial_port.c"
+        "${UTILS_DIR}/serial_port.h"
+    )
+    list(APPEND MIP_INTERFACE_SOURCES
+        "${MIP_DIR}/platform/serial_connection.hpp"
+        "${MIP_DIR}/platform/serial_connection.cpp"
+    )
+endif()
+if(WITH_TCP)
+    list(APPEND UTILS_SOURCES
+        "${UTILS_DIR}/tcp_socket.c"
+        "${UTILS_DIR}/tcp_socket.h"
+    )
+    list(APPEND MIP_INTERFACE_SOURCES
+        "${MIP_DIR}/platform/tcp_connection.hpp"
+        "${MIP_DIR}/platform/tcp_connection.cpp"
+    )
+endif()
 
 set(ALL_MIP_SOURCES
     ${MIPDEF_SOURCES}

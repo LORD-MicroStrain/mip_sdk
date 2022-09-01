@@ -78,7 +78,7 @@ bool mip_is_valid_field_descriptor(uint8_t field_descriptor)
 ///
 ///@returns true if the field descriptor represents a command.
 ///
-bool mip_is_command_field_descriptor(uint8_t field_descriptor)
+bool mip_is_cmd_field_descriptor(uint8_t field_descriptor)
 {
     return (field_descriptor < MIP_RESPONSE_DESCRIPTOR_START);
 }

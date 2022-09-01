@@ -34,7 +34,7 @@ bool mip_is_cmd_descriptor_set(uint8_t descriptor_set);
 bool mip_is_reserved_descriptor_set(uint8_t descriptor_set);
 
 bool mip_is_valid_field_descriptor(uint8_t field_descriptor);
-bool mip_is_command_field_descriptor(uint8_t field_descriptor);
+bool mip_is_cmd_field_descriptor(uint8_t field_descriptor);
 bool mip_is_reply_field_descriptor(uint8_t field_descriptor);
 bool mip_is_response_field_descriptor(uint8_t field_descriptor);
 bool mip_is_reserved_cmd_field_descriptor(uint8_t field_descriptor);
@@ -114,7 +114,7 @@ inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cm
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
 
 inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
-inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_command_field_descriptor(fieldDescriptor); }
+inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }
 inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_reply_field_descriptor(fieldDescriptor); }
 inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
 inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
