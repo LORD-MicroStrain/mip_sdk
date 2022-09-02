@@ -11,15 +11,15 @@ pipeline {
             cleanWs()
             checkout scm
             powershell """
-                mkdir build_Win32
-                cd build_Win32
-                cmake .. `
-                    -A "Win32" `
-                    -DBUILD_DOCUMENTATION=ON `
-                    -DBUILD_PACKAGE=ON
-                cmake --build . -j
-                cmake --build . --target package
-                cmake --build . --target package_docs
+              mkdir build_Win32
+              cd build_Win32
+              cmake .. `
+                -A "Win32" `
+                -DBUILD_DOCUMENTATION=ON `
+                -DBUILD_PACKAGE=ON
+              cmake --build . -j
+              cmake --build . --target package
+              cmake --build . --target package_docs
             """
             archiveArtifacts artifacts: 'build_Win32/mipsdk_*'
           }
@@ -31,13 +31,13 @@ pipeline {
             cleanWs()
             checkout scm
             powershell """
-                mkdir build_x64
-                cd build_x64
-                cmake .. `
-                    -A "x64" `
-                    -DBUILD_PACKAGE=ON
-                cmake --build . -j
-                cmake --build . --target package
+              mkdir build_x64
+              cd build_x64
+              cmake .. `
+                -A "x64" `
+                -DBUILD_PACKAGE=ON
+              cmake --build . -j
+              cmake --build . --target package
             """
             archiveArtifacts artifacts: 'build_x64/mipsdk_*'
           }
@@ -62,6 +62,34 @@ pipeline {
             sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
+          }
+        }
+      }
+    }
+  }
+  post {
+    success {
+      script {
+        if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+          node("linux-amd64") {
+            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+              sh '''
+              repo="LORD-MicroStrain/libmip"
+              branch="develop"
+              release_name="latest"
+              artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
+              gh release delete \
+                -y \
+                -R "${repo}" \
+                "${release_name}"
+              gh release create \
+                -R "${repo}" \
+                --title "${release_name}" \
+                --target "${branch}" \
+                --generate-notes \
+                "${release_name}" ${artifacts}
+              '''
+            }
           }
         }
       }

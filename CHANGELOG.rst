@@ -1,6 +1,6 @@
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 MIP SDK Change Log - update with each release
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The version number scheme in MIP SDK is as follows:
 MAJOR.MINOR.PATCH
@@ -14,11 +14,6 @@ CHANGED - A non-backwards compatible change was made to an existing function/cla
 RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 
-
 Forthcoming
 ------------------
 * Initial release of MIP SDK
-
-1.2.3
-------------------
-* foo
