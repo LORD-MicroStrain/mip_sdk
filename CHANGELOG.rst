@@ -17,3 +17,7 @@ REMOVED - A function/class has been removed.
 Forthcoming
 ------------------
 * Initial release of MIP SDK
+
+1.2.3
+------------------
+* foo
