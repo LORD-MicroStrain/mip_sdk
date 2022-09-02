@@ -1,4 +1,4 @@
-======================================================================================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 MIP SDK Change Log - update with each release
 
 The version number scheme in MIP SDK is as follows:
@@ -12,6 +12,8 @@ Major revisions will specify what caused the non-backwards compatible change. Th
 CHANGED - A non-backwards compatible change was made to an existing function/class.
 RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
-======================================================================================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Forthcoming
+------------------
+* Initial release of MIP SDK
