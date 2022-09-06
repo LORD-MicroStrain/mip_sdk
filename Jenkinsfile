@@ -91,12 +91,12 @@ pipeline {
   post {
     success {
       script {
-        def repo = "LORD-MicroStrain/libmip"
         if (BRANCH_NAME && BRANCH_NAME == 'develop') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               release_name="latest"
+              repo = "LORD-MicroStrain/libmip"
               artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
               gh release delete \
                 -y \
@@ -116,13 +116,14 @@ pipeline {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to the latest version if the master commit matches up with the commit of that version
+              repo = "LORD-MicroStrain/libmip"
               artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
               if git describe --exact-match --tags HEAD &> /dev/null; then
                 tag=$(git describe --exact-match --tags HEAD)
                 gh release delete \
                   -y \
                   -R "${repo}" \
-                  "${tag}"
+                  "${tag}" || echo "No existing release named ${tag}"
                 gh release create \
                   -R "${repo}" \
                   --title "${tag}" \
