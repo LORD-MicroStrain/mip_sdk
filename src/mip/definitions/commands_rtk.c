@@ -24,7 +24,7 @@ struct mip_field;
 
 void insert_mip_media_selector(struct mip_serializer* serializer, const mip_media_selector self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_media_selector(struct mip_serializer* serializer, mip_media_selector* self)
 {
@@ -35,7 +35,7 @@ void extract_mip_media_selector(struct mip_serializer* serializer, mip_media_sel
 
 void insert_mip_led_action(struct mip_serializer* serializer, const mip_led_action self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_led_action(struct mip_serializer* serializer, mip_led_action* self)
 {
@@ -51,7 +51,7 @@ void extract_mip_led_action(struct mip_serializer* serializer, mip_led_action* s
 
 void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
 {
-    return insert_u32(serializer, (uint32_t)(self));
+    insert_u32(serializer, (uint32_t)(self));
 }
 void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
 {
@@ -62,7 +62,7 @@ void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_ser
 
 void insert_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
 {
-    return insert_u32(serializer, (uint32_t)(self));
+    insert_u32(serializer, (uint32_t)(self));
 }
 void extract_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
 {
@@ -188,7 +188,7 @@ void extract_mip_rtk_connected_device_type_response(mip_serializer* serializer, 
 
 void insert_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_rtk_connected_device_type_command_type(struct mip_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
 {
@@ -381,7 +381,7 @@ void extract_mip_rtk_service_status_response(mip_serializer* serializer, mip_rtk
 
 void insert_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
 {

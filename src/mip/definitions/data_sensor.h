@@ -419,22 +419,19 @@ bool extract_mip_sensor_pps_timestamp_data_from_field(const struct mip_field* fi
 ///
 ///@{
 
-enum mip_sensor_gps_timestamp_data_valid_flags
-{
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE              = 0x0000,
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_PPS_VALID         = 0x0001,
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_REFRESH      = 0x0002,
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x0004,
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x0008,
-    MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x0010,
-};
-typedef enum mip_sensor_gps_timestamp_data_valid_flags mip_sensor_gps_timestamp_data_valid_flags;
+typedef uint16_t mip_sensor_gps_timestamp_data_valid_flags;
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE              = 0x0000;
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_PPS_VALID         = 0x0001; ///<  True when the PPS signal is present.
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_REFRESH      = 0x0002; ///<  Toggles each time the time is updated via internal GPS or the GPS Time Update command (0x01, 0x72).
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x0004; ///<  True if the time has ever been set.
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x0008; ///<  True if the time of week is valid.
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x0010; ///<  True if the week number is valid.
 
 struct mip_sensor_gps_timestamp_data
 {
     double tow; ///< GPS Time of Week [seconds]
     uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
-    enum mip_sensor_gps_timestamp_data_valid_flags valid_flags;
+    mip_sensor_gps_timestamp_data_valid_flags valid_flags;
     
 };
 typedef struct mip_sensor_gps_timestamp_data mip_sensor_gps_timestamp_data;
@@ -521,25 +518,22 @@ bool extract_mip_sensor_north_vector_data_from_field(const struct mip_field* fie
 ///
 ///@{
 
-enum mip_sensor_overrange_status_data_status
-{
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_NONE    = 0x0000,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_X = 0x0001,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Y = 0x0002,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Z = 0x0004,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_X  = 0x0010,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Y  = 0x0020,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Z  = 0x0040,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_X   = 0x0100,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Y   = 0x0200,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x0400,
-    MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000,
-};
-typedef enum mip_sensor_overrange_status_data_status mip_sensor_overrange_status_data_status;
+typedef uint16_t mip_sensor_overrange_status_data_status;
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_NONE    = 0x0000;
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_X = 0x0001; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Y = 0x0002; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ACCEL_Z = 0x0004; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_X  = 0x0010; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Y  = 0x0020; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_GYRO_Z  = 0x0040; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_X   = 0x0100; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Y   = 0x0200; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x0400; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000; ///<  
 
 struct mip_sensor_overrange_status_data
 {
-    enum mip_sensor_overrange_status_data_status status;
+    mip_sensor_overrange_status_data_status status;
     
 };
 typedef struct mip_sensor_overrange_status_data mip_sensor_overrange_status_data;

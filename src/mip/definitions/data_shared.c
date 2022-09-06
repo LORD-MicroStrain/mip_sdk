@@ -117,7 +117,7 @@ bool extract_mip_shared_gps_timestamp_data_from_field(const mip_field* field, vo
 
 void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self)
 {
@@ -212,7 +212,7 @@ bool extract_mip_shared_external_timestamp_data_from_field(const mip_field* fiel
 
 void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self)
 {
@@ -247,7 +247,7 @@ bool extract_mip_shared_external_time_delta_data_from_field(const mip_field* fie
 
 void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self)
 {

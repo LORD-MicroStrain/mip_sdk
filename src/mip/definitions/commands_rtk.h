@@ -60,23 +60,17 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_media_selector
-{
-    MIP_MEDIA_SELECTOR_MEDIA_EXTERNALFLASH = 0,  ///<  
-    MIP_MEDIA_SELECTOR_MEDIA_SD            = 1,  ///<  
-};
-typedef enum mip_media_selector mip_media_selector;
+typedef uint8_t mip_media_selector;
+static const mip_media_selector MIP_MEDIA_SELECTOR_MEDIA_EXTERNALFLASH = 0; ///<  
+static const mip_media_selector MIP_MEDIA_SELECTOR_MEDIA_SD            = 1; ///<  
 
 void insert_mip_media_selector(struct mip_serializer* serializer, const mip_media_selector self);
 void extract_mip_media_selector(struct mip_serializer* serializer, mip_media_selector* self);
 
-enum mip_led_action
-{
-    MIP_LED_ACTION_LED_NONE    = 0,  ///<  
-    MIP_LED_ACTION_LED_FLASH   = 1,  ///<  
-    MIP_LED_ACTION_LED_PULSATE = 2,  ///<  
-};
-typedef enum mip_led_action mip_led_action;
+typedef uint8_t mip_led_action;
+static const mip_led_action MIP_LED_ACTION_LED_NONE    = 0; ///<  
+static const mip_led_action MIP_LED_ACTION_LED_FLASH   = 1; ///<  
+static const mip_led_action MIP_LED_ACTION_LED_PULSATE = 2; ///<  
 
 void insert_mip_led_action(struct mip_serializer* serializer, const mip_led_action self);
 void extract_mip_led_action(struct mip_serializer* serializer, mip_led_action* self);
@@ -91,40 +85,34 @@ void extract_mip_led_action(struct mip_serializer* serializer, mip_led_action* s
 ///
 ///@{
 
-enum mip_rtk_get_status_flags_command_status_flags_legacy
-{
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_NONE                 = 0x00000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATE      = 0x00000007,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_PLATFORMSTATE        = 0x000000F8,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATUSCODE = 0x00000700,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_PLATFORMSTATUSCODE   = 0x00003800,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RESETCODE            = 0x0000C000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SIGNALQUALITY        = 0x000F0000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RESERVED             = 0xFFF00000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSSI                 = 0x03F00000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRP                 = 0x0C000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRQ                 = 0x30000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SINR                 = 0xC0000000,
-};
-typedef enum mip_rtk_get_status_flags_command_status_flags_legacy mip_rtk_get_status_flags_command_status_flags_legacy;
+typedef uint32_t mip_rtk_get_status_flags_command_status_flags_legacy;
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_NONE                 = 0x00000000;
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATE      = 0x00000007; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_PLATFORMSTATE        = 0x000000F8; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_CONTROLLERSTATUSCODE = 0x00000700; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_PLATFORMSTATUSCODE   = 0x00003800; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RESETCODE            = 0x0000C000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SIGNALQUALITY        = 0x000F0000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RESERVED             = 0xFFF00000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSSI                 = 0x03F00000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRP                 = 0x0C000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRQ                 = 0x30000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SINR                 = 0xC0000000; ///<  
 
-enum mip_rtk_get_status_flags_command_status_flags
-{
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NONE                    = 0x00000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_MODEM_STATE             = 0x0000000F,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CONNECTION_TYPE         = 0x000000F0,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RSSI                    = 0x0000FF00,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SIGNAL_QUALITY          = 0x000F0000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_TOWER_CHANGE_INDICATOR  = 0x00F00000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NMEA_TIMEOUT            = 0x01000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SERVER_TIMEOUT          = 0x02000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RTCM_TIMEOUT            = 0x04000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_DEVICE_OUT_OF_RANGE     = 0x08000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_UNAVAILABLE = 0x10000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RESERVED                = 0x20000000,
-    MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_VERSION                 = 0xC0000000,
-};
-typedef enum mip_rtk_get_status_flags_command_status_flags mip_rtk_get_status_flags_command_status_flags;
+typedef uint32_t mip_rtk_get_status_flags_command_status_flags;
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NONE                    = 0x00000000;
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_MODEM_STATE             = 0x0000000F; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CONNECTION_TYPE         = 0x000000F0; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RSSI                    = 0x0000FF00; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SIGNAL_QUALITY          = 0x000F0000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_TOWER_CHANGE_INDICATOR  = 0x00F00000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NMEA_TIMEOUT            = 0x01000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SERVER_TIMEOUT          = 0x02000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RTCM_TIMEOUT            = 0x04000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_DEVICE_OUT_OF_RANGE     = 0x08000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_UNAVAILABLE = 0x10000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RESERVED                = 0x20000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_VERSION                 = 0xC0000000; ///<  
 
 void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self);
 void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self);
@@ -134,7 +122,7 @@ void extract_mip_rtk_get_status_flags_command_status_flags(struct mip_serializer
 
 struct mip_rtk_get_status_flags_response
 {
-    enum mip_rtk_get_status_flags_command_status_flags flags; ///< Model number dependent. See above structures.
+    mip_rtk_get_status_flags_command_status_flags flags; ///< Model number dependent. See above structures.
     
 };
 typedef struct mip_rtk_get_status_flags_response mip_rtk_get_status_flags_response;
@@ -200,17 +188,14 @@ mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_out);
 ///
 ///@{
 
-enum mip_rtk_connected_device_type_command_type
-{
-    MIP_RTK_CONNECTED_DEVICE_TYPE_COMMAND_TYPE_GENERIC = 0,  ///<  
-    MIP_RTK_CONNECTED_DEVICE_TYPE_COMMAND_TYPE_GQ7     = 1,  ///<  
-};
-typedef enum mip_rtk_connected_device_type_command_type mip_rtk_connected_device_type_command_type;
+typedef uint8_t mip_rtk_connected_device_type_command_type;
+static const mip_rtk_connected_device_type_command_type MIP_RTK_CONNECTED_DEVICE_TYPE_COMMAND_TYPE_GENERIC = 0; ///<  
+static const mip_rtk_connected_device_type_command_type MIP_RTK_CONNECTED_DEVICE_TYPE_COMMAND_TYPE_GQ7     = 1; ///<  
 
 struct mip_rtk_connected_device_type_command
 {
-    enum mip_function_selector function;
-    enum mip_rtk_connected_device_type_command_type devType;
+    mip_function_selector function;
+    mip_rtk_connected_device_type_command_type devType;
     
 };
 typedef struct mip_rtk_connected_device_type_command mip_rtk_connected_device_type_command;
@@ -222,7 +207,7 @@ void extract_mip_rtk_connected_device_type_command_type(struct mip_serializer* s
 
 struct mip_rtk_connected_device_type_response
 {
-    enum mip_rtk_connected_device_type_command_type devType;
+    mip_rtk_connected_device_type_command_type devType;
     
 };
 typedef struct mip_rtk_connected_device_type_response mip_rtk_connected_device_type_response;
@@ -296,14 +281,11 @@ mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_out, i
 ///
 ///@{
 
-enum mip_rtk_service_status_command_service_flags
-{
-    MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_NONE                    = 0x00,
-    MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_THROTTLE                = 0x01,
-    MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_CORRECTIONS_UNAVAILABLE = 0x02,
-    MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_RESERVED                = 0xFC,
-};
-typedef enum mip_rtk_service_status_command_service_flags mip_rtk_service_status_command_service_flags;
+typedef uint8_t mip_rtk_service_status_command_service_flags;
+static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_NONE                    = 0x00;
+static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_THROTTLE                = 0x01; ///<  
+static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_CORRECTIONS_UNAVAILABLE = 0x02; ///<  
+static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_RESERVED                = 0xFC; ///<  
 
 struct mip_rtk_service_status_command
 {
@@ -320,7 +302,7 @@ void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer*
 
 struct mip_rtk_service_status_response
 {
-    enum mip_rtk_service_status_command_service_flags flags;
+    mip_rtk_service_status_command_service_flags flags;
     uint32_t recievedBytes;
     uint32_t lastBytes;
     uint64_t lastBytesTime;
@@ -342,7 +324,7 @@ mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t res
 
 struct mip_rtk_prod_erase_storage_command
 {
-    enum mip_media_selector media;
+    mip_media_selector media;
     
 };
 typedef struct mip_rtk_prod_erase_storage_command mip_rtk_prod_erase_storage_command;
@@ -362,7 +344,7 @@ struct mip_rtk_led_control_command
 {
     uint8_t primaryColor[3];
     uint8_t altColor[3];
-    enum mip_led_action act;
+    mip_led_action act;
     uint32_t period;
     
 };

@@ -94,17 +94,17 @@ struct GetStatusFlags
         enum _enumType : uint32_t
         {
             NONE                 = 0x00000000,
-            CONTROLLERSTATE      = 0x00000007,
-            PLATFORMSTATE        = 0x000000F8,
-            CONTROLLERSTATUSCODE = 0x00000700,
-            PLATFORMSTATUSCODE   = 0x00003800,
-            RESETCODE            = 0x0000C000,
-            SIGNALQUALITY        = 0x000F0000,
-            RESERVED             = 0xFFF00000,
-            RSSI                 = 0x03F00000,
-            RSRP                 = 0x0C000000,
-            RSRQ                 = 0x30000000,
-            SINR                 = 0xC0000000,
+            CONTROLLERSTATE      = 0x00000007,  ///<  
+            PLATFORMSTATE        = 0x000000F8,  ///<  
+            CONTROLLERSTATUSCODE = 0x00000700,  ///<  
+            PLATFORMSTATUSCODE   = 0x00003800,  ///<  
+            RESETCODE            = 0x0000C000,  ///<  
+            SIGNALQUALITY        = 0x000F0000,  ///<  
+            RESERVED             = 0xFFF00000,  ///<  
+            RSSI                 = 0x03F00000,  ///<  
+            RSRP                 = 0x0C000000,  ///<  
+            RSRQ                 = 0x30000000,  ///<  
+            SINR                 = 0xC0000000,  ///<  
         };
         uint32_t value = NONE;
         
@@ -122,18 +122,18 @@ struct GetStatusFlags
         enum _enumType : uint32_t
         {
             NONE                    = 0x00000000,
-            MODEM_STATE             = 0x0000000F,
-            CONNECTION_TYPE         = 0x000000F0,
-            RSSI                    = 0x0000FF00,
-            SIGNAL_QUALITY          = 0x000F0000,
-            TOWER_CHANGE_INDICATOR  = 0x00F00000,
-            NMEA_TIMEOUT            = 0x01000000,
-            SERVER_TIMEOUT          = 0x02000000,
-            RTCM_TIMEOUT            = 0x04000000,
-            DEVICE_OUT_OF_RANGE     = 0x08000000,
-            CORRECTIONS_UNAVAILABLE = 0x10000000,
-            RESERVED                = 0x20000000,
-            VERSION                 = 0xC0000000,
+            MODEM_STATE             = 0x0000000F,  ///<  
+            CONNECTION_TYPE         = 0x000000F0,  ///<  
+            RSSI                    = 0x0000FF00,  ///<  
+            SIGNAL_QUALITY          = 0x000F0000,  ///<  
+            TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<  
+            NMEA_TIMEOUT            = 0x01000000,  ///<  
+            SERVER_TIMEOUT          = 0x02000000,  ///<  
+            RTCM_TIMEOUT            = 0x04000000,  ///<  
+            DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<  
+            CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
+            RESERVED                = 0x20000000,  ///<  
+            VERSION                 = 0xC0000000,  ///<  
         };
         uint32_t value = NONE;
         
@@ -419,9 +419,9 @@ struct ServiceStatus
         enum _enumType : uint8_t
         {
             NONE                    = 0x00,
-            THROTTLE                = 0x01,
-            CORRECTIONS_UNAVAILABLE = 0x02,
-            RESERVED                = 0xFC,
+            THROTTLE                = 0x01,  ///<  
+            CORRECTIONS_UNAVAILABLE = 0x02,  ///<  
+            RESERVED                = 0xFC,  ///<  
         };
         uint8_t value = NONE;
         

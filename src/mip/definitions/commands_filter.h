@@ -155,23 +155,17 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_filter_reference_frame
-{
-    MIP_FILTER_REFERENCE_FRAME_ECEF = 1,  ///<  WGS84 Earth-fixed, earth centered coordinates
-    MIP_FILTER_REFERENCE_FRAME_LLH  = 2,  ///<  WGS84 Latitude, longitude, and height above ellipsoid
-};
-typedef enum mip_filter_reference_frame mip_filter_reference_frame;
+typedef uint8_t mip_filter_reference_frame;
+static const mip_filter_reference_frame MIP_FILTER_REFERENCE_FRAME_ECEF = 1; ///<  WGS84 Earth-fixed, earth centered coordinates
+static const mip_filter_reference_frame MIP_FILTER_REFERENCE_FRAME_LLH  = 2; ///<  WGS84 Latitude, longitude, and height above ellipsoid
 
 void insert_mip_filter_reference_frame(struct mip_serializer* serializer, const mip_filter_reference_frame self);
 void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_filter_reference_frame* self);
 
-enum mip_filter_mag_declination_source
-{
-    MIP_FILTER_MAG_DECLINATION_SOURCE_NONE   = 1,  ///<  Magnetic field is assumed to have an declination angle equal to zero.
-    MIP_FILTER_MAG_DECLINATION_SOURCE_WMM    = 2,  ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
-    MIP_FILTER_MAG_DECLINATION_SOURCE_MANUAL = 3,  ///<  Magnetic field is assumed to have the declination angle specified by the user.
-};
-typedef enum mip_filter_mag_declination_source mip_filter_mag_declination_source;
+typedef uint8_t mip_filter_mag_declination_source;
+static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_NONE   = 1; ///<  Magnetic field is assumed to have an declination angle equal to zero.
+static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_WMM    = 2; ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
+static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_MANUAL = 3; ///<  Magnetic field is assumed to have the declination angle specified by the user.
 
 void insert_mip_filter_mag_declination_source(struct mip_serializer* serializer, const mip_filter_mag_declination_source self);
 void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer, mip_filter_mag_declination_source* self);
@@ -240,23 +234,20 @@ mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device, flo
 ///
 ///@{
 
-enum mip_filter_estimation_control_command_enable_flags
-{
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_NONE               = 0x0000,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_BIAS          = 0x0001,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_BIAS         = 0x0002,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_SCALE_FACTOR  = 0x0004,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_SCALE_FACTOR = 0x0008,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ANTENNA_OFFSET     = 0x0010,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x0020,
-    MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x0040,
-};
-typedef enum mip_filter_estimation_control_command_enable_flags mip_filter_estimation_control_command_enable_flags;
+typedef uint16_t mip_filter_estimation_control_command_enable_flags;
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_NONE               = 0x0000;
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_BIAS          = 0x0001; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_BIAS         = 0x0002; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_GYRO_SCALE_FACTOR  = 0x0004; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ACCEL_SCALE_FACTOR = 0x0008; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ANTENNA_OFFSET     = 0x0010; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x0020; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x0040; ///<  
 
 struct mip_filter_estimation_control_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_estimation_control_command_enable_flags enable; ///< See above
+    mip_function_selector function;
+    mip_filter_estimation_control_command_enable_flags enable; ///< See above
     
 };
 typedef struct mip_filter_estimation_control_command mip_filter_estimation_control_command;
@@ -268,7 +259,7 @@ void extract_mip_filter_estimation_control_command_enable_flags(struct mip_seria
 
 struct mip_filter_estimation_control_response
 {
-    enum mip_filter_estimation_control_command_enable_flags enable; ///< See above
+    mip_filter_estimation_control_command_enable_flags enable; ///< See above
     
 };
 typedef struct mip_filter_estimation_control_response mip_filter_estimation_control_response;
@@ -391,19 +382,16 @@ mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_interface
 ///
 ///@{
 
-enum mip_filter_tare_orientation_command_mip_tare_axes
-{
-    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_NONE  = 0x0,
-    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x1,
-    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2,
-    MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4,
-};
-typedef enum mip_filter_tare_orientation_command_mip_tare_axes mip_filter_tare_orientation_command_mip_tare_axes;
+typedef uint8_t mip_filter_tare_orientation_command_mip_tare_axes;
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_NONE  = 0x0;
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x1; ///<  
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2; ///<  
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4; ///<  
 
 struct mip_filter_tare_orientation_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
+    mip_function_selector function;
+    mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
     
 };
 typedef struct mip_filter_tare_orientation_command mip_filter_tare_orientation_command;
@@ -415,7 +403,7 @@ void extract_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serial
 
 struct mip_filter_tare_orientation_response
 {
-    enum mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
+    mip_filter_tare_orientation_command_mip_tare_axes axes; ///< Axes to tare
     
 };
 typedef struct mip_filter_tare_orientation_response mip_filter_tare_orientation_response;
@@ -459,7 +447,7 @@ mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* device)
 
 struct mip_filter_sensor_to_vehicle_rotation_euler_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     float roll; ///< [radians]
     float pitch; ///< [radians]
     float yaw; ///< [radians]
@@ -523,7 +511,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct mip_in
 
 struct mip_filter_sensor_to_vehicle_rotation_dcm_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     float dcm[9];
     
 };
@@ -582,7 +570,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip_inte
 
 struct mip_filter_sensor_to_vehicle_rotation_quaternion_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     float quat[4];
     
 };
@@ -622,7 +610,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(struct m
 
 struct mip_filter_sensor_to_vehicle_offset_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     float offset[3]; ///< [meters]
     
 };
@@ -659,7 +647,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_interface*
 
 struct mip_filter_antenna_offset_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     float offset[3]; ///< [meters]
     
 };
@@ -693,19 +681,16 @@ mip_cmd_result mip_filter_default_antenna_offset(struct mip_interface* device);
 ///
 ///@{
 
-enum mip_filter_gnss_source_command_source
-{
-    MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_ALL_INT = 1,  ///<  All internal receivers
-    MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_EXT     = 2,  ///<  External GNSS messages provided by user
-    MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_INT_1   = 3,  ///<  Internal GNSS Receiver 1 only
-    MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_INT_2   = 4,  ///<  Internal GNSS Receiver 2 only
-};
-typedef enum mip_filter_gnss_source_command_source mip_filter_gnss_source_command_source;
+typedef uint8_t mip_filter_gnss_source_command_source;
+static const mip_filter_gnss_source_command_source MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_ALL_INT = 1; ///<  All internal receivers
+static const mip_filter_gnss_source_command_source MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_EXT     = 2; ///<  External GNSS messages provided by user
+static const mip_filter_gnss_source_command_source MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_INT_1   = 3; ///<  Internal GNSS Receiver 1 only
+static const mip_filter_gnss_source_command_source MIP_FILTER_GNSS_SOURCE_COMMAND_SOURCE_INT_2   = 4; ///<  Internal GNSS Receiver 2 only
 
 struct mip_filter_gnss_source_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_gnss_source_command_source source;
+    mip_function_selector function;
+    mip_filter_gnss_source_command_source source;
     
 };
 typedef struct mip_filter_gnss_source_command mip_filter_gnss_source_command;
@@ -717,7 +702,7 @@ void extract_mip_filter_gnss_source_command_source(struct mip_serializer* serial
 
 struct mip_filter_gnss_source_response
 {
-    enum mip_filter_gnss_source_command_source source;
+    mip_filter_gnss_source_command_source source;
     
 };
 typedef struct mip_filter_gnss_source_response mip_filter_gnss_source_response;
@@ -748,23 +733,20 @@ mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device);
 ///
 ///@{
 
-enum mip_filter_heading_source_command_source
-{
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_NONE                          = 0,  ///<  See note 3
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG                           = 1,  ///<  
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2,  ///<  Seen notes 1,2
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_EXTERNAL                      = 3,  ///<  
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG              = 4,  ///<  
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_EXTERNAL         = 5,  ///<  
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG_AND_EXTERNAL              = 6,  ///<  
-    MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG_AND_EXTERNAL = 7,  ///<  
-};
-typedef enum mip_filter_heading_source_command_source mip_filter_heading_source_command_source;
+typedef uint8_t mip_filter_heading_source_command_source;
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_NONE                          = 0; ///<  See note 3
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG                           = 1; ///<  
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2; ///<  Seen notes 1,2
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_EXTERNAL                      = 3; ///<  
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG              = 4; ///<  
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_EXTERNAL         = 5; ///<  
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG_AND_EXTERNAL              = 6; ///<  
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG_AND_EXTERNAL = 7; ///<  
 
 struct mip_filter_heading_source_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_heading_source_command_source source;
+    mip_function_selector function;
+    mip_filter_heading_source_command_source source;
     
 };
 typedef struct mip_filter_heading_source_command mip_filter_heading_source_command;
@@ -776,7 +758,7 @@ void extract_mip_filter_heading_source_command_source(struct mip_serializer* ser
 
 struct mip_filter_heading_source_response
 {
-    enum mip_filter_heading_source_command_source source;
+    mip_filter_heading_source_command_source source;
     
 };
 typedef struct mip_filter_heading_source_response mip_filter_heading_source_response;
@@ -806,7 +788,7 @@ mip_cmd_result mip_filter_default_heading_source(struct mip_interface* device);
 
 struct mip_filter_auto_init_control_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< See above
     
 };
@@ -849,7 +831,7 @@ mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* device
 
 struct mip_filter_altitude_aiding_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t aiding_selector; ///< See above
     
 };
@@ -883,7 +865,7 @@ mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* device);
 
 struct mip_filter_auto_zupt_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disable, 1 - Enable
     float threshold; ///< [meters/second]
     
@@ -919,7 +901,7 @@ mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device);
 
 struct mip_filter_auto_angular_zupt_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disable, 1 - Enable
     float threshold; ///< [radians/second]
     
@@ -973,22 +955,19 @@ mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* device);
 ///
 ///@{
 
-enum mip_filter_aiding_measurement_enable_command_aiding_source
-{
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL     = 0,  ///<  GNSS Position and Velocity
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_HEADING     = 1,  ///<  GNSS Heading (dual antenna)
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALTIMETER        = 2,  ///<  Altimeter
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_SPEED            = 3,  ///<  Speed sensor / Odometer
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER     = 4,  ///<  Magnetometer
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING = 5,  ///<  External heading input
-    MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL              = 65535,  ///<  Save/load/reset all options
-};
-typedef enum mip_filter_aiding_measurement_enable_command_aiding_source mip_filter_aiding_measurement_enable_command_aiding_source;
+typedef uint16_t mip_filter_aiding_measurement_enable_command_aiding_source;
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL     = 0;     ///<  GNSS Position and Velocity
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_HEADING     = 1;     ///<  GNSS Heading (dual antenna)
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALTIMETER        = 2;     ///<  Altimeter
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_SPEED            = 3;     ///<  Speed sensor / Odometer
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER     = 4;     ///<  Magnetometer
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING = 5;     ///<  External heading input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL              = 65535; ///<  Save/load/reset all options
 
 struct mip_filter_aiding_measurement_enable_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
+    mip_function_selector function;
+    mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
     bool enable; ///< Controls the aiding sorce
     
 };
@@ -1001,7 +980,7 @@ void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct m
 
 struct mip_filter_aiding_measurement_enable_response
 {
-    enum mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
+    mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
     bool enable; ///< Controls the aiding sorce
     
 };
@@ -1037,7 +1016,7 @@ mip_cmd_result mip_filter_run(struct mip_interface* device);
 
 struct mip_filter_kinematic_constraint_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t acceleration_constraint_selection; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
     uint8_t velocity_constraint_selection; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
     uint8_t angular_constraint_selection; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
@@ -1075,36 +1054,30 @@ mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface* dev
 ///
 ///@{
 
-enum mip_filter_initialization_configuration_command_alignment_selector
-{
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_NONE         = 0x00,
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01,
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02,
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04,
-};
-typedef enum mip_filter_initialization_configuration_command_alignment_selector mip_filter_initialization_configuration_command_alignment_selector;
+typedef uint8_t mip_filter_initialization_configuration_command_alignment_selector;
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_NONE         = 0x00;
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01; ///<  Dual-antenna GNSS alignment
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02; ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04; ///<  Magnetometer heading alignment
 
-enum mip_filter_initialization_configuration_command_initial_condition_source
-{
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT        = 0,  ///<  Automatic position, velocity and attitude
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_PITCH_ROLL = 1,  ///<  Automatic position and velocity, automatic pitch and roll, and user-specified heading
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL            = 2,  ///<  Automatic position and velocity, with fully user-specified attitude
-    MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
-};
-typedef enum mip_filter_initialization_configuration_command_initial_condition_source mip_filter_initialization_configuration_command_initial_condition_source;
+typedef uint8_t mip_filter_initialization_configuration_command_initial_condition_source;
+static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT        = 0; ///<  Automatic position, velocity and attitude
+static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_PITCH_ROLL = 1; ///<  Automatic position and velocity, automatic pitch and roll, and user-specified heading
+static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL            = 2; ///<  Automatic position and velocity, with fully user-specified attitude
+static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_MANUAL                  = 3; ///<  User-specified position, velocity, and attitude.
 
 struct mip_filter_initialization_configuration_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t wait_for_run_command; ///< Initialize filter only after receiving "run" command
-    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
-    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
+    mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
     float initial_heading; ///< User-specified initial platform heading (degrees).
     float initial_pitch; ///< User-specified initial platform pitch (degrees)
     float initial_roll; ///< User-specified initial platform roll (degrees)
     float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
     float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
-    enum mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
+    mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
 typedef struct mip_filter_initialization_configuration_command mip_filter_initialization_configuration_command;
@@ -1120,14 +1093,14 @@ void extract_mip_filter_initialization_configuration_command_initial_condition_s
 struct mip_filter_initialization_configuration_response
 {
     uint8_t wait_for_run_command; ///< Initialize filter only after receiving "run" command
-    enum mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
-    enum mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src; ///< Initial condition source:
+    mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
     float initial_heading; ///< User-specified initial platform heading (degrees).
     float initial_pitch; ///< User-specified initial platform pitch (degrees)
     float initial_roll; ///< User-specified initial platform roll (degrees)
     float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
     float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
-    enum mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
+    mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
 typedef struct mip_filter_initialization_configuration_response mip_filter_initialization_configuration_response;
@@ -1149,7 +1122,7 @@ mip_cmd_result mip_filter_default_initialization_configuration(struct mip_interf
 
 struct mip_filter_adaptive_filter_options_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t level; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
     uint16_t time_limit; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     
@@ -1185,7 +1158,7 @@ mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interface* 
 
 struct mip_filter_multi_antenna_offset_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t receiver_id; ///< Receiver: 1, 2, etc...
     float antenna_offset[3]; ///< Antenna lever arm offset vector in the vehicle frame (m)
     
@@ -1219,9 +1192,9 @@ mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface* dev
 
 struct mip_filter_rel_pos_configuration_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
-    enum mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
+    mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
     double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
     
 };
@@ -1232,7 +1205,7 @@ void extract_mip_filter_rel_pos_configuration_command(struct mip_serializer* ser
 struct mip_filter_rel_pos_configuration_response
 {
     uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
-    enum mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
+    mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
     double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
     
 };
@@ -1258,16 +1231,13 @@ mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interface* de
 ///
 ///@{
 
-enum mip_filter_ref_point_lever_arm_command_reference_point_selector
-{
-    MIP_FILTER_REF_POINT_LEVER_ARM_COMMAND_REFERENCE_POINT_SELECTOR_VEH = 1,  ///<  Defines the origin of the vehicle
-};
-typedef enum mip_filter_ref_point_lever_arm_command_reference_point_selector mip_filter_ref_point_lever_arm_command_reference_point_selector;
+typedef uint8_t mip_filter_ref_point_lever_arm_command_reference_point_selector;
+static const mip_filter_ref_point_lever_arm_command_reference_point_selector MIP_FILTER_REF_POINT_LEVER_ARM_COMMAND_REFERENCE_POINT_SELECTOR_VEH = 1; ///<  Defines the origin of the vehicle
 
 struct mip_filter_ref_point_lever_arm_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
+    mip_function_selector function;
+    mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
     float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
@@ -1280,7 +1250,7 @@ void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(str
 
 struct mip_filter_ref_point_lever_arm_response
 {
-    enum mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
+    mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
     float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
@@ -1332,7 +1302,7 @@ mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, uint8_
 
 struct mip_filter_speed_lever_arm_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t source; ///< Reserved, must be 1.
     float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
@@ -1372,7 +1342,7 @@ mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* device, 
 
 struct mip_filter_wheeled_vehicle_constraint_control_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
@@ -1408,7 +1378,7 @@ mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct mip_
 
 struct mip_filter_vertical_gyro_constraint_control_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disable, 1 - Enable
     
 };
@@ -1442,7 +1412,7 @@ mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct mip_in
 
 struct mip_filter_gnss_antenna_cal_control_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disable, 1 - Enable
     float max_offset; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     
@@ -1476,8 +1446,8 @@ mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_interface*
 
 struct mip_filter_magnetic_declination_source_command
 {
-    enum mip_function_selector function;
-    enum mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
+    mip_function_selector function;
+    mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
     float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     
 };
@@ -1487,7 +1457,7 @@ void extract_mip_filter_magnetic_declination_source_command(struct mip_serialize
 
 struct mip_filter_magnetic_declination_source_response
 {
-    enum mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
+    mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
     float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     
 };

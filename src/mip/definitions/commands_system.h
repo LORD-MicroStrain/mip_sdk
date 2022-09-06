@@ -71,7 +71,7 @@ enum { MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03 };
 
 struct mip_system_comm_mode_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t mode;
     
 };

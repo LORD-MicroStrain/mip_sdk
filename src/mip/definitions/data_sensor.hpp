@@ -481,11 +481,11 @@ struct GpsTimestamp
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
-            PPS_VALID         = 0x0001,
-            TIME_REFRESH      = 0x0002,
-            TIME_INITIALIZED  = 0x0004,
-            TOW_VALID         = 0x0008,
-            WEEK_NUMBER_VALID = 0x0010,
+            PPS_VALID         = 0x0001,  ///<  True when the PPS signal is present.
+            TIME_REFRESH      = 0x0002,  ///<  Toggles each time the time is updated via internal GPS or the GPS Time Update command (0x01, 0x72).
+            TIME_INITIALIZED  = 0x0004,  ///<  True if the time has ever been set.
+            TOW_VALID         = 0x0008,  ///<  True if the time of week is valid.
+            WEEK_NUMBER_VALID = 0x0010,  ///<  True if the week number is valid.
         };
         uint16_t value = NONE;
         
@@ -603,16 +603,16 @@ struct OverrangeStatus
         enum _enumType : uint16_t
         {
             NONE    = 0x0000,
-            ACCEL_X = 0x0001,
-            ACCEL_Y = 0x0002,
-            ACCEL_Z = 0x0004,
-            GYRO_X  = 0x0010,
-            GYRO_Y  = 0x0020,
-            GYRO_Z  = 0x0040,
-            MAG_X   = 0x0100,
-            MAG_Y   = 0x0200,
-            MAG_Z   = 0x0400,
-            PRESS   = 0x1000,
+            ACCEL_X = 0x0001,  ///<  
+            ACCEL_Y = 0x0002,  ///<  
+            ACCEL_Z = 0x0004,  ///<  
+            GYRO_X  = 0x0010,  ///<  
+            GYRO_Y  = 0x0020,  ///<  
+            GYRO_Z  = 0x0040,  ///<  
+            MAG_X   = 0x0100,  ///<  
+            MAG_Y   = 0x0200,  ///<  
+            MAG_Z   = 0x0400,  ///<  
+            PRESS   = 0x1000,  ///<  
         };
         uint16_t value = NONE;
         

@@ -910,9 +910,9 @@ struct GnssSbasSettings
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
-            ENABLE_RANGING     = 0x0001,
-            ENABLE_CORRECTIONS = 0x0002,
-            APPLY_INTEGRITY    = 0x0004,
+            ENABLE_RANGING     = 0x0001,  ///<  Use SBAS pseudoranges in position solution
+            ENABLE_CORRECTIONS = 0x0002,  ///<  Use SBAS differential corrections
+            APPLY_INTEGRITY    = 0x0004,  ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
         };
         uint16_t value = NONE;
         
@@ -1180,9 +1180,9 @@ struct GpioConfig
         enum _enumType : uint8_t
         {
             NONE       = 0x00,
-            OPEN_DRAIN = 0x01,
-            PULLDOWN   = 0x02,
-            PULLUP     = 0x04,
+            OPEN_DRAIN = 0x01,  ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pullup resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
+            PULLDOWN   = 0x02,  ///<  The pin will have an internal pulldown resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pullup. See the device specifications for the resistance value.
+            PULLUP     = 0x04,  ///<  The pin will have an internal pullup resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pulldown. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
         };
         uint8_t value = NONE;
         
@@ -1480,9 +1480,9 @@ struct GetEventTriggerStatus
         enum _enumType : uint8_t
         {
             NONE    = 0x00,
-            ACTIVE  = 0x01,
-            ENABLED = 0x02,
-            TEST    = 0x04,
+            ACTIVE  = 0x01,  ///<  True if the trigger is currently active (either due to its logic or being in test mode).
+            ENABLED = 0x02,  ///<  True if the trigger is enabled.
+            TEST    = 0x04,  ///<  True if the trigger is in test mode.
         };
         uint8_t value = NONE;
         

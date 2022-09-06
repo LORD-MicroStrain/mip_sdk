@@ -74,47 +74,41 @@ typedef struct mip_base_device_info mip_base_device_info;
 void insert_mip_base_device_info(struct mip_serializer* serializer, const mip_base_device_info* self);
 void extract_mip_base_device_info(struct mip_serializer* serializer, mip_base_device_info* self);
 
-enum mip_time_format
-{
-    MIP_TIME_FORMAT_GPS = 1,  ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
-};
-typedef enum mip_time_format mip_time_format;
+typedef uint8_t mip_time_format;
+static const mip_time_format MIP_TIME_FORMAT_GPS = 1; ///<  GPS time, a = week number since 1980, b = time of week in milliseconds.
 
 void insert_mip_time_format(struct mip_serializer* serializer, const mip_time_format self);
 void extract_mip_time_format(struct mip_serializer* serializer, mip_time_format* self);
 
-enum mip_commanded_test_bits_gq7
-{
-    MIP_COMMANDED_TEST_BITS_GQ7_NONE                   = 0x00000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_HARDWARE_FAULT = 0x00000001,
-    MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_FIRMWARE_FAULT = 0x00000002,
-    MIP_COMMANDED_TEST_BITS_GQ7_TIMING_OVERLOAD        = 0x00000004,
-    MIP_COMMANDED_TEST_BITS_GQ7_BUFFER_OVERRUN         = 0x00000008,
-    MIP_COMMANDED_TEST_BITS_GQ7_RESERVED               = 0x000000F0,
-    MIP_COMMANDED_TEST_BITS_GQ7_IPC_IMU_FAULT          = 0x00000100,
-    MIP_COMMANDED_TEST_BITS_GQ7_IPC_NAV_FAULT          = 0x00000200,
-    MIP_COMMANDED_TEST_BITS_GQ7_IPC_GNSS_FAULT         = 0x00000400,
-    MIP_COMMANDED_TEST_BITS_GQ7_COMMS_FAULT            = 0x00000800,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_ACCEL_FAULT        = 0x00001000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_GYRO_FAULT         = 0x00002000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_MAG_FAULT          = 0x00004000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_PRESS_FAULT        = 0x00008000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_RESERVED           = 0x00030000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_CAL_ERROR          = 0x00040000,
-    MIP_COMMANDED_TEST_BITS_GQ7_IMU_GENERAL_FAULT      = 0x00080000,
-    MIP_COMMANDED_TEST_BITS_GQ7_FILT_RESERVED          = 0x00300000,
-    MIP_COMMANDED_TEST_BITS_GQ7_FILT_SOLUTION_FAULT    = 0x00400000,
-    MIP_COMMANDED_TEST_BITS_GQ7_FILT_GENERAL_FAULT     = 0x00800000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER1_FAULT   = 0x01000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA1_FAULT    = 0x02000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER2_FAULT   = 0x04000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA2_FAULT    = 0x08000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTCM_FAILURE      = 0x10000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FAULT         = 0x20000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000,
-    MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000,
-};
-typedef enum mip_commanded_test_bits_gq7 mip_commanded_test_bits_gq7;
+typedef uint32_t mip_commanded_test_bits_gq7;
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_NONE                   = 0x00000000;
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_HARDWARE_FAULT = 0x00000001; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GENERAL_FIRMWARE_FAULT = 0x00000002; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_TIMING_OVERLOAD        = 0x00000004; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_BUFFER_OVERRUN         = 0x00000008; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_RESERVED               = 0x000000F0; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IPC_IMU_FAULT          = 0x00000100; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IPC_NAV_FAULT          = 0x00000200; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IPC_GNSS_FAULT         = 0x00000400; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_COMMS_FAULT            = 0x00000800; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_ACCEL_FAULT        = 0x00001000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_GYRO_FAULT         = 0x00002000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_MAG_FAULT          = 0x00004000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_PRESS_FAULT        = 0x00008000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_RESERVED           = 0x00030000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_CAL_ERROR          = 0x00040000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_IMU_GENERAL_FAULT      = 0x00080000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_FILT_RESERVED          = 0x00300000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_FILT_SOLUTION_FAULT    = 0x00400000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_FILT_GENERAL_FAULT     = 0x00800000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER1_FAULT   = 0x01000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA1_FAULT    = 0x02000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RECEIVER2_FAULT   = 0x04000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_ANTENNA2_FAULT    = 0x08000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTCM_FAILURE      = 0x10000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FAULT         = 0x20000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000; ///<  
 
 void insert_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, const mip_commanded_test_bits_gq7 self);
 void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_commanded_test_bits_gq7* self);
@@ -158,7 +152,7 @@ mip_cmd_result mip_base_set_idle(struct mip_interface* device);
 
 struct mip_base_get_device_info_response
 {
-    struct mip_base_device_info device_info;
+    mip_base_device_info device_info;
     
 };
 typedef struct mip_base_get_device_info_response mip_base_get_device_info_response;
@@ -288,7 +282,7 @@ mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* re
 enum { MIP_BASE_COMM_SPEED_COMMAND_ALL_PORTS = 0 };
 struct mip_base_comm_speed_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t port; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
     uint32_t baud; ///< Port baud rate. Must be a supported rate.
     
@@ -322,17 +316,14 @@ mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t
 ///
 ///@{
 
-enum mip_base_gps_time_update_command_field_id
-{
-    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_WEEK_NUMBER  = 1,  ///<  Week number.
-    MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_TIME_OF_WEEK = 2,  ///<  Time of week in seconds.
-};
-typedef enum mip_base_gps_time_update_command_field_id mip_base_gps_time_update_command_field_id;
+typedef uint8_t mip_base_gps_time_update_command_field_id;
+static const mip_base_gps_time_update_command_field_id MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_WEEK_NUMBER  = 1; ///<  Week number.
+static const mip_base_gps_time_update_command_field_id MIP_BASE_GPS_TIME_UPDATE_COMMAND_FIELD_ID_TIME_OF_WEEK = 2; ///<  Time of week in seconds.
 
 struct mip_base_gps_time_update_command
 {
-    enum mip_function_selector function;
-    enum mip_base_gps_time_update_command_field_id field_id; ///< Determines how to interpret value.
+    mip_function_selector function;
+    mip_base_gps_time_update_command_field_id field_id; ///< Determines how to interpret value.
     uint32_t value; ///< Week number or time of week, depending on the field_id.
     
 };

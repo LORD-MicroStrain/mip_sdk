@@ -47,7 +47,7 @@ void extract_mip_nmea_message(mip_serializer* serializer, mip_nmea_message* self
 
 void insert_mip_nmea_message_message_id(struct mip_serializer* serializer, const mip_nmea_message_message_id self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_nmea_message_message_id(struct mip_serializer* serializer, mip_nmea_message_message_id* self)
 {
@@ -58,7 +58,7 @@ void extract_mip_nmea_message_message_id(struct mip_serializer* serializer, mip_
 
 void insert_mip_nmea_message_talker_id(struct mip_serializer* serializer, const mip_nmea_message_talker_id self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_nmea_message_talker_id(struct mip_serializer* serializer, mip_nmea_message_talker_id* self)
 {
@@ -69,7 +69,7 @@ void extract_mip_nmea_message_talker_id(struct mip_serializer* serializer, mip_n
 
 void insert_mip_sensor_range_type(struct mip_serializer* serializer, const mip_sensor_range_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_sensor_range_type(struct mip_serializer* serializer, mip_sensor_range_type* self)
 {
@@ -1260,7 +1260,7 @@ void extract_mip_3dm_factory_streaming_command(mip_serializer* serializer, mip_3
 
 void insert_mip_3dm_factory_streaming_command_action(struct mip_serializer* serializer, const mip_3dm_factory_streaming_command_action self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_factory_streaming_command_action(struct mip_serializer* serializer, mip_3dm_factory_streaming_command_action* self)
 {
@@ -1477,7 +1477,7 @@ void extract_mip_3dm_gnss_sbas_settings_response(mip_serializer* serializer, mip
 
 void insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(struct mip_serializer* serializer, const mip_3dm_gnss_sbas_settings_command_sbasoptions self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(struct mip_serializer* serializer, mip_3dm_gnss_sbas_settings_command_sbasoptions* self)
 {
@@ -1879,7 +1879,7 @@ void extract_mip_3dm_pps_source_response(mip_serializer* serializer, mip_3dm_pps
 
 void insert_mip_3dm_pps_source_command_source(struct mip_serializer* serializer, const mip_3dm_pps_source_command_source self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_pps_source_command_source(struct mip_serializer* serializer, mip_3dm_pps_source_command_source* self)
 {
@@ -2022,7 +2022,7 @@ void extract_mip_3dm_gpio_config_response(mip_serializer* serializer, mip_3dm_gp
 
 void insert_mip_3dm_gpio_config_command_feature(struct mip_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_gpio_config_command_feature(struct mip_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
 {
@@ -2033,7 +2033,7 @@ void extract_mip_3dm_gpio_config_command_feature(struct mip_serializer* serializ
 
 void insert_mip_3dm_gpio_config_command_behavior(struct mip_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_gpio_config_command_behavior(struct mip_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
 {
@@ -2044,7 +2044,7 @@ void extract_mip_3dm_gpio_config_command_behavior(struct mip_serializer* seriali
 
 void insert_mip_3dm_gpio_config_command_pin_mode(struct mip_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_gpio_config_command_pin_mode(struct mip_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
 {
@@ -2293,7 +2293,7 @@ void extract_mip_3dm_odometer_response(mip_serializer* serializer, mip_3dm_odome
 
 void insert_mip_3dm_odometer_command_mode(struct mip_serializer* serializer, const mip_3dm_odometer_command_mode self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_odometer_command_mode(struct mip_serializer* serializer, mip_3dm_odometer_command_mode* self)
 {
@@ -2428,7 +2428,7 @@ void extract_mip_3dm_get_event_support_response(mip_serializer* serializer, mip_
 
 void insert_mip_3dm_get_event_support_command_query(struct mip_serializer* serializer, const mip_3dm_get_event_support_command_query self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_get_event_support_command_query(struct mip_serializer* serializer, mip_3dm_get_event_support_command_query* self)
 {
@@ -2529,7 +2529,7 @@ void extract_mip_3dm_event_control_response(mip_serializer* serializer, mip_3dm_
 
 void insert_mip_3dm_event_control_command_mode(struct mip_serializer* serializer, const mip_3dm_event_control_command_mode self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_control_command_mode(struct mip_serializer* serializer, mip_3dm_event_control_command_mode* self)
 {
@@ -2666,7 +2666,7 @@ void extract_mip_3dm_get_event_trigger_status_response(mip_serializer* serialize
 
 void insert_mip_3dm_get_event_trigger_status_command_status(struct mip_serializer* serializer, const mip_3dm_get_event_trigger_status_command_status self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_get_event_trigger_status_command_status(struct mip_serializer* serializer, mip_3dm_get_event_trigger_status_command_status* self)
 {
@@ -2928,7 +2928,7 @@ void extract_mip_3dm_event_trigger_command_gpio_params(mip_serializer* serialize
 
 void insert_mip_3dm_event_trigger_command_gpio_params_mode(struct mip_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params_mode self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_trigger_command_gpio_params_mode(struct mip_serializer* serializer, mip_3dm_event_trigger_command_gpio_params_mode* self)
 {
@@ -3002,7 +3002,7 @@ void extract_mip_3dm_event_trigger_command_threshold_params(mip_serializer* seri
 
 void insert_mip_3dm_event_trigger_command_threshold_params_type(struct mip_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_trigger_command_threshold_params_type(struct mip_serializer* serializer, mip_3dm_event_trigger_command_threshold_params_type* self)
 {
@@ -3030,7 +3030,7 @@ void extract_mip_3dm_event_trigger_command_combination_params(mip_serializer* se
 
 void insert_mip_3dm_event_trigger_command_type(struct mip_serializer* serializer, const mip_3dm_event_trigger_command_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_trigger_command_type(struct mip_serializer* serializer, mip_3dm_event_trigger_command_type* self)
 {
@@ -3262,7 +3262,7 @@ void extract_mip_3dm_event_action_command_gpio_params(mip_serializer* serializer
 
 void insert_mip_3dm_event_action_command_gpio_params_mode(struct mip_serializer* serializer, const mip_3dm_event_action_command_gpio_params_mode self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_action_command_gpio_params_mode(struct mip_serializer* serializer, mip_3dm_event_action_command_gpio_params_mode* self)
 {
@@ -3300,7 +3300,7 @@ void extract_mip_3dm_event_action_command_message_params(mip_serializer* seriali
 
 void insert_mip_3dm_event_action_command_type(struct mip_serializer* serializer, const mip_3dm_event_action_command_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_3dm_event_action_command_type(struct mip_serializer* serializer, mip_3dm_event_action_command_type* self)
 {

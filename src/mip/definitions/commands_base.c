@@ -65,7 +65,7 @@ void extract_mip_base_device_info(mip_serializer* serializer, mip_base_device_in
 
 void insert_mip_time_format(struct mip_serializer* serializer, const mip_time_format self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_time_format(struct mip_serializer* serializer, mip_time_format* self)
 {
@@ -76,7 +76,7 @@ void extract_mip_time_format(struct mip_serializer* serializer, mip_time_format*
 
 void insert_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, const mip_commanded_test_bits_gq7 self)
 {
-    return insert_u32(serializer, (uint32_t)(self));
+    insert_u32(serializer, (uint32_t)(self));
 }
 void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_commanded_test_bits_gq7* self)
 {
@@ -360,7 +360,7 @@ void extract_mip_base_gps_time_update_command(mip_serializer* serializer, mip_ba
 
 void insert_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
 {

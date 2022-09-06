@@ -433,7 +433,7 @@ bool extract_mip_sensor_gps_timestamp_data_from_field(const mip_field* field, vo
 
 void insert_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self)
 {
@@ -536,7 +536,7 @@ bool extract_mip_sensor_overrange_status_data_from_field(const mip_field* field,
 
 void insert_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, const mip_sensor_overrange_status_data_status self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, mip_sensor_overrange_status_data_status* self)
 {

@@ -80,7 +80,7 @@ void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializ
 struct mip_gnss_receiver_info_response
 {
     uint8_t num_receivers; ///< Number of physical receivers in the device
-    struct mip_gnss_receiver_info_command_info* receiver_info;
+    mip_gnss_receiver_info_command_info* receiver_info;
     
 };
 typedef struct mip_gnss_receiver_info_response mip_gnss_receiver_info_response;
@@ -99,7 +99,7 @@ mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num
 
 struct mip_gnss_signal_configuration_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t gps_enable; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
     uint8_t glonass_enable; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
     uint8_t galileo_enable; ///< Bitfield 0: Enable E1,   1: Enable E5B
@@ -140,7 +140,7 @@ mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* devic
 
 struct mip_gnss_rtk_dongle_configuration_command
 {
-    enum mip_function_selector function;
+    mip_function_selector function;
     uint8_t enable; ///< 0 - Disabled, 1- Enabled
     uint8_t reserved[3];
     

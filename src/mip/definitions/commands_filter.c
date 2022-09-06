@@ -24,7 +24,7 @@ struct mip_field;
 
 void insert_mip_filter_reference_frame(struct mip_serializer* serializer, const mip_filter_reference_frame self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_filter_reference_frame* self)
 {
@@ -35,7 +35,7 @@ void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_f
 
 void insert_mip_filter_mag_declination_source(struct mip_serializer* serializer, const mip_filter_mag_declination_source self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer, mip_filter_mag_declination_source* self)
 {
@@ -122,7 +122,7 @@ void extract_mip_filter_estimation_control_response(mip_serializer* serializer, 
 
 void insert_mip_filter_estimation_control_command_enable_flags(struct mip_serializer* serializer, const mip_filter_estimation_control_command_enable_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_estimation_control_command_enable_flags(struct mip_serializer* serializer, mip_filter_estimation_control_command_enable_flags* self)
 {
@@ -400,7 +400,7 @@ void extract_mip_filter_tare_orientation_response(mip_serializer* serializer, mi
 
 void insert_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serializer* serializer, const mip_filter_tare_orientation_command_mip_tare_axes self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serializer* serializer, mip_filter_tare_orientation_command_mip_tare_axes* self)
 {
@@ -1113,7 +1113,7 @@ void extract_mip_filter_gnss_source_response(mip_serializer* serializer, mip_fil
 
 void insert_mip_filter_gnss_source_command_source(struct mip_serializer* serializer, const mip_filter_gnss_source_command_source self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_gnss_source_command_source(struct mip_serializer* serializer, mip_filter_gnss_source_command_source* self)
 {
@@ -1232,7 +1232,7 @@ void extract_mip_filter_heading_source_response(mip_serializer* serializer, mip_
 
 void insert_mip_filter_heading_source_command_source(struct mip_serializer* serializer, const mip_filter_heading_source_command_source self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_heading_source_command_source(struct mip_serializer* serializer, mip_filter_heading_source_command_source* self)
 {
@@ -1825,7 +1825,7 @@ void extract_mip_filter_aiding_measurement_enable_response(mip_serializer* seria
 
 void insert_mip_filter_aiding_measurement_enable_command_aiding_source(struct mip_serializer* serializer, const mip_filter_aiding_measurement_enable_command_aiding_source self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct mip_serializer* serializer, mip_filter_aiding_measurement_enable_command_aiding_source* self)
 {
@@ -2166,7 +2166,7 @@ void extract_mip_filter_initialization_configuration_response(mip_serializer* se
 
 void insert_mip_filter_initialization_configuration_command_alignment_selector(struct mip_serializer* serializer, const mip_filter_initialization_configuration_command_alignment_selector self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_initialization_configuration_command_alignment_selector(struct mip_serializer* serializer, mip_filter_initialization_configuration_command_alignment_selector* self)
 {
@@ -2177,7 +2177,7 @@ void extract_mip_filter_initialization_configuration_command_alignment_selector(
 
 void insert_mip_filter_initialization_configuration_command_initial_condition_source(struct mip_serializer* serializer, const mip_filter_initialization_configuration_command_initial_condition_source self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_initialization_configuration_command_initial_condition_source(struct mip_serializer* serializer, mip_filter_initialization_configuration_command_initial_condition_source* self)
 {
@@ -2751,7 +2751,7 @@ void extract_mip_filter_ref_point_lever_arm_response(mip_serializer* serializer,
 
 void insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct mip_serializer* serializer, const mip_filter_ref_point_lever_arm_command_reference_point_selector self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct mip_serializer* serializer, mip_filter_ref_point_lever_arm_command_reference_point_selector* self)
 {
