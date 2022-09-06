@@ -48,6 +48,7 @@ enum mip_function_selector
     MIP_FUNCTION_LOAD  = 0x04,
     MIP_FUNCTION_RESET = 0x05,
 };
+typedef enum mip_function_selector mip_function_selector;
 void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self);
 void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self);
 
