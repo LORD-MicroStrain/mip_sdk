@@ -335,7 +335,7 @@ remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descrip
 
     *payload_ptr_out = NULL;
 
-    if( field_length <= remaining )
+    if( (remaining_count)field_length <= remaining )
     {
         packet_length field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
 

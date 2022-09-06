@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -6,10 +5,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+set(LIBRARY_NAME mip)
+
+# Used for conditional cmake options
+include(CMakeDependentOption)
+
+# Need to set this before the project for usage of CMAKE_TOOLCHAIN_FILE
+option(BUILD_ARDUINO "Build the library for Arduino support" OFF)
+
+if(BUILD_ARDUINO)
+    set(CMAKE_TOOLCHAIN_FILE
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/arduino/Arduino-Toolchain.cmake"
+        CACHE
+        FILEPATH
+        "Toolchain file used for Arduino builds."
+        FORCE)
+endif()
+
 project(
     "MIP SDK"
     VERSION "0.0.01"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
+    HOMEPAGE_URL "https://github.com/LORD-MicroStrain/libmip"
     LANGUAGES C CXX
 )
 
@@ -34,8 +51,12 @@ set(MIP_DIR "${SRC_DIR}/mip")
 # Build options
 #
 
-option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
-option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
+# Only allow this option on Arduino builds. Will be ON with Arduino builds and OFF by default for normal builds
+cmake_dependent_option(AUTO_SET_SKETCHBOOK_PATH "Find the Arduino sketchbook path." OFF "BUILD_ARDUINO" ON)
+
+# Only allow these options not on Arduino builds. Will be OFF with Arduino builds and ON by default for normal builds
+cmake_dependent_option(WITH_SERIAL "Build serial connection support into the library and examples" ON "NOT BUILD_ARDUINO" OFF)
+cmake_dependent_option(WITH_TCP    "Build TCP connection support into the library and examples"    ON "NOT BUILD_ARDUINO" OFF)
 
 set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -145,14 +166,33 @@ set(ALL_MIP_SOURCES
     ${MIP_INTERFACE_SOURCES}
 )
 
-
-option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+# Only allow this option if not an Arduino build. Will be ON with Arduino builds and OFF by default for normal builds
+cmake_dependent_option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF "NOT BUILD_ARDUINO" ON)
 if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
+if(BUILD_ARDUINO)
+    get_board_id(board_id mega atmega2560)
+    arduino_cmake_project(${LIBRARY_NAME} BOARD_NAME mega BOARD_CPU atmega2560)
+#    _add_arduino_cmake_library(${LIBRARY_NAME}_AVR ${ALL_MIP_SOURCES})
+#    add_arduino_header_only_library(${LIBRARY_NAME} ${board_id} ${ALL_MIP_SOURCES})
+#    foreach(filename ${ALL_MIP_SOURCES})
+#        message(STATUS "filename: ${filename}")
+#    endforeach()
+    add_arduino_library(${LIBRARY_NAME} "${ALL_MIP_SOURCES}")
+else()
+    add_library(${LIBRARY_NAME} ${ALL_MIP_SOURCES})
+endif()
 
-add_library(mip ${ALL_MIP_SOURCES})
+#add_library(${LIBRARY_NAME} ${ALL_MIP_SOURCES})
+
+if(BUILD_ARDUINO)
+#    get_board_id(board_id mega atmega2560)
+#    arduino_cmake_project(${LIBRARY_NAME} BOARD_NAME mega BOARD_CPU atmega2560)
+#    add_arduino_header_only_library()
+#    add_arduino_executable(Arduino_${LIBRARY_NAME})
+endif()
 
 
 if(${MIP_TIMESTAMP_TYPE})
@@ -160,9 +200,9 @@ if(${MIP_TIMESTAMP_TYPE})
 endif()
 
 if(MSVC)
-  target_compile_options(mip PRIVATE /W4)
+  target_compile_options(${LIBRARY_NAME} PRIVATE /W4)
 else()
-  target_compile_options(mip PRIVATE -Wall -Wextra)
+  target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Wextra)
 endif()
 
 #
@@ -241,7 +281,7 @@ include(CMakePackageConfigHelpers)
 
 set(CONFIG_EXPORT_DIR "${CMAKE_INSTALL_DATADIR}/cmake/mip")
 
-set(EXPORT_TARGETS mip)
+set(EXPORT_TARGETS ${LIBRARY_NAME})
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/cmake/mip-config.cmake.in"
     "${CMAKE_BINARY_DIR}/mip-config.cmake"
@@ -255,21 +295,41 @@ write_basic_package_version_file(
     COMPATIBILITY AnyNewerVersion
 )
 
+if(BUILD_ARDUINO)
+    # Make the Output directory which is where we will copy all of the build artifacts on a successful build
+    set(ARDUINO_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ArduinoLibrary)
+
+    # Copy the artifacts to an Output directory to make it easier for users to navigate the artifacts
+    add_custom_command(TARGET ${LIBRARY_NAME} POST_BUILD
+                       COMMAND ${CMAKE_COMMAND} -E rm -Rf ${ARDUINO_OUTPUT_DIR}
+                       COMMAND ${CMAKE_COMMAND} -E make_directory ${ARDUINO_OUTPUT_DIR}/src/atmega2560
+                       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${LIBRARY_NAME}> ${ARDUINO_OUTPUT_DIR}/src/atmega2560
+                       COMMAND ${CMAKE_COMMAND} -DOUTPUT_DIR=${ARDUINO_OUTPUT_DIR}
+                                                -DLIBRARY_NAME=${LIBRARY_NAME}
+                                                -DVERSION=${CMAKE_PROJECT_VERSION}
+                                                -DDESCRIPTION=${CMAKE_PROJECT_DESCRIPTION}
+                                                -DURL=${CMAKE_PROJECT_HOMEPAGE_URL}
+                                                -DSOURCE_DIR=${MIP_DIR}/
+                                                -P ${CMAKE_SOURCE_DIR}/cmake/arduino/GenerateArduinoLibrary.cmake
+                       )
+endif()
+
 #
 # Installation
 #
 
-install(DIRECTORY "${SRC_DIR}/mip" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
-install(TARGETS mip EXPORT mip-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
+if(NOT BUILD_ARDUINO)
+    install(DIRECTORY "${SRC_DIR}/mip" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" FILES_MATCHING PATTERN "*.h*")
+    install(TARGETS ${LIBRARY_NAME} EXPORT mip-targets ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/")
 
-install(EXPORT
-    mip-targets
-    DESTINATION "${CONFIG_EXPORT_DIR}"
-)
+    install(EXPORT
+        mip-targets
+        DESTINATION "${CONFIG_EXPORT_DIR}"
+    )
 
-install(FILES
-    "${CMAKE_BINARY_DIR}/mip-config.cmake"
-    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
-    DESTINATION "${CONFIG_EXPORT_DIR}"
-)
-
+    install(FILES
+        "${CMAKE_BINARY_DIR}/mip-config.cmake"
+        "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
+        DESTINATION "${CONFIG_EXPORT_DIR}"
+    )
+endif()

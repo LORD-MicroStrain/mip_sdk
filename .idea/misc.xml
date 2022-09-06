@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+  <component name="JenkinsBrowserPanel">
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
+  </component>
+  <component name="SerialMonitorSettings" BaudRate="9600" LineEndingsIndex="0" ShowStatusWidget="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\577387\AppData\Roaming\Subversion</configuration>
+    <option name="runUnderTerminal" value="true" />
+  </component>
+</project>

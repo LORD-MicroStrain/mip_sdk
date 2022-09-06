@@ -57,5 +57,6 @@ if(WITH_SERIAL OR WITH_TCP)
 
     add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c")
     target_link_libraries(GX5_45_ExampleC mip)
-
+else()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/AVR)
 endif()
