@@ -263,13 +263,13 @@ struct EstimationControl
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
-            GYRO_BIAS          = 0x0001,
-            ACCEL_BIAS         = 0x0002,
-            GYRO_SCALE_FACTOR  = 0x0004,
-            ACCEL_SCALE_FACTOR = 0x0008,
-            ANTENNA_OFFSET     = 0x0010,
-            AUTO_MAG_HARD_IRON = 0x0020,
-            AUTO_MAG_SOFT_IRON = 0x0040,
+            GYRO_BIAS          = 0x0001,  ///<  
+            ACCEL_BIAS         = 0x0002,  ///<  
+            GYRO_SCALE_FACTOR  = 0x0004,  ///<  
+            ACCEL_SCALE_FACTOR = 0x0008,  ///<  
+            ANTENNA_OFFSET     = 0x0010,  ///<  
+            AUTO_MAG_HARD_IRON = 0x0020,  ///<  
+            AUTO_MAG_SOFT_IRON = 0x0040,  ///<  
         };
         uint16_t value = NONE;
         
@@ -444,9 +444,9 @@ struct TareOrientation
         enum _enumType : uint8_t
         {
             NONE  = 0x0,
-            ROLL  = 0x1,
-            PITCH = 0x2,
-            YAW   = 0x4,
+            ROLL  = 0x1,  ///<  
+            PITCH = 0x2,  ///<  
+            YAW   = 0x4,  ///<  
         };
         uint8_t value = NONE;
         
@@ -1300,9 +1300,9 @@ struct InitializationConfiguration
         enum _enumType : uint8_t
         {
             NONE         = 0x00,
-            DUAL_ANTENNA = 0x01,
-            KINEMATIC    = 0x02,
-            MAGNETOMETER = 0x04,
+            DUAL_ANTENNA = 0x01,  ///<  Dual-antenna GNSS alignment
+            KINEMATIC    = 0x02,  ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
+            MAGNETOMETER = 0x04,  ///<  Magnetometer heading alignment
         };
         uint8_t value = NONE;
         

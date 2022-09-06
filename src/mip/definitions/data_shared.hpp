@@ -148,9 +148,9 @@ struct GpsTimestamp
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            TOW         = 0x0001,
-            WEEK_NUMBER = 0x0002,
-            TIME_VALID  = 0x0003,
+            TOW         = 0x0001,  ///<  Whole number seconds TOW has been set
+            WEEK_NUMBER = 0x0002,  ///<  Week number has been set
+            TIME_VALID  = 0x0003,  ///<  Both TOW and Week Number have been set
         };
         uint16_t value = NONE;
         
@@ -287,7 +287,7 @@ struct ExternalTimestamp
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            NANOSECONDS = 0x0001,
+            NANOSECONDS = 0x0001,  ///<  
         };
         uint16_t value = NONE;
         
@@ -339,7 +339,7 @@ struct ExternalTimeDelta
         enum _enumType : uint16_t
         {
             NONE     = 0x0000,
-            DT_NANOS = 0x0001,
+            DT_NANOS = 0x0001,  ///<  
         };
         uint16_t value = NONE;
         

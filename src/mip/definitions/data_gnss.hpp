@@ -185,12 +185,12 @@ struct PosLlh
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
-            LAT_LON             = 0x0001,
-            ELLIPSOID_HEIGHT    = 0x0002,
-            MSL_HEIGHT          = 0x0004,
-            HORIZONTAL_ACCURACY = 0x0008,
-            VERTICAL_ACCURACY   = 0x0010,
-            FLAGS               = 0x001F,
+            LAT_LON             = 0x0001,  ///<  
+            ELLIPSOID_HEIGHT    = 0x0002,  ///<  
+            MSL_HEIGHT          = 0x0004,  ///<  
+            HORIZONTAL_ACCURACY = 0x0008,  ///<  
+            VERTICAL_ACCURACY   = 0x0010,  ///<  
+            FLAGS               = 0x001F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -235,9 +235,9 @@ struct PosEcef
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
-            POSITION          = 0x0001,
-            POSITION_ACCURACY = 0x0002,
-            FLAGS             = 0x0003,
+            POSITION          = 0x0001,  ///<  
+            POSITION_ACCURACY = 0x0002,  ///<  
+            FLAGS             = 0x0003,  ///<  
         };
         uint16_t value = NONE;
         
@@ -278,13 +278,13 @@ struct VelNed
         enum _enumType : uint16_t
         {
             NONE             = 0x0000,
-            VELOCITY         = 0x0001,
-            SPEED_3D         = 0x0002,
-            GROUND_SPEED     = 0x0004,
-            HEADING          = 0x0008,
-            SPEED_ACCURACY   = 0x0010,
-            HEADING_ACCURACY = 0x0020,
-            FLAGS            = 0x003F,
+            VELOCITY         = 0x0001,  ///<  
+            SPEED_3D         = 0x0002,  ///<  
+            GROUND_SPEED     = 0x0004,  ///<  
+            HEADING          = 0x0008,  ///<  
+            SPEED_ACCURACY   = 0x0010,  ///<  
+            HEADING_ACCURACY = 0x0020,  ///<  
+            FLAGS            = 0x003F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -329,9 +329,9 @@ struct VelEcef
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
-            VELOCITY          = 0x0001,
-            VELOCITY_ACCURACY = 0x0002,
-            FLAGS             = 0x0003,
+            VELOCITY          = 0x0001,  ///<  
+            VELOCITY_ACCURACY = 0x0002,  ///<  
+            FLAGS             = 0x0003,  ///<  
         };
         uint16_t value = NONE;
         
@@ -372,14 +372,14 @@ struct Dop
         enum _enumType : uint16_t
         {
             NONE  = 0x0000,
-            GDOP  = 0x0001,
-            PDOP  = 0x0002,
-            HDOP  = 0x0004,
-            VDOP  = 0x0008,
-            TDOP  = 0x0010,
-            NDOP  = 0x0020,
-            EDOP  = 0x0040,
-            FLAGS = 0x007F,
+            GDOP  = 0x0001,  ///<  
+            PDOP  = 0x0002,  ///<  
+            HDOP  = 0x0004,  ///<  
+            VDOP  = 0x0008,  ///<  
+            TDOP  = 0x0010,  ///<  
+            NDOP  = 0x0020,  ///<  
+            EDOP  = 0x0040,  ///<  
+            FLAGS = 0x007F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -425,9 +425,9 @@ struct UtcTime
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
-            GNSS_DATE_TIME     = 0x0001,
-            LEAP_SECONDS_KNOWN = 0x0002,
-            FLAGS              = 0x0003,
+            GNSS_DATE_TIME     = 0x0001,  ///<  
+            LEAP_SECONDS_KNOWN = 0x0002,  ///<  
+            FLAGS              = 0x0003,  ///<  
         };
         uint16_t value = NONE;
         
@@ -473,9 +473,9 @@ struct GpsTime
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            TOW         = 0x0001,
-            WEEK_NUMBER = 0x0002,
-            FLAGS       = 0x0003,
+            TOW         = 0x0001,  ///<  
+            WEEK_NUMBER = 0x0002,  ///<  
+            FLAGS       = 0x0003,  ///<  
         };
         uint16_t value = NONE;
         
@@ -516,10 +516,10 @@ struct ClockInfo
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
-            BIAS              = 0x0001,
-            DRIFT             = 0x0002,
-            ACCURACY_ESTIMATE = 0x0004,
-            FLAGS             = 0x0007,
+            BIAS              = 0x0001,  ///<  
+            DRIFT             = 0x0002,  ///<  
+            ACCURACY_ESTIMATE = 0x0004,  ///<  
+            FLAGS             = 0x0007,  ///<  
         };
         uint16_t value = NONE;
         
@@ -572,8 +572,8 @@ struct FixInfo
         enum _enumType : uint16_t
         {
             NONE       = 0x0000,
-            SBAS_USED  = 0x0001,
-            DNGSS_USED = 0x0002,
+            SBAS_USED  = 0x0001,  ///<  
+            DNGSS_USED = 0x0002,  ///<  
         };
         uint16_t value = NONE;
         
@@ -591,10 +591,10 @@ struct FixInfo
         enum _enumType : uint16_t
         {
             NONE      = 0x0000,
-            FIX_TYPE  = 0x0001,
-            NUM_SV    = 0x0002,
-            FIX_FLAGS = 0x0004,
-            FLAGS     = 0x0007,
+            FIX_TYPE  = 0x0001,  ///<  
+            NUM_SV    = 0x0002,  ///<  
+            FIX_FLAGS = 0x0004,  ///<  
+            FLAGS     = 0x0007,  ///<  
         };
         uint16_t value = NONE;
         
@@ -638,8 +638,8 @@ struct SvInfo
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
-            USED_FOR_NAVIGATION = 0x0001,
-            HEALTHY             = 0x0002,
+            USED_FOR_NAVIGATION = 0x0001,  ///<  
+            HEALTHY             = 0x0002,  ///<  
         };
         uint16_t value = NONE;
         
@@ -657,13 +657,13 @@ struct SvInfo
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
-            CHANNEL             = 0x0001,
-            SV_ID               = 0x0002,
-            CARRIER_NOISE_RATIO = 0x0004,
-            AZIMUTH             = 0x0008,
-            ELEVATION           = 0x0010,
-            SV_FLAGS            = 0x0020,
-            FLAGS               = 0x003F,
+            CHANNEL             = 0x0001,  ///<  
+            SV_ID               = 0x0002,  ///<  
+            CARRIER_NOISE_RATIO = 0x0004,  ///<  
+            AZIMUTH             = 0x0008,  ///<  
+            ELEVATION           = 0x0010,  ///<  
+            SV_FLAGS            = 0x0020,  ///<  
+            FLAGS               = 0x003F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -731,10 +731,10 @@ struct HwStatus
         enum _enumType : uint16_t
         {
             NONE          = 0x0000,
-            SENSOR_STATE  = 0x0001,
-            ANTENNA_STATE = 0x0002,
-            ANTENNA_POWER = 0x0004,
-            FLAGS         = 0x0007,
+            SENSOR_STATE  = 0x0001,  ///<  
+            ANTENNA_STATE = 0x0002,  ///<  
+            ANTENNA_POWER = 0x0004,  ///<  
+            FLAGS         = 0x0007,  ///<  
         };
         uint16_t value = NONE;
         
@@ -788,11 +788,11 @@ struct DgpsInfo
         enum _enumType : uint16_t
         {
             NONE                = 0x0000,
-            AGE                 = 0x0001,
-            BASE_STATION_ID     = 0x0002,
-            BASE_STATION_STATUS = 0x0004,
-            NUM_CHANNELS        = 0x0008,
-            FLAGS               = 0x000F,
+            AGE                 = 0x0001,  ///<  
+            BASE_STATION_ID     = 0x0002,  ///<  
+            BASE_STATION_STATUS = 0x0004,  ///<  
+            NUM_CHANNELS        = 0x0008,  ///<  
+            FLAGS               = 0x000F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -837,11 +837,11 @@ struct DgpsChannel
         enum _enumType : uint16_t
         {
             NONE                  = 0x0000,
-            ID                    = 0x0001,
-            AGE                   = 0x0002,
-            RANGE_CORRECTION      = 0x0004,
-            RANGE_RATE_CORRECTION = 0x0008,
-            FLAGS                 = 0x000F,
+            ID                    = 0x0001,  ///<  
+            AGE                   = 0x0002,  ///<  
+            RANGE_CORRECTION      = 0x0004,  ///<  
+            RANGE_RATE_CORRECTION = 0x0008,  ///<  
+            FLAGS                 = 0x000F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -886,11 +886,11 @@ struct ClockInfo2
         enum _enumType : uint16_t
         {
             NONE           = 0x0000,
-            BIAS           = 0x0001,
-            DRIFT          = 0x0002,
-            BIAS_ACCURACY  = 0x0004,
-            DRIFT_ACCURACY = 0x0008,
-            FLAGS          = 0x000F,
+            BIAS           = 0x0001,  ///<  
+            DRIFT          = 0x0002,  ///<  
+            BIAS_ACCURACY  = 0x0004,  ///<  
+            DRIFT_ACCURACY = 0x0008,  ///<  
+            FLAGS          = 0x000F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -933,7 +933,7 @@ struct GpsLeapSeconds
         enum _enumType : uint16_t
         {
             NONE         = 0x0000,
-            LEAP_SECONDS = 0x0002,
+            LEAP_SECONDS = 0x0002,  ///<  
         };
         uint16_t value = NONE;
         
@@ -973,10 +973,10 @@ struct SbasInfo
         enum _enumType : uint8_t
         {
             NONE                  = 0x00,
-            RANGE_AVAILABLE       = 0x01,
-            CORRECTIONS_AVAILABLE = 0x02,
-            INTEGRITY_AVAILABLE   = 0x04,
-            TEST_MODE             = 0x08,
+            RANGE_AVAILABLE       = 0x01,  ///<  
+            CORRECTIONS_AVAILABLE = 0x02,  ///<  
+            INTEGRITY_AVAILABLE   = 0x04,  ///<  
+            TEST_MODE             = 0x08,  ///<  
         };
         uint8_t value = NONE;
         
@@ -994,13 +994,13 @@ struct SbasInfo
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            TOW         = 0x0001,
-            WEEK_NUMBER = 0x0002,
-            SBAS_SYSTEM = 0x0004,
-            SBAS_ID     = 0x0008,
-            COUNT       = 0x0010,
-            SBAS_STATUS = 0x0020,
-            FLAGS       = 0x003F,
+            TOW         = 0x0001,  ///<  
+            WEEK_NUMBER = 0x0002,  ///<  
+            SBAS_SYSTEM = 0x0004,  ///<  
+            SBAS_ID     = 0x0008,  ///<  
+            COUNT       = 0x0010,  ///<  
+            SBAS_STATUS = 0x0020,  ///<  
+            FLAGS       = 0x003F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1067,10 +1067,10 @@ struct SbasCorrection
         enum _enumType : uint16_t
         {
             NONE                   = 0x0000,
-            UDREI                  = 0x0001,
-            PSEUDORANGE_CORRECTION = 0x0002,
-            IONO_CORRECTION        = 0x0004,
-            FLAGS                  = 0x0007,
+            UDREI                  = 0x0001,  ///<  
+            PSEUDORANGE_CORRECTION = 0x0002,  ///<  
+            IONO_CORRECTION        = 0x0004,  ///<  
+            FLAGS                  = 0x0007,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1142,10 +1142,10 @@ struct RfErrorDetection
         enum _enumType : uint16_t
         {
             NONE           = 0x0000,
-            RF_BAND        = 0x0001,
-            JAMMING_STATE  = 0x0002,
-            SPOOFING_STATE = 0x0004,
-            FLAGS          = 0x0007,
+            RF_BAND        = 0x0001,  ///<  
+            JAMMING_STATE  = 0x0002,  ///<  
+            SPOOFING_STATE = 0x0004,  ///<  
+            FLAGS          = 0x0007,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1190,15 +1190,15 @@ struct BaseStationInfo
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
-            GPS                = 0x0001,
-            GLONASS            = 0x0002,
-            GALILEO            = 0x0004,
-            BEIDOU             = 0x0008,
-            REF_STATION        = 0x0010,
-            SINGLE_RECEIVER    = 0x0020,
-            QUARTER_CYCLE_BIT1 = 0x0040,
-            QUARTER_CYCLE_BIT2 = 0x0080,
-            QUARTER_CYCLE_BITS = 0x00C0,
+            GPS                = 0x0001,  ///<  
+            GLONASS            = 0x0002,  ///<  
+            GALILEO            = 0x0004,  ///<  
+            BEIDOU             = 0x0008,  ///<  
+            REF_STATION        = 0x0010,  ///<  
+            SINGLE_RECEIVER    = 0x0020,  ///<  
+            QUARTER_CYCLE_BIT1 = 0x0040,  ///<  
+            QUARTER_CYCLE_BIT2 = 0x0080,  ///<  
+            QUARTER_CYCLE_BITS = 0x00C0,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1216,13 +1216,13 @@ struct BaseStationInfo
         enum _enumType : uint16_t
         {
             NONE          = 0x0000,
-            TOW           = 0x0001,
-            WEEK_NUMBER   = 0x0002,
-            ECEF_POSITION = 0x0004,
-            HEIGHT        = 0x0008,
-            STATION_ID    = 0x0010,
-            INDICATORS    = 0x0020,
-            FLAGS         = 0x003F,
+            TOW           = 0x0001,  ///<  
+            WEEK_NUMBER   = 0x0002,  ///<  
+            ECEF_POSITION = 0x0004,  ///<  
+            HEIGHT        = 0x0008,  ///<  
+            STATION_ID    = 0x0010,  ///<  
+            INDICATORS    = 0x0020,  ///<  
+            FLAGS         = 0x003F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1266,15 +1266,15 @@ struct RtkCorrectionsStatus
         enum _enumType : uint16_t
         {
             NONE            = 0x0000,
-            TOW             = 0x0001,
-            WEEK_NUMBER     = 0x0002,
-            EPOCH_STATUS    = 0x0004,
-            DONGLE_STATUS   = 0x0008,
-            GPS_LATENCY     = 0x0010,
-            GLONASS_LATENCY = 0x0020,
-            GALILEO_LATENCY = 0x0040,
-            BEIDOU_LATENCY  = 0x0080,
-            FLAGS           = 0x00FF,
+            TOW             = 0x0001,  ///<  
+            WEEK_NUMBER     = 0x0002,  ///<  
+            EPOCH_STATUS    = 0x0004,  ///<  
+            DONGLE_STATUS   = 0x0008,  ///<  
+            GPS_LATENCY     = 0x0010,  ///<  
+            GLONASS_LATENCY = 0x0020,  ///<  
+            GALILEO_LATENCY = 0x0040,  ///<  
+            BEIDOU_LATENCY  = 0x0080,  ///<  
+            FLAGS           = 0x00FF,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1292,15 +1292,15 @@ struct RtkCorrectionsStatus
         enum _enumType : uint16_t
         {
             NONE                         = 0x0000,
-            ANTENNA_LOCATION_RECEIVED    = 0x0001,
-            ANTENNA_DESCRIPTION_RECEIVED = 0x0002,
-            GPS_RECEIVED                 = 0x0004,
-            GLONASS_RECEIVED             = 0x0008,
-            GALILEO_RECEIVED             = 0x0010,
-            BEIDOU_RECEIVED              = 0x0020,
-            USING_GPS_MSM_MESSAGES       = 0x0040,
-            USING_GLONASS_MSM_MESSAGES   = 0x0080,
-            DONGLE_STATUS_READ_FAILED    = 0x0100,
+            ANTENNA_LOCATION_RECEIVED    = 0x0001,  ///<  
+            ANTENNA_DESCRIPTION_RECEIVED = 0x0002,  ///<  
+            GPS_RECEIVED                 = 0x0004,  ///<  
+            GLONASS_RECEIVED             = 0x0008,  ///<  
+            GALILEO_RECEIVED             = 0x0010,  ///<  
+            BEIDOU_RECEIVED              = 0x0020,  ///<  
+            USING_GPS_MSM_MESSAGES       = 0x0040,  ///<  Using MSM messages for GPS corrections instead of RTCM messages 1001-1004
+            USING_GLONASS_MSM_MESSAGES   = 0x0080,  ///<  Using MSM messages for GLONASS corrections instead of RTCM messages 1009-1012
+            DONGLE_STATUS_READ_FAILED    = 0x0100,  ///<  A read of the dongle status was attempted, but failed
         };
         uint16_t value = NONE;
         
@@ -1348,14 +1348,14 @@ struct SatelliteStatus
         enum _enumType : uint16_t
         {
             NONE         = 0x0000,
-            TOW          = 0x0001,
-            WEEK_NUMBER  = 0x0002,
-            GNSS_ID      = 0x0004,
-            SATELLITE_ID = 0x0008,
-            ELEVATION    = 0x0010,
-            AZIMUTH      = 0x0020,
-            HEALTH       = 0x0040,
-            FLAGS        = 0x007F,
+            TOW          = 0x0001,  ///<  
+            WEEK_NUMBER  = 0x0002,  ///<  
+            GNSS_ID      = 0x0004,  ///<  
+            SATELLITE_ID = 0x0008,  ///<  
+            ELEVATION    = 0x0010,  ///<  
+            AZIMUTH      = 0x0020,  ///<  
+            HEALTH       = 0x0040,  ///<  
+            FLAGS        = 0x007F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1413,23 +1413,23 @@ struct Raw
         enum _enumType : uint16_t
         {
             NONE                      = 0x0000,
-            TOW                       = 0x0001,
-            WEEK_NUMBER               = 0x0002,
-            RECEIVER_ID               = 0x0004,
-            TRACKING_CHANNEL          = 0x0008,
-            GNSS_ID                   = 0x0010,
-            SATELLITE_ID              = 0x0020,
-            SIGNAL_ID                 = 0x0040,
-            SIGNAL_STRENGTH           = 0x0080,
-            QUALITY                   = 0x0100,
-            PSEUDORANGE               = 0x0200,
-            CARRIER_PHASE             = 0x0400,
-            DOPPLER                   = 0x0800,
-            RANGE_UNCERTAINTY         = 0x1000,
-            CARRIER_PHASE_UNCERTAINTY = 0x2000,
-            DOPPLER_UNCERTAINTY       = 0x4000,
-            LOCK_TIME                 = 0x8000,
-            FLAGS                     = 0xFFFF,
+            TOW                       = 0x0001,  ///<  
+            WEEK_NUMBER               = 0x0002,  ///<  
+            RECEIVER_ID               = 0x0004,  ///<  
+            TRACKING_CHANNEL          = 0x0008,  ///<  
+            GNSS_ID                   = 0x0010,  ///<  
+            SATELLITE_ID              = 0x0020,  ///<  
+            SIGNAL_ID                 = 0x0040,  ///<  
+            SIGNAL_STRENGTH           = 0x0080,  ///<  
+            QUALITY                   = 0x0100,  ///<  
+            PSEUDORANGE               = 0x0200,  ///<  
+            CARRIER_PHASE             = 0x0400,  ///<  
+            DOPPLER                   = 0x0800,  ///<  
+            RANGE_UNCERTAINTY         = 0x1000,  ///<  
+            CARRIER_PHASE_UNCERTAINTY = 0x2000,  ///<  
+            DOPPLER_UNCERTAINTY       = 0x4000,  ///<  
+            LOCK_TIME                 = 0x8000,  ///<  
+            FLAGS                     = 0xFFFF,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1486,9 +1486,9 @@ struct GpsEphemeris
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            EPHEMERIS   = 0x0001,
-            MODERN_DATA = 0x0002,
-            FLAGS       = 0x0003,
+            EPHEMERIS   = 0x0001,  ///<  
+            MODERN_DATA = 0x0002,  ///<  
+            FLAGS       = 0x0003,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1560,8 +1560,8 @@ struct GloEphemeris
         enum _enumType : uint16_t
         {
             NONE      = 0x0000,
-            EPHEMERIS = 0x0001,
-            FLAGS     = 0x0001,
+            EPHEMERIS = 0x0001,  ///<  
+            FLAGS     = 0x0001,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1624,11 +1624,11 @@ struct GpsIonoCorr
         enum _enumType : uint16_t
         {
             NONE        = 0x0000,
-            TOW         = 0x0001,
-            WEEK_NUMBER = 0x0002,
-            ALPHA       = 0x0004,
-            BETA        = 0x0008,
-            FLAGS       = 0x000F,
+            TOW         = 0x0001,  ///<  
+            WEEK_NUMBER = 0x0002,  ///<  
+            ALPHA       = 0x0004,  ///<  
+            BETA        = 0x0008,  ///<  
+            FLAGS       = 0x000F,  ///<  
         };
         uint16_t value = NONE;
         
@@ -1671,11 +1671,11 @@ struct GalileoIonoCorr
         enum _enumType : uint16_t
         {
             NONE              = 0x0000,
-            TOW               = 0x0001,
-            WEEK_NUMBER       = 0x0002,
-            ALPHA             = 0x0004,
-            DISTURBANCE_FLAGS = 0x0008,
-            FLAGS             = 0x000F,
+            TOW               = 0x0001,  ///<  
+            WEEK_NUMBER       = 0x0002,  ///<  
+            ALPHA             = 0x0004,  ///<  
+            DISTURBANCE_FLAGS = 0x0008,  ///<  
+            FLAGS             = 0x000F,  ///<  
         };
         uint16_t value = NONE;
         

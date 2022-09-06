@@ -123,34 +123,34 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
     enum _enumType : uint16_t
     {
         NONE                                           = 0x0000,
-        GX5_INIT_NO_ATTITUDE                           = 0x1000,
-        GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
-        GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,
-        GX5_RUN_GPS_UNAVAILABLE                        = 0x0002,
-        GX5_RUN_MATRIX_SINGULARITY                     = 0x0008,
-        GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010,
-        GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020,
-        GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040,
-        GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080,
-        GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100,
-        GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200,
-        GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400,
-        GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800,
-        GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000,
-        GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000,
-        GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000,
-        GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000,
-        GQ7_FILTER_CONDITION                           = 0x0003,
-        GQ7_ROLL_PITCH_WARNING                         = 0x0004,
-        GQ7_HEADING_WARNING                            = 0x0008,
-        GQ7_POSITION_WARNING                           = 0x0010,
-        GQ7_VELOCITY_WARNING                           = 0x0020,
-        GQ7_IMU_BIAS_WARNING                           = 0x0040,
-        GQ7_GNSS_CLK_WARNING                           = 0x0080,
-        GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100,
-        GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200,
-        GQ7_TIME_SYNC_WARNING                          = 0x0400,
-        GQ7_SOLUTION_ERROR                             = 0xF000,
+        GX5_INIT_NO_ATTITUDE                           = 0x1000,  ///<  
+        GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,  ///<  
+        GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,  ///<  
+        GX5_RUN_GPS_UNAVAILABLE                        = 0x0002,  ///<  
+        GX5_RUN_MATRIX_SINGULARITY                     = 0x0008,  ///<  
+        GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010,  ///<  
+        GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020,  ///<  
+        GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040,  ///<  
+        GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080,  ///<  
+        GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100,  ///<  
+        GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200,  ///<  
+        GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400,  ///<  
+        GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800,  ///<  
+        GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000,  ///<  
+        GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000,  ///<  
+        GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000,  ///<  
+        GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000,  ///<  
+        GQ7_FILTER_CONDITION                           = 0x0003,  ///<  
+        GQ7_ROLL_PITCH_WARNING                         = 0x0004,  ///<  
+        GQ7_HEADING_WARNING                            = 0x0008,  ///<  
+        GQ7_POSITION_WARNING                           = 0x0010,  ///<  
+        GQ7_VELOCITY_WARNING                           = 0x0020,  ///<  
+        GQ7_IMU_BIAS_WARNING                           = 0x0040,  ///<  
+        GQ7_GNSS_CLK_WARNING                           = 0x0080,  ///<  
+        GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100,  ///<  
+        GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200,  ///<  
+        GQ7_TIME_SYNC_WARNING                          = 0x0400,  ///<  No time synchronization pulse detected
+        GQ7_SOLUTION_ERROR                             = 0xF000,  ///<  Filter computation warning flags. If any bits 12-15 are set, and all filter outputs will be invalid.
     };
     uint16_t value = NONE;
     
@@ -178,12 +178,12 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
     enum _enumType : uint8_t
     {
         NONE                  = 0x00,
-        ENABLED               = 0x01,
-        USED                  = 0x02,
-        RESIDUAL_HIGH_WARNING = 0x04,
-        SAMPLE_TIME_WARNING   = 0x08,
-        CONFIGURATION_ERROR   = 0x10,
-        MAX_NUM_MEAS_EXCEEDED = 0x20,
+        ENABLED               = 0x01,  ///<  
+        USED                  = 0x02,  ///<  
+        RESIDUAL_HIGH_WARNING = 0x04,  ///<  
+        SAMPLE_TIME_WARNING   = 0x08,  ///<  
+        CONFIGURATION_ERROR   = 0x10,  ///<  
+        MAX_NUM_MEAS_EXCEEDED = 0x20,  ///<  
     };
     uint8_t value = NONE;
     
@@ -201,22 +201,22 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
     enum _enumType : uint16_t
     {
         NONE           = 0x0000,
-        TIGHT_COUPLING = 0x0001,
-        DIFFERENTIAL   = 0x0002,
-        INTEGER_FIX    = 0x0004,
-        GPS_L1         = 0x0008,
-        GPS_L2         = 0x0010,
-        GPS_L5         = 0x0020,
-        GLO_L1         = 0x0040,
-        GLO_L2         = 0x0080,
-        GAL_E1         = 0x0100,
-        GAL_E5         = 0x0200,
-        GAL_E6         = 0x0400,
-        BEI_B1         = 0x0800,
-        BEI_B2         = 0x1000,
-        BEI_B3         = 0x2000,
-        NO_FIX         = 0x4000,
-        CONFIG_ERROR   = 0x8000,
+        TIGHT_COUPLING = 0x0001,  ///<  If 1, the Kalman filter is processing raw range information from this GNSS module
+        DIFFERENTIAL   = 0x0002,  ///<  If 1, the Kalman filter is processing RTK corrections from this GNSS module
+        INTEGER_FIX    = 0x0004,  ///<  If 1, the Kalman filter has an RTK integer fix from this GNSS module, indicating the best position performance possible
+        GPS_L1         = 0x0008,  ///<  If 1, the Kalman filter is using GPS L1 measurements
+        GPS_L2         = 0x0010,  ///<  If 1, the Kalman filter is using GPS L2 measurements
+        GPS_L5         = 0x0020,  ///<  If 1, the Kalman filter is using GPS L5 measurements (not available on the GQ7)
+        GLO_L1         = 0x0040,  ///<  If 1, the Kalman filter is using GLONASS L1 measurements
+        GLO_L2         = 0x0080,  ///<  If 1, the Kalman filter is using GLONASS L2 measurements
+        GAL_E1         = 0x0100,  ///<  If 1, the Kalman filter is using Galileo E1 measurements
+        GAL_E5         = 0x0200,  ///<  If 1, the Kalman filter is using Galileo E5 measurements
+        GAL_E6         = 0x0400,  ///<  If 1, the Kalman filter is using Galileo E6 measurements
+        BEI_B1         = 0x0800,  ///<  If 1, the Kalman filter is using Beidou B1 measurements (not enabled on GQ7 currently)
+        BEI_B2         = 0x1000,  ///<  If 1, the Kalman filter is using Beidou B2 measurements (not enabled on GQ7 currently)
+        BEI_B3         = 0x2000,  ///<  If 1, the Kalman filter is using Beidou B3 measurements (not available on the GQ7)
+        NO_FIX         = 0x4000,  ///<  If 1, this GNSS module is reporting no position fix
+        CONFIG_ERROR   = 0x8000,  ///<  If 1, there is likely an issue with the antenna offset for this GNSS module
     };
     uint16_t value = NONE;
     
@@ -1541,9 +1541,9 @@ struct GnssDualAntennaStatus
         enum _enumType : uint16_t
         {
             NONE                  = 0x0000,
-            RCV_1_DATA_VALID      = 0x0001,
-            RCV_2_DATA_VALID      = 0x0002,
-            ANTENNA_OFFSETS_VALID = 0x0004,
+            RCV_1_DATA_VALID      = 0x0001,  ///<  
+            RCV_2_DATA_VALID      = 0x0002,  ///<  
+            ANTENNA_OFFSETS_VALID = 0x0004,  ///<  
         };
         uint16_t value = NONE;
         

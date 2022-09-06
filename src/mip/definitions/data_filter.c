@@ -24,7 +24,7 @@ struct mip_field;
 
 void insert_mip_filter_mode(struct mip_serializer* serializer, const mip_filter_mode self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_mode(struct mip_serializer* serializer, mip_filter_mode* self)
 {
@@ -35,7 +35,7 @@ void extract_mip_filter_mode(struct mip_serializer* serializer, mip_filter_mode*
 
 void insert_mip_filter_dynamics_mode(struct mip_serializer* serializer, const mip_filter_dynamics_mode self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, mip_filter_dynamics_mode* self)
 {
@@ -46,7 +46,7 @@ void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, mip_fil
 
 void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip_filter_status_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self)
 {
@@ -57,7 +57,7 @@ void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filt
 
 void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self)
 {
@@ -68,7 +68,7 @@ void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serialize
 
 void insert_mip_filter_measurement_indicator(struct mip_serializer* serializer, const mip_filter_measurement_indicator self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer, mip_filter_measurement_indicator* self)
 {
@@ -79,7 +79,7 @@ void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer,
 
 void insert_mip_gnss_aid_status_flags(struct mip_serializer* serializer, const mip_gnss_aid_status_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, mip_gnss_aid_status_flags* self)
 {
@@ -685,7 +685,7 @@ bool extract_mip_filter_heading_update_state_data_from_field(const mip_field* fi
 
 void insert_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self)
 {
@@ -1406,7 +1406,7 @@ bool extract_mip_filter_head_aid_status_data_from_field(const mip_field* field, 
 
 void insert_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self)
 {
@@ -1667,7 +1667,7 @@ bool extract_mip_filter_gnss_dual_antenna_status_data_from_field(const mip_field
 
 void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_fix_type self)
 {
-    return insert_u8(serializer, (uint8_t)(self));
+    insert_u8(serializer, (uint8_t)(self));
 }
 void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_fix_type* self)
 {
@@ -1678,7 +1678,7 @@ void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serial
 
 void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
 {
-    return insert_u16(serializer, (uint16_t)(self));
+    insert_u16(serializer, (uint16_t)(self));
 }
 void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
 {

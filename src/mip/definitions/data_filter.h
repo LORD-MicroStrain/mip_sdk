@@ -99,121 +99,103 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-enum mip_filter_mode
-{
-    MIP_FILTER_MODE_GX5_STARTUP            = 0,  ///<  
-    MIP_FILTER_MODE_GX5_INIT               = 1,  ///<  
-    MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID = 2,  ///<  
-    MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR = 3,  ///<  
-    MIP_FILTER_MODE_INIT                   = 1,  ///<  
-    MIP_FILTER_MODE_VERT_GYRO              = 2,  ///<  
-    MIP_FILTER_MODE_AHRS                   = 3,  ///<  
-    MIP_FILTER_MODE_FULL_NAV               = 4,  ///<  
-};
-typedef enum mip_filter_mode mip_filter_mode;
+typedef uint16_t mip_filter_mode;
+static const mip_filter_mode MIP_FILTER_MODE_GX5_STARTUP            = 0; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_GX5_INIT               = 1; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID = 2; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR = 3; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_INIT                   = 1; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_VERT_GYRO              = 2; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_AHRS                   = 3; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_FULL_NAV               = 4; ///<  
 
 void insert_mip_filter_mode(struct mip_serializer* serializer, const mip_filter_mode self);
 void extract_mip_filter_mode(struct mip_serializer* serializer, mip_filter_mode* self);
 
-enum mip_filter_dynamics_mode
-{
-    MIP_FILTER_DYNAMICS_MODE_GX5_PORTABLE   = 1,  ///<  
-    MIP_FILTER_DYNAMICS_MODE_GX5_AUTOMOTIVE = 2,  ///<  
-    MIP_FILTER_DYNAMICS_MODE_GX5_AIRBORNE   = 3,  ///<  
-    MIP_FILTER_DYNAMICS_MODE_GQ7_DEFAULT    = 1,  ///<  
-};
-typedef enum mip_filter_dynamics_mode mip_filter_dynamics_mode;
+typedef uint16_t mip_filter_dynamics_mode;
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_PORTABLE   = 1; ///<  
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AUTOMOTIVE = 2; ///<  
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AIRBORNE   = 3; ///<  
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GQ7_DEFAULT    = 1; ///<  
 
 void insert_mip_filter_dynamics_mode(struct mip_serializer* serializer, const mip_filter_dynamics_mode self);
 void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, mip_filter_dynamics_mode* self);
 
-enum mip_filter_status_flags
-{
-    MIP_FILTER_STATUS_FLAGS_NONE                                           = 0x0000,
-    MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_ATTITUDE                           = 0x1000,
-    MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_IMU_UNAVAILABLE                        = 0x0001,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_GPS_UNAVAILABLE                        = 0x0002,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_MATRIX_SINGULARITY                     = 0x0008,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000,
-    MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000,
-    MIP_FILTER_STATUS_FLAGS_GQ7_FILTER_CONDITION                           = 0x0003,
-    MIP_FILTER_STATUS_FLAGS_GQ7_ROLL_PITCH_WARNING                         = 0x0004,
-    MIP_FILTER_STATUS_FLAGS_GQ7_HEADING_WARNING                            = 0x0008,
-    MIP_FILTER_STATUS_FLAGS_GQ7_POSITION_WARNING                           = 0x0010,
-    MIP_FILTER_STATUS_FLAGS_GQ7_VELOCITY_WARNING                           = 0x0020,
-    MIP_FILTER_STATUS_FLAGS_GQ7_IMU_BIAS_WARNING                           = 0x0040,
-    MIP_FILTER_STATUS_FLAGS_GQ7_GNSS_CLK_WARNING                           = 0x0080,
-    MIP_FILTER_STATUS_FLAGS_GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100,
-    MIP_FILTER_STATUS_FLAGS_GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200,
-    MIP_FILTER_STATUS_FLAGS_GQ7_TIME_SYNC_WARNING                          = 0x0400,
-    MIP_FILTER_STATUS_FLAGS_GQ7_SOLUTION_ERROR                             = 0xF000,
-};
-typedef enum mip_filter_status_flags mip_filter_status_flags;
+typedef uint16_t mip_filter_status_flags;
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_NONE                                           = 0x0000;
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_ATTITUDE                           = 0x1000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_IMU_UNAVAILABLE                        = 0x0001; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GPS_UNAVAILABLE                        = 0x0002; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MATRIX_SINGULARITY                     = 0x0008; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_FILTER_CONDITION                           = 0x0003; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ROLL_PITCH_WARNING                         = 0x0004; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_HEADING_WARNING                            = 0x0008; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_POSITION_WARNING                           = 0x0010; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_VELOCITY_WARNING                           = 0x0020; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_IMU_BIAS_WARNING                           = 0x0040; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_GNSS_CLK_WARNING                           = 0x0080; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_TIME_SYNC_WARNING                          = 0x0400; ///<  No time synchronization pulse detected
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_SOLUTION_ERROR                             = 0xF000; ///<  Filter computation warning flags. If any bits 12-15 are set, and all filter outputs will be invalid.
 
 void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip_filter_status_flags self);
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self);
 
-enum mip_filter_aiding_measurement_type
-{
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS         = 1,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA = 2,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING      = 3,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE     = 4,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER = 5,  ///<  
-    MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED        = 6,  ///<  
-};
-typedef enum mip_filter_aiding_measurement_type mip_filter_aiding_measurement_type;
+typedef uint8_t mip_filter_aiding_measurement_type;
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS         = 1; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA = 2; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING      = 3; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE     = 4; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER = 5; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED        = 6; ///<  
 
 void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self);
 void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self);
 
-enum mip_filter_measurement_indicator
-{
-    MIP_FILTER_MEASUREMENT_INDICATOR_NONE                  = 0x00,
-    MIP_FILTER_MEASUREMENT_INDICATOR_ENABLED               = 0x01,
-    MIP_FILTER_MEASUREMENT_INDICATOR_USED                  = 0x02,
-    MIP_FILTER_MEASUREMENT_INDICATOR_RESIDUAL_HIGH_WARNING = 0x04,
-    MIP_FILTER_MEASUREMENT_INDICATOR_SAMPLE_TIME_WARNING   = 0x08,
-    MIP_FILTER_MEASUREMENT_INDICATOR_CONFIGURATION_ERROR   = 0x10,
-    MIP_FILTER_MEASUREMENT_INDICATOR_MAX_NUM_MEAS_EXCEEDED = 0x20,
-};
-typedef enum mip_filter_measurement_indicator mip_filter_measurement_indicator;
+typedef uint8_t mip_filter_measurement_indicator;
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_NONE                  = 0x00;
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_ENABLED               = 0x01; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_USED                  = 0x02; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_RESIDUAL_HIGH_WARNING = 0x04; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_SAMPLE_TIME_WARNING   = 0x08; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_CONFIGURATION_ERROR   = 0x10; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_MAX_NUM_MEAS_EXCEEDED = 0x20; ///<  
 
 void insert_mip_filter_measurement_indicator(struct mip_serializer* serializer, const mip_filter_measurement_indicator self);
 void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer, mip_filter_measurement_indicator* self);
 
-enum mip_gnss_aid_status_flags
-{
-    MIP_GNSS_AID_STATUS_FLAGS_NONE           = 0x0000,
-    MIP_GNSS_AID_STATUS_FLAGS_TIGHT_COUPLING = 0x0001,
-    MIP_GNSS_AID_STATUS_FLAGS_DIFFERENTIAL   = 0x0002,
-    MIP_GNSS_AID_STATUS_FLAGS_INTEGER_FIX    = 0x0004,
-    MIP_GNSS_AID_STATUS_FLAGS_GPS_L1         = 0x0008,
-    MIP_GNSS_AID_STATUS_FLAGS_GPS_L2         = 0x0010,
-    MIP_GNSS_AID_STATUS_FLAGS_GPS_L5         = 0x0020,
-    MIP_GNSS_AID_STATUS_FLAGS_GLO_L1         = 0x0040,
-    MIP_GNSS_AID_STATUS_FLAGS_GLO_L2         = 0x0080,
-    MIP_GNSS_AID_STATUS_FLAGS_GAL_E1         = 0x0100,
-    MIP_GNSS_AID_STATUS_FLAGS_GAL_E5         = 0x0200,
-    MIP_GNSS_AID_STATUS_FLAGS_GAL_E6         = 0x0400,
-    MIP_GNSS_AID_STATUS_FLAGS_BEI_B1         = 0x0800,
-    MIP_GNSS_AID_STATUS_FLAGS_BEI_B2         = 0x1000,
-    MIP_GNSS_AID_STATUS_FLAGS_BEI_B3         = 0x2000,
-    MIP_GNSS_AID_STATUS_FLAGS_NO_FIX         = 0x4000,
-    MIP_GNSS_AID_STATUS_FLAGS_CONFIG_ERROR   = 0x8000,
-};
-typedef enum mip_gnss_aid_status_flags mip_gnss_aid_status_flags;
+typedef uint16_t mip_gnss_aid_status_flags;
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_NONE           = 0x0000;
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_TIGHT_COUPLING = 0x0001; ///<  If 1, the Kalman filter is processing raw range information from this GNSS module
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_DIFFERENTIAL   = 0x0002; ///<  If 1, the Kalman filter is processing RTK corrections from this GNSS module
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_INTEGER_FIX    = 0x0004; ///<  If 1, the Kalman filter has an RTK integer fix from this GNSS module, indicating the best position performance possible
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GPS_L1         = 0x0008; ///<  If 1, the Kalman filter is using GPS L1 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GPS_L2         = 0x0010; ///<  If 1, the Kalman filter is using GPS L2 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GPS_L5         = 0x0020; ///<  If 1, the Kalman filter is using GPS L5 measurements (not available on the GQ7)
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GLO_L1         = 0x0040; ///<  If 1, the Kalman filter is using GLONASS L1 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GLO_L2         = 0x0080; ///<  If 1, the Kalman filter is using GLONASS L2 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GAL_E1         = 0x0100; ///<  If 1, the Kalman filter is using Galileo E1 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GAL_E5         = 0x0200; ///<  If 1, the Kalman filter is using Galileo E5 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_GAL_E6         = 0x0400; ///<  If 1, the Kalman filter is using Galileo E6 measurements
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_BEI_B1         = 0x0800; ///<  If 1, the Kalman filter is using Beidou B1 measurements (not enabled on GQ7 currently)
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_BEI_B2         = 0x1000; ///<  If 1, the Kalman filter is using Beidou B2 measurements (not enabled on GQ7 currently)
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_BEI_B3         = 0x2000; ///<  If 1, the Kalman filter is using Beidou B3 measurements (not available on the GQ7)
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_NO_FIX         = 0x4000; ///<  If 1, this GNSS module is reporting no position fix
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_CONFIG_ERROR   = 0x8000; ///<  If 1, there is likely an issue with the antenna offset for this GNSS module
 
 void insert_mip_gnss_aid_status_flags(struct mip_serializer* serializer, const mip_gnss_aid_status_flags self);
 void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, mip_gnss_aid_status_flags* self);
@@ -517,9 +499,9 @@ bool extract_mip_filter_timestamp_data_from_field(const struct mip_field* field,
 
 struct mip_filter_status_data
 {
-    enum mip_filter_mode filter_state; ///< Device-specific filter state.  Please consult the user manual for definition.
-    enum mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode.  Please consult the user manual for definition.
-    enum mip_filter_status_flags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
+    mip_filter_mode filter_state; ///< Device-specific filter state.  Please consult the user manual for definition.
+    mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode.  Please consult the user manual for definition.
+    mip_filter_status_flags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
     
 };
 typedef struct mip_filter_status_data mip_filter_status_data;
@@ -653,21 +635,18 @@ bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const struct mip_field
 ///
 ///@{
 
-enum mip_filter_heading_update_state_data_heading_source
-{
-    MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_NONE                 = 0,  ///<  
-    MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_MAGNETOMETER         = 1,  ///<  
-    MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_GNSS_VELOCITY_VECTOR = 2,  ///<  
-    MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_EXTERNAL             = 4,  ///<  
-    MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_DUAL_ANTENNA         = 8,  ///<  
-};
-typedef enum mip_filter_heading_update_state_data_heading_source mip_filter_heading_update_state_data_heading_source;
+typedef uint16_t mip_filter_heading_update_state_data_heading_source;
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_NONE                 = 0; ///<  
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_MAGNETOMETER         = 1; ///<  
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_GNSS_VELOCITY_VECTOR = 2; ///<  
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_EXTERNAL             = 4; ///<  
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_DUAL_ANTENNA         = 8; ///<  
 
 struct mip_filter_heading_update_state_data
 {
     float heading; ///< [radians]
     float heading_1sigma; ///< [radians]
-    enum mip_filter_heading_update_state_data_heading_source source;
+    mip_filter_heading_update_state_data_heading_source source;
     uint16_t valid_flags; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
     
 };
@@ -1136,7 +1115,7 @@ struct mip_filter_gnss_pos_aid_status_data
 {
     uint8_t receiver_id;
     float time_of_week; ///< Last GNSS aiding measurement time of week [seconds]
-    enum mip_gnss_aid_status_flags status; ///< Aiding measurement status bitfield
+    mip_gnss_aid_status_flags status; ///< Aiding measurement status bitfield
     uint8_t reserved[8];
     
 };
@@ -1156,7 +1135,7 @@ bool extract_mip_filter_gnss_pos_aid_status_data_from_field(const struct mip_fie
 struct mip_filter_gnss_att_aid_status_data
 {
     float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
-    enum mip_gnss_aid_status_flags status; ///< Last valid aiding measurement status bitfield
+    mip_gnss_aid_status_flags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8];
     
 };
@@ -1173,17 +1152,14 @@ bool extract_mip_filter_gnss_att_aid_status_data_from_field(const struct mip_fie
 ///
 ///@{
 
-enum mip_filter_head_aid_status_data_heading_aid_type
-{
-    MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_DUAL_ANTENNA     = 1,  ///<  
-    MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_EXTERNAL_MESSAGE = 2,  ///<  
-};
-typedef enum mip_filter_head_aid_status_data_heading_aid_type mip_filter_head_aid_status_data_heading_aid_type;
+typedef uint8_t mip_filter_head_aid_status_data_heading_aid_type;
+static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_DUAL_ANTENNA     = 1; ///<  
+static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_EXTERNAL_MESSAGE = 2; ///<  
 
 struct mip_filter_head_aid_status_data
 {
     float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
-    enum mip_filter_head_aid_status_data_heading_aid_type type; ///< 1 - Dual antenna, 2 - External heading message (user supplied)
+    mip_filter_head_aid_status_data_heading_aid_type type; ///< 1 - Dual antenna, 2 - External heading message (user supplied)
     float reserved[2];
     
 };
@@ -1302,8 +1278,8 @@ struct mip_filter_aiding_measurement_summary_data
 {
     float time_of_week; ///< [seconds]
     uint8_t source;
-    enum mip_filter_aiding_measurement_type type; ///< (see product manual for supported types)
-    enum mip_filter_measurement_indicator indicator;
+    mip_filter_aiding_measurement_type type; ///< (see product manual for supported types)
+    mip_filter_measurement_indicator indicator;
     
 };
 typedef struct mip_filter_aiding_measurement_summary_data mip_filter_aiding_measurement_summary_data;
@@ -1357,30 +1333,24 @@ bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(
 ///
 ///@{
 
-enum mip_filter_gnss_dual_antenna_status_data_fix_type
-{
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_NONE     = 0,  ///<  
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FLOAT = 1,  ///<  
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FIXED = 2,  ///<  
-};
-typedef enum mip_filter_gnss_dual_antenna_status_data_fix_type mip_filter_gnss_dual_antenna_status_data_fix_type;
+typedef uint8_t mip_filter_gnss_dual_antenna_status_data_fix_type;
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_NONE     = 0; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FLOAT = 1; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FIXED = 2; ///<  
 
-enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags
-{
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_NONE                  = 0x0000,
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001,
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002,
-    MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004,
-};
-typedef enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags;
+typedef uint16_t mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags;
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_NONE                  = 0x0000;
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004; ///<  
 
 struct mip_filter_gnss_dual_antenna_status_data
 {
     float time_of_week; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
     float heading; ///< [radians]
     float heading_unc; ///< [radians]
-    enum mip_filter_gnss_dual_antenna_status_data_fix_type fix_type; ///< Fix type indicator
-    enum mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags status_flags;
+    mip_filter_gnss_dual_antenna_status_data_fix_type fix_type; ///< Fix type indicator
+    mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags status_flags;
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };

@@ -128,20 +128,17 @@ bool extract_mip_shared_delta_ticks_data_from_field(const struct mip_field* fiel
 ///
 ///@{
 
-enum mip_shared_gps_timestamp_data_valid_flags
-{
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW         = 0x0001,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002,
-    MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x0003,
-};
-typedef enum mip_shared_gps_timestamp_data_valid_flags mip_shared_gps_timestamp_data_valid_flags;
+typedef uint16_t mip_shared_gps_timestamp_data_valid_flags;
+static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000;
+static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW         = 0x0001; ///<  Whole number seconds TOW has been set
+static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  Week number has been set
+static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x0003; ///<  Both TOW and Week Number have been set
 
 struct mip_shared_gps_timestamp_data
 {
     double tow; ///< GPS Time of Week [seconds]
     uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
-    enum mip_shared_gps_timestamp_data_valid_flags valid_flags;
+    mip_shared_gps_timestamp_data_valid_flags valid_flags;
     
 };
 typedef struct mip_shared_gps_timestamp_data mip_shared_gps_timestamp_data;
@@ -247,17 +244,14 @@ bool extract_mip_shared_reference_time_delta_data_from_field(const struct mip_fi
 ///
 ///@{
 
-enum mip_shared_external_timestamp_data_valid_flags
-{
-    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000,
-    MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x0001,
-};
-typedef enum mip_shared_external_timestamp_data_valid_flags mip_shared_external_timestamp_data_valid_flags;
+typedef uint16_t mip_shared_external_timestamp_data_valid_flags;
+static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000;
+static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x0001; ///<  
 
 struct mip_shared_external_timestamp_data
 {
     uint64_t nanoseconds;
-    enum mip_shared_external_timestamp_data_valid_flags valid_flags;
+    mip_shared_external_timestamp_data_valid_flags valid_flags;
     
 };
 typedef struct mip_shared_external_timestamp_data mip_shared_external_timestamp_data;
@@ -288,17 +282,14 @@ void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serialize
 ///
 ///@{
 
-enum mip_shared_external_time_delta_data_valid_flags
-{
-    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_NONE     = 0x0000,
-    MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x0001,
-};
-typedef enum mip_shared_external_time_delta_data_valid_flags mip_shared_external_time_delta_data_valid_flags;
+typedef uint16_t mip_shared_external_time_delta_data_valid_flags;
+static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_NONE     = 0x0000;
+static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x0001; ///<  
 
 struct mip_shared_external_time_delta_data
 {
     uint64_t dt_nanos; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
-    enum mip_shared_external_time_delta_data_valid_flags valid_flags;
+    mip_shared_external_time_delta_data_valid_flags valid_flags;
     
 };
 typedef struct mip_shared_external_time_delta_data mip_shared_external_time_delta_data;
