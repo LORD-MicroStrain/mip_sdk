@@ -43,16 +43,21 @@ The examples take two parameters for the device connection:
 Communications Interfaces
 -------------------------
 
+Two connection types are provided with the MIP SDK to make it easy to run the examples on both Windows and Linux systems.
+
 ### Serial Port
 
-A basic serial port interface is provided in C and C++ for Linux and Windows.  These can be modified for other platforms by the user.
+A basic serial port interface is provided in C and C++ for Linux and Windows. These can be modified for other platforms by the user.
+The serial port connection will be used in most cases, when the MIP device is connected
+via a serial or USB cable (the USB connection acts like a virtual serial port).
 
 Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
 
 ### TCP Client
 
-A TCP client connection is provided with the MIP SDK. This allows remote development over
-a network cable and makes it possible to insert other software into the communications path for debugging.
+The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
+via the normal serial or USB cable to a commputer system running a TCP server which forwards data between
+the serial port and TCP clients.
 
 Enable it in the CMake configuration with `-DWITH_TCP=1`.
 
@@ -66,7 +71,7 @@ How to Build
 * A working C compiler
   * C99 or later required
 * A working C++ compiler
-  * For C++ API only. Define `MSCL_DISABLE_CPP=ON` if you don't want to use any C++.
+  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
   * C++11 or later required for the mip library
   * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
 * Doxygen, if building documentation
