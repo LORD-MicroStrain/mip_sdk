@@ -111,14 +111,16 @@ pipeline {
               '''
             }
           }
-        } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
+        } else if (BRANCH_NAME && BRANCH_NAME == 'master_test') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to the latest version if the master commit matches up with the commit of that version
               repo="LORD-MicroStrain/libmip"
-              artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
+              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
+              artifacts=$(find "${archive_dir}" -type f)
               if git describe --exact-match --tags HEAD &> /dev/null; then
+                # Deploy the artifacts to Github
                 tag=$(git describe --exact-match --tags HEAD)
                 gh release delete \
                   -y \
@@ -130,6 +132,17 @@ pipeline {
                   --target "${BRANCH_NAME}" \
                   --notes "" \
                   "${tag}" ${artifacts}
+                
+                # Commit the documentation to the github pages branch
+                export GIT_ASKPASS="${HOME}/.git-askpass"
+                docs_zip="$(find ${archive_dir} -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
+                docs_dir="/tmp/mip_sdk_docs/${tag}"
+                git clone -b "gh-pages" "https://github.com/LORD-MicroStrain/mip_sdk.git" /tmp/mip_sdk_docs
+                mkdir -p "${docs_dir}"
+                pushd "${docs_dir}"
+                unzip "${docs_zip}" -d "${docs_dir}"
+                git status
+                popd
               else
                 echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
               fi
