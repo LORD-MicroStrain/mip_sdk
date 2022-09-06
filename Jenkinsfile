@@ -91,7 +91,7 @@ pipeline {
   post {
     success {
       script {
-        if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+        if (BRANCH_NAME && BRANCH_NAME == 'develop_test') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
@@ -125,7 +125,7 @@ pipeline {
               '''
             }
           }
-        } else if (BRANCH_NAME && BRANCH_NAME == 'master_test') {
+        } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
