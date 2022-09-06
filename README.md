@@ -13,7 +13,7 @@ Features
   * No dynamic memory allocation
   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
-  * FindMsclEmbedded.cmake is included for CMake-based projects
+  * FindMip.cmake is included for CMake-based projects
 * Can be used to parse offline binary files
 * C API for those who can't use C++
 * C++ API for safety, flexibility, and convenience.
@@ -86,7 +86,7 @@ The following options may be specified when configuring the build with CMake (e.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
 * BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* MSCL_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
+* MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 * BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
 
 ### Compilation with CMake
@@ -105,17 +105,20 @@ Implementation Notes
 
 ### User-Implemented Functions
 
-There are two C functions which the user must implement to use this library.
+There are two C functions which must be implemented to use this library.
 
 The first, `mip_interface_user_recv_from_device()`, must fetch raw data bytes from the connected MIP device. Typically this means reading from
 a serial port or TCP socket.
 
 The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
 
-If compiling your application for C++, declare them as `extern "C"` to avoid linking problems.
+#### C++
+For C++ applications, these functions are implemented by the `MipDeviceInterface` class, which takes a `Connection` object responsible
+for reading and writing to the device. Create a class derived from `Connection` and implement the pure virtual `recvFromDevice` and
+`sendToDevice` methods.
 
-If using the `MipDeviceInterface` class, you should instead subclass it and override the pure virtual `update` and `sendToDevice`
-methods. The `MipDeviceInterface` class implements the C functions itself.
+If you do not wish to use the `MipDeviceInterface` class, do not compile the corresponding source file and create the
+C functions yourself. Declare them functions as `extern "C"` to avoid linking problems between the C and C++ code.
 
 ### Command Results (mip_cmd_result / MipCmdResult)
 
@@ -157,7 +160,7 @@ The C++ API is implemented on top of the C API to provide additional features:
 * Improved type safety and sanity checking
 * Better clarity / reduced verbosity (e.g. with `using namespace mscl`)
 
-The C++ API uses `TitleCase` for typenames and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
+The C++ API uses `TitleCase` for types and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
 everything. This makes it easy to tell which is being used when looking at the examples.
 
-The C API can be accessed directly from C++ via the `mscl::C` namesace.
+The C API can be accessed directly from C++ via the `mip::C` namesace.
