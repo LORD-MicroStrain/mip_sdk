@@ -89,23 +89,15 @@ The following options may be specified when configuring the build with CMake (e.
 * MSCL_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 * BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
 
-### Compilation for Linux
+### Compilation with CMake
 
 1. Create the build directory (e.g. `mkdir build`).
-2. In the build directory, run `cmake .. -G 'Unix Makefiles' <options>`
+2. In the build directory, run `cmake .. <options>`
    * Replace `<options>` with your configuration options, such as `-DWITH_SERIAL=1`.
    * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
-   * An alternative generator may be used, such as ninja, code blocks, etc.
-3. Invoke `make` in the build directory (if using the `Unix Makefiles` generator).
-4. (Optional, if BUILD_TESTS was enabled) Run `ctest` to verify the test cases pass.
-
-### Compilation for Windows
-
-Todo
-
-### Compilation for Embedded MCU
-
-Todo
+   * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generatopr>`
+3. Invoke `cmake --build .` in the build directory
+4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
 
 
 Implementation Notes
