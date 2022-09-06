@@ -1,3 +1,28 @@
+// Utility function for checking out the repo since we want all the branches and tags
+def checkoutRepo() {
+  // Clean the workspace
+  cleanWs()
+
+  // Handles both PRs and branches
+  script {
+    if (env.CHANGE_BRANCH) {
+      BRANCH_NAME_REAL = env.CHANGE_BRANCH
+    } else {
+      BRANCH_NAME_REAL = env.BRANCH_NAME
+    }
+  }
+
+  // Checkout the code from github
+  checkout([  $class: 'GitSCM',
+    branches: [
+        [name: 'refs/heads/' + BRANCH_NAME_REAL]
+    ],
+    userRemoteConfigs: [[credentialsId: 'ffc94480-3383-4390-82e6-af2fb5e6c76d', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
+    extensions: [
+    ]
+  ])
+}
+
 pipeline {
   agent none
   stages {
@@ -8,8 +33,7 @@ pipeline {
           agent { label 'windows10' }
           options { skipDefaultCheckout() }
           steps {
-            cleanWs()
-            checkout scm
+            checkoutRepo()
             powershell """
               mkdir build_Win32
               cd build_Win32
@@ -28,8 +52,7 @@ pipeline {
           agent { label 'windows10' }
           options { skipDefaultCheckout() }
           steps {
-            cleanWs()
-            checkout scm
+            checkoutRepo()
             powershell """
               mkdir build_x64
               cd build_x64
@@ -46,8 +69,7 @@ pipeline {
           agent { label 'linux-amd64' }
           options { skipDefaultCheckout() }
           steps {
-            cleanWs()
-            checkout scm
+            checkoutRepo()
             sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
             archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
@@ -57,8 +79,7 @@ pipeline {
           agent { label 'linux-amd64' }
           options { skipDefaultCheckout() }
           steps {
-            cleanWs()
-            checkout scm
+            checkoutRepo()
             sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
@@ -95,25 +116,21 @@ pipeline {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to the latest version if the master commit matches up with the commit of that version
-              latest_version=$(gh release list --exclude-drafts -R LORD-MicroStrain/libmip | tr '\t' ' ' | tr -s ' ' | cut -d' ' -f1 | grep -v "latest" | sort -V -r | head -1)
-              current_commit=$(git rev-list -n 1 ${BRANCH_NAME})
-              latest_version_commit=$(git rev-list -n 1 "${latest_version}")
               artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
-              if [[ "${current_commit}" == "${latest_version_commit}" ]]; then
+              if git describe --exact-match --tags HEAD &> /dev/null; then
+                tag=$(git describe --exact-match --tags HEAD)
                 gh release delete \
                   -y \
                   -R "${repo}" \
-                  "${latest_version}"
+                  "${tag}"
                 gh release create \
                   -R "${repo}" \
-                  --title "${latest_version}" \
-                  --target "${latest_version}" \
+                  --title "${tag}" \
+                  --target "${tag}" \
                   --notes "" \
-                  "${latest_version}" ${artifacts}
+                  "${tag}" ${artifacts}
               else
                 echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
-                echo "${BRANCH_NAME} commit: ${current_commit}"
-                echo "${latest_version} commit: ${latest_version_commit}"
               fi
               '''
             }
