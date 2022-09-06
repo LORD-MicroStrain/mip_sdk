@@ -70,12 +70,11 @@ pipeline {
   post {
     success {
       script {
+        def repo = "LORD-MicroStrain/libmip"
         if (BRANCH_NAME && BRANCH_NAME == 'develop') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
-              repo="LORD-MicroStrain/libmip"
-              branch="develop"
               release_name="latest"
               artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
               gh release delete \
@@ -85,9 +84,37 @@ pipeline {
               gh release create \
                 -R "${repo}" \
                 --title "${release_name}" \
-                --target "${branch}" \
+                --target "${BRANCH_NAME}" \
                 --generate-notes \
                 "${release_name}" ${artifacts}
+              '''
+            }
+          }
+        } else if (BRANCH_NAME && BRANCH_NAME == 'master_test') {
+          node("linux-amd64") {
+            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+              sh '''
+              # Release to the latest version if the master commit matches up with the commit of that version
+              latest_version=$(gh release list --exclude-drafts -R LORD-MicroStrain/libmip | tr '\t' ' ' | tr -s ' ' | cut -d' ' -f1 | grep -v "latest" | sort -V -r | head -1)
+              current_commit=$(git rev-list -n 1 ${BRANCH_NAME})
+              latest_version_commit=$(git rev-list -n 1 "${latest_version}")
+              artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
+              if [[ "${current_commit}" == "${latest_version_commit}" ]]; then
+                gh release delete \
+                  -y \
+                  -R "${repo}" \
+                  "${latest_version}"
+                gh release create \
+                  -R "${repo}" \
+                  --title "${latest_version}" \
+                  --target "${latest_version}" \
+                  --notes "" \
+                  "${latest_version}" ${artifacts}
+              else
+                echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
+                echo "${BRANCH_NAME} commit: ${current_commit}"
+                echo "${latest_version} commit: ${latest_version_commit}"
+              fi
               '''
             }
           }
