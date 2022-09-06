@@ -101,7 +101,7 @@ pipeline {
               gh release delete \
                 -y \
                 -R "${repo}" \
-                "${release_name}"
+                "${release_name}" || echo "No existing release named ${release_name}"
               gh release create \
                 -R "${repo}" \
                 --title "${release_name}" \
