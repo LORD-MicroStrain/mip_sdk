@@ -256,7 +256,7 @@ if(BUILD_DOCUMENTATION)
 
     # Add a target to enable users to zip up the docs
     add_custom_target(package_docs
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/documentation/html
         DEPENDS docs
         COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MIP_GIT_VERSION}_Documentation.zip" --format=zip "."
     )

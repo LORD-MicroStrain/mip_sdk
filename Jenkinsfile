@@ -108,6 +108,20 @@ pipeline {
                 --target "${BRANCH_NAME}" \
                 --generate-notes \
                 "${release_name}" ${artifacts}
+
+              # Commit the documentation to the github pages branch
+              export GIT_ASKPASS="${HOME}/.git-askpass"
+              docs_zip=$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
+              docs_dir="${WORKSPACE}/mip_sdk_documentation/${release_name}"
+              git clone -b "main" "https://github.com/LORD-MicroStrain/mip_sdk_documentation.git" mip_sdk_documentation
+              rm -rf "${docs_dir}"
+              mkdir -p "${docs_dir}"
+              pushd "${docs_dir}"
+              unzip "${docs_zip}" -d "${docs_dir}"
+              git add --all
+              git commit -m "Adds documentation for ${release_name}"
+              git push origin main
+              popd
               '''
             }
           }
@@ -135,13 +149,16 @@ pipeline {
                 
                 # Commit the documentation to the github pages branch
                 export GIT_ASKPASS="${HOME}/.git-askpass"
-                docs_zip="$(find ${archive_dir} -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
-                docs_dir="/tmp/mip_sdk_docs/${tag}"
-                git clone -b "gh-pages" "https://github.com/LORD-MicroStrain/mip_sdk.git" /tmp/mip_sdk_docs
+                docs_zip=$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
+                docs_dir="${WORKSPACE}/mip_sdk_documentation/${tag}"
+                git clone -b "main" "https://github.com/LORD-MicroStrain/mip_sdk_documentation.git" mip_sdk_documentation
+                rm -rf "${docs_dir}"
                 mkdir -p "${docs_dir}"
                 pushd "${docs_dir}"
                 unzip "${docs_zip}" -d "${docs_dir}"
-                git status
+                git add --all
+                git commit -m "Adds documentation for ${tag}"
+                git push origin main
                 popd
               else
                 echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
