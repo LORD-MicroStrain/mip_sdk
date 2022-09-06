@@ -29,9 +29,9 @@ Examples
 * Get device information [C++] - queries the device strings and prints them to stdout.
 * Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
 * Product-specific examples:
-  * GQ7 setup [] - Configures the device for typical usage.
-  * CV7 setup [] - Configures the device for typical usage.
-  * CV7 event [] - Configures a data trigger to output a message.
+  * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
+  * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
+  * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
 
 You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
 
@@ -45,14 +45,13 @@ Communications Interfaces
 
 ### Serial Port
 
-A serial port library is included via git submodule. To use it, you'll have to download this additional library:
-`git submodule init`
+A basic serial port interface is provided in C and C++ for Linux and Windows.  These can be modified for other platforms by the user.
 
 Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
 
 ### TCP Client
 
-A TCP client connection is provided with MSCL-Embedded. This allows remote development over
+A TCP client connection is provided with the MIP SDK. This allows remote development over
 a network cable and makes it possible to insert other software into the communications path for debugging.
 
 Enable it in the CMake configuration with `-DWITH_TCP=1`.
