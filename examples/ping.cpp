@@ -60,7 +60,7 @@ int main(int argc, const char* argv[])
 #if METHOD == 1 || METHOD == 2 || METHOD == 3
         serial::Serial port(argv[1], baud, serial::Timeout::simpleTimeout(10));
 
-        uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+        uint8_t buffer[PACKET_LENGTH_MAX];
 
         mip::Packet packet(buffer, sizeof(buffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
@@ -105,7 +105,7 @@ int main(int argc, const char* argv[])
         mip::C::MipPendingCmd_initWithResponse(&cmd, mip::MIP_BASE_COMMAND_DESC_SET, mip::MIP_CMD_DESC_BASE_GET_DEVICE_INFO, mip::MIP_REPLY_DESC_BASE_DEVICE_INFO, responseBuffer, sizeof(responseBuffer));
         mip::C::MipCmdQueue_enqueue(device.cmdQueue(), &cmd);
 
-        uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
+        uint8_t packetBuffer[PACKET_LENGTH_MAX];
 
         mip::Packet packet(packetBuffer, sizeof(packetBuffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
@@ -241,7 +241,7 @@ int main(int argc, const char* argv[])
 //
 // CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response)
 // {
-//     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+//     uint8_t buffer[PACKET_LENGTH_MAX];
 //
 //     struct C::Packet packet;
 //     MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);

@@ -589,7 +589,7 @@ void DeviceInterface::registerExtractor(C::mip_dispatch_handler& handler, DataFi
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    uint8_t buffer[PACKET_LENGTH_MAX];
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
@@ -608,11 +608,11 @@ CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout add
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
 {
-    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    uint8_t buffer[PACKET_LENGTH_MAX];
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, buffer, MIP_FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, buffer, FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
@@ -627,7 +627,7 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
 template<class Cmd>
 bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+    uint8_t buffer[PACKET_LENGTH_MAX];
     Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 
     C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
@@ -638,7 +638,7 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
 //template<class Cmd>
 //bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
 //{
-//    uint8_t buffer[MIP_PACKET_LENGTH_MAX];
+//    uint8_t buffer[PACKET_LENGTH_MAX];
 //    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
 //
 //    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);

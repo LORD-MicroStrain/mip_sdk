@@ -11,7 +11,7 @@
 using namespace mip;
 
 
-uint8_t packetBuffer[MIP_PACKET_LENGTH_MAX];
+uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
 Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
