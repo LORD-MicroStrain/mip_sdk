@@ -99,6 +99,8 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout);
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 
+void mip_cmd_queue_clear(mip_cmd_queue* queue);
+
 void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type timestamp);
 
 void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, timeout_type timeout);

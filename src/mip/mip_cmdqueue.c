@@ -360,6 +360,25 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Clears the command queue.
+///
+/// This must be called from the same thread context as the update function.
+///
+///@param queue
+///
+void mip_cmd_queue_clear(mip_cmd_queue* queue)
+{
+    while( queue->_first_pending_cmd )
+    {
+        mip_pending_cmd* pending = queue->_first_pending_cmd;
+        queue->_first_pending_cmd = pending->_next;
+
+        // This may deallocate the pending command in another thread (make sure to fetch the next cmd first).
+        pending->_status = MIP_STATUS_ERROR;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Call periodically to make sure commands time out if no packets are
 ///       received.
 ///

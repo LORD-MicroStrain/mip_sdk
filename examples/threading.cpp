@@ -23,7 +23,8 @@ unsigned int display_progress()
 
     unsigned int count = numSamples;
 
-    float progress = count / float(maxSamples);
+    // Compute progress as a fraction from 0 to 1 (may exceed 100% if some extra packets get through).
+    float progress = std::min(count / float(maxSamples), 1.0f);
 
     unsigned int threshold = std::lround(progress * 50);
 
@@ -34,6 +35,7 @@ unsigned int display_progress()
         std::putchar(' ');
 
     std::printf("] %.0f%%\r", progress * 100);
+    std::fflush(stdout);
 
     return count;
 }
@@ -48,7 +50,10 @@ void device_thread_loop(mip::DeviceInterface* device)
     while(!stop)
     {
         if( !device->update(false) )
+        {
+            device->cmdQueue().clear();  // Avoid deadlocks if the socket is closed.
             break;
+        }
 
         std::this_thread::yield();
     }

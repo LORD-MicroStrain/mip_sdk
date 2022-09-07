@@ -38,6 +38,8 @@ struct CmdQueue : public C::mip_cmd_queue
     void enqueue(C::mip_pending_cmd& cmd) { C::mip_cmd_queue_enqueue(this, &cmd); }
     void dequeue(C::mip_pending_cmd& cmd) { C::mip_cmd_queue_dequeue(this, &cmd); }
 
+    void clear() { C::mip_cmd_queue_clear(this); }
+
     void update(Timestamp now) { C::mip_cmd_queue_update(this, now); }
 
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(this, timeout); }
