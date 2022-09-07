@@ -1,4 +1,5 @@
-build/
+[Bb]uild/
 build-doc/
 .vscode/
 int/
+.idea/
