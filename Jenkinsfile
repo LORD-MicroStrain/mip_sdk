@@ -95,9 +95,10 @@ pipeline {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
-              release_name="develop"
+              release_name="latest"
               repo="LORD-MicroStrain/libmip"
-              artifacts=$(find "${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/" -type f)
+              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
+              artifacts=$(find "${archive_dir}" -type f)
               gh release delete \
                 -y \
                 -R "${repo}" \
