@@ -59,7 +59,7 @@ bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port
 
     if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, &timeout_option, sizeof(timeout_option)) != 0 )
         return false;
-    
+
     return true;
 #endif
 }
@@ -102,9 +102,9 @@ bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, siz
 #ifdef WIN32
     return false;  // TODO: Windows
 #else
-    *bytes_read = recv(socket_ptr->handle, buffer, num_bytes, MSG_NOSIGNAL);
+    ssize_t local_bytes_read = recv(socket_ptr->handle, buffer, num_bytes, MSG_NOSIGNAL);
 
-    if( *bytes_read == (size_t)-1 )
+    if( local_bytes_read == -1 )
     {
         if(errno != EAGAIN && errno != EWOULDBLOCK)
             return false;
@@ -112,9 +112,10 @@ bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, siz
             return true;
     }
     // Throw an error if the connection has been closed by the other side.
-    else if( *bytes_read == 0 )
+    else if( local_bytes_read == 0 )
         return false;
 
-    return true;;
+    *bytes_read = local_bytes_read;
+    return true;
 #endif
 }
