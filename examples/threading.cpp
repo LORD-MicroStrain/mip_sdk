@@ -10,6 +10,7 @@
 #include <cmath>
 #include <cstdio>
 #include <stdexcept>
+#include <algorithm>
 
 const unsigned int maxSamples = 50;
 volatile unsigned int numSamples = 0;
