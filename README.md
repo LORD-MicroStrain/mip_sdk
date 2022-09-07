@@ -40,6 +40,12 @@ The examples take two parameters for the device connection:
 * For a TCP connection: Hostname and port. Hostname can be either a hostname like `localhost` or an IPv4 address.
 
 
+Documentation
+-------------
+
+https://lord-microstrain.github.io/mip_sdk_documentation/develop/index.html
+
+
 Communications Interfaces
 -------------------------
 
@@ -112,6 +118,8 @@ a serial port or TCP socket.
 
 The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
 
+See https://lord-microstrain.github.io/mip_sdk_documentation/develop/mip_interface.html for details on how to implement these functions.
+
 #### C++
 For C++ applications, these functions are implemented by the `MipDeviceInterface` class, which takes a `Connection` object responsible
 for reading and writing to the device. Create a class derived from `Connection` and implement the pure virtual `recvFromDevice` and
@@ -158,7 +166,7 @@ Currently, only the C++ api offers a way to set the additional time parameter.
 The C++ API is implemented on top of the C API to provide additional features:
 * Object-oriented interfaces
 * Improved type safety and sanity checking
-* Better clarity / reduced verbosity (e.g. with `using namespace mscl`)
+* Better clarity / reduced verbosity (e.g. with `using namespace mip`)
 
 The C++ API uses `TitleCase` for types and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
 everything. This makes it easy to tell which is being used when looking at the examples.
