@@ -252,7 +252,7 @@ remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t
 ///
 void mip_interface_process_unparsed_packets(mip_interface* device)
 {
-    mip_parser_parse(&device->_parser, NULL, 0, device->_max_update_pkts, mip_parser_last_packet_timestamp(&device->_parser));
+    mip_parser_parse(&device->_parser, NULL, 0, mip_parser_last_packet_timestamp(&device->_parser), device->_max_update_pkts);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
