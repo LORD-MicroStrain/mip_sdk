@@ -183,6 +183,11 @@ if(${MIP_TIMESTAMP_TYPE})
     add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
 endif()
 
+# Disable windows defined min/max
+if(WIN32)
+  target_compile_definitions(mip PUBLIC "NOMINMAX=1")
+endif()
+
 if(MSVC)
   target_compile_options(mip PRIVATE /W4)
 else()
