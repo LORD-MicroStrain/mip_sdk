@@ -129,7 +129,7 @@ pipeline {
               mkdir -p "${docs_dir}"
               pushd "${docs_dir}"
               unzip "${docs_zip}" -d "${docs_dir}"
-              if ! grep -q -E "^\* \[${release_name}\]\(.*\)$" "${docs_dir}/README.md"; then
+              if ! grep -q -E "^\\* \\[${release_name}\\]\\(.*\\)$" "${docs_dir}/README.md"; then
                 echo "* [${release_name}](${documentation_link})" >> "${docs_dir}/README.md"
               fi
               git add --all
@@ -177,7 +177,7 @@ pipeline {
                 mkdir -p "${docs_dir}"
                 pushd "${docs_dir}"
                 unzip "${docs_zip}" -d "${docs_dir}"
-                if ! grep -q -E "^\* \[${tag}\]\(.*\)$" "${docs_dir}/README.md"; then
+                if ! grep -q -E "^\\* \\[${tag}\\]\\(.*\\)$" "${docs_dir}/README.md"; then
                   echo "* [${tag}](${documentation_link})" >> "${docs_dir}/README.md"
                 fi
                 git add --all
