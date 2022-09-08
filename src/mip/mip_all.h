@@ -28,3 +28,5 @@
 #include "definitions/data_gnss.h"
 #include "definitions/data_filter.h"
 
+//SDK version
+#include "mip_version.h"
