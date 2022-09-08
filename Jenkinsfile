@@ -99,6 +99,14 @@ pipeline {
               repo="LORD-MicroStrain/libmip"
               archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
               artifacts=$(find "${archive_dir}" -type f)
+
+              # Generate a release notes file
+              documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${release_name}"
+              release_notes_file="/tmp/mip-sdk-release-notes-${release_name}.md"
+              echo "## Useful Links" > ${release_notes_file}
+              echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
+
+              # Deploy the artifacts to Github
               gh release delete \
                 -y \
                 -R "${repo}" \
@@ -108,7 +116,9 @@ pipeline {
                 --title "${release_name}" \
                 --target "${BRANCH_NAME}" \
                 --generate-notes \
+                --notes-file "${release_notes_file}" \
                 "${release_name}" ${artifacts}
+              rm "${release_notes_file}"
 
               # Commit the documentation to the github pages branch
               export GIT_ASKPASS="${HOME}/.git-askpass"
@@ -119,6 +129,9 @@ pipeline {
               mkdir -p "${docs_dir}"
               pushd "${docs_dir}"
               unzip "${docs_zip}" -d "${docs_dir}"
+              if ! grep -q -E "^\* \[${release_name}\]\(.*\)$" "${docs_dir}/README.md"; then
+                echo "* [${release_name}](${documentation_link})" >> "${docs_dir}/README.md"
+              fi
               git add --all
               git commit -m "Adds documentation for ${release_name}"
               git push origin main
@@ -135,8 +148,14 @@ pipeline {
               archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
               artifacts=$(find "${archive_dir}" -type f)
               if git describe --exact-match --tags HEAD &> /dev/null; then
-                # Deploy the artifacts to Github
+                # Generate a release notes file
                 tag=$(git describe --exact-match --tags HEAD)
+                documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${tag}"
+                release_notes_file="/tmp/mip-sdk-release-notes-${tag}.md"
+                echo "## Useful Links" > ${release_notes_file}
+                echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
+
+                # Deploy the artifacts to Github
                 gh release delete \
                   -y \
                   -R "${repo}" \
@@ -145,8 +164,9 @@ pipeline {
                   -R "${repo}" \
                   --title "${tag}" \
                   --target "${BRANCH_NAME}" \
-                  --notes "" \
+                  --notes-file "${release_notes_file}" \
                   "${tag}" ${artifacts}
+                rm "${release_notes_file}"
                 
                 # Commit the documentation to the github pages branch
                 export GIT_ASKPASS="${HOME}/.git-askpass"
@@ -157,6 +177,9 @@ pipeline {
                 mkdir -p "${docs_dir}"
                 pushd "${docs_dir}"
                 unzip "${docs_zip}" -d "${docs_dir}"
+                if ! grep -q -E "^\* \[${tag}\]\(.*\)$" "${docs_dir}/README.md"; then
+                  echo "* [${tag}](${documentation_link})" >> "${docs_dir}/README.md"
+                fi
                 git add --all
                 git commit -m "Adds documentation for ${tag}"
                 git push origin main

@@ -231,6 +231,8 @@ if(BUILD_DOCUMENTATION)
         message(FATAL_ERROR "Doxygen is required to build documentation.")
     endif()
 
+    set(DOXYGEN_PROJECT_NUMBER "${MIP_GIT_VERSION}")
+
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/documentation")
     set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/docs")
 
