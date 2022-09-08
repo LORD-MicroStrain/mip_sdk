@@ -192,11 +192,11 @@ public:
 
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
 
-    bool           sendToDevice(const uint8_t* data, size_t length) { return mConnection->sendToDevice(data, length); }
+    virtual bool   sendToDevice(const uint8_t* data, size_t length) { return mConnection->sendToDevice(data, length); }
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
 
     bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
-    bool           recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) { return mConnection->recvFromDevice(buffer, max_length, length_out, timestamp); }
+    virtual bool   recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) { return mConnection->recvFromDevice(buffer, max_length, length_out, timestamp); }
 
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
