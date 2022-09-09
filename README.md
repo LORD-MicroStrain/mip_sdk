@@ -168,6 +168,8 @@ Timeouts for commands are broken down into two parts.
 Currently, only the C++ api offers a way to set the additional time parameter, and only when using the `runCommand` function taking
 the command structure and the `additionalTime` parameter.
 
+The `timeout_type` / `Timeout` typedef is an alias to the timestamp type.
+
 ### C and C++ APIs
 
 The C++ API is implemented on top of the C API to provide additional features:
