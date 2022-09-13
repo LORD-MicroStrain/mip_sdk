@@ -91,51 +91,18 @@ pipeline {
   post {
     success {
       script {
-        if (BRANCH_NAME && BRANCH_NAME == 'develop') {
+        if (BRANCH_NAME && BRANCH_NAME == 'feature/release_script') {
           node("linux-amd64") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
-              release_name="latest"
-              repo="LORD-MicroStrain/libmip"
+              # Release to github
               archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
-              artifacts=$(find "${archive_dir}" -type f)
-
-              # Generate a release notes file
-              documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${release_name}"
-              release_notes_file="/tmp/mip-sdk-release-notes-${release_name}.md"
-              echo "## Useful Links" > ${release_notes_file}
-              echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
-
-              # Deploy the artifacts to Github
-              gh release delete \
-                -y \
-                -R "${repo}" \
-                "${release_name}" || echo "No existing release named ${release_name}"
-              gh release create \
-                -R "${repo}" \
-                --title "${release_name}" \
+              ./scripts/release.sh \
+                --artifacts "$(find "${archive_dir}" -type f)" \
                 --target "${BRANCH_NAME}" \
-                --generate-notes \
-                --notes-file "${release_notes_file}" \
-                "${release_name}" ${artifacts}
-              rm "${release_notes_file}"
-
-              # Commit the documentation to the github pages branch
-              export GIT_ASKPASS="${HOME}/.git-askpass"
-              docs_zip=$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
-              docs_dir="${WORKSPACE}/mip_sdk_documentation/${release_name}"
-              git clone -b "main" "https://github.com/LORD-MicroStrain/mip_sdk_documentation.git" mip_sdk_documentation
-              rm -rf "${docs_dir}"
-              mkdir -p "${docs_dir}"
-              pushd "${docs_dir}"
-              unzip "${docs_zip}" -d "${docs_dir}"
-              if ! grep -q -E "^\\* \\[${release_name}\\]\\(.*\\)$" "${docs_dir}/README.md"; then
-                echo "* [${release_name}](${documentation_link})" >> "${docs_dir}/README.md"
-              fi
-              git add --all
-              git commit -m "Adds documentation for ${release_name}"
-              git push origin main
-              popd
+                --release "latest" \
+                --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
+                --generate-notes
               '''
             }
           }
@@ -144,46 +111,14 @@ pipeline {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to the latest version if the master commit matches up with the commit of that version
-              repo="LORD-MicroStrain/libmip"
               archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
-              artifacts=$(find "${archive_dir}" -type f)
               if git describe --exact-match --tags HEAD &> /dev/null; then
-                # Generate a release notes file
-                tag=$(git describe --exact-match --tags HEAD)
-                documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${tag}"
-                release_notes_file="/tmp/mip-sdk-release-notes-${tag}.md"
-                echo "## Useful Links" > ${release_notes_file}
-                echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
-
-                # Deploy the artifacts to Github
-                gh release delete \
-                  -y \
-                  -R "${repo}" \
-                  "${tag}" || echo "No existing release named ${tag}"
-                gh release create \
-                  -R "${repo}" \
-                  --title "${tag}" \
+                # Publish a release
+                ./scripts/release.sh \
+                  --artifacts "$(find "${archive_dir}" -type f)" \
                   --target "${BRANCH_NAME}" \
-                  --notes-file "${release_notes_file}" \
-                  "${tag}" ${artifacts}
-                rm "${release_notes_file}"
-                
-                # Commit the documentation to the github pages branch
-                export GIT_ASKPASS="${HOME}/.git-askpass"
-                docs_zip=$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)
-                docs_dir="${WORKSPACE}/mip_sdk_documentation/${tag}"
-                git clone -b "main" "https://github.com/LORD-MicroStrain/mip_sdk_documentation.git" mip_sdk_documentation
-                rm -rf "${docs_dir}"
-                mkdir -p "${docs_dir}"
-                pushd "${docs_dir}"
-                unzip "${docs_zip}" -d "${docs_dir}"
-                if ! grep -q -E "^\\* \\[${tag}\\]\\(.*\\)$" "${docs_dir}/README.md"; then
-                  echo "* [${tag}](${documentation_link})" >> "${docs_dir}/README.md"
-                fi
-                git add --all
-                git commit -m "Adds documentation for ${tag}"
-                git push origin main
-                popd
+                  --release "$(git describe --exact-match --tags HEAD)" \
+                  --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
               else
                 echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
               fi
