@@ -100,6 +100,7 @@ if ! git diff-index --quiet HEAD --; then
   # Set up the auth for github assuming that a valid token is in the environment at "GH_TOKEN"
   git_askpass_file="${tmp_dir}/.mip-sdk-git-askpass"
   echo 'echo ${GH_TOKEN}' > "${git_askpass_file}"
+  chmod +x "${git_askpass_file}"
   GIT_ASKPASS="${git_askpass_file}" git push origin main
   rm "${git_askpass_file}"
 else
