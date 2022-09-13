@@ -72,7 +72,7 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
 option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
 
-set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
@@ -243,6 +243,8 @@ if(BUILD_DOCUMENTATION)
     if(NOT DOXYGEN_FOUND)
         message(FATAL_ERROR "Doxygen is required to build documentation.")
     endif()
+
+    set(DOXYGEN_PROJECT_NUMBER "${MIP_GIT_VERSION}")
 
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/documentation")
     set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/docs")
