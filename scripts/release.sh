@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Exit on error
+set -ex
+
+# On Jenkins, log all commands
+if [ "${ISHUDSONBUILD}" == "True" ]; then
+  set -x
+fi
+
 # Get some arguments from the user
 generate_notes_flag=""
 while [[ $# -gt 0 ]]; do
@@ -72,6 +80,7 @@ gh release create \
 rm -f "${release_notes_file}"
 
 # Commit the documentation to the github pages branch
+rm -rf "${docs_dir}"
 git clone -b "main" "https://github.com/LORD-MicroStrain/mip_sdk_documentation.git" "${docs_dir}"
 rm -rf "${docs_release_dir}"
 mkdir -p "${docs_release_dir}"
@@ -84,7 +93,7 @@ if ! grep -q -E "^\* \[${release_name}\]\(.*\)$" "${docs_dir}/README.md"; then
 fi
 
 # Only commit if there are changes
-if ! git status --porcelain=v1 2>/dev/null | wc -l; then
+if ! git diff-index --quiet HEAD --; then
   git add --all
   git commit -m "Adds/updates documentation for release ${release_name} at ${repo}@${mip_sdk_commit}."
 
