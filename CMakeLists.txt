@@ -60,7 +60,7 @@ endif()
 option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
 option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
 
-set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
