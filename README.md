@@ -43,7 +43,7 @@ The examples take two parameters for the device connection:
 Documentation
 -------------
 
-https://lord-microstrain.github.io/mip_sdk_documentation/latest/index.html
+Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation)
 
 
 Communications Interfaces
@@ -119,7 +119,7 @@ a serial port or TCP socket.
 
 The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
 
-See https://lord-microstrain.github.io/mip_sdk_documentation/latest/mip_interface.html for details on how to implement these functions.
+See [`mip_interface`](https://lord-microstrain.github.io/mip_sdk_documentation/latest/mip_interface.html) for details on how to implement these functions.
 
 #### C++
 For C++ applications, these functions are implemented by the `DeviceInterface` class, which takes a `Connection` object responsible
