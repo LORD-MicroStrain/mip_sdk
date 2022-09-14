@@ -59,6 +59,7 @@ endif()
 
 option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
 option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
+option(WITH_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -158,6 +159,14 @@ if(WITH_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
+if(WITH_EXTRAS)
+    set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
+    set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/mip_extras.hpp"
+        "${MIP_EXTRAS_DIR}/recording_connection.hpp"
+        "${MIP_EXTRAS_DIR}/recording_connection.cpp"
+    )
+endif()
 
 set(ALL_MIP_SOURCES
     ${MIPDEF_SOURCES}
@@ -167,17 +176,15 @@ set(ALL_MIP_SOURCES
     ${UTILS_SOURCES}
     ${MIP_CPP_HEADERS}
     ${MIP_INTERFACE_SOURCES}
+    ${MIP_EXTRA_SOURCES}
 )
-
 
 option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
-
 add_library(mip ${ALL_MIP_SOURCES})
-
 
 if(${MIP_TIMESTAMP_TYPE})
     add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
@@ -296,12 +303,20 @@ write_basic_package_version_file(
 # Installation
 #
 
-install(DIRECTORY
-    "${SRC_DIR}/mip"
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    COMPONENT mip
-    FILES_MATCHING PATTERN "*.h*"
-)
+# Only install headers that we build the source files for
+set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
+list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
+foreach(MIP_HEADER ${ALL_MIP_HEADERS})
+    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
+    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
+    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
+    install(
+        FILES "${MIP_HEADER}"
+        DESTINATION "${MIP_HEADER_DESTINATION}"
+        COMPONENT mip
+    )
+endforeach()
+
 install(TARGETS
     mip
     EXPORT mip-targets
