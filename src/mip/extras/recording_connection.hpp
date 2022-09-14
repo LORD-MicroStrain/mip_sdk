@@ -11,6 +11,13 @@ namespace mip
 namespace extras
 {
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_extras
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Recording connection. Can be used with another connection to communicate with a device, and record the data at the same time
+///
 class RecordingConnection : public Connection
 {
 public:
@@ -31,14 +38,15 @@ protected:
 ///@brief Template wrapper for a recording connection.
 ///
 ///@param ConnectionType The type of connection used to actually communicate.
+///
 template<typename ConnectionType>
 class RecordingConnectionWrapper : public RecordingConnection
 {
 public:
     ///@brief Creates a RecordingConnectionWrapper that will write received bytes to recvFile, and sent bytes to sendFile, and construct a connection object from args
     ///
-    ///@param recvFile The file to write to when bytes are received
-    ///@param sendFile The file to write to when bytes are sent
+    ///@param recvFile The file to write to when bytes are received. Null if received bytes should not be written to a file
+    ///@param sendFile The file to write to when bytes are sent. Null if sent bytes should not be written to a file
     ///@param args     Arguments required to construct the ConnectionType
     template<typename... Args>
     RecordingConnectionWrapper(std::ostream* recvFile, std::ostream* sendFile, Args&&... args) :
@@ -49,6 +57,9 @@ public:
 private:
     std::unique_ptr<ConnectionType> mConnectionPtr;
 };
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 }  // namespace extras
 }  // namespace mip

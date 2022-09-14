@@ -5,6 +5,11 @@ namespace mip
 namespace extras
 {
 
+///@brief Creates a RecordingConnection that will write received bytes to recvFile, and sent bytes to sendFile
+///
+///@param recvFile  The file to write to when bytes are received. Null if received bytes should not be written to a file
+///@param sendFile  The file to write to when bytes are sent. Null if sent bytes should not be written to a file
+///@param connection A connection class that will actually communicate with the device
 RecordingConnection::RecordingConnection(std::ostream* recvFile, std::ostream* sendFile, Connection* connection) :
     mRecvFile(recvFile), mSendFile(sendFile), mConnection(connection)
 {
