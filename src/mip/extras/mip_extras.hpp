@@ -1,3 +1,3 @@
 #pragma once
 
-#include "mip_recording_connection.hpp"
+#include "recording_connection.hpp"

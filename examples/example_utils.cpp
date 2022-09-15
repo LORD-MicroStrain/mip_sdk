@@ -42,7 +42,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingTcpConnection = mip::extras::RecordingConnectionWrapper<mip::platform::TcpConnection>;
-        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port));
+        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(port_or_hostname, port, example_utils->recordedFile.get(), example_utils->recordedFile.get()));
 #else  // MIP_USE_EXTRAS
         using TcpConnection = mip::platform::TcpConnection;
         example_utils->connection = std::unique_ptr<TcpConnection>(new TcpConnection(port_or_hostname, port));
@@ -64,7 +64,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingSerialConnection = mip::extras::RecordingConnectionWrapper<mip::platform::SerialConnection>;
-        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud));
+        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(port_or_hostname, baud, example_utils->recordedFile.get(), example_utils->recordedFile.get()));
 #else  // MIP_USE_EXTRAS
         using SerialConnection = mip::platform::SerialConnection;
         example_utils->connection = std::unique_ptr<SerialConnection>(new SerialConnection(port_or_hostname, baud));

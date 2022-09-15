@@ -21,6 +21,7 @@ endif()
 
 set(MIP_EXAMPLE_DEFS ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
 
+# C++ examples need either serial or TCP support
 if(WITH_SERIAL OR WITH_TCP)
 
     if(NOT MIP_DISABLE_CPP)
@@ -52,6 +53,10 @@ if(WITH_SERIAL OR WITH_TCP)
 
     endif()
 
+endif()
+
+# C examples need serial support
+if(WITH_SERIAL)
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
     target_link_libraries(WatchImuC mip)
 
@@ -63,5 +68,4 @@ if(WITH_SERIAL OR WITH_TCP)
 
     add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c")
     target_link_libraries(GX5_45_ExampleC mip)
-
 endif()
