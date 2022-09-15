@@ -162,7 +162,6 @@ endif()
 if(WITH_EXTRAS)
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
-        "${MIP_EXTRAS_DIR}/mip_extras.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
     )

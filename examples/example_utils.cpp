@@ -42,7 +42,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingTcpConnection = mip::extras::RecordingConnectionWrapper<mip::platform::TcpConnection>;
-        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(port_or_hostname, port, example_utils->recordedFile.get(), example_utils->recordedFile.get()));
+        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port));
 #else  // MIP_USE_EXTRAS
         using TcpConnection = mip::platform::TcpConnection;
         example_utils->connection = std::unique_ptr<TcpConnection>(new TcpConnection(port_or_hostname, port));
@@ -64,7 +64,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingSerialConnection = mip::extras::RecordingConnectionWrapper<mip::platform::SerialConnection>;
-        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(port_or_hostname, baud, example_utils->recordedFile.get(), example_utils->recordedFile.get()));
+        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud));
 #else  // MIP_USE_EXTRAS
         using SerialConnection = mip::platform::SerialConnection;
         example_utils->connection = std::unique_ptr<SerialConnection>(new SerialConnection(port_or_hostname, baud));
@@ -84,7 +84,7 @@ std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int
         throw std::underflow_error("Usage error");
     }
 
-    // If we were passed a directory name, record the data in that directory
+    // If we were passed a file name, record the data in that file
     std::string binary_file_path = "";
     if (argc >= 4)
         binary_file_path = argv[3];
@@ -94,7 +94,7 @@ std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int
 
 int printCommonUsage(const char* argv[])
 {
-    fprintf(stderr, "Usage: %s <portname> <baudrate>\nUsage: %s <hostname> <port>\n", argv[0], argv[0]);
+    fprintf(stderr, "Usage: %s <portname> <baudrate> <binaryfile>\nUsage: %s <hostname> <port> <binaryfile>\n", argv[0], argv[0]);
     return 1;
 }
 

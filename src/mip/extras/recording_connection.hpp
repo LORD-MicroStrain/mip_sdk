@@ -27,11 +27,11 @@ public:
     bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* count_out, Timestamp* timestamp_out) final;
 
 protected:
+    Connection* mConnection;
+
     // Files may be NULL to not record one direction or the other
     std::ostream* mRecvFile;
     std::ostream* mSendFile;
-
-    Connection* mConnection;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,11 +45,11 @@ class RecordingConnectionWrapper : public RecordingConnection
 public:
     ///@brief Creates a RecordingConnectionWrapper that will write received bytes to recvFile, sent bytes to sendFile, and construct a connection object from args
     ///
-    ///@param args     Arguments required to construct the ConnectionType
     ///@param recvFile The file to write to when bytes are received. Null if received bytes should not be written to a file
     ///@param sendFile The file to write to when bytes are sent. Null if sent bytes should not be written to a file
-    template<typename... Args>
-    RecordingConnectionWrapper(Args&&... args, std::ostream* recvFile=nullptr, std::ostream* sendFile=nullptr) :
+    ///@param args     Arguments required to construct the ConnectionType
+    template<class... Args>
+    RecordingConnectionWrapper(std::ostream* recvFile, std::ostream* sendFile, Args&&... args) :
         mConnectionPtr(std::unique_ptr<ConnectionType>(new ConnectionType(std::forward<Args>(args)...))), RecordingConnection(nullptr, recvFile, sendFile)
     {
         mConnection = mConnectionPtr.get();
