@@ -25,14 +25,14 @@ SerialConnection::~SerialConnection()
     serial_port_close(&mPort);
 }
 
-///@copydoc mip::Connection::sendToDevice
+///@copydoc mip::Connection::recvFromDevice
 bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, mip::Timestamp* timestamp)
 {
     *timestamp = getCurrentTimestamp();
     return serial_port_read(&mPort, buffer, max_length, length_out);
 }
 
-///@copydoc mip::Connection::recvFromDevice
+///@copydoc mip::Connection::sendToDevice
 bool SerialConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     size_t length_out;
