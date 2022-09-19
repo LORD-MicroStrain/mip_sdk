@@ -360,10 +360,10 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
-    auto callback = [](void* pointer, const Packet& packet, Timestamp timestamp)
+    auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(Packet(packet), timestamp);
+        (obj->*Callback)(Packet(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
