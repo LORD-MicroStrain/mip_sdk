@@ -45,12 +45,12 @@ void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
     }
 }
 
-void handleGyro(void*, const mip::data_sensor::ScaledGyro& data, mip::Timestamp timestamp)
+void handleGyro(void*, uint8_t descriptorSet, const mip::data_sensor::ScaledGyro& data, mip::Timestamp timestamp)
 {
     printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp timestamp)
+void handleMag(void*, uint8_t descriptorSet, const mip::data_sensor::ScaledMag& data, mip::Timestamp timestamp)
 {
     printf("Mag Data:   %f, %f, %f\n", data.scaled_mag[0], data.scaled_mag[1], data.scaled_mag[2]);
 }

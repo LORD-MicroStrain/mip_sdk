@@ -226,10 +226,10 @@ public:
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object);
 
 
-    template<class DataField, void (*Callback)(void*, const DataField&, Timestamp)>
+    template<class DataField, void (*Callback)(void*, uint8_t, const DataField&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, void* userData=nullptr, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
-    template<class DataField, class Object, void (Object::*Callback)(const DataField&, Timestamp)>
+    template<class DataField, class Object, void (Object::*Callback)(uint8_t, const DataField&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
 
@@ -473,7 +473,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, uint8_t descriptorSet, const Packet& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -490,7 +490,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///
 ///@endcode
 ///
-template<class DataField, void (*Callback)(void*, const DataField&, Timestamp)>
+template<class DataField, void (*Callback)(void*, uint8_t, const DataField&, Timestamp)>
 void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
@@ -508,7 +508,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
         bool ok = Field(*field).extract(data);
         assert(ok); (void)ok;
 
-        Callback(context, data, timestamp);
+        Callback(context, mip_field_descriptor_set(field), data, timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, userData);
@@ -535,7 +535,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
 ///@code{.cpp}
 /// class MySystem
 /// {
-///   void handleAccel(const ScaledAccel& accel, Timestamp timestamp)
+///   void handleAccel(uint8_t descriptorSet, const ScaledAccel& accel, Timestamp timestamp)
 ///   {
 ///   }
 ///
@@ -550,7 +550,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
 /// };
 ///@endcode
 ///
-template<class DataField, class Object, void (Object::*Callback)(const DataField&, Timestamp)>
+template<class DataField, class Object, void (Object::*Callback)(uint8_t, const DataField&, Timestamp)>
 void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
@@ -569,7 +569,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
         assert(ok); (void)ok;
 
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(data, timestamp);
+        (obj->*Callback)(mip_field_descriptor_set(field), data, timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, object);
