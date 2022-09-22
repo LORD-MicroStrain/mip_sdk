@@ -1544,6 +1544,169 @@ void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* seri
     *self = tmp;
 }
 
+void insert_mip_gnss_galileo_ephemeris_data(mip_serializer* serializer, const mip_gnss_galileo_ephemeris_data* self)
+{
+    insert_u8(serializer, self->index);
+    
+    insert_u8(serializer, self->count);
+    
+    insert_double(serializer, self->time_of_week);
+    
+    insert_u16(serializer, self->week_number);
+    
+    insert_u8(serializer, self->satellite_id);
+    
+    insert_u8(serializer, self->health);
+    
+    insert_u8(serializer, self->iodc);
+    
+    insert_u8(serializer, self->iode);
+    
+    insert_double(serializer, self->t_oc);
+    
+    insert_double(serializer, self->af0);
+    
+    insert_double(serializer, self->af1);
+    
+    insert_double(serializer, self->af2);
+    
+    insert_double(serializer, self->t_gd);
+    
+    insert_double(serializer, self->ISC_L1CA);
+    
+    insert_double(serializer, self->ISC_L2C);
+    
+    insert_double(serializer, self->t_oe);
+    
+    insert_double(serializer, self->a);
+    
+    insert_double(serializer, self->a_dot);
+    
+    insert_double(serializer, self->mean_anomaly);
+    
+    insert_double(serializer, self->delta_mean_motion);
+    
+    insert_double(serializer, self->delta_mean_motion_dot);
+    
+    insert_double(serializer, self->eccentricity);
+    
+    insert_double(serializer, self->argument_of_perigee);
+    
+    insert_double(serializer, self->omega);
+    
+    insert_double(serializer, self->omega_dot);
+    
+    insert_double(serializer, self->inclination);
+    
+    insert_double(serializer, self->inclination_dot);
+    
+    insert_double(serializer, self->c_ic);
+    
+    insert_double(serializer, self->c_is);
+    
+    insert_double(serializer, self->c_uc);
+    
+    insert_double(serializer, self->c_us);
+    
+    insert_double(serializer, self->c_rc);
+    
+    insert_double(serializer, self->c_rs);
+    
+    insert_mip_gnss_galileo_ephemeris_data_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_gnss_galileo_ephemeris_data(mip_serializer* serializer, mip_gnss_galileo_ephemeris_data* self)
+{
+    extract_u8(serializer, &self->index);
+    
+    extract_u8(serializer, &self->count);
+    
+    extract_double(serializer, &self->time_of_week);
+    
+    extract_u16(serializer, &self->week_number);
+    
+    extract_u8(serializer, &self->satellite_id);
+    
+    extract_u8(serializer, &self->health);
+    
+    extract_u8(serializer, &self->iodc);
+    
+    extract_u8(serializer, &self->iode);
+    
+    extract_double(serializer, &self->t_oc);
+    
+    extract_double(serializer, &self->af0);
+    
+    extract_double(serializer, &self->af1);
+    
+    extract_double(serializer, &self->af2);
+    
+    extract_double(serializer, &self->t_gd);
+    
+    extract_double(serializer, &self->ISC_L1CA);
+    
+    extract_double(serializer, &self->ISC_L2C);
+    
+    extract_double(serializer, &self->t_oe);
+    
+    extract_double(serializer, &self->a);
+    
+    extract_double(serializer, &self->a_dot);
+    
+    extract_double(serializer, &self->mean_anomaly);
+    
+    extract_double(serializer, &self->delta_mean_motion);
+    
+    extract_double(serializer, &self->delta_mean_motion_dot);
+    
+    extract_double(serializer, &self->eccentricity);
+    
+    extract_double(serializer, &self->argument_of_perigee);
+    
+    extract_double(serializer, &self->omega);
+    
+    extract_double(serializer, &self->omega_dot);
+    
+    extract_double(serializer, &self->inclination);
+    
+    extract_double(serializer, &self->inclination_dot);
+    
+    extract_double(serializer, &self->c_ic);
+    
+    extract_double(serializer, &self->c_is);
+    
+    extract_double(serializer, &self->c_uc);
+    
+    extract_double(serializer, &self->c_us);
+    
+    extract_double(serializer, &self->c_rc);
+    
+    extract_double(serializer, &self->c_rs);
+    
+    extract_mip_gnss_galileo_ephemeris_data_valid_flags(serializer, &self->valid_flags);
+    
+}
+bool extract_mip_gnss_galileo_ephemeris_data_from_field(const mip_field* field, void* ptr)
+{
+    assert(ptr);
+    mip_gnss_galileo_ephemeris_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_gnss_galileo_ephemeris_data(&serializer, self);
+    return mip_serializer_is_complete(&serializer);
+}
+
+void insert_mip_gnss_galileo_ephemeris_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_galileo_ephemeris_data_valid_flags self)
+{
+    insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_gnss_galileo_ephemeris_data_valid_flags(struct mip_serializer* serializer, mip_gnss_galileo_ephemeris_data_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
 void insert_mip_gnss_glo_ephemeris_data(mip_serializer* serializer, const mip_gnss_glo_ephemeris_data* self)
 {
     insert_u8(serializer, self->index);

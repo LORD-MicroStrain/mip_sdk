@@ -78,10 +78,11 @@ enum
     CMD_GPIO_CONFIG                     = 0x41,
     CMD_GPIO_STATE                      = 0x42,
     CMD_ODOMETER_CONFIG                 = 0x43,
-    CMD_ADVANCED_DATA_FILTER            = 0x50,
+    CMD_IMU_LOWPASS_FILTER              = 0x50,
     CMD_LEGACY_COMP_FILTER              = 0x51,
     CMD_SENSOR_RANGE                    = 0x52,
     CMD_CALIBRATED_RANGES               = 0x53,
+    CMD_LOWPASS_FILTER                  = 0x54,
     CMD_DATASTREAM_FORMAT               = 0x60,
     CMD_DEVICE_POWER_STATE              = 0x61,
     CMD_SAVE_RESTORE_GPS_SETTINGS       = 0x62,
@@ -135,6 +136,7 @@ enum
     REPLY_ODOMETER_CONFIG               = 0xC3,
     REPLY_SENSOR_RANGE                  = 0xD2,
     REPLY_CALIBRATED_RANGES             = 0xD3,
+    REPLY_LOWPASS_FILTER                = 0xD4,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,29 +147,30 @@ struct NmeaMessage
 {
     enum class MessageID : uint8_t
     {
-        GGA  = 1,  ///<  GPS System Fix Data
-        GLL  = 2,  ///<  Geographic Position Lat/Lon
-        GSV  = 3,  ///<  GNSS Satellites in View
-        RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data
-        VTG  = 5,  ///<  Course over Ground
-        HDT  = 6,  ///<  Heading, True
-        ZDA  = 7,  ///<  Time & Date
-        PRKA = 100,  ///<  Parker proprietary Euler angles
-        PRKR = 101,  ///<  Parker proprietary Angular Rate/Acceleration
+        GGA  = 1,  ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
+        GLL  = 2,  ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
+        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+        RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
+        VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
+        HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
+        ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
+        PRKA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
+        PRKR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
     };
     
     enum class TalkerID : uint8_t
     {
-        GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN"
-        GPS     = 2,  ///<  NMEA message will be produced with talker id "GP"
-        GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA"
-        GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL"
+        RESERVED = 0,  ///<  
+        GNSS     = 1,  ///<  NMEA message will be produced with talker id "GN"
+        GPS      = 2,  ///<  NMEA message will be produced with talker id "GP"
+        GALILEO  = 3,  ///<  NMEA message will be produced with talker id "GA"
+        GLONASS  = 4,  ///<  NMEA message will be produced with talker id "GL"
     };
     
-    MessageID message_id = static_cast<MessageID>(0); ///< Message type (GGA, GLL, etc)
-    TalkerID talker_id = static_cast<TalkerID>(0); ///< Talker ID (GN, GP, etc)
-    uint8_t source_desc_set = 0; ///< Data source descriptor set (Filter, GNSS, etc)
-    uint16_t decimation = 0; ///< Decimation from the base rate of the source descriptor set.
+    MessageID message_id = static_cast<MessageID>(0); ///< NMEA sentence type.
+    TalkerID talker_id = static_cast<TalkerID>(0); ///< NMEA talker ID. Ignored for proprietary sentences.
+    uint8_t source_desc_set = 0; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
+    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
     
 };
 void insert(Serializer& serializer, const NmeaMessage& self);
@@ -910,7 +913,7 @@ struct GnssSbasSettings
         enum _enumType : uint16_t
         {
             NONE               = 0x0000,
-            ENABLE_RANGING     = 0x0001,  ///<  Use SBAS pseudoranges in position solution
+            ENABLE_RANGING     = 0x0001,  ///<  Use SBAS pseudo-ranges in position solution
             ENABLE_CORRECTIONS = 0x0002,  ///<  Use SBAS differential corrections
             APPLY_INTEGRITY    = 0x0004,  ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
         };
@@ -1003,8 +1006,10 @@ CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint1
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_adv_lowpass_filter  (0x0C,0x50) Adv Lowpass Filter [CPP]
+///@defgroup cpp_3dm_imu_lowpass_filter  (0x0C,0x50) Imu Lowpass Filter [CPP]
 /// Advanced configuration for the IMU data quantity low-pass filters.
+/// 
+/// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
 /// 
 /// The scaled data quantities are by default filtered through a single-pole IIR low-pass filter
 /// which is configured with a -3dB cutoff frequency of half the reporting frequency (set by
@@ -1014,17 +1019,17 @@ CmdResult readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint1
 /// complete bypass of the digital low-pass filter.
 /// 
 /// Possible data descriptors:
-/// 0x04 – Scaled accelerometer data
-/// 0x05 – Scaled gyro data
-/// 0x06 – Scaled magnetometer data (if applicable)
-/// 0x17 – Scaled pressure data (if applicable)
+/// 0x04 - Scaled accelerometer data
+/// 0x05 - Scaled gyro data
+/// 0x06 - Scaled magnetometer data (if applicable)
+/// 0x17 - Scaled pressure data (if applicable)
 ///
 ///@{
 
-struct AdvLowpassFilter
+struct ImuLowpassFilter
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ADVANCED_DATA_FILTER;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_LOWPASS_FILTER;
     
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
@@ -1052,17 +1057,17 @@ struct AdvLowpassFilter
         
     };
 };
-void insert(Serializer& serializer, const AdvLowpassFilter& self);
-void extract(Serializer& serializer, AdvLowpassFilter& self);
+void insert(Serializer& serializer, const ImuLowpassFilter& self);
+void extract(Serializer& serializer, ImuLowpassFilter& self);
 
-void insert(Serializer& serializer, const AdvLowpassFilter::Response& self);
-void extract(Serializer& serializer, AdvLowpassFilter::Response& self);
+void insert(Serializer& serializer, const ImuLowpassFilter::Response& self);
+void extract(Serializer& serializer, ImuLowpassFilter::Response& self);
 
-CmdResult writeAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-CmdResult readAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
-CmdResult saveAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
-CmdResult loadAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
-CmdResult defaultAdvLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult writeImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+CmdResult readImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
+CmdResult saveImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult loadImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
+CmdResult defaultImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1180,9 +1185,9 @@ struct GpioConfig
         enum _enumType : uint8_t
         {
             NONE       = 0x00,
-            OPEN_DRAIN = 0x01,  ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pullup resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
-            PULLDOWN   = 0x02,  ///<  The pin will have an internal pulldown resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pullup. See the device specifications for the resistance value.
-            PULLUP     = 0x04,  ///<  The pin will have an internal pullup resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pulldown. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
+            OPEN_DRAIN = 0x01,  ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
+            PULLDOWN   = 0x02,  ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
+            PULLUP     = 0x04,  ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
         };
         uint8_t value = NONE;
         
@@ -1242,7 +1247,7 @@ CmdResult defaultGpioConfig(C::mip_interface& device, uint8_t pin);
 /// While the state of a pin can always be set, it will only have an observable effect if
 /// the pin is set to output mode.
 /// 
-/// This command does not support saving, loading, or reseting the state. Instead, use the
+/// This command does not support saving, loading, or resetting the state. Instead, use the
 /// GPIO Configuration command, which allows the initial state to be configured.
 ///
 ///@{
@@ -2096,7 +2101,7 @@ CmdResult defaultSensor2VehicleTransformEuler(C::mip_interface& device);
 /// EQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>
 /// 
 /// Where:<br/>
-/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion desrcribing the transformation. <br/>
+/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>
 /// EQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>
 /// EQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
 /// 
@@ -2236,7 +2241,7 @@ CmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);
 /// Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
 /// 
 /// The filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),
-/// and to correct for heading using the magnetomer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).
+/// and to correct for heading using the magnetometer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).
 /// Pitch/roll and heading corrections each have their own configurable time constants, with a valid range of 1-1000 seconds. The default time constant is 10 seconds.
 ///
 ///@{
@@ -2288,7 +2293,7 @@ CmdResult defaultComplementaryFilter(C::mip_interface& device);
 /// Changes the IMU sensor gain.
 /// 
 /// This allows you to optimize the range to get the best accuracy and performance
-/// while minimizing overrange events.
+/// while minimizing over-range events.
 /// 
 /// Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine
 /// the appropriate setting value for your application. Using values other than
@@ -2379,6 +2384,69 @@ void insert(Serializer& serializer, const CalibratedSensorRanges::Response& self
 void extract(Serializer& serializer, CalibratedSensorRanges::Response& self);
 
 CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t* numRangesOut, uint8_t numRangesOutMax, CalibratedSensorRanges::Entry* rangesOut);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [CPP]
+/// This command controls the low-pass anti-aliasing filter supported data quantities.
+/// 
+/// See the device user manual for data quantities which support the anti-aliasing filter.
+/// 
+/// If set to automatic mode, the frequency will track half of the transmission rate
+/// of the target descriptor according to the configured message format (0x0C,0x0F).
+/// For example, if scaled accel (0x80,0x04) is set to stream at 100 Hz, the filter would
+/// be set to 50 Hz. Changing the message format to 200 Hz would automatically adjust the
+/// filter to 100 Hz.
+/// 
+/// For WRITE, SAVE, LOAD, and DEFAULT function selectors, the descriptor set and/or field descriptor
+/// may be 0x00 to set, save, load, or reset the setting for all supported descriptors. The
+/// field descriptor must be 0x00 if the descriptor set is 0x00.
+/// 
+///
+///@{
+
+struct MipCmd3dmLowpassFilter
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t desc_set = 0; ///< Descriptor set of the quantity to be filtered.
+    uint8_t field_desc = 0; ///< Field descriptor of the quantity to be filtered.
+    bool enable = 0; ///< The filter will be enabled if this is true.
+    bool manual = 0; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
+    float frequency = 0; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LOWPASS_FILTER;
+        
+        uint8_t desc_set = 0; ///< Descriptor set of the quantity to be filtered.
+        uint8_t field_desc = 0; ///< Field descriptor of the quantity to be filtered.
+        bool enable = 0; ///< The filter will be enabled if this is true.
+        bool manual = 0; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
+        float frequency = 0; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
+        
+    };
+};
+void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self);
+void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self);
+
+void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self);
+void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self);
+
+CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
+CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
+CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult defaultMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
 ///@}
 ///
 

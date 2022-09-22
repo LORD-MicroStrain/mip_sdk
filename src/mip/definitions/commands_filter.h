@@ -736,7 +736,7 @@ mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device);
 typedef uint8_t mip_filter_heading_source_command_source;
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_NONE                          = 0; ///<  See note 3
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG                           = 1; ///<  
-static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2; ///<  Seen notes 1,2
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2; ///<  See notes 1,2
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_EXTERNAL                      = 3; ///<  
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG              = 4; ///<  
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_EXTERNAL         = 5; ///<  
@@ -968,7 +968,7 @@ struct mip_filter_aiding_measurement_enable_command
 {
     mip_function_selector function;
     mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
-    bool enable; ///< Controls the aiding sorce
+    bool enable; ///< Controls the aiding source
     
 };
 typedef struct mip_filter_aiding_measurement_enable_command mip_filter_aiding_measurement_enable_command;
@@ -981,7 +981,7 @@ void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct m
 struct mip_filter_aiding_measurement_enable_response
 {
     mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
-    bool enable; ///< Controls the aiding sorce
+    bool enable; ///< Controls the aiding source
     
 };
 typedef struct mip_filter_aiding_measurement_enable_response mip_filter_aiding_measurement_enable_response;
@@ -1153,6 +1153,7 @@ mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interface* 
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
+/// <br/><br/><b>Offset Limit</b>: 10 m magnitude (default)
 ///
 ///@{
 
@@ -1226,8 +1227,10 @@ mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interface* de
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
 /// and a velocity offset that depends on vehicle attitude and angular rate.
-/// The lever arm is defined by a 3-element vector that points from the sensor to the desired reference point, with (x,y,z) components given in the vehicle's reference frame.
-/// Note, if the reference point selector is set to VEH (1), this setting will affect the following data fields: (0x82, 0x01), (0x82, 0x02), (0x82, 0x40), (0x82, 0x41), and (0x82, 42)
+/// <br/>The lever arm is defined by a 3-element vector that points from the sensor to the desired reference point, with (x,y,z) components given in the vehicle's reference frame.
+/// <br/><br/>Note, if the reference point selector is set to VEH (1), this setting will affect the following data fields: (0x82, 0x01), (0x82, 0x02), (0x82, 0x40), (0x82, 0x41), and (0x82, 42)
+/// <br/><br/><b>Offset Limits</b>
+/// <br/>Reference Point VEH (1): 10 m magnitude (default)
 ///
 ///@{
 
@@ -1336,7 +1339,7 @@ mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* device, 
 /// By convention, the primary vehicle axis is the vehicle X-axis (note: the sensor may be physically installed in
 /// any orientation on the vehicle if the appropriate mounting transformation has been specified).
 /// This constraint will typically improve heading estimates for vehicles where the assumption is valid, such
-/// as an automobile, particulary when GNSS coverage is intermittent.
+/// as an automobile, particularly when GNSS coverage is intermittent.
 ///
 ///@{
 
