@@ -32,4 +32,5 @@
 #include "mip.hpp"
 #include "mip_device.hpp"
 
-
+//SDK version
+#include "mip_version.h"

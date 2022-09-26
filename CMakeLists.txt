@@ -15,6 +15,7 @@ project(
 
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
+set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include_directories(
     "${SRC_DIR}"
@@ -53,6 +54,18 @@ else()
   endif()
 endif()
 
+# Massage the version number a little so we can use it in a couple places
+string(REGEX REPLACE "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CLEAN ${MIP_GIT_VERSION})
+string(REPLACE "." ";" MIP_GIT_VERSION_LIST ${MIP_GIT_VERSION_CLEAN})
+list(GET MIP_GIT_VERSION_LIST 0 MIP_GIT_VERSION_MAJOR)
+list(GET MIP_GIT_VERSION_LIST 1 MIP_GIT_VERSION_MINOR)
+list(GET MIP_GIT_VERSION_LIST 2 MIP_GIT_VERSION_PATCH)
+
+# Generate the version header file
+set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
+set(VERSION_OUT_FILE "${MIP_DIR}/mip_version.h")
+configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
+
 #
 # Build options
 #
@@ -83,6 +96,7 @@ set(UTILS_SOURCES
 #
 
 set(MIP_SOURCES
+    "${VERSION_OUT_FILE}"
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
     "${MIP_DIR}/mip_dispatch.c"
@@ -416,9 +430,7 @@ if(BUILD_PACKAGE)
     set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@parker.com>")
     set(CPACK_COMPONENTS_ALL "mip")
 
-    # Massage the version number a little so we can set the proper version
-    string(REGEX REPLACE "^v([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CPACK ${MIP_GIT_VERSION})
-    set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CPACK})
+    set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
 
     # Shared configuration
     set(MIP_FILE_NAME_PREFIX "mipsdk_${MIP_GIT_VERSION}_${MIP_ARCH}")

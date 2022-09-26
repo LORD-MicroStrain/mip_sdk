@@ -240,7 +240,13 @@ public:
     template<class DataField, void (*Callback)(void*, const DataField&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, void* userData=nullptr, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
+    template<class DataField, void (*Callback)(void*, const DataField&, uint8_t, Timestamp)>
+    void registerDataCallback(C::mip_dispatch_handler& handler, void* userData=nullptr, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
+
     template<class DataField, class Object, void (Object::*Callback)(const DataField&, Timestamp)>
+    void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
+
+    template<class DataField, class Object, void (Object::*Callback)(const DataField&, uint8_t, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
 
@@ -371,10 +377,10 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
-    auto callback = [](void* pointer, const Packet& packet, Timestamp timestamp)
+    auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(Packet(packet), timestamp);
+        (obj->*Callback)(Packet(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
@@ -465,7 +471,6 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Registers a data callback (free function version).
 ///
@@ -520,6 +525,65 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
         assert(ok); (void)ok;
 
         Callback(context, data, timestamp);
+    };
+
+    registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, userData);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a data callback (free function version).
+///
+///@tparam Callback A pointer to the function to call. This must be a constant
+///        function pointer.
+///
+///@param handler
+///       This must exist as long as the hander remains registered.
+///
+///@param userData
+///       Optional data to pass to the callback function.
+///
+///@param descriptorSet
+///       If specified, overrides the descriptor set. Intended to be used with
+///       with shared data quantities.
+///
+/// Example usage:
+///@code{.cpp}
+/// void handle_packet(void* context, uint8_t descriptorSet, const Packet& packet, Timestamp timestamp)
+/// {
+///   // Use the packet data
+/// }
+///
+/// DeviceInterface device;
+/// DispatchHandler handler;
+///
+/// void setup()
+/// {
+///   // Set up device...
+///
+///   device.registerDataCallback<&handle_packet>(handler, descriptorSet, nullptr);
+/// }
+///
+///@endcode
+///
+template<class DataField, void (*Callback)(void*, const DataField&, uint8_t, Timestamp)>
+void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
+{
+    assert(descriptorSet != 0x00);
+    if(descriptorSet == 0x00)
+        return;
+
+    assert(descriptorSet != 0xFF);  // Descriptor set must be specified for shared data.
+    if(descriptorSet == 0xFF)
+        return;
+
+    auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
+    {
+        DataField data;
+
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
+
+        Callback(context, data, mip_field_descriptor_set(field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, userData);
@@ -581,6 +645,67 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
 
         Object* obj = static_cast<Object*>(pointer);
         (obj->*Callback)(data, timestamp);
+    };
+
+    registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, object);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a data callback (member function version).
+///
+///@tparam Callback A pointer to the function to call. This must be a constant
+///        member function pointer.
+///
+///@param handler
+///       This must exist as long as the hander remains registered.
+///
+///@param object
+///       A pointer to the object. The object must exist while the handler
+///       remains registered.
+///
+///@param descriptorSet
+///       If specified, overrides the descriptor set. Intended to be used with
+///       with shared data quantities.
+///
+/// Example usage:
+///@code{.cpp}
+/// class MySystem
+/// {
+///   void handleAccel(const ScaledAccel& accel, uint8_t descriptorSet, Timestamp timestamp)
+///   {
+///   }
+///
+///   void setup()
+///   {
+///     // setup device...
+///     device.registerDataHandler<ScaledAccel, MySystem, &MySystem::handleAccel>(accelHandler, this);
+///   }
+///
+///   DeviceInterface device;
+///   DispatchHandler accelHandler;
+/// };
+///@endcode
+///
+template<class DataField, class Object, void (Object::*Callback)(const DataField&, uint8_t, Timestamp)>
+void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
+{
+    assert(descriptorSet != 0x00);
+    if(descriptorSet == 0x00)
+        return;
+
+    assert(descriptorSet != 0xFF);  // Descriptor set must be specified for shared data.
+    if(descriptorSet == 0xFF)
+        return;
+
+    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    {
+        DataField data;
+
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
+
+        Object* obj = static_cast<Object*>(pointer);
+        (obj->*Callback)(data, mip_field_descriptor_set(field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, object);
