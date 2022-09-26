@@ -595,14 +595,14 @@ void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializ
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
-/// <pre>  0 – UDRE Scale Factor = 1.0</pre>
-/// <pre>  1 – UDRE Scale Factor = 0.75</pre>
-/// <pre>  2 – UDRE Scale Factor = 0.5</pre>
-/// <pre>  3 – UDRE Scale Factor = 0.3</pre>
-/// <pre>  4 – UDRE Scale Factor = 0.2</pre>
-/// <pre>  5 – UDRE Scale Factor = 0.1</pre>
-/// <pre>  6 – Reference Station Transmission Not Monitored</pre>
-/// <pre>  7 – Reference Station Not Working</pre>
+/// <pre>  0 - UDRE Scale Factor = 1.0</pre>
+/// <pre>  1 - UDRE Scale Factor = 0.75</pre>
+/// <pre>  2 - UDRE Scale Factor = 0.5</pre>
+/// <pre>  3 - UDRE Scale Factor = 0.3</pre>
+/// <pre>  4 - UDRE Scale Factor = 0.2</pre>
+/// <pre>  5 - UDRE Scale Factor = 0.1</pre>
+/// <pre>  6 - Reference Station Transmission Not Monitored</pre>
+/// <pre>  7 - Reference Station Not Working</pre>
 /// 
 /// (UDRE = User Differential Range Error)
 ///
