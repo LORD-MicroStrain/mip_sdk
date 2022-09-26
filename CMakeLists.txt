@@ -70,9 +70,9 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 # Build options
 #
 
-option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
-option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
-option(WITH_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
+option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
+option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -153,7 +153,7 @@ set(MIPDEF_SOURCES
 string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/serial_port.c"
         "${UTILS_DIR}/serial_port.h"
@@ -163,7 +163,7 @@ if(WITH_SERIAL)
         "${MIP_DIR}/platform/serial_connection.cpp"
     )
 endif()
-if(WITH_TCP)
+if(MIP_USE_TCP)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/tcp_socket.c"
         "${UTILS_DIR}/tcp_socket.h"
@@ -173,7 +173,7 @@ if(WITH_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
-if(WITH_EXTRAS)
+if(MIP_USE_EXTRAS)
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"

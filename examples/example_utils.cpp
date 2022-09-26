@@ -28,7 +28,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         if( !example_utils->recordedFile->is_open() )
             throw std::runtime_error("Unable to open binary file");
 #else  // MIP_USE_EXTRAS
-        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DWITH_EXTRAS=ON");
+        throw std::runtime_error("The program was compiled without binary file recording support. Recompile with -DMIP_USE_EXTRAS=ON");
 #endif  // MIP_USE_EXTRAS
     }
 
@@ -50,7 +50,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
         example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
 #else  // MIP_USE_TCP
-        throw std::runtime_error("This program was compiled without socket support. Recompile with -DWITH_TCP=1");
+        throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
 #endif // MIP_USE_TCP
 
     }
@@ -71,7 +71,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 #endif  // MIP_USE_EXTRAS
         example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
 #else  // MIP_USE_SERIAL
-        throw std::runtime_error("This program was compiled without serial support. Recompile with -DWITH_SERIAL=1.\n");
+        throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
 #endif //MIP_USE_SERIAL
     }
     return example_utils;

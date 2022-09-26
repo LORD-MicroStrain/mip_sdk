@@ -21,7 +21,7 @@ namespace extras
 class RecordingConnection : public Connection
 {
 public:
-    RecordingConnection(Connection* connection, std::ostream* recvFile=nullptr, std::ostream* sendFile=nullptr);
+    RecordingConnection(Connection* connection, std::ostream* recvStream=nullptr, std::ostream* sendStream=nullptr);
 
     bool sendToDevice(const uint8_t* data, size_t length) final;
     bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* count_out, Timestamp* timestamp_out) final;
@@ -43,19 +43,16 @@ template<typename ConnectionType>
 class RecordingConnectionWrapper : public RecordingConnection
 {
 public:
-    ///@brief Creates a RecordingConnectionWrapper that will write received bytes to recvFile, sent bytes to sendFile, and construct a connection object from args
+    ///@brief Creates a RecordingConnectionWrapper that will write received bytes to recvStream, sent bytes to sendStream, and construct a connection object from args
     ///
-    ///@param recvFile The file to write to when bytes are received. Null if received bytes should not be written to a file
-    ///@param sendFile The file to write to when bytes are sent. Null if sent bytes should not be written to a file
-    ///@param args     Arguments required to construct the ConnectionType
+    ///@param recvStream The stream to write to when bytes are received. Null if received bytes should not be written to a stream
+    ///@param sendStream The stream to write to when bytes are sent. Null if sent bytes should not be written to a stream
+    ///@param args       Arguments required to construct the ConnectionType
     template<class... Args>
-    RecordingConnectionWrapper(std::ostream* recvFile, std::ostream* sendFile, Args&&... args) :
-        mConnectionPtr(std::unique_ptr<ConnectionType>(new ConnectionType(std::forward<Args>(args)...))), RecordingConnection(nullptr, recvFile, sendFile)
-    {
-        mConnection = mConnectionPtr.get();
-    }
-private:
-    std::unique_ptr<ConnectionType> mConnectionPtr;
+    RecordingConnectionWrapper(std::ostream* recvStream, std::ostream* sendStream, Args&&... args) : RecordingConnection(new ConnectionType(std::forward<Args>(args)...), recvStream, sendStream) {}
+
+    ///@brief Deconstructs the RecordingConnectionWrapper as well as the underlying connection object made in the constructor
+    ~RecordingConnectionWrapper() { delete mConnection; }
 };
 
 ///@}

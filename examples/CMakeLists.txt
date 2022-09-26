@@ -7,22 +7,22 @@ set(DEVICE_SOURCES
     "${EXAMPLE_DIR}/example_utils.hpp"
 )
 
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     set(SERIAL_DEFS "MIP_USE_SERIAL")
 endif()
 
-if(WITH_TCP)
+if(MIP_USE_TCP)
     set(TCP_DEFS "MIP_USE_TCP")
 endif()
 
-if(WITH_EXTRAS)
+if(MIP_USE_EXTRAS)
     set(EXTRAS_DEFS "MIP_USE_EXTRAS")
 endif()
 
 set(MIP_EXAMPLE_DEFS ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
 
 # C++ examples need either serial or TCP support
-if(WITH_SERIAL OR WITH_TCP)
+if(MIP_USE_SERIAL OR MIP_USE_TCP)
 
     if(NOT MIP_DISABLE_CPP)
 
@@ -56,7 +56,7 @@ if(WITH_SERIAL OR WITH_TCP)
 endif()
 
 # C examples need serial support
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
     target_link_libraries(WatchImuC mip)
 
