@@ -85,8 +85,9 @@ How to Build
 ### Build configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* WITH_SERIAL - Builds the included serial port library (default enabled).
-* WITH_TCP - Builds the included socket library (default enabled).
+* MIP_USE_SERIAL - Builds the included serial port library (default enabled).
+* MIP_USE_TCP - Builds the included socket library (default enabled).
+* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
