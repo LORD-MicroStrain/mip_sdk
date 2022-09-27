@@ -114,6 +114,8 @@ set(MIP_SOURCES
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
+    "${MIP_DIR}/mip_logging.c"
+    "${MIP_DIR}/mip_logging.h"
 )
 
 set(MIPDEV_SOURCES

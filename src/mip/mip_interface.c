@@ -2,6 +2,7 @@
 #include "mip_interface.h"
 
 #include "mip_field.h"
+#include "mip_logging.h"
 
 #include "definitions/descriptors.h"
 
@@ -41,6 +42,7 @@ bool mip_interface_parse_callback(void* device, const mip_packet* packet, timest
 ///
 void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
 {
+    mip_logging_info(device, "In init", 1);
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
@@ -83,7 +85,6 @@ mip_update_callback mip_interface_update_function(struct mip_interface* device)
 {
     return device->_update_function;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets an optional user data pointer which can be retrieved later.
@@ -197,7 +198,6 @@ bool mip_interface_default_update(struct mip_interface* device, bool blocking)
     mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
     return true;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sends data to the port (i.e. from this library to the physical device).

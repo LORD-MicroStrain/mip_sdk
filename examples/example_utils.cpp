@@ -1,6 +1,8 @@
 #include <vector>
 #include <stdexcept>
 
+#include <stdarg.h>
+
 #include "example_utils.hpp"
 
 
@@ -16,6 +18,13 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
+void customLog(const void* context, void* user, mip::C::mip_logging_level level, const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+}
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port)
 {
@@ -54,6 +63,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
+    mip::initLogging(&customLog);
     if( argc < 3 || argc > maxArgs )
     {
         throw std::underflow_error("Usage error");

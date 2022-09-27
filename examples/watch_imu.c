@@ -4,6 +4,7 @@
 #include <mip/mip_interface.h>
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
+#include <mip/mip_logging.h>
 #include <mip/utils/serialization.h>
 
 #include <mip/definitions/descriptors.h>
@@ -17,6 +18,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <stdarg.h>
 
 #ifdef WIN32
 #else
@@ -30,6 +32,14 @@ serial_port port;
 uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
+
+void customLog(const void* context, void* user, mip_logging_level level, const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+}
 
 void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
@@ -142,6 +152,7 @@ int main(int argc, const char* argv[])
     if( !open_port(argv[1], baudrate) )
         return 1;
 
+    mip_logging_init(&customLog, NULL);
     mip_interface_init(&device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000);
 
     // Record program start time for use with difftime in getTimestamp().
