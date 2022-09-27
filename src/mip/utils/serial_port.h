@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_extras  Extra utilities
+///@addtogroup mip_platform  Platform specific utilities
 ///
 ///@{
 

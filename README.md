@@ -57,7 +57,7 @@ A basic serial port interface is provided in C and C++ for Linux and Windows. Th
 The serial port connection will be used in most cases, when the MIP device is connected
 via a serial or USB cable (the USB connection acts like a virtual serial port).
 
-Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
+Enable it in the CMake configuration with `-DMIP_USE_SERIAL=1`.
 
 ### TCP Client
 
@@ -65,7 +65,7 @@ The TCP client connection allows you to connect to a MIP device remotely. The MI
 via the normal serial or USB cable to a commputer system running a TCP server which forwards data between
 the serial port and TCP clients.
 
-Enable it in the CMake configuration with `-DWITH_TCP=1`.
+Enable it in the CMake configuration with `-DMIP_USE_TCP=1`.
 
 
 How to Build
@@ -85,8 +85,9 @@ How to Build
 ### Build configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* WITH_SERIAL - Builds the included serial port library (default enabled).
-* WITH_TCP - Builds the included socket library (default enabled).
+* MIP_USE_SERIAL - Builds the included serial port library (default enabled).
+* MIP_USE_TCP - Builds the included socket library (default enabled).
+* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
@@ -100,7 +101,7 @@ The following options may be specified when configuring the build with CMake (e.
 
 1. Create the build directory (e.g. `mkdir build`).
 2. In the build directory, run `cmake .. <options>`
-   * Replace `<options>` with your configuration options, such as `-DWITH_SERIAL=1`.
+   * Replace `<options>` with your configuration options, such as `-DMIP_USE_SERIAL=1`.
    * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
    * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generatopr>`
 3. Invoke `cmake --build .` in the build directory
