@@ -371,34 +371,6 @@ CmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert(Serializer& serializer, const ReceiverSafeMode& self)
-{
-    insert(serializer, self.receiver_id);
-    
-    insert(serializer, self.enable);
-    
-}
-void extract(Serializer& serializer, ReceiverSafeMode& self)
-{
-    extract(serializer, self.receiver_id);
-    
-    extract(serializer, self.enable);
-    
-}
-
-CmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiverId, uint8_t enable)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, receiverId);
-    
-    insert(serializer, enable);
-    
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RECEIVER_SAFE_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
 
 } // namespace commands_gnss
 } // namespace mip

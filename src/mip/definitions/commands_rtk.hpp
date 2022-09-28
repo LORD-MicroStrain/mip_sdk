@@ -443,7 +443,7 @@ struct ServiceStatus
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
         
         ServiceFlags flags;
-        uint32_t recievedBytes = 0;
+        uint32_t receivedBytes = 0;
         uint32_t lastBytes = 0;
         uint64_t lastBytesTime = 0;
         
@@ -455,12 +455,12 @@ void extract(Serializer& serializer, ServiceStatus& self);
 void insert(Serializer& serializer, const ServiceStatus::Response& self);
 void extract(Serializer& serializer, ServiceStatus::Response& self);
 
-CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* recievedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_rtk_prod_erase_storage  (0x0F,0x20) Prod Erase Storage [CPP]
-/// This command will erase the selected media to a raw and unitialized state. ALL DATA WILL BE LOST.
+/// This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.
 /// This command is only available in calibration mode.
 ///
 ///@{

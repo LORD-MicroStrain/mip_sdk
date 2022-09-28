@@ -303,7 +303,7 @@ void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer*
 struct mip_rtk_service_status_response
 {
     mip_rtk_service_status_command_service_flags flags;
-    uint32_t recievedBytes;
+    uint32_t receivedBytes;
     uint32_t lastBytes;
     uint64_t lastBytesTime;
     
@@ -312,12 +312,12 @@ typedef struct mip_rtk_service_status_response mip_rtk_service_status_response;
 void insert_mip_rtk_service_status_response(struct mip_serializer* serializer, const mip_rtk_service_status_response* self);
 void extract_mip_rtk_service_status_response(struct mip_serializer* serializer, mip_rtk_service_status_response* self);
 
-mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* recieved_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out);
+mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* received_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_rtk_prod_erase_storage  (0x0F,0x20) Prod Erase Storage [C]
-/// This command will erase the selected media to a raw and unitialized state. ALL DATA WILL BE LOST.
+/// This command will erase the selected media to a raw and uninitialized state. ALL DATA WILL BE LOST.
 /// This command is only available in calibration mode.
 ///
 ///@{

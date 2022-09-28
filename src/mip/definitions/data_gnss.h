@@ -453,7 +453,7 @@ static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX
 typedef uint16_t mip_gnss_fix_info_data_fix_flags;
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_NONE       = 0x0000;
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_SBAS_USED  = 0x0001; ///<  
-static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_DNGSS_USED = 0x0002; ///<  
+static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_DGNSS_USED = 0x0002; ///<  
 
 typedef uint16_t mip_gnss_fix_info_data_valid_flags;
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_NONE      = 0x0000;
@@ -595,14 +595,14 @@ void extract_mip_gnss_hw_status_data_valid_flags(struct mip_serializer* serializ
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
-/// <pre>  0 – UDRE Scale Factor = 1.0</pre>
-/// <pre>  1 – UDRE Scale Factor = 0.75</pre>
-/// <pre>  2 – UDRE Scale Factor = 0.5</pre>
-/// <pre>  3 – UDRE Scale Factor = 0.3</pre>
-/// <pre>  4 – UDRE Scale Factor = 0.2</pre>
-/// <pre>  5 – UDRE Scale Factor = 0.1</pre>
-/// <pre>  6 – Reference Station Transmission Not Monitored</pre>
-/// <pre>  7 – Reference Station Not Working</pre>
+/// <pre>  0 - UDRE Scale Factor = 1.0</pre>
+/// <pre>  1 - UDRE Scale Factor = 0.75</pre>
+/// <pre>  2 - UDRE Scale Factor = 0.5</pre>
+/// <pre>  3 - UDRE Scale Factor = 0.3</pre>
+/// <pre>  4 - UDRE Scale Factor = 0.2</pre>
+/// <pre>  5 - UDRE Scale Factor = 0.1</pre>
+/// <pre>  6 - Reference Station Transmission Not Monitored</pre>
+/// <pre>  7 - Reference Station Not Working</pre>
 /// 
 /// (UDRE = User Differential Range Error)
 ///
@@ -822,7 +822,7 @@ struct mip_gnss_sbas_correction_data
     mip_gnss_constellation_id gnss_id; ///< GNSS constellation id
     uint8_t sv_id; ///< GNSS satellite id within the constellation.
     uint8_t udrei; ///< [See above 0-13 usable, 14 not monitored, 15 - do not use]
-    float pseudorange_correction; ///< Pseudorange correction [meters].
+    float pseudorange_correction; ///< Pseudo-range correction [meters].
     float iono_correction; ///< Ionospheric correction [meters].
     mip_gnss_sbas_correction_data_valid_flags valid_flags;
     
@@ -1094,10 +1094,10 @@ struct mip_gnss_raw_data
     mip_gnss_signal_id signal_id; ///< Signal identifier for the satellite.
     float signal_strength; ///< Carrier to noise ratio [dBHz].
     mip_gnss_raw_data_gnss_signal_quality quality; ///< Indicator of signal quality.
-    double pseudorange; ///< Pseudorange measurement [meters].
+    double pseudorange; ///< Pseudo-range measurement [meters].
     double carrier_phase; ///< Carrier phase measurement [Carrier periods].
     float doppler; ///< Measured doppler shift [Hz].
-    float range_uncert; ///< Uncertainty of the pseudorange measurement [m].
+    float range_uncert; ///< Uncertainty of the pseudo-range measurement [m].
     float phase_uncert; ///< Uncertainty of the phase measurement [Carrier periods].
     float doppler_uncert; ///< Uncertainty of the measured doppler shift [Hz].
     float lock_time; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
@@ -1119,7 +1119,7 @@ void extract_mip_gnss_raw_data_valid_flags(struct mip_serializer* serializer, mi
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [C]
-/// GPS/Galileo Ephemeris Data
+/// GPS Ephemeris Data
 ///
 ///@{
 
@@ -1148,14 +1148,14 @@ struct mip_gnss_gps_ephemeris_data
     double ISC_L2C;
     double t_oe; ///< Reference time for ephemeris in [s].
     double a; ///< Semi-major axis [m].
-    double a_dot; ///< Semi-matjor axis rate [m/s].
+    double a_dot; ///< Semi-major axis rate [m/s].
     double mean_anomaly; ///< [rad].
     double delta_mean_motion; ///< [rad].
     double delta_mean_motion_dot; ///< [rad/s].
     double eccentricity;
     double argument_of_perigee; ///< [rad].
     double omega; ///< Longitude of Ascending Node [rad].
-    double omega_dot; ///< Rate of Right Ascention [rad/s].
+    double omega_dot; ///< Rate of Right Ascension [rad/s].
     double inclination; ///< Inclination angle [rad].
     double inclination_dot; ///< Inclination angle rate of change [rad/s].
     double c_ic; ///< Harmonic Correction Term.
@@ -1174,6 +1174,66 @@ bool extract_mip_gnss_gps_ephemeris_data_from_field(const struct mip_field* fiel
 
 void insert_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_gps_ephemeris_data_valid_flags self);
 void extract_mip_gnss_gps_ephemeris_data_valid_flags(struct mip_serializer* serializer, mip_gnss_gps_ephemeris_data_valid_flags* self);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_gnss_galileo_ephemeris  (0x81,0x63) Galileo Ephemeris [C]
+/// Galileo Ephemeris Data
+///
+///@{
+
+typedef uint16_t mip_gnss_galileo_ephemeris_data_valid_flags;
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_NONE        = 0x0000;
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
+
+struct mip_gnss_galileo_ephemeris_data
+{
+    uint8_t index; ///< Index of this field in this epoch.
+    uint8_t count; ///< Total number of fields in this epoch.
+    double time_of_week; ///< GPS Time of week [seconds]
+    uint16_t week_number; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id; ///< GNSS satellite id within the constellation.
+    uint8_t health; ///< Satellite and signal health
+    uint8_t iodc; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode; ///< Issue of Data Ephemeris.
+    double t_oc; ///< Reference time for clock data.
+    double af0; ///< Clock bias in [s].
+    double af1; ///< Clock drift in [s/s].
+    double af2; ///< Clock drift rate in [s/s^2].
+    double t_gd; ///< T Group Delay [s].
+    double ISC_L1CA;
+    double ISC_L2C;
+    double t_oe; ///< Reference time for ephemeris in [s].
+    double a; ///< Semi-major axis [m].
+    double a_dot; ///< Semi-major axis rate [m/s].
+    double mean_anomaly; ///< [rad].
+    double delta_mean_motion; ///< [rad].
+    double delta_mean_motion_dot; ///< [rad/s].
+    double eccentricity;
+    double argument_of_perigee; ///< [rad].
+    double omega; ///< Longitude of Ascending Node [rad].
+    double omega_dot; ///< Rate of Right Ascension [rad/s].
+    double inclination; ///< Inclination angle [rad].
+    double inclination_dot; ///< Inclination angle rate of change [rad/s].
+    double c_ic; ///< Harmonic Correction Term.
+    double c_is; ///< Harmonic Correction Term.
+    double c_uc; ///< Harmonic Correction Term.
+    double c_us; ///< Harmonic Correction Term.
+    double c_rc; ///< Harmonic Correction Term.
+    double c_rs; ///< Harmonic Correction Term.
+    mip_gnss_galileo_ephemeris_data_valid_flags valid_flags;
+    
+};
+typedef struct mip_gnss_galileo_ephemeris_data mip_gnss_galileo_ephemeris_data;
+void insert_mip_gnss_galileo_ephemeris_data(struct mip_serializer* serializer, const mip_gnss_galileo_ephemeris_data* self);
+void extract_mip_gnss_galileo_ephemeris_data(struct mip_serializer* serializer, mip_gnss_galileo_ephemeris_data* self);
+bool extract_mip_gnss_galileo_ephemeris_data_from_field(const struct mip_field* field, void* ptr);
+
+void insert_mip_gnss_galileo_ephemeris_data_valid_flags(struct mip_serializer* serializer, const mip_gnss_galileo_ephemeris_data_valid_flags self);
+void extract_mip_gnss_galileo_ephemeris_data_valid_flags(struct mip_serializer* serializer, mip_gnss_galileo_ephemeris_data_valid_flags* self);
 
 ///@}
 ///
@@ -1199,11 +1259,11 @@ struct mip_gnss_glo_ephemeris_data
     uint32_t tk; ///< Frame start time within current day [seconds]
     uint32_t tb; ///< Ephemeris reference time [seconds]
     uint8_t sat_type; ///< Type of satellite (M) GLONASS = 0, GLONASS-M = 1
-    double gamma; ///< Relative deviation of carrier frequency from nominal [dimesnionless]
+    double gamma; ///< Relative deviation of carrier frequency from nominal [dimensionless]
     double tau_n; ///< Time correction relative to GLONASS Time [seconds]
     double x[3]; ///< Satellite PE-90 position [m]
     float v[3]; ///< Satellite PE-90 velocity [m/s]
-    float a[3]; ///< Satellite PE-90 acceleration due to pertubations [m/s^2]
+    float a[3]; ///< Satellite PE-90 acceleration due to perturbations [m/s^2]
     uint8_t health; ///< Satellite Health (Bn), Non-zero indicates satellite malfunction
     uint8_t P; ///< Satellite operation mode (See GLONASS ICD)
     uint8_t NT; ///< Day number within a 4 year period.

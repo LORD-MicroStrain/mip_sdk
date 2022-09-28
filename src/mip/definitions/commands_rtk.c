@@ -360,7 +360,7 @@ void insert_mip_rtk_service_status_response(mip_serializer* serializer, const mi
 {
     insert_mip_rtk_service_status_command_service_flags(serializer, self->flags);
     
-    insert_u32(serializer, self->recievedBytes);
+    insert_u32(serializer, self->receivedBytes);
     
     insert_u32(serializer, self->lastBytes);
     
@@ -371,7 +371,7 @@ void extract_mip_rtk_service_status_response(mip_serializer* serializer, mip_rtk
 {
     extract_mip_rtk_service_status_command_service_flags(serializer, &self->flags);
     
-    extract_u32(serializer, &self->recievedBytes);
+    extract_u32(serializer, &self->receivedBytes);
     
     extract_u32(serializer, &self->lastBytes);
     
@@ -390,7 +390,7 @@ void extract_mip_rtk_service_status_command_service_flags(struct mip_serializer*
     *self = tmp;
 }
 
-mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* recieved_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out)
+mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* received_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -413,8 +413,8 @@ mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t res
         assert(flags_out);
         extract_mip_rtk_service_status_command_service_flags(&deserializer, flags_out);
         
-        assert(recieved_bytes_out);
-        extract_u32(&deserializer, recieved_bytes_out);
+        assert(received_bytes_out);
+        extract_u32(&deserializer, received_bytes_out);
         
         assert(last_bytes_out);
         extract_u32(&deserializer, last_bytes_out);

@@ -79,10 +79,11 @@ enum
     MIP_CMD_DESC_3DM_GPIO_CONFIG                     = 0x41,
     MIP_CMD_DESC_3DM_GPIO_STATE                      = 0x42,
     MIP_CMD_DESC_3DM_ODOMETER_CONFIG                 = 0x43,
-    MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER            = 0x50,
+    MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER              = 0x50,
     MIP_CMD_DESC_3DM_LEGACY_COMP_FILTER              = 0x51,
     MIP_CMD_DESC_3DM_SENSOR_RANGE                    = 0x52,
     MIP_CMD_DESC_3DM_CALIBRATED_RANGES               = 0x53,
+    MIP_CMD_DESC_3DM_LOWPASS_FILTER                  = 0x54,
     MIP_CMD_DESC_3DM_DATASTREAM_FORMAT               = 0x60,
     MIP_CMD_DESC_3DM_DEVICE_POWER_STATE              = 0x61,
     MIP_CMD_DESC_3DM_SAVE_RESTORE_GPS_SETTINGS       = 0x62,
@@ -136,6 +137,7 @@ enum
     MIP_REPLY_DESC_3DM_ODOMETER_CONFIG               = 0xC3,
     MIP_REPLY_DESC_3DM_SENSOR_RANGE                  = 0xD2,
     MIP_REPLY_DESC_3DM_CALIBRATED_RANGES             = 0xD3,
+    MIP_REPLY_DESC_3DM_LOWPASS_FILTER                = 0xD4,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -143,28 +145,29 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef uint8_t mip_nmea_message_message_id;
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1;   ///<  GPS System Fix Data
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2;   ///<  Geographic Position Lat/Lon
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3;   ///<  GNSS Satellites in View
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4;   ///<  Recommended Minimum Specific GNSS Data
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5;   ///<  Course over Ground
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6;   ///<  Heading, True
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7;   ///<  Time & Date
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKA = 100; ///<  Parker proprietary Euler angles
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKR = 101; ///<  Parker proprietary Angular Rate/Acceleration
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1;   ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2;   ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3;   ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4;   ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5;   ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6;   ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7;   ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKA = 129; ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
 
 typedef uint8_t mip_nmea_message_talker_id;
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS    = 1; ///<  NMEA message will be produced with talker id "GN"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS     = 2; ///<  NMEA message will be produced with talker id "GP"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO = 3; ///<  NMEA message will be produced with talker id "GA"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GLONASS = 4; ///<  NMEA message will be produced with talker id "GL"
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_RESERVED = 0; ///<  
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS     = 1; ///<  NMEA message will be produced with talker id "GN"
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS      = 2; ///<  NMEA message will be produced with talker id "GP"
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO  = 3; ///<  NMEA message will be produced with talker id "GA"
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GLONASS  = 4; ///<  NMEA message will be produced with talker id "GL"
 
 struct mip_nmea_message
 {
-    mip_nmea_message_message_id message_id; ///< Message type (GGA, GLL, etc)
-    mip_nmea_message_talker_id talker_id; ///< Talker ID (GN, GP, etc)
-    uint8_t source_desc_set; ///< Data source descriptor set (Filter, GNSS, etc)
-    uint16_t decimation; ///< Decimation from the base rate of the source descriptor set.
+    mip_nmea_message_message_id message_id; ///< NMEA sentence type.
+    mip_nmea_message_talker_id talker_id; ///< NMEA talker ID. Ignored for proprietary sentences.
+    uint8_t source_desc_set; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
+    uint16_t decimation; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
     
 };
 typedef struct mip_nmea_message mip_nmea_message;
@@ -752,7 +755,7 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
 
 typedef uint16_t mip_3dm_gnss_sbas_settings_command_sbasoptions;
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_NONE               = 0x0000;
-static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_RANGING     = 0x0001; ///<  Use SBAS pseudoranges in position solution
+static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_RANGING     = 0x0001; ///<  Use SBAS pseudo-ranges in position solution
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_CORRECTIONS = 0x0002; ///<  Use SBAS differential corrections
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_APPLY_INTEGRITY    = 0x0004; ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
 
@@ -828,8 +831,10 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_adv_lowpass_filter  (0x0C,0x50) Adv Lowpass Filter [C]
+///@defgroup c_3dm_imu_lowpass_filter  (0x0C,0x50) Imu Lowpass Filter [C]
 /// Advanced configuration for the IMU data quantity low-pass filters.
+/// 
+/// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
 /// 
 /// The scaled data quantities are by default filtered through a single-pole IIR low-pass filter
 /// which is configured with a -3dB cutoff frequency of half the reporting frequency (set by
@@ -839,14 +844,14 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, d
 /// complete bypass of the digital low-pass filter.
 /// 
 /// Possible data descriptors:
-/// 0x04 – Scaled accelerometer data
-/// 0x05 – Scaled gyro data
-/// 0x06 – Scaled magnetometer data (if applicable)
-/// 0x17 – Scaled pressure data (if applicable)
+/// 0x04 - Scaled accelerometer data
+/// 0x05 - Scaled gyro data
+/// 0x06 - Scaled magnetometer data (if applicable)
+/// 0x17 - Scaled pressure data (if applicable)
 ///
 ///@{
 
-struct mip_3dm_adv_lowpass_filter_command
+struct mip_3dm_imu_lowpass_filter_command
 {
     mip_function_selector function;
     uint8_t target_descriptor; ///< Field descriptor of filtered quantity within the Sensor data set. Supported values are accel (0x04), gyro (0x05), mag (0x06), and pressure (0x17), provided the data is supported by the device. Except with the READ function selector, this can be 0 to apply to all of the above quantities.
@@ -856,11 +861,11 @@ struct mip_3dm_adv_lowpass_filter_command
     uint8_t reserved; ///< Reserved, set to 0x00.
     
 };
-typedef struct mip_3dm_adv_lowpass_filter_command mip_3dm_adv_lowpass_filter_command;
-void insert_mip_3dm_adv_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_adv_lowpass_filter_command* self);
-void extract_mip_3dm_adv_lowpass_filter_command(struct mip_serializer* serializer, mip_3dm_adv_lowpass_filter_command* self);
+typedef struct mip_3dm_imu_lowpass_filter_command mip_3dm_imu_lowpass_filter_command;
+void insert_mip_3dm_imu_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self);
+void extract_mip_3dm_imu_lowpass_filter_command(struct mip_serializer* serializer, mip_3dm_imu_lowpass_filter_command* self);
 
-struct mip_3dm_adv_lowpass_filter_response
+struct mip_3dm_imu_lowpass_filter_response
 {
     uint8_t target_descriptor;
     bool enable; ///< True if the filter is currently enabled.
@@ -869,15 +874,15 @@ struct mip_3dm_adv_lowpass_filter_response
     uint8_t reserved; ///< Reserved and must be ignored.
     
 };
-typedef struct mip_3dm_adv_lowpass_filter_response mip_3dm_adv_lowpass_filter_response;
-void insert_mip_3dm_adv_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_adv_lowpass_filter_response* self);
-void extract_mip_3dm_adv_lowpass_filter_response(struct mip_serializer* serializer, mip_3dm_adv_lowpass_filter_response* self);
+typedef struct mip_3dm_imu_lowpass_filter_response mip_3dm_imu_lowpass_filter_response;
+void insert_mip_3dm_imu_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self);
+void extract_mip_3dm_imu_lowpass_filter_response(struct mip_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self);
 
-mip_cmd_result mip_3dm_write_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
-mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
-mip_cmd_result mip_3dm_save_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
-mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_write_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
+mip_cmd_result mip_3dm_read_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out);
+mip_cmd_result mip_3dm_save_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_load_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
+mip_cmd_result mip_3dm_default_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -968,9 +973,9 @@ static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BE
 
 typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_OPEN_DRAIN = 0x01; ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pullup resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pulldown resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pullup. See the device specifications for the resistance value.
-static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pullup resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pulldown. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_OPEN_DRAIN = 0x01; ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
+static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
 
 struct mip_3dm_gpio_config_command
 {
@@ -1029,7 +1034,7 @@ mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, uint8_t
 /// While the state of a pin can always be set, it will only have an observable effect if
 /// the pin is set to output mode.
 /// 
-/// This command does not support saving, loading, or reseting the state. Instead, use the
+/// This command does not support saving, loading, or resetting the state. Instead, use the
 /// GPIO Configuration command, which allows the initial state to be configured.
 ///
 ///@{
@@ -1764,7 +1769,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_inter
 /// EQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>
 /// 
 /// Where:<br/>
-/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion desrcribing the transformation. <br/>
+/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>
 /// EQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>
 /// EQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
 /// 
@@ -1884,7 +1889,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interfa
 /// Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
 /// 
 /// The filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),
-/// and to correct for heading using the magnetomer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).
+/// and to correct for heading using the magnetometer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).
 /// Pitch/roll and heading corrections each have their own configurable time constants, with a valid range of 1-1000 seconds. The default time constant is 10 seconds.
 ///
 ///@{
@@ -1926,7 +1931,7 @@ mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* device
 /// Changes the IMU sensor gain.
 /// 
 /// This allows you to optimize the range to get the best accuracy and performance
-/// while minimizing overrange events.
+/// while minimizing over-range events.
 /// 
 /// Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine
 /// the appropriate setting value for your application. Using values other than
@@ -2002,6 +2007,59 @@ void insert_mip_3dm_calibrated_sensor_ranges_response(struct mip_serializer* ser
 void extract_mip_3dm_calibrated_sensor_ranges_response(struct mip_serializer* serializer, mip_3dm_calibrated_sensor_ranges_response* self);
 
 mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mip_sensor_range_type sensor, uint8_t* num_ranges_out, uint8_t num_ranges_out_max, mip_3dm_calibrated_sensor_ranges_command_entry* ranges_out);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [C]
+/// This command controls the low-pass anti-aliasing filter supported data quantities.
+/// 
+/// See the device user manual for data quantities which support the anti-aliasing filter.
+/// 
+/// If set to automatic mode, the frequency will track half of the transmission rate
+/// of the target descriptor according to the configured message format (0x0C,0x0F).
+/// For example, if scaled accel (0x80,0x04) is set to stream at 100 Hz, the filter would
+/// be set to 50 Hz. Changing the message format to 200 Hz would automatically adjust the
+/// filter to 100 Hz.
+/// 
+/// For WRITE, SAVE, LOAD, and DEFAULT function selectors, the descriptor set and/or field descriptor
+/// may be 0x00 to set, save, load, or reset the setting for all supported descriptors. The
+/// field descriptor must be 0x00 if the descriptor set is 0x00.
+/// 
+///
+///@{
+
+struct mip_3dm_mip_cmd_3dm_lowpass_filter_command
+{
+    mip_function_selector function;
+    uint8_t desc_set; ///< Descriptor set of the quantity to be filtered.
+    uint8_t field_desc; ///< Field descriptor of the quantity to be filtered.
+    bool enable; ///< The filter will be enabled if this is true.
+    bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
+    float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
+    
+};
+typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_command mip_3dm_mip_cmd_3dm_lowpass_filter_command;
+void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_command* self);
+void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_command(struct mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_command* self);
+
+struct mip_3dm_mip_cmd_3dm_lowpass_filter_response
+{
+    uint8_t desc_set; ///< Descriptor set of the quantity to be filtered.
+    uint8_t field_desc; ///< Field descriptor of the quantity to be filtered.
+    bool enable; ///< The filter will be enabled if this is true.
+    bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
+    float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
+    
+};
+typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_response mip_3dm_mip_cmd_3dm_lowpass_filter_response;
+void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_response* self);
+void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_response(struct mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_response* self);
+
+mip_cmd_result mip_3dm_write_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency);
+mip_cmd_result mip_3dm_read_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out);
+mip_cmd_result mip_3dm_save_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_load_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_default_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
 ///@}
 ///
 

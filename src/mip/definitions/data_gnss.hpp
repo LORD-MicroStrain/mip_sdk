@@ -573,7 +573,7 @@ struct FixInfo
         {
             NONE       = 0x0000,
             SBAS_USED  = 0x0001,  ///<  
-            DNGSS_USED = 0x0002,  ///<  
+            DGNSS_USED = 0x0002,  ///<  
         };
         uint16_t value = NONE;
         
@@ -763,14 +763,14 @@ void extract(Serializer& serializer, HwStatus& self);
 /// GNSS reported DGNSS status
 /// 
 /// <pre>Possible Base Station Status Values:</pre>
-/// <pre>  0 – UDRE Scale Factor = 1.0</pre>
-/// <pre>  1 – UDRE Scale Factor = 0.75</pre>
-/// <pre>  2 – UDRE Scale Factor = 0.5</pre>
-/// <pre>  3 – UDRE Scale Factor = 0.3</pre>
-/// <pre>  4 – UDRE Scale Factor = 0.2</pre>
-/// <pre>  5 – UDRE Scale Factor = 0.1</pre>
-/// <pre>  6 – Reference Station Transmission Not Monitored</pre>
-/// <pre>  7 – Reference Station Not Working</pre>
+/// <pre>  0 - UDRE Scale Factor = 1.0</pre>
+/// <pre>  1 - UDRE Scale Factor = 0.75</pre>
+/// <pre>  2 - UDRE Scale Factor = 0.5</pre>
+/// <pre>  3 - UDRE Scale Factor = 0.3</pre>
+/// <pre>  4 - UDRE Scale Factor = 0.2</pre>
+/// <pre>  5 - UDRE Scale Factor = 0.1</pre>
+/// <pre>  6 - Reference Station Transmission Not Monitored</pre>
+/// <pre>  7 - Reference Station Not Working</pre>
 /// 
 /// (UDRE = User Differential Range Error)
 ///
@@ -1090,7 +1090,7 @@ struct SbasCorrection
     GnssConstellationId gnss_id = static_cast<GnssConstellationId>(0); ///< GNSS constellation id
     uint8_t sv_id = 0; ///< GNSS satellite id within the constellation.
     uint8_t udrei = 0; ///< [See above 0-13 usable, 14 not monitored, 15 - do not use]
-    float pseudorange_correction = 0; ///< Pseudorange correction [meters].
+    float pseudorange_correction = 0; ///< Pseudo-range correction [meters].
     float iono_correction = 0; ///< Ionospheric correction [meters].
     ValidFlags valid_flags;
     
@@ -1453,10 +1453,10 @@ struct Raw
     GnssSignalId signal_id = static_cast<GnssSignalId>(0); ///< Signal identifier for the satellite.
     float signal_strength = 0; ///< Carrier to noise ratio [dBHz].
     GnssSignalQuality quality = static_cast<GnssSignalQuality>(0); ///< Indicator of signal quality.
-    double pseudorange = 0; ///< Pseudorange measurement [meters].
+    double pseudorange = 0; ///< Pseudo-range measurement [meters].
     double carrier_phase = 0; ///< Carrier phase measurement [Carrier periods].
     float doppler = 0; ///< Measured doppler shift [Hz].
-    float range_uncert = 0; ///< Uncertainty of the pseudorange measurement [m].
+    float range_uncert = 0; ///< Uncertainty of the pseudo-range measurement [m].
     float phase_uncert = 0; ///< Uncertainty of the phase measurement [Carrier periods].
     float doppler_uncert = 0; ///< Uncertainty of the measured doppler shift [Hz].
     float lock_time = 0; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
@@ -1470,7 +1470,7 @@ void extract(Serializer& serializer, Raw& self);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_gnss_gps_ephemeris  (0x81,0x61) Gps Ephemeris [CPP]
-/// GPS/Galileo Ephemeris Data
+/// GPS Ephemeris Data
 ///
 ///@{
 
@@ -1518,14 +1518,14 @@ struct GpsEphemeris
     double ISC_L2C = 0;
     double t_oe = 0; ///< Reference time for ephemeris in [s].
     double a = 0; ///< Semi-major axis [m].
-    double a_dot = 0; ///< Semi-matjor axis rate [m/s].
+    double a_dot = 0; ///< Semi-major axis rate [m/s].
     double mean_anomaly = 0; ///< [rad].
     double delta_mean_motion = 0; ///< [rad].
     double delta_mean_motion_dot = 0; ///< [rad/s].
     double eccentricity = 0;
     double argument_of_perigee = 0; ///< [rad].
     double omega = 0; ///< Longitude of Ascending Node [rad].
-    double omega_dot = 0; ///< Rate of Right Ascention [rad/s].
+    double omega_dot = 0; ///< Rate of Right Ascension [rad/s].
     double inclination = 0; ///< Inclination angle [rad].
     double inclination_dot = 0; ///< Inclination angle rate of change [rad/s].
     double c_ic = 0; ///< Harmonic Correction Term.
@@ -1539,6 +1539,80 @@ struct GpsEphemeris
 };
 void insert(Serializer& serializer, const GpsEphemeris& self);
 void extract(Serializer& serializer, GpsEphemeris& self);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_gnss_galileo_ephemeris  (0x81,0x63) Galileo Ephemeris [CPP]
+/// Galileo Ephemeris Data
+///
+///@{
+
+struct GalileoEphemeris
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        enum _enumType : uint16_t
+        {
+            NONE        = 0x0000,
+            EPHEMERIS   = 0x0001,  ///<  
+            MODERN_DATA = 0x0002,  ///<  
+            FLAGS       = 0x0003,  ///<  
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+    };
+    
+    uint8_t index = 0; ///< Index of this field in this epoch.
+    uint8_t count = 0; ///< Total number of fields in this epoch.
+    double time_of_week = 0; ///< GPS Time of week [seconds]
+    uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
+    uint8_t satellite_id = 0; ///< GNSS satellite id within the constellation.
+    uint8_t health = 0; ///< Satellite and signal health
+    uint8_t iodc = 0; ///< Issue of Data Clock. This increments each time the data changes and rolls over at 4. It is used to make sure various raw data elements from different sources line up correctly.
+    uint8_t iode = 0; ///< Issue of Data Ephemeris.
+    double t_oc = 0; ///< Reference time for clock data.
+    double af0 = 0; ///< Clock bias in [s].
+    double af1 = 0; ///< Clock drift in [s/s].
+    double af2 = 0; ///< Clock drift rate in [s/s^2].
+    double t_gd = 0; ///< T Group Delay [s].
+    double ISC_L1CA = 0;
+    double ISC_L2C = 0;
+    double t_oe = 0; ///< Reference time for ephemeris in [s].
+    double a = 0; ///< Semi-major axis [m].
+    double a_dot = 0; ///< Semi-major axis rate [m/s].
+    double mean_anomaly = 0; ///< [rad].
+    double delta_mean_motion = 0; ///< [rad].
+    double delta_mean_motion_dot = 0; ///< [rad/s].
+    double eccentricity = 0;
+    double argument_of_perigee = 0; ///< [rad].
+    double omega = 0; ///< Longitude of Ascending Node [rad].
+    double omega_dot = 0; ///< Rate of Right Ascension [rad/s].
+    double inclination = 0; ///< Inclination angle [rad].
+    double inclination_dot = 0; ///< Inclination angle rate of change [rad/s].
+    double c_ic = 0; ///< Harmonic Correction Term.
+    double c_is = 0; ///< Harmonic Correction Term.
+    double c_uc = 0; ///< Harmonic Correction Term.
+    double c_us = 0; ///< Harmonic Correction Term.
+    double c_rc = 0; ///< Harmonic Correction Term.
+    double c_rs = 0; ///< Harmonic Correction Term.
+    ValidFlags valid_flags;
+    
+};
+void insert(Serializer& serializer, const GalileoEphemeris& self);
+void extract(Serializer& serializer, GalileoEphemeris& self);
 
 ///@}
 ///
@@ -1583,11 +1657,11 @@ struct GloEphemeris
     uint32_t tk = 0; ///< Frame start time within current day [seconds]
     uint32_t tb = 0; ///< Ephemeris reference time [seconds]
     uint8_t sat_type = 0; ///< Type of satellite (M) GLONASS = 0, GLONASS-M = 1
-    double gamma = 0; ///< Relative deviation of carrier frequency from nominal [dimesnionless]
+    double gamma = 0; ///< Relative deviation of carrier frequency from nominal [dimensionless]
     double tau_n = 0; ///< Time correction relative to GLONASS Time [seconds]
     double x[3] = {0}; ///< Satellite PE-90 position [m]
     float v[3] = {0}; ///< Satellite PE-90 velocity [m/s]
-    float a[3] = {0}; ///< Satellite PE-90 acceleration due to pertubations [m/s^2]
+    float a[3] = {0}; ///< Satellite PE-90 acceleration due to perturbations [m/s^2]
     uint8_t health = 0; ///< Satellite Health (Bn), Non-zero indicates satellite malfunction
     uint8_t P = 0; ///< Satellite operation mode (See GLONASS ICD)
     uint8_t NT = 0; ///< Day number within a 4 year period.
