@@ -5,7 +5,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Global logging callback. Do not access directly
-mip_logger_callback _mip_logger_callback  = NULL;
+mip_logger_callback _mip_logger_callback = NULL;
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Global logging level. Do not access directly
+mip_logger_level _mip_logger_level = MIP_LOGGER_LEVEL_OFF;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Global logging user data. Do not access directly
@@ -15,11 +19,13 @@ void* _mip_logger_user_data = NULL;
 ///@brief Initializes the logger with a callback and user data
 ///
 ///@param callback The callback to execute when there is data to log
+///@param level    The level that the MIP SDK should log at
 ///@param user     User data that will be passed to the callback every time it is excuted
 ///
-void mip_logger_init(mip_logger_callback callback, void* user)
+void mip_logger_init(mip_logger_callback callback, mip_logger_level level, void* user)
 {
   _mip_logger_callback = callback;
+  _mip_logger_level = level;
   _mip_logger_user_data = user;
 }
 
@@ -31,6 +37,11 @@ void mip_logger_init(mip_logger_callback callback, void* user)
 mip_logger_callback mip_logger_get_callback()
 {
   return _mip_logger_callback;
+}
+
+mip_logger_level mip_logger_get_level()
+{
+  return _mip_logger_level;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

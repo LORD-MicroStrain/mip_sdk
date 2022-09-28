@@ -14,6 +14,10 @@
 
 #include <mip/utils/serial_port.h>
 
+#ifdef MIP_ENABLE_LOGGING
+#include <mip/mip_logger.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -33,13 +37,24 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
+#ifdef MIP_ENABLE_LOGGING
 void customLog(const void* context, void* user, mip_logger_level level, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    vprintf(fmt, args);
+    switch (level)
+    {
+        case MIP_LOGGER_LEVEL_FATAL:
+        case MIP_LOGGER_LEVEL_ERROR:
+            vfprintf(stderr, fmt, args);
+            break;
+        default:
+            vprintf(fmt, args);
+            break;
+    }
     va_end(args);
 }
+#endif
 
 void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
@@ -149,10 +164,14 @@ int main(int argc, const char* argv[])
     if( baudrate == 0 )
         return usage(argv[0]);
 
+    // Initialize the MIP logger before opening the port so we can print errors if they occur
+#ifdef MIP_ENABLE_LOGGING
+    mip_logger_init(&customLog, MIP_LOGGER_LEVEL_DEBUG, NULL);
+#endif
+
     if( !open_port(argv[1], baudrate) )
         return 1;
 
-    mip_logger_init(&customLog, NULL);
     mip_interface_init(&device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000);
 
     // Record program start time for use with difftime in getTimestamp().

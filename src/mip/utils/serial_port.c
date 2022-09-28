@@ -1,4 +1,6 @@
 
+#include "mip/mip_logger.h"
+
 #include "serial_port.h"
 
 #define COM_PORT_BUFFER_SIZE  0x200
@@ -57,6 +59,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     if(port_str == NULL)
         return false;
 
+    mip_logger_debug(port, "Opening serial port %s at %d\n", port_str, baudrate);
 #ifdef WIN32
     BOOL   ready;
     DCB    dcb;
@@ -67,13 +70,16 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Check for an invalid handle
     if(port->handle == INVALID_HANDLE_VALUE)
     {
-        printf( "\nError: Unable to open com port (%d)\n", GetLastError( ) );
+        mip_logger_error(port, "Unable to open com port (%d)\n", GetLastError());
         return false;
     }
 
     //Setup the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
+    {
+        mip_logger_error(port, "Unable to setup com port buffer size (%d)\n", GetLastError());
         return false;
+    }
     
     //Set the timeouts
     COMMTIMEOUTS timeouts;
@@ -94,6 +100,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port, mutex, and exit
     if(!ready)
     {
+        mip_logger_error(port, "Unable to get com state\n");
         CloseHandle(port->handle);
         return false;
     }
@@ -110,6 +117,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port and exit
     if(!ready)
     {
+        mip_logger_error(port, "Unable to set com state\n");
         CloseHandle(port->handle);
         return false;
     }
@@ -120,16 +128,23 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 
     if (port->handle < 0)
     {
+        mip_logger_error(port, "Unable to open port (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
     // Set up baud rate and other serial device options
     struct termios serial_port_settings;
     if (tcgetattr(port->handle, &serial_port_settings) < 0)
+    {
+        mip_logger_error(port, "Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
+    }
 
     if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
+    {
+        mip_logger_error(port, "Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         return false;
+    }
 
     // Other serial settings to match MSCL
     serial_port_settings.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
@@ -143,7 +158,10 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 
     // Persist the settings
     if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
+    {
+        mip_logger_error(port, "Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
+    }
     
     // Flush any waiting data
     tcflush(port->handle, TCIOFLUSH);
@@ -199,6 +217,8 @@ bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, 
 
     if(*bytes_written == num_bytes)
         return true;
+    else if(*bytes_written == (size_t)-1)
+        mip_logger_error(port, "Failed to write serial data (%d): %s\n", errno, strerror(errno));
     
 #endif
 
@@ -234,9 +254,14 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t 
         ssize_t local_bytes_read = read(port->handle, buffer, num_bytes);
 
         if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
+        {
+            mip_logger_error(port, "Failed to read serial data (%d): %s\n", errno, strerror(errno));
             return false;
+        }
         if(local_bytes_read >= 0)
+        {
             *bytes_read = local_bytes_read;
+        }
     }
 
 #endif

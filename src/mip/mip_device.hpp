@@ -2,7 +2,6 @@
 
 #include "mip.hpp"
 #include "mip_interface.h"
-#include "mip_logger.h"
 
 #include "definitions/descriptors.h"
 

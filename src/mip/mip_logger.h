@@ -26,12 +26,13 @@ extern "C" {
 ///
 typedef enum mip_logger_level
 {
-    MIP_LOGGER_LEVEL_FATAL = 0,  ///< Fatal logs are logged when an unrecoverable error occurs
-    MIP_LOGGER_LEVEL_ERROR = 1,  ///< Error logs are logged when an error occurs
-    MIP_LOGGER_LEVEL_WARN  = 2,  ///< Warning logs are logged when something concerning happens that may or not be a mistake
-    MIP_LOGGER_LEVEL_INFO  = 3,  ///< Info logs are logged when some general info needs to be conveyed to the user
-    MIP_LOGGER_LEVEL_DEBUG = 4,  ///< Debug logs are logged for debug purposes.
-    MIP_LOGGER_LEVEL_TRACE = 5,  ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
+    MIP_LOGGER_LEVEL_OFF   = 0,  ///< Signifies that the log is turned off
+    MIP_LOGGER_LEVEL_FATAL = 1,  ///< Fatal logs are logged when an unrecoverable error occurs
+    MIP_LOGGER_LEVEL_ERROR = 2,  ///< Error logs are logged when an error occurs
+    MIP_LOGGER_LEVEL_WARN  = 3,  ///< Warning logs are logged when something concerning happens that may or not be a mistake
+    MIP_LOGGER_LEVEL_INFO  = 4,  ///< Info logs are logged when some general info needs to be conveyed to the user
+    MIP_LOGGER_LEVEL_DEBUG = 5,  ///< Debug logs are logged for debug purposes.
+    MIP_LOGGER_LEVEL_TRACE = 6,  ///< Trace logs are logged in similar cases to debug logs but can be logged in tight loops
 } mip_logger_level;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,10 +46,12 @@ typedef enum mip_logger_level
 typedef void (*mip_logger_callback)(const void* context, void* user, mip_logger_level level, const char* fmt, ...);
 
 extern mip_logger_callback _mip_logger_callback;
+extern mip_logger_level _mip_logger_level;
 extern void* _mip_logger_user_data;
 
-void mip_logger_init(mip_logger_callback callback, void* user);
+void mip_logger_init(mip_logger_callback callback, mip_logger_level level, void* user);
 mip_logger_callback mip_logger_get_callback();
+mip_logger_level mip_logger_get_level();
 void* mip_logger_get_user_data();
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +60,7 @@ void* mip_logger_get_user_data();
 ///@copydetails mip::C::mip_logger_callback
 #ifdef MIP_ENABLE_LOGGING
 #define mip_logger_log(context, level, fmt, ...) \
-    if (mip_logger_get_callback() != NULL) \
+    if (mip_logger_get_callback() != NULL && mip_logger_get_level() >= level) \
         mip_logger_get_callback()(context, mip_logger_get_user_data(), level, fmt, __VA_ARGS__)
 #else
 #define mip_logger_log(context, level, fmt, ...) do {} while (1)
@@ -124,7 +127,7 @@ using LoggerLevel = C::mip_logger_level;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@copydoc mip::C::mip_logger_init
-inline void initLogging(mip::C::mip_logger_callback callback, void* user = nullptr) { mip_logger_init(callback, user); }
+inline void initLogging(mip::C::mip_logger_callback callback, LoggerLevel level = LoggerLevel::MIP_LOGGER_LEVEL_INFO, void* user = nullptr) { mip_logger_init(callback, level, user); }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class usable by other MIP SDK classes to log information
@@ -149,6 +152,7 @@ public:
     void log(LoggerLevel level, const char* fmt, Args&&... args) const
     {
         using mip::C::mip_logger_get_callback;
+        using mip::C::mip_logger_get_level;
         using mip::C::mip_logger_get_user_data;
         mip_logger_log(this, level, fmt, args...);
     }

@@ -3,7 +3,9 @@
 
 #include <stdarg.h>
 
+#ifdef MIP_ENABLE_LOGGING
 #include <mip/mip_logger.h>
+#endif
 
 #include "example_utils.hpp"
 
@@ -20,13 +22,36 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
+#ifdef MIP_ENABLE_LOGGING
 void customLog(const void* context, void* user, mip::LoggerLevel level, const char* fmt, ...)
 {
-    va_list args;
+    // Convert the varargs into a string
+    std::string log;
+    va_list args, args_copy;
     va_start(args, fmt);
-    vprintf(fmt, args);
+    va_copy(args_copy, args);
+    const int required_len = vsnprintf(nullptr, 0, fmt, args_copy);
+    if (required_len >= 0)
+    {
+        log.resize(required_len);
+        vsnprintf(&log[0], required_len + 1, fmt, args);
+    }
+    va_end(args_copy);
     va_end(args);
+
+    // Print to the proper stream
+    switch (level)
+    {
+        case mip::LoggerLevel::MIP_LOGGER_LEVEL_FATAL:
+        case mip::LoggerLevel::MIP_LOGGER_LEVEL_ERROR:
+            std::cerr << log;
+            break;
+        default:
+            std::cout << log;
+            break;
+    }
 }
+#endif
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port, const std::string& binary_file_path)
 {
@@ -90,7 +115,9 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
+#ifdef MIP_ENABLE_LOGGING
     mip::initLogging(&customLog);
+#endif
     if( argc < 3 || argc > maxArgs )
     {
         throw std::underflow_error("Usage error");
