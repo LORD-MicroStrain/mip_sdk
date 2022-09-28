@@ -3,6 +3,8 @@
 
 #include <stdarg.h>
 
+#include <mip/mip_logger.h>
+
 #include "example_utils.hpp"
 
 
@@ -18,7 +20,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(const void* context, void* user, mip::C::mip_logging_level level, const char* fmt, ...)
+void customLog(const void* context, void* user, mip::LoggerLevel level, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);

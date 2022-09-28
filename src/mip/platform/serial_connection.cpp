@@ -11,7 +11,6 @@ namespace platform
 
 SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
 {
-    fatal("In constructur: %s\n", portName.c_str());
     if (!serial_port_open(&mPort, portName.c_str(), baudrate))
         throw std::runtime_error("Unable to open serial port");
 }

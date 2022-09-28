@@ -2,7 +2,7 @@
 
 #include "mip.hpp"
 #include "mip_interface.h"
-#include "mip_logging.h"
+#include "mip_logger.h"
 
 #include "definitions/descriptors.h"
 
@@ -133,7 +133,7 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 ///@li `bool sendToDevice(const uint8_t* data, size_t length)` - corresponds to mip_interface_user_send_to_device.
 ///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, size_t* lengthOut, Timestamp* timestampOut)` - corresponds to mip_interface_user_recv_from_device.
 ///
-class Connection : public LoggingInterface
+class Connection
 {
 public:
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.

@@ -2,7 +2,7 @@
 #include "mip_interface.h"
 
 #include "mip_field.h"
-#include "mip_logging.h"
+#include "mip_logger.h"
 
 #include "definitions/descriptors.h"
 
@@ -42,7 +42,7 @@ bool mip_interface_parse_callback(void* device, const mip_packet* packet, timest
 ///
 void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
 {
-    mip_logging_info(device, "In init", 1);
+    mip_logger_info(device, "In init", 1);
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;

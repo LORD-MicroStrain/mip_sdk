@@ -73,6 +73,8 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
 option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
 
+option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
+
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
@@ -114,8 +116,6 @@ set(MIP_SOURCES
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
-    "${MIP_DIR}/mip_logging.c"
-    "${MIP_DIR}/mip_logging.h"
 )
 
 set(MIPDEV_SOURCES
@@ -174,6 +174,13 @@ if(WITH_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
+if(MIP_ENABLE_LOGGING)
+    list(APPEND MIP_SOURCES
+        "${MIP_DIR}/mip_logger.c"
+        "${MIP_DIR}/mip_logger.h"
+    )
+    list(APPEND MIP_DEFINES "MIP_ENABLE_LOGGING")
+endif()
 
 set(ALL_MIP_SOURCES
     ${MIPDEF_SOURCES}
@@ -193,6 +200,7 @@ endif()
 
 
 add_library(mip ${ALL_MIP_SOURCES})
+target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 
 
 if(${MIP_TIMESTAMP_TYPE})
