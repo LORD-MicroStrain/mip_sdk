@@ -8,10 +8,8 @@
 
 extern mip::Timestamp getCurrentTimestamp();
 
-namespace mip
-{
-namespace platform
-{
+namespace mip {
+namespace platform {
 
 class SerialConnection : public mip::Connection
 {
@@ -27,5 +25,5 @@ private:
     serial_port mPort;
 };
 
-};  // namespace platform
-};  // namespace mip
+} // namespace platform
+} // namespace mip

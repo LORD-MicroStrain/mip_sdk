@@ -4,15 +4,15 @@
 #include <chrono>
 #include <cstdio>
 
-namespace mip
-{
-namespace platform
-{
+namespace mip {
+namespace platform {
 
 SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
 {
-    if (!serial_port_open(&mPort, portName.c_str(), baudrate))
+    if( !serial_port_open(&mPort, portName.c_str(), baudrate) )
+    {
         throw std::runtime_error("Unable to open serial port");
+    }
 }
 
 SerialConnection::~SerialConnection()
@@ -32,5 +32,5 @@ bool SerialConnection::sendToDevice(const uint8_t* data, size_t length)
     return serial_port_write(&mPort, data, length, &length_out);
 }
 
-};  // namespace platform
-};  // namespace mip
+} // namespace platform
+} // namespace mip

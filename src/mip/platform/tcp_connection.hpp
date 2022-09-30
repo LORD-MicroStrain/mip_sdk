@@ -9,10 +9,8 @@
 
 extern mip::Timestamp getCurrentTimestamp();
 
-namespace mip
-{
-namespace platform
-{
+namespace mip {
+namespace platform {
 
 class TcpConnection : public mip::Connection
 {
@@ -28,5 +26,5 @@ private:
     tcp_socket mSocket;
 };
 
-};  // namespace platform
-};  // namespace mip
+} // namespace platform
+} // namespace mip
