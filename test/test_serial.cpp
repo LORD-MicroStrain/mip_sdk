@@ -13,7 +13,7 @@ int main(int argc, const char* argv[])
         printf("Available serial ports:\n");
         std::vector<serial::PortInfo> ports = serial::list_ports();
 
-        for(const serial::PortInfo& port : ports)
+        for( const serial::PortInfo& port : ports )
         {
             printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
         }

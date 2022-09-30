@@ -12,9 +12,9 @@ uint8_t check_buffer[MIP_PACKET_LENGTH_MAX];
 
 struct mip_parser parser;
 
-unsigned int num_errors = 0;
-size_t bytesRead = 0;
-size_t bytes_parsed = 0;
+unsigned int num_errors   = 0;
+size_t       bytesRead    = 0;
+size_t       bytes_parsed = 0;
 
 bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
 {
@@ -26,7 +26,7 @@ bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
     if( length > MIP_PACKET_LENGTH_MAX )
     {
         num_errors++;
-        fprintf(stderr, "Packet with length too long (%ld)\n", length);
+        fprintf(stderr, "Packet with length too long (%zu)\n", length);
         return false;
     }
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
@@ -57,12 +57,16 @@ bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
         fprintf(stderr, "Packet does not match next sequence in input file:\n");
 
         fputs("Packet:    ", stderr);
-        for(size_t i=0; i<length; i++)
+        for( size_t i = 0; i < length; i++ )
+        {
             fprintf(stderr, " %02X", packet_buffer[i]);
+        }
 
         fputs("Reference: ", stderr);
-        for(size_t i=0; i<length; i++)
+        for( size_t i = 0; i < length; i++ )
+        {
             fprintf(stderr, " %02X", check_buffer[i]);
+        }
 
         fputc('\n', stderr);
     }
@@ -111,16 +115,20 @@ int main(int argc, const char* argv[])
 
         // End of file (or error)
         if( numRead != numToRead )
+        {
             break;
+        }
 
-    } while(num_errors == 0);
+    }
+    while( num_errors == 0 );
 
     fclose(infile);
 
     if( bytes_parsed != bytesRead )
     {
         num_errors++;
-        fprintf(stderr, "Read %ld bytes but only parsed %ld bytes (delta %ld).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
+        fprintf(stderr, "Read %zu bytes but only parsed %zu bytes (delta %llu).\n", bytesRead, bytes_parsed,
+                bytesRead - bytes_parsed);
     }
 
     fclose(infile2);

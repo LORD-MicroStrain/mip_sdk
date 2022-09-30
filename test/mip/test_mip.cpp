@@ -14,7 +14,7 @@ using namespace mip;
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+Field        fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -26,8 +26,9 @@ int main(int argc, const char* argv[])
     auto callback = [](void*, const Packet* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
-        bool error = false;
-        for(Field field : *parsedPacket)
+        bool         error        = false;
+
+        for( Field field : *parsedPacket )
         {
             if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
             {
@@ -44,7 +45,8 @@ int main(int argc, const char* argv[])
                 error = true;
                 fprintf(stderr, "Payload length does not match.\n");
             }
-            if( std::memcmp(field.payload(), fields[parsedFields].payload(), std::min(field.payloadLength(),fields[parsedFields].payloadLength())) != 0 )
+            if( std::memcmp(field.payload(), fields[parsedFields].payload(),
+                            std::min(field.payloadLength(), fields[parsedFields].payloadLength())) != 0 )
             {
                 error = true;
                 fprintf(stderr, "Payloads do not match.\n");
@@ -54,9 +56,12 @@ int main(int argc, const char* argv[])
             {
                 numErrors++;
                 fprintf(stderr, "  From field %d/%d\n", parsedFields, numFields);
-                fprintf(stderr, "  Descriptor set: %02X/%02X\n", field.descriptorSet(), fields[parsedFields].descriptorSet());
-                fprintf(stderr, "  Field Descriptor: %02X/%02X\n", field.fieldDescriptor(), fields[parsedFields].fieldDescriptor());
-                fprintf(stderr, "  Payload Length: %02X/%02X\n", field.payloadLength(), fields[parsedFields].payloadLength());
+                fprintf(stderr, "  Descriptor set: %02X/%02X\n", field.descriptorSet(),
+                        fields[parsedFields].descriptorSet());
+                fprintf(stderr, "  Field Descriptor: %02X/%02X\n", field.fieldDescriptor(),
+                        fields[parsedFields].fieldDescriptor());
+                fprintf(stderr, "  Payload Length: %02X/%02X\n", field.payloadLength(),
+                        fields[parsedFields].payloadLength());
                 fputc('\n', stderr);
             }
 
@@ -76,23 +81,27 @@ int main(int argc, const char* argv[])
 
     const unsigned int NUM_ITERATIONS = 100;
 
-    for(unsigned int i=0; i<NUM_ITERATIONS; i++)
+    for( unsigned int i = 0; i < NUM_ITERATIONS; i++ )
     {
         Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
-        for(numFields = 0; ; numFields++)
+        for( numFields = 0;; numFields++ )
         {
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
-            const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
+            const uint8_t payloadLength   = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
             uint8_t* payload;
             RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
 
             if( rem < 0 )
+            {
                 break;
+            }
 
-            for(unsigned int p=0; p<payloadLength; p++)
+            for( unsigned int p = 0; p < payloadLength; p++ )
+            {
                 payload[p] = rand() & 0xFF;
+            }
 
             fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
         }
@@ -108,7 +117,9 @@ int main(int argc, const char* argv[])
         }
 
         if( numErrors > 10 )
+        {
             break;
+        }
     }
 
     return numErrors;
