@@ -359,7 +359,7 @@
 /// to time out and make the device appear temporarily unresponsive. Setting a
 /// reasonable timeout ensures that the bad packet is rejected more quickly.
 /// The timeout should be set so that a MIP packet of the largest possible
-/// size (261 bytes) can be transfered well within the transmission time plus
+/// size (261 bytes) can be transferred well within the transmission time plus
 /// any additional processing delays in the application or operating system.
 /// As an example, for a 115200 baud serial link a timeout of 30 ms would be
 /// about right. You can use the mip_timeout_from_baudrate() function to

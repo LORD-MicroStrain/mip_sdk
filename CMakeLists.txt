@@ -34,24 +34,24 @@ set(MIP_DIR "${SRC_DIR}/mip")
 find_package(Git)
 set(DEFAULT_MIP_GIT_VERSION "v0.0.0")
 if(NOT GIT_FOUND)
-  message(STATUS "Unable to find git, will build with unknown version")
-  set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
+    message(STATUS "Unable to find git, will build with unknown version")
+    set(MIP_GIT_VERSION ${DEFAULT_MSCL_GIT_VERSION})
 else()
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
-    ERROR_VARIABLE MIP_GIT_VERSION_ERR
-    RESULT_VARIABLE MIP_GIT_VERSION_RET
-  )
-  if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
-    message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
-    set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
-  else()
-    set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
-    string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
-    message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
-  endif()
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E env ${GIT_EXECUTABLE} describe --tags
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE MIP_GIT_VERSION_OUT
+        ERROR_VARIABLE MIP_GIT_VERSION_ERR
+        RESULT_VARIABLE MIP_GIT_VERSION_RET
+    )
+    if(NOT ${MIP_GIT_VERSION_RET} EQUAL 0)
+        message(STATUS "Unable to determine version from Git, defaulting to version ${DEFAULT_MIP_GIT_VERSION}")
+        set(MIP_GIT_VERSION ${DEFAULT_MIP_GIT_VERSION})
+    else()
+        set(MIP_GIT_VERSION ${MIP_GIT_VERSION_OUT})
+        string(REGEX REPLACE "\n" "" MIP_GIT_VERSION "${MIP_GIT_VERSION}")
+        message(STATUS "MIP SDK Version: ${MIP_GIT_VERSION}")
+    endif()
 endif()
 
 # Massage the version number a little so we can use it in a couple places
@@ -71,7 +71,7 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 #
 
 option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
-option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
+option(WITH_TCP    "Build TCP connection support into the library and examples" ON)
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -199,13 +199,13 @@ endif()
 
 # Disable windows defined min/max
 if(WIN32)
-  target_compile_definitions(mip PUBLIC "NOMINMAX=1")
+    target_compile_definitions(mip PUBLIC "NOMINMAX=1")
 endif()
 
 if(MSVC)
-  target_compile_options(mip PRIVATE /W4)
+    target_compile_options(mip PRIVATE /W4)
 else()
-  target_compile_options(mip PRIVATE -Wall -Wextra)
+    target_compile_options(mip PRIVATE -Wall -Wextra)
 endif()
 
 #
@@ -281,7 +281,7 @@ if(BUILD_DOCUMENTATION)
         DEPENDS docs
         COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_CURRENT_BINARY_DIR}/mipsdk_${MIP_GIT_VERSION}_Documentation.zip" --format=zip "."
     )
-endif(BUILD_DOCUMENTATION)
+endif()
 
 #
 # Packaging
@@ -412,7 +412,7 @@ endif()
 if(BUILD_PACKAGE)
     # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
     set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
-    set(CPACK_PACKAGE_VENDOR "Parker Hanifin")
+    set(CPACK_PACKAGE_VENDOR "Parker Hannifin")
     set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@parker.com>")
     set(CPACK_COMPONENTS_ALL "mip")
 

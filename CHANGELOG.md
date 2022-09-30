@@ -1,4 +1,3 @@
-
 MIP SDK Change Log
 ==================
 
