@@ -9,12 +9,12 @@
 #include <cstring>
 #include <stdio.h>
 
-namespace mip
-{
-    namespace C {
-        CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd, struct MipCmd_Base_GetDeviceInfo_Response* response);
-        CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info);
-    }
+namespace mip {
+namespace C {
+CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd,
+                                    struct MipCmd_Base_GetDeviceInfo_Response* response);
+CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info);
+}
 }
 
 int usage(const char* argv[])
@@ -33,7 +33,7 @@ int main(int argc, const char* argv[])
         printf("Available serial ports:\n");
         std::vector<serial::PortInfo> ports = serial::list_ports();
 
-        for(const serial::PortInfo& port : ports)
+        for( const serial::PortInfo& port : ports )
         {
             printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
         }
@@ -67,15 +67,15 @@ int main(int argc, const char* argv[])
         uint8_t* payload;
         mip::RemainingCount available = packet.allocField(mip::MIP_CMD_DESC_BASE_PING, 0, &payload);
 
-    #if METHOD == 1
+#if METHOD == 1
         mip::MipCmd_Base_GetDeviceInfo info;
         size_t used = mip::insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, &info);
-    #elif METHOD == 2
+#elif METHOD == 2
         mip::MipCmd_Base_GetDeviceInfo info;
         size_t used = mip::insert(payload, available, 0, info);
-    #elif METHOD == 3
+#elif METHOD == 3
         size_t used = mip::insert_MipCmd_Base_GetDeviceInfo_args(payload, available, 0);
-    #endif
+#endif
 
         // Skip error checking as this field will always fit in this buffer.
         packet.reallocLastField(payload, used);
@@ -157,24 +157,24 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", mip::MipCmdResult_toString(result), result);
         }
 #elif METHOD >= 5
-    MipDevice device(argv[1], baud);
+        MipDevice device(argv[1], baud);
 
-    mip::MipCmd_Base_GetDeviceInfo cmd;
-    mip::MipCmd_Base_GetDeviceInfo_Response response;
+        mip::MipCmd_Base_GetDeviceInfo          cmd;
+        mip::MipCmd_Base_GetDeviceInfo_Response response;
 
-    #if METHOD == 5
+#if METHOD == 5
         mip::CmdResult result = exec_MipCmd_Base_GetDeviceInfo(&device, &cmd, &response);
-    #elif METHOD == 6
+#elif METHOD == 6
         mip::CmdResult result = mipcmd_base_getDeviceInfo(&device, &response.device_info);
-    #elif METHOD == 7
+#elif METHOD == 7
         mip::CmdResult result = mip::runCommand(&device, cmd, response);
-    #elif METHOD == 8
-        mip::DeviceInterface* device2 = &device;
+#elif METHOD == 8
+        mip::DeviceInterface*      device2 = &device;
         mip::C::MipInterfaceState* device3 = device2;
-        mip::MipInterfaceState* device4 = device3;
+        mip::MipInterfaceState*    device4 = device3;
         static_assert(std::is_same<mip::MipInterfaceState, mip::C::MipInterfaceState>::value, "Not the same");
         mip::CmdResult result = mip::get_device_information(device4, &response.device_info);
-    #endif
+#endif
 
         if( result == mip::MIP_ACK_OK )
         {
@@ -182,7 +182,7 @@ int main(int argc, const char* argv[])
 
             auto print_info = [](const char* name, const char info[16])
             {
-                char msg[17] = {0};
+                char msg[17] = { 0 };
                 std::strncpy(msg, info, 16);
                 printf("  %s%s\n", name, msg);
             };
@@ -193,10 +193,10 @@ int main(int argc, const char* argv[])
             print_info("Device Options:   ", response.device_info.device_options);
             print_info("Lot Number:       ", response.device_info.lot_number);
 
-            printf(  "  Firmware version:           %d.%d.%d\n\n",
-                (response.device_info.firmware_version / 1000),
-                (response.device_info.firmware_version / 100) % 10,
-                (response.device_info.firmware_version / 1)   % 100
+            printf("  Firmware version:           %d.%d.%d\n\n",
+                   (response.device_info.firmware_version / 1000),
+                   (response.device_info.firmware_version / 100) % 10,
+                   (response.device_info.firmware_version / 1) % 100
             );
         }
         else
@@ -206,7 +206,7 @@ int main(int argc, const char* argv[])
 
 #endif
     }
-    catch(const std::exception& ex)
+    catch( const std::exception& ex )
     {
         fprintf(stderr, "Could not open serial port: %s", ex.what());
         return 1;

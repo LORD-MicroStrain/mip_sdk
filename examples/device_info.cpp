@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <vector>
 #include <cstring>
-#include <stdio.h>
+#include <cstdio>
 
 
 int main(int argc, const char* argv[])
@@ -21,13 +21,13 @@ int main(int argc, const char* argv[])
 
         mip::CmdResult result = mip::commands_base::getDeviceInfo(*device, &device_info);
 
-        if( result == mip::CmdResult::ACK_OK)
+        if( result == mip::CmdResult::ACK_OK )
         {
             printf("Success:\n");
 
             auto print_info = [](const char* name, const char info[16])
             {
-                char msg[17] = {0};
+                char msg[17] = { 0 };
                 std::strncpy(msg, info, 16);
                 printf("  %s%s\n", name, msg);
             };
@@ -38,10 +38,10 @@ int main(int argc, const char* argv[])
             print_info("Device Options:   ", device_info.device_options);
             print_info("Lot Number:       ", device_info.lot_number);
 
-            printf(  "  Firmware version:           %d.%d.%d\n\n",
-                (device_info.firmware_version / 1000),
-                (device_info.firmware_version / 100) % 10,
-                (device_info.firmware_version / 1)   % 100
+            printf("  Firmware version:           %d.%d.%d\n\n",
+                   (device_info.firmware_version / 1000),
+                   (device_info.firmware_version / 100) % 10,
+                   (device_info.firmware_version / 1) % 100
             );
         }
         else
@@ -49,11 +49,11 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
     }
-    catch(const std::underflow_error& ex)
+    catch( const std::underflow_error& ex )
     {
         return printCommonUsage(argv);
     }
-    catch(const std::exception& ex)
+    catch( const std::exception& ex )
     {
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
