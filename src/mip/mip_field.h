@@ -5,7 +5,7 @@
 #include "mip_packet.h"
 
 #ifdef __cplusplus
-namespace mip{
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -59,7 +59,8 @@ typedef struct mip_field
 } mip_field;
 
 
-void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload,
+                    uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup FieldAccess  Field Accessors [C]
@@ -90,7 +91,7 @@ bool mip_field_is_valid(const mip_field* field);
 /// for(mip_field field = mip_field_from_packet(packet); mip_field_is_valid(&field); mip_field_next(&field))
 /// {
 ///     // Check the field descriptor for what kind of data it holds.
-///     switch( mip_field_field_desriptor(&field) )
+///     switch( mip_field_field_descriptor(&field) )
 ///     {
 ///     case MIP_DATA_DESC_SENSOR_SCALED_ACCEL:
 ///         break;

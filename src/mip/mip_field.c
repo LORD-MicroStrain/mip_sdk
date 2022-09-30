@@ -25,11 +25,14 @@
 ///
 ///@returns A %mip_field initialized with the specified values.
 ///
-void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
+void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload,
+                    uint8_t payload_length)
 {
-    assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
+    assert(payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX);
     if( payload_length > MIP_FIELD_PAYLOAD_LENGTH_MAX )
+    {
         payload_length = MIP_FIELD_PAYLOAD_LENGTH_MAX;
+    }
 
     field->_payload          = payload;
     field->_payload_length   = payload_length;
@@ -81,7 +84,6 @@ bool mip_field_is_valid(const mip_field* field)
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initialize a mip_field struct to an invalid/empty state.
 ///
@@ -96,7 +98,7 @@ void mip_field_init_empty(mip_field* field)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Constructs a %mip_field from a pointer to the heaader.
+///@brief Constructs a %mip_field from a pointer to the header.
 ///
 /// Generally you should use mip_field_from_packet() or mip_field_create() instead.
 ///
@@ -117,8 +119,8 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 {
     mip_field field;
 
-    field._payload         = header + MIP_INDEX_FIELD_PAYLOAD;
-    field._descriptor_set   = descriptor_set;
+    field._payload        = header + MIP_INDEX_FIELD_PAYLOAD;
+    field._descriptor_set = descriptor_set;
 
     // Default invalid values.
     field._payload_length   = 0;
@@ -127,12 +129,14 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 
     if( total_length >= MIP_FIELD_HEADER_LENGTH )
     {
-        // Field length is external input so it must be sanitized.
+        // Field length is external input, so it must be sanitized.
         uint8_t field_length = header[MIP_INDEX_FIELD_LEN];
 
         // Ensure field length does not exceed total_length.
         if( field_length > total_length )
+        {
             field_length = total_length;
+        }
 
         // Check for invalid field length.
         if( field_length >= MIP_FIELD_HEADER_LENGTH )
@@ -163,7 +167,8 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 ///
 mip_field mip_field_first_from_packet(const mip_packet* packet)
 {
-    return mip_field_from_header_ptr( mip_packet_payload(packet), mip_packet_payload_length(packet), mip_packet_descriptor_set(packet) );
+    return mip_field_from_header_ptr(mip_packet_payload(packet), mip_packet_payload_length(packet),
+                                     mip_packet_descriptor_set(packet));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,9 +229,13 @@ bool mip_field_next(mip_field* field)
 bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet)
 {
     if( field->_descriptor_set != MIP_INVALID_DESCRIPTOR_SET )
+    {
         *field = mip_field_next_after(field);
+    }
     else
+    {
         *field = mip_field_first_from_packet(packet);
+    }
 
     return mip_field_is_valid(field);
 }

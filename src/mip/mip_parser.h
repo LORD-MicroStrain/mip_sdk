@@ -7,7 +7,7 @@
 #include "mip_types.h"
 
 #ifdef __cplusplus
-namespace mip{
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -64,14 +64,16 @@ typedef struct mip_parser
 } mip_parser;
 
 
-
 #define MIPPARSER_UNLIMITED_PACKETS   0   ///< Specifies no limit when used as the max_packets argument to mip_parser_parse.
 #define MIPPARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
 
 
-void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
+void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback,
+                     void* callback_object, timestamp_type timeout);
 bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp);
-remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets);
+remaining_count
+mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp,
+                 unsigned int max_packets);
 
 void mip_parser_reset(mip_parser* parser);
 

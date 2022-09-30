@@ -46,7 +46,8 @@ enum mip_dispatch_type
 ///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool post_callback, mip_dispatch_packet_callback callback, void* user_data)
+void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool post_callback,
+                                              mip_dispatch_packet_callback callback, void* user_data)
 {
     handler->_next             = NULL;
     handler->_packet_callback  = callback;
@@ -81,7 +82,9 @@ void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uin
 ///@param user_data
 ///       Any pointer the user wants to pass into the callback.
 ///
-void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data)
+void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint8_t descriptor_set,
+                                             uint8_t field_descriptor, mip_dispatch_field_callback callback,
+                                             void* user_data)
 {
     handler->_next             = NULL;
     handler->_field_callback   = callback;
@@ -126,12 +129,14 @@ void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint
 ///         Otherwise, the behavior is undefined and your program may experience
 ///         memory corruption or process crash.
 ///
-void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr)
+void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set,
+                                         uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr)
 {
     // The only wildcard allowed is MIP_DISPATCH_ANY_DATA_SET when field_descriptor is from the shared data set.
     assert(descriptor_set != MIP_DISPATCH_ANY_DESCRIPTOR);
     assert(field_descriptor != MIP_DISPATCH_ANY_DESCRIPTOR && field_descriptor != MIP_DISPATCH_ANY_DATA_SET);
-    assert(!mip_is_data_descriptor_set(descriptor_set) || (descriptor_set != MIP_DISPATCH_ANY_DATA_SET) || mip_is_shared_data_field_descriptor(field_descriptor));
+    assert(!mip_is_data_descriptor_set(descriptor_set) || (descriptor_set != MIP_DISPATCH_ANY_DATA_SET) ||
+           mip_is_shared_data_field_descriptor(field_descriptor));
     assert(field_ptr);
 
     handler->_next             = NULL;
@@ -187,13 +192,17 @@ void mip_dispatcher_init(mip_dispatcher* self)
 void mip_dispatcher_add_handler(mip_dispatcher* self, mip_dispatch_handler* handler)
 {
     if( self->_first_handler == NULL )
+    {
         self->_first_handler = handler;
+    }
     else
     {
         mip_dispatch_handler* last = self->_first_handler;
 
-        while(last->_next != NULL)
+        while( last->_next != NULL )
+        {
             last = last->_next;
+        }
 
         last->_next = handler;
     }
@@ -208,22 +217,24 @@ void mip_dispatcher_add_handler(mip_dispatcher* self, mip_dispatch_handler* hand
 void mip_dispatcher_remove_handler(mip_dispatcher* self, mip_dispatch_handler* handler)
 {
     if( self->_first_handler == NULL )
+    {
         return;
+    }
 
     mip_dispatch_handler* query = self->_first_handler;
 
     if( query == handler )
     {
         self->_first_handler = handler->_next;
-        handler->_next = NULL;
+        handler->_next       = NULL;
         return;
     }
 
-    while(query->_next != NULL)
+    while( query->_next != NULL )
     {
         if( query->_next == handler )
         {
-            query->_next = handler->_next;
+            query->_next   = handler->_next;
             handler->_next = NULL;
             return;
         }
@@ -241,7 +252,7 @@ void mip_dispatcher_remove_all_handlers(mip_dispatcher* self)
     self->_first_handler = NULL;
 
     // Break the chain (technically not necessary, but aids debugging)
-    while(query)
+    while( query )
     {
         mip_dispatch_handler* next = query->_next;
         query->_next = NULL;
@@ -267,22 +278,25 @@ static bool mip_dispatch_is_descriptor_set_match(uint8_t desc_set, uint8_t handl
 ///@param timestamp Packet parse time.
 ///@param post      If true, this is called after field iteration. Otherwise before.
 ///
-static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp, bool post)
+static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip_packet* packet,
+                                                 timestamp_type timestamp, bool post)
 {
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
 
     // Iterate all packet handlers for this packet.
-    for(mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
+    for( mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next )
     {
-        switch(handler->_type)
+        switch( handler->_type )
         {
-        case MIP_DISPATCH_TYPE_PACKET_POST: if(!post) continue; else break;
-        case MIP_DISPATCH_TYPE_PACKET_PRE:  if( post) continue; else break;
-        default: continue;
+            case MIP_DISPATCH_TYPE_PACKET_POST: if( !post ) { continue; } else { break; }
+            case MIP_DISPATCH_TYPE_PACKET_PRE:  if( post )  { continue; } else { break; }
+            default: continue;
         }
 
         if( mip_dispatch_is_descriptor_set_match(descriptor_set, handler->_descriptor_set) )
+        {
             handler->_packet_callback(handler->_user_data, packet, timestamp);
+        }
     }
 }
 
@@ -296,7 +310,8 @@ static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip
 ///
 ///@returns true if the field matches.
 ///
-static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_desc, uint8_t handler_desc_set, uint8_t handler_field_desc)
+static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_desc, uint8_t handler_desc_set,
+                                             uint8_t handler_field_desc)
 {
     return mip_dispatch_is_descriptor_set_match(desc_set, handler_desc_set) && (
         (handler_field_desc == field_desc) ||
@@ -318,23 +333,24 @@ static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_
     const uint8_t field_descriptor = mip_field_field_descriptor(field);
 
     // Iterate all field handlers for this field.
-    for(mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next)
+    for( mip_dispatch_handler* handler = self->_first_handler; handler != NULL; handler = handler->_next )
     {
-        if(handler->_type == MIP_DISPATCH_TYPE_FIELD)
+        if( handler->_type == MIP_DISPATCH_TYPE_FIELD )
         {
-            if( mip_dispatch_is_descriptor_match(descriptor_set, field_descriptor, handler->_descriptor_set, handler->_field_descriptor) )
+            if( mip_dispatch_is_descriptor_match(descriptor_set, field_descriptor, handler->_descriptor_set,
+                                                 handler->_field_descriptor) )
             {
                 handler->_field_callback(handler->_user_data, field, timestamp);
             }
         }
-        else if(handler->_type == MIP_DISPATCH_TYPE_EXTRACT)
+        else if( handler->_type == MIP_DISPATCH_TYPE_EXTRACT )
         {
             if( handler->_descriptor_set == descriptor_set && handler->_field_descriptor == field_descriptor )
             {
                 handler->_extract_callback(field, handler->_user_data);
             }
         }
-    };
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

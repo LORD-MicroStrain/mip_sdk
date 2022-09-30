@@ -11,7 +11,6 @@ extern "C" {
 #endif
 
 
-
 // Used like a signed version of size_t
 typedef int_least16_t remaining_count;
 
@@ -26,10 +25,10 @@ typedef int_least16_t remaining_count;
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
 #ifdef MIP_TIMESTAMP_TYPE
-    typedef MIP_TIMESTAMP_TYPE timestamp_type;
-    static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
+typedef MIP_TIMESTAMP_TYPE timestamp_type;
+static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
 #else
-    typedef uint64_t timestamp_type;
+typedef uint64_t timestamp_type;
 #endif
 
 typedef timestamp_type timeout_type;

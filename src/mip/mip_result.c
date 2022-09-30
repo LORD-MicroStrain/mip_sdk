@@ -15,9 +15,9 @@ extern "C" {
 ///
 const char* mip_cmd_result_to_string(enum mip_cmd_result result)
 {
-    switch(result)
+    switch( result )
     {
-    // Status codes
+        // Status codes
     case MIP_STATUS_ERROR:          return "Error";
     case MIP_STATUS_CANCELLED:      return "Canceled";
     case MIP_STATUS_TIMEDOUT:       return "Timed out";

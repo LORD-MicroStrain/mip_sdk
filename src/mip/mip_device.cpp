@@ -5,7 +5,8 @@ namespace mip {
 namespace C {
 extern "C" {
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length,
+                                         timestamp_type* timestamp_out)
 {
     return static_cast<DeviceInterface*>(device)->recvFromDevice(buffer, max_length, out_length, timestamp_out);
 }

@@ -29,10 +29,11 @@
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, timestamp_type timeout)
+void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback,
+                     void* callback_object, timestamp_type timeout)
 {
     parser->_start_time = 0;
-    parser->_timeout = timeout;
+    parser->_timeout    = timeout;
 
     parser->_result_buffer[0] = 0;
 
@@ -40,7 +41,7 @@ void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mi
 
     parser->_expected_length = MIPPARSER_RESET_LENGTH;
 
-    parser->_callback = callback;
+    parser->_callback        = callback;
     parser->_callback_object = callback_object;
 }
 
@@ -91,7 +92,7 @@ void mip_parser_reset(mip_parser* parser)
 ///      of the input data and the buffer can be reused or discarded afterward.
 ///      However, if max_packets is nonzero (meaning the number of packets parsed
 ///      will be limited), then this is no longer guaranteed as the excess data
-///      may fill up the internal bufffer. In this case, you must process packets
+///      may fill up the internal buffer. In this case, you must process packets
 ///      faster than they arrive on average. For bursty data (e.g. GNSS data),
 ///      use a large internal buffer (see mip_parser_init) to help average out
 ///      the packet processing load.
@@ -105,16 +106,20 @@ void mip_parser_reset(mip_parser* parser)
 ///
 ///@note The parser will do its best to ignore non-MIP data. However, it is
 ///      possible for some binary data to appear to be a MIP packet if it
-///      conntains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
+///      contains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
 ///      16-bit checksum has a 1 in 65,536 chance of appearing to be valid.
 ///
-remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets)
+remaining_count
+mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp,
+                 unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
     if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
     {
         if( byte_ring_count(&parser->_ring) > 0 )
+        {
             byte_ring_pop(&parser->_ring, 1);
+        }
         parser->_expected_length = MIPPARSER_RESET_LENGTH;
     }
 
@@ -131,7 +136,9 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
             bool stop = (max_packets > 0) && (num_packets >= max_packets);
 
             if( parser->_callback )
+            {
                 stop |= !parser->_callback(parser->_callback_object, &packet, parser->_start_time);
+            }
 
             if( stop )
             {
@@ -146,7 +153,8 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
         // This code assumes the ring buffer is large enough for any single
         // received mip packet, otherwise it will get stuck in an infinite loop.
 
-    } while( input_count );
+    }
+    while( input_count );
 
     return -(remaining_count)input_count;
 }
@@ -173,17 +181,19 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
         if( parser->_expected_length == MIPPARSER_RESET_LENGTH )
         {
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
+            {
                 byte_ring_pop(&parser->_ring, 1);
+            }
             else
             {
                 // Synchronized - set the start time and expect more data.
-                parser->_start_time = timestamp;
+                parser->_start_time      = timestamp;
                 parser->_expected_length = MIP_HEADER_LENGTH;
             }
         }
         else if( parser->_expected_length == MIP_HEADER_LENGTH )
         {
-            // Check the sync bytes and drop a single byte if not sync'd.
+            // Check the sync bytes and drop a single byte if not synced.
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
             {
                 byte_ring_pop(&parser->_ring, 1);
@@ -200,7 +210,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             uint_least16_t packet_length = parser->_expected_length;
             parser->_expected_length = MIPPARSER_RESET_LENGTH;  // Reset parsing state
 
-             byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
+            byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
 
             mip_packet_from_buffer(packet_out, parser->_result_buffer, packet_length);
 
@@ -332,7 +342,7 @@ timestamp_type mip_parser_last_packet_timestamp(const mip_parser* parser)
 ///       should be written. Cannot be NULL.
 ///
 ///@returns How many bytes can be written to the buffer. Due to the use of a
-///         cicular buffer, this may be less than the total available buffer
+///         circular buffer, this may be less than the total available buffer
 ///         space. Do not write more data than specified.
 ///
 size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** const ptr_out)

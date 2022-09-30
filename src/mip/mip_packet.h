@@ -3,7 +3,7 @@
 #include "mip_types.h"
 
 #ifdef __cplusplus
-namespace mip{
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -43,7 +43,7 @@ typedef uint_least16_t packet_length;  ///< Type used for the length of a MIP pa
 typedef struct mip_packet
 {
     uint8_t*       _buffer;        ///<@private Pointer to the packet data.
-    uint_least16_t _buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
+    uint_least16_t _buffer_length; ///<@private Length of the buffer (NOT the packet length!).
 } mip_packet;
 
 
@@ -58,9 +58,9 @@ typedef struct mip_packet
 ///@{
 
 void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
-
-bool            mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
-remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
+bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length,
+                                       uint8_t** payload_ptr_out);
 remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
 remaining_count mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr);
 
