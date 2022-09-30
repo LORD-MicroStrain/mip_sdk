@@ -132,8 +132,10 @@ bool mip_serializer_is_complete(const mip_serializer* serializer)
 
 static void pack(uint8_t* buffer, const void* value, size_t size)
 {
-    for(size_t i=0; i<size; i++)
-        buffer[ size-1 - i ] = ((uint8_t*)value)[i];
+    for( size_t i = 0; i < size; i++ )
+    {
+        buffer[size - 1 - i] = ((uint8_t*)value)[i];
+    }
 }
 
 #define INSERT_MACRO(name, type) \
@@ -159,11 +161,12 @@ INSERT_MACRO(float,  float   )
 INSERT_MACRO(double, double  )
 
 
-
 static void unpack(const uint8_t* buffer, void* value, size_t size)
 {
-    for(size_t i=0; i<size; i++)
-        ((uint8_t*)value)[i] = buffer[ size-1 - i ];
+    for( size_t i = 0; i < size; i++ )
+    {
+        ((uint8_t*)value)[i] = buffer[size - 1 - i];
+    }
 }
 
 
