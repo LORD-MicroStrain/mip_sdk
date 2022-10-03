@@ -12,6 +12,13 @@ extern mip::Timestamp getCurrentTimestamp();
 namespace mip {
 namespace platform {
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_platform
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Can be used on Windows, OSX, or linux to communicate with a MIP device over TCP
+///
 class TcpConnection : public mip::Connection
 {
 public:
@@ -25,6 +32,9 @@ public:
 private:
     tcp_socket mSocket;
 };
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 } // namespace platform
 } // namespace mip

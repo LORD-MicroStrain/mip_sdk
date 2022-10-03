@@ -11,6 +11,13 @@ extern mip::Timestamp getCurrentTimestamp();
 namespace mip {
 namespace platform {
 
+////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_platform
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Can be used on Windows, OSX, or linux to communicate with a MIP device over serial
+///
 class SerialConnection : public mip::Connection
 {
 public:
@@ -24,6 +31,9 @@ public:
 private:
     serial_port mPort;
 };
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
 
 } // namespace platform
 } // namespace mip
