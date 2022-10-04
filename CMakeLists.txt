@@ -70,8 +70,9 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 # Build options
 #
 
-option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
-option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
+option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
+option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
+option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -152,7 +153,7 @@ set(MIPDEF_SOURCES
 string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
 string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/serial_port.c"
         "${UTILS_DIR}/serial_port.h"
@@ -162,7 +163,7 @@ if(WITH_SERIAL)
         "${MIP_DIR}/platform/serial_connection.cpp"
     )
 endif()
-if(WITH_TCP)
+if(MIP_USE_TCP)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/tcp_socket.c"
         "${UTILS_DIR}/tcp_socket.h"
@@ -170,6 +171,13 @@ if(WITH_TCP)
     list(APPEND MIP_INTERFACE_SOURCES
         "${MIP_DIR}/platform/tcp_connection.hpp"
         "${MIP_DIR}/platform/tcp_connection.cpp"
+    )
+endif()
+if(MIP_USE_EXTRAS)
+    set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
+    set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/recording_connection.hpp"
+        "${MIP_EXTRAS_DIR}/recording_connection.cpp"
     )
 endif()
 
@@ -181,17 +189,15 @@ set(ALL_MIP_SOURCES
     ${UTILS_SOURCES}
     ${MIP_CPP_HEADERS}
     ${MIP_INTERFACE_SOURCES}
+    ${MIP_EXTRA_SOURCES}
 )
-
 
 option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
-
 add_library(mip ${ALL_MIP_SOURCES})
-
 
 if(${MIP_TIMESTAMP_TYPE})
     add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
@@ -310,12 +316,20 @@ write_basic_package_version_file(
 # Installation
 #
 
-install(DIRECTORY
-    "${SRC_DIR}/mip"
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    COMPONENT mip
-    FILES_MATCHING PATTERN "*.h*"
-)
+# Only install headers that we build the source files for
+set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
+list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
+foreach(MIP_HEADER ${ALL_MIP_HEADERS})
+    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
+    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
+    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
+    install(
+        FILES "${MIP_HEADER}"
+        DESTINATION "${MIP_HEADER_DESTINATION}"
+        COMPONENT mip
+    )
+endforeach()
+
 install(TARGETS
     mip
     EXPORT mip-targets

@@ -135,7 +135,18 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
+    ///@brief Sends bytes to the device
+    ///
+    ///@param data   The data to send to the device
+    ///@param length Length of data in bytes
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
+
+    ///@brief Receives bytes from the device
+    ///
+    ///@param buffer     Buffer to store the received data in
+    ///@param max_length Max number of bytes that can be read. Should be at most the length of buffer.
+    ///@param length_out Number of bytes actually read.
+    ///@param timestamp  Timestamp of when the data was received
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
 };
 
