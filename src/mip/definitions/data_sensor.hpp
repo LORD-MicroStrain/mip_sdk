@@ -83,6 +83,11 @@ struct RawAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(raw_accel);
+    }
+    
     float raw_accel[3] = {0}; ///< Native sensor counts
     
 };
@@ -104,6 +109,11 @@ struct RawGyro
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(raw_gyro);
+    }
     
     float raw_gyro[3] = {0}; ///< Native sensor counts
     
@@ -127,6 +137,11 @@ struct RawMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(raw_mag);
+    }
+    
     float raw_mag[3] = {0}; ///< Native sensor counts
     
 };
@@ -148,6 +163,11 @@ struct RawPressure
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(raw_pressure);
+    }
     
     float raw_pressure = 0; ///< Native sensor counts
     
@@ -171,6 +191,11 @@ struct ScaledAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scaled_accel);
+    }
+    
     float scaled_accel[3] = {0}; ///< (x, y, z)[g]
     
 };
@@ -192,6 +217,11 @@ struct ScaledGyro
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(scaled_gyro);
+    }
     
     float scaled_gyro[3] = {0}; ///< (x, y, z) [radians/second]
     
@@ -215,6 +245,11 @@ struct ScaledMag
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scaled_mag);
+    }
+    
     float scaled_mag[3] = {0}; ///< (x, y, z) [Gauss]
     
 };
@@ -235,6 +270,11 @@ struct ScaledPressure
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_SCALED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(scaled_pressure);
+    }
     
     float scaled_pressure = 0; ///< [mBar]
     
@@ -258,6 +298,11 @@ struct DeltaTheta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(delta_theta);
+    }
+    
     float delta_theta[3] = {0}; ///< (x, y, z) [radians]
     
 };
@@ -279,6 +324,11 @@ struct DeltaVelocity
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_VELOCITY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(delta_velocity);
+    }
     
     float delta_velocity[3] = {0}; ///< (x, y, z) [g*sec]
     
@@ -311,6 +361,11 @@ struct CompOrientationMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(m);
+    }
+    
     float m[9] = {0}; ///< Matrix elements in row-major order.
     
 };
@@ -340,6 +395,11 @@ struct CompQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(q);
+    }
+    
     float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     
 };
@@ -361,6 +421,11 @@ struct CompEulerAngles
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_EULER_ANGLES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(roll,pitch,yaw);
+    }
     
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
@@ -385,6 +450,11 @@ struct CompOrientationUpdateMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(m);
+    }
+    
     float m[9] = {0};
     
 };
@@ -405,6 +475,11 @@ struct OrientationRawTemp
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(raw_temp);
+    }
     
     uint16_t raw_temp[4] = {0};
     
@@ -427,6 +502,11 @@ struct InternalTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(counts);
+    }
+    
     uint32_t counts = 0;
     
 };
@@ -447,6 +527,11 @@ struct PpsTimestamp
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_PPS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(seconds,useconds);
+    }
     
     uint32_t seconds = 0;
     uint32_t useconds = 0;
@@ -475,6 +560,11 @@ struct GpsTimestamp
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(tow,week_number,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -525,6 +615,11 @@ struct TemperatureAbs
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(min_temp,max_temp,mean_temp);
+    }
+    
     float min_temp = 0; ///< [degC]
     float max_temp = 0; ///< [degC]
     float mean_temp = 0; ///< [degC]
@@ -554,6 +649,11 @@ struct UpVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(up);
+    }
+    
     float up[3] = {0}; ///< [Gs]
     
 };
@@ -578,6 +678,11 @@ struct NorthVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(north);
+    }
+    
     float north[3] = {0}; ///< [Gauss]
     
 };
@@ -597,6 +702,11 @@ struct OverrangeStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(status);
+    }
     
     struct Status : Bitfield<Status>
     {
@@ -644,6 +754,11 @@ struct OdometerData
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ODOMETER;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(speed,uncertainty,valid_flags);
+    }
     
     float speed = 0; ///< Average speed over the time interval [m/s]. Can be negative for quadrature encoders.
     float uncertainty = 0; ///< Uncertainty of velocity [m/s].

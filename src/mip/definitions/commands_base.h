@@ -173,8 +173,8 @@ mip_cmd_result mip_base_get_device_info(struct mip_interface* device, mip_base_d
 
 struct mip_base_get_device_descriptors_response
 {
-    uint8_t descriptors_count;
     uint16_t* descriptors;
+    uint8_t descriptors_count;
     
 };
 typedef struct mip_base_get_device_descriptors_response mip_base_get_device_descriptors_response;
@@ -229,8 +229,8 @@ mip_cmd_result mip_base_resume(struct mip_interface* device);
 
 struct mip_base_get_extended_descriptors_response
 {
-    uint8_t descriptors_count;
     uint16_t* descriptors;
+    uint8_t descriptors_count;
     
 };
 typedef struct mip_base_get_extended_descriptors_response mip_base_get_extended_descriptors_response;
