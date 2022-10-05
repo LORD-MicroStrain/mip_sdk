@@ -10,7 +10,7 @@ namespace platform {
 ///@brief Creates a SerialConnection that will communicate with a device over serial
 ///
 ///@param portName Path to the port to connect to. On Windows, this usually looks like "COM<N>", on linux, "/dev/tty<N>"
-///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to 
+///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to
 SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
 {
     if( !serial_port_open(&mPort, portName.c_str(), baudrate) )

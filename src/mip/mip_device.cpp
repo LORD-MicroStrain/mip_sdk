@@ -1,4 +1,3 @@
-
 #include "mip_device.hpp"
 
 namespace mip {

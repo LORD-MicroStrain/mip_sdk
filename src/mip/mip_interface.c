@@ -1,4 +1,3 @@
-
 #include "mip_interface.h"
 
 #include "mip_field.h"

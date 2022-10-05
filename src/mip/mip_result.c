@@ -1,4 +1,3 @@
-
 #include "mip_result.h"
 
 #ifdef __cplusplus

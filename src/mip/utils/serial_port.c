@@ -1,4 +1,3 @@
-
 #include "serial_port.h"
 
 #define COM_PORT_BUFFER_SIZE  0x200

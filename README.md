@@ -9,19 +9,19 @@ Features
 
 * Send commands using a single function
 * Suitable for bare-metal microcontrollers
-  * Minimal code size and memory footprint
-  * No dynamic memory allocation
-  * No dependence on any RTOS or threading
+   * Minimal code size and memory footprint
+   * No dynamic memory allocation
+   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
-  * FindMip.cmake is included for CMake-based projects
+   * FindMip.cmake is included for CMake-based projects
 * Can be used to parse offline binary files
 * C API for those who can't use C++
 * C++ API for safety, flexibility, and convenience.
 
 * Advanced Features
-  * MIP packet creation
-  * MIP packet parsing and field iteration
-  * Data field deserialization
+   * MIP packet creation
+   * MIP packet parsing and field iteration
+   * Data field deserialization
 
 Examples
 --------
@@ -29,9 +29,9 @@ Examples
 * Get device information [C++] - queries the device strings and prints them to stdout.
 * Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
 * Product-specific examples:
-  * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
-  * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
-  * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
+   * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
+   * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
+   * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
 
 You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the
 examples.
@@ -78,11 +78,11 @@ How to Build
 
 * CMake version 3.10 or later
 * A working C compiler
-  * C99 or later required
+   * C99 or later required
 * A working C++ compiler
-  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
-  * C++11 or later required for the mip library
-  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
+   * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
+   * C++11 or later required for the mip library
+   * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
 * Doxygen, if building documentation
 
 ### Build configuration
@@ -106,9 +106,9 @@ The following options may be specified when configuring the build with CMake (e.
 
 1. Create the build directory (e.g. `mkdir build`).
 2. In the build directory, run `cmake .. <options>`
-  * Replace `<options>` with your configuration options, such as `-DWITH_SERIAL=1`.
-  * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
-  * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generatopr>`
+   * Replace `<options>` with your configuration options, such as `-DWITH_SERIAL=1`.
+   * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
+   * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generatopr>`
 3. Invoke `cmake --build .` in the build directory
 4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
 
@@ -143,13 +143,13 @@ C functions yourself. Declare them functions as `extern "C"` to avoid linking pr
 
 Command results are divided into two categories:
 * Reply codes are returned by the device, e.g.:
-  * ACK / OK
-  * Invalid parameter
-  * Unknown command
+   * ACK / OK
+   * Invalid parameter
+   * Unknown command
 * Status codes are set by this library, e.g.:
-  * General ERROR
-  * TIMEDOUT
-  * Other statuses are used while the command is still in process
+   * General ERROR
+   * TIMEDOUT
+   * Other statuses are used while the command is still in process
 
 ### Timestamps and Timeouts
 

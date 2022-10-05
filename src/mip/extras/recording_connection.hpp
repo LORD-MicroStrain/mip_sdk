@@ -6,10 +6,8 @@
 #include <ostream>
 #include <iostream>
 
-namespace mip
-{
-namespace extras
-{
+namespace mip {
+namespace extras {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_extras Extra utilities
@@ -21,7 +19,7 @@ namespace extras
 class RecordingConnection : public Connection
 {
 public:
-    RecordingConnection(Connection* connection, std::ostream* recvStream=nullptr, std::ostream* sendStream=nullptr);
+    RecordingConnection(Connection* connection, std::ostream* recvStream = nullptr, std::ostream* sendStream = nullptr);
 
     bool sendToDevice(const uint8_t* data, size_t length) final;
     bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* count_out, Timestamp* timestamp_out) final;
@@ -49,7 +47,8 @@ public:
     ///@param sendStream The stream to write to when bytes are sent. Null if sent bytes should not be written to a stream
     ///@param args       Arguments required to construct the ConnectionType
     template<class... Args>
-    RecordingConnectionWrapper(std::ostream* recvStream, std::ostream* sendStream, Args&&... args) : RecordingConnection(new ConnectionType(std::forward<Args>(args)...), recvStream, sendStream) {}
+    RecordingConnectionWrapper(std::ostream* recvStream, std::ostream* sendStream, Args&&... args) :
+        RecordingConnection(new ConnectionType(std::forward<Args>(args)...), recvStream, sendStream) {}
 
     ///@brief Deconstructs the RecordingConnectionWrapper as well as the underlying connection object made in the constructor
     ~RecordingConnectionWrapper() { delete mConnection; }
@@ -58,5 +57,5 @@ public:
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace extras
-}  // namespace mip
+} // namespace extras
+} // namespace mip

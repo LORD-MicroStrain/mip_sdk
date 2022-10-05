@@ -1,4 +1,3 @@
-
 #include <mip/mip.hpp>
 
 #include <cstring>

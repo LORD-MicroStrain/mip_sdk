@@ -1,4 +1,3 @@
-
 #include "mip_packet.h"
 #include "mip_offsets.h"
 
@@ -467,4 +466,3 @@ void mip_packet_reset(mip_packet* packet, uint8_t descriptor_set)
 {
     mip_packet_create(packet, mip_packet_buffer(packet), mip_packet_buffer_size(packet), descriptor_set);
 }
-

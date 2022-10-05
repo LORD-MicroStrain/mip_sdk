@@ -1,4 +1,3 @@
-
 #include "byte_ring.h"
 
 #include <assert.h>

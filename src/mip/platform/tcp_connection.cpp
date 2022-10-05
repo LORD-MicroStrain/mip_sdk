@@ -1,4 +1,3 @@
-
 #include "tcp_connection.hpp"
 
 #include <stdexcept>

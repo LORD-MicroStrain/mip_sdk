@@ -221,7 +221,7 @@ public:
     Parser&   parser()   { return *static_cast<Parser*>(C::mip_interface_parser(this)); }
     CmdQueue& cmdQueue() { return *static_cast<CmdQueue*>(C::mip_interface_cmd_queue(this)); }
 
-    const Parser&   parser()   const   { return const_cast<DeviceInterface*>(this)->parser(); }
+    const Parser&   parser()   const { return const_cast<DeviceInterface*>(this)->parser(); }
     const CmdQueue& cmdQueue() const { return const_cast<DeviceInterface*>(this)->cmdQueue(); }
 
     const Connection* connection() const { return mConnection; }

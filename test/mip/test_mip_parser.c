@@ -1,4 +1,3 @@
-
 #include <mip/mip_parser.h>
 
 #include <stdio.h>

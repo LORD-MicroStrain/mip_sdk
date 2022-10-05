@@ -1,4 +1,3 @@
-
 #include "serialization.h"
 #include "../mip_field.h"
 
