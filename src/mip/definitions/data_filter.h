@@ -255,7 +255,7 @@ bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* fie
 /// EQSTART p^{veh} = q^{-1} p^{ned} q EQEND<br/>
 /// 
 /// Where:<br/>
-/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion desrcribing the rotation. <br/>
+/// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the rotation. <br/>
 /// EQSTART p^ned = (0, v^{ned}_x, v^{ned}_y, v^{ned}_z) EQEND and EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame.<br/>
 /// EQSTART p^veh = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
 ///
@@ -473,7 +473,7 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const struct mip_
 /// Upon recovering from a PPS outage, the user should expect a jump in the reported GPS time due to the accumulation of internal clock error.
 /// If synchronization to an external clock or onboard GNSS receiver (for products that have one) is disabled, this time is equivalent to internal system time.
 /// 
-/// Note: this data field may be deprecrated in the future. The more flexible shared data field (0x82, 0xD3) should be used instead.
+/// Note: this data field may be deprecated in the future. The more flexible shared data field (0x82, 0xD3) should be used instead.
 ///
 ///@{
 
@@ -500,7 +500,7 @@ bool extract_mip_filter_timestamp_data_from_field(const struct mip_field* field,
 struct mip_filter_status_data
 {
     mip_filter_mode filter_state; ///< Device-specific filter state.  Please consult the user manual for definition.
-    mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode.  Please consult the user manual for definition.
+    mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode. Please consult the user manual for definition.
     mip_filter_status_flags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
     
 };

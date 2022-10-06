@@ -461,7 +461,7 @@ void insert(Serializer& serializer, const ServiceStatus::Response& self)
 {
     insert(serializer, self.flags);
     
-    insert(serializer, self.recievedBytes);
+    insert(serializer, self.receivedBytes);
     
     insert(serializer, self.lastBytes);
     
@@ -472,7 +472,7 @@ void extract(Serializer& serializer, ServiceStatus::Response& self)
 {
     extract(serializer, self.flags);
     
-    extract(serializer, self.recievedBytes);
+    extract(serializer, self.receivedBytes);
     
     extract(serializer, self.lastBytes);
     
@@ -480,7 +480,7 @@ void extract(Serializer& serializer, ServiceStatus::Response& self)
     
 }
 
-CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* recievedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut)
+CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -501,8 +501,8 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
         assert(flagsOut);
         extract(deserializer, *flagsOut);
         
-        assert(recievedbytesOut);
-        extract(deserializer, *recievedbytesOut);
+        assert(receivedbytesOut);
+        extract(deserializer, *receivedbytesOut);
         
         assert(lastbytesOut);
         extract(deserializer, *lastbytesOut);

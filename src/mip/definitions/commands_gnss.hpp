@@ -34,7 +34,6 @@ enum
     CMD_LIST_RECEIVERS             = 0x01,
     CMD_SIGNAL_CONFIGURATION       = 0x02,
     CMD_RTK_DONGLE_CONFIGURATION   = 0x10,
-    CMD_RECEIVER_SAFE_MODE         = 0x60,
     
     REPLY_LIST_RECEIVERS           = 0x81,
     REPLY_SIGNAL_CONFIGURATION     = 0x82,
@@ -76,7 +75,7 @@ struct ReceiverInfo
     {
         uint8_t receiver_id = 0; ///< Receiver id: e.g. 1, 2, etc.
         uint8_t mip_data_descriptor_set = 0; ///< MIP descriptor set associated with this receiver
-        char description[32] = {0}; ///< Ascii description of receiver
+        char description[32] = {0}; ///< Ascii description of receiver. Contains the following info (comma-delimited):<br/> Module name/model<br/> Firmware version info
         
     };
     
@@ -196,31 +195,6 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
 CmdResult saveRtkDongleConfiguration(C::mip_interface& device);
 CmdResult loadRtkDongleConfiguration(C::mip_interface& device);
 CmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [CPP]
-/// Enable/disable safe mode for the provided receiver ID.
-/// Note: Receivers in safe mode will not output valid GNSS data.
-/// 
-///
-///@{
-
-struct ReceiverSafeMode
-{
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RECEIVER_SAFE_MODE;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    uint8_t receiver_id = 0; ///< Receiver id: e.g. 1, 2, etc.
-    uint8_t enable = 0; ///< 0 - Disabled, 1- Enabled
-    
-};
-void insert(Serializer& serializer, const ReceiverSafeMode& self);
-void extract(Serializer& serializer, ReceiverSafeMode& self);
-
-CmdResult receiverSafeMode(C::mip_interface& device, uint8_t receiverId, uint8_t enable);
 ///@}
 ///
 

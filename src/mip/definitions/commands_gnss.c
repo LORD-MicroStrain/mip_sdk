@@ -367,35 +367,6 @@ mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* d
     
     return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert_mip_gnss_receiver_safe_mode_command(mip_serializer* serializer, const mip_gnss_receiver_safe_mode_command* self)
-{
-    insert_u8(serializer, self->receiver_id);
-    
-    insert_u8(serializer, self->enable);
-    
-}
-void extract_mip_gnss_receiver_safe_mode_command(mip_serializer* serializer, mip_gnss_receiver_safe_mode_command* self)
-{
-    extract_u8(serializer, &self->receiver_id);
-    
-    extract_u8(serializer, &self->enable);
-    
-}
-
-mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_u8(&serializer, receiver_id);
-    
-    insert_u8(&serializer, enable);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
 
 #ifdef __cplusplus
 } // namespace C
