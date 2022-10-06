@@ -180,6 +180,11 @@ struct PosLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(latitude,longitude,ellipsoid_height,msl_height,horizontal_accuracy,vertical_accuracy,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -230,6 +235,11 @@ struct PosEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(x,x_accuracy,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -272,6 +282,11 @@ struct VelNed
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(v,speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -324,6 +339,11 @@ struct VelEcef
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(v,v_accuracy,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -366,6 +386,11 @@ struct Dop
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(gdop,pdop,hdop,vdop,tdop,ndop,edop,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -420,6 +445,11 @@ struct UtcTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(year,month,day,hour,min,sec,msec,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -468,6 +498,11 @@ struct GpsTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(tow,week_number,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -510,6 +545,11 @@ struct ClockInfo
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias,drift,accuracy_estimate,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -555,6 +595,11 @@ struct FixInfo
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(fix_type,num_sv,fix_flags,valid_flags);
+    }
     
     enum class FixType : uint8_t
     {
@@ -633,6 +678,11 @@ struct SvInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(channel,sv_id,carrier_noise_ratio,azimuth,elevation,sv_flags,valid_flags);
+    }
+    
     struct SVFlags : Bitfield<SVFlags>
     {
         enum _enumType : uint16_t
@@ -702,6 +752,11 @@ struct HwStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_state,antenna_state,antenna_power,valid_flags);
+    }
     
     enum class ReceiverState : uint8_t
     {
@@ -783,6 +838,11 @@ struct DgpsInfo
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -831,6 +891,11 @@ struct DgpsChannel
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -881,6 +946,11 @@ struct ClockInfo2
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias,drift,bias_accuracy_estimate,drift_accuracy_estimate,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -928,6 +998,11 @@ struct GpsLeapSeconds
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(leap_seconds,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -967,6 +1042,11 @@ struct SbasInfo
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,sbas_system,sbas_id,count,sbas_status,valid_flags);
+    }
     
     struct SbasStatus : Bitfield<SbasStatus>
     {
@@ -1062,6 +1142,11 @@ struct SbasCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,gnss_id,sv_id,udrei,pseudorange_correction,iono_correction,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -1112,6 +1197,11 @@ struct RfErrorDetection
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(rf_band,jamming_state,spoofing_state,reserved,valid_flags);
+    }
     
     enum class RFBand : uint8_t
     {
@@ -1184,6 +1274,11 @@ struct BaseStationInfo
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,ecef_pos,height,station_id,indicators,valid_flags);
+    }
     
     struct IndicatorFlags : Bitfield<IndicatorFlags>
     {
@@ -1260,6 +1355,11 @@ struct RtkCorrectionsStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -1343,6 +1443,11 @@ struct SatelliteStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,gnss_id,satellite_id,elevation,azimuth,health,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -1397,6 +1502,11 @@ struct Raw
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,receiver_id,tracking_channel,gnss_id,satellite_id,signal_id,signal_strength,quality,pseudorange,carrier_phase,doppler,range_uncert,phase_uncert,doppler_uncert,lock_time,valid_flags);
+    }
     
     enum class GnssSignalQuality : uint8_t
     {
@@ -1481,6 +1591,11 @@ struct GpsEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -1554,6 +1669,11 @@ struct GalileoEphemeris
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -1629,6 +1749,11 @@ struct GloEphemeris
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x,v,a,health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -1693,6 +1818,11 @@ struct GpsIonoCorr
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,alpha,beta,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -1739,6 +1869,11 @@ struct GalileoIonoCorr
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,week_number,alpha,disturbance_flags,valid_flags);
+    }
     
     struct ValidFlags : Bitfield<ValidFlags>
     {
