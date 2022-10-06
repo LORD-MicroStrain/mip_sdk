@@ -342,7 +342,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_base_continuous_bit  (0x01,0x08) Continuous Bit [CPP]
-/// Report result of continous built-in test.
+/// Report result of continuous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
 ///

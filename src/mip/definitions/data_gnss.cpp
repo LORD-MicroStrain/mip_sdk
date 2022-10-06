@@ -910,6 +910,149 @@ void extract(Serializer& serializer, GpsEphemeris& self)
     
 }
 
+void insert(Serializer& serializer, const GalileoEphemeris& self)
+{
+    insert(serializer, self.index);
+    
+    insert(serializer, self.count);
+    
+    insert(serializer, self.time_of_week);
+    
+    insert(serializer, self.week_number);
+    
+    insert(serializer, self.satellite_id);
+    
+    insert(serializer, self.health);
+    
+    insert(serializer, self.iodc);
+    
+    insert(serializer, self.iode);
+    
+    insert(serializer, self.t_oc);
+    
+    insert(serializer, self.af0);
+    
+    insert(serializer, self.af1);
+    
+    insert(serializer, self.af2);
+    
+    insert(serializer, self.t_gd);
+    
+    insert(serializer, self.ISC_L1CA);
+    
+    insert(serializer, self.ISC_L2C);
+    
+    insert(serializer, self.t_oe);
+    
+    insert(serializer, self.a);
+    
+    insert(serializer, self.a_dot);
+    
+    insert(serializer, self.mean_anomaly);
+    
+    insert(serializer, self.delta_mean_motion);
+    
+    insert(serializer, self.delta_mean_motion_dot);
+    
+    insert(serializer, self.eccentricity);
+    
+    insert(serializer, self.argument_of_perigee);
+    
+    insert(serializer, self.omega);
+    
+    insert(serializer, self.omega_dot);
+    
+    insert(serializer, self.inclination);
+    
+    insert(serializer, self.inclination_dot);
+    
+    insert(serializer, self.c_ic);
+    
+    insert(serializer, self.c_is);
+    
+    insert(serializer, self.c_uc);
+    
+    insert(serializer, self.c_us);
+    
+    insert(serializer, self.c_rc);
+    
+    insert(serializer, self.c_rs);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, GalileoEphemeris& self)
+{
+    extract(serializer, self.index);
+    
+    extract(serializer, self.count);
+    
+    extract(serializer, self.time_of_week);
+    
+    extract(serializer, self.week_number);
+    
+    extract(serializer, self.satellite_id);
+    
+    extract(serializer, self.health);
+    
+    extract(serializer, self.iodc);
+    
+    extract(serializer, self.iode);
+    
+    extract(serializer, self.t_oc);
+    
+    extract(serializer, self.af0);
+    
+    extract(serializer, self.af1);
+    
+    extract(serializer, self.af2);
+    
+    extract(serializer, self.t_gd);
+    
+    extract(serializer, self.ISC_L1CA);
+    
+    extract(serializer, self.ISC_L2C);
+    
+    extract(serializer, self.t_oe);
+    
+    extract(serializer, self.a);
+    
+    extract(serializer, self.a_dot);
+    
+    extract(serializer, self.mean_anomaly);
+    
+    extract(serializer, self.delta_mean_motion);
+    
+    extract(serializer, self.delta_mean_motion_dot);
+    
+    extract(serializer, self.eccentricity);
+    
+    extract(serializer, self.argument_of_perigee);
+    
+    extract(serializer, self.omega);
+    
+    extract(serializer, self.omega_dot);
+    
+    extract(serializer, self.inclination);
+    
+    extract(serializer, self.inclination_dot);
+    
+    extract(serializer, self.c_ic);
+    
+    extract(serializer, self.c_is);
+    
+    extract(serializer, self.c_uc);
+    
+    extract(serializer, self.c_us);
+    
+    extract(serializer, self.c_rc);
+    
+    extract(serializer, self.c_rs);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
 void insert(Serializer& serializer, const GloEphemeris& self)
 {
     insert(serializer, self.index);

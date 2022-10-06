@@ -1678,7 +1678,7 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, d
     }
     return result;
 }
-void insert_mip_3dm_adv_lowpass_filter_command(mip_serializer* serializer, const mip_3dm_adv_lowpass_filter_command* self)
+void insert_mip_3dm_imu_lowpass_filter_command(mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -1696,7 +1696,7 @@ void insert_mip_3dm_adv_lowpass_filter_command(mip_serializer* serializer, const
         
     }
 }
-void extract_mip_3dm_adv_lowpass_filter_command(mip_serializer* serializer, mip_3dm_adv_lowpass_filter_command* self)
+void extract_mip_3dm_imu_lowpass_filter_command(mip_serializer* serializer, mip_3dm_imu_lowpass_filter_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -1715,7 +1715,7 @@ void extract_mip_3dm_adv_lowpass_filter_command(mip_serializer* serializer, mip_
     }
 }
 
-void insert_mip_3dm_adv_lowpass_filter_response(mip_serializer* serializer, const mip_3dm_adv_lowpass_filter_response* self)
+void insert_mip_3dm_imu_lowpass_filter_response(mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self)
 {
     insert_u8(serializer, self->target_descriptor);
     
@@ -1728,7 +1728,7 @@ void insert_mip_3dm_adv_lowpass_filter_response(mip_serializer* serializer, cons
     insert_u8(serializer, self->reserved);
     
 }
-void extract_mip_3dm_adv_lowpass_filter_response(mip_serializer* serializer, mip_3dm_adv_lowpass_filter_response* self)
+void extract_mip_3dm_imu_lowpass_filter_response(mip_serializer* serializer, mip_3dm_imu_lowpass_filter_response* self)
 {
     extract_u8(serializer, &self->target_descriptor);
     
@@ -1742,7 +1742,7 @@ void extract_mip_3dm_adv_lowpass_filter_response(mip_serializer* serializer, mip
     
 }
 
-mip_cmd_result mip_3dm_write_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
+mip_cmd_result mip_3dm_write_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1762,9 +1762,9 @@ mip_cmd_result mip_3dm_write_adv_lowpass_filter(struct mip_interface* device, ui
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out)
+mip_cmd_result mip_3dm_read_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor, bool* enable_out, bool* manual_out, uint16_t* frequency_out, uint8_t* reserved_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1777,7 +1777,7 @@ mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uin
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_ADVANCED_DATA_FILTER, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -1803,7 +1803,7 @@ mip_cmd_result mip_3dm_read_adv_lowpass_filter(struct mip_interface* device, uin
     }
     return result;
 }
-mip_cmd_result mip_3dm_save_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_save_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1815,9 +1815,9 @@ mip_cmd_result mip_3dm_save_adv_lowpass_filter(struct mip_interface* device, uin
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_load_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1829,9 +1829,9 @@ mip_cmd_result mip_3dm_load_adv_lowpass_filter(struct mip_interface* device, uin
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
+mip_cmd_result mip_3dm_default_imu_lowpass_filter(struct mip_interface* device, uint8_t target_descriptor)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1843,7 +1843,7 @@ mip_cmd_result mip_3dm_default_adv_lowpass_filter(struct mip_interface* device, 
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_ADVANCED_DATA_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_IMU_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_pps_source_command(mip_serializer* serializer, const mip_3dm_pps_source_command* self)
 {
@@ -4652,6 +4652,180 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mi
             result = MIP_STATUS_ERROR;
     }
     return result;
+}
+void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    insert_u8(serializer, self->desc_set);
+    
+    insert_u8(serializer, self->field_desc);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_bool(serializer, self->enable);
+        
+        insert_bool(serializer, self->manual);
+        
+        insert_float(serializer, self->frequency);
+        
+    }
+}
+void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    extract_u8(serializer, &self->desc_set);
+    
+    extract_u8(serializer, &self->field_desc);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_bool(serializer, &self->enable);
+        
+        extract_bool(serializer, &self->manual);
+        
+        extract_float(serializer, &self->frequency);
+        
+    }
+}
+
+void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_response* self)
+{
+    insert_u8(serializer, self->desc_set);
+    
+    insert_u8(serializer, self->field_desc);
+    
+    insert_bool(serializer, self->enable);
+    
+    insert_bool(serializer, self->manual);
+    
+    insert_float(serializer, self->frequency);
+    
+}
+void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_response* self)
+{
+    extract_u8(serializer, &self->desc_set);
+    
+    extract_u8(serializer, &self->field_desc);
+    
+    extract_bool(serializer, &self->enable);
+    
+    extract_bool(serializer, &self->manual);
+    
+    extract_float(serializer, &self->frequency);
+    
+}
+
+mip_cmd_result mip_3dm_write_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_u8(&serializer, desc_set);
+    
+    insert_u8(&serializer, field_desc);
+    
+    insert_bool(&serializer, enable);
+    
+    insert_bool(&serializer, manual);
+    
+    insert_float(&serializer, frequency);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_read_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    insert_u8(&serializer, desc_set);
+    
+    insert_u8(&serializer, field_desc);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_LOWPASS_FILTER, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        extract_u8(&deserializer, &desc_set);
+        
+        extract_u8(&deserializer, &field_desc);
+        
+        assert(enable_out);
+        extract_bool(&deserializer, enable_out);
+        
+        assert(manual_out);
+        extract_bool(&deserializer, manual_out);
+        
+        assert(frequency_out);
+        extract_float(&deserializer, frequency_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_3dm_save_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    insert_u8(&serializer, desc_set);
+    
+    insert_u8(&serializer, field_desc);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_load_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    insert_u8(&serializer, desc_set);
+    
+    insert_u8(&serializer, field_desc);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_default_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    insert_u8(&serializer, desc_set);
+    
+    insert_u8(&serializer, field_desc);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus
