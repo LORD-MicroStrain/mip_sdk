@@ -23,12 +23,11 @@ mip::Timestamp getCurrentTimestamp()
 }
 
 #ifdef MIP_ENABLE_LOGGING
-void customLog(const void* context, void* user, mip::LoggerLevel level, const char* fmt, ...)
+void customLog(const void* context, void* user, mip::LoggingLevel level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
-    va_list args, args_copy;
-    va_start(args, fmt);
+    va_list args_copy;
     va_copy(args_copy, args);
     const int required_len = vsnprintf(nullptr, 0, fmt, args_copy);
     if (required_len >= 0)
@@ -37,13 +36,12 @@ void customLog(const void* context, void* user, mip::LoggerLevel level, const ch
         vsnprintf(&log[0], required_len + 1, fmt, args);
     }
     va_end(args_copy);
-    va_end(args);
 
     // Print to the proper stream
     switch (level)
     {
-        case mip::LoggerLevel::MIP_LOGGER_LEVEL_FATAL:
-        case mip::LoggerLevel::MIP_LOGGER_LEVEL_ERROR:
+        case mip::LoggingLevel::MIP_LOG_LEVEL_FATAL:
+        case mip::LoggingLevel::MIP_LOG_LEVEL_ERROR:
             std::cerr << log;
             break;
         default:
@@ -116,7 +114,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
 #ifdef MIP_ENABLE_LOGGING
-    mip::initLogging(&customLog);
+    mip::Logging::initialize(&customLog);
 #endif
     if( argc < 3 || argc > maxArgs )
     {

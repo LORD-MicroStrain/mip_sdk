@@ -38,21 +38,18 @@ mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
 #ifdef MIP_ENABLE_LOGGING
-void customLog(const void* context, void* user, mip_logger_level level, const char* fmt, ...)
+void customLog(const void* context, void* user, mip_log_level level, const char* fmt, va_list args)
 {
-    va_list args;
-    va_start(args, fmt);
     switch (level)
     {
-        case MIP_LOGGER_LEVEL_FATAL:
-        case MIP_LOGGER_LEVEL_ERROR:
+        case MIP_LOG_LEVEL_FATAL:
+        case MIP_LOG_LEVEL_ERROR:
             vfprintf(stderr, fmt, args);
             break;
         default:
             vprintf(fmt, args);
             break;
     }
-    va_end(args);
 }
 #endif
 
@@ -166,7 +163,7 @@ int main(int argc, const char* argv[])
 
     // Initialize the MIP logger before opening the port so we can print errors if they occur
 #ifdef MIP_ENABLE_LOGGING
-    mip_logger_init(&customLog, MIP_LOGGER_LEVEL_DEBUG, NULL);
+    mip_logging_init(&customLog, MIP_LOG_LEVEL_DEBUG, NULL);
 #endif
 
     if( !open_port(argv[1], baudrate) )
