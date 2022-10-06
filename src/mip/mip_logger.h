@@ -66,7 +66,7 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 #ifdef MIP_ENABLE_LOGGING
 #define MIP_LOG_LOG(context, level, fmt, ...) mip_logging_log(context, level, fmt, __VA_ARGS__)
 #else
-#define MIP_LOG_LOG(context, level, fmt, ...) do {} while (0)
+#define MIP_LOG_LOG(context, level, fmt, ...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
