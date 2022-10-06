@@ -27,15 +27,15 @@ namespace commands_system {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum 
+enum
 {
     DESCRIPTOR_SET           = 0x7F,
-    
+
     CMD_ENUMERATE            = 0x01,
     CMD_COM_MODE             = 0x10,
     CMD_HARDWARE_CONTROL     = 0x11,
     CMD_HARDWARE_CONTROL_2   = 0x12,
-    
+
     REPLY_COM_MODE           = 0x90,
     REPLY_HARDWARE_CONTROL   = 0x91,
     REPLY_HARDWARE_CONTROL_2 = 0x92,
@@ -57,14 +57,14 @@ static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_system_comm_mode  (0x7F,0x10) Comm Mode [CPP]
 /// Advanced specialized communication modes.
-/// 
+///
 /// This command allows the user to communicate directly with various subsystems which may be present in MIP devices (i.e. IMU, GNSS, etc.)
 /// Please see the specific device's user manual for possible modes.
-/// 
+///
 /// This command responds with an ACK/NACK just prior to switching to the new protocol.
 /// For all functions except 0x01 (use new settings), the new communications mode value is ignored.
-/// 
-/// 
+///
+///
 ///
 ///@{
 
@@ -72,23 +72,22 @@ struct CommMode
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
-    
+
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
     static const bool HAS_SAVE_FUNCTION = false;
     static const bool HAS_LOAD_FUNCTION = false;
     static const bool HAS_RESET_FUNCTION = true;
-    
+
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t mode = 0;
-    
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
-        
+
         uint8_t mode = 0;
-        
     };
 };
 void insert(Serializer& serializer, const CommMode& self);
@@ -109,4 +108,3 @@ CmdResult defaultCommMode(C::mip_interface& device);
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_system
 } // namespace mip
-

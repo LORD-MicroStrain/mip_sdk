@@ -28,10 +28,10 @@ struct mip_field;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum 
+enum
 {
     MIP_3DM_CMD_DESC_SET                             = 0x0C,
-    
+
     MIP_CMD_DESC_3DM_POLL_IMU_MESSAGE                = 0x01,
     MIP_CMD_DESC_3DM_POLL_GNSS_MESSAGE               = 0x02,
     MIP_CMD_DESC_3DM_POLL_FILTER_MESSAGE             = 0x03,
@@ -89,7 +89,7 @@ enum
     MIP_CMD_DESC_3DM_SAVE_RESTORE_GPS_SETTINGS       = 0x62,
     MIP_CMD_DESC_3DM_DEVICE_SETTINGS                 = 0x63,
     MIP_CMD_DESC_3DM_RAW_CLIP_SETTINGS               = 0x70,
-    
+
     MIP_REPLY_DESC_3DM_IMU_MESSAGE_FORMAT            = 0x80,
     MIP_REPLY_DESC_3DM_GNSS_MESSAGE_FORMAT           = 0x81,
     MIP_REPLY_DESC_3DM_FILTER_MESSAGE_FORMAT         = 0x82,
@@ -156,7 +156,7 @@ static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKA = 129;
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
 
 typedef uint8_t mip_nmea_message_talker_id;
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_RESERVED = 0; ///<  
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_RESERVED = 0; ///<
 static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS     = 1; ///<  NMEA message will be produced with talker id "GN"
 static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS      = 2; ///<  NMEA message will be produced with talker id "GP"
 static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO  = 3; ///<  NMEA message will be produced with talker id "GA"
@@ -168,7 +168,6 @@ struct mip_nmea_message
     mip_nmea_message_talker_id talker_id; ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
     uint16_t decimation; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
-    
 };
 typedef struct mip_nmea_message mip_nmea_message;
 void insert_mip_nmea_message(struct mip_serializer* serializer, const mip_nmea_message* self);
@@ -198,7 +197,7 @@ void extract_mip_sensor_range_type(struct mip_serializer* serializer, mip_sensor
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_poll_imu_message  (0x0C,0x01) Poll Imu Message [C]
 /// Poll the device for an IMU message with the specified format
-/// 
+///
 /// This function polls for an IMU message using the provided format. The resulting message
 /// will maintain the order of descriptors sent in the command and any unrecognized
 /// descriptors are ignored. If the format is not provided, the device will attempt to use the
@@ -213,7 +212,6 @@ struct mip_3dm_poll_imu_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the descriptor list.
     mip_descriptor_rate* descriptors; ///< Descriptor list.
-    
 };
 typedef struct mip_3dm_poll_imu_message_command mip_3dm_poll_imu_message_command;
 void insert_mip_3dm_poll_imu_message_command(struct mip_serializer* serializer, const mip_3dm_poll_imu_message_command* self);
@@ -225,7 +223,7 @@ mip_cmd_result mip_3dm_poll_imu_message(struct mip_interface* device, bool suppr
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_poll_gnss_message  (0x0C,0x02) Poll Gnss Message [C]
 /// Poll the device for an GNSS message with the specified format
-/// 
+///
 /// This function polls for a GNSS message using the provided format. The resulting message
 /// will maintain the order of descriptors sent in the command and any unrecognized
 /// descriptors are ignored. If the format is not provided, the device will attempt to use the
@@ -240,7 +238,6 @@ struct mip_3dm_poll_gnss_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the descriptor list.
     mip_descriptor_rate* descriptors; ///< Descriptor list.
-    
 };
 typedef struct mip_3dm_poll_gnss_message_command mip_3dm_poll_gnss_message_command;
 void insert_mip_3dm_poll_gnss_message_command(struct mip_serializer* serializer, const mip_3dm_poll_gnss_message_command* self);
@@ -252,7 +249,7 @@ mip_cmd_result mip_3dm_poll_gnss_message(struct mip_interface* device, bool supp
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_poll_filter_message  (0x0C,0x03) Poll Filter Message [C]
 /// Poll the device for an Estimation Filter message with the specified format
-/// 
+///
 /// This function polls for an Estimation Filter message using the provided format. The resulting message
 /// will maintain the order of descriptors sent in the command and any unrecognized
 /// descriptors are ignored. If the format is not provided, the device will attempt to use the
@@ -267,7 +264,6 @@ struct mip_3dm_poll_filter_message_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the format list.
     mip_descriptor_rate* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_poll_filter_message_command mip_3dm_poll_filter_message_command;
 void insert_mip_3dm_poll_filter_message_command(struct mip_serializer* serializer, const mip_3dm_poll_filter_message_command* self);
@@ -279,7 +275,7 @@ mip_cmd_result mip_3dm_poll_filter_message(struct mip_interface* device, bool su
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_imu_message_format  (0x0C,0x08) Imu Message Format [C]
 /// Set, read, or save the format of the IMU data packet.
-/// 
+///
 /// The resulting data messages will maintain the order of descriptors sent in the command.
 ///
 ///@{
@@ -289,7 +285,6 @@ struct mip_3dm_imu_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_imu_message_format_command mip_3dm_imu_message_format_command;
 void insert_mip_3dm_imu_message_format_command(struct mip_serializer* serializer, const mip_3dm_imu_message_format_command* self);
@@ -299,7 +294,6 @@ struct mip_3dm_imu_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_imu_message_format_response mip_3dm_imu_message_format_response;
 void insert_mip_3dm_imu_message_format_response(struct mip_serializer* serializer, const mip_3dm_imu_message_format_response* self);
@@ -315,7 +309,7 @@ mip_cmd_result mip_3dm_default_imu_message_format(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gps_message_format  (0x0C,0x09) Gps Message Format [C]
 /// Set, read, or save the format of the GNSS data packet.
-/// 
+///
 /// The resulting data messages will maintain the order of descriptors sent in the command.
 ///
 ///@{
@@ -325,7 +319,6 @@ struct mip_3dm_gps_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_gps_message_format_command mip_3dm_gps_message_format_command;
 void insert_mip_3dm_gps_message_format_command(struct mip_serializer* serializer, const mip_3dm_gps_message_format_command* self);
@@ -335,7 +328,6 @@ struct mip_3dm_gps_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors
     mip_descriptor_rate* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_gps_message_format_response mip_3dm_gps_message_format_response;
 void insert_mip_3dm_gps_message_format_response(struct mip_serializer* serializer, const mip_3dm_gps_message_format_response* self);
@@ -351,7 +343,7 @@ mip_cmd_result mip_3dm_default_gps_message_format(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_filter_message_format  (0x0C,0x0A) Filter Message Format [C]
 /// Set, read, or save the format of the Estimation Filter data packet.
-/// 
+///
 /// The resulting data messages will maintain the order of descriptors sent in the command.
 ///
 ///@{
@@ -361,7 +353,6 @@ struct mip_3dm_filter_message_format_command
     mip_function_selector function;
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate* descriptors;
-    
 };
 typedef struct mip_3dm_filter_message_format_command mip_3dm_filter_message_format_command;
 void insert_mip_3dm_filter_message_format_command(struct mip_serializer* serializer, const mip_3dm_filter_message_format_command* self);
@@ -371,7 +362,6 @@ struct mip_3dm_filter_message_format_response
 {
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate* descriptors;
-    
 };
 typedef struct mip_3dm_filter_message_format_response mip_3dm_filter_message_format_response;
 void insert_mip_3dm_filter_message_format_response(struct mip_serializer* serializer, const mip_3dm_filter_message_format_response* self);
@@ -387,7 +377,7 @@ mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* devic
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_imu_get_base_rate  (0x0C,0x06) Imu Get Base Rate [C]
 /// Get the base rate for the IMU data in Hz
-/// 
+///
 /// This is the fastest rate for this type of data available on the device.
 /// This is used in conjunction with the IMU Message Format Command to set streaming data at a specified rate.
 ///
@@ -396,7 +386,6 @@ mip_cmd_result mip_3dm_default_filter_message_format(struct mip_interface* devic
 struct mip_3dm_imu_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_imu_get_base_rate_response mip_3dm_imu_get_base_rate_response;
 void insert_mip_3dm_imu_get_base_rate_response(struct mip_serializer* serializer, const mip_3dm_imu_get_base_rate_response* self);
@@ -408,7 +397,7 @@ mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint16_t*
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gps_get_base_rate  (0x0C,0x07) Gps Get Base Rate [C]
 /// Get the base rate for the GNSS data in Hz
-/// 
+///
 /// This is the fastest rate for this type of data available on the device.
 /// This is used in conjunction with the GNSS Message Format Command to set streaming data at a specified rate.
 ///
@@ -417,7 +406,6 @@ mip_cmd_result mip_3dm_imu_get_base_rate(struct mip_interface* device, uint16_t*
 struct mip_3dm_gps_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_gps_get_base_rate_response mip_3dm_gps_get_base_rate_response;
 void insert_mip_3dm_gps_get_base_rate_response(struct mip_serializer* serializer, const mip_3dm_gps_get_base_rate_response* self);
@@ -429,7 +417,7 @@ mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint16_t*
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_filter_get_base_rate  (0x0C,0x0B) Filter Get Base Rate [C]
 /// Get the base rate for the Estimation Filter data in Hz
-/// 
+///
 /// This is the fastest rate for this type of data available on the device.
 /// This is used in conjunction with the Estimation Filter Message Format Command to set streaming data at a specified rate.
 ///
@@ -438,7 +426,6 @@ mip_cmd_result mip_3dm_gps_get_base_rate(struct mip_interface* device, uint16_t*
 struct mip_3dm_filter_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
-    
 };
 typedef struct mip_3dm_filter_get_base_rate_response mip_3dm_filter_get_base_rate_response;
 void insert_mip_3dm_filter_get_base_rate_response(struct mip_serializer* serializer, const mip_3dm_filter_get_base_rate_response* self);
@@ -450,7 +437,7 @@ mip_cmd_result mip_3dm_filter_get_base_rate(struct mip_interface* device, uint16
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_poll_data  (0x0C,0x0D) Poll Data [C]
 /// Poll the device for a message with the specified descriptor set and format.
-/// 
+///
 /// This function polls for a message using the provided format. The resulting message
 /// will maintain the order of descriptors sent in the command and any unrecognized
 /// descriptors are ignored. If the format is not provided, the device will attempt to use the
@@ -466,7 +453,6 @@ struct mip_3dm_poll_data_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t num_descriptors; ///< Number of descriptors in the format list.
     uint8_t* descriptors; ///< Descriptor format list.
-    
 };
 typedef struct mip_3dm_poll_data_command mip_3dm_poll_data_command;
 void insert_mip_3dm_poll_data_command(struct mip_serializer* serializer, const mip_3dm_poll_data_command* self);
@@ -484,7 +470,6 @@ mip_cmd_result mip_3dm_poll_data(struct mip_interface* device, uint8_t desc_set,
 struct mip_3dm_get_base_rate_command
 {
     uint8_t desc_set; ///< This is the data descriptor set. It must be a supported descriptor.
-    
 };
 typedef struct mip_3dm_get_base_rate_command mip_3dm_get_base_rate_command;
 void insert_mip_3dm_get_base_rate_command(struct mip_serializer* serializer, const mip_3dm_get_base_rate_command* self);
@@ -494,7 +479,6 @@ struct mip_3dm_get_base_rate_response
 {
     uint8_t desc_set; ///< Echoes the parameter in the command.
     uint16_t rate; ///< Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).
-    
 };
 typedef struct mip_3dm_get_base_rate_response mip_3dm_get_base_rate_response;
 void insert_mip_3dm_get_base_rate_response(struct mip_serializer* serializer, const mip_3dm_get_base_rate_response* self);
@@ -506,7 +490,7 @@ mip_cmd_result mip_3dm_get_base_rate(struct mip_interface* device, uint8_t desc_
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_message_format  (0x0C,0x0F) Message Format [C]
 /// Set, read, or save the format for a given data packet.
-/// 
+///
 /// The resulting data messages will maintain the order of descriptors sent in the command.
 ///
 ///@{
@@ -517,7 +501,6 @@ struct mip_3dm_message_format_command
     uint8_t desc_set; ///< Data descriptor set. Must be supported. When function is SAVE, LOAD, or DEFAULT, can be 0 to apply to all descriptor sets.
     uint8_t num_descriptors; ///< Number of descriptors (limited by payload size)
     mip_descriptor_rate* descriptors; ///< List of descriptors and decimations.
-    
 };
 typedef struct mip_3dm_message_format_command mip_3dm_message_format_command;
 void insert_mip_3dm_message_format_command(struct mip_serializer* serializer, const mip_3dm_message_format_command* self);
@@ -528,7 +511,6 @@ struct mip_3dm_message_format_response
     uint8_t desc_set; ///< Echoes the descriptor set from the command.
     uint8_t num_descriptors; ///< Number of descriptors in the list.
     mip_descriptor_rate* descriptors; ///< List of descriptors and decimations.
-    
 };
 typedef struct mip_3dm_message_format_response mip_3dm_message_format_response;
 void insert_mip_3dm_message_format_response(struct mip_serializer* serializer, const mip_3dm_message_format_response* self);
@@ -544,7 +526,7 @@ mip_cmd_result mip_3dm_default_message_format(struct mip_interface* device, uint
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_nmea_poll_data  (0x0C,0x04) Nmea Poll Data [C]
 /// Poll the device for a NMEA message with the specified format.
-/// 
+///
 /// This function polls for a NMEA message using the provided format.
 /// If the format is not provided, the device will attempt to use the
 /// stored format (set with the Set NMEA Message Format command.) If no format is provided
@@ -558,7 +540,6 @@ struct mip_3dm_nmea_poll_data_command
     bool suppress_ack; ///< Suppress the usual ACK/NACK reply.
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message* format_entries; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_poll_data_command mip_3dm_nmea_poll_data_command;
 void insert_mip_3dm_nmea_poll_data_command(struct mip_serializer* serializer, const mip_3dm_nmea_poll_data_command* self);
@@ -578,7 +559,6 @@ struct mip_3dm_nmea_message_format_command
     mip_function_selector function;
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message* format_entries; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_message_format_command mip_3dm_nmea_message_format_command;
 void insert_mip_3dm_nmea_message_format_command(struct mip_serializer* serializer, const mip_3dm_nmea_message_format_command* self);
@@ -588,7 +568,6 @@ struct mip_3dm_nmea_message_format_response
 {
     uint8_t count; ///< Number of format entries (limited by payload size)
     mip_nmea_message* format_entries; ///< List of format entries.
-    
 };
 typedef struct mip_3dm_nmea_message_format_response mip_3dm_nmea_message_format_response;
 void insert_mip_3dm_nmea_message_format_response(struct mip_serializer* serializer, const mip_3dm_nmea_message_format_response* self);
@@ -604,9 +583,9 @@ mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device)
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_device_settings  (0x0C,0x30) Device Settings [C]
 /// Save, Load, or Reset to Default the values for all device settings.
-/// 
+///
 /// When a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.
-/// 
+///
 /// This command should have a long timeout as it may take up to 1 second to complete.
 ///
 ///@{
@@ -614,7 +593,6 @@ mip_cmd_result mip_3dm_default_nmea_message_format(struct mip_interface* device)
 struct mip_3dm_device_settings_command
 {
     mip_function_selector function;
-    
 };
 typedef struct mip_3dm_device_settings_command mip_3dm_device_settings_command;
 void insert_mip_3dm_device_settings_command(struct mip_serializer* serializer, const mip_3dm_device_settings_command* self);
@@ -628,17 +606,17 @@ mip_cmd_result mip_3dm_default_device_settings(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_uart_baudrate  (0x0C,0x40) Uart Baudrate [C]
 /// Read, Save, Load, or Reset to Default the baud rate of the main communication channel.
-/// 
+///
 /// For all functions except 0x01 (use new settings), the new baud rate value is ignored.
 /// Please see the device user manual for supported baud rates.
-/// 
+///
 /// The device will wait until all incoming and outgoing data has been sent, up
 /// to a maximum of 250 ms, before applying any change.
-/// 
+///
 /// No guarantee is provided as to what happens to commands issued during this
 /// delay period; They may or may not be processed and any responses aren't
 /// guaranteed to be at one rate or the other. The same applies to data packets.
-/// 
+///
 /// It is highly recommended that the device be idle before issuing this command
 /// and that it be issued in its own packet. Users should wait 250 ms after
 /// sending this command before further interaction.
@@ -649,7 +627,6 @@ struct mip_3dm_uart_baudrate_command
 {
     mip_function_selector function;
     uint32_t baud;
-    
 };
 typedef struct mip_3dm_uart_baudrate_command mip_3dm_uart_baudrate_command;
 void insert_mip_3dm_uart_baudrate_command(struct mip_serializer* serializer, const mip_3dm_uart_baudrate_command* self);
@@ -658,7 +635,6 @@ void extract_mip_3dm_uart_baudrate_command(struct mip_serializer* serializer, mi
 struct mip_3dm_uart_baudrate_response
 {
     uint32_t baud;
-    
 };
 typedef struct mip_3dm_uart_baudrate_response mip_3dm_uart_baudrate_response;
 void insert_mip_3dm_uart_baudrate_response(struct mip_serializer* serializer, const mip_3dm_uart_baudrate_response* self);
@@ -674,7 +650,7 @@ mip_cmd_result mip_3dm_default_uart_baudrate(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_factory_streaming  (0x0C,0x10) Factory Streaming [C]
 /// Configures the device for recording data for technical support.
-/// 
+///
 /// This command will configure all available data streams to predefined
 /// formats designed to be used with technical support.
 ///
@@ -689,7 +665,6 @@ struct mip_3dm_factory_streaming_command
 {
     mip_3dm_factory_streaming_command_action action;
     uint8_t reserved; ///< Reserved. Set to 0x00.
-    
 };
 typedef struct mip_3dm_factory_streaming_command mip_3dm_factory_streaming_command;
 void insert_mip_3dm_factory_streaming_command(struct mip_serializer* serializer, const mip_3dm_factory_streaming_command* self);
@@ -704,7 +679,7 @@ mip_cmd_result mip_3dm_factory_streaming(struct mip_interface* device, mip_3dm_f
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_datastream_control  (0x0C,0x11) Datastream Control [C]
 /// Enable/disable the selected data stream.
-/// 
+///
 /// Each data stream (descriptor set) can be enabled or disabled.
 /// The default for the device is all streams enabled.
 /// For all functions except 0x01 (use new setting),
@@ -721,7 +696,6 @@ struct mip_3dm_datastream_control_command
     mip_function_selector function;
     uint8_t desc_set; ///< The descriptor set of the stream to control. When function is SAVE, LOAD, or DEFAULT, can be ALL_STREAMS(0) to apply to all descriptor sets. On Generation 5 products, this must be one of the above legacy constants.
     bool enable; ///< True or false to enable or disable the stream.
-    
 };
 typedef struct mip_3dm_datastream_control_command mip_3dm_datastream_control_command;
 void insert_mip_3dm_datastream_control_command(struct mip_serializer* serializer, const mip_3dm_datastream_control_command* self);
@@ -731,7 +705,6 @@ struct mip_3dm_datastream_control_response
 {
     uint8_t desc_set;
     bool enabled;
-    
 };
 typedef struct mip_3dm_datastream_control_response mip_3dm_datastream_control_response;
 void insert_mip_3dm_datastream_control_response(struct mip_serializer* serializer, const mip_3dm_datastream_control_response* self);
@@ -747,9 +720,9 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gnss_sbas_settings  (0x0C,0x22) Gnss Sbas Settings [C]
 /// Configure the SBAS subsystem
-/// 
-/// 
-/// 
+///
+///
+///
 ///
 ///@{
 
@@ -766,7 +739,6 @@ struct mip_3dm_gnss_sbas_settings_command
     mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options; ///< SBAS options, see definition
     uint8_t num_included_prns; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t* included_prns; ///< List of specific SBAS PRNs to search for
-    
 };
 typedef struct mip_3dm_gnss_sbas_settings_command mip_3dm_gnss_sbas_settings_command;
 void insert_mip_3dm_gnss_sbas_settings_command(struct mip_serializer* serializer, const mip_3dm_gnss_sbas_settings_command* self);
@@ -781,7 +753,6 @@ struct mip_3dm_gnss_sbas_settings_response
     mip_3dm_gnss_sbas_settings_command_sbasoptions sbas_options; ///< SBAS options, see definition
     uint8_t num_included_prns; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t* included_prns; ///< List of specific SBAS PRNs to search for
-    
 };
 typedef struct mip_3dm_gnss_sbas_settings_response mip_3dm_gnss_sbas_settings_response;
 void insert_mip_3dm_gnss_sbas_settings_response(struct mip_serializer* serializer, const mip_3dm_gnss_sbas_settings_response* self);
@@ -797,7 +768,7 @@ mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gnss_time_assistance  (0x0C,0x24) Gnss Time Assistance [C]
 /// Provide the GNSS subsystem with initial time information.
-/// 
+///
 /// This message is required immediately after power up if GNSS Assist was enabled when the device was powered off.
 /// This will initialize the subsystem clock to help reduce the time to first fix (TTFF).
 ///
@@ -809,7 +780,6 @@ struct mip_3dm_gnss_time_assistance_command
     double tow; ///< GPS Time of week [seconds]
     uint16_t week_number; ///< GPS Weeks since 1980 [weeks]
     float accuracy; ///< Accuracy of time information [seconds]
-    
 };
 typedef struct mip_3dm_gnss_time_assistance_command mip_3dm_gnss_time_assistance_command;
 void insert_mip_3dm_gnss_time_assistance_command(struct mip_serializer* serializer, const mip_3dm_gnss_time_assistance_command* self);
@@ -820,7 +790,6 @@ struct mip_3dm_gnss_time_assistance_response
     double tow; ///< GPS Time of week [seconds]
     uint16_t week_number; ///< GPS Weeks since 1980 [weeks]
     float accuracy; ///< Accuracy of time information [seconds]
-    
 };
 typedef struct mip_3dm_gnss_time_assistance_response mip_3dm_gnss_time_assistance_response;
 void insert_mip_3dm_gnss_time_assistance_response(struct mip_serializer* serializer, const mip_3dm_gnss_time_assistance_response* self);
@@ -833,16 +802,16 @@ mip_cmd_result mip_3dm_read_gnss_time_assistance(struct mip_interface* device, d
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_imu_lowpass_filter  (0x0C,0x50) Imu Lowpass Filter [C]
 /// Advanced configuration for the IMU data quantity low-pass filters.
-/// 
+///
 /// Deprecated, use the lowpass filter (0x0C,0x54) command instead.
-/// 
+///
 /// The scaled data quantities are by default filtered through a single-pole IIR low-pass filter
 /// which is configured with a -3dB cutoff frequency of half the reporting frequency (set by
 /// decimation factor in the IMU Message Format command) to prevent aliasing on a per data
 /// quantity basis. This advanced configuration command allows for the cutoff frequency to
 /// be configured independently of the data reporting frequency as well as allowing for a
 /// complete bypass of the digital low-pass filter.
-/// 
+///
 /// Possible data descriptors:
 /// 0x04 - Scaled accelerometer data
 /// 0x05 - Scaled gyro data
@@ -859,7 +828,6 @@ struct mip_3dm_imu_lowpass_filter_command
     bool manual; ///< If false, the cutoff frequency is set to half of the streaming rate as configured by the message format command. Otherwise, the cutoff frequency is set according to the following 'frequency' parameter.
     uint16_t frequency; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
     uint8_t reserved; ///< Reserved, set to 0x00.
-    
 };
 typedef struct mip_3dm_imu_lowpass_filter_command mip_3dm_imu_lowpass_filter_command;
 void insert_mip_3dm_imu_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_command* self);
@@ -872,7 +840,6 @@ struct mip_3dm_imu_lowpass_filter_response
     bool manual; ///< True if the filter cutoff was manually configured.
     uint16_t frequency; ///< The cutoff frequency of the filter. If the filter is in auto mode, this value is unspecified.
     uint8_t reserved; ///< Reserved and must be ignored.
-    
 };
 typedef struct mip_3dm_imu_lowpass_filter_response mip_3dm_imu_lowpass_filter_response;
 void insert_mip_3dm_imu_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_imu_lowpass_filter_response* self);
@@ -902,7 +869,6 @@ struct mip_3dm_pps_source_command
 {
     mip_function_selector function;
     mip_3dm_pps_source_command_source source;
-    
 };
 typedef struct mip_3dm_pps_source_command mip_3dm_pps_source_command;
 void insert_mip_3dm_pps_source_command(struct mip_serializer* serializer, const mip_3dm_pps_source_command* self);
@@ -914,7 +880,6 @@ void extract_mip_3dm_pps_source_command_source(struct mip_serializer* serializer
 struct mip_3dm_pps_source_response
 {
     mip_3dm_pps_source_command_source source;
-    
 };
 typedef struct mip_3dm_pps_source_response mip_3dm_pps_source_response;
 void insert_mip_3dm_pps_source_response(struct mip_serializer* serializer, const mip_3dm_pps_source_response* self);
@@ -930,22 +895,22 @@ mip_cmd_result mip_3dm_default_pps_source(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gpio_config  (0x0C,0x41) Gpio Config [C]
 /// Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.
-/// 
+///
 /// GPIO pins are device-dependent. Some features are only available on
 /// certain pins. Some behaviors require specific configurations.
 /// Consult the device user manual for restrictions and default settings.
-/// 
+///
 /// To avoid glitches on GPIOs configured as an output in a mode other than
 /// GPIO, always configure the relevant function before setting up the pin
 /// with this command. Otherwise, the pin state will be undefined between
 /// this command and the one to set up the feature. For input pins, use
 /// this command first so the state is well-defined when the feature is
 /// initialized.
-/// 
+///
 /// Some configurations can only be active on one pin at a time. If such
 /// configuration is applied to a second pin, the second one will take
 /// precedence and the original pin's configuration will be reset.
-/// 
+///
 ///
 ///@{
 
@@ -984,7 +949,6 @@ struct mip_3dm_gpio_config_command
     mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
     mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-    
 };
 typedef struct mip_3dm_gpio_config_command mip_3dm_gpio_config_command;
 void insert_mip_3dm_gpio_config_command(struct mip_serializer* serializer, const mip_3dm_gpio_config_command* self);
@@ -1005,7 +969,6 @@ struct mip_3dm_gpio_config_response
     mip_3dm_gpio_config_command_feature feature; ///< Determines how the pin will be used.
     mip_3dm_gpio_config_command_behavior behavior; ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     mip_3dm_gpio_config_command_pin_mode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
-    
 };
 typedef struct mip_3dm_gpio_config_response mip_3dm_gpio_config_response;
 void insert_mip_3dm_gpio_config_response(struct mip_serializer* serializer, const mip_3dm_gpio_config_response* self);
@@ -1021,19 +984,19 @@ mip_cmd_result mip_3dm_default_gpio_config(struct mip_interface* device, uint8_t
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gpio_state  (0x0C,0x42) Gpio State [C]
 /// Allows the state of the pin to be read or controlled.
-/// 
+///
 /// This command serves two purposes: 1) To allow reading the state of a pin via command,
 /// rather than polling a data quantity, and 2) to provide a way to set the output state
 /// without also having to specify the operating mode.
-/// 
+///
 /// The state read back from the pin is the physical state of the pin, rather than a
 /// configuration value. The state can be read regardless of its configuration as long as
 /// the device supports GPIO input on that pin. If the pin is set to an output, the read
 /// value would match the output value.
-/// 
+///
 /// While the state of a pin can always be set, it will only have an observable effect if
 /// the pin is set to output mode.
-/// 
+///
 /// This command does not support saving, loading, or resetting the state. Instead, use the
 /// GPIO Configuration command, which allows the initial state to be configured.
 ///
@@ -1044,7 +1007,6 @@ struct mip_3dm_gpio_state_command
     mip_function_selector function;
     uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state; ///< The pin state.
-    
 };
 typedef struct mip_3dm_gpio_state_command mip_3dm_gpio_state_command;
 void insert_mip_3dm_gpio_state_command(struct mip_serializer* serializer, const mip_3dm_gpio_state_command* self);
@@ -1054,7 +1016,6 @@ struct mip_3dm_gpio_state_response
 {
     uint8_t pin; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state; ///< The pin state.
-    
 };
 typedef struct mip_3dm_gpio_state_response mip_3dm_gpio_state_response;
 void insert_mip_3dm_gpio_state_response(struct mip_serializer* serializer, const mip_3dm_gpio_state_response* self);
@@ -1067,7 +1028,7 @@ mip_cmd_result mip_3dm_read_gpio_state(struct mip_interface* device, uint8_t pin
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_odometer  (0x0C,0x43) Odometer [C]
 /// Configures the hardware odometer interface.
-/// 
+///
 ///
 ///@{
 
@@ -1081,7 +1042,6 @@ struct mip_3dm_odometer_command
     mip_3dm_odometer_command_mode mode; ///< Mode setting.
     float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-    
 };
 typedef struct mip_3dm_odometer_command mip_3dm_odometer_command;
 void insert_mip_3dm_odometer_command(struct mip_serializer* serializer, const mip_3dm_odometer_command* self);
@@ -1095,7 +1055,6 @@ struct mip_3dm_odometer_response
     mip_3dm_odometer_command_mode mode; ///< Mode setting.
     float scaling; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
-    
 };
 typedef struct mip_3dm_odometer_response mip_3dm_odometer_response;
 void insert_mip_3dm_odometer_response(struct mip_serializer* serializer, const mip_3dm_odometer_response* self);
@@ -1111,22 +1070,22 @@ mip_cmd_result mip_3dm_default_odometer(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_get_event_support  (0x0C,0x2A) Get Event Support [C]
 /// Lists the available trigger or action types.
-/// 
+///
 /// There are a limited number of trigger and action slots available
 /// in the device. Up to M triggers and N actions can be configured at once
 /// in slots 1..M and 1..N respectively. M and N are identified by the
 /// max_instances field in the response with the appropriate query selector.
-/// 
+///
 /// Each slot can be configured as one of a variety of different types of
 /// triggers or actions. The supported types are enumerated in the response
 /// to this command. Additionally, there is a limit on the number of a given
 /// type. In other words, while the device may support M triggers in total,
 /// only a few of them maybe usable as a given type. This limit helps optimize
 /// device resources. The limit is identified in the count field.
-/// 
+///
 /// All of the information in this command is available in the user manual.
 /// This command provides a programmatic method for obtaining the information.
-/// 
+///
 ///
 ///@{
 
@@ -1138,13 +1097,11 @@ struct mip_3dm_get_event_support_command_info
 {
     uint8_t type; ///< Trigger or action type, as defined in the respective setup command.
     uint8_t count; ///< This is the maximum number of instances supported for this type.
-    
 };
 typedef struct mip_3dm_get_event_support_command_info mip_3dm_get_event_support_command_info;
 struct mip_3dm_get_event_support_command
 {
     mip_3dm_get_event_support_command_query query; ///< What type of information to retrieve.
-    
 };
 typedef struct mip_3dm_get_event_support_command mip_3dm_get_event_support_command;
 void insert_mip_3dm_get_event_support_command(struct mip_serializer* serializer, const mip_3dm_get_event_support_command* self);
@@ -1162,7 +1119,6 @@ struct mip_3dm_get_event_support_response
     uint8_t max_instances; ///< Number of slots available. The 'instance' number for the configuration or control commands must be between 1 and this value.
     uint8_t num_entries; ///< Number of supported types.
     mip_3dm_get_event_support_command_info entries[126]; ///< List of supported types.
-    
 };
 typedef struct mip_3dm_get_event_support_response mip_3dm_get_event_support_response;
 void insert_mip_3dm_get_event_support_response(struct mip_serializer* serializer, const mip_3dm_get_event_support_response* self);
@@ -1174,11 +1130,11 @@ mip_cmd_result mip_3dm_get_event_support(struct mip_interface* device, mip_3dm_g
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_event_control  (0x0C,0x2B) Event Control [C]
 /// Enables or disables event triggers.
-/// 
+///
 /// Triggers can be disabled, enabled, and tested. While disabled, a trigger will
 /// not evaluate its logic and effective behave like no trigger is configured.
 /// A disabled trigger will not activate any actions. Triggers are disabled by default.
-/// 
+///
 /// Use this command to enable (or disable) a trigger, or to place it into a test mode.
 /// When in test mode, the trigger logic is disabled but the output is forced to
 /// the active state, meaning that it will behave as if the trigger logic is satisfied
@@ -1197,7 +1153,6 @@ struct mip_3dm_event_control_command
     mip_function_selector function;
     uint8_t instance; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     mip_3dm_event_control_command_mode mode; ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
-    
 };
 typedef struct mip_3dm_event_control_command mip_3dm_event_control_command;
 void insert_mip_3dm_event_control_command(struct mip_serializer* serializer, const mip_3dm_event_control_command* self);
@@ -1210,7 +1165,6 @@ struct mip_3dm_event_control_response
 {
     uint8_t instance; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     mip_3dm_event_control_command_mode mode; ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
-    
 };
 typedef struct mip_3dm_event_control_response mip_3dm_event_control_response;
 void insert_mip_3dm_event_control_response(struct mip_serializer* serializer, const mip_3dm_event_control_response* self);
@@ -1238,14 +1192,12 @@ struct mip_3dm_get_event_trigger_status_command_entry
 {
     uint8_t type; ///< Configured trigger type.
     mip_3dm_get_event_trigger_status_command_status status; ///< Trigger status.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_command_entry mip_3dm_get_event_trigger_status_command_entry;
 struct mip_3dm_get_event_trigger_status_command
 {
     uint8_t requested_count; ///< Number of entries requested. If 0, requests all trigger slots.
     uint8_t requested_instances[20]; ///< List of trigger instances to query.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_command mip_3dm_get_event_trigger_status_command;
 void insert_mip_3dm_get_event_trigger_status_command(struct mip_serializer* serializer, const mip_3dm_get_event_trigger_status_command* self);
@@ -1261,7 +1213,6 @@ struct mip_3dm_get_event_trigger_status_response
 {
     uint8_t count; ///< Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.
     mip_3dm_get_event_trigger_status_command_entry triggers[20]; ///< A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.
-    
 };
 typedef struct mip_3dm_get_event_trigger_status_response mip_3dm_get_event_trigger_status_response;
 void insert_mip_3dm_get_event_trigger_status_response(struct mip_serializer* serializer, const mip_3dm_get_event_trigger_status_response* self);
@@ -1279,14 +1230,12 @@ struct mip_3dm_get_event_action_status_command_entry
 {
     uint8_t action_type; ///< Configured action type.
     uint8_t trigger_id; ///< Associated trigger instance.
-    
 };
 typedef struct mip_3dm_get_event_action_status_command_entry mip_3dm_get_event_action_status_command_entry;
 struct mip_3dm_get_event_action_status_command
 {
     uint8_t requested_count; ///< Number of entries requested. If 0, requests all action slots.
     uint8_t requested_instances[20]; ///< List of action instances to query.
-    
 };
 typedef struct mip_3dm_get_event_action_status_command mip_3dm_get_event_action_status_command;
 void insert_mip_3dm_get_event_action_status_command(struct mip_serializer* serializer, const mip_3dm_get_event_action_status_command* self);
@@ -1299,7 +1248,6 @@ struct mip_3dm_get_event_action_status_response
 {
     uint8_t count; ///< Number of entries requested. If requested_count was 0, this is the number of supported action slots.
     mip_3dm_get_event_action_status_command_entry actions[20]; ///< A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.
-    
 };
 typedef struct mip_3dm_get_event_action_status_response mip_3dm_get_event_action_status_response;
 void insert_mip_3dm_get_event_action_status_response(struct mip_serializer* serializer, const mip_3dm_get_event_action_status_response* self);
@@ -1324,7 +1272,6 @@ struct mip_3dm_event_trigger_command_gpio_params
 {
     uint8_t pin; ///< GPIO pin number.
     mip_3dm_event_trigger_command_gpio_params_mode mode; ///< How the pin state affects the trigger.
-    
 };
 typedef struct mip_3dm_event_trigger_command_gpio_params mip_3dm_event_trigger_command_gpio_params;
 typedef uint8_t mip_3dm_event_trigger_command_threshold_params_type;
@@ -1347,7 +1294,6 @@ struct mip_3dm_event_trigger_command_threshold_params
         double high_thres;
         double interval;
     };
-    
 };
 typedef struct mip_3dm_event_trigger_command_threshold_params mip_3dm_event_trigger_command_threshold_params;
 enum { MIP_3DM_EVENT_TRIGGER_COMMAND_COMBINATION_PARAMS_LOGIC_NEVER = 0x0000 };
@@ -1367,7 +1313,6 @@ struct mip_3dm_event_trigger_command_combination_params
 {
     uint16_t logic_table; ///< The last column of a truth table describing the output given the state of each input.
     uint8_t input_triggers[4]; ///< List of trigger IDs for inputs. Use 0 for unused inputs.
-    
 };
 typedef struct mip_3dm_event_trigger_command_combination_params mip_3dm_event_trigger_command_combination_params;
 typedef uint8_t mip_3dm_event_trigger_command_type;
@@ -1390,7 +1335,6 @@ struct mip_3dm_event_trigger_command
     uint8_t instance; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     mip_3dm_event_trigger_command_type type; ///< Type of trigger to configure.
     mip_3dm_event_trigger_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_trigger_command mip_3dm_event_trigger_command;
 void insert_mip_3dm_event_trigger_command(struct mip_serializer* serializer, const mip_3dm_event_trigger_command* self);
@@ -1419,7 +1363,6 @@ struct mip_3dm_event_trigger_response
     uint8_t instance; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
     mip_3dm_event_trigger_command_type type; ///< Type of trigger to configure.
     mip_3dm_event_trigger_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_trigger_response mip_3dm_event_trigger_response;
 void insert_mip_3dm_event_trigger_response(struct mip_serializer* serializer, const mip_3dm_event_trigger_response* self);
@@ -1450,7 +1393,6 @@ struct mip_3dm_event_action_command_gpio_params
 {
     uint8_t pin; ///< GPIO pin number.
     mip_3dm_event_action_command_gpio_params_mode mode; ///< Behavior of the pin.
-    
 };
 typedef struct mip_3dm_event_action_command_gpio_params mip_3dm_event_action_command_gpio_params;
 struct mip_3dm_event_action_command_message_params
@@ -1459,7 +1401,6 @@ struct mip_3dm_event_action_command_message_params
     uint16_t decimation; ///< Decimation from the base rate. If 0, a packet is emitted each time the trigger activates. Otherwise, packets will be streamed while the trigger is active. The internal decimation counter is reset if the trigger deactivates.
     uint8_t num_fields; ///< Number of mip fields in the packet. Limited to 12.
     uint8_t descriptors[20]; ///< List of field descriptors.
-    
 };
 typedef struct mip_3dm_event_action_command_message_params mip_3dm_event_action_command_message_params;
 typedef uint8_t mip_3dm_event_action_command_type;
@@ -1481,7 +1422,6 @@ struct mip_3dm_event_action_command
     uint8_t trigger; ///< Trigger ID number.
     mip_3dm_event_action_command_type type; ///< Type of action to configure.
     mip_3dm_event_action_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_action_command mip_3dm_event_action_command;
 void insert_mip_3dm_event_action_command(struct mip_serializer* serializer, const mip_3dm_event_action_command* self);
@@ -1505,7 +1445,6 @@ struct mip_3dm_event_action_response
     uint8_t trigger; ///< Trigger ID number.
     mip_3dm_event_action_command_type type; ///< Type of action to configure.
     mip_3dm_event_action_command_parameters parameters;
-    
 };
 typedef struct mip_3dm_event_action_response mip_3dm_event_action_response;
 void insert_mip_3dm_event_action_response(struct mip_serializer* serializer, const mip_3dm_event_action_response* self);
@@ -1521,7 +1460,7 @@ mip_cmd_result mip_3dm_default_event_action(struct mip_interface* device, uint8_
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_accel_bias  (0x0C,0x37) Accel Bias [C]
 /// Configures the user specified accelerometer bias
-/// 
+///
 /// The user specified bias is subtracted from the calibrated accelerometer output.  Value is input in the sensor frame.
 ///
 ///@{
@@ -1530,7 +1469,6 @@ struct mip_3dm_accel_bias_command
 {
     mip_function_selector function;
     float bias[3]; ///< accelerometer bias in the sensor frame (x,y,z) [g]
-    
 };
 typedef struct mip_3dm_accel_bias_command mip_3dm_accel_bias_command;
 void insert_mip_3dm_accel_bias_command(struct mip_serializer* serializer, const mip_3dm_accel_bias_command* self);
@@ -1539,7 +1477,6 @@ void extract_mip_3dm_accel_bias_command(struct mip_serializer* serializer, mip_3
 struct mip_3dm_accel_bias_response
 {
     float bias[3]; ///< accelerometer bias in the sensor frame (x,y,z) [g]
-    
 };
 typedef struct mip_3dm_accel_bias_response mip_3dm_accel_bias_response;
 void insert_mip_3dm_accel_bias_response(struct mip_serializer* serializer, const mip_3dm_accel_bias_response* self);
@@ -1555,7 +1492,7 @@ mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gyro_bias  (0x0C,0x38) Gyro Bias [C]
 /// Configures the user specified gyroscope bias
-/// 
+///
 /// The user specified bias is subtracted from the calibrated angular rate output.  Value is input in the sensor frame.
 ///
 ///@{
@@ -1564,7 +1501,6 @@ struct mip_3dm_gyro_bias_command
 {
     mip_function_selector function;
     float bias[3]; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_gyro_bias_command mip_3dm_gyro_bias_command;
 void insert_mip_3dm_gyro_bias_command(struct mip_serializer* serializer, const mip_3dm_gyro_bias_command* self);
@@ -1573,7 +1509,6 @@ void extract_mip_3dm_gyro_bias_command(struct mip_serializer* serializer, mip_3d
 struct mip_3dm_gyro_bias_response
 {
     float bias[3]; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_gyro_bias_response mip_3dm_gyro_bias_response;
 void insert_mip_3dm_gyro_bias_response(struct mip_serializer* serializer, const mip_3dm_gyro_bias_response* self);
@@ -1589,7 +1524,7 @@ mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device);
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_capture_gyro_bias  (0x0C,0x39) Capture Gyro Bias [C]
 /// Samples gyro for a specified time range and writes the averaged result to the Gyro Bias vector in RAM
-/// 
+///
 /// The device will average the gyro output for the duration of "averaging_time_ms." To store the resulting vector
 /// in non-volatile memory, use the Set Gyro Bias command.
 /// IMPORTANT: The device must be stationary and experiencing minimum vibration for the duration of "averaging_time_ms"
@@ -1600,7 +1535,6 @@ mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device);
 struct mip_3dm_capture_gyro_bias_command
 {
     uint16_t averaging_time_ms; ///< Averaging time [milliseconds]
-    
 };
 typedef struct mip_3dm_capture_gyro_bias_command mip_3dm_capture_gyro_bias_command;
 void insert_mip_3dm_capture_gyro_bias_command(struct mip_serializer* serializer, const mip_3dm_capture_gyro_bias_command* self);
@@ -1609,7 +1543,6 @@ void extract_mip_3dm_capture_gyro_bias_command(struct mip_serializer* serializer
 struct mip_3dm_capture_gyro_bias_response
 {
     float bias[3]; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
-    
 };
 typedef struct mip_3dm_capture_gyro_bias_response mip_3dm_capture_gyro_bias_response;
 void insert_mip_3dm_capture_gyro_bias_response(struct mip_serializer* serializer, const mip_3dm_capture_gyro_bias_response* self);
@@ -1621,7 +1554,7 @@ mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint16_t 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_mag_hard_iron_offset  (0x0C,0x3A) Mag Hard Iron Offset [C]
 /// Configure the user specified magnetometer hard iron offset vector
-/// 
+///
 /// The values for this offset are determined empirically by external software algorithms
 /// based on calibration data taken after the device is installed in its application. These values
 /// can be obtained and set by using the LORD "MIP Iron Calibration" application.
@@ -1634,7 +1567,6 @@ struct mip_3dm_mag_hard_iron_offset_command
 {
     mip_function_selector function;
     float offset[3]; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
-    
 };
 typedef struct mip_3dm_mag_hard_iron_offset_command mip_3dm_mag_hard_iron_offset_command;
 void insert_mip_3dm_mag_hard_iron_offset_command(struct mip_serializer* serializer, const mip_3dm_mag_hard_iron_offset_command* self);
@@ -1643,7 +1575,6 @@ void extract_mip_3dm_mag_hard_iron_offset_command(struct mip_serializer* seriali
 struct mip_3dm_mag_hard_iron_offset_response
 {
     float offset[3]; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
-    
 };
 typedef struct mip_3dm_mag_hard_iron_offset_response mip_3dm_mag_hard_iron_offset_response;
 void insert_mip_3dm_mag_hard_iron_offset_response(struct mip_serializer* serializer, const mip_3dm_mag_hard_iron_offset_response* self);
@@ -1659,16 +1590,16 @@ mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* device
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_mag_soft_iron_matrix  (0x0C,0x3B) Mag Soft Iron Matrix [C]
 /// Configure the user specified magnetometer soft iron offset matrix
-/// 
+///
 /// The values for this matrix are determined empirically by external software algorithms
 /// based on calibration data taken after the device is installed in its application. These values
 /// can be obtained and set by using the LORD "MIP Iron Calibration" application.
 /// Alternatively, on some systems, the auto-mag calibration feature may be used to capture these values in-run.
 /// The matrix is applied to the scaled magnetometer vector prior to output.
-/// 
+///
 /// The matrix is in row major order:
 /// EQSTART M = \begin{bmatrix} 0 &amp; 1 &amp; 2 \\ 3 &amp; 4 &amp; 5 \\ 6 &amp; 7 &amp; 8 \end{bmatrix} EQEND
-/// 
+///
 ///
 ///@{
 
@@ -1676,7 +1607,6 @@ struct mip_3dm_mag_soft_iron_matrix_command
 {
     mip_function_selector function;
     float offset[9]; ///< soft iron matrix [dimensionless]
-    
 };
 typedef struct mip_3dm_mag_soft_iron_matrix_command mip_3dm_mag_soft_iron_matrix_command;
 void insert_mip_3dm_mag_soft_iron_matrix_command(struct mip_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_command* self);
@@ -1685,7 +1615,6 @@ void extract_mip_3dm_mag_soft_iron_matrix_command(struct mip_serializer* seriali
 struct mip_3dm_mag_soft_iron_matrix_response
 {
     float offset[9]; ///< soft iron matrix [dimensionless]
-    
 };
 typedef struct mip_3dm_mag_soft_iron_matrix_response mip_3dm_mag_soft_iron_matrix_response;
 void insert_mip_3dm_mag_soft_iron_matrix_response(struct mip_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_response* self);
@@ -1734,7 +1663,6 @@ struct mip_3dm_sensor_2_vehicle_transform_euler_command
     float roll; ///< [radians]
     float pitch; ///< [radians]
     float yaw; ///< [radians]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_euler_command mip_3dm_sensor_2_vehicle_transform_euler_command;
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_command* self);
@@ -1745,7 +1673,6 @@ struct mip_3dm_sensor_2_vehicle_transform_euler_response
     float roll; ///< [radians]
     float pitch; ///< [radians]
     float yaw; ///< [radians]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_euler_response mip_3dm_sensor_2_vehicle_transform_euler_response;
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_response(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_response* self);
@@ -1761,18 +1688,18 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_euler(struct mip_inter
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_sensor_2_vehicle_transform_quaternion  (0x0C,0x32) Sensor 2 Vehicle Transform Quaternion [C]
 /// Set the sensor to vehicle frame transformation using unit length quaternion.
-/// 
+///
 /// Note: This is the transformation, the inverse of the rotation.
-/// 
+///
 /// This quaternion describes the transformation of vectors from the sensor body frame to the vehicle frame of reference, and satisfies the following relationship:<br/>
-/// 
+///
 /// EQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>
-/// 
+///
 /// Where:<br/>
 /// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>
 /// EQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>
 /// EQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>
-/// 
+///
 /// The transformation may be stored in the device as a matrix or a quaternion.  When the quaternion is read back from the device, it may not
 /// be exactly equal to the quaternion used to set the transformation, but it is functionally equivalent.<br/>
 /// <br/><br/>
@@ -1800,7 +1727,6 @@ struct mip_3dm_sensor_2_vehicle_transform_quaternion_command
 {
     mip_function_selector function;
     float q[4]; ///< Unit length quaternion representing transform [w, i, j, k]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_command mip_3dm_sensor_2_vehicle_transform_quaternion_command;
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_command(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_command* self);
@@ -1809,7 +1735,6 @@ void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_command(struct mip_se
 struct mip_3dm_sensor_2_vehicle_transform_quaternion_response
 {
     float q[4]; ///< Unit length quaternion representing transform [w, i, j, k]
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_response mip_3dm_sensor_2_vehicle_transform_quaternion_response;
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
@@ -1825,12 +1750,12 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct mip_
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_sensor_2_vehicle_transform_dcm  (0x0C,0x33) Sensor 2 Vehicle Transform Dcm [C]
 /// Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.
-/// 
+///
 /// These angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>
 /// EQSTART v^{veh} = M_{sen}^{veh} v^{sen} EQEND<br/>
-/// 
+///
 /// Where:<br/>
-/// 
+///
 /// EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
@@ -1862,7 +1787,6 @@ struct mip_3dm_sensor_2_vehicle_transform_dcm_command
 {
     mip_function_selector function;
     float dcm[9]; ///< 3 x 3 direction cosine matrix, stored in row-major order
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_command mip_3dm_sensor_2_vehicle_transform_dcm_command;
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_command(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_command* self);
@@ -1871,7 +1795,6 @@ void extract_mip_3dm_sensor_2_vehicle_transform_dcm_command(struct mip_serialize
 struct mip_3dm_sensor_2_vehicle_transform_dcm_response
 {
     float dcm[9]; ///< 3 x 3 direction cosine matrix, stored in row-major order
-    
 };
 typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_response mip_3dm_sensor_2_vehicle_transform_dcm_response;
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
@@ -1887,7 +1810,7 @@ mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interfa
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_complementary_filter  (0x0C,0x51) Complementary Filter [C]
 /// Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.
-/// 
+///
 /// The filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),
 /// and to correct for heading using the magnetometer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).
 /// Pitch/roll and heading corrections each have their own configurable time constants, with a valid range of 1-1000 seconds. The default time constant is 10 seconds.
@@ -1901,7 +1824,6 @@ struct mip_3dm_complementary_filter_command
     bool heading_enable; ///< Enable Heading corrections (only available on devices with magnetometer)
     float pitch_roll_time_constant; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant; ///< Time constant associated with the heading corrections [s]
-    
 };
 typedef struct mip_3dm_complementary_filter_command mip_3dm_complementary_filter_command;
 void insert_mip_3dm_complementary_filter_command(struct mip_serializer* serializer, const mip_3dm_complementary_filter_command* self);
@@ -1913,7 +1835,6 @@ struct mip_3dm_complementary_filter_response
     bool heading_enable; ///< Enable Heading corrections (only available on devices with magnetometer)
     float pitch_roll_time_constant; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant; ///< Time constant associated with the heading corrections [s]
-    
 };
 typedef struct mip_3dm_complementary_filter_response mip_3dm_complementary_filter_response;
 void insert_mip_3dm_complementary_filter_response(struct mip_serializer* serializer, const mip_3dm_complementary_filter_response* self);
@@ -1929,10 +1850,10 @@ mip_cmd_result mip_3dm_default_complementary_filter(struct mip_interface* device
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_sensor_range  (0x0C,0x52) Sensor Range [C]
 /// Changes the IMU sensor gain.
-/// 
+///
 /// This allows you to optimize the range to get the best accuracy and performance
 /// while minimizing over-range events.
-/// 
+///
 /// Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine
 /// the appropriate setting value for your application. Using values other than
 /// those specified may result in a NACK or inaccurate measurement data.
@@ -1944,7 +1865,6 @@ struct mip_3dm_sensor_range_command
     mip_function_selector function;
     mip_sensor_range_type sensor; ///< Which type of sensor will get the new range value.
     uint8_t setting; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
-    
 };
 typedef struct mip_3dm_sensor_range_command mip_3dm_sensor_range_command;
 void insert_mip_3dm_sensor_range_command(struct mip_serializer* serializer, const mip_3dm_sensor_range_command* self);
@@ -1954,7 +1874,6 @@ struct mip_3dm_sensor_range_response
 {
     mip_sensor_range_type sensor; ///< Which type of sensor will get the new range value.
     uint8_t setting; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
-    
 };
 typedef struct mip_3dm_sensor_range_response mip_3dm_sensor_range_response;
 void insert_mip_3dm_sensor_range_response(struct mip_serializer* serializer, const mip_3dm_sensor_range_response* self);
@@ -1970,7 +1889,7 @@ mip_cmd_result mip_3dm_default_sensor_range(struct mip_interface* device, mip_se
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_calibrated_sensor_ranges  (0x0C,0x53) Calibrated Sensor Ranges [C]
 /// Returns the supported sensor ranges which may be used with the 3DM Sensor Range (0x0C,0x52) command.
-/// 
+///
 /// The response includes an array of (u8, float) pairs which map each allowed setting
 /// to the corresponding maximum range in physical units. See SensorRangeType for units.
 ///
@@ -1980,13 +1899,11 @@ struct mip_3dm_calibrated_sensor_ranges_command_entry
 {
     uint8_t setting; ///< The value used in the 3DM Sensor Range command and response.
     float range; ///< The actual range value. Units depend on the sensor type.
-    
 };
 typedef struct mip_3dm_calibrated_sensor_ranges_command_entry mip_3dm_calibrated_sensor_ranges_command_entry;
 struct mip_3dm_calibrated_sensor_ranges_command
 {
     mip_sensor_range_type sensor; ///< The sensor to query. Cannot be ALL.
-    
 };
 typedef struct mip_3dm_calibrated_sensor_ranges_command mip_3dm_calibrated_sensor_ranges_command;
 void insert_mip_3dm_calibrated_sensor_ranges_command(struct mip_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_command* self);
@@ -2000,7 +1917,6 @@ struct mip_3dm_calibrated_sensor_ranges_response
     mip_sensor_range_type sensor; ///< The sensor type from the command.
     uint8_t num_ranges; ///< Number of supported ranges.
     mip_3dm_calibrated_sensor_ranges_command_entry ranges[50]; ///< List of possible range settings.
-    
 };
 typedef struct mip_3dm_calibrated_sensor_ranges_response mip_3dm_calibrated_sensor_ranges_response;
 void insert_mip_3dm_calibrated_sensor_ranges_response(struct mip_serializer* serializer, const mip_3dm_calibrated_sensor_ranges_response* self);
@@ -2012,19 +1928,19 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mi
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [C]
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
-/// 
+///
 /// See the device user manual for data quantities which support the anti-aliasing filter.
-/// 
+///
 /// If set to automatic mode, the frequency will track half of the transmission rate
 /// of the target descriptor according to the configured message format (0x0C,0x0F).
 /// For example, if scaled accel (0x80,0x04) is set to stream at 100 Hz, the filter would
 /// be set to 50 Hz. Changing the message format to 200 Hz would automatically adjust the
 /// filter to 100 Hz.
-/// 
+///
 /// For WRITE, SAVE, LOAD, and DEFAULT function selectors, the descriptor set and/or field descriptor
 /// may be 0x00 to set, save, load, or reset the setting for all supported descriptors. The
 /// field descriptor must be 0x00 if the descriptor set is 0x00.
-/// 
+///
 ///
 ///@{
 
@@ -2036,7 +1952,6 @@ struct mip_3dm_mip_cmd_3dm_lowpass_filter_command
     bool enable; ///< The filter will be enabled if this is true.
     bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
-    
 };
 typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_command mip_3dm_mip_cmd_3dm_lowpass_filter_command;
 void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_command* self);
@@ -2049,7 +1964,6 @@ struct mip_3dm_mip_cmd_3dm_lowpass_filter_response
     bool enable; ///< The filter will be enabled if this is true.
     bool manual; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
-    
 };
 typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_response mip_3dm_mip_cmd_3dm_lowpass_filter_response;
 void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_response* self);
@@ -2072,4 +1986,3 @@ mip_cmd_result mip_3dm_default_mip_cmd_3dm_lowpass_filter(struct mip_interface* 
 } // namespace mip
 } // extern "C"
 #endif // __cplusplus
-

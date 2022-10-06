@@ -28,10 +28,10 @@ struct mip_field;
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum 
+enum
 {
     MIP_FILTER_DATA_DESC_SET                                         = 0x82,
-    
+
     MIP_DATA_DESC_FILTER_POS_LLH                                     = 0x01,
     MIP_DATA_DESC_FILTER_VEL_NED                                     = 0x02,
     MIP_DATA_DESC_FILTER_ATT_QUATERNION                              = 0x03,
@@ -92,7 +92,6 @@ enum
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
-    
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,55 +99,55 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef uint16_t mip_filter_mode;
-static const mip_filter_mode MIP_FILTER_MODE_GX5_STARTUP            = 0; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_GX5_INIT               = 1; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID = 2; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR = 3; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_INIT                   = 1; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_VERT_GYRO              = 2; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_AHRS                   = 3; ///<  
-static const mip_filter_mode MIP_FILTER_MODE_FULL_NAV               = 4; ///<  
+static const mip_filter_mode MIP_FILTER_MODE_GX5_STARTUP            = 0; ///<
+static const mip_filter_mode MIP_FILTER_MODE_GX5_INIT               = 1; ///<
+static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_VALID = 2; ///<
+static const mip_filter_mode MIP_FILTER_MODE_GX5_RUN_SOLUTION_ERROR = 3; ///<
+static const mip_filter_mode MIP_FILTER_MODE_INIT                   = 1; ///<
+static const mip_filter_mode MIP_FILTER_MODE_VERT_GYRO              = 2; ///<
+static const mip_filter_mode MIP_FILTER_MODE_AHRS                   = 3; ///<
+static const mip_filter_mode MIP_FILTER_MODE_FULL_NAV               = 4; ///<
 
 void insert_mip_filter_mode(struct mip_serializer* serializer, const mip_filter_mode self);
 void extract_mip_filter_mode(struct mip_serializer* serializer, mip_filter_mode* self);
 
 typedef uint16_t mip_filter_dynamics_mode;
-static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_PORTABLE   = 1; ///<  
-static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AUTOMOTIVE = 2; ///<  
-static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AIRBORNE   = 3; ///<  
-static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GQ7_DEFAULT    = 1; ///<  
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_PORTABLE   = 1; ///<
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AUTOMOTIVE = 2; ///<
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GX5_AIRBORNE   = 3; ///<
+static const mip_filter_dynamics_mode MIP_FILTER_DYNAMICS_MODE_GQ7_DEFAULT    = 1; ///<
 
 void insert_mip_filter_dynamics_mode(struct mip_serializer* serializer, const mip_filter_dynamics_mode self);
 void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, mip_filter_dynamics_mode* self);
 
 typedef uint16_t mip_filter_status_flags;
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_NONE                                           = 0x0000;
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_ATTITUDE                           = 0x1000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_IMU_UNAVAILABLE                        = 0x0001; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GPS_UNAVAILABLE                        = 0x0002; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MATRIX_SINGULARITY                     = 0x0008; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_FILTER_CONDITION                           = 0x0003; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ROLL_PITCH_WARNING                         = 0x0004; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_HEADING_WARNING                            = 0x0008; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_POSITION_WARNING                           = 0x0010; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_VELOCITY_WARNING                           = 0x0020; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_IMU_BIAS_WARNING                           = 0x0040; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_GNSS_CLK_WARNING                           = 0x0080; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100; ///<  
-static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200; ///<  
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_ATTITUDE                           = 0x1000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_INIT_NO_POSITION_VELOCITY                  = 0x2000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_IMU_UNAVAILABLE                        = 0x0001; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GPS_UNAVAILABLE                        = 0x0002; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MATRIX_SINGULARITY                     = 0x0008; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_POSITION_COVARIANCE_WARNING            = 0x0010; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_VELOCITY_COVARIANCE_WARNING            = 0x0020; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ATTITUDE_COVARIANCE_WARNING            = 0x0040; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_NAN_IN_SOLUTION_WARNING                = 0x0080; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING             = 0x0100; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING            = 0x0200; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING     = 0x0400; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING    = 0x0800; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_BIAS_EST_HIGH_WARNING              = 0x1000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING = 0x2000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING         = 0x4000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING         = 0x8000; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_FILTER_CONDITION                           = 0x0003; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ROLL_PITCH_WARNING                         = 0x0004; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_HEADING_WARNING                            = 0x0008; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_POSITION_WARNING                           = 0x0010; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_VELOCITY_WARNING                           = 0x0020; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_IMU_BIAS_WARNING                           = 0x0040; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_GNSS_CLK_WARNING                           = 0x0080; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ANTENNA_LEVER_ARM_WARNING                  = 0x0100; ///<
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200; ///<
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_TIME_SYNC_WARNING                          = 0x0400; ///<  No time synchronization pulse detected
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_SOLUTION_ERROR                             = 0xF000; ///<  Filter computation warning flags. If any bits 12-15 are set, and all filter outputs will be invalid.
 
@@ -156,24 +155,24 @@ void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self);
 
 typedef uint8_t mip_filter_aiding_measurement_type;
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS         = 1; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA = 2; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING      = 3; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE     = 4; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER = 5; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED        = 6; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS         = 1; ///<
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA = 2; ///<
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING      = 3; ///<
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE     = 4; ///<
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER = 5; ///<
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED        = 6; ///<
 
 void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self);
 void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self);
 
 typedef uint8_t mip_filter_measurement_indicator;
 static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_NONE                  = 0x00;
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_ENABLED               = 0x01; ///<  
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_USED                  = 0x02; ///<  
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_RESIDUAL_HIGH_WARNING = 0x04; ///<  
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_SAMPLE_TIME_WARNING   = 0x08; ///<  
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_CONFIGURATION_ERROR   = 0x10; ///<  
-static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_MAX_NUM_MEAS_EXCEEDED = 0x20; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_ENABLED               = 0x01; ///<
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_USED                  = 0x02; ///<
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_RESIDUAL_HIGH_WARNING = 0x04; ///<
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_SAMPLE_TIME_WARNING   = 0x08; ///<
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_CONFIGURATION_ERROR   = 0x10; ///<
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_MAX_NUM_MEAS_EXCEEDED = 0x20; ///<
 
 void insert_mip_filter_measurement_indicator(struct mip_serializer* serializer, const mip_filter_measurement_indicator self);
 void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer, mip_filter_measurement_indicator* self);
@@ -217,7 +216,6 @@ struct mip_filter_position_llh_data
     double longitude; ///< [degrees]
     double ellipsoid_height; ///< [meters]
     uint16_t valid_flags; ///< 0 - Invalid, 1 - valid
-    
 };
 typedef struct mip_filter_position_llh_data mip_filter_position_llh_data;
 void insert_mip_filter_position_llh_data(struct mip_serializer* serializer, const mip_filter_position_llh_data* self);
@@ -238,7 +236,6 @@ struct mip_filter_velocity_ned_data
     float east; ///< [meters/second]
     float down; ///< [meters/second]
     uint16_t valid_flags; ///< 0 - Invalid, 1 - valid
-    
 };
 typedef struct mip_filter_velocity_ned_data mip_filter_velocity_ned_data;
 void insert_mip_filter_velocity_ned_data(struct mip_serializer* serializer, const mip_filter_velocity_ned_data* self);
@@ -251,9 +248,9 @@ bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* fie
 ///@defgroup c_filter_attitude_quaternion  (0x82,0x03) Attitude Quaternion [C]
 /// 4x1 vector representation of the quaternion describing the orientation of the device with respect to the NED local-level frame.
 /// This quaternion satisfies the following relationship:
-/// 
+///
 /// EQSTART p^{veh} = q^{-1} p^{ned} q EQEND<br/>
-/// 
+///
 /// Where:<br/>
 /// EQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the rotation. <br/>
 /// EQSTART p^ned = (0, v^{ned}_x, v^{ned}_y, v^{ned}_z) EQEND and EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame.<br/>
@@ -265,7 +262,6 @@ struct mip_filter_attitude_quaternion_data
 {
     float q[4]; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_attitude_quaternion_data mip_filter_attitude_quaternion_data;
 void insert_mip_filter_attitude_quaternion_data(struct mip_serializer* serializer, const mip_filter_attitude_quaternion_data* self);
@@ -278,11 +274,11 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const struct mip_fie
 ///@defgroup c_filter_attitude_dcm  (0x82,0x04) Attitude Dcm [C]
 /// 3x3 Direction Cosine Matrix EQSTART M_{ned}^{veh} EQEND describing the orientation of the device with respect to the NED local-level frame.
 /// This matrix satisfies the following relationship:
-/// 
+///
 /// EQSTART v^{veh} = M_{ned}^{veh} v^{ned} EQEND<br/>
-/// 
+///
 /// Where:<br/>
-/// 
+///
 /// EQSTART v^{ned} EQEND is a 3-element vector expressed in the NED frame. <br/>
 /// EQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>
 /// <br/>
@@ -294,7 +290,6 @@ struct mip_filter_attitude_dcm_data
 {
     float dcm[9]; ///< Matrix elements in row-major order.
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_attitude_dcm_data mip_filter_attitude_dcm_data;
 void insert_mip_filter_attitude_dcm_data(struct mip_serializer* serializer, const mip_filter_attitude_dcm_data* self);
@@ -316,7 +311,6 @@ struct mip_filter_euler_angles_data
     float pitch; ///< [radians]
     float yaw; ///< [radians]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_euler_angles_data mip_filter_euler_angles_data;
 void insert_mip_filter_euler_angles_data(struct mip_serializer* serializer, const mip_filter_euler_angles_data* self);
@@ -335,7 +329,6 @@ struct mip_filter_gyro_bias_data
 {
     float bias[3]; ///< (x, y, z) [radians/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gyro_bias_data mip_filter_gyro_bias_data;
 void insert_mip_filter_gyro_bias_data(struct mip_serializer* serializer, const mip_filter_gyro_bias_data* self);
@@ -354,7 +347,6 @@ struct mip_filter_accel_bias_data
 {
     float bias[3]; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_accel_bias_data mip_filter_accel_bias_data;
 void insert_mip_filter_accel_bias_data(struct mip_serializer* serializer, const mip_filter_accel_bias_data* self);
@@ -375,7 +367,6 @@ struct mip_filter_position_llh_uncertainty_data
     float east; ///< [meters]
     float down; ///< [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_position_llh_uncertainty_data mip_filter_position_llh_uncertainty_data;
 void insert_mip_filter_position_llh_uncertainty_data(struct mip_serializer* serializer, const mip_filter_position_llh_uncertainty_data* self);
@@ -396,7 +387,6 @@ struct mip_filter_velocity_ned_uncertainty_data
     float east; ///< [meters/second]
     float down; ///< [meters/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_velocity_ned_uncertainty_data mip_filter_velocity_ned_uncertainty_data;
 void insert_mip_filter_velocity_ned_uncertainty_data(struct mip_serializer* serializer, const mip_filter_velocity_ned_uncertainty_data* self);
@@ -418,7 +408,6 @@ struct mip_filter_euler_angles_uncertainty_data
     float pitch; ///< [radians]
     float yaw; ///< [radians]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_euler_angles_uncertainty_data mip_filter_euler_angles_uncertainty_data;
 void insert_mip_filter_euler_angles_uncertainty_data(struct mip_serializer* serializer, const mip_filter_euler_angles_uncertainty_data* self);
@@ -437,7 +426,6 @@ struct mip_filter_gyro_bias_uncertainty_data
 {
     float bias_uncert[3]; ///< (x,y,z) [radians/sec]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gyro_bias_uncertainty_data mip_filter_gyro_bias_uncertainty_data;
 void insert_mip_filter_gyro_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_gyro_bias_uncertainty_data* self);
@@ -456,7 +444,6 @@ struct mip_filter_accel_bias_uncertainty_data
 {
     float bias_uncert[3]; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_accel_bias_uncertainty_data mip_filter_accel_bias_uncertainty_data;
 void insert_mip_filter_accel_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_accel_bias_uncertainty_data* self);
@@ -468,11 +455,11 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const struct mip_
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_timestamp  (0x82,0x11) Timestamp [C]
 /// GPS timestamp of the Filter data
-/// 
+///
 /// Should the PPS become unavailable, the device will revert to its internal clock, which will cause the reported time to drift from true GPS time.
 /// Upon recovering from a PPS outage, the user should expect a jump in the reported GPS time due to the accumulation of internal clock error.
 /// If synchronization to an external clock or onboard GNSS receiver (for products that have one) is disabled, this time is equivalent to internal system time.
-/// 
+///
 /// Note: this data field may be deprecated in the future. The more flexible shared data field (0x82, 0xD3) should be used instead.
 ///
 ///@{
@@ -482,7 +469,6 @@ struct mip_filter_timestamp_data
     double tow; ///< GPS Time of Week [seconds]
     uint16_t week_number; ///< GPS Week Number since 1980 [weeks]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_timestamp_data mip_filter_timestamp_data;
 void insert_mip_filter_timestamp_data(struct mip_serializer* serializer, const mip_filter_timestamp_data* self);
@@ -502,7 +488,6 @@ struct mip_filter_status_data
     mip_filter_mode filter_state; ///< Device-specific filter state.  Please consult the user manual for definition.
     mip_filter_dynamics_mode dynamics_mode; ///< Device-specific dynamics mode. Please consult the user manual for definition.
     mip_filter_status_flags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
-    
 };
 typedef struct mip_filter_status_data mip_filter_status_data;
 void insert_mip_filter_status_data(struct mip_serializer* serializer, const mip_filter_status_data* self);
@@ -522,7 +507,6 @@ struct mip_filter_linear_accel_data
 {
     float accel[3]; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_linear_accel_data mip_filter_linear_accel_data;
 void insert_mip_filter_linear_accel_data(struct mip_serializer* serializer, const mip_filter_linear_accel_data* self);
@@ -541,7 +525,6 @@ struct mip_filter_gravity_vector_data
 {
     float gravity[3]; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gravity_vector_data mip_filter_gravity_vector_data;
 void insert_mip_filter_gravity_vector_data(struct mip_serializer* serializer, const mip_filter_gravity_vector_data* self);
@@ -560,7 +543,6 @@ struct mip_filter_comp_accel_data
 {
     float accel[3]; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_comp_accel_data mip_filter_comp_accel_data;
 void insert_mip_filter_comp_accel_data(struct mip_serializer* serializer, const mip_filter_comp_accel_data* self);
@@ -579,7 +561,6 @@ struct mip_filter_comp_angular_rate_data
 {
     float gyro[3]; ///< (x, y, z) [radians/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_comp_angular_rate_data mip_filter_comp_angular_rate_data;
 void insert_mip_filter_comp_angular_rate_data(struct mip_serializer* serializer, const mip_filter_comp_angular_rate_data* self);
@@ -598,7 +579,6 @@ struct mip_filter_quaternion_attitude_uncertainty_data
 {
     float q[4]; ///< [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_quaternion_attitude_uncertainty_data mip_filter_quaternion_attitude_uncertainty_data;
 void insert_mip_filter_quaternion_attitude_uncertainty_data(struct mip_serializer* serializer, const mip_filter_quaternion_attitude_uncertainty_data* self);
@@ -617,7 +597,6 @@ struct mip_filter_wgs84_gravity_mag_data
 {
     float magnitude; ///< [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_wgs84_gravity_mag_data mip_filter_wgs84_gravity_mag_data;
 void insert_mip_filter_wgs84_gravity_mag_data(struct mip_serializer* serializer, const mip_filter_wgs84_gravity_mag_data* self);
@@ -629,18 +608,18 @@ bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const struct mip_field
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_heading_update_state  (0x82,0x14) Heading Update State [C]
 /// Filter reported heading update state.
-/// 
+///
 /// Heading updates can be applied from the sources listed below.  Note, some of these sources may be combined.
 /// The heading value is always relative to true north.
 ///
 ///@{
 
 typedef uint16_t mip_filter_heading_update_state_data_heading_source;
-static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_NONE                 = 0; ///<  
-static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_MAGNETOMETER         = 1; ///<  
-static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_GNSS_VELOCITY_VECTOR = 2; ///<  
-static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_EXTERNAL             = 4; ///<  
-static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_DUAL_ANTENNA         = 8; ///<  
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_NONE                 = 0; ///<
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_MAGNETOMETER         = 1; ///<
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_GNSS_VELOCITY_VECTOR = 2; ///<
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_EXTERNAL             = 4; ///<
+static const mip_filter_heading_update_state_data_heading_source MIP_FILTER_HEADING_UPDATE_STATE_DATA_HEADING_SOURCE_DUAL_ANTENNA         = 8; ///<
 
 struct mip_filter_heading_update_state_data
 {
@@ -648,7 +627,6 @@ struct mip_filter_heading_update_state_data
     float heading_1sigma; ///< [radians]
     mip_filter_heading_update_state_data_heading_source source;
     uint16_t valid_flags; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
-    
 };
 typedef struct mip_filter_heading_update_state_data mip_filter_heading_update_state_data;
 void insert_mip_filter_heading_update_state_data(struct mip_serializer* serializer, const mip_filter_heading_update_state_data* self);
@@ -675,7 +653,6 @@ struct mip_filter_magnetic_model_data
     float inclination; ///< [radians]
     float declination; ///< [radians]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetic_model_data mip_filter_magnetic_model_data;
 void insert_mip_filter_magnetic_model_data(struct mip_serializer* serializer, const mip_filter_magnetic_model_data* self);
@@ -694,7 +671,6 @@ struct mip_filter_accel_scale_factor_data
 {
     float scale_factor[3]; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_accel_scale_factor_data mip_filter_accel_scale_factor_data;
 void insert_mip_filter_accel_scale_factor_data(struct mip_serializer* serializer, const mip_filter_accel_scale_factor_data* self);
@@ -713,7 +689,6 @@ struct mip_filter_accel_scale_factor_uncertainty_data
 {
     float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_accel_scale_factor_uncertainty_data mip_filter_accel_scale_factor_uncertainty_data;
 void insert_mip_filter_accel_scale_factor_uncertainty_data(struct mip_serializer* serializer, const mip_filter_accel_scale_factor_uncertainty_data* self);
@@ -732,7 +707,6 @@ struct mip_filter_gyro_scale_factor_data
 {
     float scale_factor[3]; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gyro_scale_factor_data mip_filter_gyro_scale_factor_data;
 void insert_mip_filter_gyro_scale_factor_data(struct mip_serializer* serializer, const mip_filter_gyro_scale_factor_data* self);
@@ -751,7 +725,6 @@ struct mip_filter_gyro_scale_factor_uncertainty_data
 {
     float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gyro_scale_factor_uncertainty_data mip_filter_gyro_scale_factor_uncertainty_data;
 void insert_mip_filter_gyro_scale_factor_uncertainty_data(struct mip_serializer* serializer, const mip_filter_gyro_scale_factor_uncertainty_data* self);
@@ -770,7 +743,6 @@ struct mip_filter_mag_bias_data
 {
     float bias[3]; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_mag_bias_data mip_filter_mag_bias_data;
 void insert_mip_filter_mag_bias_data(struct mip_serializer* serializer, const mip_filter_mag_bias_data* self);
@@ -789,7 +761,6 @@ struct mip_filter_mag_bias_uncertainty_data
 {
     float bias_uncert[3]; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_mag_bias_uncertainty_data mip_filter_mag_bias_uncertainty_data;
 void insert_mip_filter_mag_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_mag_bias_uncertainty_data* self);
@@ -801,7 +772,7 @@ bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const struct mip_fi
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_standard_atmosphere  (0x82,0x20) Standard Atmosphere [C]
 /// Filter reported standard atmosphere parameters.
-/// 
+///
 /// The US 1976 Standard Atmosphere Model is used. A valid GNSS location is required for the model to be valid.
 ///
 ///@{
@@ -814,7 +785,6 @@ struct mip_filter_standard_atmosphere_data
     float standard_pressure; ///< [milliBar]
     float standard_density; ///< [kilogram/meter^3]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_standard_atmosphere_data mip_filter_standard_atmosphere_data;
 void insert_mip_filter_standard_atmosphere_data(struct mip_serializer* serializer, const mip_filter_standard_atmosphere_data* self);
@@ -826,7 +796,7 @@ bool extract_mip_filter_standard_atmosphere_data_from_field(const struct mip_fie
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_pressure_altitude  (0x82,0x21) Pressure Altitude [C]
 /// Filter reported pressure altitude.
-/// 
+///
 /// The US 1976 Standard Atmosphere Model is used to calculate the pressure altitude in meters.
 /// A valid pressure sensor reading is required for the pressure altitude to be valid.
 /// The minimum pressure reading supported by the model is 0.0037 mBar, corresponding to an altitude of 84,852 meters.
@@ -837,7 +807,6 @@ struct mip_filter_pressure_altitude_data
 {
     float pressure_altitude; ///< [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_pressure_altitude_data mip_filter_pressure_altitude_data;
 void insert_mip_filter_pressure_altitude_data(struct mip_serializer* serializer, const mip_filter_pressure_altitude_data* self);
@@ -855,7 +824,6 @@ struct mip_filter_density_altitude_data
 {
     float density_altitude; ///< m
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_density_altitude_data mip_filter_density_altitude_data;
 void insert_mip_filter_density_altitude_data(struct mip_serializer* serializer, const mip_filter_density_altitude_data* self);
@@ -867,7 +835,7 @@ bool extract_mip_filter_density_altitude_data_from_field(const struct mip_field*
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_antenna_offset_correction  (0x82,0x30) Antenna Offset Correction [C]
 /// Filter reported GNSS antenna offset in vehicle frame.
-/// 
+///
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
 ///
 ///@{
@@ -876,7 +844,6 @@ struct mip_filter_antenna_offset_correction_data
 {
     float offset[3]; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_antenna_offset_correction_data mip_filter_antenna_offset_correction_data;
 void insert_mip_filter_antenna_offset_correction_data(struct mip_serializer* serializer, const mip_filter_antenna_offset_correction_data* self);
@@ -895,7 +862,6 @@ struct mip_filter_antenna_offset_correction_uncertainty_data
 {
     float offset_uncert[3]; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_antenna_offset_correction_uncertainty_data mip_filter_antenna_offset_correction_uncertainty_data;
 void insert_mip_filter_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_antenna_offset_correction_uncertainty_data* self);
@@ -907,7 +873,7 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_multi_antenna_offset_correction  (0x82,0x34) Multi Antenna Offset Correction [C]
 /// Filter reported GNSS antenna offset in vehicle frame.
-/// 
+///
 /// This offset added to any previously stored offset vector to compensate for errors in definition.
 ///
 ///@{
@@ -917,7 +883,6 @@ struct mip_filter_multi_antenna_offset_correction_data
     uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
     float offset[3]; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_multi_antenna_offset_correction_data mip_filter_multi_antenna_offset_correction_data;
 void insert_mip_filter_multi_antenna_offset_correction_data(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_data* self);
@@ -937,7 +902,6 @@ struct mip_filter_multi_antenna_offset_correction_uncertainty_data
     uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
     float offset_uncert[3]; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_multi_antenna_offset_correction_uncertainty_data mip_filter_multi_antenna_offset_correction_uncertainty_data;
 void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_uncertainty_data* self);
@@ -949,7 +913,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_magnetometer_offset  (0x82,0x25) Magnetometer Offset [C]
 /// Filter reported magnetometer hard iron offset in sensor frame.
-/// 
+///
 /// This offset added to any previously stored hard iron offset vector to compensate for magnetometer in-run bias errors.
 ///
 ///@{
@@ -958,7 +922,6 @@ struct mip_filter_magnetometer_offset_data
 {
     float hard_iron[3]; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_offset_data mip_filter_magnetometer_offset_data;
 void insert_mip_filter_magnetometer_offset_data(struct mip_serializer* serializer, const mip_filter_magnetometer_offset_data* self);
@@ -970,7 +933,7 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const struct mip_fie
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_magnetometer_matrix  (0x82,0x26) Magnetometer Matrix [C]
 /// Filter reported magnetometer soft iron matrix in sensor frame.
-/// 
+///
 /// This matrix is post multiplied to any previously stored soft iron matrix to compensate for magnetometer in-run errors.
 ///
 ///@{
@@ -979,7 +942,6 @@ struct mip_filter_magnetometer_matrix_data
 {
     float soft_iron[9]; ///< Row-major [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_matrix_data mip_filter_magnetometer_matrix_data;
 void insert_mip_filter_magnetometer_matrix_data(struct mip_serializer* serializer, const mip_filter_magnetometer_matrix_data* self);
@@ -998,7 +960,6 @@ struct mip_filter_magnetometer_offset_uncertainty_data
 {
     float hard_iron_uncertainty[3]; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_offset_uncertainty_data mip_filter_magnetometer_offset_uncertainty_data;
 void insert_mip_filter_magnetometer_offset_uncertainty_data(struct mip_serializer* serializer, const mip_filter_magnetometer_offset_uncertainty_data* self);
@@ -1017,7 +978,6 @@ struct mip_filter_magnetometer_matrix_uncertainty_data
 {
     float soft_iron_uncertainty[9]; ///< Row-major [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_matrix_uncertainty_data mip_filter_magnetometer_matrix_uncertainty_data;
 void insert_mip_filter_magnetometer_matrix_uncertainty_data(struct mip_serializer* serializer, const mip_filter_magnetometer_matrix_uncertainty_data* self);
@@ -1035,7 +995,6 @@ struct mip_filter_magnetometer_covariance_matrix_data
 {
     float covariance[9];
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_covariance_matrix_data mip_filter_magnetometer_covariance_matrix_data;
 void insert_mip_filter_magnetometer_covariance_matrix_data(struct mip_serializer* serializer, const mip_filter_magnetometer_covariance_matrix_data* self);
@@ -1054,7 +1013,6 @@ struct mip_filter_magnetometer_residual_vector_data
 {
     float residual[3]; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_magnetometer_residual_vector_data mip_filter_magnetometer_residual_vector_data;
 void insert_mip_filter_magnetometer_residual_vector_data(struct mip_serializer* serializer, const mip_filter_magnetometer_residual_vector_data* self);
@@ -1075,7 +1033,6 @@ struct mip_filter_clock_correction_data
     float bias; ///< [seconds]
     float bias_drift; ///< [seconds/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_clock_correction_data mip_filter_clock_correction_data;
 void insert_mip_filter_clock_correction_data(struct mip_serializer* serializer, const mip_filter_clock_correction_data* self);
@@ -1096,7 +1053,6 @@ struct mip_filter_clock_correction_uncertainty_data
     float bias_uncertainty; ///< [seconds]
     float bias_drift_uncertainty; ///< [seconds/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_clock_correction_uncertainty_data mip_filter_clock_correction_uncertainty_data;
 void insert_mip_filter_clock_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_clock_correction_uncertainty_data* self);
@@ -1117,7 +1073,6 @@ struct mip_filter_gnss_pos_aid_status_data
     float time_of_week; ///< Last GNSS aiding measurement time of week [seconds]
     mip_gnss_aid_status_flags status; ///< Aiding measurement status bitfield
     uint8_t reserved[8];
-    
 };
 typedef struct mip_filter_gnss_pos_aid_status_data mip_filter_gnss_pos_aid_status_data;
 void insert_mip_filter_gnss_pos_aid_status_data(struct mip_serializer* serializer, const mip_filter_gnss_pos_aid_status_data* self);
@@ -1137,7 +1092,6 @@ struct mip_filter_gnss_att_aid_status_data
     float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
     mip_gnss_aid_status_flags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8];
-    
 };
 typedef struct mip_filter_gnss_att_aid_status_data mip_filter_gnss_att_aid_status_data;
 void insert_mip_filter_gnss_att_aid_status_data(struct mip_serializer* serializer, const mip_filter_gnss_att_aid_status_data* self);
@@ -1153,15 +1107,14 @@ bool extract_mip_filter_gnss_att_aid_status_data_from_field(const struct mip_fie
 ///@{
 
 typedef uint8_t mip_filter_head_aid_status_data_heading_aid_type;
-static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_DUAL_ANTENNA     = 1; ///<  
-static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_EXTERNAL_MESSAGE = 2; ///<  
+static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_DUAL_ANTENNA     = 1; ///<
+static const mip_filter_head_aid_status_data_heading_aid_type MIP_FILTER_HEAD_AID_STATUS_DATA_HEADING_AID_TYPE_EXTERNAL_MESSAGE = 2; ///<
 
 struct mip_filter_head_aid_status_data
 {
     float time_of_week; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
     mip_filter_head_aid_status_data_heading_aid_type type; ///< 1 - Dual antenna, 2 - External heading message (user supplied)
     float reserved[2];
-    
 };
 typedef struct mip_filter_head_aid_status_data mip_filter_head_aid_status_data;
 void insert_mip_filter_head_aid_status_data(struct mip_serializer* serializer, const mip_filter_head_aid_status_data* self);
@@ -1183,7 +1136,6 @@ struct mip_filter_rel_pos_ned_data
 {
     double relative_position[3]; ///< [meters, NED]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_rel_pos_ned_data mip_filter_rel_pos_ned_data;
 void insert_mip_filter_rel_pos_ned_data(struct mip_serializer* serializer, const mip_filter_rel_pos_ned_data* self);
@@ -1202,7 +1154,6 @@ struct mip_filter_ecef_pos_data
 {
     double position_ecef[3]; ///< [meters, ECEF]
     uint16_t valid_flags; ///< 0 - invalid, 1 valid
-    
 };
 typedef struct mip_filter_ecef_pos_data mip_filter_ecef_pos_data;
 void insert_mip_filter_ecef_pos_data(struct mip_serializer* serializer, const mip_filter_ecef_pos_data* self);
@@ -1221,7 +1172,6 @@ struct mip_filter_ecef_vel_data
 {
     float velocity_ecef[3]; ///< [meters/second, ECEF]
     uint16_t valid_flags; ///< 0 - invalid, 1 valid
-    
 };
 typedef struct mip_filter_ecef_vel_data mip_filter_ecef_vel_data;
 void insert_mip_filter_ecef_vel_data(struct mip_serializer* serializer, const mip_filter_ecef_vel_data* self);
@@ -1240,7 +1190,6 @@ struct mip_filter_ecef_pos_uncertainty_data
 {
     float pos_uncertainty[3]; ///< [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_ecef_pos_uncertainty_data mip_filter_ecef_pos_uncertainty_data;
 void insert_mip_filter_ecef_pos_uncertainty_data(struct mip_serializer* serializer, const mip_filter_ecef_pos_uncertainty_data* self);
@@ -1259,7 +1208,6 @@ struct mip_filter_ecef_vel_uncertainty_data
 {
     float vel_uncertainty[3]; ///< [meters/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_ecef_vel_uncertainty_data mip_filter_ecef_vel_uncertainty_data;
 void insert_mip_filter_ecef_vel_uncertainty_data(struct mip_serializer* serializer, const mip_filter_ecef_vel_uncertainty_data* self);
@@ -1280,7 +1228,6 @@ struct mip_filter_aiding_measurement_summary_data
     uint8_t source;
     mip_filter_aiding_measurement_type type; ///< (see product manual for supported types)
     mip_filter_measurement_indicator indicator;
-    
 };
 typedef struct mip_filter_aiding_measurement_summary_data mip_filter_aiding_measurement_summary_data;
 void insert_mip_filter_aiding_measurement_summary_data(struct mip_serializer* serializer, const mip_filter_aiding_measurement_summary_data* self);
@@ -1299,7 +1246,6 @@ struct mip_filter_odometer_scale_factor_error_data
 {
     float scale_factor_error; ///< [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_odometer_scale_factor_error_data mip_filter_odometer_scale_factor_error_data;
 void insert_mip_filter_odometer_scale_factor_error_data(struct mip_serializer* serializer, const mip_filter_odometer_scale_factor_error_data* self);
@@ -1318,7 +1264,6 @@ struct mip_filter_odometer_scale_factor_error_uncertainty_data
 {
     float scale_factor_error_uncertainty; ///< [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_odometer_scale_factor_error_uncertainty_data mip_filter_odometer_scale_factor_error_uncertainty_data;
 void insert_mip_filter_odometer_scale_factor_error_uncertainty_data(struct mip_serializer* serializer, const mip_filter_odometer_scale_factor_error_uncertainty_data* self);
@@ -1334,15 +1279,15 @@ bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(
 ///@{
 
 typedef uint8_t mip_filter_gnss_dual_antenna_status_data_fix_type;
-static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_NONE     = 0; ///<  
-static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FLOAT = 1; ///<  
-static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FIXED = 2; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_NONE     = 0; ///<
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FLOAT = 1; ///<
+static const mip_filter_gnss_dual_antenna_status_data_fix_type MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_FIX_TYPE_FIX_DA_FIXED = 2; ///<
 
 typedef uint16_t mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags;
 static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_NONE                  = 0x0000;
-static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001; ///<  
-static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002; ///<  
-static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001; ///<
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002; ///<
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004; ///<
 
 struct mip_filter_gnss_dual_antenna_status_data
 {
@@ -1352,7 +1297,6 @@ struct mip_filter_gnss_dual_antenna_status_data
     mip_filter_gnss_dual_antenna_status_data_fix_type fix_type; ///< Fix type indicator
     mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags status_flags;
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
-    
 };
 typedef struct mip_filter_gnss_dual_antenna_status_data mip_filter_gnss_dual_antenna_status_data;
 void insert_mip_filter_gnss_dual_antenna_status_data(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data* self);
@@ -1377,4 +1321,3 @@ void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(
 } // namespace mip
 } // extern "C"
 #endif // __cplusplus
-

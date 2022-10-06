@@ -27,10 +27,10 @@ namespace commands_rtk {
 // Descriptors
 ////////////////////////////////////////////////////////////////////////////////
 
-enum 
+enum
 {
     DESCRIPTOR_SET                   = 0x0F,
-    
+
     CMD_GET_STATUS_FLAGS             = 0x01,
     CMD_GET_IMEI                     = 0x02,
     CMD_GET_IMSI                     = 0x03,
@@ -43,7 +43,7 @@ enum
     CMD_PROD_ERASE_STORAGE           = 0x20,
     CMD_CONTROL                      = 0x21,
     CMD_MODEM_HARD_RESET             = 0x22,
-    
+
     REPLY_GET_STATUS_FLAGS           = 0x81,
     REPLY_GET_IMEI                   = 0x82,
     REPLY_GET_IMSI                   = 0x83,
@@ -61,15 +61,15 @@ enum
 
 enum class MediaSelector : uint8_t
 {
-    MEDIA_EXTERNALFLASH = 0,  ///<  
-    MEDIA_SD            = 1,  ///<  
+    MEDIA_EXTERNALFLASH = 0,  ///<
+    MEDIA_SD            = 1,  ///<
 };
 
 enum class LedAction : uint8_t
 {
-    LED_NONE    = 0,  ///<  
-    LED_FLASH   = 1,  ///<  
-    LED_PULSATE = 2,  ///<  
+    LED_NONE    = 0,  ///<
+    LED_FLASH   = 1,  ///<
+    LED_PULSATE = 2,  ///<
 };
 
 
@@ -86,28 +86,28 @@ struct GetStatusFlags
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
+
     struct StatusFlagsLegacy : Bitfield<StatusFlagsLegacy>
     {
         enum _enumType : uint32_t
         {
             NONE                 = 0x00000000,
-            CONTROLLERSTATE      = 0x00000007,  ///<  
-            PLATFORMSTATE        = 0x000000F8,  ///<  
-            CONTROLLERSTATUSCODE = 0x00000700,  ///<  
-            PLATFORMSTATUSCODE   = 0x00003800,  ///<  
-            RESETCODE            = 0x0000C000,  ///<  
-            SIGNALQUALITY        = 0x000F0000,  ///<  
-            RESERVED             = 0xFFF00000,  ///<  
-            RSSI                 = 0x03F00000,  ///<  
-            RSRP                 = 0x0C000000,  ///<  
-            RSRQ                 = 0x30000000,  ///<  
-            SINR                 = 0xC0000000,  ///<  
+            CONTROLLERSTATE      = 0x00000007,  ///<
+            PLATFORMSTATE        = 0x000000F8,  ///<
+            CONTROLLERSTATUSCODE = 0x00000700,  ///<
+            PLATFORMSTATUSCODE   = 0x00003800,  ///<
+            RESETCODE            = 0x0000C000,  ///<
+            SIGNALQUALITY        = 0x000F0000,  ///<
+            RESERVED             = 0xFFF00000,  ///<
+            RSSI                 = 0x03F00000,  ///<
+            RSRP                 = 0x0C000000,  ///<
+            RSRQ                 = 0x30000000,  ///<
+            SINR                 = 0xC0000000,  ///<
         };
         uint32_t value = NONE;
-        
+
         StatusFlagsLegacy() : value(NONE) {}
         StatusFlagsLegacy(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
@@ -116,27 +116,27 @@ struct GetStatusFlags
         StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
     };
-    
+
     struct StatusFlags : Bitfield<StatusFlags>
     {
         enum _enumType : uint32_t
         {
             NONE                    = 0x00000000,
-            MODEM_STATE             = 0x0000000F,  ///<  
-            CONNECTION_TYPE         = 0x000000F0,  ///<  
-            RSSI                    = 0x0000FF00,  ///<  
-            SIGNAL_QUALITY          = 0x000F0000,  ///<  
-            TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<  
-            NMEA_TIMEOUT            = 0x01000000,  ///<  
-            SERVER_TIMEOUT          = 0x02000000,  ///<  
-            RTCM_TIMEOUT            = 0x04000000,  ///<  
-            DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<  
-            CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
-            RESERVED                = 0x20000000,  ///<  
-            VERSION                 = 0xC0000000,  ///<  
+            MODEM_STATE             = 0x0000000F,  ///<
+            CONNECTION_TYPE         = 0x000000F0,  ///<
+            RSSI                    = 0x0000FF00,  ///<
+            SIGNAL_QUALITY          = 0x000F0000,  ///<
+            TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<
+            NMEA_TIMEOUT            = 0x01000000,  ///<
+            SERVER_TIMEOUT          = 0x02000000,  ///<
+            RTCM_TIMEOUT            = 0x04000000,  ///<
+            DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<
+            CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<
+            RESERVED                = 0x20000000,  ///<
+            VERSION                 = 0xC0000000,  ///<
         };
         uint32_t value = NONE;
-        
+
         StatusFlags() : value(NONE) {}
         StatusFlags(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
@@ -145,15 +145,14 @@ struct GetStatusFlags
         StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
     };
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
-        
+
         StatusFlags flags; ///< Model number dependent. See above structures.
-        
     };
 };
 void insert(Serializer& serializer, const GetStatusFlags& self);
@@ -174,17 +173,16 @@ struct GetImei
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
-        
+
         char IMEI[32] = {0};
-        
     };
 };
 void insert(Serializer& serializer, const GetImei& self);
@@ -205,17 +203,16 @@ struct GetImsi
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
-        
+
         char IMSI[32] = {0};
-        
     };
 };
 void insert(Serializer& serializer, const GetImsi& self);
@@ -236,17 +233,16 @@ struct GetIccid
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
-        
+
         char ICCID[32] = {0};
-        
     };
 };
 void insert(Serializer& serializer, const GetIccid& self);
@@ -267,29 +263,28 @@ struct ConnectedDeviceType
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
-    
+
     static const bool HAS_WRITE_FUNCTION = true;
     static const bool HAS_READ_FUNCTION = true;
     static const bool HAS_SAVE_FUNCTION = true;
     static const bool HAS_LOAD_FUNCTION = true;
     static const bool HAS_RESET_FUNCTION = true;
-    
+
     enum class Type : uint8_t
     {
-        GENERIC = 0,  ///<  
-        GQ7     = 1,  ///<  
+        GENERIC = 0,  ///<
+        GQ7     = 1,  ///<
     };
-    
+
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Type devType = static_cast<Type>(0);
-    
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
-        
+
         Type devType = static_cast<Type>(0);
-        
     };
 };
 void insert(Serializer& serializer, const ConnectedDeviceType& self);
@@ -314,17 +309,16 @@ struct GetActCode
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
-        
+
         char ActivationCode[32] = {0};
-        
     };
 };
 void insert(Serializer& serializer, const GetActCode& self);
@@ -345,17 +339,16 @@ struct GetModemFirmwareVersion
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
-        
+
         char ModemFirmwareVersion[32] = {0};
-        
     };
 };
 void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
@@ -377,19 +370,18 @@ struct GetRssi
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
+
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
-        
+
         bool valid = 0;
         int32_t rssi = 0;
         int32_t signalQuality = 0;
-        
     };
 };
 void insert(Serializer& serializer, const GetRssi& self);
@@ -411,20 +403,20 @@ struct ServiceStatus
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
+
     struct ServiceFlags : Bitfield<ServiceFlags>
     {
         enum _enumType : uint8_t
         {
             NONE                    = 0x00,
-            THROTTLE                = 0x01,  ///<  
-            CORRECTIONS_UNAVAILABLE = 0x02,  ///<  
-            RESERVED                = 0xFC,  ///<  
+            THROTTLE                = 0x01,  ///<
+            CORRECTIONS_UNAVAILABLE = 0x02,  ///<
+            RESERVED                = 0xFC,  ///<
         };
         uint8_t value = NONE;
-        
+
         ServiceFlags() : value(NONE) {}
         ServiceFlags(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
@@ -433,20 +425,19 @@ struct ServiceStatus
         ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
         ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
     };
-    
+
     uint32_t reserved1 = 0;
     uint32_t reserved2 = 0;
-    
+
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
-        
+
         ServiceFlags flags;
         uint32_t receivedBytes = 0;
         uint32_t lastBytes = 0;
         uint64_t lastBytesTime = 0;
-        
     };
 };
 void insert(Serializer& serializer, const ServiceStatus& self);
@@ -469,11 +460,10 @@ struct ProdEraseStorage
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
+
     MediaSelector media = static_cast<MediaSelector>(0);
-    
 };
 void insert(Serializer& serializer, const ProdEraseStorage& self);
 void extract(Serializer& serializer, ProdEraseStorage& self);
@@ -491,14 +481,13 @@ struct LedControl
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
+
     uint8_t primaryColor[3] = {0};
     uint8_t altColor[3] = {0};
     LedAction act = static_cast<LedAction>(0);
     uint32_t period = 0;
-    
 };
 void insert(Serializer& serializer, const LedControl& self);
 void extract(Serializer& serializer, LedControl& self);
@@ -517,10 +506,8 @@ struct ModemHardReset
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
-    
+
     static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    
 };
 void insert(Serializer& serializer, const ModemHardReset& self);
 void extract(Serializer& serializer, ModemHardReset& self);
@@ -535,4 +522,3 @@ CmdResult modemHardReset(C::mip_interface& device);
 ////////////////////////////////////////////////////////////////////////////////
 } // namespace commands_rtk
 } // namespace mip
-
