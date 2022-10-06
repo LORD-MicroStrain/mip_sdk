@@ -64,8 +64,10 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 ///@copydetails mip::C::mip_log_callback
 ///
 #ifdef MIP_ENABLE_LOGGING
+#define MIP_LOG_INIT(callback, level, user) mip_logging_init(callback, level, user)
 #define MIP_LOG_LOG(context, level, fmt, ...) mip_logging_log(context, level, fmt, __VA_ARGS__)
 #else
+#define MIP_LOG_INIT(callback, level, user) (void)0
 #define MIP_LOG_LOG(context, level, fmt, ...) (void)0
 #endif
 
@@ -145,9 +147,6 @@ private:
     };
 
 public:
-    ///@copydoc mip::C::mip_logging_init
-    static inline void initialize(mip::C::mip_log_callback callback, LoggingLevel level = LoggingLevel::MIP_LOG_LEVEL_INFO, void* user = nullptr) { mip_logging_init(callback, level, user); }
-
     ///@brief Helper function to log a string with varargs using the MIP SDK logger.
     ///       Prefer using specific functions like fatal, info, etc.
     ///@param context The context of the object doing the logging

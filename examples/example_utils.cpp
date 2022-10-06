@@ -3,9 +3,7 @@
 
 #include <stdarg.h>
 
-#ifdef MIP_ENABLE_LOGGING
-#include <mip/mip_logger.h>
-#endif
+#include <mip/mip_logging.h>
 
 #include "example_utils.hpp"
 
@@ -22,7 +20,6 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-#ifdef MIP_ENABLE_LOGGING
 void customLog(const void* context, void* user, mip::LoggingLevel level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
@@ -49,7 +46,6 @@ void customLog(const void* context, void* user, mip::LoggingLevel level, const c
             break;
     }
 }
-#endif
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port, const std::string& binary_file_path)
 {
@@ -114,7 +110,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
 #ifdef MIP_ENABLE_LOGGING
-    mip::Logging::initialize(&customLog);
+    MIP_LOG_INIT(&customLog, mip::LoggingLevel::MIP_LOG_LEVEL_INFO, nullptr);
 #endif
     if( argc < 3 || argc > maxArgs )
     {

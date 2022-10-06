@@ -4,7 +4,7 @@
 #include <mip/mip_interface.h>
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
-#include <mip/mip_logger.h>
+#include <mip/mip_logging.h>
 #include <mip/utils/serialization.h>
 
 #include <mip/definitions/descriptors.h>
@@ -14,9 +14,7 @@
 
 #include <mip/utils/serial_port.h>
 
-#ifdef MIP_ENABLE_LOGGING
-#include <mip/mip_logger.h>
-#endif
+#include <mip/mip_logging.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +35,6 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
-#ifdef MIP_ENABLE_LOGGING
 void customLog(const void* context, void* user, mip_log_level level, const char* fmt, va_list args)
 {
     switch (level)
@@ -51,7 +48,6 @@ void customLog(const void* context, void* user, mip_log_level level, const char*
             break;
     }
 }
-#endif
 
 void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
@@ -162,9 +158,7 @@ int main(int argc, const char* argv[])
         return usage(argv[0]);
 
     // Initialize the MIP logger before opening the port so we can print errors if they occur
-#ifdef MIP_ENABLE_LOGGING
-    mip_logging_init(&customLog, MIP_LOG_LEVEL_DEBUG, NULL);
-#endif
+    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_INFO, NULL);
 
     if( !open_port(argv[1], baudrate) )
         return 1;

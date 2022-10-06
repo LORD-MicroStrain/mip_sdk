@@ -1,6 +1,6 @@
 
 #include "mip_device.hpp"
-#include "mip_logger.h"
+#include "mip_logging.h"
 
 namespace mip {
 namespace C {

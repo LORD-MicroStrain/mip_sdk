@@ -175,19 +175,19 @@ if(MIP_USE_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
-if(MIP_ENABLE_LOGGING)
-    list(APPEND MIP_SOURCES
-        "${MIP_DIR}/mip_logger.c"
-        "${MIP_DIR}/mip_logger.h"
-    )
-    list(APPEND MIP_DEFINES "MIP_ENABLE_LOGGING")
-endif()
 if(MIP_USE_EXTRAS)
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
     )
+endif()
+
+# Logging is a little weird since we need to install the header no matter what
+list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.h")
+if(MIP_ENABLE_LOGGING)
+    list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.c")
+    list(APPEND MIP_DEFINES "MIP_ENABLE_LOGGING")
 endif()
 
 set(ALL_MIP_SOURCES
