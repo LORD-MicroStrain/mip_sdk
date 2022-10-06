@@ -29,7 +29,7 @@ namespace data_shared {
 
 enum
 {
-    DESCRIPTOR_SET      = 0xFF,
+    DESCRIPTOR_SET = 0xFF,
 
 
     DATA_EVENT_SOURCE   = 0xD0,
@@ -65,7 +65,7 @@ static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 
 struct EventSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -77,6 +77,7 @@ struct EventSource
 
     uint8_t trigger_id = 0; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
 };
+
 void insert(Serializer& serializer, const EventSource& self);
 void extract(Serializer& serializer, EventSource& self);
 
@@ -93,7 +94,7 @@ void extract(Serializer& serializer, EventSource& self);
 
 struct Ticks
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -105,6 +106,7 @@ struct Ticks
 
     uint32_t ticks = 0; ///< Ticks since powerup.
 };
+
 void insert(Serializer& serializer, const Ticks& self);
 void extract(Serializer& serializer, Ticks& self);
 
@@ -122,7 +124,7 @@ void extract(Serializer& serializer, Ticks& self);
 
 struct DeltaTicks
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -134,6 +136,7 @@ struct DeltaTicks
 
     uint32_t ticks = 0; ///< Ticks since last output.
 };
+
 void insert(Serializer& serializer, const DeltaTicks& self);
 void extract(Serializer& serializer, DeltaTicks& self);
 
@@ -150,14 +153,14 @@ void extract(Serializer& serializer, DeltaTicks& self);
 
 struct GpsTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(tow, week_number, valid_flags);
     }
 
     struct ValidFlags : Bitfield<ValidFlags>
@@ -180,10 +183,11 @@ struct GpsTimestamp
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
 
-    double tow = 0; ///< GPS Time of Week [seconds]
-    uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
+    double     tow         = 0; ///< GPS Time of Week [seconds]
+    uint16_t   week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
 };
+
 void insert(Serializer& serializer, const GpsTimestamp& self);
 void extract(Serializer& serializer, GpsTimestamp& self);
 
@@ -206,7 +210,7 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 
 struct DeltaTime
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -218,6 +222,7 @@ struct DeltaTime
 
     double seconds = 0; ///< Seconds since last output.
 };
+
 void insert(Serializer& serializer, const DeltaTime& self);
 void extract(Serializer& serializer, DeltaTime& self);
 
@@ -238,7 +243,7 @@ void extract(Serializer& serializer, DeltaTime& self);
 
 struct ReferenceTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -250,6 +255,7 @@ struct ReferenceTimestamp
 
     uint64_t nanoseconds = 0; ///< Nanoseconds since initialization.
 };
+
 void insert(Serializer& serializer, const ReferenceTimestamp& self);
 void extract(Serializer& serializer, ReferenceTimestamp& self);
 
@@ -272,7 +278,7 @@ void extract(Serializer& serializer, ReferenceTimestamp& self);
 
 struct ReferenceTimeDelta
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -284,6 +290,7 @@ struct ReferenceTimeDelta
 
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
 };
+
 void insert(Serializer& serializer, const ReferenceTimeDelta& self);
 void extract(Serializer& serializer, ReferenceTimeDelta& self);
 
@@ -305,14 +312,14 @@ void extract(Serializer& serializer, ReferenceTimeDelta& self);
 
 struct ExternalTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(nanoseconds,valid_flags);
+        return std::make_tuple(nanoseconds, valid_flags);
     }
 
     struct ValidFlags : Bitfield<ValidFlags>
@@ -333,9 +340,10 @@ struct ExternalTimestamp
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
 
-    uint64_t nanoseconds = 0;
+    uint64_t   nanoseconds = 0;
     ValidFlags valid_flags;
 };
+
 void insert(Serializer& serializer, const ExternalTimestamp& self);
 void extract(Serializer& serializer, ExternalTimestamp& self);
 
@@ -361,14 +369,14 @@ void extract(Serializer& serializer, ExternalTimestamp& self);
 
 struct ExternalTimeDelta
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_shared::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(dt_nanos,valid_flags);
+        return std::make_tuple(dt_nanos, valid_flags);
     }
 
     struct ValidFlags : Bitfield<ValidFlags>
@@ -389,9 +397,10 @@ struct ExternalTimeDelta
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
 
-    uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
+    uint64_t   dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     ValidFlags valid_flags;
 };
+
 void insert(Serializer& serializer, const ExternalTimeDelta& self);
 void extract(Serializer& serializer, ExternalTimeDelta& self);
 

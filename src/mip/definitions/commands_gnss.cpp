@@ -44,14 +44,14 @@ void insert(Serializer& serializer, const ReceiverInfo::Response& self)
 {
     insert(serializer, self.num_receivers);
 
-    for(unsigned int i=0; i < self.num_receivers; i++)
+    for (unsigned int i = 0; i < self.num_receivers; i++)
         insert(serializer, self.receiver_info[i]);
 }
 
 void extract(Serializer& serializer, ReceiverInfo::Response& self)
 {
     C::extract_count(&serializer, &self.num_receivers, self.num_receivers);
-    for(unsigned int i=0; i < self.num_receivers; i++)
+    for (unsigned int i = 0; i < self.num_receivers; i++)
         extract(serializer, self.receiver_info[i]);
 }
 
@@ -61,7 +61,7 @@ void insert(Serializer& serializer, const ReceiverInfo::Info& self)
 
     insert(serializer, self.mip_data_descriptor_set);
 
-    for(unsigned int i=0; i < 32; i++)
+    for (unsigned int i = 0; i < 32; i++)
         insert(serializer, self.description[i]);
 }
 
@@ -71,27 +71,29 @@ void extract(Serializer& serializer, ReceiverInfo::Info& self)
 
     extract(serializer, self.mip_data_descriptor_set);
 
-    for(unsigned int i=0; i < 32; i++)
+    for (unsigned int i = 0; i < 32; i++)
         extract(serializer, self.description[i]);
 }
 
-CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut)
+CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax,
+    ReceiverInfo::Info* receiverInfoOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
 
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_LIST_RECEIVERS, NULL, 0, REPLY_LIST_RECEIVERS, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_LIST_RECEIVERS, NULL, 0,
+        REPLY_LIST_RECEIVERS, buffer, &responseLength);
 
-    if( result == MIP_ACK_OK )
+    if (result == MIP_ACK_OK)
     {
         Serializer deserializer(buffer, responseLength);
 
         C::extract_count(&deserializer, numReceiversOut, numReceiversOutMax);
         assert(receiverInfoOut || (numReceiversOut == 0));
-        for(unsigned int i=0; i < *numReceiversOut; i++)
+        for (unsigned int i = 0; i < *numReceiversOut; i++)
             extract(deserializer, receiverInfoOut[i]);
 
-        if( deserializer.remaining() != 0 )
+        if (deserializer.remaining() != 0)
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -101,7 +103,7 @@ void insert(Serializer& serializer, const SignalConfiguration& self)
 {
     insert(serializer, self.function);
 
-    if( self.function == FunctionSelector::WRITE )
+    if (self.function == FunctionSelector::WRITE)
     {
         insert(serializer, self.gps_enable);
 
@@ -111,7 +113,7 @@ void insert(Serializer& serializer, const SignalConfiguration& self)
 
         insert(serializer, self.beidou_enable);
 
-        for(unsigned int i=0; i < 4; i++)
+        for (unsigned int i = 0; i < 4; i++)
             insert(serializer, self.reserved[i]);
     }
 }
@@ -120,7 +122,7 @@ void extract(Serializer& serializer, SignalConfiguration& self)
 {
     extract(serializer, self.function);
 
-    if( self.function == FunctionSelector::WRITE )
+    if (self.function == FunctionSelector::WRITE)
     {
         extract(serializer, self.gps_enable);
 
@@ -130,7 +132,7 @@ void extract(Serializer& serializer, SignalConfiguration& self)
 
         extract(serializer, self.beidou_enable);
 
-        for(unsigned int i=0; i < 4; i++)
+        for (unsigned int i = 0; i < 4; i++)
             extract(serializer, self.reserved[i]);
     }
 }
@@ -145,7 +147,7 @@ void insert(Serializer& serializer, const SignalConfiguration::Response& self)
 
     insert(serializer, self.beidou_enable);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.reserved[i]);
 }
 
@@ -159,13 +161,14 @@ void extract(Serializer& serializer, SignalConfiguration::Response& self)
 
     extract(serializer, self.beidou_enable);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.reserved[i]);
 }
 
-CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
+CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable,
+    uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::WRITE);
@@ -178,26 +181,29 @@ CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, 
     insert(serializer, beidouEnable);
 
     assert(reserved || (4 == 0));
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, reserved[i]);
 
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
-CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
+CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut,
+    uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
 
-    uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    uint8_t   responseLength = sizeof(buffer);
+    CmdResult result         = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION,
+        buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
 
-    if( result == MIP_ACK_OK )
+    if (result == MIP_ACK_OK)
     {
         Serializer deserializer(buffer, responseLength);
 
@@ -214,10 +220,10 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
         extract(deserializer, *beidouEnableOut);
 
         assert(reservedOut || (4 == 0));
-        for(unsigned int i=0; i < 4; i++)
+        for (unsigned int i = 0; i < 4; i++)
             extract(deserializer, reservedOut[i]);
 
-        if( deserializer.remaining() != 0 )
+        if (deserializer.remaining() != 0)
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -225,46 +231,49 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
 
 CmdResult saveSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 CmdResult loadSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 CmdResult defaultSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 void insert(Serializer& serializer, const RtkDongleConfiguration& self)
 {
     insert(serializer, self.function);
 
-    if( self.function == FunctionSelector::WRITE )
+    if (self.function == FunctionSelector::WRITE)
     {
         insert(serializer, self.enable);
 
-        for(unsigned int i=0; i < 3; i++)
+        for (unsigned int i = 0; i < 3; i++)
             insert(serializer, self.reserved[i]);
     }
 }
@@ -273,11 +282,11 @@ void extract(Serializer& serializer, RtkDongleConfiguration& self)
 {
     extract(serializer, self.function);
 
-    if( self.function == FunctionSelector::WRITE )
+    if (self.function == FunctionSelector::WRITE)
     {
         extract(serializer, self.enable);
 
-        for(unsigned int i=0; i < 3; i++)
+        for (unsigned int i = 0; i < 3; i++)
             extract(serializer, self.reserved[i]);
     }
 }
@@ -286,7 +295,7 @@ void insert(Serializer& serializer, const RtkDongleConfiguration::Response& self
 {
     insert(serializer, self.enable);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.reserved[i]);
 }
 
@@ -294,39 +303,42 @@ void extract(Serializer& serializer, RtkDongleConfiguration::Response& self)
 {
     extract(serializer, self.enable);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.reserved[i]);
 }
 
 CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
 
     assert(reserved || (3 == 0));
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, reserved[i]);
 
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
 
-    uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    uint8_t   responseLength = sizeof(buffer);
+    CmdResult result         = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET,
+        CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer),
+        REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
 
-    if( result == MIP_ACK_OK )
+    if (result == MIP_ACK_OK)
     {
         Serializer deserializer(buffer, responseLength);
 
@@ -334,10 +346,10 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
         extract(deserializer, *enableOut);
 
         assert(reservedOut || (3 == 0));
-        for(unsigned int i=0; i < 3; i++)
+        for (unsigned int i = 0; i < 3; i++)
             extract(deserializer, reservedOut[i]);
 
-        if( deserializer.remaining() != 0 )
+        if (deserializer.remaining() != 0)
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -345,35 +357,38 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
 
 CmdResult saveRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 CmdResult loadRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 CmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t    buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
 
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
 
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer,
+        (uint8_t)mip_serializer_length(&serializer));
 }
 
 } // namespace commands_gnss

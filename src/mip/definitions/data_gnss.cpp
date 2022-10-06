@@ -64,7 +64,7 @@ void extract(Serializer& serializer, PosLlh& self)
 
 void insert(Serializer& serializer, const PosEcef& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.x[i]);
 
     insert(serializer, self.x_accuracy);
@@ -74,7 +74,7 @@ void insert(Serializer& serializer, const PosEcef& self)
 
 void extract(Serializer& serializer, PosEcef& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.x[i]);
 
     extract(serializer, self.x_accuracy);
@@ -84,7 +84,7 @@ void extract(Serializer& serializer, PosEcef& self)
 
 void insert(Serializer& serializer, const VelNed& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.v[i]);
 
     insert(serializer, self.speed);
@@ -102,7 +102,7 @@ void insert(Serializer& serializer, const VelNed& self)
 
 void extract(Serializer& serializer, VelNed& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.v[i]);
 
     extract(serializer, self.speed);
@@ -120,7 +120,7 @@ void extract(Serializer& serializer, VelNed& self)
 
 void insert(Serializer& serializer, const VelEcef& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.v[i]);
 
     insert(serializer, self.v_accuracy);
@@ -130,7 +130,7 @@ void insert(Serializer& serializer, const VelEcef& self)
 
 void extract(Serializer& serializer, VelEcef& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.v[i]);
 
     extract(serializer, self.v_accuracy);
@@ -512,7 +512,7 @@ void insert(Serializer& serializer, const RfErrorDetection& self)
 
     insert(serializer, self.spoofing_state);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.reserved[i]);
 
     insert(serializer, self.valid_flags);
@@ -526,7 +526,7 @@ void extract(Serializer& serializer, RfErrorDetection& self)
 
     extract(serializer, self.spoofing_state);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.reserved[i]);
 
     extract(serializer, self.valid_flags);
@@ -538,7 +538,7 @@ void insert(Serializer& serializer, const BaseStationInfo& self)
 
     insert(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.ecef_pos[i]);
 
     insert(serializer, self.height);
@@ -556,7 +556,7 @@ void extract(Serializer& serializer, BaseStationInfo& self)
 
     extract(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.ecef_pos[i]);
 
     extract(serializer, self.height);
@@ -586,7 +586,7 @@ void insert(Serializer& serializer, const RtkCorrectionsStatus& self)
 
     insert(serializer, self.beidou_correction_latency);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.reserved[i]);
 
     insert(serializer, self.valid_flags);
@@ -610,7 +610,7 @@ void extract(Serializer& serializer, RtkCorrectionsStatus& self)
 
     extract(serializer, self.beidou_correction_latency);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.reserved[i]);
 
     extract(serializer, self.valid_flags);
@@ -1052,13 +1052,13 @@ void insert(Serializer& serializer, const GloEphemeris& self)
 
     insert(serializer, self.tau_n);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.x[i]);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.v[i]);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.a[i]);
 
     insert(serializer, self.health);
@@ -1108,13 +1108,13 @@ void extract(Serializer& serializer, GloEphemeris& self)
 
     extract(serializer, self.tau_n);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.x[i]);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.v[i]);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.a[i]);
 
     extract(serializer, self.health);
@@ -1146,10 +1146,10 @@ void insert(Serializer& serializer, const GpsIonoCorr& self)
 
     insert(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.alpha[i]);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.beta[i]);
 
     insert(serializer, self.valid_flags);
@@ -1161,10 +1161,10 @@ void extract(Serializer& serializer, GpsIonoCorr& self)
 
     extract(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.alpha[i]);
 
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.beta[i]);
 
     extract(serializer, self.valid_flags);
@@ -1176,7 +1176,7 @@ void insert(Serializer& serializer, const GalileoIonoCorr& self)
 
     insert(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.alpha[i]);
 
     insert(serializer, self.disturbance_flags);
@@ -1190,7 +1190,7 @@ void extract(Serializer& serializer, GalileoIonoCorr& self)
 
     extract(serializer, self.week_number);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.alpha[i]);
 
     extract(serializer, self.disturbance_flags);

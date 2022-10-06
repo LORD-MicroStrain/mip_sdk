@@ -30,13 +30,13 @@ using namespace ::mip::C;
 
 void insert(Serializer& serializer, const BuiltInTest& self)
 {
-    for(unsigned int i=0; i < 16; i++)
+    for (unsigned int i = 0; i < 16; i++)
         insert(serializer, self.result[i]);
 }
 
 void extract(Serializer& serializer, BuiltInTest& self)
 {
-    for(unsigned int i=0; i < 16; i++)
+    for (unsigned int i = 0; i < 16; i++)
         extract(serializer, self.result[i]);
 }
 

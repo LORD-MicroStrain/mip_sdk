@@ -61,12 +61,12 @@ enum
 
 struct BaseDeviceInfo
 {
-    uint16_t firmware_version = 0;
-    char model_name[16] = {0};
-    char model_number[16] = {0};
-    char serial_number[16] = {0};
-    char lot_number[16] = {0};
-    char device_options[16] = {0};
+    uint16_t firmware_version   = 0;
+    char     model_name[16]     = {0};
+    char     model_number[16]   = {0};
+    char     serial_number[16]  = {0};
+    char     lot_number[16]     = {0};
+    char     device_options[16] = {0};
 };
 void insert(Serializer& serializer, const BaseDeviceInfo& self);
 void extract(Serializer& serializer, BaseDeviceInfo& self);
@@ -137,7 +137,7 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
 
 struct Ping
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_PING;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -160,7 +160,7 @@ CmdResult ping(C::mip_interface& device);
 
 struct SetIdle
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SET_TO_IDLE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -179,7 +179,7 @@ CmdResult setIdle(C::mip_interface& device);
 
 struct GetDeviceInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_INFO;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -187,7 +187,7 @@ struct GetDeviceInfo
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_INFO;
 
         BaseDeviceInfo device_info;
@@ -213,7 +213,7 @@ CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
 
 struct GetDeviceDescriptors
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_DESCRIPTORS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -221,7 +221,7 @@ struct GetDeviceDescriptors
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
 
         uint16_t* descriptors = {nullptr};
@@ -234,7 +234,8 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self);
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self);
 void extract(Serializer& serializer, GetDeviceDescriptors::Response& self);
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax,
+    uint8_t* descriptorsOutCount);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -250,7 +251,7 @@ CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOu
 
 struct BuiltInTest
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_BUILT_IN_TEST;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -258,7 +259,7 @@ struct BuiltInTest
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_BUILT_IN_TEST;
 
         uint32_t result = 0;
@@ -283,7 +284,7 @@ CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut);
 
 struct Resume
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_RESUME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -305,7 +306,7 @@ CmdResult resume(C::mip_interface& device);
 
 struct GetExtendedDescriptors
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_EXTENDED_DESCRIPTORS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -313,7 +314,7 @@ struct GetExtendedDescriptors
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
 
         uint16_t* descriptors = {nullptr};
@@ -326,7 +327,8 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self);
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self);
 void extract(Serializer& serializer, GetExtendedDescriptors::Response& self);
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax,
+    uint8_t* descriptorsOutCount);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -339,7 +341,7 @@ CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptors
 
 struct ContinuousBit
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_CONTINUOUS_BIT;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -347,7 +349,7 @@ struct ContinuousBit
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_CONTINUOUS_BIT;
 
         uint8_t result[16] = {0}; ///< Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
@@ -383,26 +385,26 @@ CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut);
 
 struct CommSpeed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_COMM_SPEED;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     static const uint32_t ALL_PORTS = 0;
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t port = 0; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
-    uint32_t baud = 0; ///< Port baud rate. Must be a supported rate.
+    FunctionSelector      function  = static_cast<FunctionSelector>(0);
+    uint8_t               port      = 0; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+    uint32_t              baud      = 0; ///< Port baud rate. Must be a supported rate.
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_COMM_SPEED;
 
-        uint8_t port = 0; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
+        uint8_t  port = 0; ///< Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports. See the device user manual for details.
         uint32_t baud = 0; ///< Port baud rate. Must be a supported rate.
     };
 };
@@ -429,13 +431,13 @@ CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
 
 struct GpsTimeUpdate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = false;
-    static const bool HAS_SAVE_FUNCTION = false;
-    static const bool HAS_LOAD_FUNCTION = false;
+    static const bool HAS_READ_FUNCTION  = false;
+    static const bool HAS_SAVE_FUNCTION  = false;
+    static const bool HAS_LOAD_FUNCTION  = false;
     static const bool HAS_RESET_FUNCTION = false;
 
     enum class FieldId : uint8_t
@@ -445,8 +447,8 @@ struct GpsTimeUpdate
     };
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    FieldId field_id = static_cast<FieldId>(0); ///< Determines how to interpret value.
-    uint32_t value = 0; ///< Week number or time of week, depending on the field_id.
+    FieldId          field_id = static_cast<FieldId>(0); ///< Determines how to interpret value.
+    uint32_t         value    = 0; ///< Week number or time of week, depending on the field_id.
 };
 void insert(Serializer& serializer, const GpsTimeUpdate& self);
 void extract(Serializer& serializer, GpsTimeUpdate& self);
@@ -464,7 +466,7 @@ CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fi
 
 struct SoftReset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_base::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SOFT_RESET;
 
     static const bool HAS_FUNCTION_SELECTOR = false;

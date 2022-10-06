@@ -74,7 +74,7 @@ void extract(Serializer& serializer, VelocityNed& self)
 
 void insert(Serializer& serializer, const AttitudeQuaternion& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.q[i]);
 
     insert(serializer, self.valid_flags);
@@ -82,7 +82,7 @@ void insert(Serializer& serializer, const AttitudeQuaternion& self)
 
 void extract(Serializer& serializer, AttitudeQuaternion& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.q[i]);
 
     extract(serializer, self.valid_flags);
@@ -90,7 +90,7 @@ void extract(Serializer& serializer, AttitudeQuaternion& self)
 
 void insert(Serializer& serializer, const AttitudeDcm& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.dcm[i]);
 
     insert(serializer, self.valid_flags);
@@ -98,7 +98,7 @@ void insert(Serializer& serializer, const AttitudeDcm& self)
 
 void extract(Serializer& serializer, AttitudeDcm& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.dcm[i]);
 
     extract(serializer, self.valid_flags);
@@ -128,7 +128,7 @@ void extract(Serializer& serializer, EulerAngles& self)
 
 void insert(Serializer& serializer, const GyroBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias[i]);
 
     insert(serializer, self.valid_flags);
@@ -136,7 +136,7 @@ void insert(Serializer& serializer, const GyroBias& self)
 
 void extract(Serializer& serializer, GyroBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias[i]);
 
     extract(serializer, self.valid_flags);
@@ -144,7 +144,7 @@ void extract(Serializer& serializer, GyroBias& self)
 
 void insert(Serializer& serializer, const AccelBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias[i]);
 
     insert(serializer, self.valid_flags);
@@ -152,7 +152,7 @@ void insert(Serializer& serializer, const AccelBias& self)
 
 void extract(Serializer& serializer, AccelBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias[i]);
 
     extract(serializer, self.valid_flags);
@@ -226,7 +226,7 @@ void extract(Serializer& serializer, EulerAnglesUncertainty& self)
 
 void insert(Serializer& serializer, const GyroBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -234,7 +234,7 @@ void insert(Serializer& serializer, const GyroBiasUncertainty& self)
 
 void extract(Serializer& serializer, GyroBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -242,7 +242,7 @@ void extract(Serializer& serializer, GyroBiasUncertainty& self)
 
 void insert(Serializer& serializer, const AccelBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -250,7 +250,7 @@ void insert(Serializer& serializer, const AccelBiasUncertainty& self)
 
 void extract(Serializer& serializer, AccelBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -294,7 +294,7 @@ void extract(Serializer& serializer, Status& self)
 
 void insert(Serializer& serializer, const LinearAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.accel[i]);
 
     insert(serializer, self.valid_flags);
@@ -302,7 +302,7 @@ void insert(Serializer& serializer, const LinearAccel& self)
 
 void extract(Serializer& serializer, LinearAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.accel[i]);
 
     extract(serializer, self.valid_flags);
@@ -310,7 +310,7 @@ void extract(Serializer& serializer, LinearAccel& self)
 
 void insert(Serializer& serializer, const GravityVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.gravity[i]);
 
     insert(serializer, self.valid_flags);
@@ -318,7 +318,7 @@ void insert(Serializer& serializer, const GravityVector& self)
 
 void extract(Serializer& serializer, GravityVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.gravity[i]);
 
     extract(serializer, self.valid_flags);
@@ -326,7 +326,7 @@ void extract(Serializer& serializer, GravityVector& self)
 
 void insert(Serializer& serializer, const CompAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.accel[i]);
 
     insert(serializer, self.valid_flags);
@@ -334,7 +334,7 @@ void insert(Serializer& serializer, const CompAccel& self)
 
 void extract(Serializer& serializer, CompAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.accel[i]);
 
     extract(serializer, self.valid_flags);
@@ -342,7 +342,7 @@ void extract(Serializer& serializer, CompAccel& self)
 
 void insert(Serializer& serializer, const CompAngularRate& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.gyro[i]);
 
     insert(serializer, self.valid_flags);
@@ -350,7 +350,7 @@ void insert(Serializer& serializer, const CompAngularRate& self)
 
 void extract(Serializer& serializer, CompAngularRate& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.gyro[i]);
 
     extract(serializer, self.valid_flags);
@@ -358,7 +358,7 @@ void extract(Serializer& serializer, CompAngularRate& self)
 
 void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.q[i]);
 
     insert(serializer, self.valid_flags);
@@ -366,7 +366,7 @@ void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self)
 
 void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.q[i]);
 
     extract(serializer, self.valid_flags);
@@ -440,7 +440,7 @@ void extract(Serializer& serializer, MagneticModel& self)
 
 void insert(Serializer& serializer, const AccelScaleFactor& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scale_factor[i]);
 
     insert(serializer, self.valid_flags);
@@ -448,7 +448,7 @@ void insert(Serializer& serializer, const AccelScaleFactor& self)
 
 void extract(Serializer& serializer, AccelScaleFactor& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scale_factor[i]);
 
     extract(serializer, self.valid_flags);
@@ -456,7 +456,7 @@ void extract(Serializer& serializer, AccelScaleFactor& self)
 
 void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scale_factor_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -464,7 +464,7 @@ void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self)
 
 void extract(Serializer& serializer, AccelScaleFactorUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scale_factor_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -472,7 +472,7 @@ void extract(Serializer& serializer, AccelScaleFactorUncertainty& self)
 
 void insert(Serializer& serializer, const GyroScaleFactor& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scale_factor[i]);
 
     insert(serializer, self.valid_flags);
@@ -480,7 +480,7 @@ void insert(Serializer& serializer, const GyroScaleFactor& self)
 
 void extract(Serializer& serializer, GyroScaleFactor& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scale_factor[i]);
 
     extract(serializer, self.valid_flags);
@@ -488,7 +488,7 @@ void extract(Serializer& serializer, GyroScaleFactor& self)
 
 void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scale_factor_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -496,7 +496,7 @@ void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self)
 
 void extract(Serializer& serializer, GyroScaleFactorUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scale_factor_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -504,7 +504,7 @@ void extract(Serializer& serializer, GyroScaleFactorUncertainty& self)
 
 void insert(Serializer& serializer, const MagBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias[i]);
 
     insert(serializer, self.valid_flags);
@@ -512,7 +512,7 @@ void insert(Serializer& serializer, const MagBias& self)
 
 void extract(Serializer& serializer, MagBias& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias[i]);
 
     extract(serializer, self.valid_flags);
@@ -520,7 +520,7 @@ void extract(Serializer& serializer, MagBias& self)
 
 void insert(Serializer& serializer, const MagBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -528,7 +528,7 @@ void insert(Serializer& serializer, const MagBiasUncertainty& self)
 
 void extract(Serializer& serializer, MagBiasUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -594,7 +594,7 @@ void extract(Serializer& serializer, DensityAltitude& self)
 
 void insert(Serializer& serializer, const AntennaOffsetCorrection& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.offset[i]);
 
     insert(serializer, self.valid_flags);
@@ -602,7 +602,7 @@ void insert(Serializer& serializer, const AntennaOffsetCorrection& self)
 
 void extract(Serializer& serializer, AntennaOffsetCorrection& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.offset[i]);
 
     extract(serializer, self.valid_flags);
@@ -610,7 +610,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrection& self)
 
 void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.offset_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -618,7 +618,7 @@ void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& se
 
 void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.offset_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -628,7 +628,7 @@ void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self)
 {
     insert(serializer, self.receiver_id);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.offset[i]);
 
     insert(serializer, self.valid_flags);
@@ -638,7 +638,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self)
 {
     extract(serializer, self.receiver_id);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.offset[i]);
 
     extract(serializer, self.valid_flags);
@@ -648,7 +648,7 @@ void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertaint
 {
     insert(serializer, self.receiver_id);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.offset_uncert[i]);
 
     insert(serializer, self.valid_flags);
@@ -658,7 +658,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
 {
     extract(serializer, self.receiver_id);
 
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.offset_uncert[i]);
 
     extract(serializer, self.valid_flags);
@@ -666,7 +666,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
 
 void insert(Serializer& serializer, const MagnetometerOffset& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.hard_iron[i]);
 
     insert(serializer, self.valid_flags);
@@ -674,7 +674,7 @@ void insert(Serializer& serializer, const MagnetometerOffset& self)
 
 void extract(Serializer& serializer, MagnetometerOffset& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.hard_iron[i]);
 
     extract(serializer, self.valid_flags);
@@ -682,7 +682,7 @@ void extract(Serializer& serializer, MagnetometerOffset& self)
 
 void insert(Serializer& serializer, const MagnetometerMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.soft_iron[i]);
 
     insert(serializer, self.valid_flags);
@@ -690,7 +690,7 @@ void insert(Serializer& serializer, const MagnetometerMatrix& self)
 
 void extract(Serializer& serializer, MagnetometerMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.soft_iron[i]);
 
     extract(serializer, self.valid_flags);
@@ -698,7 +698,7 @@ void extract(Serializer& serializer, MagnetometerMatrix& self)
 
 void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.hard_iron_uncertainty[i]);
 
     insert(serializer, self.valid_flags);
@@ -706,7 +706,7 @@ void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self)
 
 void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.hard_iron_uncertainty[i]);
 
     extract(serializer, self.valid_flags);
@@ -714,7 +714,7 @@ void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self)
 
 void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.soft_iron_uncertainty[i]);
 
     insert(serializer, self.valid_flags);
@@ -722,7 +722,7 @@ void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self)
 
 void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.soft_iron_uncertainty[i]);
 
     extract(serializer, self.valid_flags);
@@ -730,7 +730,7 @@ void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self)
 
 void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.covariance[i]);
 
     insert(serializer, self.valid_flags);
@@ -738,7 +738,7 @@ void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self)
 
 void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.covariance[i]);
 
     extract(serializer, self.valid_flags);
@@ -746,7 +746,7 @@ void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self)
 
 void insert(Serializer& serializer, const MagnetometerResidualVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.residual[i]);
 
     insert(serializer, self.valid_flags);
@@ -754,7 +754,7 @@ void insert(Serializer& serializer, const MagnetometerResidualVector& self)
 
 void extract(Serializer& serializer, MagnetometerResidualVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.residual[i]);
 
     extract(serializer, self.valid_flags);
@@ -812,7 +812,7 @@ void insert(Serializer& serializer, const GnssPosAidStatus& self)
 
     insert(serializer, self.status);
 
-    for(unsigned int i=0; i < 8; i++)
+    for (unsigned int i = 0; i < 8; i++)
         insert(serializer, self.reserved[i]);
 }
 
@@ -824,7 +824,7 @@ void extract(Serializer& serializer, GnssPosAidStatus& self)
 
     extract(serializer, self.status);
 
-    for(unsigned int i=0; i < 8; i++)
+    for (unsigned int i = 0; i < 8; i++)
         extract(serializer, self.reserved[i]);
 }
 
@@ -834,7 +834,7 @@ void insert(Serializer& serializer, const GnssAttAidStatus& self)
 
     insert(serializer, self.status);
 
-    for(unsigned int i=0; i < 8; i++)
+    for (unsigned int i = 0; i < 8; i++)
         insert(serializer, self.reserved[i]);
 }
 
@@ -844,7 +844,7 @@ void extract(Serializer& serializer, GnssAttAidStatus& self)
 
     extract(serializer, self.status);
 
-    for(unsigned int i=0; i < 8; i++)
+    for (unsigned int i = 0; i < 8; i++)
         extract(serializer, self.reserved[i]);
 }
 
@@ -854,7 +854,7 @@ void insert(Serializer& serializer, const HeadAidStatus& self)
 
     insert(serializer, self.type);
 
-    for(unsigned int i=0; i < 2; i++)
+    for (unsigned int i = 0; i < 2; i++)
         insert(serializer, self.reserved[i]);
 }
 
@@ -864,13 +864,13 @@ void extract(Serializer& serializer, HeadAidStatus& self)
 
     extract(serializer, self.type);
 
-    for(unsigned int i=0; i < 2; i++)
+    for (unsigned int i = 0; i < 2; i++)
         extract(serializer, self.reserved[i]);
 }
 
 void insert(Serializer& serializer, const RelPosNed& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.relative_position[i]);
 
     insert(serializer, self.valid_flags);
@@ -878,7 +878,7 @@ void insert(Serializer& serializer, const RelPosNed& self)
 
 void extract(Serializer& serializer, RelPosNed& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.relative_position[i]);
 
     extract(serializer, self.valid_flags);
@@ -886,7 +886,7 @@ void extract(Serializer& serializer, RelPosNed& self)
 
 void insert(Serializer& serializer, const EcefPos& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.position_ecef[i]);
 
     insert(serializer, self.valid_flags);
@@ -894,7 +894,7 @@ void insert(Serializer& serializer, const EcefPos& self)
 
 void extract(Serializer& serializer, EcefPos& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.position_ecef[i]);
 
     extract(serializer, self.valid_flags);
@@ -902,7 +902,7 @@ void extract(Serializer& serializer, EcefPos& self)
 
 void insert(Serializer& serializer, const EcefVel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.velocity_ecef[i]);
 
     insert(serializer, self.valid_flags);
@@ -910,7 +910,7 @@ void insert(Serializer& serializer, const EcefVel& self)
 
 void extract(Serializer& serializer, EcefVel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.velocity_ecef[i]);
 
     extract(serializer, self.valid_flags);
@@ -918,7 +918,7 @@ void extract(Serializer& serializer, EcefVel& self)
 
 void insert(Serializer& serializer, const EcefPosUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.pos_uncertainty[i]);
 
     insert(serializer, self.valid_flags);
@@ -926,7 +926,7 @@ void insert(Serializer& serializer, const EcefPosUncertainty& self)
 
 void extract(Serializer& serializer, EcefPosUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.pos_uncertainty[i]);
 
     extract(serializer, self.valid_flags);
@@ -934,7 +934,7 @@ void extract(Serializer& serializer, EcefPosUncertainty& self)
 
 void insert(Serializer& serializer, const EcefVelUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.vel_uncertainty[i]);
 
     insert(serializer, self.valid_flags);
@@ -942,7 +942,7 @@ void insert(Serializer& serializer, const EcefVelUncertainty& self)
 
 void extract(Serializer& serializer, EcefVelUncertainty& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.vel_uncertainty[i]);
 
     extract(serializer, self.valid_flags);

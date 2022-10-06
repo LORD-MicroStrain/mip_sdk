@@ -30,37 +30,37 @@ using namespace ::mip::C;
 
 void insert(Serializer& serializer, const RawAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.raw_accel[i]);
 }
 
 void extract(Serializer& serializer, RawAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.raw_accel[i]);
 }
 
 void insert(Serializer& serializer, const RawGyro& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.raw_gyro[i]);
 }
 
 void extract(Serializer& serializer, RawGyro& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.raw_gyro[i]);
 }
 
 void insert(Serializer& serializer, const RawMag& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.raw_mag[i]);
 }
 
 void extract(Serializer& serializer, RawMag& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.raw_mag[i]);
 }
 
@@ -76,37 +76,37 @@ void extract(Serializer& serializer, RawPressure& self)
 
 void insert(Serializer& serializer, const ScaledAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scaled_accel[i]);
 }
 
 void extract(Serializer& serializer, ScaledAccel& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scaled_accel[i]);
 }
 
 void insert(Serializer& serializer, const ScaledGyro& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scaled_gyro[i]);
 }
 
 void extract(Serializer& serializer, ScaledGyro& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scaled_gyro[i]);
 }
 
 void insert(Serializer& serializer, const ScaledMag& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.scaled_mag[i]);
 }
 
 void extract(Serializer& serializer, ScaledMag& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.scaled_mag[i]);
 }
 
@@ -122,49 +122,49 @@ void extract(Serializer& serializer, ScaledPressure& self)
 
 void insert(Serializer& serializer, const DeltaTheta& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.delta_theta[i]);
 }
 
 void extract(Serializer& serializer, DeltaTheta& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.delta_theta[i]);
 }
 
 void insert(Serializer& serializer, const DeltaVelocity& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.delta_velocity[i]);
 }
 
 void extract(Serializer& serializer, DeltaVelocity& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.delta_velocity[i]);
 }
 
 void insert(Serializer& serializer, const CompOrientationMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.m[i]);
 }
 
 void extract(Serializer& serializer, CompOrientationMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.m[i]);
 }
 
 void insert(Serializer& serializer, const CompQuaternion& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.q[i]);
 }
 
 void extract(Serializer& serializer, CompQuaternion& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.q[i]);
 }
 
@@ -188,25 +188,25 @@ void extract(Serializer& serializer, CompEulerAngles& self)
 
 void insert(Serializer& serializer, const CompOrientationUpdateMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         insert(serializer, self.m[i]);
 }
 
 void extract(Serializer& serializer, CompOrientationUpdateMatrix& self)
 {
-    for(unsigned int i=0; i < 9; i++)
+    for (unsigned int i = 0; i < 9; i++)
         extract(serializer, self.m[i]);
 }
 
 void insert(Serializer& serializer, const OrientationRawTemp& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         insert(serializer, self.raw_temp[i]);
 }
 
 void extract(Serializer& serializer, OrientationRawTemp& self)
 {
-    for(unsigned int i=0; i < 4; i++)
+    for (unsigned int i = 0; i < 4; i++)
         extract(serializer, self.raw_temp[i]);
 }
 
@@ -272,25 +272,25 @@ void extract(Serializer& serializer, TemperatureAbs& self)
 
 void insert(Serializer& serializer, const UpVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.up[i]);
 }
 
 void extract(Serializer& serializer, UpVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.up[i]);
 }
 
 void insert(Serializer& serializer, const NorthVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         insert(serializer, self.north[i]);
 }
 
 void extract(Serializer& serializer, NorthVector& self)
 {
-    for(unsigned int i=0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
         extract(serializer, self.north[i]);
 }
 

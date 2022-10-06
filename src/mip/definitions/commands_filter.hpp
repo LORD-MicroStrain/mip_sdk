@@ -183,7 +183,7 @@ enum class FilterMagDeclinationSource : uint8_t
 
 struct Reset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_RESET_FILTER;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -213,13 +213,13 @@ CmdResult reset(C::mip_interface& device);
 
 struct SetInitialAttitude
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SET_INITIAL_ATTITUDE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
-    float roll = 0; ///< [radians]
-    float pitch = 0; ///< [radians]
+    float roll    = 0; ///< [radians]
+    float pitch   = 0; ///< [radians]
     float heading = 0; ///< [radians]
 };
 void insert(Serializer& serializer, const SetInitialAttitude& self);
@@ -246,13 +246,13 @@ CmdResult setInitialAttitude(C::mip_interface& device, float roll, float pitch, 
 
 struct EstimationControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ESTIMATION_CONTROL_FLAGS;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     struct EnableFlags : Bitfield<EnableFlags>
@@ -280,11 +280,11 @@ struct EstimationControl
     };
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    EnableFlags enable; ///< See above
+    EnableFlags      enable; ///< See above
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ESTIMATION_CONTROL_FLAGS;
 
         EnableFlags enable; ///< See above
@@ -315,24 +315,25 @@ CmdResult defaultEstimationControl(C::mip_interface& device);
 
 struct ExternalGnssUpdate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_GNSS_UPDATE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
-    double gps_time = 0; ///< [seconds]
-    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
-    double latitude = 0; ///< [degrees]
-    double longitude = 0; ///< [degrees]
-    double height = 0; ///< Above WGS84 ellipsoid [meters]
-    float velocity[3] = {0}; ///< NED Frame [meters/second]
-    float pos_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters]
-    float vel_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters/second]
+    double   gps_time           = 0; ///< [seconds]
+    uint16_t gps_week           = 0; ///< [GPS week number, not modulus 1024]
+    double   latitude           = 0; ///< [degrees]
+    double   longitude          = 0; ///< [degrees]
+    double   height             = 0; ///< Above WGS84 ellipsoid [meters]
+    float    velocity[3]        = {0}; ///< NED Frame [meters/second]
+    float    pos_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters]
+    float    vel_uncertainty[3] = {0}; ///< NED Frame, 1-sigma [meters/second]
 };
 void insert(Serializer& serializer, const ExternalGnssUpdate& self);
 void extract(Serializer& serializer, ExternalGnssUpdate& self);
 
-CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty);
+CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude,
+    double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,14 +356,14 @@ CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t 
 
 struct ExternalHeadingUpdate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_HEADING_UPDATE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
-    float heading = 0; ///< Bounded by +-PI [radians]
-    float heading_uncertainty = 0; ///< 1-sigma [radians]
-    uint8_t type = 0; ///< 1 - True, 2 - Magnetic
+    float   heading             = 0; ///< Bounded by +-PI [radians]
+    float   heading_uncertainty = 0; ///< 1-sigma [radians]
+    uint8_t type                = 0; ///< 1 - True, 2 - Magnetic
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdate& self);
 void extract(Serializer& serializer, ExternalHeadingUpdate& self);
@@ -394,21 +395,22 @@ CmdResult externalHeadingUpdate(C::mip_interface& device, float heading, float h
 
 struct ExternalHeadingUpdateWithTime
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_EXTERNAL_HEADING_UPDATE_WITH_TIME;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
-    double gps_time = 0; ///< [seconds]
-    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
-    float heading = 0; ///< Relative to true north, bounded by +-PI [radians]
-    float heading_uncertainty = 0; ///< 1-sigma [radians]
-    uint8_t type = 0; ///< 1 - True, 2 - Magnetic
+    double   gps_time            = 0; ///< [seconds]
+    uint16_t gps_week            = 0; ///< [GPS week number, not modulus 1024]
+    float    heading             = 0; ///< Relative to true north, bounded by +-PI [radians]
+    float    heading_uncertainty = 0; ///< 1-sigma [radians]
+    uint8_t  type                = 0; ///< 1 - True, 2 - Magnetic
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
 void extract(Serializer& serializer, ExternalHeadingUpdateWithTime& self);
 
-CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, float heading, float headingUncertainty, uint8_t type);
+CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, float heading,
+    float headingUncertainty, uint8_t type);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -423,13 +425,13 @@ CmdResult externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime
 
 struct TareOrientation
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_TARE_ORIENTATION;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     struct MipTareAxes : Bitfield<MipTareAxes>
@@ -453,11 +455,11 @@ struct TareOrientation
     };
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    MipTareAxes axes; ///< Axes to tare
+    MipTareAxes      axes; ///< Axes to tare
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_TARE_ORIENTATION;
 
         MipTareAxes axes; ///< Axes to tare
@@ -506,28 +508,28 @@ CmdResult defaultTareOrientation(C::mip_interface& device);
 
 struct SensorToVehicleRotationEuler
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_EULER;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float roll = 0; ///< [radians]
-    float pitch = 0; ///< [radians]
-    float yaw = 0; ///< [radians]
+    float            roll     = 0; ///< [radians]
+    float            pitch    = 0; ///< [radians]
+    float            yaw      = 0; ///< [radians]
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_EULER;
 
-        float roll = 0; ///< [radians]
+        float roll  = 0; ///< [radians]
         float pitch = 0; ///< [radians]
-        float yaw = 0; ///< [radians]
+        float yaw   = 0; ///< [radians]
     };
 };
 void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self);
@@ -579,21 +581,21 @@ CmdResult defaultSensorToVehicleRotationEuler(C::mip_interface& device);
 
 struct SensorToVehicleRotationDcm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_DCM;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float dcm[9] = {0};
+    float            dcm[9]   = {0};
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_DCM;
 
         float dcm[9] = {0};
@@ -647,21 +649,21 @@ CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device);
 
 struct SensorToVehicleRotationQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_ROTATION_QUATERNION;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    float quat[4] = {0};
+    float            quat[4]  = {0};
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION;
 
         float quat[4] = {0};
@@ -696,21 +698,21 @@ CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device);
 
 struct SensorToVehicleOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SENSOR2VEHICLE_OFFSET;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    float offset[3] = {0}; ///< [meters]
+    FunctionSelector function  = static_cast<FunctionSelector>(0);
+    float            offset[3] = {0}; ///< [meters]
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SENSOR2VEHICLE_OFFSET;
 
         float offset[3] = {0}; ///< [meters]
@@ -742,21 +744,21 @@ CmdResult defaultSensorToVehicleOffset(C::mip_interface& device);
 
 struct AntennaOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANTENNA_OFFSET;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    float offset[3] = {0}; ///< [meters]
+    FunctionSelector function  = static_cast<FunctionSelector>(0);
+    float            offset[3] = {0}; ///< [meters]
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_OFFSET;
 
         float offset[3] = {0}; ///< [meters]
@@ -787,13 +789,13 @@ CmdResult defaultAntennaOffset(C::mip_interface& device);
 
 struct GnssSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GNSS_SOURCE_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     enum class Source : uint8_t
@@ -805,11 +807,11 @@ struct GnssSource
     };
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    Source source = static_cast<Source>(0);
+    Source           source   = static_cast<Source>(0);
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GNSS_SOURCE_CONTROL;
 
         Source source = static_cast<Source>(0);
@@ -847,13 +849,13 @@ CmdResult defaultGnssSource(C::mip_interface& device);
 
 struct HeadingSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_HEADING_UPDATE_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     enum class Source : uint8_t
@@ -869,11 +871,11 @@ struct HeadingSource
     };
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    Source source = static_cast<Source>(0);
+    Source           source   = static_cast<Source>(0);
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_HEADING_UPDATE_CONTROL;
 
         Source source = static_cast<Source>(0);
@@ -908,21 +910,21 @@ CmdResult defaultHeadingSource(C::mip_interface& device);
 
 struct AutoInitControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_AUTOINIT_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< See above
+    uint8_t          enable   = 0; ///< See above
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AUTOINIT_CONTROL;
 
         uint8_t enable = 0; ///< See above
@@ -960,21 +962,21 @@ CmdResult defaultAutoInitControl(C::mip_interface& device);
 
 struct AltitudeAiding
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ALTITUDE_AIDING_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t aiding_selector = 0; ///< See above
+    FunctionSelector function        = static_cast<FunctionSelector>(0);
+    uint8_t          aiding_selector = 0; ///< See above
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ALTITUDE_AIDING_CONTROL;
 
         uint8_t aiding_selector = 0; ///< See above
@@ -1003,26 +1005,26 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device);
 
 struct AutoZupt
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ZUPT_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-    float threshold = 0; ///< [meters/second]
+    FunctionSelector function  = static_cast<FunctionSelector>(0);
+    uint8_t          enable    = 0; ///< 0 - Disable, 1 - Enable
+    float            threshold = 0; ///< [meters/second]
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ZUPT_CONTROL;
 
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float threshold = 0; ///< [meters/second]
+        uint8_t enable    = 0; ///< 0 - Disable, 1 - Enable
+        float   threshold = 0; ///< [meters/second]
     };
 };
 void insert(Serializer& serializer, const AutoZupt& self);
@@ -1048,26 +1050,26 @@ CmdResult defaultAutoZupt(C::mip_interface& device);
 
 struct AutoAngularZupt
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANGULAR_ZUPT_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-    float threshold = 0; ///< [radians/second]
+    FunctionSelector function  = static_cast<FunctionSelector>(0);
+    uint8_t          enable    = 0; ///< 0 - Disable, 1 - Enable
+    float            threshold = 0; ///< [radians/second]
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANGULAR_ZUPT_CONTROL;
 
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float threshold = 0; ///< [radians/second]
+        uint8_t enable    = 0; ///< 0 - Disable, 1 - Enable
+        float   threshold = 0; ///< [radians/second]
     };
 };
 void insert(Serializer& serializer, const AutoAngularZupt& self);
@@ -1092,7 +1094,7 @@ CmdResult defaultAutoAngularZupt(C::mip_interface& device);
 
 struct CommandedZupt
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_COMMANDED_ZUPT;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -1112,7 +1114,7 @@ CmdResult commandedZupt(C::mip_interface& device);
 
 struct CommandedAngularZupt
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_COMMANDED_ANGULAR_ZUPT;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -1133,13 +1135,13 @@ CmdResult commandedAngularZupt(C::mip_interface& device);
 
 struct AidingMeasurementEnable
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_AIDING_MEASUREMENT_ENABLE;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     enum class AidingSource : uint16_t
@@ -1153,17 +1155,17 @@ struct AidingMeasurementEnable
         ALL              = 65535,  ///<  Save/load/reset all options
     };
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
-    bool enable = 0; ///< Controls the aiding source
+    FunctionSelector function      = static_cast<FunctionSelector>(0);
+    AidingSource     aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
+    bool             enable        = 0; ///< Controls the aiding source
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_AIDING_MEASUREMENT_ENABLE;
 
         AidingSource aiding_source = static_cast<AidingSource>(0); ///< Aiding measurement source
-        bool enable = 0; ///< Controls the aiding source
+        bool         enable        = 0; ///< Controls the aiding source
     };
 };
 void insert(Serializer& serializer, const AidingMeasurementEnable& self);
@@ -1172,8 +1174,10 @@ void extract(Serializer& serializer, AidingMeasurementEnable& self);
 void insert(Serializer& serializer, const AidingMeasurementEnable::Response& self);
 void extract(Serializer& serializer, AidingMeasurementEnable::Response& self);
 
-CmdResult writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool enable);
-CmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool* enableOut);
+CmdResult writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource,
+    bool enable);
+CmdResult readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource,
+    bool* enableOut);
 CmdResult saveAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource);
 CmdResult loadAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource);
 CmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource);
@@ -1189,7 +1193,7 @@ CmdResult defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasure
 
 struct Run
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_RUN;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
@@ -1210,28 +1214,28 @@ CmdResult run(C::mip_interface& device);
 
 struct KinematicConstraint
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_KINEMATIC_CONSTRAINT;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
-    uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
-    uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
+    FunctionSelector function                          = static_cast<FunctionSelector>(0);
+    uint8_t          acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
+    uint8_t          velocity_constraint_selection     = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+    uint8_t          angular_constraint_selection      = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_KINEMATIC_CONSTRAINT;
 
         uint8_t acceleration_constraint_selection = 0; ///< Acceleration constraint: <br/> 0=None (default), <br/> 1=Zero-acceleration.
-        uint8_t velocity_constraint_selection = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
-        uint8_t angular_constraint_selection = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
+        uint8_t velocity_constraint_selection     = 0; ///< 0=None (default), <br/> 1=Zero-velocity, <br/> 2=Wheeled-vehicle. <br/>
+        uint8_t angular_constraint_selection      = 0; ///< 0=None (default), 1=Zero-angular rate (ZUPT).
     };
 };
 void insert(Serializer& serializer, const KinematicConstraint& self);
@@ -1240,8 +1244,10 @@ void extract(Serializer& serializer, KinematicConstraint& self);
 void insert(Serializer& serializer, const KinematicConstraint::Response& self);
 void extract(Serializer& serializer, KinematicConstraint::Response& self);
 
-CmdResult writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection, uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection);
-CmdResult readKinematicConstraint(C::mip_interface& device, uint8_t* accelerationConstraintSelectionOut, uint8_t* velocityConstraintSelectionOut, uint8_t* angularConstraintSelectionOut);
+CmdResult writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection,
+    uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection);
+CmdResult readKinematicConstraint(C::mip_interface& device, uint8_t* accelerationConstraintSelectionOut,
+    uint8_t* velocityConstraintSelectionOut, uint8_t* angularConstraintSelectionOut);
 CmdResult saveKinematicConstraint(C::mip_interface& device);
 CmdResult loadKinematicConstraint(C::mip_interface& device);
 CmdResult defaultKinematicConstraint(C::mip_interface& device);
@@ -1259,13 +1265,13 @@ CmdResult defaultKinematicConstraint(C::mip_interface& device);
 
 struct InitializationConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_INITIALIZATION_CONFIGURATION;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     struct AlignmentSelector : Bitfield<AlignmentSelector>
@@ -1296,31 +1302,39 @@ struct InitializationConfiguration
         MANUAL                  = 3,  ///<  User-specified position, velocity, and attitude.
     };
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
-    InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
-    AlignmentSelector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
-    float initial_heading = 0; ///< User-specified initial platform heading (degrees).
-    float initial_pitch = 0; ///< User-specified initial platform pitch (degrees)
-    float initial_roll = 0; ///< User-specified initial platform roll (degrees)
-    float initial_position[3] = {0}; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
-    float initial_velocity[3] = {0}; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
-    FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
+    FunctionSelector       function                 = static_cast<FunctionSelector>(0);
+    uint8_t                wait_for_run_command     = 0; ///< Initialize filter only after receiving "run" command
+    InitialConditionSource initial_cond_src         = static_cast<InitialConditionSource>(0); ///< Initial condition source:
+    AlignmentSelector      auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+    float                  initial_heading          = 0; ///< User-specified initial platform heading (degrees).
+    float                  initial_pitch            = 0; ///< User-specified initial platform pitch (degrees)
+    float                  initial_roll             = 0; ///< User-specified initial platform roll (degrees)
+    float                  initial_position[3]      = {
+        0
+    }; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    float                  initial_velocity[3]      = {
+        0
+    }; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    FilterReferenceFrame   reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_INITIALIZATION_CONFIGURATION;
 
-        uint8_t wait_for_run_command = 0; ///< Initialize filter only after receiving "run" command
-        InitialConditionSource initial_cond_src = static_cast<InitialConditionSource>(0); ///< Initial condition source:
-        AlignmentSelector auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
-        float initial_heading = 0; ///< User-specified initial platform heading (degrees).
-        float initial_pitch = 0; ///< User-specified initial platform pitch (degrees)
-        float initial_roll = 0; ///< User-specified initial platform roll (degrees)
-        float initial_position[3] = {0}; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
-        float initial_velocity[3] = {0}; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
-        FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
+        uint8_t                wait_for_run_command     = 0; ///< Initialize filter only after receiving "run" command
+        InitialConditionSource initial_cond_src         = static_cast<InitialConditionSource>(0); ///< Initial condition source:
+        AlignmentSelector      auto_heading_alignment_selector; ///< Bitfield specifying the allowed automatic heading alignment methods for automatic initial conditions. Bits are set to 1 to enable, and the correspond to the following: <br/>
+        float                  initial_heading          = 0; ///< User-specified initial platform heading (degrees).
+        float                  initial_pitch            = 0; ///< User-specified initial platform pitch (degrees)
+        float                  initial_roll             = 0; ///< User-specified initial platform roll (degrees)
+        float                  initial_position[3]      = {
+            0
+        }; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+        float                  initial_velocity[3]      = {
+            0
+        }; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+        FilterReferenceFrame   reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< User-specified initial position/velocity reference frames
     };
 };
 void insert(Serializer& serializer, const InitializationConfiguration& self);
@@ -1329,8 +1343,16 @@ void extract(Serializer& serializer, InitializationConfiguration& self);
 void insert(Serializer& serializer, const InitializationConfiguration::Response& self);
 void extract(Serializer& serializer, InitializationConfiguration::Response& self);
 
-CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector);
-CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut);
+CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand,
+    InitializationConfiguration::InitialConditionSource initialCondSrc,
+    InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading,
+    float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity,
+    FilterReferenceFrame referenceFrameSelector);
+CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut,
+    InitializationConfiguration::InitialConditionSource* initialCondSrcOut,
+    InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut,
+    float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut,
+    FilterReferenceFrame* referenceFrameSelectorOut);
 CmdResult saveInitializationConfiguration(C::mip_interface& device);
 CmdResult loadInitializationConfiguration(C::mip_interface& device);
 CmdResult defaultInitializationConfiguration(C::mip_interface& device);
@@ -1344,25 +1366,25 @@ CmdResult defaultInitializationConfiguration(C::mip_interface& device);
 
 struct AdaptiveFilterOptions
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ADAPTIVE_FILTER_OPTIONS;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
-    uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
+    FunctionSelector function   = static_cast<FunctionSelector>(0);
+    uint8_t          level      = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+    uint16_t         time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ADAPTIVE_FILTER_OPTIONS;
 
-        uint8_t level = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
+        uint8_t  level      = 0; ///< Auto-adaptive operating level: <br/> 0=Off, <br/> 1=Conservative, <br/> 2=Moderate (default), <br/> 3=Aggressive.
         uint16_t time_limit = 0; ///< Maximum duration of measurement rejection before entering recovery mode    (ms)
     };
 };
@@ -1390,26 +1412,26 @@ CmdResult defaultAdaptiveFilterOptions(C::mip_interface& device);
 
 struct MultiAntennaOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MULTI_ANTENNA_OFFSET;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t receiver_id = 0; ///< Receiver: 1, 2, etc...
-    float antenna_offset[3] = {0}; ///< Antenna lever arm offset vector in the vehicle frame (m)
+    FunctionSelector function          = static_cast<FunctionSelector>(0);
+    uint8_t          receiver_id       = 0; ///< Receiver: 1, 2, etc...
+    float            antenna_offset[3] = {0}; ///< Antenna lever arm offset vector in the vehicle frame (m)
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MULTI_ANTENNA_OFFSET;
 
-        uint8_t receiver_id = 0;
-        float antenna_offset[3] = {0};
+        uint8_t receiver_id       = 0;
+        float   antenna_offset[3] = {0};
     };
 };
 void insert(Serializer& serializer, const MultiAntennaOffset& self);
@@ -1433,28 +1455,32 @@ CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId
 
 struct RelPosConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REL_POS_CONFIGURATION;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
+    FunctionSelector     function                 = static_cast<FunctionSelector>(0);
+    uint8_t              source                   = 0; ///< 0 - auto (RTK base station), 1 - manual
     FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
-    double reference_coordinates[3] = {0}; ///< reference coordinates, units determined by source selection
+    double               reference_coordinates[3] = {
+        0
+    }; ///< reference coordinates, units determined by source selection
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REL_POS_CONFIGURATION;
 
-        uint8_t source = 0; ///< 0 - auto (RTK base station), 1 - manual
+        uint8_t              source                   = 0; ///< 0 - auto (RTK base station), 1 - manual
         FilterReferenceFrame reference_frame_selector = static_cast<FilterReferenceFrame>(0); ///< ECEF or LLH
-        double reference_coordinates[3] = {0}; ///< reference coordinates, units determined by source selection
+        double               reference_coordinates[3] = {
+            0
+        }; ///< reference coordinates, units determined by source selection
     };
 };
 void insert(Serializer& serializer, const RelPosConfiguration& self);
@@ -1463,8 +1489,10 @@ void extract(Serializer& serializer, RelPosConfiguration& self);
 void insert(Serializer& serializer, const RelPosConfiguration::Response& self);
 void extract(Serializer& serializer, RelPosConfiguration::Response& self);
 
-CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates);
-CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut);
+CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector,
+    const double* referenceCoordinates);
+CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut,
+    FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut);
 CmdResult saveRelPosConfiguration(C::mip_interface& device);
 CmdResult loadRelPosConfiguration(C::mip_interface& device);
 CmdResult defaultRelPosConfiguration(C::mip_interface& device);
@@ -1485,13 +1513,13 @@ CmdResult defaultRelPosConfiguration(C::mip_interface& device);
 
 struct RefPointLeverArm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REF_POINT_LEVER_ARM;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     enum class ReferencePointSelector : uint8_t
@@ -1499,17 +1527,21 @@ struct RefPointLeverArm
         VEH = 1,  ///<  Defines the origin of the vehicle
     };
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
-    float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    FunctionSelector       function            = static_cast<FunctionSelector>(0);
+    ReferencePointSelector ref_point_sel       = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
+    float                  lever_arm_offset[3] = {
+        0
+    }; ///< [m] Lever arm offset vector in the vehicle's reference frame.
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REF_POINT_LEVER_ARM;
 
-        ReferencePointSelector ref_point_sel = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
-        float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        ReferencePointSelector ref_point_sel       = static_cast<ReferencePointSelector>(0); ///< Reserved, must be 1
+        float                  lever_arm_offset[3] = {
+            0
+        }; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     };
 };
 void insert(Serializer& serializer, const RefPointLeverArm& self);
@@ -1518,8 +1550,10 @@ void extract(Serializer& serializer, RefPointLeverArm& self);
 void insert(Serializer& serializer, const RefPointLeverArm::Response& self);
 void extract(Serializer& serializer, RefPointLeverArm::Response& self);
 
-CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset);
-CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, float* leverArmOffsetOut);
+CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel,
+    const float* leverArmOffset);
+CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut,
+    float* leverArmOffsetOut);
 CmdResult saveRefPointLeverArm(C::mip_interface& device);
 CmdResult loadRefPointLeverArm(C::mip_interface& device);
 CmdResult defaultRefPointLeverArm(C::mip_interface& device);
@@ -1535,20 +1569,21 @@ CmdResult defaultRefPointLeverArm(C::mip_interface& device);
 
 struct SpeedMeasurement
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SPEED_MEASUREMENT;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
-    uint8_t source = 0; ///< Reserved, must be 1.
-    float time_of_week = 0; ///< GPS time of week when speed was sampled
-    float speed = 0; ///< Estimated speed along vehicle's x-axis (may be positive or negative) [meters/second]
-    float speed_uncertainty = 0; ///< Estimated uncertainty in the speed measurement (1-sigma value) [meters/second]
+    uint8_t source            = 0; ///< Reserved, must be 1.
+    float   time_of_week      = 0; ///< GPS time of week when speed was sampled
+    float   speed             = 0; ///< Estimated speed along vehicle's x-axis (may be positive or negative) [meters/second]
+    float   speed_uncertainty = 0; ///< Estimated uncertainty in the speed measurement (1-sigma value) [meters/second]
 };
 void insert(Serializer& serializer, const SpeedMeasurement& self);
 void extract(Serializer& serializer, SpeedMeasurement& self);
 
-CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeOfWeek, float speed, float speedUncertainty);
+CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeOfWeek, float speed,
+    float speedUncertainty);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1565,26 +1600,26 @@ CmdResult speedMeasurement(C::mip_interface& device, uint8_t source, float timeO
 
 struct SpeedLeverArm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SPEED_LEVER_ARM;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t source = 0; ///< Reserved, must be 1.
-    float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    FunctionSelector function            = static_cast<FunctionSelector>(0);
+    uint8_t          source              = 0; ///< Reserved, must be 1.
+    float            lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_SPEED_LEVER_ARM;
 
-        uint8_t source = 0; ///< Reserved, must be 1.
-        float lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+        uint8_t source              = 0; ///< Reserved, must be 1.
+        float   lever_arm_offset[3] = {0}; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     };
 };
 void insert(Serializer& serializer, const SpeedLeverArm& self);
@@ -1614,21 +1649,21 @@ CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source);
 
 struct WheeledVehicleConstraintControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_VEHICLE_CONSTRAINT_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+    uint8_t          enable   = 0; ///< 0 - Disable, 1 - Enable
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_CONSTRAINT_CONTROL;
 
         uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
@@ -1659,21 +1694,21 @@ CmdResult defaultWheeledVehicleConstraintControl(C::mip_interface& device);
 
 struct VerticalGyroConstraintControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_CONSTRAINT_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
+    uint8_t          enable   = 0; ///< 0 - Disable, 1 - Enable
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_CONSTRAINT_CONTROL;
 
         uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
@@ -1702,26 +1737,26 @@ CmdResult defaultVerticalGyroConstraintControl(C::mip_interface& device);
 
 struct GnssAntennaCalControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ANTENNA_CALIBRATION_CONTROL;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-    float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
+    FunctionSelector function   = static_cast<FunctionSelector>(0);
+    uint8_t          enable     = 0; ///< 0 - Disable, 1 - Enable
+    float            max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ANTENNA_CALIBRATION_CONTROL;
 
-        uint8_t enable = 0; ///< 0 - Disable, 1 - Enable
-        float max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
+        uint8_t enable     = 0; ///< 0 - Disable, 1 - Enable
+        float   max_offset = 0; ///< Maximum absolute value of lever arm offset error in the vehicle frame [meters]. See device user manual for the valid range of this parameter.
     };
 };
 void insert(Serializer& serializer, const GnssAntennaCalControl& self);
@@ -1745,26 +1780,26 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device);
 
 struct MagneticDeclinationSource
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_DECLINATION_SOURCE;
 
     static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION  = true;
+    static const bool HAS_SAVE_FUNCTION  = true;
+    static const bool HAS_LOAD_FUNCTION  = true;
     static const bool HAS_RESET_FUNCTION = true;
 
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
-    float declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
+    FunctionSelector           function    = static_cast<FunctionSelector>(0);
+    FilterMagDeclinationSource source      = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
+    float                      declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
 
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_DECLINATION_SOURCE;
 
-        FilterMagDeclinationSource source = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
-        float declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
+        FilterMagDeclinationSource source      = static_cast<FilterMagDeclinationSource>(0); ///< Magnetic field declination angle source
+        float                      declination = 0; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
     };
 };
 void insert(Serializer& serializer, const MagneticDeclinationSource& self);
@@ -1774,7 +1809,8 @@ void insert(Serializer& serializer, const MagneticDeclinationSource::Response& s
 void extract(Serializer& serializer, MagneticDeclinationSource::Response& self);
 
 CmdResult writeMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource source, float declination);
-CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource* sourceOut, float* declinationOut);
+CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource* sourceOut,
+    float* declinationOut);
 CmdResult saveMagneticDeclinationSource(C::mip_interface& device);
 CmdResult loadMagneticDeclinationSource(C::mip_interface& device);
 CmdResult defaultMagneticDeclinationSource(C::mip_interface& device);
@@ -1791,7 +1827,7 @@ CmdResult defaultMagneticDeclinationSource(C::mip_interface& device);
 
 struct SetInitialHeading
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::commands_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_SET_INITIAL_HEADING;
 
     static const bool HAS_FUNCTION_SELECTOR = false;

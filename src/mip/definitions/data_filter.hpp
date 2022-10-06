@@ -29,7 +29,7 @@ namespace data_filter {
 
 enum
 {
-    DESCRIPTOR_SET                                   = 0x82,
+    DESCRIPTOR_SET = 0x82,
 
     DATA_POS_LLH                                     = 0x01,
     DATA_VEL_NED                                     = 0x02,
@@ -241,21 +241,22 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
 
 struct PositionLlh
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_LLH;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(latitude,longitude,ellipsoid_height,valid_flags);
+        return std::make_tuple(latitude, longitude, ellipsoid_height, valid_flags);
     }
 
-    double latitude = 0; ///< [degrees]
-    double longitude = 0; ///< [degrees]
-    double ellipsoid_height = 0; ///< [meters]
-    uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
+    double   latitude         = 0; ///< [degrees]
+    double   longitude        = 0; ///< [degrees]
+    double   ellipsoid_height = 0; ///< [meters]
+    uint16_t valid_flags      = 0; ///< 0 - Invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const PositionLlh& self);
 void extract(Serializer& serializer, PositionLlh& self);
 
@@ -269,21 +270,22 @@ void extract(Serializer& serializer, PositionLlh& self);
 
 struct VelocityNed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(north, east, down, valid_flags);
     }
 
-    float north = 0; ///< [meters/second]
-    float east = 0; ///< [meters/second]
-    float down = 0; ///< [meters/second]
+    float    north       = 0; ///< [meters/second]
+    float    east        = 0; ///< [meters/second]
+    float    down        = 0; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const VelocityNed& self);
 void extract(Serializer& serializer, VelocityNed& self);
 
@@ -305,19 +307,20 @@ void extract(Serializer& serializer, VelocityNed& self);
 
 struct AttitudeQuaternion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_QUATERNION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(q,valid_flags);
+        return std::make_tuple(q, valid_flags);
     }
 
-    float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    float    q[4]        = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AttitudeQuaternion& self);
 void extract(Serializer& serializer, AttitudeQuaternion& self);
 
@@ -341,19 +344,20 @@ void extract(Serializer& serializer, AttitudeQuaternion& self);
 
 struct AttitudeDcm
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_MATRIX;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(dcm,valid_flags);
+        return std::make_tuple(dcm, valid_flags);
     }
 
-    float dcm[9] = {0}; ///< Matrix elements in row-major order.
+    float    dcm[9]      = {0}; ///< Matrix elements in row-major order.
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AttitudeDcm& self);
 void extract(Serializer& serializer, AttitudeDcm& self);
 
@@ -368,21 +372,22 @@ void extract(Serializer& serializer, AttitudeDcm& self);
 
 struct EulerAngles
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw,valid_flags);
+        return std::make_tuple(roll, pitch, yaw, valid_flags);
     }
 
-    float roll = 0; ///< [radians]
-    float pitch = 0; ///< [radians]
-    float yaw = 0; ///< [radians]
+    float    roll        = 0; ///< [radians]
+    float    pitch       = 0; ///< [radians]
+    float    yaw         = 0; ///< [radians]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const EulerAngles& self);
 void extract(Serializer& serializer, EulerAngles& self);
 
@@ -396,19 +401,20 @@ void extract(Serializer& serializer, EulerAngles& self);
 
 struct GyroBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias, valid_flags);
     }
 
-    float bias[3] = {0}; ///< (x, y, z) [radians/second]
+    float    bias[3]     = {0}; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GyroBias& self);
 void extract(Serializer& serializer, GyroBias& self);
 
@@ -422,19 +428,20 @@ void extract(Serializer& serializer, GyroBias& self);
 
 struct AccelBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias, valid_flags);
     }
 
-    float bias[3] = {0}; ///< (x, y, z) [meters/second^2]
+    float    bias[3]     = {0}; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AccelBias& self);
 void extract(Serializer& serializer, AccelBias& self);
 
@@ -448,21 +455,22 @@ void extract(Serializer& serializer, AccelBias& self);
 
 struct PositionLlhUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(north, east, down, valid_flags);
     }
 
-    float north = 0; ///< [meters]
-    float east = 0; ///< [meters]
-    float down = 0; ///< [meters]
+    float    north       = 0; ///< [meters]
+    float    east        = 0; ///< [meters]
+    float    down        = 0; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const PositionLlhUncertainty& self);
 void extract(Serializer& serializer, PositionLlhUncertainty& self);
 
@@ -476,21 +484,22 @@ void extract(Serializer& serializer, PositionLlhUncertainty& self);
 
 struct VelocityNedUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(north, east, down, valid_flags);
     }
 
-    float north = 0; ///< [meters/second]
-    float east = 0; ///< [meters/second]
-    float down = 0; ///< [meters/second]
+    float    north       = 0; ///< [meters/second]
+    float    east        = 0; ///< [meters/second]
+    float    down        = 0; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const VelocityNedUncertainty& self);
 void extract(Serializer& serializer, VelocityNedUncertainty& self);
 
@@ -505,21 +514,22 @@ void extract(Serializer& serializer, VelocityNedUncertainty& self);
 
 struct EulerAnglesUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_EULER;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw,valid_flags);
+        return std::make_tuple(roll, pitch, yaw, valid_flags);
     }
 
-    float roll = 0; ///< [radians]
-    float pitch = 0; ///< [radians]
-    float yaw = 0; ///< [radians]
+    float    roll        = 0; ///< [radians]
+    float    pitch       = 0; ///< [radians]
+    float    yaw         = 0; ///< [radians]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const EulerAnglesUncertainty& self);
 void extract(Serializer& serializer, EulerAnglesUncertainty& self);
 
@@ -533,19 +543,20 @@ void extract(Serializer& serializer, EulerAnglesUncertainty& self);
 
 struct GyroBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert, valid_flags);
     }
 
-    float bias_uncert[3] = {0}; ///< (x,y,z) [radians/sec]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    bias_uncert[3] = {0}; ///< (x,y,z) [radians/sec]
+    uint16_t valid_flags    = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GyroBiasUncertainty& self);
 void extract(Serializer& serializer, GyroBiasUncertainty& self);
 
@@ -559,19 +570,20 @@ void extract(Serializer& serializer, GyroBiasUncertainty& self);
 
 struct AccelBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert, valid_flags);
     }
 
-    float bias_uncert[3] = {0}; ///< (x,y,z) [meters/second^2]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    bias_uncert[3] = {0}; ///< (x,y,z) [meters/second^2]
+    uint16_t valid_flags    = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AccelBiasUncertainty& self);
 void extract(Serializer& serializer, AccelBiasUncertainty& self);
 
@@ -591,20 +603,21 @@ void extract(Serializer& serializer, AccelBiasUncertainty& self);
 
 struct Timestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_TIMESTAMP;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(tow, week_number, valid_flags);
     }
 
-    double tow = 0; ///< GPS Time of Week [seconds]
+    double   tow         = 0; ///< GPS Time of Week [seconds]
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const Timestamp& self);
 void extract(Serializer& serializer, Timestamp& self);
 
@@ -618,20 +631,21 @@ void extract(Serializer& serializer, Timestamp& self);
 
 struct Status
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(filter_state,dynamics_mode,status_flags);
+        return std::make_tuple(filter_state, dynamics_mode, status_flags);
     }
 
-    FilterMode filter_state = static_cast<FilterMode>(0); ///< Device-specific filter state.  Please consult the user manual for definition.
+    FilterMode         filter_state  = static_cast<FilterMode>(0); ///< Device-specific filter state.  Please consult the user manual for definition.
     FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0); ///< Device-specific dynamics mode. Please consult the user manual for definition.
-    FilterStatusFlags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
+    FilterStatusFlags  status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
 };
+
 void insert(Serializer& serializer, const Status& self);
 void extract(Serializer& serializer, Status& self);
 
@@ -646,19 +660,20 @@ void extract(Serializer& serializer, Status& self);
 
 struct LinearAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_LINEAR_ACCELERATION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(accel,valid_flags);
+        return std::make_tuple(accel, valid_flags);
     }
 
-    float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
+    float    accel[3]    = {0}; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const LinearAccel& self);
 void extract(Serializer& serializer, LinearAccel& self);
 
@@ -672,19 +687,20 @@ void extract(Serializer& serializer, LinearAccel& self);
 
 struct GravityVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(gravity,valid_flags);
+        return std::make_tuple(gravity, valid_flags);
     }
 
-    float gravity[3] = {0}; ///< (x, y, z) [meters/second^2]
+    float    gravity[3]  = {0}; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GravityVector& self);
 void extract(Serializer& serializer, GravityVector& self);
 
@@ -698,19 +714,20 @@ void extract(Serializer& serializer, GravityVector& self);
 
 struct CompAccel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ACCELERATION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(accel,valid_flags);
+        return std::make_tuple(accel, valid_flags);
     }
 
-    float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
+    float    accel[3]    = {0}; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const CompAccel& self);
 void extract(Serializer& serializer, CompAccel& self);
 
@@ -724,19 +741,20 @@ void extract(Serializer& serializer, CompAccel& self);
 
 struct CompAngularRate
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(gyro,valid_flags);
+        return std::make_tuple(gyro, valid_flags);
     }
 
-    float gyro[3] = {0}; ///< (x, y, z) [radians/second]
+    float    gyro[3]     = {0}; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const CompAngularRate& self);
 void extract(Serializer& serializer, CompAngularRate& self);
 
@@ -750,19 +768,20 @@ void extract(Serializer& serializer, CompAngularRate& self);
 
 struct QuaternionAttitudeUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(q,valid_flags);
+        return std::make_tuple(q, valid_flags);
     }
 
-    float q[4] = {0}; ///< [dimensionless]
+    float    q[4]        = {0}; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self);
 void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self);
 
@@ -776,19 +795,20 @@ void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self);
 
 struct Wgs84GravityMag
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(magnitude,valid_flags);
+        return std::make_tuple(magnitude, valid_flags);
     }
 
-    float magnitude = 0; ///< [meters/second^2]
+    float    magnitude   = 0; ///< [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const Wgs84GravityMag& self);
 void extract(Serializer& serializer, Wgs84GravityMag& self);
 
@@ -805,14 +825,14 @@ void extract(Serializer& serializer, Wgs84GravityMag& self);
 
 struct HeadingUpdateState
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(heading,heading_1sigma,source,valid_flags);
+        return std::make_tuple(heading, heading_1sigma, source, valid_flags);
     }
 
     enum class HeadingSource : uint16_t
@@ -824,11 +844,12 @@ struct HeadingUpdateState
         DUAL_ANTENNA         = 8,  ///<
     };
 
-    float heading = 0; ///< [radians]
-    float heading_1sigma = 0; ///< [radians]
-    HeadingSource source = static_cast<HeadingSource>(0);
-    uint16_t valid_flags = 0; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
+    float         heading        = 0; ///< [radians]
+    float         heading_1sigma = 0; ///< [radians]
+    HeadingSource source         = static_cast<HeadingSource>(0);
+    uint16_t      valid_flags    = 0; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
 };
+
 void insert(Serializer& serializer, const HeadingUpdateState& self);
 void extract(Serializer& serializer, HeadingUpdateState& self);
 
@@ -843,23 +864,24 @@ void extract(Serializer& serializer, HeadingUpdateState& self);
 
 struct MagneticModel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAGNETIC_MODEL;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(intensity_north,intensity_east,intensity_down,inclination,declination,valid_flags);
+        return std::make_tuple(intensity_north, intensity_east, intensity_down, inclination, declination, valid_flags);
     }
 
-    float intensity_north = 0; ///< [Gauss]
-    float intensity_east = 0; ///< [Gauss]
-    float intensity_down = 0; ///< [Gauss]
-    float inclination = 0; ///< [radians]
-    float declination = 0; ///< [radians]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    intensity_north = 0; ///< [Gauss]
+    float    intensity_east  = 0; ///< [Gauss]
+    float    intensity_down  = 0; ///< [Gauss]
+    float    inclination     = 0; ///< [radians]
+    float    declination     = 0; ///< [radians]
+    uint16_t valid_flags     = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagneticModel& self);
 void extract(Serializer& serializer, MagneticModel& self);
 
@@ -873,19 +895,20 @@ void extract(Serializer& serializer, MagneticModel& self);
 
 struct AccelScaleFactor
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor,valid_flags);
+        return std::make_tuple(scale_factor, valid_flags);
     }
 
-    float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags     = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AccelScaleFactor& self);
 void extract(Serializer& serializer, AccelScaleFactor& self);
 
@@ -899,19 +922,20 @@ void extract(Serializer& serializer, AccelScaleFactor& self);
 
 struct AccelScaleFactorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert,valid_flags);
+        return std::make_tuple(scale_factor_uncert, valid_flags);
     }
 
-    float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags            = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self);
 void extract(Serializer& serializer, AccelScaleFactorUncertainty& self);
 
@@ -925,19 +949,20 @@ void extract(Serializer& serializer, AccelScaleFactorUncertainty& self);
 
 struct GyroScaleFactor
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor,valid_flags);
+        return std::make_tuple(scale_factor, valid_flags);
     }
 
-    float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags     = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GyroScaleFactor& self);
 void extract(Serializer& serializer, GyroScaleFactor& self);
 
@@ -951,19 +976,20 @@ void extract(Serializer& serializer, GyroScaleFactor& self);
 
 struct GyroScaleFactorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert,valid_flags);
+        return std::make_tuple(scale_factor_uncert, valid_flags);
     }
 
-    float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
+    uint16_t valid_flags            = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self);
 void extract(Serializer& serializer, GyroScaleFactorUncertainty& self);
 
@@ -977,19 +1003,20 @@ void extract(Serializer& serializer, GyroScaleFactorUncertainty& self);
 
 struct MagBias
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias, valid_flags);
     }
 
-    float bias[3] = {0}; ///< (x,y,z) [Gauss]
+    float    bias[3]     = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagBias& self);
 void extract(Serializer& serializer, MagBias& self);
 
@@ -1003,19 +1030,20 @@ void extract(Serializer& serializer, MagBias& self);
 
 struct MagBiasUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert, valid_flags);
     }
 
-    float bias_uncert[3] = {0}; ///< (x,y,z) [Gauss]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    bias_uncert[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags    = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagBiasUncertainty& self);
 void extract(Serializer& serializer, MagBiasUncertainty& self);
 
@@ -1031,23 +1059,25 @@ void extract(Serializer& serializer, MagBiasUncertainty& self);
 
 struct StandardAtmosphere
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(geometric_altitude,geopotential_altitude,standard_temperature,standard_pressure,standard_density,valid_flags);
+        return std::make_tuple(geometric_altitude, geopotential_altitude, standard_temperature, standard_pressure,
+            standard_density, valid_flags);
     }
 
-    float geometric_altitude = 0; ///< Input into calculation [meters]
-    float geopotential_altitude = 0; ///< [meters]
-    float standard_temperature = 0; ///< [degC]
-    float standard_pressure = 0; ///< [milliBar]
-    float standard_density = 0; ///< [kilogram/meter^3]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    geometric_altitude    = 0; ///< Input into calculation [meters]
+    float    geopotential_altitude = 0; ///< [meters]
+    float    standard_temperature  = 0; ///< [degC]
+    float    standard_pressure     = 0; ///< [milliBar]
+    float    standard_density      = 0; ///< [kilogram/meter^3]
+    uint16_t valid_flags           = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const StandardAtmosphere& self);
 void extract(Serializer& serializer, StandardAtmosphere& self);
 
@@ -1065,19 +1095,20 @@ void extract(Serializer& serializer, StandardAtmosphere& self);
 
 struct PressureAltitude
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(pressure_altitude,valid_flags);
+        return std::make_tuple(pressure_altitude, valid_flags);
     }
 
-    float pressure_altitude = 0; ///< [meters]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    pressure_altitude = 0; ///< [meters]
+    uint16_t valid_flags       = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const PressureAltitude& self);
 void extract(Serializer& serializer, PressureAltitude& self);
 
@@ -1090,19 +1121,20 @@ void extract(Serializer& serializer, PressureAltitude& self);
 
 struct DensityAltitude
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(density_altitude,valid_flags);
+        return std::make_tuple(density_altitude, valid_flags);
     }
 
-    float density_altitude = 0; ///< m
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    density_altitude = 0; ///< m
+    uint16_t valid_flags      = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const DensityAltitude& self);
 void extract(Serializer& serializer, DensityAltitude& self);
 
@@ -1118,19 +1150,20 @@ void extract(Serializer& serializer, DensityAltitude& self);
 
 struct AntennaOffsetCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(offset,valid_flags);
+        return std::make_tuple(offset, valid_flags);
     }
 
-    float offset[3] = {0}; ///< (x,y,z) [meters]
+    float    offset[3]   = {0}; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AntennaOffsetCorrection& self);
 void extract(Serializer& serializer, AntennaOffsetCorrection& self);
 
@@ -1144,19 +1177,20 @@ void extract(Serializer& serializer, AntennaOffsetCorrection& self);
 
 struct AntennaOffsetCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(offset_uncert,valid_flags);
+        return std::make_tuple(offset_uncert, valid_flags);
     }
 
-    float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    offset_uncert[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags      = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self);
 void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self);
 
@@ -1172,20 +1206,21 @@ void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self);
 
 struct MultiAntennaOffsetCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset,valid_flags);
+        return std::make_tuple(receiver_id, offset, valid_flags);
     }
 
-    uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
-    float offset[3] = {0}; ///< (x,y,z) [meters]
+    uint8_t  receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
+    float    offset[3]   = {0}; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self);
 void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self);
 
@@ -1199,20 +1234,21 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self);
 
 struct MultiAntennaOffsetCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset_uncert,valid_flags);
+        return std::make_tuple(receiver_id, offset_uncert, valid_flags);
     }
 
-    uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
-    float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    uint8_t  receiver_id      = 0; ///< Receiver ID for the receiver to which the antenna is attached
+    float    offset_uncert[3] = {0}; ///< (x,y,z) [meters]
+    uint16_t valid_flags      = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self);
 void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& self);
 
@@ -1228,19 +1264,20 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
 
 struct MagnetometerOffset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron,valid_flags);
+        return std::make_tuple(hard_iron, valid_flags);
     }
 
-    float hard_iron[3] = {0}; ///< (x,y,z) [Gauss]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    hard_iron[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags  = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerOffset& self);
 void extract(Serializer& serializer, MagnetometerOffset& self);
 
@@ -1256,19 +1293,20 @@ void extract(Serializer& serializer, MagnetometerOffset& self);
 
 struct MagnetometerMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron,valid_flags);
+        return std::make_tuple(soft_iron, valid_flags);
     }
 
-    float soft_iron[9] = {0}; ///< Row-major [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    soft_iron[9] = {0}; ///< Row-major [dimensionless]
+    uint16_t valid_flags  = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerMatrix& self);
 void extract(Serializer& serializer, MagnetometerMatrix& self);
 
@@ -1282,19 +1320,20 @@ void extract(Serializer& serializer, MagnetometerMatrix& self);
 
 struct MagnetometerOffsetUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron_uncertainty,valid_flags);
+        return std::make_tuple(hard_iron_uncertainty, valid_flags);
     }
 
-    float hard_iron_uncertainty[3] = {0}; ///< (x,y,z) [Gauss]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    hard_iron_uncertainty[3] = {0}; ///< (x,y,z) [Gauss]
+    uint16_t valid_flags              = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self);
 void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self);
 
@@ -1308,19 +1347,20 @@ void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self);
 
 struct MagnetometerMatrixUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron_uncertainty,valid_flags);
+        return std::make_tuple(soft_iron_uncertainty, valid_flags);
     }
 
-    float soft_iron_uncertainty[9] = {0}; ///< Row-major [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    soft_iron_uncertainty[9] = {0}; ///< Row-major [dimensionless]
+    uint16_t valid_flags              = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self);
 void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self);
 
@@ -1333,19 +1373,20 @@ void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self);
 
 struct MagnetometerCovarianceMatrix
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(covariance,valid_flags);
+        return std::make_tuple(covariance, valid_flags);
     }
 
-    float covariance[9] = {0};
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    covariance[9] = {0};
+    uint16_t valid_flags   = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self);
 void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self);
 
@@ -1359,19 +1400,20 @@ void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self);
 
 struct MagnetometerResidualVector
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_RESIDUAL;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(residual,valid_flags);
+        return std::make_tuple(residual, valid_flags);
     }
 
-    float residual[3] = {0}; ///< (x,y,z) [Gauss]
+    float    residual[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const MagnetometerResidualVector& self);
 void extract(Serializer& serializer, MagnetometerResidualVector& self);
 
@@ -1385,21 +1427,22 @@ void extract(Serializer& serializer, MagnetometerResidualVector& self);
 
 struct ClockCorrection
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,bias,bias_drift,valid_flags);
+        return std::make_tuple(receiver_id, bias, bias_drift, valid_flags);
     }
 
-    uint8_t receiver_id = 0; ///< 1, 2, etc.
-    float bias = 0; ///< [seconds]
-    float bias_drift = 0; ///< [seconds/second]
+    uint8_t  receiver_id = 0; ///< 1, 2, etc.
+    float    bias        = 0; ///< [seconds]
+    float    bias_drift  = 0; ///< [seconds/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const ClockCorrection& self);
 void extract(Serializer& serializer, ClockCorrection& self);
 
@@ -1413,21 +1456,22 @@ void extract(Serializer& serializer, ClockCorrection& self);
 
 struct ClockCorrectionUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,bias_uncertainty,bias_drift_uncertainty,valid_flags);
+        return std::make_tuple(receiver_id, bias_uncertainty, bias_drift_uncertainty, valid_flags);
     }
 
-    uint8_t receiver_id = 0; ///< 1, 2, etc.
-    float bias_uncertainty = 0; ///< [seconds]
-    float bias_drift_uncertainty = 0; ///< [seconds/second]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    uint8_t  receiver_id            = 0; ///< 1, 2, etc.
+    float    bias_uncertainty       = 0; ///< [seconds]
+    float    bias_drift_uncertainty = 0; ///< [seconds/second]
+    uint16_t valid_flags            = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const ClockCorrectionUncertainty& self);
 void extract(Serializer& serializer, ClockCorrectionUncertainty& self);
 
@@ -1441,21 +1485,22 @@ void extract(Serializer& serializer, ClockCorrectionUncertainty& self);
 
 struct GnssPosAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,time_of_week,status,reserved);
+        return std::make_tuple(receiver_id, time_of_week, status, reserved);
     }
 
-    uint8_t receiver_id = 0;
-    float time_of_week = 0; ///< Last GNSS aiding measurement time of week [seconds]
+    uint8_t            receiver_id  = 0;
+    float              time_of_week = 0; ///< Last GNSS aiding measurement time of week [seconds]
     GnssAidStatusFlags status; ///< Aiding measurement status bitfield
-    uint8_t reserved[8] = {0};
+    uint8_t            reserved[8]  = {0};
 };
+
 void insert(Serializer& serializer, const GnssPosAidStatus& self);
 void extract(Serializer& serializer, GnssPosAidStatus& self);
 
@@ -1469,20 +1514,21 @@ void extract(Serializer& serializer, GnssPosAidStatus& self);
 
 struct GnssAttAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_ATT_AID_STATUS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,status,reserved);
+        return std::make_tuple(time_of_week, status, reserved);
     }
 
-    float time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    float              time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
     GnssAidStatusFlags status; ///< Last valid aiding measurement status bitfield
-    uint8_t reserved[8] = {0};
+    uint8_t            reserved[8]  = {0};
 };
+
 void insert(Serializer& serializer, const GnssAttAidStatus& self);
 void extract(Serializer& serializer, GnssAttAidStatus& self);
 
@@ -1496,14 +1542,14 @@ void extract(Serializer& serializer, GnssAttAidStatus& self);
 
 struct HeadAidStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,type,reserved);
+        return std::make_tuple(time_of_week, type, reserved);
     }
 
     enum class HeadingAidType : uint8_t
@@ -1512,10 +1558,11 @@ struct HeadAidStatus
         EXTERNAL_MESSAGE = 2,  ///<
     };
 
-    float time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
-    HeadingAidType type = static_cast<HeadingAidType>(0); ///< 1 - Dual antenna, 2 - External heading message (user supplied)
-    float reserved[2] = {0};
+    float          time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
+    HeadingAidType type         = static_cast<HeadingAidType>(0); ///< 1 - Dual antenna, 2 - External heading message (user supplied)
+    float          reserved[2]  = {0};
 };
+
 void insert(Serializer& serializer, const HeadAidStatus& self);
 void extract(Serializer& serializer, HeadAidStatus& self);
 
@@ -1529,19 +1576,20 @@ void extract(Serializer& serializer, HeadAidStatus& self);
 
 struct RelPosNed
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_REL_POS_NED;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(relative_position,valid_flags);
+        return std::make_tuple(relative_position, valid_flags);
     }
 
-    double relative_position[3] = {0}; ///< [meters, NED]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    double   relative_position[3] = {0}; ///< [meters, NED]
+    uint16_t valid_flags          = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const RelPosNed& self);
 void extract(Serializer& serializer, RelPosNed& self);
 
@@ -1555,19 +1603,20 @@ void extract(Serializer& serializer, RelPosNed& self);
 
 struct EcefPos
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(position_ecef,valid_flags);
+        return std::make_tuple(position_ecef, valid_flags);
     }
 
-    double position_ecef[3] = {0}; ///< [meters, ECEF]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
+    double   position_ecef[3] = {0}; ///< [meters, ECEF]
+    uint16_t valid_flags      = 0; ///< 0 - invalid, 1 valid
 };
+
 void insert(Serializer& serializer, const EcefPos& self);
 void extract(Serializer& serializer, EcefPos& self);
 
@@ -1581,19 +1630,20 @@ void extract(Serializer& serializer, EcefPos& self);
 
 struct EcefVel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(velocity_ecef,valid_flags);
+        return std::make_tuple(velocity_ecef, valid_flags);
     }
 
-    float velocity_ecef[3] = {0}; ///< [meters/second, ECEF]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
+    float    velocity_ecef[3] = {0}; ///< [meters/second, ECEF]
+    uint16_t valid_flags      = 0; ///< 0 - invalid, 1 valid
 };
+
 void insert(Serializer& serializer, const EcefVel& self);
 void extract(Serializer& serializer, EcefVel& self);
 
@@ -1607,19 +1657,20 @@ void extract(Serializer& serializer, EcefVel& self);
 
 struct EcefPosUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(pos_uncertainty,valid_flags);
+        return std::make_tuple(pos_uncertainty, valid_flags);
     }
 
-    float pos_uncertainty[3] = {0}; ///< [meters]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    pos_uncertainty[3] = {0}; ///< [meters]
+    uint16_t valid_flags        = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const EcefPosUncertainty& self);
 void extract(Serializer& serializer, EcefPosUncertainty& self);
 
@@ -1633,19 +1684,20 @@ void extract(Serializer& serializer, EcefPosUncertainty& self);
 
 struct EcefVelUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(vel_uncertainty,valid_flags);
+        return std::make_tuple(vel_uncertainty, valid_flags);
     }
 
-    float vel_uncertainty[3] = {0}; ///< [meters/second]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    vel_uncertainty[3] = {0}; ///< [meters/second]
+    uint16_t valid_flags        = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const EcefVelUncertainty& self);
 void extract(Serializer& serializer, EcefVelUncertainty& self);
 
@@ -1659,21 +1711,22 @@ void extract(Serializer& serializer, EcefVelUncertainty& self);
 
 struct AidingMeasurementSummary
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,source,type,indicator);
+        return std::make_tuple(time_of_week, source, type, indicator);
     }
 
-    float time_of_week = 0; ///< [seconds]
-    uint8_t source = 0;
-    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types)
-    FilterMeasurementIndicator indicator;
+    float                       time_of_week = 0; ///< [seconds]
+    uint8_t                     source       = 0;
+    FilterAidingMeasurementType type         = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types)
+    FilterMeasurementIndicator  indicator;
 };
+
 void insert(Serializer& serializer, const AidingMeasurementSummary& self);
 void extract(Serializer& serializer, AidingMeasurementSummary& self);
 
@@ -1687,19 +1740,20 @@ void extract(Serializer& serializer, AidingMeasurementSummary& self);
 
 struct OdometerScaleFactorError
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_error,valid_flags);
+        return std::make_tuple(scale_factor_error, valid_flags);
     }
 
-    float scale_factor_error = 0; ///< [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor_error = 0; ///< [dimensionless]
+    uint16_t valid_flags        = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const OdometerScaleFactorError& self);
 void extract(Serializer& serializer, OdometerScaleFactorError& self);
 
@@ -1713,19 +1767,20 @@ void extract(Serializer& serializer, OdometerScaleFactorError& self);
 
 struct OdometerScaleFactorErrorUncertainty
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_error_uncertainty,valid_flags);
+        return std::make_tuple(scale_factor_error_uncertainty, valid_flags);
     }
 
-    float scale_factor_error_uncertainty = 0; ///< [dimensionless]
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    float    scale_factor_error_uncertainty = 0; ///< [dimensionless]
+    uint16_t valid_flags                    = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const OdometerScaleFactorErrorUncertainty& self);
 void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self);
 
@@ -1739,14 +1794,14 @@ void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self);
 
 struct GnssDualAntennaStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t DESCRIPTOR_SET   = ::mip::data_filter::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
 
     static const bool HAS_FUNCTION_SELECTOR = false;
 
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,heading,heading_unc,fix_type,status_flags,valid_flags);
+        return std::make_tuple(time_of_week, heading, heading_unc, fix_type, status_flags, valid_flags);
     }
 
     enum class FixType : uint8_t
@@ -1776,13 +1831,14 @@ struct GnssDualAntennaStatus
         DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
     };
 
-    float time_of_week = 0; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
-    float heading = 0; ///< [radians]
-    float heading_unc = 0; ///< [radians]
-    FixType fix_type = static_cast<FixType>(0); ///< Fix type indicator
+    float                  time_of_week = 0; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
+    float                  heading      = 0; ///< [radians]
+    float                  heading_unc  = 0; ///< [radians]
+    FixType                fix_type     = static_cast<FixType>(0); ///< Fix type indicator
     DualAntennaStatusFlags status_flags;
-    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    uint16_t               valid_flags  = 0; ///< 0 - invalid, 1 - valid
 };
+
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);
 void extract(Serializer& serializer, GnssDualAntennaStatus& self);
 
