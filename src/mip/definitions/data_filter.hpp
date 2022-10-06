@@ -247,6 +247,11 @@ struct PositionLlh
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(latitude,longitude,ellipsoid_height,valid_flags);
+    }
+    
     double latitude = 0; ///< [degrees]
     double longitude = 0; ///< [degrees]
     double ellipsoid_height = 0; ///< [meters]
@@ -270,6 +275,11 @@ struct VelocityNed
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(north,east,down,valid_flags);
+    }
     
     float north = 0; ///< [meters/second]
     float east = 0; ///< [meters/second]
@@ -303,6 +313,11 @@ struct AttitudeQuaternion
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(q,valid_flags);
+    }
+    
     float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -335,6 +350,11 @@ struct AttitudeDcm
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(dcm,valid_flags);
+    }
+    
     float dcm[9] = {0}; ///< Matrix elements in row-major order.
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -357,6 +377,11 @@ struct EulerAngles
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(roll,pitch,yaw,valid_flags);
+    }
     
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
@@ -382,6 +407,11 @@ struct GyroBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias,valid_flags);
+    }
+    
     float bias[3] = {0}; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -404,6 +434,11 @@ struct AccelBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias,valid_flags);
+    }
+    
     float bias[3] = {0}; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -425,6 +460,11 @@ struct PositionLlhUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(north,east,down,valid_flags);
+    }
     
     float north = 0; ///< [meters]
     float east = 0; ///< [meters]
@@ -449,6 +489,11 @@ struct VelocityNedUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(north,east,down,valid_flags);
+    }
     
     float north = 0; ///< [meters/second]
     float east = 0; ///< [meters/second]
@@ -475,6 +520,11 @@ struct EulerAnglesUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(roll,pitch,yaw,valid_flags);
+    }
+    
     float roll = 0; ///< [radians]
     float pitch = 0; ///< [radians]
     float yaw = 0; ///< [radians]
@@ -499,6 +549,11 @@ struct GyroBiasUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias_uncert,valid_flags);
+    }
+    
     float bias_uncert[3] = {0}; ///< (x,y,z) [radians/sec]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -520,6 +575,11 @@ struct AccelBiasUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias_uncert,valid_flags);
+    }
     
     float bias_uncert[3] = {0}; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -549,6 +609,11 @@ struct Timestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(tow,week_number,valid_flags);
+    }
+    
     double tow = 0; ///< GPS Time of Week [seconds]
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -571,6 +636,11 @@ struct Status
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(filter_state,dynamics_mode,status_flags);
+    }
     
     FilterMode filter_state = static_cast<FilterMode>(0); ///< Device-specific filter state.  Please consult the user manual for definition.
     FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0); ///< Device-specific dynamics mode. Please consult the user manual for definition.
@@ -596,6 +666,11 @@ struct LinearAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(accel,valid_flags);
+    }
+    
     float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -617,6 +692,11 @@ struct GravityVector
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(gravity,valid_flags);
+    }
     
     float gravity[3] = {0}; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -640,6 +720,11 @@ struct CompAccel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(accel,valid_flags);
+    }
+    
     float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -661,6 +746,11 @@ struct CompAngularRate
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(gyro,valid_flags);
+    }
     
     float gyro[3] = {0}; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -684,6 +774,11 @@ struct QuaternionAttitudeUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(q,valid_flags);
+    }
+    
     float q[4] = {0}; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -705,6 +800,11 @@ struct Wgs84GravityMag
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(magnitude,valid_flags);
+    }
     
     float magnitude = 0; ///< [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -730,6 +830,11 @@ struct HeadingUpdateState
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(heading,heading_1sigma,source,valid_flags);
+    }
     
     enum class HeadingSource : uint16_t
     {
@@ -765,6 +870,11 @@ struct MagneticModel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(intensity_north,intensity_east,intensity_down,inclination,declination,valid_flags);
+    }
+    
     float intensity_north = 0; ///< [Gauss]
     float intensity_east = 0; ///< [Gauss]
     float intensity_down = 0; ///< [Gauss]
@@ -791,6 +901,11 @@ struct AccelScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor,valid_flags);
+    }
+    
     float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -812,6 +927,11 @@ struct AccelScaleFactorUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor_uncert,valid_flags);
+    }
     
     float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -835,6 +955,11 @@ struct GyroScaleFactor
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor,valid_flags);
+    }
+    
     float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -856,6 +981,11 @@ struct GyroScaleFactorUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor_uncert,valid_flags);
+    }
     
     float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -879,6 +1009,11 @@ struct MagBias
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias,valid_flags);
+    }
+    
     float bias[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -900,6 +1035,11 @@ struct MagBiasUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(bias_uncert,valid_flags);
+    }
     
     float bias_uncert[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -924,6 +1064,11 @@ struct StandardAtmosphere
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(geometric_altitude,geopotential_altitude,standard_temperature,standard_pressure,standard_density,valid_flags);
+    }
     
     float geometric_altitude = 0; ///< Input into calculation [meters]
     float geopotential_altitude = 0; ///< [meters]
@@ -955,6 +1100,11 @@ struct PressureAltitude
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(pressure_altitude,valid_flags);
+    }
+    
     float pressure_altitude = 0; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -975,6 +1125,11 @@ struct DensityAltitude
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(density_altitude,valid_flags);
+    }
     
     float density_altitude = 0; ///< m
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1000,6 +1155,11 @@ struct AntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(offset,valid_flags);
+    }
+    
     float offset[3] = {0}; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1021,6 +1181,11 @@ struct AntennaOffsetCorrectionUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(offset_uncert,valid_flags);
+    }
     
     float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1046,6 +1211,11 @@ struct MultiAntennaOffsetCorrection
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_id,offset,valid_flags);
+    }
+    
     uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
     float offset[3] = {0}; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1068,6 +1238,11 @@ struct MultiAntennaOffsetCorrectionUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_id,offset_uncert,valid_flags);
+    }
     
     uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
     float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
@@ -1094,6 +1269,11 @@ struct MagnetometerOffset
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(hard_iron,valid_flags);
+    }
+    
     float hard_iron[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1118,6 +1298,11 @@ struct MagnetometerMatrix
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(soft_iron,valid_flags);
+    }
+    
     float soft_iron[9] = {0}; ///< Row-major [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1139,6 +1324,11 @@ struct MagnetometerOffsetUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(hard_iron_uncertainty,valid_flags);
+    }
     
     float hard_iron_uncertainty[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1162,6 +1352,11 @@ struct MagnetometerMatrixUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(soft_iron_uncertainty,valid_flags);
+    }
+    
     float soft_iron_uncertainty[9] = {0}; ///< Row-major [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1182,6 +1377,11 @@ struct MagnetometerCovarianceMatrix
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(covariance,valid_flags);
+    }
     
     float covariance[9] = {0};
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1205,6 +1405,11 @@ struct MagnetometerResidualVector
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(residual,valid_flags);
+    }
+    
     float residual[3] = {0}; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1226,6 +1431,11 @@ struct ClockCorrection
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_id,bias,bias_drift,valid_flags);
+    }
     
     uint8_t receiver_id = 0; ///< 1, 2, etc.
     float bias = 0; ///< [seconds]
@@ -1251,6 +1461,11 @@ struct ClockCorrectionUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_id,bias_uncertainty,bias_drift_uncertainty,valid_flags);
+    }
+    
     uint8_t receiver_id = 0; ///< 1, 2, etc.
     float bias_uncertainty = 0; ///< [seconds]
     float bias_drift_uncertainty = 0; ///< [seconds/second]
@@ -1274,6 +1489,11 @@ struct GnssPosAidStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(receiver_id,time_of_week,status,reserved);
+    }
     
     uint8_t receiver_id = 0;
     float time_of_week = 0; ///< Last GNSS aiding measurement time of week [seconds]
@@ -1299,6 +1519,11 @@ struct GnssAttAidStatus
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,status,reserved);
+    }
+    
     float time_of_week = 0; ///< Last valid aiding measurement time of week [seconds] [processed instead of measured?]
     GnssAidStatusFlags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8] = {0};
@@ -1321,6 +1546,11 @@ struct HeadAidStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,type,reserved);
+    }
     
     enum class HeadingAidType : uint8_t
     {
@@ -1351,6 +1581,11 @@ struct RelPosNed
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(relative_position,valid_flags);
+    }
+    
     double relative_position[3] = {0}; ///< [meters, NED]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1372,6 +1607,11 @@ struct EcefPos
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(position_ecef,valid_flags);
+    }
     
     double position_ecef[3] = {0}; ///< [meters, ECEF]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
@@ -1395,6 +1635,11 @@ struct EcefVel
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(velocity_ecef,valid_flags);
+    }
+    
     float velocity_ecef[3] = {0}; ///< [meters/second, ECEF]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
     
@@ -1416,6 +1661,11 @@ struct EcefPosUncertainty
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(pos_uncertainty,valid_flags);
+    }
     
     float pos_uncertainty[3] = {0}; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
@@ -1439,6 +1689,11 @@ struct EcefVelUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(vel_uncertainty,valid_flags);
+    }
+    
     float vel_uncertainty[3] = {0}; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1460,6 +1715,11 @@ struct AidingMeasurementSummary
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,source,type,indicator);
+    }
     
     float time_of_week = 0; ///< [seconds]
     uint8_t source = 0;
@@ -1485,6 +1745,11 @@ struct OdometerScaleFactorError
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor_error,valid_flags);
+    }
+    
     float scale_factor_error = 0; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1507,6 +1772,11 @@ struct OdometerScaleFactorErrorUncertainty
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(scale_factor_error_uncertainty,valid_flags);
+    }
+    
     float scale_factor_error_uncertainty = 0; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
@@ -1528,6 +1798,11 @@ struct GnssDualAntennaStatus
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time_of_week,heading,heading_unc,fix_type,status_flags,valid_flags);
+    }
     
     enum class FixType : uint8_t
     {

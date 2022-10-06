@@ -230,8 +230,8 @@ struct GetDeviceDescriptors
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
         
-        uint8_t descriptors_count = 0;
         uint16_t* descriptors = {nullptr};
+        uint8_t descriptors_count = 0;
         
     };
 };
@@ -326,8 +326,8 @@ struct GetExtendedDescriptors
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         
-        uint8_t descriptors_count = 0;
         uint16_t* descriptors = {nullptr};
+        uint8_t descriptors_count = 0;
         
     };
 };
