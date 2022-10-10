@@ -324,4 +324,3 @@ bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPa
 ////////////////////////////////////////////////////////////////////////////////
 
 } // namespace mip
-
