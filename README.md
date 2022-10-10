@@ -182,3 +182,4 @@ The C++ API uses `TitleCase` for types and `camelCase` for functions and variabl
 everything. This makes it easy to tell which is being used when looking at the examples.
 
 The C API can be accessed directly from C++ via the `mip::C` namesace.
+
