@@ -1,4 +1,4 @@
 # Declare files that will always have LF line endings on checkout.
-*.c* text eol=lf
-*.h* text eol=lf
-*.md text eol=lf
+*.c* text eol=crlf
+*.h* text eol=crlf
+*.md text eol=crlf
