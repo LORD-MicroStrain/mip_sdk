@@ -6,7 +6,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_platform
@@ -37,4 +37,4 @@ bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, siz
 
 #ifdef __cplusplus
 }
-#endif
+#endif // __cplusplus

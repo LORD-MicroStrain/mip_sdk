@@ -3,7 +3,7 @@
 #ifdef __cplusplus
 namespace mip {
 namespace C {
-#endif
+#endif // __cplusplus
 
 enum
 {
@@ -53,4 +53,4 @@ static constexpr size_t PACKET_LENGTH_MIN        = C::MIP_PACKET_LENGTH_MIN;
 static constexpr size_t FIELD_PAYLOAD_LENGTH_MAX = C::MIP_FIELD_LENGTH_MAX;
 
 } // namespace mip
-#endif
+#endif // __cplusplus

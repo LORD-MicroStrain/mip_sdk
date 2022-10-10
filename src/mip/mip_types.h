@@ -8,7 +8,8 @@
 namespace mip {
 namespace C {
 extern "C" {
-#endif
+#endif // __cplusplus
+
 
 
 // Used like a signed version of size_t
@@ -25,16 +26,15 @@ typedef int_least16_t remaining_count;
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
 #ifdef MIP_TIMESTAMP_TYPE
-typedef MIP_TIMESTAMP_TYPE timestamp_type;
-static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
-#else
-typedef uint64_t timestamp_type;
-#endif
+    typedef MIP_TIMESTAMP_TYPE timestamp_type;
+    static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
+#else // !MIP_TIMESTAMP_TYPE
+    typedef uint64_t timestamp_type;
+#endif // MIP_TIMESTAMP_TYPE
 
 typedef timestamp_type timeout_type;
 
 #ifdef __cplusplus
-
 } // extern "C"
 } // namespace C
 
@@ -43,5 +43,4 @@ using Timestamp      = C::timestamp_type;
 using Timeout        = C::timeout_type;
 
 } // namespace mip
-
-#endif
+#endif // __cplusplus

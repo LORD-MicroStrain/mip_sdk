@@ -11,7 +11,7 @@
 namespace mip {
 namespace C {
 extern "C" {
-#endif
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_c
@@ -59,15 +59,14 @@ typedef struct mip_interface
 } mip_interface;
 
 void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size,
-                        timeout_type parse_timeout, timeout_type base_reply_timeout);
+    timeout_type parse_timeout, timeout_type base_reply_timeout);
 
 //
 // Communications
 //
 
 remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length,
-                                            timestamp_type timestamp);
-
+    timestamp_type timestamp);
 void mip_interface_process_unparsed_packets(mip_interface* device);
 bool mip_interface_update(mip_interface* device, bool blocking);
 bool mip_interface_default_update(mip_interface* device, bool blocking);
@@ -82,17 +81,13 @@ void mip_interface_receive_packet(mip_interface* device, const mip_packet* packe
 //
 
 enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mip_pending_cmd* cmd);
-
 enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor,
-                                              const uint8_t* payload, uint8_t payload_length);
-
+    const uint8_t* payload, uint8_t payload_length);
 enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device, uint8_t descriptor_set,
-                                                            uint8_t field_descriptor, const uint8_t* payload,
-                                                            uint8_t payload_length, uint8_t response_descriptor,
-                                                            uint8_t* response_data, uint8_t* response_length_inout);
-
+    uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length, uint8_t response_descriptor,
+    uint8_t* response_data, uint8_t* response_length_inout);
 enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet* packet,
-                                                     mip_pending_cmd* cmd);
+    mip_pending_cmd* cmd);
 
 bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd);
 
@@ -100,16 +95,12 @@ bool mip_interface_start_command_packet(mip_interface* device, const mip_packet*
 // Data Callbacks
 //
 
-void mip_interface_register_packet_callback(mip_interface* device, mip_dispatch_handler* handler,
-                                            uint8_t descriptor_set, bool after_fields,
-                                            mip_dispatch_packet_callback callback, void* user_data);
-
+void mip_interface_register_packet_callback(mip_interface* device, mip_dispatch_handler* handler, uint8_t descriptor_set,
+    bool after_fields, mip_dispatch_packet_callback callback, void* user_data);
 void mip_interface_register_field_callback(mip_interface* device, mip_dispatch_handler* handler, uint8_t descriptor_set,
-                                           uint8_t field_descriptor, mip_dispatch_field_callback callback,
-                                           void* user_data);
-
+    uint8_t field_descriptor, mip_dispatch_field_callback callback, void* user_data);
 void mip_interface_register_extractor(mip_interface* device, mip_dispatch_handler* handler, uint8_t descriptor_set,
-                                      uint8_t field_descriptor, mip_dispatch_extractor callback, void* field_ptr);
+    uint8_t field_descriptor, mip_dispatch_extractor callback, void* field_ptr);
 
 //
 // Accessors
@@ -122,7 +113,7 @@ unsigned int mip_interface_max_packets_per_update(const mip_interface* device);
 
 mip_update_callback mip_interface_update_function(mip_interface* device);
 void* mip_interface_user_pointer(const mip_interface* device);
-mip_parser* mip_interface_parser(mip_interface* device);
+mip_parser*    mip_interface_parser(mip_interface* device);
 mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device);
 
 ///@}
@@ -159,7 +150,7 @@ mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device);
 ///         base reply timeout) or only sleep for a minimal amount of time.
 ///
 extern bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length,
-                                                size_t* out_length, timestamp_type* timestamp_out);
+    size_t* out_length, timestamp_type* timestamp_out);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +169,7 @@ extern bool mip_interface_user_send_to_device(mip_interface* device, const uint8
 
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
-#endif
+} // namespace C
+} // namespace mip
+#endif // __cplusplus

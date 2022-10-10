@@ -6,7 +6,7 @@
 namespace mip {
 namespace C {
 extern "C" {
-#endif
+#endif // __cplusplus
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -58,9 +58,10 @@ typedef struct mip_packet
 ///@{
 
 void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
+
 bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length,
-                                       uint8_t** payload_ptr_out);
+    uint8_t** payload_ptr_out);
 remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
 remaining_count mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr);
 
@@ -109,7 +110,7 @@ bool            mip_packet_is_data(const mip_packet* packet);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
-#endif
+} // namespace C
+} // namespace mip
+#endif // __cplusplus

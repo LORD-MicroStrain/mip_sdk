@@ -10,7 +10,7 @@
 namespace mip {
 namespace C {
 extern "C" {
-#endif
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_c  MIP C API
@@ -69,11 +69,10 @@ typedef struct mip_parser
 
 
 void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback,
-                     void* callback_object, timestamp_type timeout);
+    void* callback_object, timestamp_type timeout);
 bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp);
-remaining_count
-mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp,
-                 unsigned int max_packets);
+remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count,
+    timestamp_type timestamp, unsigned int max_packets);
 
 void mip_parser_reset(mip_parser* parser);
 
@@ -104,7 +103,7 @@ timeout_type mip_timeout_from_baudrate(uint32_t baudrate);
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
-#endif
+} // namespace C
+} // namespace mip
+#endif // __cplusplus

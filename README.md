@@ -56,17 +56,16 @@ systems.
 ### Serial Port
 
 A basic serial port interface is provided in C and C++ for Linux and Windows. These can be modified for other platforms
-by the user.
-The serial port connection will be used in most cases, when the MIP device is connected
-via a serial or USB cable (the USB connection acts like a virtual serial port).
+by the user. The serial port connection will be used in most cases, when the MIP device is connected via a serial or USB
+cable (the USB connection acts like a virtual serial port).
 
 Enable it in the CMake configuration with `-DMIP_USE_SERIAL=1`.
 
 ### TCP Client
 
-The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
-via the normal serial or USB cable to a computer system running a TCP server which forwards data between
-the serial port and TCP clients.
+The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected via the
+normal serial or USB cable to a computer system running a TCP server which forwards data between the serial port and TCP
+clients.
 
 Enable it in the CMake configuration with `-DMIP_USE_TCP=1`.
 
@@ -121,8 +120,7 @@ Implementation Notes
 There are two C functions which must be implemented to use this library.
 
 The first, `mip_interface_user_recv_from_device()`, must fetch raw data bytes from the connected MIP device. Typically,
-this means reading from
-a serial port or TCP socket.
+this means reading from a serial port or TCP socket.
 
 The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
 
@@ -131,13 +129,11 @@ how to implement these functions.
 
 #### C++
 For C++ applications, these functions are implemented by the `DeviceInterface` class, which takes a `Connection` object
-responsible
-for reading and writing to the device. Create a class derived from `Connection` and implement the pure
-virtual `recvFromDevice` and
-`sendToDevice` methods.
+responsible for reading and writing to the device. Create a class derived from `Connection` and implement the pure
+virtual `recvFromDevice` and `sendToDevice` methods.
 
-If you do not wish to use the `DeviceInterface` class, do not compile the corresponding source file and create the
-C functions yourself. Declare them functions as `extern "C"` to avoid linking problems between the C and C++ code.
+If you do not wish to use the `DeviceInterface` class, do not compile the corresponding source file and create the C
+functions yourself. Declare them functions as `extern "C"` to avoid linking problems between the C and C++ code.
 
 ### Command Results (mip_cmd_result / MipCmdResult)
 
@@ -155,29 +151,20 @@ Command results are divided into two categories:
 
 #### Timestamp type
 Timestamps (`timestamp_type` / `Timestamp`) represent the local time when data was received or a packet was parsed.
-These timestamps
-are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not
-intended to be
-a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the
-connected MIP device.
-In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may
-be delayed.
+These timestamps are used to implement command timeouts and provide the user with an approximate timestamp of received
+data. It is not intended to be a precise timestamp or used for synchronization, and it generally cannot be used instead
+of the timestamps from the connected MIP device. In particular, if you limit the maximum number of packets processed
+per `update` call, the timestamp of some packets may be delayed.
 
 Because different applications may keep track of time differently (especially on embedded platforms), it is up to the
-user to provide
-the current time whenever data is received from the device. On a PC, this might come from the posix `time()` function or
-from the
-`std::chrono` library. On ARM systems, it is often derived from the Systick timer. It should be a monotonically
-increasing value;
-jumps backwards in time will cause problems.
+user to provide the current time whenever data is received from the device. On a PC, this might come from the
+posix `time()` function or from the `std::chrono` library. On ARM systems, it is often derived from the Systick timer.
+It should be a monotonically increasing value; jumps backwards in time will cause problems.
 
 By default, timestamps are `typedef`'d to `uint64_t`. Typically, timestamps are in milliseconds. Embedded systems may
-wish to use
-`uint32_t` or even `uint16_t` instead. The value is allowed to wrap around as long as the time between wraparounds is
-longer than
-twice the longest timeout needed. If higher precision is needed or wraparound can't be tolerated by your application,
-define it to
-`uint64_t`. It must be a standard unsigned integer type.
+wish to use `uint32_t` or even `uint16_t` instead. The value is allowed to wrap around as long as the time between
+wraparounds is longer than twice the longest timeout needed. If higher precision is needed or wraparound can't be
+tolerated by your application, define it to `uint64_t`. It must be a standard unsigned integer type.
 
 #### Command Timeouts
 
@@ -187,8 +174,7 @@ Timeouts for commands are broken down into two parts.
 * "Additional time" which applies per command, because some commands may take longer to complete.
 
 Currently, only the C++ api offers a way to set the additional time parameter, and only when using the `runCommand`
-function taking
-the command structure and the `additionalTime` parameter.
+function taking the command structure and the `additionalTime` parameter.
 
 The `timeout_type` / `Timeout` typedef is an alias to the timestamp type.
 
@@ -200,7 +186,6 @@ The C++ API is implemented on top of the C API to provide additional features:
 * Better clarity / reduced verbosity (e.g. with `using namespace mip`)
 
 The C++ API uses `TitleCase` for types and `camelCase` for functions and variables, while the C api uses `snake_case`
-naming for
-everything. This makes it easy to tell which is being used when looking at the examples.
+naming for everything. This makes it easy to tell which is being used when looking at the examples.
 
 The C API can be accessed directly from C++ via the `mip::C` namespace.

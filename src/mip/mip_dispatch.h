@@ -11,7 +11,7 @@
 #ifdef __cplusplus
 namespace mip {
 namespace C {
-#endif
+#endif // __cplusplus
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* pa
 ///@param field     The MIP field triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_field_callback)(void* context, const mip_field* field, timestamp_type timestamp);
+typedef void (*mip_dispatch_field_callback )(void* context, const mip_field* field, timestamp_type timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for extraction callbacks.
@@ -103,12 +103,11 @@ typedef struct mip_dispatch_handler
 
 
 void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool after_fields,
-                                              mip_dispatch_packet_callback callback, void* context);
+    mip_dispatch_packet_callback callback, void* context);
 void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint8_t descriptor_set,
-                                             uint8_t field_descriptor, mip_dispatch_field_callback callback,
-                                             void* context);
-void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set,
-                                         uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr);
+    uint8_t field_descriptor, mip_dispatch_field_callback callback, void* context);
+void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor,
+    mip_dispatch_extractor extractor, void* field_ptr);
 
 void mip_dispatch_handler_set_enabled(mip_dispatch_handler* handler, bool enable);
 bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
@@ -145,4 +144,4 @@ void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* pack
 #ifdef __cplusplus
 } // namespace C
 } // namespace mip
-#endif
+#endif // __cplusplus

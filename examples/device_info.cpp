@@ -1,4 +1,3 @@
-
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
@@ -7,7 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include <cstring>
-#include <cstdio>
+#include <stdio.h>
 
 
 int main(int argc, const char* argv[])
@@ -21,7 +20,7 @@ int main(int argc, const char* argv[])
 
         mip::CmdResult result = mip::commands_base::getDeviceInfo(*device, &device_info);
 
-        if( result == mip::CmdResult::ACK_OK )
+        if (result == mip::CmdResult::ACK_OK)
         {
             printf("Success:\n");
 
@@ -39,9 +38,9 @@ int main(int argc, const char* argv[])
             print_info("Lot Number:       ", device_info.lot_number);
 
             printf("  Firmware version:           %d.%d.%d\n\n",
-                   (device_info.firmware_version / 1000),
-                   (device_info.firmware_version / 100) % 10,
-                   (device_info.firmware_version / 1) % 100
+                (device_info.firmware_version / 1000),
+                (device_info.firmware_version / 100) % 10,
+                (device_info.firmware_version / 1) % 100
             );
         }
         else
@@ -49,11 +48,11 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", result.name(), result.value);
         }
     }
-    catch( const std::underflow_error& ex )
+    catch (const std::underflow_error& ex)
     {
         return printCommonUsage(argv);
     }
-    catch( const std::exception& ex )
+    catch (const std::exception& ex)
     {
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;

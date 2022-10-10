@@ -6,7 +6,6 @@
 #include "../utils/serialization.h"
 
 #ifdef __cplusplus
-
 #include <tuple>
 #include <type_traits>
 
@@ -15,7 +14,8 @@ namespace C {
 extern "C" {
 #endif // __cplusplus
 
-enum {
+enum
+{
     MIP_INVALID_DESCRIPTOR_SET        = 0x00,
     MIP_DATA_DESCRIPTOR_SET_START     = 0x80,
     MIP_RESERVED_DESCRIPTOR_SET_START = 0xF0,
@@ -62,7 +62,6 @@ void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor
 void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
 
 #ifdef __cplusplus
-
 } // extern "C"
 } // namespace "C"
 
@@ -84,9 +83,15 @@ struct CompositeDescriptor
 
 //    operator uint16_t() const { return as_u16(); }
 
-    bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
-
+    bool operator==(const CompositeDescriptor& other) const
+    {
+        return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor;
+    }
+    bool operator<(const CompositeDescriptor& other) const
+    {
+        return descriptorSet < other.descriptorSet ||
+            (descriptorSet <= other.descriptorSet && (fieldDescriptor < other.fieldDescriptor));
+    }
 };
 
 
@@ -94,8 +99,14 @@ struct CompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
-template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert(Serializer& serializer, const Bitfield<Derived>& bitfield)
+{
+    insert(serializer, static_cast<const Derived&>(bitfield).value);
+}
+template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield)
+{
+    extract(serializer, static_cast<Derived&>(bitfield).value);
+}
 
 
 enum class FunctionSelector : uint8_t
@@ -114,17 +125,16 @@ inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_da
 inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
 
-inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
-inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }
-inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_reply_field_descriptor(fieldDescriptor); }
-inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
-inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
+inline bool isValidFieldDescriptor     (uint8_t fieldDescriptor) { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
+inline bool isCommandFieldDescriptor   (uint8_t fieldDescriptor) { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }
+inline bool isReplyFieldDescriptor     (uint8_t fieldDescriptor) { return C::mip_is_reply_field_descriptor(fieldDescriptor); }
+inline bool isResponseFieldDescriptor  (uint8_t fieldDescriptor) { return C::mip_is_response_field_descriptor(fieldDescriptor); }
+inline bool isReservedFieldDescriptor  (uint8_t fieldDescriptor) { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
 inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
 
 
-inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+inline void insert (Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
+inline void extract(Serializer& serializer, DescriptorRate& self)       { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 } // namespace mip
-
 #endif // __cplusplus

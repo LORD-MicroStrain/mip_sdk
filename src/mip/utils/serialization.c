@@ -5,7 +5,7 @@
 
 #ifdef __cplusplus
 namespace mip {
-#endif
+#endif // __cplusplus
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,10 +131,8 @@ bool mip_serializer_is_complete(const mip_serializer* serializer)
 
 static void pack(uint8_t* buffer, const void* value, size_t size)
 {
-    for( size_t i = 0; i < size; i++ )
-    {
+    for (size_t i = 0; i < size; i++)
         buffer[size - 1 - i] = ((uint8_t*)value)[i];
-    }
 }
 
 #define INSERT_MACRO(name, type) \
@@ -162,10 +160,8 @@ INSERT_MACRO(double, double  )
 
 static void unpack(const uint8_t* buffer, void* value, size_t size)
 {
-    for( size_t i = 0; i < size; i++ )
-    {
+    for (size_t i = 0; i < size; i++)
         ((uint8_t*)value)[i] = buffer[size - 1 - i];
-    }
 }
 
 
@@ -209,7 +205,7 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 {
     *count_out = 0;  // Default to zero if extraction fails.
     extract_u8(serializer, count_out);
-    if( *count_out > max_count )
+    if (*count_out > max_count)
     {
         // This is an error condition which can occur if the device sends
         // more array entries than the receiving structure expected.
@@ -224,4 +220,4 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 
 #ifdef __cplusplus
 } // namespace mip
-#endif
+#endif // __cplusplus

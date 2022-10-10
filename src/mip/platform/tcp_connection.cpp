@@ -13,10 +13,8 @@ namespace platform {
 ///@param port     Port on hostName to connect to
 TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
 {
-    if( !tcp_socket_open(&mSocket, hostname.c_str(), port, 3000) )
-    {
+    if (!tcp_socket_open(&mSocket, hostname.c_str(), port, 3000))
         throw std::runtime_error("Unable to open TCP socket");
-    }
 }
 
 ///@brief Closes the underlying TCP socket

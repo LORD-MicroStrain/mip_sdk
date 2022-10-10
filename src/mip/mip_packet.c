@@ -37,10 +37,8 @@ void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
     assert(buffer != NULL);
 
     // Limit the length in case it's longer than a mip packer (or worse, longer than the buffer size field can hold)
-    if( length > MIP_PACKET_LENGTH_MAX )
-    {
+    if (length > MIP_PACKET_LENGTH_MAX)
         length = MIP_PACKET_LENGTH_MAX;
-    }
 
     packet->_buffer        = buffer;
     packet->_buffer_length = length;
@@ -64,7 +62,7 @@ void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, 
 {
     mip_packet_from_buffer(packet, buffer, buffer_size);
 
-    if( buffer_size < MIP_PACKET_LENGTH_MIN )
+    if (buffer_size < MIP_PACKET_LENGTH_MIN)
     {
         assert(false); // Buffer too small!
         return;
@@ -159,7 +157,7 @@ uint16_t mip_packet_compute_checksum(const mip_packet* packet)
     // subtraction is guaranteed to be safe.
     const packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
-    for( packet_length i = 0; i < length; i++ )
+    for (packet_length i = 0; i < length; i++)
     {
         a += packet->_buffer[i];
         b += a;
@@ -192,10 +190,8 @@ bool mip_packet_is_sane(const mip_packet* packet)
 ///
 bool mip_packet_is_valid(const mip_packet* packet)
 {
-    if( !mip_packet_is_sane(packet) || (mip_packet_descriptor_set(packet) == 0x00) )
-    {
+    if (!mip_packet_is_sane(packet) || (mip_packet_descriptor_set(packet) == 0x00))
         return false;
-    }
 
     const uint16_t listed_checksum   = mip_packet_checksum_value(packet);
     const uint16_t computed_checksum = mip_packet_compute_checksum(packet);
@@ -212,10 +208,8 @@ bool mip_packet_is_valid(const mip_packet* packet)
 ///
 bool mip_packet_is_empty(const mip_packet* packet)
 {
-    if( !mip_packet_is_sane(packet) )
-    {
+    if (!mip_packet_is_sane(packet))
         return true;
-    }
 
     return mip_packet_payload_length(packet) == 0;
 }
@@ -291,10 +285,8 @@ bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const ui
 {
     uint8_t* payload_buffer;
     remaining_count remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
-    if( remaining < 0 )
-    {
+    if (remaining < 0)
         return false;
-    }
 
     memcpy(payload_buffer, payload, payload_length);
 
@@ -332,7 +324,7 @@ bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const ui
 ///         not be written.
 ///
 remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length,
-                                       uint8_t** const payload_ptr_out)
+    uint8_t** const payload_ptr_out)
 {
     assert(payload_ptr_out != NULL);
     // assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -343,7 +335,7 @@ remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descrip
 
     *payload_ptr_out = NULL;
 
-    if( field_length <= remaining )
+    if (field_length <= remaining)
     {
         packet_length field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
 
@@ -392,7 +384,7 @@ remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* paylo
 
     remaining_count remaining = mip_packet_remaining_space(packet) + delta_length;
 
-    if( remaining >= 0 )
+    if (remaining >= 0)
     {
         field_ptr[MIP_INDEX_FIELD_LEN] = new_field_length;
         packet->_buffer[MIP_INDEX_LENGTH] += delta_length;

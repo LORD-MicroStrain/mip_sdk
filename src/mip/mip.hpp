@@ -125,10 +125,7 @@ class Packet : public C::mip_packet
 
 public:
     ///@copydoc mip::C::mip_packet_create
-    Packet(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet)
-    {
-        C::mip_packet_create(this, buffer, bufferSize, descriptorSet);
-    }
+    Packet(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip_packet_from_buffer
     Packet(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
     /// Constructs a C++ %Packet class from the base C object.
@@ -136,55 +133,54 @@ public:
     /// Constructs a C++ %Packet class from the base C object.
     Packet(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
 
-    ///<@copydoc mip::C::mip_packet_descriptor_set
-    uint8_t descriptorSet() const { return C::mip_packet_descriptor_set(this); }
-    ///<@copydoc mip::C::mip_packet_total_length
-    PacketLength totalLength() const { return C::mip_packet_total_length(this); }
-    ///<@copydoc mip::C::mip_packet_payload_length
-    uint8_t payloadLength() const { return C::mip_packet_payload_length(this); }
+    uint8_t      descriptorSet() const { return C::mip_packet_descriptor_set(this); } ///<@copydoc mip::C::mip_packet_descriptor_set
+    PacketLength totalLength()   const { return C::mip_packet_total_length(this);   } ///<@copydoc mip::C::mip_packet_total_length
+    uint8_t      payloadLength() const { return C::mip_packet_payload_length(this); } ///<@copydoc mip::C::mip_packet_payload_length
 
-    bool isData() const { return C::mip_packet_is_data(this); }
+    bool isData()    const { return C::mip_packet_is_data(this);  }
     bool isCommand() const { return !C::mip_packet_is_data(this); }
 
-    const uint8_t* pointer() const { return C::mip_packet_pointer(this); }  ///<@copydoc mip::C::mip_packet_pointer
-    const uint8_t* payload() const { return C::mip_packet_payload(this); }  ///<@copydoc mip::C::mip_packet_payload
+    const uint8_t* pointer() const { return C::mip_packet_pointer(this); } ///<@copydoc mip::C::mip_packet_pointer
+    const uint8_t* payload() const { return C::mip_packet_payload(this); } ///<@copydoc mip::C::mip_packet_payload
 
-    ///<@copydoc mip::C::mip_packet_checksum_value
-    uint16_t checksumValue() const { return C::mip_packet_checksum_value(this); }
-    ///<@copydoc mip::C::mip_packet_compute_checksum
-    uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); }
+    uint16_t checksumValue()   const { return C::mip_packet_checksum_value(this);   } ///<@copydoc mip::C::mip_packet_checksum_value
+    uint16_t computeChecksum() const { return C::mip_packet_compute_checksum(this); } ///<@copydoc mip::C::mip_packet_compute_checksum
 
-    bool isSane() const { return C::mip_packet_is_sane(this); }    ///<@copydoc mip::C::mip_packet_is_sane
-    bool isValid() const { return C::mip_packet_is_valid(this); }  ///<@copydoc mip::C::mip_packet_is_valid
-    bool isEmpty() const { return C::mip_packet_is_empty(this); }  ///<@copydoc mip::C::mip_packet_is_empty
+    bool isSane()  const { return C::mip_packet_is_sane(this);  } ///<@copydoc mip::C::mip_packet_is_sane
+    bool isValid() const { return C::mip_packet_is_valid(this); } ///<@copydoc mip::C::mip_packet_is_valid
+    bool isEmpty() const { return C::mip_packet_is_empty(this); } ///<@copydoc mip::C::mip_packet_is_empty
 
-    ///<@copydoc mip::C::mip_packet_buffer_size
-    PacketLength bufferSize() const { return C::mip_packet_buffer_size(this); }
-    ///<@copydoc mip::C::mip_packet_remaining_space
-    RemainingCount remainingSpace() const { return C::mip_packet_remaining_space(this); }
+    PacketLength bufferSize()       const { return C::mip_packet_buffer_size(this);     } ///<@copydoc mip::C::mip_packet_buffer_size
+    RemainingCount remainingSpace() const { return C::mip_packet_remaining_space(this); } ///<@copydoc mip::C::mip_packet_remaining_space
 
-    ///<@copydoc mip::C::mip_packet_add_field
+    ///@copydoc mip::C::mip_packet_add_field
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, size_t payloadLength)
     {
         return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength);
     }
-    ///<@copydoc mip::C::mip_packet_alloc_field
+
+    ///@copydoc mip::C::mip_packet_alloc_field
     RemainingCount allocField(uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out)
     {
         return C::mip_packet_alloc_field(this, fieldDescriptor, payloadLength, payloadPtr_out);
     }
-    ///<@copydoc mip::C::mip_packet_realloc_last_field
+
+    ///@copydoc mip::C::mip_packet_realloc_last_field
     RemainingCount reallocLastField(uint8_t* payloadPtr, uint8_t newPayloadLength)
     {
         return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength);
     }
-    ///<@copydoc mip::C::mip_packet_cancel_last_field
-    RemainingCount cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }
 
-    void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip::C::mip_packet_finalize
+    ///@copydoc mip::C::mip_packet_cancel_last_field
+    RemainingCount cancelLastField(uint8_t* payloadPtr)
+    {
+        return C::mip_packet_cancel_last_field(this, payloadPtr);
+    }
 
-    void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); }  ///<@copydoc mip::C::mip_packet_reset
-    void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
+    void finalize() { C::mip_packet_finalize(this); } ///<@copydoc mip::C::mip_packet_finalize
+
+    void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); } ///<@copydoc mip::C::mip_packet_reset
+    void reset()                { reset(descriptorSet());             } ///<@brief Resets the packet using the same descriptor set.
 
     /// Returns the first field in the packet.
     Field firstField() const { return Field(C::mip_field_first_from_packet(this)); }
@@ -197,9 +193,9 @@ public:
     ///@internal
 #if __cpp_range_based_for >= 201603
     std::nullptr_t     end() const { return nullptr; }
-#else
+#else // __cpp_range_based_for < 201603
     FieldIterator end() const { return Field(); }
-#endif
+#endif // __cpp_range_based_for >= 201603
 
     template<class Field>
     bool addField(const Field& field, uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
@@ -213,7 +209,7 @@ public:
 
     template<class Field>
     static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field,
-                                  uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
+        uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
     {
         Packet packet(buffer, bufferSize, Field::DESCRIPTOR_SET);
         packet.addField<Field>(field, fieldDescriptor);
@@ -233,13 +229,10 @@ private:
         bool operator==(const FieldIterator& other) const
         {
             // Required to make invalid fields equivalent for range-based for loop
-            if( !mField.isValid() && !other.mField.isValid() )
-            {
+            if (!mField.isValid() && !other.mField.isValid())
                 return true;
-            }
             return mField.descriptorSet() == other.mField.descriptorSet() &&
-                   mField.fieldDescriptor() == other.mField.fieldDescriptor() &&
-                   mField.payload() == other.mField.payload();
+                mField.fieldDescriptor() == other.mField.fieldDescriptor() && mField.payload() == other.mField.payload();
         }
         bool operator!=(const FieldIterator& other) const { return !(*this == other); }
 
@@ -248,15 +241,10 @@ private:
 
         const Field& operator*() const { return mField; }
 
-        FieldIterator& operator++()
-        {
-            mField.next();
-            return *this;
-        }
+        FieldIterator& operator++() { mField.next(); return *this; }
     private:
         Field mField;
     };
-
 };
 
 
@@ -270,10 +258,10 @@ class Parser : public C::mip_parser
 public:
     ///@copydoc mip::C::mip_parser_init
     Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject,
-           Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+        Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
     Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*, const Packet*, Timestamp), void* callbackObject,
-           Timeout timeout)
+        Timeout timeout)
     {
         C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout);
     }
@@ -366,10 +354,8 @@ bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPa
 
     size_t    count;
     Timestamp timestamp;
-    if( !reader(ptr, maxCount, &count, &timestamp) )
-    {
+    if (!reader(ptr, maxCount, &count, &timestamp))
         return false;
-    }
 
     assert(count <= maxCount);
 

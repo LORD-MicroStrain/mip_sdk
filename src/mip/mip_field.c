@@ -25,13 +25,11 @@
 ///@returns A %mip_field initialized with the specified values.
 ///
 void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload,
-                    uint8_t payload_length)
+    uint8_t payload_length)
 {
     assert(payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX);
-    if( payload_length > MIP_FIELD_PAYLOAD_LENGTH_MAX )
-    {
+    if (payload_length > MIP_FIELD_PAYLOAD_LENGTH_MAX)
         payload_length = MIP_FIELD_PAYLOAD_LENGTH_MAX;
-    }
 
     field->_payload          = payload;
     field->_payload_length   = payload_length;
@@ -126,19 +124,17 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
     field._field_descriptor = 0x00;  // This makes the field invalid.
     field._remaining_length = 0;
 
-    if( total_length >= MIP_FIELD_HEADER_LENGTH )
+    if (total_length >= MIP_FIELD_HEADER_LENGTH)
     {
         // Field length is external input, so it must be sanitized.
         uint8_t field_length = header[MIP_INDEX_FIELD_LEN];
 
         // Ensure field length does not exceed total_length.
-        if( field_length > total_length )
-        {
+        if (field_length > total_length)
             field_length = total_length;
-        }
 
         // Check for invalid field length.
-        if( field_length >= MIP_FIELD_HEADER_LENGTH )
+        if (field_length >= MIP_FIELD_HEADER_LENGTH)
         {
             field._field_descriptor = header[MIP_INDEX_FIELD_DESC];
             field._payload_length   = field_length - MIP_FIELD_HEADER_LENGTH;
@@ -167,7 +163,7 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 mip_field mip_field_first_from_packet(const mip_packet* packet)
 {
     return mip_field_from_header_ptr(mip_packet_payload(packet), mip_packet_payload_length(packet),
-                                     mip_packet_descriptor_set(packet));
+        mip_packet_descriptor_set(packet));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -227,14 +223,10 @@ bool mip_field_next(mip_field* field)
 ///
 bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet)
 {
-    if( field->_descriptor_set != MIP_INVALID_DESCRIPTOR_SET )
-    {
+    if (field->_descriptor_set != MIP_INVALID_DESCRIPTOR_SET)
         *field = mip_field_next_after(field);
-    }
     else
-    {
         *field = mip_field_first_from_packet(packet);
-    }
 
     return mip_field_is_valid(field);
 }

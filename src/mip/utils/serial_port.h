@@ -2,14 +2,14 @@
 
 #ifdef WIN32
 #include <windows.h>
-#else
+#else // !WIN32
 #include <poll.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
 #include <termios.h>
 #include <sys/ioctl.h>
-#endif
+#endif // WIN32
 
 #include <stdio.h>
 #include <stdint.h>
@@ -18,7 +18,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_platform  Platform specific utilities
@@ -35,11 +35,11 @@ extern "C" {
 typedef struct serial_port
 {
     bool is_open;
-#ifdef WIN32 //Windows
+#ifdef WIN32 //  Windows
     HANDLE handle;
-#else //Linux
+#else // !WIN32  Linux
     int handle;
-#endif
+#endif // WIN32
 } serial_port;
 
 
@@ -56,4 +56,4 @@ bool serial_port_is_open(serial_port* port);
 
 #ifdef __cplusplus
 }
-#endif
+#endif // __cplusplus

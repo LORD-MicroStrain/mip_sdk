@@ -81,7 +81,7 @@ struct CmdResult
 
 #ifndef _WIN32 // Avoid name conflict with windows.h
     static constexpr C::mip_cmd_result STATUS_PENDING = STATUS_QUEUED;
-#endif
+#endif // _WIN32
 
     C::mip_cmd_result value = C::MIP_STATUS_NONE;
 

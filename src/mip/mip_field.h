@@ -8,7 +8,7 @@
 namespace mip {
 namespace C {
 extern "C" {
-#endif
+#endif // __cplusplus
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ typedef struct mip_field
 
 
 void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload,
-                    uint8_t payload_length);
+    uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup FieldAccess  Field Accessors [C]
@@ -120,7 +120,7 @@ bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet);
 ///
 
 #ifdef __cplusplus
-} // namespace mip
-} // namespace C
 } // extern "C"
-#endif
+} // namespace C
+} // namespace mip
+#endif // __cplusplus

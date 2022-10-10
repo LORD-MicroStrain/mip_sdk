@@ -1,4 +1,3 @@
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // CV7_Example.cpp
@@ -37,10 +36,10 @@ using namespace mip;
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-//Sensor-to-vehicle frame transformation (Euler Angles)
+// Sensor-to-vehicle frame transformation (Euler Angles)
 float sensor_to_vehicle_transformation_euler[3] = { 0.0f, 0.0f, 0.0f };
 
-//Device data stores
+// Device data stores
 data_shared::GpsTimestamp sensor_gps_time;
 data_sensor::ScaledAccel  sensor_accel;
 data_sensor::ScaledGyro   sensor_gyro;
@@ -76,110 +75,92 @@ void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp time
 int main(int argc, const char* argv[])
 {
 
-    std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
+    std::unique_ptr<ExampleUtils>          utils  = handleCommonArgs(argc, argv);
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
 
     //
-    //Ping the device (note: this is good to do to make sure the device is present)
+    // Ping the device (note: this is good to do to make sure the device is present)
     //
 
-    if( commands_base::ping(*device) != CmdResult::ACK_OK )
-    {
+    if (commands_base::ping(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not ping the device!");
-    }
 
 
     //
-    //Idle the device (note: this is good to do during setup)
+    // Idle the device (note: this is good to do during setup)
     //
 
-    if( commands_base::setIdle(*device) != CmdResult::ACK_OK )
-    {
+    if (commands_base::setIdle(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set the device to idle!");
-    }
 
 
     //
-    //Load the device default settings (so the device is in a known state)
+    // Load the device default settings (so the device is in a known state)
     //
 
-    if( commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK )
-    {
+    if (commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
-    }
 
 
     //
-    //Setup Sensor data format to 100 Hz
+    // Set up Sensor data format to 100 Hz
     //
 
     uint16_t sensor_base_rate;
 
-    //Note: Querying the device base rate is only one way to calculate the descriptor decimation.
-    //We could have also set it directly with information from the datasheet (shown in GNSS setup).
+    // Note: Querying the device base rate is only one way to calculate the descriptor decimation.
+    // We could have also set it directly with information from the datasheet (shown in GNSS setup).
 
-    if( commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK )
-    {
+    if (commands_3dm::getBaseRate(*device, data_sensor::DESCRIPTOR_SET, &sensor_base_rate) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not get sensor base rate format!");
-    }
 
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation  = sensor_base_rate / sensor_sample_rate;
 
-    std::array<DescriptorRate, 4> sensor_descriptors = {
-        {
-            { data_shared::DATA_GPS_TIME, sensor_decimation },
-            { data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
-            { data_sensor::DATA_GYRO_SCALED, sensor_decimation },
-            { data_sensor::DATA_MAG_SCALED, sensor_decimation },
-        }
-    };
+    std::array<DescriptorRate, 4> sensor_descriptors = { {
+        { data_shared::DATA_GPS_TIME,     sensor_decimation },
+        { data_sensor::DATA_ACCEL_SCALED, sensor_decimation },
+        { data_sensor::DATA_GYRO_SCALED,  sensor_decimation },
+        { data_sensor::DATA_MAG_SCALED,   sensor_decimation },
+    } };
 
-    if( commands_3dm::writeMessageFormat(*device, data_sensor::DESCRIPTOR_SET, sensor_descriptors.size(),
-                                         sensor_descriptors.data()) != CmdResult::ACK_OK )
-    {
+    if (commands_3dm::writeMessageFormat(*device, data_sensor::DESCRIPTOR_SET, sensor_descriptors.size(), sensor_descriptors.data()) !=
+        CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
-    }
 
 
     //
-    //Setup FILTER data format
+    // Set up FILTER data format
     //
 
     uint16_t filter_base_rate;
 
-    if( commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK )
-    {
+    if (commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not get filter base rate format!");
-    }
 
     const uint16_t filter_sample_rate = 100; // Hz
     const uint16_t filter_decimation  = filter_base_rate / filter_sample_rate;
 
-    std::array<DescriptorRate, 3> filter_descriptors = {
-        {
-            { data_shared::DATA_GPS_TIME, filter_decimation },
-            { data_filter::DATA_FILTER_STATUS, filter_decimation },
-            { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-        }
-    };
+    std::array<DescriptorRate, 3> filter_descriptors = { {
+        { data_shared::DATA_GPS_TIME,         filter_decimation },
+        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+    } };
 
-    if( commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(),
-                                         filter_descriptors.data()) != CmdResult::ACK_OK )
-    {
+    if (commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) !=
+        CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
-    }
 
 
     //
-    // Setup event triggers/actions on > 45 degrees filter pitch and roll Euler angles
+    // Set up event triggers/actions on > 45 degrees filter pitch and roll Euler angles
     // (Note 1: we are reusing the event and action structs, since the settings for pitch/roll are so similar)
     // (Note 2: we are using the same value for event and action ids.  This is not necessary, but done here for convenience)
     //
 
-    //EVENTS
+    // EVENTS
 
-    //Roll
+    // Roll
     commands_3dm::EventTrigger::Parameters event_params;
     event_params.threshold.type       = commands_3dm::EventTrigger::ThresholdParams::Type::WINDOW;
     event_params.threshold.desc_set   = data_filter::DESCRIPTOR_SET;
@@ -188,102 +169,77 @@ int main(int argc, const char* argv[])
     event_params.threshold.high_thres = -0.7853981;
     event_params.threshold.low_thres  = 0.7853981;
 
-    if( commands_3dm::writeEventTrigger(*device, FILTER_ROLL_EVENT_ACTION_ID,
-                                        commands_3dm::EventTrigger::Type::THRESHOLD, event_params) !=
-        CmdResult::ACK_OK )
-    {
+    if (commands_3dm::writeEventTrigger(*device, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventTrigger::Type::THRESHOLD,
+        event_params) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set roll event parameters!");
-    }
 
-    //Pitch
+    // Pitch
     event_params.threshold.param_id = 2;
 
-    if( commands_3dm::writeEventTrigger(*device, FILTER_PITCH_EVENT_ACTION_ID,
-                                        commands_3dm::EventTrigger::Type::THRESHOLD, event_params) !=
-        CmdResult::ACK_OK )
-    {
+    if (commands_3dm::writeEventTrigger(*device, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventTrigger::Type::THRESHOLD,
+        event_params) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set pitch event parameters!");
-    }
 
-    //ACTIONS
+    // ACTIONS
 
-    //Roll
+    // Roll
     commands_3dm::EventAction::Parameters event_action;
-    event_action.message.desc_set   = data_filter::DESCRIPTOR_SET;
-    event_action.message.num_fields = 1;
+    event_action.message.desc_set       = data_filter::DESCRIPTOR_SET;
+    event_action.message.num_fields     = 1;
     event_action.message.descriptors[0] = data_shared::DATA_EVENT_SOURCE;
-    event_action.message.decimation = 0;
+    event_action.message.decimation     = 0;
 
-    if( writeEventAction(*device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID,
-                         commands_3dm::EventAction::Type::MESSAGE, event_action) != CmdResult::ACK_OK )
-    {
+    if (writeEventAction(*device, FILTER_ROLL_EVENT_ACTION_ID, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventAction::Type::MESSAGE,
+        event_action) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set roll action parameters!");
-    }
 
-    //Pitch
-    if( writeEventAction(*device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID,
-                         commands_3dm::EventAction::Type::MESSAGE, event_action) != CmdResult::ACK_OK )
-    {
+    // Pitch
+    if (writeEventAction(*device, FILTER_PITCH_EVENT_ACTION_ID, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventAction::Type::MESSAGE,
+        event_action) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set pitch action parameters!");
-    }
 
 
-    //ENABLE EVENTS
+    // ENABLE EVENTS
 
-    //Roll
-    if( writeEventControl(*device, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) !=
-        CmdResult::ACK_OK )
-    {
+    // Roll
+    if (writeEventControl(*device, FILTER_ROLL_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable roll event!");
-    }
 
-    //Pitch
-    if( writeEventControl(*device, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) !=
-        CmdResult::ACK_OK )
-    {
+    // Pitch
+    if (writeEventControl(*device, FILTER_PITCH_EVENT_ACTION_ID, commands_3dm::EventControl::Mode::ENABLED) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not enable pitch event!");
-    }
 
     //
-    //Set up the sensor to vehicle transformation
+    // Set up the sensor to vehicle transformation
     //
 
-    if( commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0],
-                                                        sensor_to_vehicle_transformation_euler[1],
-                                                        sensor_to_vehicle_transformation_euler[2]) !=
-        CmdResult::ACK_OK )
-    {
+    if (commands_3dm::writeSensor2VehicleTransformEuler(*device, sensor_to_vehicle_transformation_euler[0],
+        sensor_to_vehicle_transformation_euler[1], sensor_to_vehicle_transformation_euler[2]) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set sensor-to-vehicle transformation!");
-    }
 
 
     //
-    //Set up the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
+    // Set up the filter aiding measurements (GNSS position/velocity and dual antenna [aka gnss heading])
     //
 
-    if( commands_filter::writeAidingMeasurementEnable(*device,
-                                                      commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER,
-                                                      true) != CmdResult::ACK_OK )
-    {
+    if (commands_filter::writeAidingMeasurementEnable(*device, commands_filter::AidingMeasurementEnable::AidingSource::MAGNETOMETER,
+        true) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter aiding measurement enable!");
-    }
 
 
     //
-    //Reset the filter (note: this is good to do after filter setup is complete)
+    // Reset the filter (note: this is good to do after filter setup is complete)
     //
 
-    if( commands_filter::reset(*device) != CmdResult::ACK_OK )
-    {
+    if (commands_filter::reset(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not reset the filter!");
-    }
 
 
     //
     // Register data callbacks
     //
 
-    //Sensor Data
+    // Sensor Data
     DispatchHandler sensor_data_handlers[4];
 
     device->registerExtractor(sensor_data_handlers[0], &sensor_gps_time, data_sensor::DESCRIPTOR_SET);
@@ -291,7 +247,7 @@ int main(int argc, const char* argv[])
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
     device->registerExtractor(sensor_data_handlers[3], &sensor_mag);
 
-    //Filter Data
+    // Filter Data
     DispatchHandler filter_data_handlers[4];
 
     device->registerExtractor(filter_data_handlers[0], &filter_gps_time, data_filter::DESCRIPTOR_SET);
@@ -299,48 +255,45 @@ int main(int argc, const char* argv[])
     device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
 
     device->registerFieldCallback<&handleFilterEventSource>(filter_data_handlers[3], data_filter::DESCRIPTOR_SET,
-                                                            data_shared::DATA_EVENT_SOURCE);
+        data_shared::DATA_EVENT_SOURCE);
 
     //
-    //Resume the device
+    // Resume the device
     //
 
-    if( commands_base::resume(*device) != CmdResult::ACK_OK )
-    {
+    if (commands_base::resume(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not resume the device!");
-    }
 
 
     //
-    //Main Loop: Update the interface and process data
+    // Main Loop: Update the interface and process data
     //
 
-    bool running = true;
+    bool           running              = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
-    while( running )
+    while (running)
     {
         device->update();
 
-        //Check Filter State
-        if( (!filter_state_ahrs) && (filter_status.filter_state == data_filter::FilterMode::AHRS) )
+        // Check Filter State
+        if ((!filter_state_ahrs) && (filter_status.filter_state == data_filter::FilterMode::AHRS))
         {
             printf("NOTE: Filter has entered AHRS mode.\n");
             filter_state_ahrs = true;
         }
 
-        //Once in full nav, print out data at 10 Hz
-        if( filter_state_ahrs )
+        // Once in full nav, print out data at 10 Hz
+        if (filter_state_ahrs)
         {
             mip::Timestamp curr_timestamp = getCurrentTimestamp();
 
-            if( curr_timestamp - prev_print_timestamp >= 1000 )
+            if (curr_timestamp - prev_print_timestamp >= 1000)
             {
                 printf("TOW = %f: ATT_EULER = [%f %f %f]\n",
-                       filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch,
-                       filter_euler_angles.yaw);
+                    filter_gps_time.tow, filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
 
                 prev_print_timestamp = curr_timestamp;
             }
@@ -362,16 +315,12 @@ void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp time
 {
     mip::data_shared::EventSource data;
 
-    if( field.extract(data) )
+    if (field.extract(data))
     {
-        if( data.trigger_id == FILTER_ROLL_EVENT_ACTION_ID )
-        {
+        if (data.trigger_id == FILTER_ROLL_EVENT_ACTION_ID)
             printf("WARNING: Roll event triggered!\n");
-        }
-        else if( data.trigger_id == FILTER_PITCH_EVENT_ACTION_ID )
-        {
+        else if (data.trigger_id == FILTER_PITCH_EVENT_ACTION_ID)
             printf("WARNING: Pitch event triggered!\n");
-        }
     }
 }
 
@@ -393,10 +342,8 @@ int usage(const char* argv0)
 
 void exit_gracefully(const char* message)
 {
-    if( message )
-    {
+    if (message)
         printf("%s\n", message);
-    }
 
 #ifdef _WIN32
     int dummy = getchar();

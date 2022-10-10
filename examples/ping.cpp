@@ -1,4 +1,3 @@
-
 #include "serial_mip_device.hpp"
 
 #include <mip/definitions/commands_base.h>
@@ -12,7 +11,7 @@
 namespace mip {
 namespace C {
 CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, const struct MipCmd_Base_GetDeviceInfo* cmd,
-                                    struct MipCmd_Base_GetDeviceInfo_Response* response);
+    struct MipCmd_Base_GetDeviceInfo_Response* response);
 CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info);
 }
 }
@@ -28,21 +27,21 @@ int main(int argc, const char* argv[])
 {
     uint32_t baud = 0;
 
-    if( argc == 1 )
+    if (argc == 1)
     {
         printf("Available serial ports:\n");
         std::vector<serial::PortInfo> ports = serial::list_ports();
 
-        for( const serial::PortInfo& port : ports )
+        for (const serial::PortInfo& port : ports)
         {
             printf("  %s %s %s\n", port.port.c_str(), port.description.c_str(), port.hardware_id.c_str());
         }
         return 0;
     }
-    else if( argc == 3 )
+    else if (argc == 3)
     {
         baud = std::strtoul(argv[2], nullptr, 10);
-        if( baud == 0 )
+        if (baud == 0)
         {
             fprintf(stderr, "Error: invalid baud rate '%s'\n", argv[2]);
             return 1;
@@ -75,7 +74,7 @@ int main(int argc, const char* argv[])
         size_t used = mip::insert(payload, available, 0, info);
 #elif METHOD == 3
         size_t used = mip::insert_MipCmd_Base_GetDeviceInfo_args(payload, available, 0);
-#endif
+#endif // METHOD == 1
 
         // Skip error checking as this field will always fit in this buffer.
         packet.reallocLastField(payload, used);
@@ -174,9 +173,9 @@ int main(int argc, const char* argv[])
         mip::MipInterfaceState*    device4 = device3;
         static_assert(std::is_same<mip::MipInterfaceState, mip::C::MipInterfaceState>::value, "Not the same");
         mip::CmdResult result = mip::get_device_information(device4, &response.device_info);
-#endif
+#endif // METHOD == 5
 
-        if( result == mip::MIP_ACK_OK )
+        if (result == mip::MIP_ACK_OK)
         {
             printf("Success:\n");
 
@@ -194,9 +193,9 @@ int main(int argc, const char* argv[])
             print_info("Lot Number:       ", response.device_info.lot_number);
 
             printf("  Firmware version:           %d.%d.%d\n\n",
-                   (response.device_info.firmware_version / 1000),
-                   (response.device_info.firmware_version / 100) % 10,
-                   (response.device_info.firmware_version / 1) % 100
+                (response.device_info.firmware_version / 1000),
+                (response.device_info.firmware_version / 100) % 10,
+                (response.device_info.firmware_version / 1) % 100
             );
         }
         else
@@ -204,9 +203,9 @@ int main(int argc, const char* argv[])
             printf("Error: command completed with NACK: %s (%d)\n", mip::MipCmdResult_toString(result), result);
         }
 
-#endif
+#endif  // METHOD == 1 || METHOD == 2 || METHOD == 3
     }
-    catch( const std::exception& ex )
+    catch (const std::exception& ex)
     {
         fprintf(stderr, "Could not open serial port: %s", ex.what());
         return 1;
@@ -214,11 +213,9 @@ int main(int argc, const char* argv[])
 
     return 0;
 }
-//
-// namespace mip
-// {
-// namespace C
-// {
+
+// namespace mip {
+// namespace C {
 //
 // CmdResult mipcmd_base_getDeviceInfo(struct C::MipInterfaceState* device, struct MipBaseDeviceInfo* info)
 // {
@@ -282,5 +279,5 @@ int main(int argc, const char* argv[])
 //     return result;
 // }
 //
-// }
-// }
+// } // namespace C
+// } // namespace mip

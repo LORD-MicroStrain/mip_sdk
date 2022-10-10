@@ -29,7 +29,7 @@
 ///       and is typically 100 milliseconds.
 ///
 void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback,
-                     void* callback_object, timestamp_type timeout)
+    void* callback_object, timestamp_type timeout)
 {
     parser->_start_time = 0;
     parser->_timeout    = timeout;
@@ -108,17 +108,14 @@ void mip_parser_reset(mip_parser* parser)
 ///      contains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
 ///      16-bit checksum has a 1 in 65,536 chance of appearing to be valid.
 ///
-remaining_count
-mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp,
-                 unsigned int max_packets)
+remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count,
+    timestamp_type timestamp, unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
-    if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
+    if (parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout)
     {
-        if( byte_ring_count(&parser->_ring) > 0 )
-        {
+        if (byte_ring_count(&parser->_ring) > 0)
             byte_ring_pop(&parser->_ring, 1);
-        }
         parser->_expected_length = MIPPARSER_RESET_LENGTH;
     }
 
@@ -129,17 +126,15 @@ mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_c
         byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
 
         mip_packet packet;
-        while( mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp) )
+        while (mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp))
         {
             num_packets++;
             bool stop = (max_packets > 0) && (num_packets >= max_packets);
 
-            if( parser->_callback )
-            {
+            if (parser->_callback)
                 stop |= !parser->_callback(parser->_callback_object, &packet, parser->_start_time);
-            }
 
-            if( stop )
+            if (stop)
             {
                 // Pull more data from the input buffer if possible.
                 byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
@@ -151,9 +146,8 @@ mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_c
         // Need more data to continue parsing.
         // This code assumes the ring buffer is large enough for any single
         // received mip packet, otherwise it will get stuck in an infinite loop.
-
     }
-    while( input_count );
+    while (input_count);
 
     return -(remaining_count)input_count;
 }
@@ -175,14 +169,12 @@ mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_c
 bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp)
 {
     // Parse packets while there is sufficient data in the ring buffer.
-    while( byte_ring_count(&parser->_ring) >= parser->_expected_length )
+    while (byte_ring_count(&parser->_ring) >= parser->_expected_length)
     {
-        if( parser->_expected_length == MIPPARSER_RESET_LENGTH )
+        if (parser->_expected_length == MIPPARSER_RESET_LENGTH)
         {
-            if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
-            {
+            if (byte_ring_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1)
                 byte_ring_pop(&parser->_ring, 1);
-            }
             else
             {
                 // Synchronized - set the start time and expect more data.
@@ -190,10 +182,10 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
                 parser->_expected_length = MIP_HEADER_LENGTH;
             }
         }
-        else if( parser->_expected_length == MIP_HEADER_LENGTH )
+        else if (parser->_expected_length == MIP_HEADER_LENGTH)
         {
             // Check the sync bytes and drop a single byte if not synced.
-            if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
+            if (byte_ring_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2)
             {
                 byte_ring_pop(&parser->_ring, 1);
                 parser->_expected_length = MIPPARSER_RESET_LENGTH;
@@ -213,7 +205,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
 
             mip_packet_from_buffer(packet_out, parser->_result_buffer, packet_length);
 
-            if( !mip_packet_is_valid(packet_out) )
+            if (!mip_packet_is_valid(packet_out))
             {
                 // Invalid packet, drop just the first sync byte and restart.
                 byte_ring_pop(&parser->_ring, 1);

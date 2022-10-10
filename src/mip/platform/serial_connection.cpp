@@ -13,10 +13,8 @@ namespace platform {
 ///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to
 SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
 {
-    if( !serial_port_open(&mPort, portName.c_str(), baudrate) )
-    {
+    if (!serial_port_open(&mPort, portName.c_str(), baudrate))
         throw std::runtime_error("Unable to open serial port");
-    }
 }
 
 ///@brief Closes the underlying serial port

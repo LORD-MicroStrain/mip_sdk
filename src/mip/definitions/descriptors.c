@@ -165,6 +165,6 @@ void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate
 
 
 #ifdef __cplusplus
-} // namespace mip
 } // extern "C"
+} // namespace mip
 #endif // __cplusplus

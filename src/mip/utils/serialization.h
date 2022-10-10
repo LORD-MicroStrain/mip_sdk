@@ -110,7 +110,7 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 /// extract. The signature for each is as follows:
 ///@code{.cpp}
 /// void mip::insert(Serializer& serializer, Type value);
-/// voie mip::extract(Serializer& serializer, Type value);
+/// void mip::extract(Serializer& serializer, Type value);
 ///@endcode
 /// Where `Type` is a struct or numeric type.
 ///
@@ -144,8 +144,16 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 class Serializer : public C::mip_serializer
 {
 public:
-    Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
-    Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
+    Serializer(uint8_t* buffer, size_t size, size_t offset = 0)
+    {
+        C::mip_serializer_init_insertion(this, buffer, size);
+        this->_offset = offset;
+    }
+    Serializer(const uint8_t* buffer, size_t size, size_t offset = 0)
+    {
+        C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size);
+        this->_offset = offset;
+    }
 
     size_t capacity() const { return C::mip_serializer_capacity(this); }
     size_t length() const { return C::mip_serializer_length(this); }
@@ -182,8 +190,11 @@ inline void insert(Serializer& serializer, double value)   { return C::insert_do
 ///@param value      The enum to insert.
 ///
 template<typename Enum>
-typename std::enable_if< std::is_enum<Enum>::value, void>::type
-/*void*/ insert(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+typename std::enable_if<std::is_enum<Enum>::value, void>::type
+/*void*/ insert(Serializer& serializer, Enum value)
+{
+    return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value));
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Insert the given value into the buffer.
@@ -192,7 +203,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /// contents of buffer may be partially modified.
 ///
 ///@param value      Value to insert.
-///@param buffer     Buffer to udpate with the value.
+///@param buffer     Buffer to update with the value.
 ///@param bufferSize Size of the buffer.
 ///
 ///@returns true if sufficient space was available, false otherwise.
@@ -227,8 +238,9 @@ inline void extract(Serializer& serializer, double& value)   { return C::extract
 ///@param[out] value The enum to populate.
 ///
 template<typename Enum>
-typename std::enable_if< std::is_enum<Enum>::value, void>::type
-/*void*/ extract(Serializer& serializer, Enum& value) {
+typename std::enable_if<std::is_enum<Enum>::value, void>::type
+/*void*/ extract(Serializer& serializer, Enum& value)
+{
     typename std::underlying_type<Enum>::type tmp;
     extract(serializer, tmp);
     value = static_cast<Enum>(tmp);
@@ -255,7 +267,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 ///         consumed.
 ///
 template<typename T>
-bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
+bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset = 0, bool exact_size = false)
 {
     Serializer serializer(buffer, bufferSize, offset);
     extract(serializer, value_out);

@@ -52,10 +52,8 @@ uint8_t byte_ring_at(const byte_ring_state* state, size_t index)
 size_t byte_ring_pop(byte_ring_state* state, size_t count)
 {
     size_t available = byte_ring_count(state);
-    if( count > available )
-    {
+    if (count > available)
         count = available;
-    }
 
     state->tail += count;
 
@@ -65,16 +63,12 @@ size_t byte_ring_pop(byte_ring_state* state, size_t count)
 size_t byte_ring_copy_to(const byte_ring_state* state, uint8_t* buffer, size_t count)
 {
     const size_t available = byte_ring_count(state);
-    if( available < count )
-    {
+    if (available < count)
         count = available;
-    }
 
     // const size_t count_A =
-    for( size_t i = 0; i < count; i++ )
-    {
+    for (size_t i = 0; i < count; i++)
         buffer[i] = byte_ring_at(state, i);
-    }
 
     return count;
 }
@@ -86,10 +80,8 @@ size_t byte_ring_copy_from_and_update(byte_ring_state* state, const uint8_t** co
 
     const size_t capacity = byte_ring_capacity(state);
 
-    for( size_t i = 0; i < count; i++ )
-    {
+    for (size_t i = 0; i < count; i++)
         state->buffer[(state->head + i) % capacity] = (*bytes)[i];
-    }
 
     state->head += count;
 
@@ -109,14 +101,10 @@ size_t byte_ring_get_write_ptr(byte_ring_state* state, uint8_t** const ptr_out)
 
     *ptr_out = &state->buffer[head];
 
-    if( remainingSpace >= bytesUntilWrap )
-    {
+    if (remainingSpace >= bytesUntilWrap)
         return bytesUntilWrap;
-    }
     else
-    {
         return remainingSpace;
-    }
 }
 
 void byte_ring_notify_written(byte_ring_state* state, size_t count)

@@ -1,15 +1,14 @@
-
 #pragma once
 
 #ifdef MIP_USE_SERIAL
 #include "mip/platform/serial_connection.hpp"
-#endif
+#endif // MIP_USE_SERIAL
 #ifdef MIP_USE_TCP
 #include "mip/platform/tcp_connection.hpp"
-#endif
+#endif // MIP_USE_TCP
 #ifdef MIP_USE_EXTRAS
-    #include "mip/extras/recording_connection.hpp"
-#endif
+#include "mip/extras/recording_connection.hpp"
+#endif // MIP_USE_EXTRAS
 
 
 #include <mip/mip_device.hpp>
@@ -30,7 +29,8 @@ struct ExampleUtils
 
 mip::Timestamp getCurrentTimestamp();
 
-std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port, const std::string& binary_file_path);
+std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port,
+    const std::string& binary_file_path);
 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs = 4);
 int printCommonUsage(const char* argv[]);

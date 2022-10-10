@@ -27,46 +27,43 @@ int main(int argc, const char* argv[])
         unsigned int parsedFields = 0;
         bool         error        = false;
 
-        for( Field field : *parsedPacket )
+        for (Field field : *parsedPacket)
         {
-            if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
+            if (field.descriptorSet() != fields[parsedFields].descriptorSet())
             {
                 error = true;
                 fprintf(stderr, "Descriptor set does not match.\n");
             }
-            if( field.fieldDescriptor() != fields[parsedFields].fieldDescriptor() )
+            if (field.fieldDescriptor() != fields[parsedFields].fieldDescriptor())
             {
                 error = true;
                 fprintf(stderr, "Field descriptor does not match.\n");
             }
-            if( field.payloadLength() != fields[parsedFields].payloadLength() )
+            if (field.payloadLength() != fields[parsedFields].payloadLength())
             {
                 error = true;
                 fprintf(stderr, "Payload length does not match.\n");
             }
-            if( std::memcmp(field.payload(), fields[parsedFields].payload(),
-                            std::min(field.payloadLength(), fields[parsedFields].payloadLength())) != 0 )
+            if (std::memcmp(field.payload(), fields[parsedFields].payload(),
+                std::min(field.payloadLength(), fields[parsedFields].payloadLength())) != 0)
             {
                 error = true;
                 fprintf(stderr, "Payloads do not match.\n");
             }
 
-            if( error )
+            if (error)
             {
                 numErrors++;
                 fprintf(stderr, "  From field %d/%d\n", parsedFields, numFields);
-                fprintf(stderr, "  Descriptor set: %02X/%02X\n", field.descriptorSet(),
-                        fields[parsedFields].descriptorSet());
-                fprintf(stderr, "  Field Descriptor: %02X/%02X\n", field.fieldDescriptor(),
-                        fields[parsedFields].fieldDescriptor());
-                fprintf(stderr, "  Payload Length: %02X/%02X\n", field.payloadLength(),
-                        fields[parsedFields].payloadLength());
+                fprintf(stderr, "  Descriptor set: %02X/%02X\n", field.descriptorSet(), fields[parsedFields].descriptorSet());
+                fprintf(stderr, "  Field Descriptor: %02X/%02X\n", field.fieldDescriptor(), fields[parsedFields].fieldDescriptor());
+                fprintf(stderr, "  Payload Length: %02X/%02X\n", field.payloadLength(), fields[parsedFields].payloadLength());
                 fputc('\n', stderr);
             }
 
             parsedFields++;
         }
-        if( parsedFields != numFields )
+        if (parsedFields != numFields)
         {
             numErrors++;
             fprintf(stderr, "Field count mismatch: %d != %d\n", parsedFields, numFields);
@@ -80,11 +77,11 @@ int main(int argc, const char* argv[])
 
     const unsigned int NUM_ITERATIONS = 100;
 
-    for( unsigned int i = 0; i < NUM_ITERATIONS; i++ )
+    for (unsigned int i = 0; i < NUM_ITERATIONS; i++)
     {
         Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
-        for( numFields = 0;; numFields++ )
+        for (numFields = 0;; numFields++)
         {
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
             const uint8_t payloadLength   = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
@@ -92,15 +89,11 @@ int main(int argc, const char* argv[])
             uint8_t* payload;
             RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
 
-            if( rem < 0 )
-            {
+            if (rem < 0)
                 break;
-            }
 
-            for( unsigned int p = 0; p < payloadLength; p++ )
-            {
+            for (unsigned int p = 0; p < payloadLength; p++)
                 payload[p] = rand() & 0xFF;
-            }
 
             fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
         }
@@ -109,16 +102,14 @@ int main(int argc, const char* argv[])
 
         RemainingCount rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
 
-        if( rem != 0 )
+        if (rem != 0)
         {
             numErrors++;
             fprintf(stderr, "Parser reports %d unparsed bytes.\n", rem);
         }
 
-        if( numErrors > 10 )
-        {
+        if (numErrors > 10)
             break;
-        }
     }
 
     return numErrors;

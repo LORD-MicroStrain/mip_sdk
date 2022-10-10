@@ -1,4 +1,3 @@
-
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
@@ -30,14 +29,10 @@ unsigned int display_progress()
     unsigned int threshold = std::lround(progress * 50);
 
     unsigned int i = 0;
-    for( ; i < threshold; i++ )
-    {
+    for (; i < threshold; i++)
         std::putchar('#');
-    }
-    for( ; i < 50; i++ )
-    {
+    for (; i < 50; i++)
         std::putchar(' ');
-    }
 
     std::printf("] %.0f%%\r", progress * 100);
     std::fflush(stdout);
@@ -52,9 +47,9 @@ void packet_callback(void*, const mip::Packet& packet, mip::Timestamp timestamp)
 
 void device_thread_loop(mip::DeviceInterface* device)
 {
-    while( !stop )
+    while (!stop)
     {
-        if( !device->update(false) )
+        if (!device->update(false))
         {
             device->cmdQueue().clear();  // Avoid deadlocks if the socket is closed.
             break;
@@ -66,14 +61,12 @@ void device_thread_loop(mip::DeviceInterface* device)
 
 bool update_device(mip::DeviceInterface& device, bool blocking)
 {
-    if( !blocking )
-    {
+    if (!blocking)
         return device.defaultUpdate(blocking);
-    }
 
     // Optionally display progress while waiting for command replies.
     // Displaying it here makes it update more frequently.
-    //display_progress();
+    // display_progress();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     return true;
@@ -120,13 +113,10 @@ int main(int argc, const char* argv[])
 
             // Ping the device a bunch (stress test).
             // If setUpdateFunction above is commented out, this can crash the program.
-            for( unsigned int i = 0; i < 10; i++ )
-            {
+            for (unsigned int i = 0; i < 10; i++)
                 mip::commands_base::ping(*device);
-            }
-
         }
-        while( count < maxSamples );
+        while (count < maxSamples);
 
         std::printf("\nDone!\n");
 
@@ -136,13 +126,13 @@ int main(int argc, const char* argv[])
         stop = true;
 #if USE_THREADS
         deviceThread.join();
-#endif
+#endif // USE_THREADS
     }
-    catch( const std::underflow_error& ex )
+    catch (const std::underflow_error& ex)
     {
         return printCommonUsage(argv);
     }
-    catch( const std::exception& ex )
+    catch (const std::exception& ex)
     {
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
