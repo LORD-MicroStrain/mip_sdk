@@ -128,9 +128,7 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ alias for mip::C::mip_log_level
-using LoggingLevel = C::mip_log_level;
-
-
+using LogLevel = C::mip_log_level;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class usable by other MIP SDK classes to log information
@@ -154,7 +152,7 @@ public:
     ///@param fmt     printf style format string
     ///@param ...args Variadic args used to populate the fmt string
     template<class... Args>
-    static void log(const void* context, LoggingLevel level, const char* fmt, Args&&... args)
+    static void log(const void* context, LogLevel level, const char* fmt, Args&&... args)
     {
         using mip::C::mip_logging_log;
         MIP_LOG_LOG(context, level, fmt, args...);
@@ -165,32 +163,32 @@ public:
     ///@param fmt     printf style format string
     ///@param ...args Variadic args used to populate the fmt string
     template<class... Args>
-    static void fatal(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_FATAL, fmt, args...); }
+    static void fatal(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_FATAL, fmt, args...); }
 
     ///@brief Helper function to log a string with varargs at error level
     ///@copydetails mip::Logger::fatal
     template<class... Args>
-    static void error(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_ERROR, fmt, args...); }
+    static void error(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_ERROR, fmt, args...); }
 
     ///@brief Helper function to log a string with varargs at warn level
     ///@copydetails mip::Logger::fatal
     template<class... Args>
-    static void warn(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_WARN, fmt, args...); }
+    static void warn(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_WARN, fmt, args...); }
 
     ///@brief Helper function to log a string with varargs at info level
     ///@copydetails mip::Logger::fatal
     template<class... Args>
-    static void info(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_INFO, fmt, args...); }
+    static void info(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_INFO, fmt, args...); }
 
     ///@brief Helper function to log a string with varargs at debug level
     ///@copydetails mip::Logger::fatal
     template<class... Args>
-    static void debug(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_DEBUG, fmt, args...); }
+    static void debug(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_DEBUG, fmt, args...); }
 
     ///@brief Helper function to log a string with varargs at trace level
     ///@copydetails mip::Logger::fatal
     template<class... Args>
-    static void trace(const void* context, const char* fmt, Args&&... args) { log(context, LoggingLevel::MIP_LOG_LEVEL_TRACE, fmt, args...); }
+    static void trace(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_TRACE, fmt, args...); }
 };
 
 ///@}

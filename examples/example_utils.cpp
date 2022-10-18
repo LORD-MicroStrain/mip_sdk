@@ -20,7 +20,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(const void* context, void* user, mip::LoggingLevel level, const char* fmt, va_list args)
+void customLog(const void* context, void* user, mip::LogLevel level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
@@ -37,8 +37,8 @@ void customLog(const void* context, void* user, mip::LoggingLevel level, const c
     // Print to the proper stream
     switch (level)
     {
-        case mip::LoggingLevel::MIP_LOG_LEVEL_FATAL:
-        case mip::LoggingLevel::MIP_LOG_LEVEL_ERROR:
+        case mip::LogLevel::MIP_LOG_LEVEL_FATAL:
+        case mip::LogLevel::MIP_LOG_LEVEL_ERROR:
             std::cerr << log;
             break;
         default:
@@ -109,9 +109,9 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
-#ifdef MIP_ENABLE_LOGGING
-    MIP_LOG_INIT(&customLog, mip::LoggingLevel::MIP_LOG_LEVEL_INFO, nullptr);
-#endif
+    // Setup the logger for the MIP SDK
+    MIP_LOG_INIT(&customLog, mip::LogLevel::MIP_LOG_LEVEL_INFO, nullptr);
+
     if( argc < 3 || argc > maxArgs )
     {
         throw std::underflow_error("Usage error");
