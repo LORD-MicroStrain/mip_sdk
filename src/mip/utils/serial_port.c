@@ -59,7 +59,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     if(port_str == NULL)
         return false;
 
-    MIP_LOG_DEBUG(port, "Opening serial port %s at %d\n", port_str, baudrate);
+    MIP_LOG_DEBUG("Opening serial port %s at %d\n", port_str, baudrate);
 #ifdef WIN32
     BOOL   ready;
     DCB    dcb;
@@ -70,14 +70,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Check for an invalid handle
     if(port->handle == INVALID_HANDLE_VALUE)
     {
-        MIP_LOG_ERROR(port, "Unable to open com port (%d)\n", GetLastError());
+        MIP_LOG_ERROR("Unable to open com port (%d)\n", GetLastError());
         return false;
     }
 
     //Setup the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
     {
-        MIP_LOG_ERROR(port, "Unable to setup com port buffer size (%d)\n", GetLastError());
+        MIP_LOG_ERROR("Unable to setup com port buffer size (%d)\n", GetLastError());
         return false;
     }
     
@@ -100,7 +100,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port, mutex, and exit
     if(!ready)
     {
-        MIP_LOG_ERROR(port, "Unable to get com state\n");
+        MIP_LOG_ERROR("Unable to get com state\n");
         CloseHandle(port->handle);
         return false;
     }
@@ -117,7 +117,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     //Close the serial port and exit
     if(!ready)
     {
-        MIP_LOG_ERROR(port, "Unable to set com state\n");
+        MIP_LOG_ERROR("Unable to set com state\n");
         CloseHandle(port->handle);
         return false;
     }
@@ -128,7 +128,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 
     if (port->handle < 0)
     {
-        MIP_LOG_ERROR(port, "Unable to open port (%d): %s\n", errno, strerror(errno));
+        MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
@@ -136,13 +136,13 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     struct termios serial_port_settings;
     if (tcgetattr(port->handle, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR(port, "Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
+        MIP_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
     if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
     {
-        MIP_LOG_ERROR(port, "Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         return false;
     }
 
@@ -159,7 +159,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     // Persist the settings
     if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
     {
-        MIP_LOG_ERROR(port, "Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
+        MIP_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
         return false;
     }
     
@@ -218,7 +218,7 @@ bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, 
     if(*bytes_written == num_bytes)
         return true;
     else if(*bytes_written == (size_t)-1)
-        MIP_LOG_ERROR(port, "Failed to write serial data (%d): %s\n", errno, strerror(errno));
+        MIP_LOG_ERROR("Failed to write serial data (%d): %s\n", errno, strerror(errno));
     
 #endif
 
@@ -255,7 +255,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, size_t 
 
         if(local_bytes_read == (ssize_t)-1 && errno != EAGAIN)
         {
-            MIP_LOG_ERROR(port, "Failed to read serial data (%d): %s\n", errno, strerror(errno));
+            MIP_LOG_ERROR("Failed to read serial data (%d): %s\n", errno, strerror(errno));
             return false;
         }
         if(local_bytes_read >= 0)

@@ -35,7 +35,7 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
-void customLog(const void* context, void* user, mip_log_level level, const char* fmt, va_list args)
+void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
 {
     switch (level)
     {

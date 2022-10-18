@@ -75,6 +75,7 @@ option(MIP_USE_TCP    "Build TCP connection support into the library and exampel
 option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 
 option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
+set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -209,6 +210,9 @@ endif()
 add_library(mip ${ALL_MIP_SOURCES})
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 
+if(${MIP_LOGGING_MAX_LEVEL})
+    add_compile_definitions("MIP_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
+endif()
 if(${MIP_TIMESTAMP_TYPE})
     add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
 endif()

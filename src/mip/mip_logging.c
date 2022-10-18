@@ -64,7 +64,7 @@ void* mip_logging_user_data()
 //        Should not be called directly
 ///@copydetails mip::C::mip_log_callback
 ///
-void mip_logging_log(const void* context, mip_log_level level, const char* fmt, ...)
+void mip_logging_log(mip_log_level level, const char* fmt, ...)
 {
   const mip_log_callback logging_callback = mip_logging_callback();
   const mip_log_level logging_level = mip_logging_level();
@@ -72,7 +72,7 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
   {
     va_list args;
     va_start(args, fmt);
-    logging_callback(context, mip_logging_user_data(), level, fmt, args);
+    logging_callback(mip_logging_user_data(), level, fmt, args);
     va_end(args);
   }
 }

@@ -39,12 +39,11 @@ typedef enum mip_log_level
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Callback function typedef for custom logging behavior.
 ///
-///@param context Context of what called this function. Could be a MIP device, serial connection, etc.
 ///@param level   The log level that this log should be logged at
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
-typedef void (*mip_log_callback)(const void* context, void* user, mip_log_level level, const char* fmt, va_list args);
+typedef void (*mip_log_callback)(void* user, mip_log_level level, const char* fmt, va_list args);
 
 extern mip_log_callback _mip_log_callback;
 extern mip_log_level _mip_log_level;
@@ -56,7 +55,7 @@ mip_log_callback mip_logging_callback();
 mip_log_level mip_logging_level();
 void* mip_logging_user_data();
 
-void mip_logging_log(const void* context, mip_log_level level, const char* fmt, ...);
+void mip_logging_log(mip_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK. Prefer specific
@@ -65,10 +64,10 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 ///
 #ifdef MIP_ENABLE_LOGGING
 #define MIP_LOG_INIT(callback, level, user) mip_logging_init(callback, level, user)
-#define MIP_LOG_LOG(context, level, fmt, ...) mip_logging_log(context, level, fmt, __VA_ARGS__)
+#define MIP_LOG_LOG(level, fmt, ...) mip_logging_log(level, fmt, __VA_ARGS__)
 #else
 #define MIP_LOG_INIT(callback, level, user) (void)0
-#define MIP_LOG_LOG(context, level, fmt, ...) (void)0
+#define MIP_LOG_LOG(level, fmt, ...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,32 +77,56 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
-#define MIP_LOG_FATAL(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_FATAL, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 1
+#define MIP_LOG_FATAL(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_FATAL, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_FATAL(fmt, ...) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at error level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#define MIP_LOG_ERROR(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_ERROR, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 2
+#define MIP_LOG_ERROR(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_ERROR, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_ERROR(fmt, ...) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at warn level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#define MIP_LOG_WARN(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_WARN, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 3
+#define MIP_LOG_WARN(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_WARN, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_WARN(fmt, ...) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at info level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#define MIP_LOG_INFO(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_INFO, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 4
+#define MIP_LOG_INFO(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_INFO, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_INFO(fmt, ...) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at debug level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#define MIP_LOG_DEBUG(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_DEBUG, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 5
+#define MIP_LOG_DEBUG(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_DEBUG, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_DEBUG(fmt, ...) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at trace level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#define MIP_LOG_TRACE(context, fmt, ...) MIP_LOG_LOG(context, MIP_LOG_LEVEL_TRACE, fmt, __VA_ARGS__)
+#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= 6
+#define MIP_LOG_TRACE(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, fmt, __VA_ARGS__)
+#else
+#define MIP_LOG_DEBUG(fmt, ...) (void)0
+#endif
 
 ///@}
 ///@}
@@ -112,88 +135,5 @@ void mip_logging_log(const void* context, mip_log_level level, const char* fmt, 
 #ifdef __cplusplus
 } // extern "C"
 } // namespace C
-
-////////////////////////////////////////////////////////////////////////////////
-///@addtogroup mip_cpp
-///@{
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup mip_logger_cpp  Mip Logging [C++]
-///
-///@brief High-level C++ functions for logging information from within the MIP SDK
-///
-/// This module contains functions that allow the MIP SDK to log information
-/// and allows users to override the logging functions
-///
-///@{
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief C++ alias for mip::C::mip_log_level
-using LogLevel = C::mip_log_level;
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief C++ class usable by other MIP SDK classes to log information
-///
-class Logging
-{
-private:
-    ///@brief Helper struct to mark function parameters as unused.
-    ///       Required for parameters that are variadic template arguments
-    struct unused
-    {
-        template<typename ...Args>
-        unused(Args const & ... ) {}
-    };
-
-public:
-    ///@brief Helper function to log a string with varargs using the MIP SDK logger.
-    ///       Prefer using specific functions like fatal, info, etc.
-    ///@param context The context of the object doing the logging
-    ///@param level   The log level that this log should be logged at
-    ///@param fmt     printf style format string
-    ///@param ...args Variadic args used to populate the fmt string
-    template<class... Args>
-    static void log(const void* context, LogLevel level, const char* fmt, Args&&... args)
-    {
-        using mip::C::mip_logging_log;
-        MIP_LOG_LOG(context, level, fmt, args...);
-        unused{context, level, fmt, args...};  // If logging is turned off
-    }
-
-    ///@brief Helper function to log a string with varargs at fatal level
-    ///@param fmt     printf style format string
-    ///@param ...args Variadic args used to populate the fmt string
-    template<class... Args>
-    static void fatal(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_FATAL, fmt, args...); }
-
-    ///@brief Helper function to log a string with varargs at error level
-    ///@copydetails mip::Logger::fatal
-    template<class... Args>
-    static void error(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_ERROR, fmt, args...); }
-
-    ///@brief Helper function to log a string with varargs at warn level
-    ///@copydetails mip::Logger::fatal
-    template<class... Args>
-    static void warn(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_WARN, fmt, args...); }
-
-    ///@brief Helper function to log a string with varargs at info level
-    ///@copydetails mip::Logger::fatal
-    template<class... Args>
-    static void info(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_INFO, fmt, args...); }
-
-    ///@brief Helper function to log a string with varargs at debug level
-    ///@copydetails mip::Logger::fatal
-    template<class... Args>
-    static void debug(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_DEBUG, fmt, args...); }
-
-    ///@brief Helper function to log a string with varargs at trace level
-    ///@copydetails mip::Logger::fatal
-    template<class... Args>
-    static void trace(const void* context, const char* fmt, Args&&... args) { log(context, LogLevel::MIP_LOG_LEVEL_TRACE, fmt, args...); }
-};
-
-///@}
-///@}
-////////////////////////////////////////////////////////////////////////////////
-
 } // namespace mip
 #endif
