@@ -24,7 +24,7 @@ public:
     RecordingConnection(Connection* connection, std::ostream* recvStream=nullptr, std::ostream* sendStream=nullptr);
 
     bool sendToDevice(const uint8_t* data, size_t length) final;
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* count_out, Timestamp* timestamp_out) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) final;
 
 protected:
     Connection* mConnection;

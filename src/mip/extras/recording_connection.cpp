@@ -25,9 +25,9 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 }
 
 ///@copydoc mip::Connection::recvFromDevice
-bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, size_t* count_out, Timestamp* timestamp_out)
+bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* count_out, Timestamp* timestamp_out)
 {
-    const bool ok = mConnection->recvFromDevice(buffer, max_length, count_out, timestamp_out);
+    const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time, count_out, timestamp_out);
     if( ok && mRecvFile != nullptr )
         mRecvFile->write(reinterpret_cast<char*>(buffer), *count_out);
     return ok;
