@@ -134,6 +134,29 @@ uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd)
     return cmd->_response_length;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Determines how much time is remaining before the command times out.
+///
+/// For most cases you should instead call mip_pending_cmd_check_timeout() to
+/// know if the command has timed out or not.
+///
+///@param cmd The command to check. Must be in MIP_STATUS_WAITING state.
+///@param now The current timestamp.
+///
+///@warning The command must be in the MIP_STATUS_WAITING state, otherwise the
+///         result is unspecified.
+///
+///@returns The time remaining before the command times out. The value will be
+///         negative if the timeout time has passed.
+///
+int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type now)
+{
+    assert(cmd->_status == MIP_STATUS_WAITING);
+
+    // result <= 0 if timed out.
+    // Note: this still works with unsigned overflow.
+    return (int)(now - cmd->_timeout_time);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Checks if the command should time out.
@@ -148,7 +171,7 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 {
     if( cmd->_status == MIP_STATUS_WAITING )
     {
-        if( (int)(now - cmd->_timeout_time) > 0 )
+        if( mip_pending_cmd_remaining_time(cmd, now) > 0 )
         {
             return true;
         }
