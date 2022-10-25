@@ -136,7 +136,7 @@ class Connection
 {
 public:
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
-    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) = 0;
+    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
 
     void connect_interface(C::mip_interface* device);
 };
@@ -177,6 +177,8 @@ public:
     // Callback functions
     //
 
+    // C function callbacks
+
     C::mip_send_callback   sendFunction()   const { return C::mip_interface_send_function(this);   }
     C::mip_recv_callback   recvFunction()   const { return C::mip_interface_recv_function(this);   }
     C::mip_update_callback updateFunction() const { return C::mip_interface_update_function(this); }
@@ -185,6 +187,18 @@ public:
     void setRecvFunction  (C::mip_recv_callback   callback) { C::mip_interface_set_recv_function  (this, callback); }
     void setUpdateFunction(C::mip_update_callback function) { C::mip_interface_set_update_function(this, function); }
 
+    // free/nonmember function callbacks
+
+    template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
+    void setSendFunction();
+
+    template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    void setRecvFunction();
+
+    template<bool (*Update)(DeviceInterface&, Timeout)>
+    void setUpdateFunction();
+
+    // derived member function callbacks
 
     template<class Derived, bool (Derived::*Send)(const uint8_t*, size_t)>
     void setSendFunction();
@@ -195,6 +209,7 @@ public:
     template<class Derived, bool (Derived::*Update)(Timeout)>
     void setUpdateFunction();
 
+    // Separate class object callbacks
 
     template<
         class T,
@@ -297,8 +312,49 @@ public:
 };
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Sets the send callback function.
+///@brief Sets the send callback function (free function version).
+///
+///@tparam Send A compile-time pointer to the callback function.
+///
+template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
+void DeviceInterface::setSendFunction()
+{
+    setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length){
+        return (*Send)(*static_cast<DeviceInterface*>(device), data, length);
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the receive callback function (free function version).
+///
+///@tparam Send A compile-time pointer to the callback function.
+///
+template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+void DeviceInterface::setRecvFunction()
+{
+    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out){
+        return (*Recv)(*static_cast<DeviceInterface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the update callback function (free function version).
+///
+///@tparam Send A compile-time pointer to the callback function.
+///
+template<bool (*Update)(DeviceInterface&, Timeout)>
+void DeviceInterface::setUpdateFunction()
+{
+    setUpdateFunction([](C::mip_interface* device, C::timeout_type wait_time){
+        return (*Update)(*static_cast<DeviceInterface*>(device), wait_time);
+    });
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the send callback function (derived member function version).
 ///
 ///@tparam Derived Derived class type. Must inherit from DeviceInterface.
 ///@tparam Send    Compile-time pointer to member function of Derived.
@@ -332,7 +388,7 @@ void DeviceInterface::setSendFunction()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Sets the receive callback function.
+///@brief Sets the receive callback function (derived member function version).
 ///
 ///@tparam Derived Derived class type. Must inherit from DeviceInterface.
 ///@tparam Recv    Compile-time pointer to member function of Derived.
@@ -353,7 +409,7 @@ void DeviceInterface::setRecvFunction()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Sets the update function to a function taking a MipDevice reference.
+///@brief Sets the update callback function (derived member function version).
 ///
 ///@tparam Derived Derived class type. Must inherit from DeviceInterface.
 ///@tparam Update  Compile-time pointer to member function of Derived.
