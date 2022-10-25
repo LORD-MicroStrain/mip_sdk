@@ -27,9 +27,12 @@ TcpConnection::~TcpConnection()
 }
 
 ///@copydoc mip::Connection::sendToDevice
-bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, mip::Timestamp* timestamp)
+bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp)
 {
+    (void)wait_time;  // Not used, timeout is always fixed
+
     *timestamp = getCurrentTimestamp();
+
     return tcp_socket_recv(&mSocket, buffer, max_length, length_out);
 }
 

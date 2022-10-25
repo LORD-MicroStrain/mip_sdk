@@ -28,7 +28,7 @@ public:
     TcpConnection(const std::string& hostname, uint16_t port);
     ~TcpConnection();
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, mip::Timestamp* timestamp) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
 private:

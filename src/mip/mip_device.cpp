@@ -39,8 +39,7 @@ void Connection::connect_interface(C::mip_interface* device)
     };
     auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out)->bool
     {
-        (void)wait_time; // Temp hack
-        return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, length_out, timestamp_out);
+        return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, wait_time, length_out, timestamp_out);
     };
 
     C::mip_interface_set_user_pointer(device, this);

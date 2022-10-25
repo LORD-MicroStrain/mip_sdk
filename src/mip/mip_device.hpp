@@ -136,7 +136,7 @@ class Connection
 {
 public:
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
-    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;
+    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) = 0;
 
     void connect_interface(C::mip_interface* device);
 };
