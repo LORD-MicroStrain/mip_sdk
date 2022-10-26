@@ -218,7 +218,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
     if( wait_time <= 0 )
     {
-        if( serial_port_read_count(&mPort) == 0 )
+        if( serial_port_read_count(port) == 0 )
             return true;
     }
 
