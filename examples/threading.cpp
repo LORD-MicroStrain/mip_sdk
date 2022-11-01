@@ -69,6 +69,8 @@ bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
     // Displaying it here makes it update more frequently.
     //display_progress();
 
+    // Avoid failing the update function as long as the other thread is running.
+    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     return true;
 }

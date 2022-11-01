@@ -250,7 +250,7 @@ public:
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
-    CmdResult      waitForReply(const C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
+    CmdResult      waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
     //
     // Data Callbacks
