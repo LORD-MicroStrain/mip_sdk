@@ -78,7 +78,7 @@ void mip_interface_receive_packet(mip_interface* device, const mip_packet* packe
 // Commands
 //
 
-enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mip_pending_cmd* cmd);
+enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pending_cmd* cmd);
 enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length, uint8_t response_descriptor, uint8_t* response_data, uint8_t* response_length_inout);
 enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd);
