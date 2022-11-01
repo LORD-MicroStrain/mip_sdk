@@ -6,9 +6,6 @@
 
 #include <string>
 
-
-extern mip::Timestamp getCurrentTimestamp();
-
 namespace mip
 {
 namespace platform

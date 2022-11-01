@@ -28,7 +28,7 @@ SerialConnection::~SerialConnection()
 ///@copydoc mip::Connection::recvFromDevice
 bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp)
 {
-    *timestamp = getCurrentTimestamp();
+    *timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
     return serial_port_read(&mPort, buffer, max_length, wait_time, length_out);
 }

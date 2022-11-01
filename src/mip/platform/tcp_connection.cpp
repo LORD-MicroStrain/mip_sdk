@@ -31,7 +31,7 @@ bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout w
 {
     (void)wait_time;  // Not used, timeout is always fixed
 
-    *timestamp = getCurrentTimestamp();
+    *timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
     return tcp_socket_recv(&mSocket, buffer, max_length, length_out);
 }
