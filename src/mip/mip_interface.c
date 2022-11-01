@@ -297,13 +297,28 @@ mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
 ///
 ///@returns The final status of the command.
 ///
-enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pending_cmd* cmd)
 {
     enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
     {
         if( !mip_interface_update(device, true) )
+        {
+            // When this function returns the pending command may be deallocated and the
+            // queue will have a dangling pointer. Therefore, the command must be manually
+            // errored out and de-queued.
+            //
+            // Note: This fix can still cause a race condition in multithreaded apps if the
+            // update thread happens to run right before the cmd is dequeued. The user is
+            // advised to not fail the update callback when another thread is handling
+            // reception, unless that thread is not running. Generally such updates shouldn't
+            // fail as long as the other thread is working normally anyway.
+
+            mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
+            cmd->_status = MIP_STATUS_ERROR;
+
             return MIP_STATUS_ERROR;
+        }
     }
     return status;
 }
