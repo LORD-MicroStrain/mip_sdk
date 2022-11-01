@@ -926,6 +926,13 @@ struct GnssSbasSettings
         SBASOptions& operator=(int val) { value = val; return *this; }
         SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
+        void enableRanging(bool val) { if(val) value |= ENABLE_RANGING; else value &= ~ENABLE_RANGING; }
+        bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
+        void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
+        bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
+        void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1198,6 +1205,13 @@ struct GpioConfig
         PinMode& operator=(int val) { value = val; return *this; }
         PinMode& operator|=(uint8_t val) { return *this = value | val; }
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
+        
+        bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
+        void openDrain(bool val) { if(val) value |= OPEN_DRAIN; else value &= ~OPEN_DRAIN; }
+        bool pulldown() const { return (value & PULLDOWN) > 0; }
+        void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
+        bool pullup() const { return (value & PULLUP) > 0; }
+        void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1498,6 +1512,13 @@ struct GetEventTriggerStatus
         Status& operator=(int val) { value = val; return *this; }
         Status& operator|=(uint8_t val) { return *this = value | val; }
         Status& operator&=(uint8_t val) { return *this = value & val; }
+        
+        bool active() const { return (value & ACTIVE) > 0; }
+        void active(bool val) { if(val) value |= ACTIVE; else value &= ~ACTIVE; }
+        bool enabled() const { return (value & ENABLED) > 0; }
+        void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
+        bool test() const { return (value & TEST) > 0; }
+        void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
     };
     
     struct Entry

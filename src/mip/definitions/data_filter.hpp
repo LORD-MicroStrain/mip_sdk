@@ -161,6 +161,63 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
     FilterStatusFlags& operator=(int val) { value = val; return *this; }
     FilterStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
     FilterStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
+    
+    bool gx5InitNoAttitude() const { return (value & GX5_INIT_NO_ATTITUDE) > 0; }
+    void gx5InitNoAttitude(bool val) { if(val) value |= GX5_INIT_NO_ATTITUDE; else value &= ~GX5_INIT_NO_ATTITUDE; }
+    bool gx5InitNoPositionVelocity() const { return (value & GX5_INIT_NO_POSITION_VELOCITY) > 0; }
+    void gx5InitNoPositionVelocity(bool val) { if(val) value |= GX5_INIT_NO_POSITION_VELOCITY; else value &= ~GX5_INIT_NO_POSITION_VELOCITY; }
+    bool gx5RunImuUnavailable() const { return (value & GX5_RUN_IMU_UNAVAILABLE) > 0; }
+    void gx5RunImuUnavailable(bool val) { if(val) value |= GX5_RUN_IMU_UNAVAILABLE; else value &= ~GX5_RUN_IMU_UNAVAILABLE; }
+    bool gx5RunGpsUnavailable() const { return (value & GX5_RUN_GPS_UNAVAILABLE) > 0; }
+    void gx5RunGpsUnavailable(bool val) { if(val) value |= GX5_RUN_GPS_UNAVAILABLE; else value &= ~GX5_RUN_GPS_UNAVAILABLE; }
+    bool gx5RunMatrixSingularity() const { return (value & GX5_RUN_MATRIX_SINGULARITY) > 0; }
+    void gx5RunMatrixSingularity(bool val) { if(val) value |= GX5_RUN_MATRIX_SINGULARITY; else value &= ~GX5_RUN_MATRIX_SINGULARITY; }
+    bool gx5RunPositionCovarianceWarning() const { return (value & GX5_RUN_POSITION_COVARIANCE_WARNING) > 0; }
+    void gx5RunPositionCovarianceWarning(bool val) { if(val) value |= GX5_RUN_POSITION_COVARIANCE_WARNING; else value &= ~GX5_RUN_POSITION_COVARIANCE_WARNING; }
+    bool gx5RunVelocityCovarianceWarning() const { return (value & GX5_RUN_VELOCITY_COVARIANCE_WARNING) > 0; }
+    void gx5RunVelocityCovarianceWarning(bool val) { if(val) value |= GX5_RUN_VELOCITY_COVARIANCE_WARNING; else value &= ~GX5_RUN_VELOCITY_COVARIANCE_WARNING; }
+    bool gx5RunAttitudeCovarianceWarning() const { return (value & GX5_RUN_ATTITUDE_COVARIANCE_WARNING) > 0; }
+    void gx5RunAttitudeCovarianceWarning(bool val) { if(val) value |= GX5_RUN_ATTITUDE_COVARIANCE_WARNING; else value &= ~GX5_RUN_ATTITUDE_COVARIANCE_WARNING; }
+    bool gx5RunNanInSolutionWarning() const { return (value & GX5_RUN_NAN_IN_SOLUTION_WARNING) > 0; }
+    void gx5RunNanInSolutionWarning(bool val) { if(val) value |= GX5_RUN_NAN_IN_SOLUTION_WARNING; else value &= ~GX5_RUN_NAN_IN_SOLUTION_WARNING; }
+    bool gx5RunGyroBiasEstHighWarning() const { return (value & GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING) > 0; }
+    void gx5RunGyroBiasEstHighWarning(bool val) { if(val) value |= GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING; else value &= ~GX5_RUN_GYRO_BIAS_EST_HIGH_WARNING; }
+    bool gx5RunAccelBiasEstHighWarning() const { return (value & GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING) > 0; }
+    void gx5RunAccelBiasEstHighWarning(bool val) { if(val) value |= GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING; else value &= ~GX5_RUN_ACCEL_BIAS_EST_HIGH_WARNING; }
+    bool gx5RunGyroScaleFactorEstHighWarning() const { return (value & GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING) > 0; }
+    void gx5RunGyroScaleFactorEstHighWarning(bool val) { if(val) value |= GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING; else value &= ~GX5_RUN_GYRO_SCALE_FACTOR_EST_HIGH_WARNING; }
+    bool gx5RunAccelScaleFactorEstHighWarning() const { return (value & GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING) > 0; }
+    void gx5RunAccelScaleFactorEstHighWarning(bool val) { if(val) value |= GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING; else value &= ~GX5_RUN_ACCEL_SCALE_FACTOR_EST_HIGH_WARNING; }
+    bool gx5RunMagBiasEstHighWarning() const { return (value & GX5_RUN_MAG_BIAS_EST_HIGH_WARNING) > 0; }
+    void gx5RunMagBiasEstHighWarning(bool val) { if(val) value |= GX5_RUN_MAG_BIAS_EST_HIGH_WARNING; else value &= ~GX5_RUN_MAG_BIAS_EST_HIGH_WARNING; }
+    bool gx5RunAntOffsetCorrectionEstHighWarning() const { return (value & GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING) > 0; }
+    void gx5RunAntOffsetCorrectionEstHighWarning(bool val) { if(val) value |= GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING; else value &= ~GX5_RUN_ANT_OFFSET_CORRECTION_EST_HIGH_WARNING; }
+    bool gx5RunMagHardIronEstHighWarning() const { return (value & GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING) > 0; }
+    void gx5RunMagHardIronEstHighWarning(bool val) { if(val) value |= GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING; else value &= ~GX5_RUN_MAG_HARD_IRON_EST_HIGH_WARNING; }
+    bool gx5RunMagSoftIronEstHighWarning() const { return (value & GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING) > 0; }
+    void gx5RunMagSoftIronEstHighWarning(bool val) { if(val) value |= GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING; else value &= ~GX5_RUN_MAG_SOFT_IRON_EST_HIGH_WARNING; }
+    uint16_t gq7FilterCondition() const { return (value & GQ7_FILTER_CONDITION) >> 0; }
+    void gq7FilterCondition(uint16_t val) { value = (value & ~GQ7_FILTER_CONDITION) | (val << 0); }
+    bool gq7RollPitchWarning() const { return (value & GQ7_ROLL_PITCH_WARNING) > 0; }
+    void gq7RollPitchWarning(bool val) { if(val) value |= GQ7_ROLL_PITCH_WARNING; else value &= ~GQ7_ROLL_PITCH_WARNING; }
+    bool gq7HeadingWarning() const { return (value & GQ7_HEADING_WARNING) > 0; }
+    void gq7HeadingWarning(bool val) { if(val) value |= GQ7_HEADING_WARNING; else value &= ~GQ7_HEADING_WARNING; }
+    bool gq7PositionWarning() const { return (value & GQ7_POSITION_WARNING) > 0; }
+    void gq7PositionWarning(bool val) { if(val) value |= GQ7_POSITION_WARNING; else value &= ~GQ7_POSITION_WARNING; }
+    bool gq7VelocityWarning() const { return (value & GQ7_VELOCITY_WARNING) > 0; }
+    void gq7VelocityWarning(bool val) { if(val) value |= GQ7_VELOCITY_WARNING; else value &= ~GQ7_VELOCITY_WARNING; }
+    bool gq7ImuBiasWarning() const { return (value & GQ7_IMU_BIAS_WARNING) > 0; }
+    void gq7ImuBiasWarning(bool val) { if(val) value |= GQ7_IMU_BIAS_WARNING; else value &= ~GQ7_IMU_BIAS_WARNING; }
+    bool gq7GnssClkWarning() const { return (value & GQ7_GNSS_CLK_WARNING) > 0; }
+    void gq7GnssClkWarning(bool val) { if(val) value |= GQ7_GNSS_CLK_WARNING; else value &= ~GQ7_GNSS_CLK_WARNING; }
+    bool gq7AntennaLeverArmWarning() const { return (value & GQ7_ANTENNA_LEVER_ARM_WARNING) > 0; }
+    void gq7AntennaLeverArmWarning(bool val) { if(val) value |= GQ7_ANTENNA_LEVER_ARM_WARNING; else value &= ~GQ7_ANTENNA_LEVER_ARM_WARNING; }
+    bool gq7MountingTransformWarning() const { return (value & GQ7_MOUNTING_TRANSFORM_WARNING) > 0; }
+    void gq7MountingTransformWarning(bool val) { if(val) value |= GQ7_MOUNTING_TRANSFORM_WARNING; else value &= ~GQ7_MOUNTING_TRANSFORM_WARNING; }
+    bool gq7TimeSyncWarning() const { return (value & GQ7_TIME_SYNC_WARNING) > 0; }
+    void gq7TimeSyncWarning(bool val) { if(val) value |= GQ7_TIME_SYNC_WARNING; else value &= ~GQ7_TIME_SYNC_WARNING; }
+    uint16_t gq7SolutionError() const { return (value & GQ7_SOLUTION_ERROR) >> 12; }
+    void gq7SolutionError(uint16_t val) { value = (value & ~GQ7_SOLUTION_ERROR) | (val << 12); }
 };
 
 enum class FilterAidingMeasurementType : uint8_t
@@ -194,6 +251,19 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
     FilterMeasurementIndicator& operator=(int val) { value = val; return *this; }
     FilterMeasurementIndicator& operator|=(uint8_t val) { return *this = value | val; }
     FilterMeasurementIndicator& operator&=(uint8_t val) { return *this = value & val; }
+    
+    bool enabled() const { return (value & ENABLED) > 0; }
+    void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
+    bool used() const { return (value & USED) > 0; }
+    void used(bool val) { if(val) value |= USED; else value &= ~USED; }
+    bool residualHighWarning() const { return (value & RESIDUAL_HIGH_WARNING) > 0; }
+    void residualHighWarning(bool val) { if(val) value |= RESIDUAL_HIGH_WARNING; else value &= ~RESIDUAL_HIGH_WARNING; }
+    bool sampleTimeWarning() const { return (value & SAMPLE_TIME_WARNING) > 0; }
+    void sampleTimeWarning(bool val) { if(val) value |= SAMPLE_TIME_WARNING; else value &= ~SAMPLE_TIME_WARNING; }
+    bool configurationError() const { return (value & CONFIGURATION_ERROR) > 0; }
+    void configurationError(bool val) { if(val) value |= CONFIGURATION_ERROR; else value &= ~CONFIGURATION_ERROR; }
+    bool maxNumMeasExceeded() const { return (value & MAX_NUM_MEAS_EXCEEDED) > 0; }
+    void maxNumMeasExceeded(bool val) { if(val) value |= MAX_NUM_MEAS_EXCEEDED; else value &= ~MAX_NUM_MEAS_EXCEEDED; }
 };
 
 struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
@@ -227,6 +297,39 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
     GnssAidStatusFlags& operator=(int val) { value = val; return *this; }
     GnssAidStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
     GnssAidStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
+    
+    bool tightCoupling() const { return (value & TIGHT_COUPLING) > 0; }
+    void tightCoupling(bool val) { if(val) value |= TIGHT_COUPLING; else value &= ~TIGHT_COUPLING; }
+    bool differential() const { return (value & DIFFERENTIAL) > 0; }
+    void differential(bool val) { if(val) value |= DIFFERENTIAL; else value &= ~DIFFERENTIAL; }
+    bool integerFix() const { return (value & INTEGER_FIX) > 0; }
+    void integerFix(bool val) { if(val) value |= INTEGER_FIX; else value &= ~INTEGER_FIX; }
+    bool gpsL1() const { return (value & GPS_L1) > 0; }
+    void gpsL1(bool val) { if(val) value |= GPS_L1; else value &= ~GPS_L1; }
+    bool gpsL2() const { return (value & GPS_L2) > 0; }
+    void gpsL2(bool val) { if(val) value |= GPS_L2; else value &= ~GPS_L2; }
+    bool gpsL5() const { return (value & GPS_L5) > 0; }
+    void gpsL5(bool val) { if(val) value |= GPS_L5; else value &= ~GPS_L5; }
+    bool gloL1() const { return (value & GLO_L1) > 0; }
+    void gloL1(bool val) { if(val) value |= GLO_L1; else value &= ~GLO_L1; }
+    bool gloL2() const { return (value & GLO_L2) > 0; }
+    void gloL2(bool val) { if(val) value |= GLO_L2; else value &= ~GLO_L2; }
+    bool galE1() const { return (value & GAL_E1) > 0; }
+    void galE1(bool val) { if(val) value |= GAL_E1; else value &= ~GAL_E1; }
+    bool galE5() const { return (value & GAL_E5) > 0; }
+    void galE5(bool val) { if(val) value |= GAL_E5; else value &= ~GAL_E5; }
+    bool galE6() const { return (value & GAL_E6) > 0; }
+    void galE6(bool val) { if(val) value |= GAL_E6; else value &= ~GAL_E6; }
+    bool beiB1() const { return (value & BEI_B1) > 0; }
+    void beiB1(bool val) { if(val) value |= BEI_B1; else value &= ~BEI_B1; }
+    bool beiB2() const { return (value & BEI_B2) > 0; }
+    void beiB2(bool val) { if(val) value |= BEI_B2; else value &= ~BEI_B2; }
+    bool beiB3() const { return (value & BEI_B3) > 0; }
+    void beiB3(bool val) { if(val) value |= BEI_B3; else value &= ~BEI_B3; }
+    bool noFix() const { return (value & NO_FIX) > 0; }
+    void noFix(bool val) { if(val) value |= NO_FIX; else value &= ~NO_FIX; }
+    bool configError() const { return (value & CONFIG_ERROR) > 0; }
+    void configError(bool val) { if(val) value |= CONFIG_ERROR; else value &= ~CONFIG_ERROR; }
 };
 
 
@@ -1829,6 +1932,13 @@ struct GnssDualAntennaStatus
         DualAntennaStatusFlags& operator=(int val) { value = val; return *this; }
         DualAntennaStatusFlags& operator|=(uint16_t val) { return *this = value | val; }
         DualAntennaStatusFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool rcv1DataValid() const { return (value & RCV_1_DATA_VALID) > 0; }
+        void rcv1DataValid(bool val) { if(val) value |= RCV_1_DATA_VALID; else value &= ~RCV_1_DATA_VALID; }
+        bool rcv2DataValid() const { return (value & RCV_2_DATA_VALID) > 0; }
+        void rcv2DataValid(bool val) { if(val) value |= RCV_2_DATA_VALID; else value &= ~RCV_2_DATA_VALID; }
+        bool antennaOffsetsValid() const { return (value & ANTENNA_OFFSETS_VALID) > 0; }
+        void antennaOffsetsValid(bool val) { if(val) value |= ANTENNA_OFFSETS_VALID; else value &= ~ANTENNA_OFFSETS_VALID; }
     };
     
     float time_of_week = 0; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]
