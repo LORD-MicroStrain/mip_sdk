@@ -2021,6 +2021,48 @@ CmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_3dm_coning_sculling_enable  (0x0C,0x3E) Coning Sculling Enable [CPP]
+/// Controls the Coning and Sculling Compenstation setting.
+///
+///@{
+
+struct ConingScullingEnable
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONING_AND_SCULLING_ENABLE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CONING_AND_SCULLING_ENABLE;
+        
+        bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+        
+    };
+};
+void insert(Serializer& serializer, const ConingScullingEnable& self);
+void extract(Serializer& serializer, ConingScullingEnable& self);
+
+void insert(Serializer& serializer, const ConingScullingEnable::Response& self);
+void extract(Serializer& serializer, ConingScullingEnable::Response& self);
+
+CmdResult writeConingScullingEnable(C::mip_interface& device, bool enable);
+CmdResult readConingScullingEnable(C::mip_interface& device, bool* enableOut);
+CmdResult saveConingScullingEnable(C::mip_interface& device);
+CmdResult loadConingScullingEnable(C::mip_interface& device);
+CmdResult defaultConingScullingEnable(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_3dm_sensor_2_vehicle_transform_euler  (0x0C,0x31) Sensor 2 Vehicle Transform Euler [CPP]
 /// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
 /// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,

@@ -428,6 +428,103 @@ CmdResult defaultTareOrientation(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert(Serializer& serializer, const VehicleDynamicsMode& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.mode);
+        
+    }
+}
+void extract(Serializer& serializer, VehicleDynamicsMode& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.mode);
+        
+    }
+}
+
+void insert(Serializer& serializer, const VehicleDynamicsMode::Response& self)
+{
+    insert(serializer, self.mode);
+    
+}
+void extract(Serializer& serializer, VehicleDynamicsMode::Response& self)
+{
+    extract(serializer, self.mode);
+    
+}
+
+CmdResult writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, mode);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode* modeOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_VEHICLE_DYNAMICS_MODE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(modeOut);
+        extract(deserializer, *modeOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveVehicleDynamicsMode(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadVehicleDynamicsMode(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultVehicleDynamicsMode(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self)
 {
     insert(serializer, self.function);
@@ -1258,6 +1355,576 @@ CmdResult defaultAutoInitControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert(Serializer& serializer, const AccelNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.x);
+        
+        insert(serializer, self.y);
+        
+        insert(serializer, self.z);
+        
+    }
+}
+void extract(Serializer& serializer, AccelNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.x);
+        
+        extract(serializer, self.y);
+        
+        extract(serializer, self.z);
+        
+    }
+}
+
+void insert(Serializer& serializer, const AccelNoise::Response& self)
+{
+    insert(serializer, self.x);
+    
+    insert(serializer, self.y);
+    
+    insert(serializer, self.z);
+    
+}
+void extract(Serializer& serializer, AccelNoise::Response& self)
+{
+    extract(serializer, self.x);
+    
+    extract(serializer, self.y);
+    
+    extract(serializer, self.z);
+    
+}
+
+CmdResult writeAccelNoise(C::mip_interface& device, float x, float y, float z)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, x);
+    
+    insert(serializer, y);
+    
+    insert(serializer, z);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readAccelNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_ACCEL_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(xOut);
+        extract(deserializer, *xOut);
+        
+        assert(yOut);
+        extract(deserializer, *yOut);
+        
+        assert(zOut);
+        extract(deserializer, *zOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveAccelNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadAccelNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultAccelNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const GyroNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.x);
+        
+        insert(serializer, self.y);
+        
+        insert(serializer, self.z);
+        
+    }
+}
+void extract(Serializer& serializer, GyroNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.x);
+        
+        extract(serializer, self.y);
+        
+        extract(serializer, self.z);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GyroNoise::Response& self)
+{
+    insert(serializer, self.x);
+    
+    insert(serializer, self.y);
+    
+    insert(serializer, self.z);
+    
+}
+void extract(Serializer& serializer, GyroNoise::Response& self)
+{
+    extract(serializer, self.x);
+    
+    extract(serializer, self.y);
+    
+    extract(serializer, self.z);
+    
+}
+
+CmdResult writeGyroNoise(C::mip_interface& device, float x, float y, float z)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, x);
+    
+    insert(serializer, y);
+    
+    insert(serializer, z);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readGyroNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_GYRO_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(xOut);
+        extract(deserializer, *xOut);
+        
+        assert(yOut);
+        extract(deserializer, *yOut);
+        
+        assert(zOut);
+        extract(deserializer, *zOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveGyroNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadGyroNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultGyroNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const AccelBiasModel& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.x_beta);
+        
+        insert(serializer, self.y_beta);
+        
+        insert(serializer, self.z_beta);
+        
+        insert(serializer, self.x);
+        
+        insert(serializer, self.y);
+        
+        insert(serializer, self.z);
+        
+    }
+}
+void extract(Serializer& serializer, AccelBiasModel& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.x_beta);
+        
+        extract(serializer, self.y_beta);
+        
+        extract(serializer, self.z_beta);
+        
+        extract(serializer, self.x);
+        
+        extract(serializer, self.y);
+        
+        extract(serializer, self.z);
+        
+    }
+}
+
+void insert(Serializer& serializer, const AccelBiasModel::Response& self)
+{
+    insert(serializer, self.x_beta);
+    
+    insert(serializer, self.y_beta);
+    
+    insert(serializer, self.z_beta);
+    
+    insert(serializer, self.x);
+    
+    insert(serializer, self.y);
+    
+    insert(serializer, self.z);
+    
+}
+void extract(Serializer& serializer, AccelBiasModel::Response& self)
+{
+    extract(serializer, self.x_beta);
+    
+    extract(serializer, self.y_beta);
+    
+    extract(serializer, self.z_beta);
+    
+    extract(serializer, self.x);
+    
+    extract(serializer, self.y);
+    
+    extract(serializer, self.z);
+    
+}
+
+CmdResult writeAccelBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, xBeta);
+    
+    insert(serializer, yBeta);
+    
+    insert(serializer, zBeta);
+    
+    insert(serializer, x);
+    
+    insert(serializer, y);
+    
+    insert(serializer, z);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readAccelBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_ACCEL_BIAS_MODEL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(xBetaOut);
+        extract(deserializer, *xBetaOut);
+        
+        assert(yBetaOut);
+        extract(deserializer, *yBetaOut);
+        
+        assert(zBetaOut);
+        extract(deserializer, *zBetaOut);
+        
+        assert(xOut);
+        extract(deserializer, *xOut);
+        
+        assert(yOut);
+        extract(deserializer, *yOut);
+        
+        assert(zOut);
+        extract(deserializer, *zOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveAccelBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadAccelBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultAccelBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const GyroBiasModel& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.x_beta);
+        
+        insert(serializer, self.y_beta);
+        
+        insert(serializer, self.z_beta);
+        
+        insert(serializer, self.x);
+        
+        insert(serializer, self.y);
+        
+        insert(serializer, self.z);
+        
+    }
+}
+void extract(Serializer& serializer, GyroBiasModel& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.x_beta);
+        
+        extract(serializer, self.y_beta);
+        
+        extract(serializer, self.z_beta);
+        
+        extract(serializer, self.x);
+        
+        extract(serializer, self.y);
+        
+        extract(serializer, self.z);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GyroBiasModel::Response& self)
+{
+    insert(serializer, self.x_beta);
+    
+    insert(serializer, self.y_beta);
+    
+    insert(serializer, self.z_beta);
+    
+    insert(serializer, self.x);
+    
+    insert(serializer, self.y);
+    
+    insert(serializer, self.z);
+    
+}
+void extract(Serializer& serializer, GyroBiasModel::Response& self)
+{
+    extract(serializer, self.x_beta);
+    
+    extract(serializer, self.y_beta);
+    
+    extract(serializer, self.z_beta);
+    
+    extract(serializer, self.x);
+    
+    extract(serializer, self.y);
+    
+    extract(serializer, self.z);
+    
+}
+
+CmdResult writeGyroBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, xBeta);
+    
+    insert(serializer, yBeta);
+    
+    insert(serializer, zBeta);
+    
+    insert(serializer, x);
+    
+    insert(serializer, y);
+    
+    insert(serializer, z);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readGyroBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_GYRO_BIAS_MODEL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(xBetaOut);
+        extract(deserializer, *xBetaOut);
+        
+        assert(yBetaOut);
+        extract(deserializer, *yBetaOut);
+        
+        assert(zBetaOut);
+        extract(deserializer, *zBetaOut);
+        
+        assert(xOut);
+        extract(deserializer, *xOut);
+        
+        assert(yOut);
+        extract(deserializer, *yOut);
+        
+        assert(zOut);
+        extract(deserializer, *zOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveGyroBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadGyroBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultGyroBiasModel(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert(Serializer& serializer, const AltitudeAiding& self)
 {
     insert(serializer, self.function);
@@ -1604,6 +2271,641 @@ void extract(Serializer& serializer, CommandedAngularZupt& self)
 CmdResult commandedAngularZupt(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMMANDED_ANGULAR_ZUPT, NULL, 0);
+}
+void insert(Serializer& serializer, const ReferencePosition& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+        insert(serializer, self.latitude);
+        
+        insert(serializer, self.longitude);
+        
+        insert(serializer, self.altitude);
+        
+    }
+}
+void extract(Serializer& serializer, ReferencePosition& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+        extract(serializer, self.latitude);
+        
+        extract(serializer, self.longitude);
+        
+        extract(serializer, self.altitude);
+        
+    }
+}
+
+void insert(Serializer& serializer, const ReferencePosition::Response& self)
+{
+    insert(serializer, self.enable);
+    
+    insert(serializer, self.latitude);
+    
+    insert(serializer, self.longitude);
+    
+    insert(serializer, self.altitude);
+    
+}
+void extract(Serializer& serializer, ReferencePosition::Response& self)
+{
+    extract(serializer, self.enable);
+    
+    extract(serializer, self.latitude);
+    
+    extract(serializer, self.longitude);
+    
+    extract(serializer, self.altitude);
+    
+}
+
+CmdResult writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, enable);
+    
+    insert(serializer, latitude);
+    
+    insert(serializer, longitude);
+    
+    insert(serializer, altitude);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readReferencePosition(C::mip_interface& device, bool* enableOut, double* latitudeOut, double* longitudeOut, double* altitudeOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_REFERENCE_POSITION, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(enableOut);
+        extract(deserializer, *enableOut);
+        
+        assert(latitudeOut);
+        extract(deserializer, *latitudeOut);
+        
+        assert(longitudeOut);
+        extract(deserializer, *longitudeOut);
+        
+        assert(altitudeOut);
+        extract(deserializer, *altitudeOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveReferencePosition(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadReferencePosition(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultReferencePosition(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.adaptive_measurement);
+        
+        insert(serializer, self.frequency);
+        
+        insert(serializer, self.low_limit);
+        
+        insert(serializer, self.high_limit);
+        
+        insert(serializer, self.low_limit_uncertainty);
+        
+        insert(serializer, self.high_limit_uncertainty);
+        
+        insert(serializer, self.minimum_uncertainty);
+        
+    }
+}
+void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.adaptive_measurement);
+        
+        extract(serializer, self.frequency);
+        
+        extract(serializer, self.low_limit);
+        
+        extract(serializer, self.high_limit);
+        
+        extract(serializer, self.low_limit_uncertainty);
+        
+        extract(serializer, self.high_limit_uncertainty);
+        
+        extract(serializer, self.minimum_uncertainty);
+        
+    }
+}
+
+void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
+{
+    insert(serializer, self.adaptive_measurement);
+    
+    insert(serializer, self.frequency);
+    
+    insert(serializer, self.low_limit);
+    
+    insert(serializer, self.high_limit);
+    
+    insert(serializer, self.low_limit_uncertainty);
+    
+    insert(serializer, self.high_limit_uncertainty);
+    
+    insert(serializer, self.minimum_uncertainty);
+    
+}
+void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
+{
+    extract(serializer, self.adaptive_measurement);
+    
+    extract(serializer, self.frequency);
+    
+    extract(serializer, self.low_limit);
+    
+    extract(serializer, self.high_limit);
+    
+    extract(serializer, self.low_limit_uncertainty);
+    
+    extract(serializer, self.high_limit_uncertainty);
+    
+    extract(serializer, self.minimum_uncertainty);
+    
+}
+
+CmdResult writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, adaptiveMeasurement);
+    
+    insert(serializer, frequency);
+    
+    insert(serializer, lowLimit);
+    
+    insert(serializer, highLimit);
+    
+    insert(serializer, lowLimitUncertainty);
+    
+    insert(serializer, highLimitUncertainty);
+    
+    insert(serializer, minimumUncertainty);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(adaptiveMeasurementOut);
+        extract(deserializer, *adaptiveMeasurementOut);
+        
+        assert(frequencyOut);
+        extract(deserializer, *frequencyOut);
+        
+        assert(lowLimitOut);
+        extract(deserializer, *lowLimitOut);
+        
+        assert(highLimitOut);
+        extract(deserializer, *highLimitOut);
+        
+        assert(lowLimitUncertaintyOut);
+        extract(deserializer, *lowLimitUncertaintyOut);
+        
+        assert(highLimitUncertaintyOut);
+        extract(deserializer, *highLimitUncertaintyOut);
+        
+        assert(minimumUncertaintyOut);
+        extract(deserializer, *minimumUncertaintyOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.adaptive_measurement);
+        
+        insert(serializer, self.frequency);
+        
+        insert(serializer, self.low_limit);
+        
+        insert(serializer, self.high_limit);
+        
+        insert(serializer, self.low_limit_uncertainty);
+        
+        insert(serializer, self.high_limit_uncertainty);
+        
+        insert(serializer, self.minimum_uncertainty);
+        
+    }
+}
+void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.adaptive_measurement);
+        
+        extract(serializer, self.frequency);
+        
+        extract(serializer, self.low_limit);
+        
+        extract(serializer, self.high_limit);
+        
+        extract(serializer, self.low_limit_uncertainty);
+        
+        extract(serializer, self.high_limit_uncertainty);
+        
+        extract(serializer, self.minimum_uncertainty);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self)
+{
+    insert(serializer, self.adaptive_measurement);
+    
+    insert(serializer, self.frequency);
+    
+    insert(serializer, self.low_limit);
+    
+    insert(serializer, self.high_limit);
+    
+    insert(serializer, self.low_limit_uncertainty);
+    
+    insert(serializer, self.high_limit_uncertainty);
+    
+    insert(serializer, self.minimum_uncertainty);
+    
+}
+void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self)
+{
+    extract(serializer, self.adaptive_measurement);
+    
+    extract(serializer, self.frequency);
+    
+    extract(serializer, self.low_limit);
+    
+    extract(serializer, self.high_limit);
+    
+    extract(serializer, self.low_limit_uncertainty);
+    
+    extract(serializer, self.high_limit_uncertainty);
+    
+    extract(serializer, self.minimum_uncertainty);
+    
+}
+
+CmdResult writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, adaptiveMeasurement);
+    
+    insert(serializer, frequency);
+    
+    insert(serializer, lowLimit);
+    
+    insert(serializer, highLimit);
+    
+    insert(serializer, lowLimitUncertainty);
+    
+    insert(serializer, highLimitUncertainty);
+    
+    insert(serializer, minimumUncertainty);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(adaptiveMeasurementOut);
+        extract(deserializer, *adaptiveMeasurementOut);
+        
+        assert(frequencyOut);
+        extract(deserializer, *frequencyOut);
+        
+        assert(lowLimitOut);
+        extract(deserializer, *lowLimitOut);
+        
+        assert(highLimitOut);
+        extract(deserializer, *highLimitOut);
+        
+        assert(lowLimitUncertaintyOut);
+        extract(deserializer, *lowLimitUncertaintyOut);
+        
+        assert(highLimitUncertaintyOut);
+        extract(deserializer, *highLimitUncertaintyOut);
+        
+        assert(minimumUncertaintyOut);
+        extract(deserializer, *minimumUncertaintyOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.enable);
+        
+        insert(serializer, self.frequency);
+        
+        insert(serializer, self.high_limit);
+        
+        insert(serializer, self.high_limit_uncertainty);
+        
+        insert(serializer, self.minimum_uncertainty);
+        
+    }
+}
+void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.enable);
+        
+        extract(serializer, self.frequency);
+        
+        extract(serializer, self.high_limit);
+        
+        extract(serializer, self.high_limit_uncertainty);
+        
+        extract(serializer, self.minimum_uncertainty);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self)
+{
+    insert(serializer, self.enable);
+    
+    insert(serializer, self.frequency);
+    
+    insert(serializer, self.high_limit);
+    
+    insert(serializer, self.high_limit_uncertainty);
+    
+    insert(serializer, self.minimum_uncertainty);
+    
+}
+void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self)
+{
+    extract(serializer, self.enable);
+    
+    extract(serializer, self.frequency);
+    
+    extract(serializer, self.high_limit);
+    
+    extract(serializer, self.high_limit_uncertainty);
+    
+    extract(serializer, self.minimum_uncertainty);
+    
+}
+
+CmdResult writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, enable);
+    
+    insert(serializer, frequency);
+    
+    insert(serializer, highLimit);
+    
+    insert(serializer, highLimitUncertainty);
+    
+    insert(serializer, minimumUncertainty);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool* enableOut, float* frequencyOut, float* highLimitOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(enableOut);
+        extract(deserializer, *enableOut);
+        
+        assert(frequencyOut);
+        extract(deserializer, *frequencyOut);
+        
+        assert(highLimitOut);
+        extract(deserializer, *highLimitOut);
+        
+        assert(highLimitUncertaintyOut);
+        extract(deserializer, *highLimitUncertaintyOut);
+        
+        assert(minimumUncertaintyOut);
+        extract(deserializer, *minimumUncertaintyOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const AidingMeasurementEnable& self)
 {
@@ -3023,6 +4325,129 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device)
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const HardIronOffsetNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.x);
+        
+        insert(serializer, self.y);
+        
+        insert(serializer, self.z);
+        
+    }
+}
+void extract(Serializer& serializer, HardIronOffsetNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.x);
+        
+        extract(serializer, self.y);
+        
+        extract(serializer, self.z);
+        
+    }
+}
+
+void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self)
+{
+    insert(serializer, self.x);
+    
+    insert(serializer, self.y);
+    
+    insert(serializer, self.z);
+    
+}
+void extract(Serializer& serializer, HardIronOffsetNoise::Response& self)
+{
+    extract(serializer, self.x);
+    
+    extract(serializer, self.y);
+    
+    extract(serializer, self.z);
+    
+}
+
+CmdResult writeHardIronOffsetNoise(C::mip_interface& device, float x, float y, float z)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, x);
+    
+    insert(serializer, y);
+    
+    insert(serializer, z);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readHardIronOffsetNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(xOut);
+        extract(deserializer, *xOut);
+        
+        assert(yOut);
+        extract(deserializer, *yOut);
+        
+        assert(zOut);
+        extract(deserializer, *zOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const MagneticDeclinationSource& self)
 {
