@@ -371,6 +371,8 @@ size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** const ptr_out)
 ///
 void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type timestamp, unsigned int max_packets)
 {
+    MIP_DIAG_INC(parser->_diag_bytes_read, count);
+
     byte_ring_notify_written(&parser->_ring, count);
     mip_parser_parse(parser, NULL, 0, timestamp, max_packets);
 }
