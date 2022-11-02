@@ -153,14 +153,29 @@ int main(int argc, const char* argv[])
 
 #ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
     printf(
+        "\nDiagnostics:\n"
         "\n"
-        "Valid packets:    %" PRIu32 "\n"
-        "Invalid packets:  %" PRIu32 "\n"
-        "Timeouts:         %" PRIu32 "\n"
+        "Commands:\n"
+        "  Sent:     %" PRIu16 "\n"
+        "  Acks:     %" PRIu16 "\n"
+        "  Nacks:    %" PRIu16 "\n"
+        "  Timeouts: %" PRIu16 "\n"
+        "  Errors:   %" PRIu16 "\n"
         "\n"
-        "Bytes read:       %" PRIu32 "\n"
-        "Valid bytes:      %" PRIu32 "\n"
-        "Skipped bytes:    %" PRIu32 "\n",
+        "Parser:\n"
+        "  Valid packets:    %" PRIu32 "\n"
+        "  Invalid packets:  %" PRIu32 "\n"
+        "  Timeouts:         %" PRIu32 "\n"
+        "\n"
+        "  Bytes read:       %" PRIu32 "\n"
+        "  Valid bytes:      %" PRIu32 "\n"
+        "  Unparsed bytes:   %" PRIu32 "\n",
+        mip_cmd_queue_diagnostic_cmds_queued(&utils->device->cmdQueue()),
+        mip_cmd_queue_diagnostic_cmd_acks(&utils->device->cmdQueue()),
+        mip_cmd_queue_diagnostic_cmd_nacks(&utils->device->cmdQueue()),
+        mip_cmd_queue_diagnostic_cmd_timeouts(&utils->device->cmdQueue()),
+        mip_cmd_queue_diagnostic_cmd_errors(&utils->device->cmdQueue()),
+
         mip_parser_diagnostic_valid_packets(&utils->device->parser()),
         mip_parser_diagnostic_invalid_packets(&utils->device->parser()),
         mip_parser_diagnostic_timeouts(&utils->device->parser()),
