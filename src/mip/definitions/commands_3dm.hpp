@@ -926,6 +926,13 @@ struct GnssSbasSettings
         SBASOptions& operator=(int val) { value = val; return *this; }
         SBASOptions& operator|=(uint16_t val) { return *this = value | val; }
         SBASOptions& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool enableRanging() const { return (value & ENABLE_RANGING) > 0; }
+        void enableRanging(bool val) { if(val) value |= ENABLE_RANGING; else value &= ~ENABLE_RANGING; }
+        bool enableCorrections() const { return (value & ENABLE_CORRECTIONS) > 0; }
+        void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
+        bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
+        void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1198,6 +1205,13 @@ struct GpioConfig
         PinMode& operator=(int val) { value = val; return *this; }
         PinMode& operator|=(uint8_t val) { return *this = value | val; }
         PinMode& operator&=(uint8_t val) { return *this = value & val; }
+        
+        bool openDrain() const { return (value & OPEN_DRAIN) > 0; }
+        void openDrain(bool val) { if(val) value |= OPEN_DRAIN; else value &= ~OPEN_DRAIN; }
+        bool pulldown() const { return (value & PULLDOWN) > 0; }
+        void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
+        bool pullup() const { return (value & PULLUP) > 0; }
+        void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1498,6 +1512,13 @@ struct GetEventTriggerStatus
         Status& operator=(int val) { value = val; return *this; }
         Status& operator|=(uint8_t val) { return *this = value | val; }
         Status& operator&=(uint8_t val) { return *this = value & val; }
+        
+        bool active() const { return (value & ACTIVE) > 0; }
+        void active(bool val) { if(val) value |= ACTIVE; else value &= ~ACTIVE; }
+        bool enabled() const { return (value & ENABLED) > 0; }
+        void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
+        bool test() const { return (value & TEST) > 0; }
+        void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
     };
     
     struct Entry
@@ -2018,6 +2039,48 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
 CmdResult saveMagSoftIronMatrix(C::mip_interface& device);
 CmdResult loadMagSoftIronMatrix(C::mip_interface& device);
 CmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_3dm_coning_sculling_enable  (0x0C,0x3E) Coning Sculling Enable [CPP]
+/// Controls the Coning and Sculling Compenstation setting.
+///
+///@{
+
+struct ConingScullingEnable
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONING_AND_SCULLING_ENABLE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CONING_AND_SCULLING_ENABLE;
+        
+        bool enable = 0; ///< If true, coning and sculling compensation is enabled.
+        
+    };
+};
+void insert(Serializer& serializer, const ConingScullingEnable& self);
+void extract(Serializer& serializer, ConingScullingEnable& self);
+
+void insert(Serializer& serializer, const ConingScullingEnable::Response& self);
+void extract(Serializer& serializer, ConingScullingEnable::Response& self);
+
+CmdResult writeConingScullingEnable(C::mip_interface& device, bool enable);
+CmdResult readConingScullingEnable(C::mip_interface& device, bool* enableOut);
+CmdResult saveConingScullingEnable(C::mip_interface& device);
+CmdResult loadConingScullingEnable(C::mip_interface& device);
+CmdResult defaultConingScullingEnable(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
