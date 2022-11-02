@@ -3933,6 +3933,114 @@ mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_SOFT_IRON_MATRIX, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert_mip_3dm_coning_sculling_enable_command(mip_serializer* serializer, const mip_3dm_coning_sculling_enable_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_bool(serializer, self->enable);
+        
+    }
+}
+void extract_mip_3dm_coning_sculling_enable_command(mip_serializer* serializer, mip_3dm_coning_sculling_enable_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_bool(serializer, &self->enable);
+        
+    }
+}
+
+void insert_mip_3dm_coning_sculling_enable_response(mip_serializer* serializer, const mip_3dm_coning_sculling_enable_response* self)
+{
+    insert_bool(serializer, self->enable);
+    
+}
+void extract_mip_3dm_coning_sculling_enable_response(mip_serializer* serializer, mip_3dm_coning_sculling_enable_response* self)
+{
+    extract_bool(serializer, &self->enable);
+    
+}
+
+mip_cmd_result mip_3dm_write_coning_sculling_enable(struct mip_interface* device, bool enable)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_bool(&serializer, enable);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_read_coning_sculling_enable(struct mip_interface* device, bool* enable_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(enable_out);
+        extract_bool(&deserializer, enable_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_3dm_save_coning_sculling_enable(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_load_coning_sculling_enable(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_default_coning_sculling_enable(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONING_AND_SCULLING_ENABLE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert_mip_3dm_sensor_2_vehicle_transform_euler_command(mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_euler_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
