@@ -14,6 +14,9 @@
 #include <thread>
 #include <array>
 
+#define __STDC_FORMAT_MACROS 1
+#include <cinttypes>
+
 mip::data_sensor::ScaledAccel scaled_accel;
 
 void handlePacket(void*, const mip::Packet& packet, mip::Timestamp timestamp)
@@ -56,19 +59,14 @@ void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp ti
 }
 
 
-int main(int argc, const char* argv[])
+int run(mip::DeviceInterface& device)
 {
-    try
-    {
-        std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-        std::unique_ptr<mip::DeviceInterface>& device = utils->device;
-
         mip::CmdResult result;
 
         // Get the base rate.
 
         uint16_t base_rate;
-        result = mip::commands_3dm::getBaseRate(*device, mip::data_sensor::DESCRIPTOR_SET, &base_rate);
+        result = mip::commands_3dm::getBaseRate(device, mip::data_sensor::DESCRIPTOR_SET, &base_rate);
 
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to get base rate: %s (%d)\n", result.name(), result.value), 1;
@@ -84,13 +82,13 @@ int main(int argc, const char* argv[])
             { mip::data_sensor::DATA_MAG_SCALED,   decimation },
         }};
 
-        result = mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size(), descriptors.data());
+        result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size(), descriptors.data());
 
         if( result == mip::CmdResult::NACK_COMMAND_FAILED )
         {
             // Failed to set message format - maybe this device doesn't have a magnetometer.
             // Try again without the last descriptor (scaled mag).
-            result = mip::commands_3dm::writeMessageFormat(*device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size()-1, descriptors.data());
+            result = mip::commands_3dm::writeMessageFormat(device, mip::data_sensor::DESCRIPTOR_SET, descriptors.size()-1, descriptors.data());
         }
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to set message format: %s (%d)\n", result.name(), result.value), 1;
@@ -98,23 +96,23 @@ int main(int argc, const char* argv[])
         // Register some callbacks.
 
         mip::DispatchHandler packetHandler;
-        device->registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_ANY_DATA_SET, false);
+        device.registerPacketCallback<&handlePacket>(packetHandler, mip::C::MIP_DISPATCH_ANY_DATA_SET, false);
 
         mip::DispatchHandler dataHandlers[4];
-        device->registerFieldCallback<&handleAccel>(dataHandlers[0], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_ACCEL_SCALED);
-        device->registerDataCallback<mip::data_sensor::ScaledGyro, &handleGyro>(dataHandlers[1]);
-        device->registerDataCallback<mip::data_sensor::ScaledMag,  &handleMag >(dataHandlers[2]);
-        device->registerExtractor(dataHandlers[3], &scaled_accel);
+        device.registerFieldCallback<&handleAccel>(dataHandlers[0], mip::data_sensor::DESCRIPTOR_SET, mip::data_sensor::DATA_ACCEL_SCALED);
+        device.registerDataCallback<mip::data_sensor::ScaledGyro, &handleGyro>(dataHandlers[1]);
+        device.registerDataCallback<mip::data_sensor::ScaledMag,  &handleMag >(dataHandlers[2]);
+        device.registerExtractor(dataHandlers[3], &scaled_accel);
 
         // Enable the data stream and resume the device.
 
-        result = mip::commands_3dm::writeDatastreamControl(*device, mip::data_sensor::DESCRIPTOR_SET, true);
+        result = mip::commands_3dm::writeDatastreamControl(device, mip::data_sensor::DESCRIPTOR_SET, true);
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to enable datastream: %s (%d)\n", result.name(), result.value), 1;
 
         // Resume the device to ensure it's streaming.
 
-        result = mip::commands_base::resume(*device);
+        result = mip::commands_base::resume(device);
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to resume device: %s (%d)\n", result.name(), result.value), 1;
 
@@ -122,19 +120,24 @@ int main(int argc, const char* argv[])
         const mip::Timestamp start_time = getCurrentTimestamp();
         do
         {
-            device->update();
+            device.update();
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         } while( getCurrentTimestamp() - start_time < 3000 );
 
-        result = mip::commands_base::setIdle(*device);
+        result = mip::commands_base::setIdle(device);
         if( result != mip::CmdResult::ACK_OK )
             return fprintf(stderr, "Failed to idle device: %s (%d)\n", result.name(), result.value), 1;
 
-        // mip::TdmCommands::EventControl ctrl;
-        // ctrl.mode = mip::TdmCommands::EventControl::Mode::ENABLED;
+    return 0;
+}
 
-        return 0;
+int main(int argc, const char* argv[])
+{
+    std::unique_ptr<ExampleUtils> utils;
+    try
+    {
+        utils = handleCommonArgs(argc, argv);
     }
     catch(const std::underflow_error& ex)
     {
@@ -145,5 +148,27 @@ int main(int argc, const char* argv[])
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
     }
-    return 0;
+
+    const int result = run(*utils->device);
+
+#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+    printf(
+        "\n"
+        "Valid packets:    %" PRIu32 "\n"
+        "Invalid packets:  %" PRIu32 "\n"
+        "Timeouts:         %" PRIu32 "\n"
+        "\n"
+        "Bytes read:       %" PRIu32 "\n"
+        "Valid bytes:      %" PRIu32 "\n"
+        "Skipped bytes:    %" PRIu32 "\n",
+        mip_parser_diagnostic_valid_packets(&utils->device->parser()),
+        mip_parser_diagnostic_invalid_packets(&utils->device->parser()),
+        mip_parser_diagnostic_timeouts(&utils->device->parser()),
+        mip_parser_diagnostic_bytes_read(&utils->device->parser()),
+        mip_parser_diagnostic_packet_bytes(&utils->device->parser()),
+        mip_parser_diagnostic_bytes_skipped(&utils->device->parser())
+    );
+#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+
+    return result;
 }
