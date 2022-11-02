@@ -378,7 +378,7 @@ void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type
 }
 
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the total number of bytes read from the user input buffer.
@@ -448,7 +448,7 @@ uint16_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
     return parser->_diag_timeouts;
 }
 
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
 
 ////////////////////////////////////////////////////////////////////////////////

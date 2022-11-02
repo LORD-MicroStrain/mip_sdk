@@ -364,7 +364,7 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
             // The command could go out of scope or its attributes inspected.
             pending->_status = status;
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
             if( mip_cmd_result_is_ack(status) )
                 MIP_DIAG_INC(queue->_diag_cmds_acked, 1);
             else if( mip_cmd_result_is_reply(status) )
@@ -373,7 +373,7 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
                 MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
             else
                 MIP_DIAG_INC(queue->_diag_cmds_failed, 1);
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
         }
     }
 }
@@ -461,7 +461,7 @@ timeout_type mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue)
 }
 
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the number of commands ever put into the queue.
@@ -526,4 +526,4 @@ uint16_t mip_cmd_queue_diagnostic_cmd_errors(const mip_cmd_queue* queue)
     return queue->_diag_cmds_failed;
 }
 
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS

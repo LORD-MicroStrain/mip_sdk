@@ -62,13 +62,13 @@ typedef struct mip_parser
     mip_packet_callback _callback;                             ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*               _callback_object;                      ///<@private User-specified pointer passed to the callback function.
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
     uint32_t            _diag_bytes_read;                      ///<@private Counts bytes read from the user input buffer.
     uint32_t            _diag_packet_bytes;                    ///<@private Counts bytes parsed into valid packets.
     uint32_t            _diag_valid_packets;                   ///<@private Counts packets successfully parsed.
     uint16_t            _diag_invalid_packets;                 ///<@private Counts invalid packets encountered (bad checksums).
     uint16_t            _diag_timeouts;                        ///<@private Counts packet timeouts.
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
 } mip_parser;
 
@@ -105,7 +105,7 @@ timestamp_type mip_parser_last_packet_timestamp(const mip_parser* parser);
 // Diagnostics
 //
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
 
 uint32_t mip_parser_diagnostic_bytes_read(const mip_parser* parser);
 uint32_t mip_parser_diagnostic_packet_bytes(const mip_parser* parser);
@@ -115,7 +115,7 @@ uint32_t mip_parser_diagnostic_valid_packets(const mip_parser* parser);
 uint16_t mip_parser_diagnostic_invalid_packets(const mip_parser* parser);
 uint16_t mip_parser_diagnostic_timeouts(const mip_parser* parser);
 
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
 
 //

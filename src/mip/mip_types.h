@@ -35,21 +35,21 @@ typedef int_least16_t remaining_count;
 typedef timestamp_type timeout_type;
 
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
 
 // Saturating addition
 #define MIP_DIAG_INC(counter, amount) do { if (counter + amount < counter) counter = -1; else counter += amount; } while(false)
 
 #define MIP_DIAG_ZERO(counter) counter = 0
 
-#else // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#else // MIP_ENABLE_DIAGNOSTICS
 
 // Do nothing if diagnostic counters diabled. Cast amount to void to avoid "unused local variable" warnings.
 #define MIP_DIAG_INC(counter, amount) (void)amount
 
 #define MIP_DIAG_ZERO(counter)
 
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
 
 #ifdef __cplusplus

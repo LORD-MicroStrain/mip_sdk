@@ -151,7 +151,7 @@ int main(int argc, const char* argv[])
 
     const int result = run(*utils->device);
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
     printf(
         "\nDiagnostics:\n"
         "\n"
@@ -183,7 +183,7 @@ int main(int argc, const char* argv[])
         mip_parser_diagnostic_packet_bytes(&utils->device->parser()),
         mip_parser_diagnostic_bytes_skipped(&utils->device->parser())
     );
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
     return result;
 }

@@ -220,7 +220,7 @@ int main(int argc, const char* argv[])
 
 done:
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#ifdef MIP_ENABLE_DIAGNOSTICS
     printf(
         "\nDiagnostics:\n"
         "\n"
@@ -252,7 +252,7 @@ done:
         mip_parser_diagnostic_packet_bytes(mip_interface_parser(&device)),
         mip_parser_diagnostic_bytes_skipped(mip_interface_parser(&device))
     );
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+#endif // MIP_ENABLE_DIAGNOSTICS
 
     serial_port_close(&port);
     return result == MIP_ACK_OK ? 0 : 2;
