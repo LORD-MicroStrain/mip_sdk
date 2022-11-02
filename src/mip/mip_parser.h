@@ -63,11 +63,11 @@ typedef struct mip_parser
     void*               _callback_object;                      ///<@private User-specified pointer passed to the callback function.
 
 #ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
-    uint32_t            _diag_bytes_parsed;                    ///<@private Counts the total number of bytes read from the user input buffer.
-    uint32_t            _diag_packet_bytes;                    ///<@private Counts the total number of bytes parsed into valid packets.
-    uint32_t            _diag_valid_packets;                   ///<@private Counts number of packets successfully parsed.
-    uint16_t            _diag_invalid_packets;                 ///<@private Counts the number of invalid packets encountered (bad checksums).
-    uint16_t            _diag_timeouts;                        ///<@private Counts the number of packet timeouts.
+    uint32_t            _diag_bytes_read;                      ///<@private Counts bytes read from the user input buffer.
+    uint32_t            _diag_packet_bytes;                    ///<@private Counts bytes parsed into valid packets.
+    uint32_t            _diag_valid_packets;                   ///<@private Counts packets successfully parsed.
+    uint16_t            _diag_invalid_packets;                 ///<@private Counts invalid packets encountered (bad checksums).
+    uint16_t            _diag_timeouts;                        ///<@private Counts packet timeouts.
 #endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
 
 } mip_parser;

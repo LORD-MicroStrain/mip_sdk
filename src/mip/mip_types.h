@@ -38,7 +38,7 @@ typedef timestamp_type timeout_type;
 #ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
 
 // Saturating addition
-#define MIP_DIAG_INC(counter, amout) do { if (counter + amount < counter) counter = -1; else counter += amount; } while(false)
+#define MIP_DIAG_INC(counter, amount) do { if (counter + amount < counter) counter = -1; else counter += amount; } while(false)
 
 #define MIP_DIAG_ZERO(counter) counter = 0
 
