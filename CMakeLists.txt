@@ -200,8 +200,16 @@ endif()
 
 add_library(mip ${ALL_MIP_SOURCES})
 
+#
+# Preprocessor definitions
+#
+
 if(${MIP_TIMESTAMP_TYPE})
-    add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+    target_compile_definitions(mip PUBLIC "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+endif()
+
+if(${MIP_ENABLE_DIAGNOSTIC_COUNTERS})
+    target_compile_definitions(mip PUBLIC "MIP_ENABLE_DIAGNOSTIC_COUNTERS")
 endif()
 
 # Disable windows defined min/max
