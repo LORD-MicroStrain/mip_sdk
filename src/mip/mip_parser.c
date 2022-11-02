@@ -57,13 +57,11 @@ void mip_parser_reset(mip_parser* parser)
     parser->_start_time = 0;
     byte_ring_clear(&parser->_ring);
 
-#ifdef MIP_ENABLE_DIAGNOSTIC_COUNTERS
-    parser->_diag_bytes_read      = 0;
-    parser->_diag_packet_bytes    = 0;
-    parser->_diag_valid_packets   = 0;
-    parser->_diag_invalid_packets = 0;
-    parser->_diag_timeouts        = 0;
-#endif // MIP_ENABLE_DIAGNOSTIC_COUNTERS
+    MIP_DIAG_ZERO(parser->_diag_bytes_read);
+    MIP_DIAG_ZERO(parser->_diag_packet_bytes);
+    MIP_DIAG_ZERO(parser->_diag_valid_packets);
+    MIP_DIAG_ZERO(parser->_diag_invalid_packets);
+    MIP_DIAG_ZERO(parser->_diag_timeouts);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +210,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             uint_least16_t packet_length = parser->_expected_length;
             parser->_expected_length = MIPPARSER_RESET_LENGTH;  // Reset parsing state
 
-             byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
+            byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
 
             mip_packet_from_buffer(packet_out, parser->_result_buffer, packet_length);
 
