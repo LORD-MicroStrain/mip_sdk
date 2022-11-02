@@ -1699,6 +1699,38 @@ mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_3dm_coning_sculling_enable  (0x0C,0x3E) Coning Sculling Enable [C]
+/// Controls the Coning and Sculling Compenstation setting.
+///
+///@{
+
+struct mip_3dm_coning_sculling_enable_command
+{
+    mip_function_selector function;
+    bool enable; ///< If true, coning and sculling compensation is enabled.
+    
+};
+typedef struct mip_3dm_coning_sculling_enable_command mip_3dm_coning_sculling_enable_command;
+void insert_mip_3dm_coning_sculling_enable_command(struct mip_serializer* serializer, const mip_3dm_coning_sculling_enable_command* self);
+void extract_mip_3dm_coning_sculling_enable_command(struct mip_serializer* serializer, mip_3dm_coning_sculling_enable_command* self);
+
+struct mip_3dm_coning_sculling_enable_response
+{
+    bool enable; ///< If true, coning and sculling compensation is enabled.
+    
+};
+typedef struct mip_3dm_coning_sculling_enable_response mip_3dm_coning_sculling_enable_response;
+void insert_mip_3dm_coning_sculling_enable_response(struct mip_serializer* serializer, const mip_3dm_coning_sculling_enable_response* self);
+void extract_mip_3dm_coning_sculling_enable_response(struct mip_serializer* serializer, mip_3dm_coning_sculling_enable_response* self);
+
+mip_cmd_result mip_3dm_write_coning_sculling_enable(struct mip_interface* device, bool enable);
+mip_cmd_result mip_3dm_read_coning_sculling_enable(struct mip_interface* device, bool* enable_out);
+mip_cmd_result mip_3dm_save_coning_sculling_enable(struct mip_interface* device);
+mip_cmd_result mip_3dm_load_coning_sculling_enable(struct mip_interface* device);
+mip_cmd_result mip_3dm_default_coning_sculling_enable(struct mip_interface* device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_sensor_2_vehicle_transform_euler  (0x0C,0x31) Sensor 2 Vehicle Transform Euler [C]
 /// Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.
 /// These are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,

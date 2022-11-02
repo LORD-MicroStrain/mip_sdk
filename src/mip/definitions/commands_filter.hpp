@@ -167,6 +167,13 @@ enum class FilterMagDeclinationSource : uint8_t
     MANUAL = 3,  ///<  Magnetic field is assumed to have the declination angle specified by the user.
 };
 
+enum class FilterAdaptiveMeasurement : uint8_t
+{
+    DISABLED = 0,  ///<  No adaptive measurement
+    FIXED    = 1,  ///<  Enable fixed adaptive measurement (use specified limits)
+    AUTO     = 2,  ///<  Enable auto adaptive measurement
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -504,6 +511,56 @@ CmdResult readTareOrientation(C::mip_interface& device, TareOrientation::MipTare
 CmdResult saveTareOrientation(C::mip_interface& device);
 CmdResult loadTareOrientation(C::mip_interface& device);
 CmdResult defaultTareOrientation(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_vehicle_dynamics_mode  (0x0D,0x10) Vehicle Dynamics Mode [CPP]
+/// Controls the vehicle dynamics mode.
+///
+///@{
+
+struct VehicleDynamicsMode
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_VEHICLE_DYNAMICS_MODE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    enum class DynamicsMode : uint8_t
+    {
+        PORTABLE        = 1,  ///<  
+        AUTOMOTIVE      = 2,  ///<  
+        AIRBORNE        = 3,  ///<  
+        AIRBORNE_HIGH_G = 4,  ///<  
+    };
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    DynamicsMode mode = static_cast<DynamicsMode>(0);
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_VEHICLE_DYNAMICS_MODE;
+        
+        DynamicsMode mode = static_cast<DynamicsMode>(0);
+        
+    };
+};
+void insert(Serializer& serializer, const VehicleDynamicsMode& self);
+void extract(Serializer& serializer, VehicleDynamicsMode& self);
+
+void insert(Serializer& serializer, const VehicleDynamicsMode::Response& self);
+void extract(Serializer& serializer, VehicleDynamicsMode::Response& self);
+
+CmdResult writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode);
+CmdResult readVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode* modeOut);
+CmdResult saveVehicleDynamicsMode(C::mip_interface& device);
+CmdResult loadVehicleDynamicsMode(C::mip_interface& device);
+CmdResult defaultVehicleDynamicsMode(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -980,6 +1037,222 @@ CmdResult defaultAutoInitControl(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_accel_noise  (0x0D,0x1A) Accel Noise [CPP]
+/// Accelerometer Noise Standard Deviation
+/// 
+/// Each of the noise values must be greater than 0.0.
+/// 
+/// The noise value represents process noise in the 3DM-GX5-45 NAV Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter.
+/// Default values provide good performance for most laboratory conditions.
+/// 
+///
+///@{
+
+struct AccelNoise
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_NOISE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float x = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    float y = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    float z = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_NOISE;
+        
+        float x = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        float y = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        float z = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const AccelNoise& self);
+void extract(Serializer& serializer, AccelNoise& self);
+
+void insert(Serializer& serializer, const AccelNoise::Response& self);
+void extract(Serializer& serializer, AccelNoise::Response& self);
+
+CmdResult writeAccelNoise(C::mip_interface& device, float x, float y, float z);
+CmdResult readAccelNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut);
+CmdResult saveAccelNoise(C::mip_interface& device);
+CmdResult loadAccelNoise(C::mip_interface& device);
+CmdResult defaultAccelNoise(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_gyro_noise  (0x0D,0x1B) Gyro Noise [CPP]
+/// Gyroscope Noise Standard Deviation
+/// 
+/// Each of the noise values must be greater than 0.0
+/// 
+/// The noise value represents process noise in the 3DM-GX5-45 NAV Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter.
+/// Default values provide good performance for most laboratory conditions.
+/// 
+///
+///@{
+
+struct GyroNoise
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_NOISE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float x = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    float y = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    float z = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_NOISE;
+        
+        float x = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        float y = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        float z = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const GyroNoise& self);
+void extract(Serializer& serializer, GyroNoise& self);
+
+void insert(Serializer& serializer, const GyroNoise::Response& self);
+void extract(Serializer& serializer, GyroNoise::Response& self);
+
+CmdResult writeGyroNoise(C::mip_interface& device, float x, float y, float z);
+CmdResult readGyroNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut);
+CmdResult saveGyroNoise(C::mip_interface& device);
+CmdResult loadGyroNoise(C::mip_interface& device);
+CmdResult defaultGyroNoise(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_accel_bias_model  (0x0D,0x1C) Accel Bias Model [CPP]
+/// Accelerometer Bias Model Parameters
+/// 
+/// Each of the noise values must be greater than 0.0
+/// 
+///
+///@{
+
+struct AccelBiasModel
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_BIAS_MODEL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float x_beta = 0; ///< Accel Bias Beta [1/second]
+    float y_beta = 0; ///< Accel Bias Beta [1/second]
+    float z_beta = 0; ///< Accel Bias Beta [1/second]
+    float x = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    float y = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    float z = 0; ///< Accel Noise 1-sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_BIAS_MODEL;
+        
+        float x_beta = 0; ///< Accel Bias Beta [1/second]
+        float y_beta = 0; ///< Accel Bias Beta [1/second]
+        float z_beta = 0; ///< Accel Bias Beta [1/second]
+        float x = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        float y = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        float z = 0; ///< Accel Noise 1-sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const AccelBiasModel& self);
+void extract(Serializer& serializer, AccelBiasModel& self);
+
+void insert(Serializer& serializer, const AccelBiasModel::Response& self);
+void extract(Serializer& serializer, AccelBiasModel::Response& self);
+
+CmdResult writeAccelBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z);
+CmdResult readAccelBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut);
+CmdResult saveAccelBiasModel(C::mip_interface& device);
+CmdResult loadAccelBiasModel(C::mip_interface& device);
+CmdResult defaultAccelBiasModel(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_gyro_bias_model  (0x0D,0x1D) Gyro Bias Model [CPP]
+/// Gyroscope Bias Model Parameters
+/// 
+/// Each of the noise values must be greater than 0.0
+/// 
+///
+///@{
+
+struct GyroBiasModel
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_GYRO_BIAS_MODEL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float x_beta = 0; ///< Gyro Bias Beta [1/second]
+    float y_beta = 0; ///< Gyro Bias Beta [1/second]
+    float z_beta = 0; ///< Gyro Bias Beta [1/second]
+    float x = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    float y = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    float z = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_GYRO_BIAS_MODEL;
+        
+        float x_beta = 0; ///< Gyro Bias Beta [1/second]
+        float y_beta = 0; ///< Gyro Bias Beta [1/second]
+        float z_beta = 0; ///< Gyro Bias Beta [1/second]
+        float x = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        float y = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        float z = 0; ///< Gyro Noise 1-sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const GyroBiasModel& self);
+void extract(Serializer& serializer, GyroBiasModel& self);
+
+void insert(Serializer& serializer, const GyroBiasModel::Response& self);
+void extract(Serializer& serializer, GyroBiasModel::Response& self);
+
+CmdResult writeGyroBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z);
+CmdResult readGyroBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut);
+CmdResult saveGyroBiasModel(C::mip_interface& device);
+CmdResult loadGyroBiasModel(C::mip_interface& device);
+CmdResult defaultGyroBiasModel(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_filter_altitude_aiding  (0x0D,0x47) Altitude Aiding [CPP]
 /// Altitude Aiding Control
 /// 
@@ -1166,6 +1439,246 @@ void insert(Serializer& serializer, const CommandedAngularZupt& self);
 void extract(Serializer& serializer, CommandedAngularZupt& self);
 
 CmdResult commandedAngularZupt(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_reference_position  (0x0D,0x26) Reference Position [CPP]
+/// Set the Lat/Long/Alt reference position for the sensor.
+/// 
+/// This position is used by the sensor to calculate the WGS84 gravity and WMM2015 magnetic field parameters.
+/// 
+///
+///@{
+
+struct ReferencePosition
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_REFERENCE_POSITION;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    bool enable = 0; ///< enable/disable
+    double latitude = 0; ///< [degrees]
+    double longitude = 0; ///< [degrees]
+    double altitude = 0; ///< [meters]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_REFERENCE_POSITION;
+        
+        bool enable = 0; ///< enable/disable
+        double latitude = 0; ///< [degrees]
+        double longitude = 0; ///< [degrees]
+        double altitude = 0; ///< [meters]
+        
+    };
+};
+void insert(Serializer& serializer, const ReferencePosition& self);
+void extract(Serializer& serializer, ReferencePosition& self);
+
+void insert(Serializer& serializer, const ReferencePosition::Response& self);
+void extract(Serializer& serializer, ReferencePosition::Response& self);
+
+CmdResult writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude);
+CmdResult readReferencePosition(C::mip_interface& device, bool* enableOut, double* latitudeOut, double* longitudeOut, double* altitudeOut);
+CmdResult saveReferencePosition(C::mip_interface& device);
+CmdResult loadReferencePosition(C::mip_interface& device);
+CmdResult defaultReferencePosition(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_accel_magnitude_error_adaptive_measurement  (0x0D,0x44) Accel Magnitude Error Adaptive Measurement [CPP]
+/// Enable or disable the gravity magnitude error adaptive measurement.
+/// This function can be used to tune the filter performance in the target application
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+/// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
+/// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
+/// When “auto-adaptive” is selected, the filter and limit parameters are ignored.
+/// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
+/// 
+///
+///@{
+
+struct AccelMagnitudeErrorAdaptiveMeasurement
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
+    float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit = 0; ///< [meters/second^2]
+    float high_limit = 0; ///< [meters/second^2]
+    float low_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        
+        FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
+        float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+        float low_limit = 0; ///< [meters/second^2]
+        float high_limit = 0; ///< [meters/second^2]
+        float low_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self);
+void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self);
+
+void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
+void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
+
+CmdResult writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
+CmdResult readAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
+CmdResult saveAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult loadAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult defaultAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_mag_magnitude_error_adaptive_measurement  (0x0D,0x45) Mag Magnitude Error Adaptive Measurement [CPP]
+/// Enable or disable the magnetometer magnitude error adaptive measurement.
+/// This feature will reject magnetometer readings that are out of range of the thresholds specified (fixed adaptive) or calculated internally (auto-adaptive).
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+///
+///@{
+
+struct MagMagnitudeErrorAdaptiveMeasurement
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
+    float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit = 0; ///< [meters/second^2]
+    float high_limit = 0; ///< [meters/second^2]
+    float low_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        
+        FilterAdaptiveMeasurement adaptive_measurement = static_cast<FilterAdaptiveMeasurement>(0); ///< Adaptive measurement selector
+        float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+        float low_limit = 0; ///< [meters/second^2]
+        float high_limit = 0; ///< [meters/second^2]
+        float low_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self);
+void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self);
+
+void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self);
+void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self);
+
+CmdResult writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
+CmdResult readMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
+CmdResult saveMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult loadMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult defaultMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_mag_dip_angle_error_adaptive_measurement  (0x0D,0x46) Mag Dip Angle Error Adaptive Measurement [CPP]
+/// Enable or disable the magnetometer dip angle error adaptive measurement.
+/// This function can be used to tune the filter performance in the target application
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+/// The magnetometer dip angle adaptive measurement is ignored if the auto-adaptive magnetometer magnitude or auto-adaptive accel magnitude options are selected.
+/// 
+///
+///@{
+
+struct MagDipAngleErrorAdaptiveMeasurement
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    bool enable = 0; ///< Enable/Disable
+    float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+    float high_limit = 0; ///< [meters/second^2]
+    float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL;
+        
+        bool enable = 0; ///< Enable/Disable
+        float frequency = 0; ///< Low-pass filter curoff frequency [hertz]
+        float high_limit = 0; ///< [meters/second^2]
+        float high_limit_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        float minimum_uncertainty = 0; ///< 1-Sigma [meters/second^2]
+        
+    };
+};
+void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self);
+void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self);
+
+void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self);
+void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self);
+
+CmdResult writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty);
+CmdResult readMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool* enableOut, float* frequencyOut, float* highLimitOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
+CmdResult saveMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult loadMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device);
+CmdResult defaultMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1801,6 +2314,61 @@ CmdResult readGnssAntennaCalControl(C::mip_interface& device, uint8_t* enableOut
 CmdResult saveGnssAntennaCalControl(C::mip_interface& device);
 CmdResult loadGnssAntennaCalControl(C::mip_interface& device);
 CmdResult defaultGnssAntennaCalControl(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_hard_iron_offset_noise  (0x0D,0x2B) Hard Iron Offset Noise [CPP]
+/// Set the expected hard iron offset noise 1-sigma values
+/// 
+/// This function can be used to tune the filter performance in the target application.
+/// 
+/// Each of the noise values must be greater than 0.0
+/// 
+/// The noise value represents process noise in the 3DM-GX5-45 NAV Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter.
+/// Default values provide good performance for most laboratory conditions.
+/// 
+///
+///@{
+
+struct HardIronOffsetNoise
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_HARD_IRON_OFFSET_NOISE;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    float x = 0; ///< HI Offset Noise 1-sima [gauss]
+    float y = 0; ///< HI Offset Noise 1-sima [gauss]
+    float z = 0; ///< HI Offset Noise 1-sima [gauss]
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_HARD_IRON_OFFSET_NOISE;
+        
+        float x = 0; ///< HI Offset Noise 1-sima [gauss]
+        float y = 0; ///< HI Offset Noise 1-sima [gauss]
+        float z = 0; ///< HI Offset Noise 1-sima [gauss]
+        
+    };
+};
+void insert(Serializer& serializer, const HardIronOffsetNoise& self);
+void extract(Serializer& serializer, HardIronOffsetNoise& self);
+
+void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self);
+void extract(Serializer& serializer, HardIronOffsetNoise::Response& self);
+
+CmdResult writeHardIronOffsetNoise(C::mip_interface& device, float x, float y, float z);
+CmdResult readHardIronOffsetNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut);
+CmdResult saveHardIronOffsetNoise(C::mip_interface& device);
+CmdResult loadHardIronOffsetNoise(C::mip_interface& device);
+CmdResult defaultHardIronOffsetNoise(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
