@@ -67,6 +67,7 @@ enum mip_cmd_result mip_pending_cmd_status(const mip_pending_cmd* cmd);
 const uint8_t* mip_pending_cmd_response(const mip_pending_cmd* cmd);
 uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd);
 
+int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type now);
 bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type now);
 
 ///@}
