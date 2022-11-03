@@ -19,7 +19,7 @@ if(MIP_USE_EXTRAS)
     set(EXTRAS_DEFS "MIP_USE_EXTRAS")
 endif()
 
-set(MIP_EXAMPLE_DEFS ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
+set(MIP_EXAMPLE_DEFS ${MIP_DEFINES} ${SERIAL_DEFS} ${TCP_DEFS} ${EXTRAS_DEFS})
 
 # C++ examples need either serial or TCP support
 if(MIP_USE_SERIAL OR MIP_USE_TCP)
