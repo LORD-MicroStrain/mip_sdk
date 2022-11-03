@@ -47,7 +47,7 @@ typedef timestamp_type timeout_type;
 // Do nothing if diagnostic counters diabled. Cast amount to void to avoid "unused local variable" warnings.
 #define MIP_DIAG_INC(counter, amount) (void)amount
 
-#define MIP_DIAG_ZERO(counter)
+#define MIP_DIAG_ZERO(counter) (void)0
 
 #endif // MIP_ENABLE_DIAGNOSTICS
 
