@@ -202,6 +202,7 @@ mip_update_callback mip_interface_update_function(const mip_interface* device)
     return device->_update_callback;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets an optional user data pointer which can be retrieved later.
 ///

@@ -1,6 +1,5 @@
 
 #include "mip_device.hpp"
-#include "mip_logging.h"
 
 namespace mip {
 
