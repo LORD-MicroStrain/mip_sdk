@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <inttypes.h>
 
 #ifdef WIN32
 #else
@@ -222,6 +223,40 @@ int main(int argc, const char* argv[])
     }
 
 done:
+
+#ifdef MIP_ENABLE_DIAGNOSTICS
+    printf(
+        "\nDiagnostics:\n"
+        "\n"
+        "Commands:\n"
+        "  Sent:     %" PRIu16 "\n"
+        "  Acks:     %" PRIu16 "\n"
+        "  Nacks:    %" PRIu16 "\n"
+        "  Timeouts: %" PRIu16 "\n"
+        "  Errors:   %" PRIu16 "\n"
+        "\n"
+        "Parser:\n"
+        "  Valid packets:    %" PRIu32 "\n"
+        "  Invalid packets:  %" PRIu32 "\n"
+        "  Timeouts:         %" PRIu32 "\n"
+        "\n"
+        "  Bytes read:       %" PRIu32 "\n"
+        "  Valid bytes:      %" PRIu32 "\n"
+        "  Unparsed bytes:   %" PRIu32 "\n",
+        mip_cmd_queue_diagnostic_cmds_queued(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_acks(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_nacks(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_timeouts(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_errors(mip_interface_cmd_queue(&device)),
+
+        mip_parser_diagnostic_valid_packets(mip_interface_parser(&device)),
+        mip_parser_diagnostic_invalid_packets(mip_interface_parser(&device)),
+        mip_parser_diagnostic_timeouts(mip_interface_parser(&device)),
+        mip_parser_diagnostic_bytes_read(mip_interface_parser(&device)),
+        mip_parser_diagnostic_packet_bytes(mip_interface_parser(&device)),
+        mip_parser_diagnostic_bytes_skipped(mip_interface_parser(&device))
+    );
+#endif // MIP_ENABLE_DIAGNOSTICS
 
     serial_port_close(&port);
     return result == MIP_ACK_OK ? 0 : 2;

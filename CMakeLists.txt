@@ -73,6 +73,7 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
 option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
 option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
@@ -199,8 +200,16 @@ endif()
 
 add_library(mip ${ALL_MIP_SOURCES})
 
+#
+# Preprocessor definitions
+#
+
 if(${MIP_TIMESTAMP_TYPE})
-    add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+    target_compile_definitions(mip PUBLIC "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+endif()
+
+if(${MIP_ENABLE_DIAGNOSTICS})
+    target_compile_definitions(mip PUBLIC "MIP_ENABLE_DIAGNOSTICS")
 endif()
 
 # Disable windows defined min/max
