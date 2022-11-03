@@ -41,17 +41,27 @@ typedef uint8_t mip_log_level;
 ///
 typedef void (*mip_log_callback)(void* user, mip_log_level level, const char* fmt, va_list args);
 
-extern mip_log_callback _mip_log_callback;
-extern mip_log_level _mip_log_level;
-extern void* _mip_log_user_data;
+void mip_logging_init(mip_log_callback callback, mip_log_level level, void* user);
 
-void _mip_logging_init(mip_log_callback callback, mip_log_level level, void* user);
-
-mip_log_callback _mip_logging_callback();
-mip_log_level _mip_logging_level();
-void* _mip_logging_user_data();
+mip_log_callback mip_logging_callback();
+mip_log_level mip_logging_level();
+void* mip_logging_user_data();
 
 void mip_logging_log(mip_log_level level, const char* fmt, ...);
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Helper macro used to initialize the MIP logger. 
+///       This function does not need to be called unless the user wants logging
+///
+///@param callback The callback to execute when there is data to log
+///@param level    The level that the MIP SDK should log at
+///@param user     User data that will be passed to the callback every time it is excuted
+///
+#ifdef MIP_ENABLE_LOGGING
+#define MIP_LOG_INIT(callback, level, user) mip_logging_init(callback, level, user)
+#else
+#define MIP_LOG_INIT(callback, level, user) (void)0
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK. Prefer specific
@@ -59,10 +69,8 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ///@copydetails mip::C::mip_log_callback
 ///
 #ifdef MIP_ENABLE_LOGGING
-#define MIP_LOG_INIT(callback, level, user) _mip_logging_init(callback, level, user)
 #define MIP_LOG_LOG(level, fmt, ...) mip_logging_log(level, fmt, __VA_ARGS__)
 #else
-#define MIP_LOG_INIT(callback, level, user) (void)0
 #define MIP_LOG_LOG(level, fmt, ...) (void)0
 #endif
 
@@ -121,7 +129,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_TRACE
 #define MIP_LOG_TRACE(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, fmt, __VA_ARGS__)
 #else
-#define MIP_LOG_DEBUG(fmt, ...) (void)0
+#define MIP_LOG_TRACE(fmt, ...) (void)0
 #endif
 
 ///@}
