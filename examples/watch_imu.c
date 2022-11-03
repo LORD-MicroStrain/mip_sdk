@@ -113,12 +113,12 @@ timestamp_type get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
 {
     (void)device;
 
     *timestamp_out = get_current_timestamp();
-    if( !serial_port_read(&port, buffer, max_length, out_length) )
+    if( !serial_port_read(&port, buffer, max_length, wait_time, out_length) )
         return false;
 
     return true;
@@ -163,7 +163,11 @@ int main(int argc, const char* argv[])
     if( !open_port(argv[1], baudrate) )
         return 1;
 
-    mip_interface_init(&device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000);
+    mip_interface_init(
+        &device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000,
+        &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
+    );
+
 
     // Record program start time for use with difftime in getTimestamp().
     time(&startTime);
