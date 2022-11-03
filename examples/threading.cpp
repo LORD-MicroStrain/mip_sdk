@@ -50,7 +50,7 @@ void device_thread_loop(mip::DeviceInterface* device)
 {
     while(!stop)
     {
-        if( !device->update(false) )
+        if( !device->update(0) )
         {
             device->cmdQueue().clear();  // Avoid deadlocks if the socket is closed.
             break;
@@ -60,15 +60,17 @@ void device_thread_loop(mip::DeviceInterface* device)
     }
 }
 
-bool update_device(mip::DeviceInterface& device, bool blocking)
+bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
 {
-    if( !blocking )
-        return device.defaultUpdate(blocking);
+    if( wait_time > 0 )
+        return device.defaultUpdate(wait_time);
 
     // Optionally display progress while waiting for command replies.
     // Displaying it here makes it update more frequently.
     //display_progress();
 
+    // Avoid failing the update function as long as the other thread is running.
+    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     return true;
 }

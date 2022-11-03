@@ -1,0 +1,13 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Declare files that will always have LF line endings on checkout.
+*.c* text eol=LF
+*.h* text eol=LF
+*.md text eol=LF
+CMakeLists.txt text eol=LF
+LICENSE.txt text eol=LF
+
+# Denote all files that are truly binary and should not be modified.
+*.bin binary
+*.svg binary

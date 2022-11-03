@@ -70,6 +70,11 @@ struct EventSource
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(trigger_id);
+    }
+    
     uint8_t trigger_id = 0; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
     
 };
@@ -93,6 +98,11 @@ struct Ticks
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(ticks);
+    }
     
     uint32_t ticks = 0; ///< Ticks since powerup.
     
@@ -119,6 +129,11 @@ struct DeltaTicks
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(ticks);
+    }
+    
     uint32_t ticks = 0; ///< Ticks since last output.
     
 };
@@ -143,6 +158,11 @@ struct GpsTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(tow,week_number,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -161,6 +181,13 @@ struct GpsTimestamp
         ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool tow() const { return (value & TOW) > 0; }
+        void tow(bool val) { if(val) value |= TOW; else value &= ~TOW; }
+        bool weekNumber() const { return (value & WEEK_NUMBER) > 0; }
+        void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
+        uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
+        void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
     };
     
     double tow = 0; ///< GPS Time of Week [seconds]
@@ -195,6 +222,11 @@ struct DeltaTime
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(seconds);
+    }
+    
     double seconds = 0; ///< Seconds since last output.
     
 };
@@ -222,6 +254,11 @@ struct ReferenceTimestamp
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
     
     static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(nanoseconds);
+    }
     
     uint64_t nanoseconds = 0; ///< Nanoseconds since initialization.
     
@@ -253,6 +290,11 @@ struct ReferenceTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(dt_nanos);
+    }
+    
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     
 };
@@ -282,6 +324,11 @@ struct ExternalTimestamp
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(nanoseconds,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -298,6 +345,9 @@ struct ExternalTimestamp
         ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
+        void nanoseconds(bool val) { if(val) value |= NANOSECONDS; else value &= ~NANOSECONDS; }
     };
     
     uint64_t nanoseconds = 0;
@@ -334,6 +384,11 @@ struct ExternalTimeDelta
     
     static const bool HAS_FUNCTION_SELECTOR = false;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple(dt_nanos,valid_flags);
+    }
+    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -350,6 +405,9 @@ struct ExternalTimeDelta
         ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool dtNanos() const { return (value & DT_NANOS) > 0; }
+        void dtNanos(bool val) { if(val) value |= DT_NANOS; else value &= ~DT_NANOS; }
     };
     
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
