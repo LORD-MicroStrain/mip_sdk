@@ -195,6 +195,12 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout)
 {
     queue->_first_pending_cmd = NULL;
     queue->_base_timeout = base_reply_timeout;
+
+    MIP_DIAG_ZERO(queue->_diag_cmds_queued);
+    MIP_DIAG_ZERO(queue->_diag_cmds_acked);
+    MIP_DIAG_ZERO(queue->_diag_cmds_nacked);
+    MIP_DIAG_ZERO(queue->_diag_cmds_timedout);
+    MIP_DIAG_ZERO(queue->_diag_cmds_failed);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +220,8 @@ void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
         cmd->_status = MIP_STATUS_CANCELLED;
         return;
     }
+
+    MIP_DIAG_INC(queue->_diag_cmds_queued, 1);
 
     cmd->_status = MIP_STATUS_PENDING;
     queue->_first_pending_cmd = cmd;
@@ -378,6 +386,17 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
             // This must be done last b/c it may trigger the thread which queued the command.
             // The command could go out of scope or its attributes inspected.
             pending->_status = status;
+
+#ifdef MIP_ENABLE_DIAGNOSTICS
+            if( mip_cmd_result_is_ack(status) )
+                MIP_DIAG_INC(queue->_diag_cmds_acked, 1);
+            else if( mip_cmd_result_is_reply(status) )
+                MIP_DIAG_INC(queue->_diag_cmds_nacked, 1);
+            else if( status == MIP_STATUS_TIMEDOUT )
+                MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
+            else
+                MIP_DIAG_INC(queue->_diag_cmds_failed, 1);
+#endif // MIP_ENABLE_DIAGNOSTICS
         }
     }
 }
@@ -397,7 +416,7 @@ void mip_cmd_queue_clear(mip_cmd_queue* queue)
         queue->_first_pending_cmd = pending->_next;
 
         // This may deallocate the pending command in another thread (make sure to fetch the next cmd first).
-        pending->_status = MIP_STATUS_ERROR;
+        pending->_status = MIP_STATUS_CANCELLED;
     }
 }
 
@@ -434,6 +453,8 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
 
             // This must be last!
             pending->_status = MIP_STATUS_TIMEDOUT;
+
+            MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
         }
     }
 }
@@ -441,7 +462,8 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets the base reply timeout for all commands.
 ///
-/// THe base reply timeout is the minimum time to wait for a reply.
+/// The base reply timeout is the minimum time to wait for a reply.
+/// Takes effect for any commands queued after this function call.
 ///
 ///@param queue
 ///@param timeout
@@ -460,3 +482,71 @@ timeout_type mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue)
 {
     return queue->_base_timeout;
 }
+
+
+#ifdef MIP_ENABLE_DIAGNOSTICS
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of commands ever put into the queue.
+///
+/// In most cases this is the number of commands sent to the device.
+///
+uint16_t mip_cmd_queue_diagnostic_cmds_queued(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_queued;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of commands that have failed for any reason.
+///
+uint16_t mip_cmd_queue_diagnostic_cmds_failed(const mip_cmd_queue* queue)
+{
+    return (uint16_t)queue->_diag_cmds_nacked + queue->_diag_cmds_failed + queue->_diag_cmds_timedout;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of successful commands.
+///
+/// Same as mip_cmd_queue_diagnostic_cmd_acks().
+///
+uint16_t mip_cmd_queue_diagnostic_cmds_successful(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_acked;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of successful commands.
+///
+/// Same as mip_cmd_queue_diagnostic_cmds_successful().
+///
+uint16_t mip_cmd_queue_diagnostic_cmd_acks(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_acked;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of commands nack'd by the device.
+///
+uint16_t mip_cmd_queue_diagnostic_cmd_nacks(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_nacked;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of commands that did not receive a reply within the
+///       time limit.
+///
+uint16_t mip_cmd_queue_diagnostic_cmd_timeouts(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_timedout;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the number of command errors not caused by the device.
+///
+uint16_t mip_cmd_queue_diagnostic_cmd_errors(const mip_cmd_queue* queue)
+{
+    return queue->_diag_cmds_failed;
+}
+
+#endif // MIP_ENABLE_DIAGNOSTICS

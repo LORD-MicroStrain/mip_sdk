@@ -87,9 +87,10 @@ How to Build
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
 * MIP_USE_SERIAL - Builds the included serial port library (default enabled).
 * MIP_USE_TCP - Builds the included socket library (default enabled).
-* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory. (default enabled)
+* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * MIP_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
 * MIP_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead of the higher level functions compiled into the code
+* MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
 * BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.

@@ -73,6 +73,7 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
 option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
 option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
 
 option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
 set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
@@ -208,18 +209,26 @@ if(MIP_DISABLE_CPP)
 endif()
 
 add_library(mip ${ALL_MIP_SOURCES})
-target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
+
+#
+# Preprocessor definitions
+#
 
 if(${MIP_LOGGING_MAX_LEVEL})
-    add_compile_definitions("MIP_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
+    list(APPEND MIP_DEFINES "MIP_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
 endif()
+
 if(${MIP_TIMESTAMP_TYPE})
-    add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+    list(APPEND MIP_DEFINES "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+endif()
+
+if(${MIP_ENABLE_DIAGNOSTICS})
+    list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
 endif()
 
 # Disable windows defined min/max
 if(WIN32)
-  target_compile_definitions(mip PUBLIC "NOMINMAX=1")
+  list(APPEND MIP_DEFINES "NOMINMAX=1")
 endif()
 
 if(MSVC)
@@ -227,6 +236,8 @@ if(MSVC)
 else()
   target_compile_options(mip PRIVATE -Wall -Wextra)
 endif()
+
+target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 
 #
 # TESTING
