@@ -4,6 +4,7 @@
 #include <mip/mip_interface.h>
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
+#include <mip/mip_logging.h>
 #include <mip/utils/serialization.h>
 
 #include <mip/definitions/descriptors.h>
@@ -13,10 +14,14 @@
 
 #include <mip/utils/serial_port.h>
 
+#include <mip/mip_logging.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <stdarg.h>
+#include <inttypes.h>
 
 #ifdef WIN32
 #else
@@ -30,6 +35,20 @@ serial_port port;
 uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
+
+void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
+{
+    switch (level)
+    {
+        case MIP_LOG_LEVEL_FATAL:
+        case MIP_LOG_LEVEL_ERROR:
+            vfprintf(stderr, fmt, args);
+            break;
+        default:
+            vprintf(fmt, args);
+            break;
+    }
+}
 
 void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
 {
@@ -95,12 +114,12 @@ timestamp_type get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
 {
     (void)device;
 
     *timestamp_out = get_current_timestamp();
-    if( !serial_port_read(&port, buffer, max_length, out_length) )
+    if( !serial_port_read(&port, buffer, max_length, wait_time, out_length) )
         return false;
 
     return true;
@@ -139,10 +158,17 @@ int main(int argc, const char* argv[])
     if( baudrate == 0 )
         return usage(argv[0]);
 
+    // Initialize the MIP logger before opening the port so we can print errors if they occur
+    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_INFO, NULL);
+
     if( !open_port(argv[1], baudrate) )
         return 1;
 
-    mip_interface_init(&device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000);
+    mip_interface_init(
+        &device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000,
+        &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
+    );
+
 
     // Record program start time for use with difftime in getTimestamp().
     time(&startTime);
@@ -218,6 +244,40 @@ int main(int argc, const char* argv[])
     }
 
 done:
+
+#ifdef MIP_ENABLE_DIAGNOSTICS
+    printf(
+        "\nDiagnostics:\n"
+        "\n"
+        "Commands:\n"
+        "  Sent:     %" PRIu16 "\n"
+        "  Acks:     %" PRIu16 "\n"
+        "  Nacks:    %" PRIu16 "\n"
+        "  Timeouts: %" PRIu16 "\n"
+        "  Errors:   %" PRIu16 "\n"
+        "\n"
+        "Parser:\n"
+        "  Valid packets:    %" PRIu32 "\n"
+        "  Invalid packets:  %" PRIu32 "\n"
+        "  Timeouts:         %" PRIu32 "\n"
+        "\n"
+        "  Bytes read:       %" PRIu32 "\n"
+        "  Valid bytes:      %" PRIu32 "\n"
+        "  Unparsed bytes:   %" PRIu32 "\n",
+        mip_cmd_queue_diagnostic_cmds_queued(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_acks(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_nacks(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_timeouts(mip_interface_cmd_queue(&device)),
+        mip_cmd_queue_diagnostic_cmd_errors(mip_interface_cmd_queue(&device)),
+
+        mip_parser_diagnostic_valid_packets(mip_interface_parser(&device)),
+        mip_parser_diagnostic_invalid_packets(mip_interface_parser(&device)),
+        mip_parser_diagnostic_timeouts(mip_interface_parser(&device)),
+        mip_parser_diagnostic_bytes_read(mip_interface_parser(&device)),
+        mip_parser_diagnostic_packet_bytes(mip_interface_parser(&device)),
+        mip_parser_diagnostic_bytes_skipped(mip_interface_parser(&device))
+    );
+#endif // MIP_ENABLE_DIAGNOSTICS
 
     serial_port_close(&port);
     return result == MIP_ACK_OK ? 0 : 2;
