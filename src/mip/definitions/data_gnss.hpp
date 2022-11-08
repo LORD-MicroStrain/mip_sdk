@@ -250,7 +250,7 @@ struct PosEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(x,x_accuracy,valid_flags);
+        return std::make_tuple(x[0],x[1],x[2],x_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -305,7 +305,7 @@ struct VelNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(v,speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
+        return std::make_tuple(v[0],v[1],v[2],speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -376,7 +376,7 @@ struct VelEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(v,v_accuracy,valid_flags);
+        return std::make_tuple(v[0],v[1],v[2],v_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -1480,7 +1480,7 @@ struct BaseStationInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,ecef_pos,height,station_id,indicators,valid_flags);
+        return std::make_tuple(time_of_week,week_number,ecef_pos[0],ecef_pos[1],ecef_pos[2],height,station_id,indicators,valid_flags);
     }
     
     struct IndicatorFlags : Bitfield<IndicatorFlags>
@@ -1595,7 +1595,7 @@ struct RtkCorrectionsStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved,valid_flags);
+        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved[0],reserved[1],reserved[2],reserved[3],valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2092,7 +2092,7 @@ struct GloEphemeris
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x,v,a,health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x[0],x[1],x[2],v[0],v[1],v[2],a[0],a[1],a[2],health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2166,7 +2166,7 @@ struct GpsIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha,beta,valid_flags);
+        return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],alpha[3],beta[0],beta[1],beta[2],beta[3],valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2229,7 +2229,7 @@ struct GalileoIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha,disturbance_flags,valid_flags);
+        return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],disturbance_flags,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>

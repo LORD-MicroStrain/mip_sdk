@@ -418,7 +418,7 @@ struct AttitudeQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(q,valid_flags);
+        return std::make_tuple(q[0],q[1],q[2],q[3],valid_flags);
     }
     
     float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
@@ -455,7 +455,7 @@ struct AttitudeDcm
     
     auto as_tuple() const
     {
-        return std::make_tuple(dcm,valid_flags);
+        return std::make_tuple(dcm[0],dcm[1],dcm[2],dcm[3],dcm[4],dcm[5],dcm[6],dcm[7],dcm[8],valid_flags);
     }
     
     float dcm[9] = {0}; ///< Matrix elements in row-major order.
@@ -512,7 +512,7 @@ struct GyroBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
     }
     
     float bias[3] = {0}; ///< (x, y, z) [radians/second]
@@ -539,7 +539,7 @@ struct AccelBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
     }
     
     float bias[3] = {0}; ///< (x, y, z) [meters/second^2]
@@ -654,7 +654,7 @@ struct GyroBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
     }
     
     float bias_uncert[3] = {0}; ///< (x,y,z) [radians/sec]
@@ -681,7 +681,7 @@ struct AccelBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
     }
     
     float bias_uncert[3] = {0}; ///< (x,y,z) [meters/second^2]
@@ -771,7 +771,7 @@ struct LinearAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(accel,valid_flags);
+        return std::make_tuple(accel[0],accel[1],accel[2],valid_flags);
     }
     
     float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
@@ -798,7 +798,7 @@ struct GravityVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(gravity,valid_flags);
+        return std::make_tuple(gravity[0],gravity[1],gravity[2],valid_flags);
     }
     
     float gravity[3] = {0}; ///< (x, y, z) [meters/second^2]
@@ -825,7 +825,7 @@ struct CompAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(accel,valid_flags);
+        return std::make_tuple(accel[0],accel[1],accel[2],valid_flags);
     }
     
     float accel[3] = {0}; ///< (x,y,z) [meters/second^2]
@@ -852,7 +852,7 @@ struct CompAngularRate
     
     auto as_tuple() const
     {
-        return std::make_tuple(gyro,valid_flags);
+        return std::make_tuple(gyro[0],gyro[1],gyro[2],valid_flags);
     }
     
     float gyro[3] = {0}; ///< (x, y, z) [radians/second]
@@ -879,7 +879,7 @@ struct QuaternionAttitudeUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(q,valid_flags);
+        return std::make_tuple(q[0],q[1],q[2],q[3],valid_flags);
     }
     
     float q[4] = {0}; ///< [dimensionless]
@@ -1006,7 +1006,7 @@ struct AccelScaleFactor
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor,valid_flags);
+        return std::make_tuple(scale_factor[0],scale_factor[1],scale_factor[2],valid_flags);
     }
     
     float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
@@ -1033,7 +1033,7 @@ struct AccelScaleFactorUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert,valid_flags);
+        return std::make_tuple(scale_factor_uncert[0],scale_factor_uncert[1],scale_factor_uncert[2],valid_flags);
     }
     
     float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
@@ -1060,7 +1060,7 @@ struct GyroScaleFactor
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor,valid_flags);
+        return std::make_tuple(scale_factor[0],scale_factor[1],scale_factor[2],valid_flags);
     }
     
     float scale_factor[3] = {0}; ///< (x,y,z) [dimensionless]
@@ -1087,7 +1087,7 @@ struct GyroScaleFactorUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert,valid_flags);
+        return std::make_tuple(scale_factor_uncert[0],scale_factor_uncert[1],scale_factor_uncert[2],valid_flags);
     }
     
     float scale_factor_uncert[3] = {0}; ///< (x,y,z) [dimensionless]
@@ -1114,7 +1114,7 @@ struct MagBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias,valid_flags);
+        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
     }
     
     float bias[3] = {0}; ///< (x,y,z) [Gauss]
@@ -1141,7 +1141,7 @@ struct MagBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert,valid_flags);
+        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
     }
     
     float bias_uncert[3] = {0}; ///< (x,y,z) [Gauss]
@@ -1260,7 +1260,7 @@ struct AntennaOffsetCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset,valid_flags);
+        return std::make_tuple(offset[0],offset[1],offset[2],valid_flags);
     }
     
     float offset[3] = {0}; ///< (x,y,z) [meters]
@@ -1287,7 +1287,7 @@ struct AntennaOffsetCorrectionUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset_uncert,valid_flags);
+        return std::make_tuple(offset_uncert[0],offset_uncert[1],offset_uncert[2],valid_flags);
     }
     
     float offset_uncert[3] = {0}; ///< (x,y,z) [meters]
@@ -1316,7 +1316,7 @@ struct MultiAntennaOffsetCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset,valid_flags);
+        return std::make_tuple(receiver_id,offset[0],offset[1],offset[2],valid_flags);
     }
     
     uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
@@ -1344,7 +1344,7 @@ struct MultiAntennaOffsetCorrectionUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset_uncert,valid_flags);
+        return std::make_tuple(receiver_id,offset_uncert[0],offset_uncert[1],offset_uncert[2],valid_flags);
     }
     
     uint8_t receiver_id = 0; ///< Receiver ID for the receiver to which the antenna is attached
@@ -1374,7 +1374,7 @@ struct MagnetometerOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron,valid_flags);
+        return std::make_tuple(hard_iron[0],hard_iron[1],hard_iron[2],valid_flags);
     }
     
     float hard_iron[3] = {0}; ///< (x,y,z) [Gauss]
@@ -1403,7 +1403,7 @@ struct MagnetometerMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron,valid_flags);
+        return std::make_tuple(soft_iron[0],soft_iron[1],soft_iron[2],soft_iron[3],soft_iron[4],soft_iron[5],soft_iron[6],soft_iron[7],soft_iron[8],valid_flags);
     }
     
     float soft_iron[9] = {0}; ///< Row-major [dimensionless]
@@ -1430,7 +1430,7 @@ struct MagnetometerOffsetUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron_uncertainty,valid_flags);
+        return std::make_tuple(hard_iron_uncertainty[0],hard_iron_uncertainty[1],hard_iron_uncertainty[2],valid_flags);
     }
     
     float hard_iron_uncertainty[3] = {0}; ///< (x,y,z) [Gauss]
@@ -1457,7 +1457,7 @@ struct MagnetometerMatrixUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron_uncertainty,valid_flags);
+        return std::make_tuple(soft_iron_uncertainty[0],soft_iron_uncertainty[1],soft_iron_uncertainty[2],soft_iron_uncertainty[3],soft_iron_uncertainty[4],soft_iron_uncertainty[5],soft_iron_uncertainty[6],soft_iron_uncertainty[7],soft_iron_uncertainty[8],valid_flags);
     }
     
     float soft_iron_uncertainty[9] = {0}; ///< Row-major [dimensionless]
@@ -1483,7 +1483,7 @@ struct MagnetometerCovarianceMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(covariance,valid_flags);
+        return std::make_tuple(covariance[0],covariance[1],covariance[2],covariance[3],covariance[4],covariance[5],covariance[6],covariance[7],covariance[8],valid_flags);
     }
     
     float covariance[9] = {0};
@@ -1510,7 +1510,7 @@ struct MagnetometerResidualVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(residual,valid_flags);
+        return std::make_tuple(residual[0],residual[1],residual[2],valid_flags);
     }
     
     float residual[3] = {0}; ///< (x,y,z) [Gauss]
@@ -1652,7 +1652,7 @@ struct HeadAidStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,type,reserved);
+        return std::make_tuple(time_of_week,type,reserved[0],reserved[1]);
     }
     
     enum class HeadingAidType : uint8_t
@@ -1686,7 +1686,7 @@ struct RelPosNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(relative_position,valid_flags);
+        return std::make_tuple(relative_position[0],relative_position[1],relative_position[2],valid_flags);
     }
     
     double relative_position[3] = {0}; ///< [meters, NED]
@@ -1713,7 +1713,7 @@ struct EcefPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(position_ecef,valid_flags);
+        return std::make_tuple(position_ecef[0],position_ecef[1],position_ecef[2],valid_flags);
     }
     
     double position_ecef[3] = {0}; ///< [meters, ECEF]
@@ -1740,7 +1740,7 @@ struct EcefVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(velocity_ecef,valid_flags);
+        return std::make_tuple(velocity_ecef[0],velocity_ecef[1],velocity_ecef[2],valid_flags);
     }
     
     float velocity_ecef[3] = {0}; ///< [meters/second, ECEF]
@@ -1767,7 +1767,7 @@ struct EcefPosUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(pos_uncertainty,valid_flags);
+        return std::make_tuple(pos_uncertainty[0],pos_uncertainty[1],pos_uncertainty[2],valid_flags);
     }
     
     float pos_uncertainty[3] = {0}; ///< [meters]
@@ -1794,7 +1794,7 @@ struct EcefVelUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(vel_uncertainty,valid_flags);
+        return std::make_tuple(vel_uncertainty[0],vel_uncertainty[1],vel_uncertainty[2],valid_flags);
     }
     
     float vel_uncertainty[3] = {0}; ///< [meters/second]
