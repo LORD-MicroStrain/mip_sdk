@@ -149,28 +149,28 @@ struct NmeaMessage
     {
         GGA  = 1,  ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
         GLL  = 2,  ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
-        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
         RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
         VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
         HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
         ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-        PRKA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
-        PRKR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
+        PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+        PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
     };
     
     enum class TalkerID : uint8_t
     {
-        RESERVED = 0,  ///<  
-        GNSS     = 1,  ///<  NMEA message will be produced with talker id "GN"
-        GPS      = 2,  ///<  NMEA message will be produced with talker id "GP"
-        GALILEO  = 3,  ///<  NMEA message will be produced with talker id "GA"
-        GLONASS  = 4,  ///<  NMEA message will be produced with talker id "GL"
+        IGNORED = 0,  ///<  Talker ID cannot be changed.
+        GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN".
+        GPS     = 2,  ///<  NMEA message will be produced with talker id "GP".
+        GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA".
+        GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL".
     };
     
     MessageID message_id = static_cast<MessageID>(0); ///< NMEA sentence type.
     TalkerID talker_id = static_cast<TalkerID>(0); ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set = 0; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
-    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
+    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
 };
 void insert(Serializer& serializer, const NmeaMessage& self);
@@ -2450,7 +2450,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [CPP]
+///@defgroup cpp_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [CPP]
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.
@@ -2468,7 +2468,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///
 ///@{
 
-struct MipCmd3dmLowpassFilter
+struct LowpassFilter
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
@@ -2499,17 +2499,17 @@ struct MipCmd3dmLowpassFilter
         
     };
 };
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self);
+void insert(Serializer& serializer, const LowpassFilter& self);
+void extract(Serializer& serializer, LowpassFilter& self);
 
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self);
+void insert(Serializer& serializer, const LowpassFilter::Response& self);
+void extract(Serializer& serializer, LowpassFilter::Response& self);
 
-CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
-CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
-CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult defaultMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
+CmdResult readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
+CmdResult saveLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult loadLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult defaultLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
 ///@}
 ///
 
