@@ -2042,7 +2042,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mi
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [C]
+///@defgroup c_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [C]
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.
@@ -2060,7 +2060,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mi
 ///
 ///@{
 
-struct mip_3dm_mip_cmd_3dm_lowpass_filter_command
+struct mip_3dm_lowpass_filter_command
 {
     mip_function_selector function;
     uint8_t desc_set; ///< Descriptor set of the quantity to be filtered.
@@ -2070,11 +2070,11 @@ struct mip_3dm_mip_cmd_3dm_lowpass_filter_command
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
     
 };
-typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_command mip_3dm_mip_cmd_3dm_lowpass_filter_command;
-void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_command* self);
-void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_command(struct mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_command* self);
+typedef struct mip_3dm_lowpass_filter_command mip_3dm_lowpass_filter_command;
+void insert_mip_3dm_lowpass_filter_command(struct mip_serializer* serializer, const mip_3dm_lowpass_filter_command* self);
+void extract_mip_3dm_lowpass_filter_command(struct mip_serializer* serializer, mip_3dm_lowpass_filter_command* self);
 
-struct mip_3dm_mip_cmd_3dm_lowpass_filter_response
+struct mip_3dm_lowpass_filter_response
 {
     uint8_t desc_set; ///< Descriptor set of the quantity to be filtered.
     uint8_t field_desc; ///< Field descriptor of the quantity to be filtered.
@@ -2083,15 +2083,15 @@ struct mip_3dm_mip_cmd_3dm_lowpass_filter_response
     float frequency; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
     
 };
-typedef struct mip_3dm_mip_cmd_3dm_lowpass_filter_response mip_3dm_mip_cmd_3dm_lowpass_filter_response;
-void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_response* self);
-void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_response(struct mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_response* self);
+typedef struct mip_3dm_lowpass_filter_response mip_3dm_lowpass_filter_response;
+void insert_mip_3dm_lowpass_filter_response(struct mip_serializer* serializer, const mip_3dm_lowpass_filter_response* self);
+void extract_mip_3dm_lowpass_filter_response(struct mip_serializer* serializer, mip_3dm_lowpass_filter_response* self);
 
-mip_cmd_result mip_3dm_write_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency);
-mip_cmd_result mip_3dm_read_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out);
-mip_cmd_result mip_3dm_save_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
-mip_cmd_result mip_3dm_load_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
-mip_cmd_result mip_3dm_default_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_write_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency);
+mip_cmd_result mip_3dm_read_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out);
+mip_cmd_result mip_3dm_save_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_load_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
+mip_cmd_result mip_3dm_default_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc);
 ///@}
 ///
 

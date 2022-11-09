@@ -2450,7 +2450,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [CPP]
+///@defgroup cpp_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [CPP]
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.
@@ -2468,7 +2468,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///
 ///@{
 
-struct MipCmd3dmLowpassFilter
+struct LowpassFilter
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
@@ -2499,17 +2499,17 @@ struct MipCmd3dmLowpassFilter
         
     };
 };
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self);
+void insert(Serializer& serializer, const LowpassFilter& self);
+void extract(Serializer& serializer, LowpassFilter& self);
 
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self);
+void insert(Serializer& serializer, const LowpassFilter::Response& self);
+void extract(Serializer& serializer, LowpassFilter::Response& self);
 
-CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
-CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
-CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult defaultMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
+CmdResult readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
+CmdResult saveLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult loadLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult defaultLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
 ///@}
 ///
 
