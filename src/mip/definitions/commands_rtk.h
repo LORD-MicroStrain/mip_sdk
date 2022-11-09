@@ -108,7 +108,7 @@ static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FL
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_TOWER_CHANGE_INDICATOR  = 0x00F00000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NMEA_TIMEOUT            = 0x01000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SERVER_TIMEOUT          = 0x02000000; ///<  
-static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RTCM_TIMEOUT            = 0x04000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_TIMEOUT     = 0x04000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_DEVICE_OUT_OF_RANGE     = 0x08000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_UNAVAILABLE = 0x10000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RESERVED                = 0x20000000; ///<  

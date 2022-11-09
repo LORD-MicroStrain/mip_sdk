@@ -149,28 +149,28 @@ struct NmeaMessage
     {
         GGA  = 1,  ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
         GLL  = 2,  ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
-        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
         RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
         VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
         HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
         ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-        PRKA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
-        PRKR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
+        PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+        PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
     };
     
     enum class TalkerID : uint8_t
     {
-        RESERVED = 0,  ///<  
-        GNSS     = 1,  ///<  NMEA message will be produced with talker id "GN"
-        GPS      = 2,  ///<  NMEA message will be produced with talker id "GP"
-        GALILEO  = 3,  ///<  NMEA message will be produced with talker id "GA"
-        GLONASS  = 4,  ///<  NMEA message will be produced with talker id "GL"
+        IGNORED = 0,  ///<  Talker ID cannot be changed.
+        GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN".
+        GPS     = 2,  ///<  NMEA message will be produced with talker id "GP".
+        GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA".
+        GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL".
     };
     
     MessageID message_id = static_cast<MessageID>(0); ///< NMEA sentence type.
     TalkerID talker_id = static_cast<TalkerID>(0); ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set = 0; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
-    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
+    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
 };
 void insert(Serializer& serializer, const NmeaMessage& self);

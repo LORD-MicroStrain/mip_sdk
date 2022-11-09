@@ -147,27 +147,27 @@ enum
 typedef uint8_t mip_nmea_message_message_id;
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GGA  = 1;   ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GLL  = 2;   ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3;   ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_GSV  = 3;   ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4;   ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5;   ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6;   ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7;   ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKA = 129; ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PRKR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRA = 129; ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
 
 typedef uint8_t mip_nmea_message_talker_id;
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_RESERVED = 0; ///<  
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS     = 1; ///<  NMEA message will be produced with talker id "GN"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS      = 2; ///<  NMEA message will be produced with talker id "GP"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO  = 3; ///<  NMEA message will be produced with talker id "GA"
-static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GLONASS  = 4; ///<  NMEA message will be produced with talker id "GL"
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_IGNORED = 0; ///<  Talker ID cannot be changed.
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GNSS    = 1; ///<  NMEA message will be produced with talker id "GN".
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GPS     = 2; ///<  NMEA message will be produced with talker id "GP".
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GALILEO = 3; ///<  NMEA message will be produced with talker id "GA".
+static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_GLONASS = 4; ///<  NMEA message will be produced with talker id "GL".
 
 struct mip_nmea_message
 {
     mip_nmea_message_message_id message_id; ///< NMEA sentence type.
     mip_nmea_message_talker_id talker_id; ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
-    uint16_t decimation; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
+    uint16_t decimation; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
 };
 typedef struct mip_nmea_message mip_nmea_message;

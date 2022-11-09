@@ -152,7 +152,7 @@ struct GetStatusFlags
             TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<  
             NMEA_TIMEOUT            = 0x01000000,  ///<  
             SERVER_TIMEOUT          = 0x02000000,  ///<  
-            RTCM_TIMEOUT            = 0x04000000,  ///<  
+            CORRECTIONS_TIMEOUT     = 0x04000000,  ///<  
             DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
             RESERVED                = 0x20000000,  ///<  
@@ -182,8 +182,8 @@ struct GetStatusFlags
         void nmeaTimeout(bool val) { if(val) value |= NMEA_TIMEOUT; else value &= ~NMEA_TIMEOUT; }
         bool serverTimeout() const { return (value & SERVER_TIMEOUT) > 0; }
         void serverTimeout(bool val) { if(val) value |= SERVER_TIMEOUT; else value &= ~SERVER_TIMEOUT; }
-        bool rtcmTimeout() const { return (value & RTCM_TIMEOUT) > 0; }
-        void rtcmTimeout(bool val) { if(val) value |= RTCM_TIMEOUT; else value &= ~RTCM_TIMEOUT; }
+        bool correctionsTimeout() const { return (value & CORRECTIONS_TIMEOUT) > 0; }
+        void correctionsTimeout(bool val) { if(val) value |= CORRECTIONS_TIMEOUT; else value &= ~CORRECTIONS_TIMEOUT; }
         bool deviceOutOfRange() const { return (value & DEVICE_OUT_OF_RANGE) > 0; }
         void deviceOutOfRange(bool val) { if(val) value |= DEVICE_OUT_OF_RANGE; else value &= ~DEVICE_OUT_OF_RANGE; }
         bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
