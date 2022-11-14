@@ -465,7 +465,6 @@ if(BUILD_PACKAGE)
     set(CPACK_COMPONENTS_ALL "mip")
 
     set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
-    message(WARNING ${CPACK_PACKAGE_VERSION})
 
     # Shared configuration
     set(MIP_FILE_NAME_PREFIX "mipsdk_${MIP_GIT_VERSION}_${MIP_ARCH}")
