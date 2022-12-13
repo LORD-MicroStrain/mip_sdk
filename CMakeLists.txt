@@ -57,9 +57,18 @@ endif()
 # Massage the version number a little so we can use it in a couple places
 string(REGEX REPLACE "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CLEAN ${MIP_GIT_VERSION})
 string(REPLACE "." ";" MIP_GIT_VERSION_LIST ${MIP_GIT_VERSION_CLEAN})
-list(GET MIP_GIT_VERSION_LIST 0 MIP_GIT_VERSION_MAJOR)
-list(GET MIP_GIT_VERSION_LIST 1 MIP_GIT_VERSION_MINOR)
-list(GET MIP_GIT_VERSION_LIST 2 MIP_GIT_VERSION_PATCH)
+list(LENGTH MIP_GIT_VERSION_LIST MIP_GIT_VERSION_LIST_LENGTH)
+if (MIP_GIT_VERSION_LIST_LENGTH GREATER_EQUAL 3)
+    list(GET MIP_GIT_VERSION_LIST 0 MIP_GIT_VERSION_MAJOR)
+    list(GET MIP_GIT_VERSION_LIST 1 MIP_GIT_VERSION_MINOR)
+    list(GET MIP_GIT_VERSION_LIST 2 MIP_GIT_VERSION_PATCH)
+else()
+    message(WARNING "MIP version cannot be parsed into a semantic version string.\nPlease run 'git fetch --tags' to get a properly tagged build")
+    set(MIP_GIT_VERSION_CLEAN "0.0.0")
+    set(MIP_GIT_VERSION_MAJOR 0)
+    set(MIP_GIT_VERSION_MINOR 0)
+    set(MIP_GIT_VERSION_PATCH 0)
+endif()
 
 # Generate the version header file
 set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
@@ -154,8 +163,8 @@ set(MIPDEF_SOURCES
     ${INTDEF_SOURCES}
 )
 
-string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
-string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
+string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
+string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
 if(MIP_USE_SERIAL)
     list(APPEND UTILS_SOURCES
