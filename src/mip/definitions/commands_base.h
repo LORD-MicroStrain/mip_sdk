@@ -310,6 +310,7 @@ mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_base_gps_time_update  (0x01,0x72) Gps Time Update [C]
+/// Set device internal GPS time
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
