@@ -171,11 +171,10 @@ public:
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = Field::FIELD_DESCRIPTOR;
-        uint8_t* payload;
-        size_t available = allocField(fieldDescriptor, 0, &payload);
-        Serializer serializer(payload, available);
+        Serializer serializer(*this, fieldDescriptor);
         insert(serializer, field);
-        return reallocLastField(payload, serializer.length()) >= 0;
+        C::mip_serializer_finish_new_field(&serializer, this);
+        return serializer.isOk();
     }
 
     template<class Field>
@@ -241,7 +240,7 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    RemainingCount parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
+    RemainingCount parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }
