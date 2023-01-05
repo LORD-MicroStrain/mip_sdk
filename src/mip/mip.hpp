@@ -65,7 +65,7 @@ public:
     const uint8_t* payload() const { return C::mip_field_payload(this); }
 
     template<class Field>
-    bool extract(Field& field) const { return mip::extract(field, payload(), payloadLength(), 0, true); }
+    bool extract(Field& field, bool exact_size=true) const { return mip::extract(field, payload(), payloadLength(), 0, exact_size); }
 
     ///@brief Index the payload at the given location.
     ///@param index
@@ -167,18 +167,21 @@ public:
 #endif
 
     template<class Field>
-    bool addField(const Field& field, uint8_t fieldDescriptor = Field::FIELD_DESCRIPTOR)
+    bool addField(const Field& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
-        uint8_t* payload;
-        size_t available = allocField(fieldDescriptor, 0, &payload);
-        Serializer serializer(payload, available);
+        if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
+            fieldDescriptor = Field::FIELD_DESCRIPTOR;
+        Serializer serializer(*this, fieldDescriptor);
         insert(serializer, field);
-        return reallocLastField(payload, serializer.length()) >= 0;
+        C::mip_serializer_finish_new_field(&serializer, this);
+        return serializer.isOk();
     }
 
     template<class Field>
-    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=Field::FIELD_DESCRIPTOR)
+    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
+        if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
+            fieldDescriptor = Field::FIELD_DESCRIPTOR;
         Packet packet(buffer, bufferSize, Field::DESCRIPTOR_SET);
         packet.addField<Field>(field, fieldDescriptor);
         packet.finalize();
@@ -237,7 +240,7 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    RemainingCount parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
+    RemainingCount parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }

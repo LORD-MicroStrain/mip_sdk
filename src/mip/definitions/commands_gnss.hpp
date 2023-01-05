@@ -159,6 +159,7 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device);
 /// Configure the SPARTN corrections service parameters.
 /// Notes:<br/>
 /// - Enable and type settings will only update after a power cycle <br/>
+/// - Type settings will only take effect after a power cycle <br/>
 /// - Key information can be updated while running
 ///
 ///@{
@@ -176,7 +177,7 @@ struct MipGnssSpartnConfiguration
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
-    uint8_t type = 0; ///< Connection type (1 = Network, 2 = L-Band)
+    uint8_t type = 0; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
     uint32_t current_key_tow = 0; ///< The GPS time of week the current key is valid until
     uint16_t current_key_week = 0; ///< The GPS week number the current key is valid until
     uint8_t current_key[32] = {0}; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)
@@ -190,7 +191,7 @@ struct MipGnssSpartnConfiguration
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SPARTN_CONFIGURATION;
         
         uint8_t enable = 0; ///< Enable/Disable the SPARTN subsystem (0 = Disabled, 1 = Enabled)
-        uint8_t type = 0; ///< Connection type (1 = Network, 2 = L-Band)
+        uint8_t type = 0; ///< Connection type (0 - None, 1 = Network, 2 = L-Band)
         uint32_t current_key_tow = 0; ///< The GPS time of week the current key is valid until
         uint16_t current_key_week = 0; ///< The GPS week number the current key is valid until
         uint8_t current_key[32] = {0}; ///< 32 character string of ASCII hex values for the current key (e.g. "bc" for 0xBC)

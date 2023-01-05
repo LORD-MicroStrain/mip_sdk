@@ -109,6 +109,9 @@ enum class FunctionSelector : uint8_t
 
 using DescriptorRate = C::mip_descriptor_rate;
 
+static constexpr uint8_t INVALID_FIELD_DESCRIPTOR = C::MIP_INVALID_FIELD_DESCRIPTOR;
+static constexpr uint8_t INVALID_DESCRIPTOR_SET   = C::MIP_INVALID_DESCRIPTOR_SET;
+
 inline bool isValidDescriptorSet   (uint8_t descriptorSet) { return C::mip_is_valid_descriptor_set(descriptorSet); }
 inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }

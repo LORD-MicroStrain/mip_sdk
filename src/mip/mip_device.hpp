@@ -21,6 +21,11 @@ struct Dispatcher : public C::mip_dispatcher
         ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
         ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
     };
+
+    void addHandler(DispatchHandler& handler) { C::mip_dispatcher_add_handler(this, &handler); }
+    void removeHandler(DispatchHandler& handler) { C::mip_dispatcher_remove_handler(this, &handler); }
+
+    void removeAllHandlers() { C::mip_dispatcher_remove_all_handlers(this); }
 };
 
 
