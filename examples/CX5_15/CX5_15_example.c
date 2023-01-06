@@ -56,8 +56,6 @@ mip_sensor_scaled_gyro_data   sensor_gyro;
 
 mip_filter_timestamp_data     filter_gps_time;
 mip_filter_status_data        filter_status;
-mip_filter_position_llh_data  filter_position_llh;
-mip_filter_velocity_ned_data  filter_velocity_ned;
 mip_filter_euler_angles_data  filter_euler_angles;
 mip_filter_comp_angular_rate_data  filter_comp_angular_rate;
 mip_filter_comp_accel_data  filter_comp_accel;
@@ -251,11 +249,9 @@ int main(int argc, const char* argv[])
 
     mip_interface_register_extractor(&device, &filter_data_handlers[0], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_FILTER_TIMESTAMP, extract_mip_filter_timestamp_data_from_field,                  &filter_gps_time);
     mip_interface_register_extractor(&device, &filter_data_handlers[1], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_FILTER_STATUS,    extract_mip_filter_status_data_from_field,                     &filter_status);
-    mip_interface_register_extractor(&device, &filter_data_handlers[2], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_POS_LLH,          extract_mip_filter_position_llh_data_from_field,               &filter_position_llh);
-    mip_interface_register_extractor(&device, &filter_data_handlers[3], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_VEL_NED,          extract_mip_filter_velocity_ned_data_from_field,               &filter_velocity_ned);
-    mip_interface_register_extractor(&device, &filter_data_handlers[4], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, extract_mip_filter_euler_angles_data_from_field,               &filter_euler_angles);
-    mip_interface_register_extractor(&device, &filter_data_handlers[5], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_COMPENSATED_ANGULAR_RATE, extract_mip_filter_comp_angular_rate_data_from_field,  &filter_comp_angular_rate);
-    mip_interface_register_extractor(&device, &filter_data_handlers[6], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_COMPENSATED_ACCELERATION, extract_mip_filter_comp_accel_data_from_field,         &filter_comp_accel);
+    mip_interface_register_extractor(&device, &filter_data_handlers[2], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_ATT_EULER_ANGLES, extract_mip_filter_euler_angles_data_from_field,               &filter_euler_angles);
+    mip_interface_register_extractor(&device, &filter_data_handlers[3], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_COMPENSATED_ANGULAR_RATE, extract_mip_filter_comp_angular_rate_data_from_field,  &filter_comp_angular_rate);
+    mip_interface_register_extractor(&device, &filter_data_handlers[4], MIP_FILTER_DATA_DESC_SET, MIP_DATA_DESC_FILTER_COMPENSATED_ACCELERATION, extract_mip_filter_comp_accel_data_from_field,         &filter_comp_accel);
 
 
     //

@@ -49,8 +49,6 @@ data_sensor::ScaledGyro   sensor_gyro;
 
 data_filter::Timestamp    filter_gps_time;
 data_filter::Status       filter_status;
-data_filter::PositionLlh  filter_position_llh;
-data_filter::VelocityNed  filter_velocity_ned;
 data_filter::EulerAngles  filter_euler_angles;
 data_filter::CompAngularRate  filter_comp_angular_rate;
 data_filter::CompAccel    filter_comp_accel;
@@ -215,15 +213,13 @@ int main(int argc, const char* argv[])
     device->registerExtractor(sensor_data_handlers[2], &sensor_gyro);
  
     //Filter Data
-    DispatchHandler filter_data_handlers[7];
+    DispatchHandler filter_data_handlers[5];
 
     device->registerExtractor(filter_data_handlers[0], &filter_gps_time);
     device->registerExtractor(filter_data_handlers[1], &filter_status);
-    device->registerExtractor(filter_data_handlers[2], &filter_position_llh);
-    device->registerExtractor(filter_data_handlers[3], &filter_velocity_ned);
-    device->registerExtractor(filter_data_handlers[4], &filter_euler_angles);
-    device->registerExtractor(filter_data_handlers[5], &filter_comp_angular_rate);
-    device->registerExtractor(filter_data_handlers[6], &filter_comp_accel);
+    device->registerExtractor(filter_data_handlers[2], &filter_euler_angles);
+    device->registerExtractor(filter_data_handlers[3], &filter_comp_angular_rate);
+    device->registerExtractor(filter_data_handlers[4], &filter_comp_accel);
     
 
     //
