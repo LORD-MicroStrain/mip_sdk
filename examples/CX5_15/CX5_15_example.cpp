@@ -153,11 +153,10 @@ int main(int argc, const char* argv[])
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    std::array<DescriptorRate, 4> sensor_descriptors = {{
+    std::array<DescriptorRate, 3> sensor_descriptors = {{
         { data_sensor::DATA_TIME_STAMP_GPS, sensor_decimation },
         { data_sensor::DATA_ACCEL_SCALED,   sensor_decimation },
         { data_sensor::DATA_GYRO_SCALED,    sensor_decimation },
-        { data_sensor::DATA_MAG_SCALED,     sensor_decimation },
     }};
 
     if(commands_3dm::writeImuMessageFormat(*device, sensor_descriptors.size(), sensor_descriptors.data()) != CmdResult::ACK_OK)

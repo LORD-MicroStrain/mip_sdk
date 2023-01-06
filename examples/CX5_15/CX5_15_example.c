@@ -186,14 +186,13 @@ int main(int argc, const char* argv[])
     const uint16_t sensor_sample_rate = 100; // Hz
     const uint16_t sensor_decimation = sensor_base_rate / sensor_sample_rate;
 
-    const mip_descriptor_rate sensor_descriptors[4] = {
+    const mip_descriptor_rate sensor_descriptors[3] = {
         { MIP_DATA_DESC_SENSOR_TIME_STAMP_GPS, sensor_decimation },
         { MIP_DATA_DESC_SENSOR_ACCEL_SCALED,   sensor_decimation },
         { MIP_DATA_DESC_SENSOR_GYRO_SCALED,    sensor_decimation },
-        { MIP_DATA_DESC_SENSOR_MAG_SCALED,     sensor_decimation },
     };
 
-    if(mip_3dm_write_imu_message_format(&device, 4, sensor_descriptors) != MIP_ACK_OK)
+    if(mip_3dm_write_imu_message_format(&device, 3, sensor_descriptors) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set sensor message format!");
 
 
@@ -315,7 +314,6 @@ int main(int argc, const char* argv[])
         {
 
            timestamp_type curr_time = get_current_timestamp();
-            printf("%lu \n", curr_time-prev_print_timestamp);
 
            if(curr_time - prev_print_timestamp >= 1000)
            {
