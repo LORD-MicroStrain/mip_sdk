@@ -51,9 +51,17 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         target_link_libraries(GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(GX5_45_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
 
+        add_executable(GX5_15_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GX5_15/GX5_15_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(GX5_15_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(GX5_15_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
+
         add_executable(CX5_15_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CX5_15/CX5_15_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(CX5_15_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CX5_15_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
+
+        add_executable(CV5_15_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV5_15/CV5_15_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(CV5_15_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(CV5_15_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
 
 
     endif()
@@ -74,7 +82,13 @@ if(MIP_USE_SERIAL)
     add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c")
     target_link_libraries(GX5_45_ExampleC mip)
 
+    add_executable(GX5_15_ExampleC "${EXAMPLE_DIR}/GX5_15/GX5_15_example.c")
+    target_link_libraries(GX5_15_ExampleC mip)
+
     add_executable(CX5_15_ExampleC "${EXAMPLE_DIR}/CX5_15/CX5_15_example.c")
     target_link_libraries(CX5_15_ExampleC mip)
+
+    add_executable(CV5_15_ExampleC "${EXAMPLE_DIR}/CV5_15/CV5_15_example.c")
+    target_link_libraries(CV5_15_ExampleC mip)
 
 endif()

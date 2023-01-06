@@ -1,12 +1,12 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// CX5_15_Example.c
+// GX5_15_Example.c
 //
-// C Example set-up program for the CX5-15
+// C Example set-up program for the GX5-15
 //
-// This example shows a typical setup for the CX5-15 sensor in a wheeled-vehicle application using using C.
-// It is not an exhaustive example of all CX5-15 settings.
+// This example shows a typical setup for the GX5-15 sensor in a wheeled-vehicle application using using C.
+// It is not an exhaustive example of all GX5-15 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
 //
