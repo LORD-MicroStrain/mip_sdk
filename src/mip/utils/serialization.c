@@ -87,7 +87,7 @@ void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packe
 
     if( mip_serializer_is_ok(serializer) )
         mip_packet_realloc_last_field(packet, serializer->_buffer, serializer->_offset);
-    else
+    else if( serializer->_buffer )
         mip_packet_cancel_last_field(packet, serializer->_buffer);
 }
 
