@@ -171,6 +171,7 @@ struct GpsTimestamp
             TOW         = 0x0001,  ///<  Whole number seconds TOW has been set
             WEEK_NUMBER = 0x0002,  ///<  Week number has been set
             TIME_VALID  = 0x0003,  ///<  Both TOW and Week Number have been set
+            ALL         = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -188,6 +189,9 @@ struct GpsTimestamp
         void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
         uint16_t timeValid() const { return (value & TIME_VALID) >> 0; }
         void timeValid(uint16_t val) { value = (value & ~TIME_VALID) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double tow = 0; ///< GPS Time of Week [seconds]
@@ -335,6 +339,7 @@ struct ExternalTimestamp
         {
             NONE        = 0x0000,
             NANOSECONDS = 0x0001,  ///<  
+            ALL         = 0x0001,
         };
         uint16_t value = NONE;
         
@@ -348,6 +353,9 @@ struct ExternalTimestamp
         
         bool nanoseconds() const { return (value & NANOSECONDS) > 0; }
         void nanoseconds(bool val) { if(val) value |= NANOSECONDS; else value &= ~NANOSECONDS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint64_t nanoseconds = 0;
@@ -395,6 +403,7 @@ struct ExternalTimeDelta
         {
             NONE     = 0x0000,
             DT_NANOS = 0x0001,  ///<  
+            ALL      = 0x0001,
         };
         uint16_t value = NONE;
         
@@ -408,6 +417,9 @@ struct ExternalTimeDelta
         
         bool dtNanos() const { return (value & DT_NANOS) > 0; }
         void dtNanos(bool val) { if(val) value |= DT_NANOS; else value &= ~DT_NANOS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.

@@ -277,6 +277,7 @@ struct EstimationControl
             ANTENNA_OFFSET     = 0x0010,  ///<  
             AUTO_MAG_HARD_IRON = 0x0020,  ///<  
             AUTO_MAG_SOFT_IRON = 0x0040,  ///<  
+            ALL                = 0x007F,
         };
         uint16_t value = NONE;
         
@@ -302,6 +303,9 @@ struct EstimationControl
         void autoMagHardIron(bool val) { if(val) value |= AUTO_MAG_HARD_IRON; else value &= ~AUTO_MAG_HARD_IRON; }
         bool autoMagSoftIron() const { return (value & AUTO_MAG_SOFT_IRON) > 0; }
         void autoMagSoftIron(bool val) { if(val) value |= AUTO_MAG_SOFT_IRON; else value &= ~AUTO_MAG_SOFT_IRON; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -469,6 +473,7 @@ struct TareOrientation
             ROLL  = 0x1,  ///<  
             PITCH = 0x2,  ///<  
             YAW   = 0x4,  ///<  
+            ALL   = 0x7,
         };
         uint8_t value = NONE;
         
@@ -486,6 +491,9 @@ struct TareOrientation
         void pitch(bool val) { if(val) value |= PITCH; else value &= ~PITCH; }
         bool yaw() const { return (value & YAW) > 0; }
         void yaw(bool val) { if(val) value |= YAW; else value &= ~YAW; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1838,6 +1846,7 @@ struct InitializationConfiguration
             DUAL_ANTENNA = 0x01,  ///<  Dual-antenna GNSS alignment
             KINEMATIC    = 0x02,  ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
             MAGNETOMETER = 0x04,  ///<  Magnetometer heading alignment
+            ALL          = 0x07,
         };
         uint8_t value = NONE;
         
@@ -1855,6 +1864,9 @@ struct InitializationConfiguration
         void kinematic(bool val) { if(val) value |= KINEMATIC; else value &= ~KINEMATIC; }
         bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
         void magnetometer(bool val) { if(val) value |= MAGNETOMETER; else value &= ~MAGNETOMETER; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     enum class InitialConditionSource : uint8_t

@@ -151,6 +151,7 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
         GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200,  ///<  
         GQ7_TIME_SYNC_WARNING                          = 0x0400,  ///<  No time synchronization pulse detected
         GQ7_SOLUTION_ERROR                             = 0xF000,  ///<  Filter computation warning flags. If any bits 12-15 are set, and all filter outputs will be invalid.
+        ALL                                            = 0xFFFF,
     };
     uint16_t value = NONE;
     
@@ -218,6 +219,9 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
     void gq7TimeSyncWarning(bool val) { if(val) value |= GQ7_TIME_SYNC_WARNING; else value &= ~GQ7_TIME_SYNC_WARNING; }
     uint16_t gq7SolutionError() const { return (value & GQ7_SOLUTION_ERROR) >> 12; }
     void gq7SolutionError(uint16_t val) { value = (value & ~GQ7_SOLUTION_ERROR) | (val << 12); }
+    
+    bool allSet() const { return value == ALL; }
+    void setAll() { value |= ALL; }
 };
 
 enum class FilterAidingMeasurementType : uint8_t
@@ -241,6 +245,7 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
         SAMPLE_TIME_WARNING   = 0x08,  ///<  
         CONFIGURATION_ERROR   = 0x10,  ///<  
         MAX_NUM_MEAS_EXCEEDED = 0x20,  ///<  
+        ALL                   = 0x3F,
     };
     uint8_t value = NONE;
     
@@ -264,6 +269,9 @@ struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
     void configurationError(bool val) { if(val) value |= CONFIGURATION_ERROR; else value &= ~CONFIGURATION_ERROR; }
     bool maxNumMeasExceeded() const { return (value & MAX_NUM_MEAS_EXCEEDED) > 0; }
     void maxNumMeasExceeded(bool val) { if(val) value |= MAX_NUM_MEAS_EXCEEDED; else value &= ~MAX_NUM_MEAS_EXCEEDED; }
+    
+    bool allSet() const { return value == ALL; }
+    void setAll() { value |= ALL; }
 };
 
 struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
@@ -287,6 +295,7 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
         BEI_B3         = 0x2000,  ///<  If 1, the Kalman filter is using Beidou B3 measurements (not available on the GQ7)
         NO_FIX         = 0x4000,  ///<  If 1, this GNSS module is reporting no position fix
         CONFIG_ERROR   = 0x8000,  ///<  If 1, there is likely an issue with the antenna offset for this GNSS module
+        ALL            = 0xFFFF,
     };
     uint16_t value = NONE;
     
@@ -330,6 +339,9 @@ struct GnssAidStatusFlags : Bitfield<GnssAidStatusFlags>
     void noFix(bool val) { if(val) value |= NO_FIX; else value &= ~NO_FIX; }
     bool configError() const { return (value & CONFIG_ERROR) > 0; }
     void configError(bool val) { if(val) value |= CONFIG_ERROR; else value &= ~CONFIG_ERROR; }
+    
+    bool allSet() const { return value == ALL; }
+    void setAll() { value |= ALL; }
 };
 
 
@@ -1922,6 +1934,7 @@ struct GnssDualAntennaStatus
             RCV_1_DATA_VALID      = 0x0001,  ///<  
             RCV_2_DATA_VALID      = 0x0002,  ///<  
             ANTENNA_OFFSETS_VALID = 0x0004,  ///<  
+            ALL                   = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -1939,6 +1952,9 @@ struct GnssDualAntennaStatus
         void rcv2DataValid(bool val) { if(val) value |= RCV_2_DATA_VALID; else value &= ~RCV_2_DATA_VALID; }
         bool antennaOffsetsValid() const { return (value & ANTENNA_OFFSETS_VALID) > 0; }
         void antennaOffsetsValid(bool val) { if(val) value |= ANTENNA_OFFSETS_VALID; else value &= ~ANTENNA_OFFSETS_VALID; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     float time_of_week = 0; ///< Last dual-antenna GNSS aiding measurement time of week [seconds]

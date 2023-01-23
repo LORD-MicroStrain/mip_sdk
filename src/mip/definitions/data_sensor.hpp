@@ -576,6 +576,7 @@ struct GpsTimestamp
             TIME_INITIALIZED  = 0x0004,  ///<  True if the time has ever been set.
             TOW_VALID         = 0x0008,  ///<  True if the time of week is valid.
             WEEK_NUMBER_VALID = 0x0010,  ///<  True if the week number is valid.
+            ALL               = 0x001F,
         };
         uint16_t value = NONE;
         
@@ -597,6 +598,9 @@ struct GpsTimestamp
         void towValid(bool val) { if(val) value |= TOW_VALID; else value &= ~TOW_VALID; }
         bool weekNumberValid() const { return (value & WEEK_NUMBER_VALID) > 0; }
         void weekNumberValid(bool val) { if(val) value |= WEEK_NUMBER_VALID; else value &= ~WEEK_NUMBER_VALID; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double tow = 0; ///< GPS Time of Week [seconds]
@@ -734,6 +738,7 @@ struct OverrangeStatus
             MAG_Y   = 0x0200,  ///<  
             MAG_Z   = 0x0400,  ///<  
             PRESS   = 0x1000,  ///<  
+            ALL     = 0x1777,
         };
         uint16_t value = NONE;
         
@@ -765,6 +770,9 @@ struct OverrangeStatus
         void magZ(bool val) { if(val) value |= MAG_Z; else value &= ~MAG_Z; }
         bool press() const { return (value & PRESS) > 0; }
         void press(bool val) { if(val) value |= PRESS; else value &= ~PRESS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     Status status;

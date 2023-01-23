@@ -916,6 +916,7 @@ struct GnssSbasSettings
             ENABLE_RANGING     = 0x0001,  ///<  Use SBAS pseudo-ranges in position solution
             ENABLE_CORRECTIONS = 0x0002,  ///<  Use SBAS differential corrections
             APPLY_INTEGRITY    = 0x0004,  ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
+            ALL                = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -933,6 +934,9 @@ struct GnssSbasSettings
         void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
         bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
         void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1195,6 +1199,7 @@ struct GpioConfig
             OPEN_DRAIN = 0x01,  ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
             PULLDOWN   = 0x02,  ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
             PULLUP     = 0x04,  ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
+            ALL        = 0x07,
         };
         uint8_t value = NONE;
         
@@ -1212,6 +1217,9 @@ struct GpioConfig
         void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
         bool pullup() const { return (value & PULLUP) > 0; }
         void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1502,6 +1510,7 @@ struct GetEventTriggerStatus
             ACTIVE  = 0x01,  ///<  True if the trigger is currently active (either due to its logic or being in test mode).
             ENABLED = 0x02,  ///<  True if the trigger is enabled.
             TEST    = 0x04,  ///<  True if the trigger is in test mode.
+            ALL     = 0x07,
         };
         uint8_t value = NONE;
         
@@ -1519,6 +1528,9 @@ struct GetEventTriggerStatus
         void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
         bool test() const { return (value & TEST) > 0; }
         void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct Entry

@@ -105,6 +105,7 @@ struct GetStatusFlags
             RSRP                 = 0x0C000000,  ///<  
             RSRQ                 = 0x30000000,  ///<  
             SINR                 = 0xC0000000,  ///<  
+            ALL                  = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -138,6 +139,9 @@ struct GetStatusFlags
         void rsrq(uint32_t val) { value = (value & ~RSRQ) | (val << 28); }
         uint32_t sinr() const { return (value & SINR) >> 30; }
         void sinr(uint32_t val) { value = (value & ~SINR) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct StatusFlags : Bitfield<StatusFlags>
@@ -157,6 +161,7 @@ struct GetStatusFlags
             CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
             RESERVED                = 0x20000000,  ///<  
             VERSION                 = 0xC0000000,  ///<  
+            ALL                     = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -192,6 +197,9 @@ struct GetStatusFlags
         void reserved(bool val) { if(val) value |= RESERVED; else value &= ~RESERVED; }
         uint32_t version() const { return (value & VERSION) >> 30; }
         void version(uint32_t val) { value = (value & ~VERSION) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     
@@ -470,6 +478,7 @@ struct ServiceStatus
             THROTTLE                = 0x01,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x02,  ///<  
             RESERVED                = 0xFC,  ///<  
+            ALL                     = 0xFF,
         };
         uint8_t value = NONE;
         
@@ -487,6 +496,9 @@ struct ServiceStatus
         void correctionsUnavailable(bool val) { if(val) value |= CORRECTIONS_UNAVAILABLE; else value &= ~CORRECTIONS_UNAVAILABLE; }
         uint8_t reserved() const { return (value & RESERVED) >> 2; }
         void reserved(uint8_t val) { value = (value & ~RESERVED) | (val << 2); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint32_t reserved1 = 0;
