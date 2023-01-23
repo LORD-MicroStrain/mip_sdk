@@ -426,6 +426,7 @@ static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x0004; ///<  True if the time has ever been set.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x0008; ///<  True if the time of week is valid.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x0010; ///<  True if the week number is valid.
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_ALL               = 0x001F;
 
 struct mip_sensor_gps_timestamp_data
 {
@@ -530,6 +531,7 @@ static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Y   = 0x0200; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x0400; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ALL     = 0x1777;
 
 struct mip_sensor_overrange_status_data
 {

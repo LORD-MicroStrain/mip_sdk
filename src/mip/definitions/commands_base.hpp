@@ -109,6 +109,7 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
         GNSS_RTK_FAULT         = 0x20000000,  ///<  
         GNSS_SOLUTION_FAULT    = 0x40000000,  ///<  
         GNSS_GENERAL_FAULT     = 0x80000000,  ///<  
+        ALL                    = 0xFFFFFFFF,
     };
     uint32_t value = NONE;
     
@@ -174,6 +175,9 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
     void gnssSolutionFault(bool val) { if(val) value |= GNSS_SOLUTION_FAULT; else value &= ~GNSS_SOLUTION_FAULT; }
     bool gnssGeneralFault() const { return (value & GNSS_GENERAL_FAULT) > 0; }
     void gnssGeneralFault(bool val) { if(val) value |= GNSS_GENERAL_FAULT; else value &= ~GNSS_GENERAL_FAULT; }
+    
+    bool allSet() const { return value == ALL; }
+    void setAll() { value |= ALL; }
 };
 
 

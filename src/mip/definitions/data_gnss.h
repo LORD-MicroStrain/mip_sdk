@@ -185,6 +185,7 @@ static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_HORIZONTAL_ACCURACY = 0x0008; ///<  
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_VERTICAL_ACCURACY   = 0x0010; ///<  
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_FLAGS               = 0x001F; ///<  
+static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_ALL                 = 0x001F;
 
 struct mip_gnss_pos_llh_data
 {
@@ -218,6 +219,7 @@ static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLA
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION          = 0x0001; ///<  
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION_ACCURACY = 0x0002; ///<  
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003; ///<  
+static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_ALL               = 0x0003;
 
 struct mip_gnss_pos_ecef_data
 {
@@ -251,6 +253,7 @@ static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_SPEED_ACCURACY   = 0x0010; ///<  
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_HEADING_ACCURACY = 0x0020; ///<  
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_FLAGS            = 0x003F; ///<  
+static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_ALL              = 0x003F;
 
 struct mip_gnss_vel_ned_data
 {
@@ -284,6 +287,7 @@ static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLA
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY          = 0x0001; ///<  
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY_ACCURACY = 0x0002; ///<  
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003; ///<  
+static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_ALL               = 0x0003;
 
 struct mip_gnss_vel_ecef_data
 {
@@ -318,6 +322,7 @@ static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_TDOP  =
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_NDOP  = 0x0020; ///<  
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_EDOP  = 0x0040; ///<  
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_FLAGS = 0x007F; ///<  
+static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_ALL   = 0x007F;
 
 struct mip_gnss_dop_data
 {
@@ -352,6 +357,7 @@ static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLA
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_GNSS_DATE_TIME     = 0x0001; ///<  
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_LEAP_SECONDS_KNOWN = 0x0002; ///<  
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_FLAGS              = 0x0003; ///<  
+static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_ALL                = 0x0003;
 
 struct mip_gnss_utc_time_data
 {
@@ -386,6 +392,7 @@ static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLA
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_TOW         = 0x0001; ///<  
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
+static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_ALL         = 0x0003;
 
 struct mip_gnss_gps_time_data
 {
@@ -416,6 +423,7 @@ static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_DRIFT             = 0x0002; ///<  
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_ACCURACY_ESTIMATE = 0x0004; ///<  
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_FLAGS             = 0x0007; ///<  
+static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_ALL               = 0x0007;
 
 struct mip_gnss_clock_info_data
 {
@@ -454,6 +462,7 @@ typedef uint16_t mip_gnss_fix_info_data_fix_flags;
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_NONE       = 0x0000;
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_SBAS_USED  = 0x0001; ///<  
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_DGNSS_USED = 0x0002; ///<  
+static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_ALL        = 0x0003;
 
 typedef uint16_t mip_gnss_fix_info_data_valid_flags;
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_NONE      = 0x0000;
@@ -461,6 +470,7 @@ static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLA
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_NUM_SV    = 0x0002; ///<  
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FIX_FLAGS = 0x0004; ///<  
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FLAGS     = 0x0007; ///<  
+static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_ALL       = 0x0007;
 
 struct mip_gnss_fix_info_data
 {
@@ -498,6 +508,7 @@ typedef uint16_t mip_gnss_sv_info_data_svflags;
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_NONE                = 0x0000;
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_USED_FOR_NAVIGATION = 0x0001; ///<  
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_HEALTHY             = 0x0002; ///<  
+static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_ALL                 = 0x0003;
 
 typedef uint16_t mip_gnss_sv_info_data_valid_flags;
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_NONE                = 0x0000;
@@ -508,6 +519,7 @@ static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_ELEVATION           = 0x0010; ///<  
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_SV_FLAGS            = 0x0020; ///<  
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_FLAGS               = 0x003F; ///<  
+static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_ALL                 = 0x003F;
 
 struct mip_gnss_sv_info_data
 {
@@ -562,6 +574,7 @@ static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_F
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ANTENNA_STATE = 0x0002; ///<  
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ANTENNA_POWER = 0x0004; ///<  
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_FLAGS         = 0x0007; ///<  
+static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ALL           = 0x0007;
 
 struct mip_gnss_hw_status_data
 {
@@ -615,6 +628,7 @@ static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_F
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_BASE_STATION_STATUS = 0x0004; ///<  
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_NUM_CHANNELS        = 0x0008; ///<  
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_FLAGS               = 0x000F; ///<  
+static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_ALL                 = 0x000F;
 
 struct mip_gnss_dgps_info_data
 {
@@ -650,6 +664,7 @@ static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_V
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_RANGE_CORRECTION      = 0x0004; ///<  
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_RANGE_RATE_CORRECTION = 0x0008; ///<  
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_FLAGS                 = 0x000F; ///<  
+static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_ALL                   = 0x000F;
 
 struct mip_gnss_dgps_channel_data
 {
@@ -685,6 +700,7 @@ static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_V
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_BIAS_ACCURACY  = 0x0004; ///<  
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_DRIFT_ACCURACY = 0x0008; ///<  
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_FLAGS          = 0x000F; ///<  
+static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_ALL            = 0x000F;
 
 struct mip_gnss_clock_info_2_data
 {
@@ -714,6 +730,7 @@ void extract_mip_gnss_clock_info_2_data_valid_flags(struct mip_serializer* seria
 typedef uint16_t mip_gnss_gps_leap_seconds_data_valid_flags;
 static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_NONE         = 0x0000;
 static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_LEAP_SECONDS = 0x0002; ///<  
+static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_ALL          = 0x0002;
 
 struct mip_gnss_gps_leap_seconds_data
 {
@@ -743,6 +760,7 @@ static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_ST
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_CORRECTIONS_AVAILABLE = 0x02; ///<  
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_INTEGRITY_AVAILABLE   = 0x04; ///<  
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_TEST_MODE             = 0x08; ///<  
+static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_ALL                   = 0x0F;
 
 typedef uint16_t mip_gnss_sbas_info_data_valid_flags;
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_NONE        = 0x0000;
@@ -753,6 +771,7 @@ static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_F
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_COUNT       = 0x0010; ///<  
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_SBAS_STATUS = 0x0020; ///<  
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_FLAGS       = 0x003F; ///<  
+static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_ALL         = 0x003F;
 
 struct mip_gnss_sbas_info_data
 {
@@ -812,6 +831,7 @@ static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_PSEUDORANGE_CORRECTION = 0x0002; ///<  
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_IONO_CORRECTION        = 0x0004; ///<  
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_FLAGS                  = 0x0007; ///<  
+static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_ALL                    = 0x0007;
 
 struct mip_gnss_sbas_correction_data
 {
@@ -867,6 +887,7 @@ static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETE
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_JAMMING_STATE  = 0x0002; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_SPOOFING_STATE = 0x0004; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FLAGS          = 0x0007; ///<  
+static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x0007;
 
 struct mip_gnss_rf_error_detection_data
 {
@@ -915,6 +936,7 @@ static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATI
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_QUARTER_CYCLE_BIT1 = 0x0040; ///<  
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_QUARTER_CYCLE_BIT2 = 0x0080; ///<  
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_QUARTER_CYCLE_BITS = 0x00C0; ///<  
+static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_ALL                = 0x00FF;
 
 typedef uint16_t mip_gnss_base_station_info_data_valid_flags;
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_NONE          = 0x0000;
@@ -925,6 +947,7 @@ static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_I
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_STATION_ID    = 0x0010; ///<  
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_INDICATORS    = 0x0020; ///<  
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_FLAGS         = 0x003F; ///<  
+static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_ALL           = 0x003F;
 
 struct mip_gnss_base_station_info_data
 {
@@ -966,6 +989,7 @@ static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRE
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_GALILEO_LATENCY = 0x0040; ///<  
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_BEIDOU_LATENCY  = 0x0080; ///<  
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_FLAGS           = 0x00FF; ///<  
+static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_ALL             = 0x00FF;
 
 typedef uint16_t mip_gnss_rtk_corrections_status_data_epoch_status;
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_NONE                         = 0x0000;
@@ -978,6 +1002,7 @@ static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORR
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_USING_GPS_MSM_MESSAGES       = 0x0040; ///<  Using MSM messages for GPS corrections instead of RTCM messages 1001-1004
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_USING_GLONASS_MSM_MESSAGES   = 0x0080; ///<  Using MSM messages for GLONASS corrections instead of RTCM messages 1009-1012
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_DONGLE_STATUS_READ_FAILED    = 0x0100; ///<  A read of the dongle status was attempted, but failed
+static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_ALL                          = 0x01FF;
 
 struct mip_gnss_rtk_corrections_status_data
 {
@@ -1022,6 +1047,7 @@ static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATU
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_AZIMUTH      = 0x0020; ///<  
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_HEALTH       = 0x0040; ///<  
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_FLAGS        = 0x007F; ///<  
+static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_ALL          = 0x007F;
 
 struct mip_gnss_satellite_status_data
 {
@@ -1080,6 +1106,7 @@ static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_CARRIER
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_DOPPLER_UNCERTAINTY       = 0x4000; ///<  
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_LOCK_TIME                 = 0x8000; ///<  
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_FLAGS                     = 0xFFFF; ///<  
+static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_ALL                       = 0xFFFF;
 
 struct mip_gnss_raw_data
 {
@@ -1128,6 +1155,7 @@ static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
+static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
 
 struct mip_gnss_gps_ephemeris_data
 {
@@ -1188,6 +1216,7 @@ static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEME
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS   = 0x0001; ///<  
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
+static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
 
 struct mip_gnss_galileo_ephemeris_data
 {
@@ -1247,6 +1276,7 @@ typedef uint16_t mip_gnss_glo_ephemeris_data_valid_flags;
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_NONE      = 0x0000;
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS = 0x0001; ///<  
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS     = 0x0001; ///<  
+static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_ALL       = 0x0001;
 
 struct mip_gnss_glo_ephemeris_data
 {
@@ -1300,6 +1330,7 @@ static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_ALPHA       = 0x0004; ///<  
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_BETA        = 0x0008; ///<  
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_FLAGS       = 0x000F; ///<  
+static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_ALL         = 0x000F;
 
 struct mip_gnss_gps_iono_corr_data
 {
@@ -1333,6 +1364,7 @@ static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_C
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_ALPHA             = 0x0004; ///<  
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_DISTURBANCE_FLAGS = 0x0008; ///<  
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_FLAGS             = 0x000F; ///<  
+static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_ALL               = 0x000F;
 
 struct mip_gnss_galileo_iono_corr_data
 {
