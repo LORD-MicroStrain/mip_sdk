@@ -114,6 +114,9 @@ struct PendingCmd : public C::mip_pending_cmd
     ///
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
+    ///@copydoc mip::C::mip_pending_cmd_response_descriptor
+    uint8_t responseDescriptor() const { return C::mip_pending_cmd_response_descriptor(this); }
+
     ///@copydoc mip::C::mip_pending_cmd_response
     const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
 

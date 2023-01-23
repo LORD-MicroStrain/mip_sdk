@@ -63,7 +63,7 @@ void mip_pending_cmd_init_with_response(mip_pending_cmd* cmd, uint8_t descriptor
 void mip_pending_cmd_init_full(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_size, timeout_type additional_time);
 
 enum mip_cmd_result mip_pending_cmd_status(const mip_pending_cmd* cmd);
-
+uint8_t mip_pending_cmd_response_descriptor(const mip_pending_cmd* cmd);
 const uint8_t* mip_pending_cmd_response(const mip_pending_cmd* cmd);
 uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd);
 

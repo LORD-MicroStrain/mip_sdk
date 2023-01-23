@@ -109,6 +109,14 @@ enum mip_cmd_result mip_pending_cmd_status(const mip_pending_cmd* cmd)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Returns the response descriptor.
+///
+uint8_t mip_pending_cmd_response_descriptor(const mip_pending_cmd* cmd)
+{
+    return cmd->_response_descriptor;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the response payload pointer.
 ///
 /// This function may only be called after the command finishes with an ACK.
