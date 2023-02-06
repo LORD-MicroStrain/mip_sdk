@@ -134,6 +134,7 @@ public:
 ///
 class Packet : public C::mip_packet
 {
+public:
     class FieldIterator;
 
 public:
