@@ -42,7 +42,7 @@ bool mip_is_data_descriptor_set(uint8_t descriptor_set)
 ///
 bool mip_is_cmd_descriptor_set(uint8_t descriptor_set)
 {
-    return (descriptor_set < MIP_DATA_DESCRIPTOR_SET_START);
+    return !mip_is_data_descriptor_set(descriptor_set);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
