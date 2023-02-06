@@ -33,7 +33,7 @@ namespace mip
 
 using PacketLength = C::packet_length;
 
-template<class Field> struct MipFieldInfo;
+template<class FieldType> struct MipFieldInfo;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_cpp
@@ -88,7 +88,7 @@ public:
 
     ///@brief Deserializes the field data to specific field struct.
     ///
-    ///@tparam Field Any field class from a file in the mip/definitions directory.
+    ///@tparam FieldType Any field class from a file in the mip/definitions directory.
     ///
     ///@param[out] field A reference to the field struct to be filled out. Valid
     ///                  only if the function returns true.
@@ -97,8 +97,8 @@ public:
     ///@returns True if the field was successfully deserialized, or false if the field contains
     ///         too few bytes (or to many if exact_size is specified). The field data is not
     ///         valid unless this function returns true.
-    template<class Field>
-    bool extract(Field& field, bool exact_size=true) const { return mip::extract(field, payload(), payloadLength(), 0, exact_size); }
+    template<class FieldType>
+    bool extract(FieldType& field, bool exact_size=true) const { return mip::extract(field, payload(), payloadLength(), 0, exact_size); }
 
 
     ///@brief Determines if the field holds data (and not a command, reply, or response).
@@ -214,18 +214,18 @@ public:
 
     ///@brief Adds a field of the given type to the packet.
     ///
-    ///@tparam Field Any field class from a file in the mip/definitions directory.
+    ///@tparam FieldType Any field class from a file in the mip/definitions directory.
     ///
     ///@param field           Instance of the field to add to the packet.
     ///@param fieldDescriptor If specified, overrides the field descriptor.
     ///
     ///@returns True if the field was added, false if the packet has insufficient space.
     ///
-    template<class Field>
-    bool addField(const Field& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    template<class FieldType>
+    bool addField(const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
-            fieldDescriptor = Field::FIELD_DESCRIPTOR;
+            fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
         Serializer serializer(*this, fieldDescriptor);
         insert(serializer, field);
         C::mip_serializer_finish_new_field(&serializer, this);
@@ -234,11 +234,11 @@ public:
 
     ///@brief Creates a new Packet containing a single MIP field from an instance of the field type.
     ///
-    /// This works just like the addField<Field>() function but also initializes and finalizes the packet.
+    /// This works just like the addField<FieldType>() function but also initializes and finalizes the packet.
     /// It is assumed that the field will fit in an empty packet; otherwise the field can't ever be used.
     /// The field classes are predefined so this doesn't need runtime checking.
     ///
-    ///@tparam Field Any field class from a file in the mip/definitions directory.
+    ///@tparam FieldType Any field class from a file in the mip/definitions directory.
     ///
     ///@param buffer          Buffer to hold the packet bytes.
     ///@param bufferSize      Size of buffer in bytes.
@@ -247,13 +247,13 @@ public:
     ///
     ///@returns A Packet object containing the field.
     ///
-    template<class Field>
-    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const Field& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    template<class FieldType>
+    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
-            fieldDescriptor = Field::FIELD_DESCRIPTOR;
-        Packet packet(buffer, bufferSize, Field::DESCRIPTOR_SET);
-        packet.addField<Field>(field, fieldDescriptor);
+            fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
+        Packet packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
+        packet.addField<FieldType>(field, fieldDescriptor);
         packet.finalize();
         return packet;
     }
