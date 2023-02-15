@@ -85,7 +85,7 @@ struct RawAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_accel);
+        return std::make_tuple(raw_accel[0],raw_accel[1],raw_accel[2]);
     }
     
     float raw_accel[3] = {0}; ///< Native sensor counts
@@ -112,7 +112,7 @@ struct RawGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_gyro);
+        return std::make_tuple(raw_gyro[0],raw_gyro[1],raw_gyro[2]);
     }
     
     float raw_gyro[3] = {0}; ///< Native sensor counts
@@ -139,7 +139,7 @@ struct RawMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_mag);
+        return std::make_tuple(raw_mag[0],raw_mag[1],raw_mag[2]);
     }
     
     float raw_mag[3] = {0}; ///< Native sensor counts
@@ -193,7 +193,7 @@ struct ScaledAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_accel);
+        return std::make_tuple(scaled_accel[0],scaled_accel[1],scaled_accel[2]);
     }
     
     float scaled_accel[3] = {0}; ///< (x, y, z)[g]
@@ -220,7 +220,7 @@ struct ScaledGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_gyro);
+        return std::make_tuple(scaled_gyro[0],scaled_gyro[1],scaled_gyro[2]);
     }
     
     float scaled_gyro[3] = {0}; ///< (x, y, z) [radians/second]
@@ -247,7 +247,7 @@ struct ScaledMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_mag);
+        return std::make_tuple(scaled_mag[0],scaled_mag[1],scaled_mag[2]);
     }
     
     float scaled_mag[3] = {0}; ///< (x, y, z) [Gauss]
@@ -300,7 +300,7 @@ struct DeltaTheta
     
     auto as_tuple() const
     {
-        return std::make_tuple(delta_theta);
+        return std::make_tuple(delta_theta[0],delta_theta[1],delta_theta[2]);
     }
     
     float delta_theta[3] = {0}; ///< (x, y, z) [radians]
@@ -327,7 +327,7 @@ struct DeltaVelocity
     
     auto as_tuple() const
     {
-        return std::make_tuple(delta_velocity);
+        return std::make_tuple(delta_velocity[0],delta_velocity[1],delta_velocity[2]);
     }
     
     float delta_velocity[3] = {0}; ///< (x, y, z) [g*sec]
@@ -363,7 +363,7 @@ struct CompOrientationMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(m);
+        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
     float m[9] = {0}; ///< Matrix elements in row-major order.
@@ -397,7 +397,7 @@ struct CompQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(q);
+        return std::make_tuple(q[0],q[1],q[2],q[3]);
     }
     
     float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
@@ -452,7 +452,7 @@ struct CompOrientationUpdateMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(m);
+        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
     float m[9] = {0};
@@ -478,7 +478,7 @@ struct OrientationRawTemp
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_temp);
+        return std::make_tuple(raw_temp[0],raw_temp[1],raw_temp[2],raw_temp[3]);
     }
     
     uint16_t raw_temp[4] = {0};
@@ -576,6 +576,7 @@ struct GpsTimestamp
             TIME_INITIALIZED  = 0x0004,  ///<  True if the time has ever been set.
             TOW_VALID         = 0x0008,  ///<  True if the time of week is valid.
             WEEK_NUMBER_VALID = 0x0010,  ///<  True if the week number is valid.
+            ALL               = 0x001F,
         };
         uint16_t value = NONE;
         
@@ -597,6 +598,9 @@ struct GpsTimestamp
         void towValid(bool val) { if(val) value |= TOW_VALID; else value &= ~TOW_VALID; }
         bool weekNumberValid() const { return (value & WEEK_NUMBER_VALID) > 0; }
         void weekNumberValid(bool val) { if(val) value |= WEEK_NUMBER_VALID; else value &= ~WEEK_NUMBER_VALID; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double tow = 0; ///< GPS Time of Week [seconds]
@@ -662,7 +666,7 @@ struct UpVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(up);
+        return std::make_tuple(up[0],up[1],up[2]);
     }
     
     float up[3] = {0}; ///< [Gs]
@@ -691,7 +695,7 @@ struct NorthVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(north);
+        return std::make_tuple(north[0],north[1],north[2]);
     }
     
     float north[3] = {0}; ///< [Gauss]
@@ -734,6 +738,7 @@ struct OverrangeStatus
             MAG_Y   = 0x0200,  ///<  
             MAG_Z   = 0x0400,  ///<  
             PRESS   = 0x1000,  ///<  
+            ALL     = 0x1777,
         };
         uint16_t value = NONE;
         
@@ -765,6 +770,9 @@ struct OverrangeStatus
         void magZ(bool val) { if(val) value |= MAG_Z; else value &= ~MAG_Z; }
         bool press() const { return (value & PRESS) > 0; }
         void press(bool val) { if(val) value |= PRESS; else value &= ~PRESS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     Status status;

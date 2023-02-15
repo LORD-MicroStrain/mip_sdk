@@ -151,6 +151,7 @@ static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_ANTENNA_LEVER_A
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_MOUNTING_TRANSFORM_WARNING                 = 0x0200; ///<  
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_TIME_SYNC_WARNING                          = 0x0400; ///<  No time synchronization pulse detected
 static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_GQ7_SOLUTION_ERROR                             = 0xF000; ///<  Filter computation warning flags. If any bits 12-15 are set, and all filter outputs will be invalid.
+static const mip_filter_status_flags MIP_FILTER_STATUS_FLAGS_ALL                                            = 0xFFFF;
 
 void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip_filter_status_flags self);
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self);
@@ -174,6 +175,7 @@ static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_R
 static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_SAMPLE_TIME_WARNING   = 0x08; ///<  
 static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_CONFIGURATION_ERROR   = 0x10; ///<  
 static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_MAX_NUM_MEAS_EXCEEDED = 0x20; ///<  
+static const mip_filter_measurement_indicator MIP_FILTER_MEASUREMENT_INDICATOR_ALL                   = 0x3F;
 
 void insert_mip_filter_measurement_indicator(struct mip_serializer* serializer, const mip_filter_measurement_indicator self);
 void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer, mip_filter_measurement_indicator* self);
@@ -196,6 +198,7 @@ static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_BEI_B2         
 static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_BEI_B3         = 0x2000; ///<  If 1, the Kalman filter is using Beidou B3 measurements (not available on the GQ7)
 static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_NO_FIX         = 0x4000; ///<  If 1, this GNSS module is reporting no position fix
 static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_CONFIG_ERROR   = 0x8000; ///<  If 1, there is likely an issue with the antenna offset for this GNSS module
+static const mip_gnss_aid_status_flags MIP_GNSS_AID_STATUS_FLAGS_ALL            = 0xFFFF;
 
 void insert_mip_gnss_aid_status_flags(struct mip_serializer* serializer, const mip_gnss_aid_status_flags self);
 void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, mip_gnss_aid_status_flags* self);
@@ -1343,6 +1346,7 @@ static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags 
 static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_1_DATA_VALID      = 0x0001; ///<  
 static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_RCV_2_DATA_VALID      = 0x0002; ///<  
 static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ANTENNA_OFFSETS_VALID = 0x0004; ///<  
+static const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags MIP_FILTER_GNSS_DUAL_ANTENNA_STATUS_DATA_DUAL_ANTENNA_STATUS_FLAGS_ALL                   = 0x0007;
 
 struct mip_filter_gnss_dual_antenna_status_data
 {

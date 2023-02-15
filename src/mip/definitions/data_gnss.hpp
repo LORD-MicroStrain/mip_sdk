@@ -196,6 +196,7 @@ struct PosLlh
             HORIZONTAL_ACCURACY = 0x0008,  ///<  
             VERTICAL_ACCURACY   = 0x0010,  ///<  
             FLAGS               = 0x001F,  ///<  
+            ALL                 = 0x001F,
         };
         uint16_t value = NONE;
         
@@ -219,6 +220,9 @@ struct PosLlh
         void verticalAccuracy(bool val) { if(val) value |= VERTICAL_ACCURACY; else value &= ~VERTICAL_ACCURACY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double latitude = 0; ///< [degrees]
@@ -250,7 +254,7 @@ struct PosEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(x,x_accuracy,valid_flags);
+        return std::make_tuple(x[0],x[1],x[2],x_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -261,6 +265,7 @@ struct PosEcef
             POSITION          = 0x0001,  ///<  
             POSITION_ACCURACY = 0x0002,  ///<  
             FLAGS             = 0x0003,  ///<  
+            ALL               = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -278,6 +283,9 @@ struct PosEcef
         void positionAccuracy(bool val) { if(val) value |= POSITION_ACCURACY; else value &= ~POSITION_ACCURACY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double x[3] = {0}; ///< [meters]
@@ -305,7 +313,7 @@ struct VelNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(v,speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
+        return std::make_tuple(v[0],v[1],v[2],speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -320,6 +328,7 @@ struct VelNed
             SPEED_ACCURACY   = 0x0010,  ///<  
             HEADING_ACCURACY = 0x0020,  ///<  
             FLAGS            = 0x003F,  ///<  
+            ALL              = 0x003F,
         };
         uint16_t value = NONE;
         
@@ -345,6 +354,9 @@ struct VelNed
         void headingAccuracy(bool val) { if(val) value |= HEADING_ACCURACY; else value &= ~HEADING_ACCURACY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     float v[3] = {0}; ///< [meters/second]
@@ -376,7 +388,7 @@ struct VelEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(v,v_accuracy,valid_flags);
+        return std::make_tuple(v[0],v[1],v[2],v_accuracy,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -387,6 +399,7 @@ struct VelEcef
             VELOCITY          = 0x0001,  ///<  
             VELOCITY_ACCURACY = 0x0002,  ///<  
             FLAGS             = 0x0003,  ///<  
+            ALL               = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -404,6 +417,9 @@ struct VelEcef
         void velocityAccuracy(bool val) { if(val) value |= VELOCITY_ACCURACY; else value &= ~VELOCITY_ACCURACY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     float v[3] = {0}; ///< [meters/second]
@@ -447,6 +463,7 @@ struct Dop
             NDOP  = 0x0020,  ///<  
             EDOP  = 0x0040,  ///<  
             FLAGS = 0x007F,  ///<  
+            ALL   = 0x007F,
         };
         uint16_t value = NONE;
         
@@ -474,6 +491,9 @@ struct Dop
         void edop(bool val) { if(val) value |= EDOP; else value &= ~EDOP; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     float gdop = 0; ///< Geometric DOP
@@ -517,6 +537,7 @@ struct UtcTime
             GNSS_DATE_TIME     = 0x0001,  ///<  
             LEAP_SECONDS_KNOWN = 0x0002,  ///<  
             FLAGS              = 0x0003,  ///<  
+            ALL                = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -534,6 +555,9 @@ struct UtcTime
         void leapSecondsKnown(bool val) { if(val) value |= LEAP_SECONDS_KNOWN; else value &= ~LEAP_SECONDS_KNOWN; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint16_t year = 0;
@@ -577,6 +601,7 @@ struct GpsTime
             TOW         = 0x0001,  ///<  
             WEEK_NUMBER = 0x0002,  ///<  
             FLAGS       = 0x0003,  ///<  
+            ALL         = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -594,6 +619,9 @@ struct GpsTime
         void weekNumber(bool val) { if(val) value |= WEEK_NUMBER; else value &= ~WEEK_NUMBER; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double tow = 0; ///< GPS Time of week [seconds]
@@ -633,6 +661,7 @@ struct ClockInfo
             DRIFT             = 0x0002,  ///<  
             ACCURACY_ESTIMATE = 0x0004,  ///<  
             FLAGS             = 0x0007,  ///<  
+            ALL               = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -652,6 +681,9 @@ struct ClockInfo
         void accuracyEstimate(bool val) { if(val) value |= ACCURACY_ESTIMATE; else value &= ~ACCURACY_ESTIMATE; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double bias = 0; ///< [seconds]
@@ -701,6 +733,7 @@ struct FixInfo
             NONE       = 0x0000,
             SBAS_USED  = 0x0001,  ///<  
             DGNSS_USED = 0x0002,  ///<  
+            ALL        = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -716,6 +749,9 @@ struct FixInfo
         void sbasUsed(bool val) { if(val) value |= SBAS_USED; else value &= ~SBAS_USED; }
         bool dgnssUsed() const { return (value & DGNSS_USED) > 0; }
         void dgnssUsed(bool val) { if(val) value |= DGNSS_USED; else value &= ~DGNSS_USED; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -727,6 +763,7 @@ struct FixInfo
             NUM_SV    = 0x0002,  ///<  
             FIX_FLAGS = 0x0004,  ///<  
             FLAGS     = 0x0007,  ///<  
+            ALL       = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -746,6 +783,9 @@ struct FixInfo
         void fixFlags(bool val) { if(val) value |= FIX_FLAGS; else value &= ~FIX_FLAGS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FixType fix_type = static_cast<FixType>(0);
@@ -786,6 +826,7 @@ struct SvInfo
             NONE                = 0x0000,
             USED_FOR_NAVIGATION = 0x0001,  ///<  
             HEALTHY             = 0x0002,  ///<  
+            ALL                 = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -801,6 +842,9 @@ struct SvInfo
         void usedForNavigation(bool val) { if(val) value |= USED_FOR_NAVIGATION; else value &= ~USED_FOR_NAVIGATION; }
         bool healthy() const { return (value & HEALTHY) > 0; }
         void healthy(bool val) { if(val) value |= HEALTHY; else value &= ~HEALTHY; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -815,6 +859,7 @@ struct SvInfo
             ELEVATION           = 0x0010,  ///<  
             SV_FLAGS            = 0x0020,  ///<  
             FLAGS               = 0x003F,  ///<  
+            ALL                 = 0x003F,
         };
         uint16_t value = NONE;
         
@@ -840,6 +885,9 @@ struct SvInfo
         void svFlags(bool val) { if(val) value |= SV_FLAGS; else value &= ~SV_FLAGS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t channel = 0; ///< Receiver channel number
@@ -906,6 +954,7 @@ struct HwStatus
             ANTENNA_STATE = 0x0002,  ///<  
             ANTENNA_POWER = 0x0004,  ///<  
             FLAGS         = 0x0007,  ///<  
+            ALL           = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -925,6 +974,9 @@ struct HwStatus
         void antennaPower(bool val) { if(val) value |= ANTENNA_POWER; else value &= ~ANTENNA_POWER; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     ReceiverState receiver_state = static_cast<ReceiverState>(0);
@@ -978,6 +1030,7 @@ struct DgpsInfo
             BASE_STATION_STATUS = 0x0004,  ///<  
             NUM_CHANNELS        = 0x0008,  ///<  
             FLAGS               = 0x000F,  ///<  
+            ALL                 = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -999,6 +1052,9 @@ struct DgpsInfo
         void numChannels(bool val) { if(val) value |= NUM_CHANNELS; else value &= ~NUM_CHANNELS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t sv_id = 0;
@@ -1043,6 +1099,7 @@ struct DgpsChannel
             RANGE_CORRECTION      = 0x0004,  ///<  
             RANGE_RATE_CORRECTION = 0x0008,  ///<  
             FLAGS                 = 0x000F,  ///<  
+            ALL                   = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -1064,6 +1121,9 @@ struct DgpsChannel
         void rangeRateCorrection(bool val) { if(val) value |= RANGE_RATE_CORRECTION; else value &= ~RANGE_RATE_CORRECTION; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t sv_id = 0;
@@ -1108,6 +1168,7 @@ struct ClockInfo2
             BIAS_ACCURACY  = 0x0004,  ///<  
             DRIFT_ACCURACY = 0x0008,  ///<  
             FLAGS          = 0x000F,  ///<  
+            ALL            = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -1129,6 +1190,9 @@ struct ClockInfo2
         void driftAccuracy(bool val) { if(val) value |= DRIFT_ACCURACY; else value &= ~DRIFT_ACCURACY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double bias = 0;
@@ -1167,6 +1231,7 @@ struct GpsLeapSeconds
         {
             NONE         = 0x0000,
             LEAP_SECONDS = 0x0002,  ///<  
+            ALL          = 0x0002,
         };
         uint16_t value = NONE;
         
@@ -1180,6 +1245,9 @@ struct GpsLeapSeconds
         
         bool leapSeconds() const { return (value & LEAP_SECONDS) > 0; }
         void leapSeconds(bool val) { if(val) value |= LEAP_SECONDS; else value &= ~LEAP_SECONDS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t leap_seconds = 0; ///< [s]
@@ -1218,6 +1286,7 @@ struct SbasInfo
             CORRECTIONS_AVAILABLE = 0x02,  ///<  
             INTEGRITY_AVAILABLE   = 0x04,  ///<  
             TEST_MODE             = 0x08,  ///<  
+            ALL                   = 0x0F,
         };
         uint8_t value = NONE;
         
@@ -1237,6 +1306,9 @@ struct SbasInfo
         void integrityAvailable(bool val) { if(val) value |= INTEGRITY_AVAILABLE; else value &= ~INTEGRITY_AVAILABLE; }
         bool testMode() const { return (value & TEST_MODE) > 0; }
         void testMode(bool val) { if(val) value |= TEST_MODE; else value &= ~TEST_MODE; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -1251,6 +1323,7 @@ struct SbasInfo
             COUNT       = 0x0010,  ///<  
             SBAS_STATUS = 0x0020,  ///<  
             FLAGS       = 0x003F,  ///<  
+            ALL         = 0x003F,
         };
         uint16_t value = NONE;
         
@@ -1276,6 +1349,9 @@ struct SbasInfo
         void sbasStatus(bool val) { if(val) value |= SBAS_STATUS; else value &= ~SBAS_STATUS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -1341,6 +1417,7 @@ struct SbasCorrection
             PSEUDORANGE_CORRECTION = 0x0002,  ///<  
             IONO_CORRECTION        = 0x0004,  ///<  
             FLAGS                  = 0x0007,  ///<  
+            ALL                    = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -1360,6 +1437,9 @@ struct SbasCorrection
         void ionoCorrection(bool val) { if(val) value |= IONO_CORRECTION; else value &= ~IONO_CORRECTION; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -1430,6 +1510,7 @@ struct RfErrorDetection
             JAMMING_STATE  = 0x0002,  ///<  
             SPOOFING_STATE = 0x0004,  ///<  
             FLAGS          = 0x0007,  ///<  
+            ALL            = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -1449,6 +1530,9 @@ struct RfErrorDetection
         void spoofingState(bool val) { if(val) value |= SPOOFING_STATE; else value &= ~SPOOFING_STATE; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     RFBand rf_band = static_cast<RFBand>(0); ///< RF Band of the reported information
@@ -1480,7 +1564,7 @@ struct BaseStationInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,ecef_pos,height,station_id,indicators,valid_flags);
+        return std::make_tuple(time_of_week,week_number,ecef_pos[0],ecef_pos[1],ecef_pos[2],height,station_id,indicators,valid_flags);
     }
     
     struct IndicatorFlags : Bitfield<IndicatorFlags>
@@ -1497,6 +1581,7 @@ struct BaseStationInfo
             QUARTER_CYCLE_BIT1 = 0x0040,  ///<  
             QUARTER_CYCLE_BIT2 = 0x0080,  ///<  
             QUARTER_CYCLE_BITS = 0x00C0,  ///<  
+            ALL                = 0x00FF,
         };
         uint16_t value = NONE;
         
@@ -1526,6 +1611,9 @@ struct BaseStationInfo
         void quarterCycleBit2(bool val) { if(val) value |= QUARTER_CYCLE_BIT2; else value &= ~QUARTER_CYCLE_BIT2; }
         uint16_t quarterCycleBits() const { return (value & QUARTER_CYCLE_BITS) >> 6; }
         void quarterCycleBits(uint16_t val) { value = (value & ~QUARTER_CYCLE_BITS) | (val << 6); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -1540,6 +1628,7 @@ struct BaseStationInfo
             STATION_ID    = 0x0010,  ///<  
             INDICATORS    = 0x0020,  ///<  
             FLAGS         = 0x003F,  ///<  
+            ALL           = 0x003F,
         };
         uint16_t value = NONE;
         
@@ -1565,6 +1654,9 @@ struct BaseStationInfo
         void indicators(bool val) { if(val) value |= INDICATORS; else value &= ~INDICATORS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double time_of_week = 0; ///< GPS Time of week the message was received [seconds]
@@ -1595,7 +1687,7 @@ struct RtkCorrectionsStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved,valid_flags);
+        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved[0],reserved[1],reserved[2],reserved[3],valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -1612,6 +1704,7 @@ struct RtkCorrectionsStatus
             GALILEO_LATENCY = 0x0040,  ///<  
             BEIDOU_LATENCY  = 0x0080,  ///<  
             FLAGS           = 0x00FF,  ///<  
+            ALL             = 0x00FF,
         };
         uint16_t value = NONE;
         
@@ -1641,6 +1734,9 @@ struct RtkCorrectionsStatus
         void beidouLatency(bool val) { if(val) value |= BEIDOU_LATENCY; else value &= ~BEIDOU_LATENCY; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct EpochStatus : Bitfield<EpochStatus>
@@ -1657,6 +1753,7 @@ struct RtkCorrectionsStatus
             USING_GPS_MSM_MESSAGES       = 0x0040,  ///<  Using MSM messages for GPS corrections instead of RTCM messages 1001-1004
             USING_GLONASS_MSM_MESSAGES   = 0x0080,  ///<  Using MSM messages for GLONASS corrections instead of RTCM messages 1009-1012
             DONGLE_STATUS_READ_FAILED    = 0x0100,  ///<  A read of the dongle status was attempted, but failed
+            ALL                          = 0x01FF,
         };
         uint16_t value = NONE;
         
@@ -1686,6 +1783,9 @@ struct RtkCorrectionsStatus
         void usingGlonassMsmMessages(bool val) { if(val) value |= USING_GLONASS_MSM_MESSAGES; else value &= ~USING_GLONASS_MSM_MESSAGES; }
         bool dongleStatusReadFailed() const { return (value & DONGLE_STATUS_READ_FAILED) > 0; }
         void dongleStatusReadFailed(bool val) { if(val) value |= DONGLE_STATUS_READ_FAILED; else value &= ~DONGLE_STATUS_READ_FAILED; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -1736,6 +1836,7 @@ struct SatelliteStatus
             AZIMUTH      = 0x0020,  ///<  
             HEALTH       = 0x0040,  ///<  
             FLAGS        = 0x007F,  ///<  
+            ALL          = 0x007F,
         };
         uint16_t value = NONE;
         
@@ -1763,6 +1864,9 @@ struct SatelliteStatus
         void health(bool val) { if(val) value |= HEALTH; else value &= ~HEALTH; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -1832,6 +1936,7 @@ struct Raw
             DOPPLER_UNCERTAINTY       = 0x4000,  ///<  
             LOCK_TIME                 = 0x8000,  ///<  
             FLAGS                     = 0xFFFF,  ///<  
+            ALL                       = 0xFFFF,
         };
         uint16_t value = NONE;
         
@@ -1877,6 +1982,9 @@ struct Raw
         void lockTime(bool val) { if(val) value |= LOCK_TIME; else value &= ~LOCK_TIME; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -1931,6 +2039,7 @@ struct GpsEphemeris
             EPHEMERIS   = 0x0001,  ///<  
             MODERN_DATA = 0x0002,  ///<  
             FLAGS       = 0x0003,  ///<  
+            ALL         = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -1948,6 +2057,9 @@ struct GpsEphemeris
         void modernData(bool val) { if(val) value |= MODERN_DATA; else value &= ~MODERN_DATA; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -2017,6 +2129,7 @@ struct GalileoEphemeris
             EPHEMERIS   = 0x0001,  ///<  
             MODERN_DATA = 0x0002,  ///<  
             FLAGS       = 0x0003,  ///<  
+            ALL         = 0x0003,
         };
         uint16_t value = NONE;
         
@@ -2034,6 +2147,9 @@ struct GalileoEphemeris
         void modernData(bool val) { if(val) value |= MODERN_DATA; else value &= ~MODERN_DATA; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -2092,7 +2208,7 @@ struct GloEphemeris
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x,v,a,health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
+        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x[0],x[1],x[2],v[0],v[1],v[2],a[0],a[1],a[2],health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2102,6 +2218,7 @@ struct GloEphemeris
             NONE      = 0x0000,
             EPHEMERIS = 0x0001,  ///<  
             FLAGS     = 0x0001,  ///<  
+            ALL       = 0x0001,
         };
         uint16_t value = NONE;
         
@@ -2117,6 +2234,9 @@ struct GloEphemeris
         void ephemeris(bool val) { if(val) value |= EPHEMERIS; else value &= ~EPHEMERIS; }
         bool flags() const { return (value & FLAGS) > 0; }
         void flags(bool val) { if(val) value |= FLAGS; else value &= ~FLAGS; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint8_t index = 0; ///< Index of this field in this epoch.
@@ -2166,7 +2286,7 @@ struct GpsIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha,beta,valid_flags);
+        return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],alpha[3],beta[0],beta[1],beta[2],beta[3],valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2179,6 +2299,7 @@ struct GpsIonoCorr
             ALPHA       = 0x0004,  ///<  
             BETA        = 0x0008,  ///<  
             FLAGS       = 0x000F,  ///<  
+            ALL         = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -2200,6 +2321,9 @@ struct GpsIonoCorr
         void beta(bool val) { if(val) value |= BETA; else value &= ~BETA; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double time_of_week = 0; ///< GPS Time of week [seconds]
@@ -2229,7 +2353,7 @@ struct GalileoIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha,disturbance_flags,valid_flags);
+        return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],disturbance_flags,valid_flags);
     }
     
     struct ValidFlags : Bitfield<ValidFlags>
@@ -2242,6 +2366,7 @@ struct GalileoIonoCorr
             ALPHA             = 0x0004,  ///<  
             DISTURBANCE_FLAGS = 0x0008,  ///<  
             FLAGS             = 0x000F,  ///<  
+            ALL               = 0x000F,
         };
         uint16_t value = NONE;
         
@@ -2263,6 +2388,9 @@ struct GalileoIonoCorr
         void disturbanceFlags(bool val) { if(val) value |= DISTURBANCE_FLAGS; else value &= ~DISTURBANCE_FLAGS; }
         uint16_t flags() const { return (value & FLAGS) >> 0; }
         void flags(uint16_t val) { value = (value & ~FLAGS) | (val << 0); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     double time_of_week = 0; ///< GPS Time of week [seconds]

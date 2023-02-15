@@ -109,6 +109,7 @@ static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTCM_F
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FAULT         = 0x20000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_ALL                    = 0xFFFFFFFF;
 
 void insert_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, const mip_commanded_test_bits_gq7 self);
 void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_commanded_test_bits_gq7* self);
@@ -310,6 +311,7 @@ mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_base_gps_time_update  (0x01,0x72) Gps Time Update [C]
+/// Set device internal GPS time
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.

@@ -149,28 +149,28 @@ struct NmeaMessage
     {
         GGA  = 1,  ///<  GPS System Fix Data. Source can be the Filter or GNSS1/2 datasets.
         GLL  = 2,  ///<  Geographic Position Lat/Lon. Source can be the Filter or GNSS1/2 datasets.
-        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID is ignored (talker depends on the satellite).
+        GSV  = 3,  ///<  GNSS Satellites in View. Source must be either GNSS1 or GNSS2 datasets. The talker ID must be set to IGNORED.
         RMC  = 4,  ///<  Recommended Minimum Specific GNSS Data. Source can be the Filter or GNSS1/2 datasets.
         VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
         HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
         ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-        PRKA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID is ignored.
-        PRKR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID is ignored.
+        PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+        PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
     };
     
     enum class TalkerID : uint8_t
     {
-        RESERVED = 0,  ///<  
-        GNSS     = 1,  ///<  NMEA message will be produced with talker id "GN"
-        GPS      = 2,  ///<  NMEA message will be produced with talker id "GP"
-        GALILEO  = 3,  ///<  NMEA message will be produced with talker id "GA"
-        GLONASS  = 4,  ///<  NMEA message will be produced with talker id "GL"
+        IGNORED = 0,  ///<  Talker ID cannot be changed.
+        GNSS    = 1,  ///<  NMEA message will be produced with talker id "GN".
+        GPS     = 2,  ///<  NMEA message will be produced with talker id "GP".
+        GALILEO = 3,  ///<  NMEA message will be produced with talker id "GA".
+        GLONASS = 4,  ///<  NMEA message will be produced with talker id "GL".
     };
     
     MessageID message_id = static_cast<MessageID>(0); ///< NMEA sentence type.
     TalkerID talker_id = static_cast<TalkerID>(0); ///< NMEA talker ID. Ignored for proprietary sentences.
     uint8_t source_desc_set = 0; ///< Data descriptor set where the data will be sourced. Available options depend on the sentence.
-    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower.
+    uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
 };
 void insert(Serializer& serializer, const NmeaMessage& self);
@@ -916,6 +916,7 @@ struct GnssSbasSettings
             ENABLE_RANGING     = 0x0001,  ///<  Use SBAS pseudo-ranges in position solution
             ENABLE_CORRECTIONS = 0x0002,  ///<  Use SBAS differential corrections
             APPLY_INTEGRITY    = 0x0004,  ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
+            ALL                = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -933,6 +934,9 @@ struct GnssSbasSettings
         void enableCorrections(bool val) { if(val) value |= ENABLE_CORRECTIONS; else value &= ~ENABLE_CORRECTIONS; }
         bool applyIntegrity() const { return (value & APPLY_INTEGRITY) > 0; }
         void applyIntegrity(bool val) { if(val) value |= APPLY_INTEGRITY; else value &= ~APPLY_INTEGRITY; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1195,6 +1199,7 @@ struct GpioConfig
             OPEN_DRAIN = 0x01,  ///<  The pin will be an open-drain output. The state will be either LOW or FLOATING instead of LOW or HIGH, respectively. This is used to connect multiple open-drain outputs from several devices. An internal or external pull-up resistor is typically used in combination. The maximum voltage of an open drain output is subject to the device maximum input voltage range found in the specifications.
             PULLDOWN   = 0x02,  ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
             PULLUP     = 0x04,  ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
+            ALL        = 0x07,
         };
         uint8_t value = NONE;
         
@@ -1212,6 +1217,9 @@ struct GpioConfig
         void pulldown(bool val) { if(val) value |= PULLDOWN; else value &= ~PULLDOWN; }
         bool pullup() const { return (value & PULLUP) > 0; }
         void pullup(bool val) { if(val) value |= PULLUP; else value &= ~PULLUP; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
@@ -1502,6 +1510,7 @@ struct GetEventTriggerStatus
             ACTIVE  = 0x01,  ///<  True if the trigger is currently active (either due to its logic or being in test mode).
             ENABLED = 0x02,  ///<  True if the trigger is enabled.
             TEST    = 0x04,  ///<  True if the trigger is in test mode.
+            ALL     = 0x07,
         };
         uint8_t value = NONE;
         
@@ -1519,6 +1528,9 @@ struct GetEventTriggerStatus
         void enabled(bool val) { if(val) value |= ENABLED; else value &= ~ENABLED; }
         bool test() const { return (value & TEST) > 0; }
         void test(bool val) { if(val) value |= TEST; else value &= ~TEST; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct Entry
@@ -2450,7 +2462,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_3dm_mip_cmd_3dm_lowpass_filter  (0x0C,0x54) Mip Cmd 3Dm Lowpass Filter [CPP]
+///@defgroup cpp_3dm_lowpass_filter  (0x0C,0x54) Lowpass Filter [CPP]
 /// This command controls the low-pass anti-aliasing filter supported data quantities.
 /// 
 /// See the device user manual for data quantities which support the anti-aliasing filter.
@@ -2468,7 +2480,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
 ///
 ///@{
 
-struct MipCmd3dmLowpassFilter
+struct LowpassFilter
 {
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
@@ -2499,17 +2511,17 @@ struct MipCmd3dmLowpassFilter
         
     };
 };
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self);
+void insert(Serializer& serializer, const LowpassFilter& self);
+void extract(Serializer& serializer, LowpassFilter& self);
 
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self);
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self);
+void insert(Serializer& serializer, const LowpassFilter::Response& self);
+void extract(Serializer& serializer, LowpassFilter::Response& self);
 
-CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
-CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
-CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
-CmdResult defaultMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
+CmdResult readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);
+CmdResult saveLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult loadLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
+CmdResult defaultLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc);
 ///@}
 ///
 
