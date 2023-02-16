@@ -277,7 +277,7 @@ int main(int argc, const char* argv[])
             filter_state_ahrs = true;
         }
 
-        //Once in full nav, print out data at 10 Hz
+        //Once in AHRS Flter Mode, print out data at 10 Hz
         if(filter_state_ahrs)
         {
            mip::Timestamp curr_timestamp = getCurrentTimestamp();
