@@ -35,7 +35,6 @@ extern "C" {
 
 typedef struct serial_port
 {
-    bool is_open;
 #ifdef WIN32 //Windows
     HANDLE handle;
 #else //Linux
