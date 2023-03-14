@@ -143,6 +143,8 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
+    virtual ~Connection() {}
+
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
 
