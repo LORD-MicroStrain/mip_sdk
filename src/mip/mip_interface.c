@@ -582,15 +582,21 @@ enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, cons
 ///
 bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
 {
+    // The command queue should be locked to ensure the queue matches the order of sent commands.
+    // This also protects mip_interface_send_to_device.
+    // This requires that the mutex is recursive.
+    MIP_MUTEX_LOCK(&mip_interface_cmd_queue(device)->_mutex);
+
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
-    if( !mip_interface_send_to_device(device, mip_packet_pointer(packet), mip_packet_total_length(packet)) )
-    {
-        mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
-        return false;
-    }
+    bool ok = mip_interface_send_to_device(device, mip_packet_pointer(packet), mip_packet_total_length(packet));
 
-    return true;
+    if(!ok)
+        mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
+
+    MIP_MUTEX_UNLOCK(&mip_interface_cmd_queue(device)->_mutex);
+
+    return ok;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,8 @@
 #include "mip_result.h"
 #include "mip_packet.h"
 
+#include "utils/mip_mutex.h"
+
 #ifdef __cplusplus
 namespace mip {
 namespace C {
@@ -55,6 +57,11 @@ typedef struct mip_pending_cmd
         uint8_t                 _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
     };                                                 ///<@private
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
+
+//#ifdef MIP_ENABLE_THREADING
+//    mip_mutex_type              _mutex;
+//#endif
+
 } mip_pending_cmd;
 
 void mip_pending_cmd_init(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor);
@@ -69,6 +76,8 @@ uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd);
 
 int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type now);
 bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type now);
+
+void mip_pending_cmd_signal(mip_pending_cmd* cmd, mip_cmd_result status);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +104,10 @@ typedef struct mip_cmd_queue
     mip_pending_cmd* _first_pending_cmd;
     timeout_type     _base_timeout;
 
+#ifdef MIP_ENABLE_THREADING
+    mip_mutex_type   _mutex;
+#endif // MIP_ENABLE_THREADING
+
 #ifdef MIP_ENABLE_DIAGNOSTICS
     uint16_t         _diag_cmds_queued;    ///<@private Number of queued commands.
     uint16_t         _diag_cmds_acked;     ///<@private Number of successful commands.
@@ -106,17 +119,20 @@ typedef struct mip_cmd_queue
 } mip_cmd_queue;
 
 void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout);
+void mip_cmd_queue_deinit(mip_cmd_queue* queue);
+
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
+void mip_cmd_queue_cancel(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 
 void mip_cmd_queue_clear(mip_cmd_queue* queue);
 
 void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type timestamp);
 
+void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, timestamp_type timestamp);
+
 void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, timeout_type timeout);
 timeout_type mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue);
-
-void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, timestamp_type timestamp);
 
 
 #ifdef MIP_ENABLE_DIAGNOSTICS

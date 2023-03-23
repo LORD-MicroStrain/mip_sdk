@@ -89,6 +89,12 @@ set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to l
 
 set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
+option(MIP_ENABLE_THREADING "Enable thread synchronization primitives for better multi-threading support on Linux and Windows systems." ON)
+
+if(MIP_ENABLE_THREADING)
+    find_package(Threads REQUIRED)
+endif()
+
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 #
@@ -186,6 +192,12 @@ if(MIP_USE_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
+if(MIP_ENABLE_THREADING)
+    list(APPEND UTILS_SOURCES
+        "${UTILS_DIR}/mip_mutex.c"
+        "${UTILS_DIR}/mip_mutex.h"
+    )
+endif()
 if(MIP_USE_EXTRAS)
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
@@ -235,6 +247,10 @@ if(${MIP_ENABLE_DIAGNOSTICS})
     list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
 endif()
 
+if(MIP_ENABLE_THREADING)
+    list(APPEND MIP_DEFINES "MIP_ENABLE_THREADING")
+endif()
+
 # Disable windows defined min/max
 if(WIN32)
   list(APPEND MIP_DEFINES "NOMINMAX=1")
@@ -247,6 +263,14 @@ else()
 endif()
 
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
+
+#
+# Linked libraries
+#
+
+if(MIP_ENABLE_THREADING)
+    target_link_libraries(mip PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 #
 # TESTING

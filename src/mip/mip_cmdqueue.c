@@ -3,6 +3,7 @@
 
 #include "mip_field.h"
 #include "mip_packet.h"
+#include "utils/mip_mutex.h"
 
 #include <string.h>
 #include <assert.h>
@@ -189,6 +190,38 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Signal a pending command that it has finished.
+///
+/// This is used to signal the waiting function (mip_interface_wait_for_reply)
+/// that the command has finished due to reply, timeout, or cancellation.
+///
+///@warning This function may cause deallocation of the pending command struct
+///         under certain circumstatnces - in particular, when the command was
+///         issued from another thread (regardless of MIP_ENABLE_THREADING), it
+///         may return from the command function, causing the pending cmd to go
+///         out of scope.
+///
+///@warning This function must not be called from user code while the command
+///         is in a command queue. Doing so will result in undefined behavior.
+///         Instead, use mip_cmd_queue_cancel() which will call this function
+///         internally with MIP_STATUS_CANCELLED.
+///
+///@param cmd
+///
+///@param status
+///       The final command status. This should be the finished result, i.e.
+///       mip_cmd_result_is_finished(status) should return true.
+///
+void mip_pending_cmd_signal(mip_pending_cmd* cmd, mip_cmd_result status)
+{
+    assert(mip_cmd_result_is_finished(status));
+
+    cmd->_status = status;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initializes a command queue.
 ///
@@ -209,6 +242,24 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout)
     MIP_DIAG_ZERO(queue->_diag_cmds_nacked);
     MIP_DIAG_ZERO(queue->_diag_cmds_timedout);
     MIP_DIAG_ZERO(queue->_diag_cmds_failed);
+
+    MIP_MUTEX_INIT(&queue->_mutex);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief De-initialize a command queue.
+///
+/// Call this to clean up the command queue. Queued commands will be terminated
+/// with MIP_STATUS_CANCELLED. If multithreading is enabled, the mutex is
+/// destroyed.
+///
+///@see mip_cmd_queue_clear.
+///
+void mip_cmd_queue_deinit(mip_cmd_queue* queue)
+{
+    mip_cmd_queue_clear(queue);
+
+    MIP_MUTEX_DEINIT(&queue->_mutex);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -222,21 +273,27 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout)
 ///
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 {
+    MIP_MUTEX_LOCK(&queue->_mutex);
+
     // For now only one command can be queued at a time.
     if( queue->_first_pending_cmd )
     {
+        //mip_pending_cmd_signal(cmd, MIP_STATUS_CANCELLED);
         cmd->_status = MIP_STATUS_CANCELLED;
-        return;
+    }
+    else
+    {
+        MIP_DIAG_INC(queue->_diag_cmds_queued, 1);
+
+        cmd->_status = MIP_STATUS_PENDING;
+        queue->_first_pending_cmd = cmd;
     }
 
-    MIP_DIAG_INC(queue->_diag_cmds_queued, 1);
-
-    cmd->_status = MIP_STATUS_PENDING;
-    queue->_first_pending_cmd = cmd;
+    MIP_MUTEX_UNLOCK(&queue->_mutex);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Removes a pending command from the queue.
+///@brief Removes a pending command from the queue without cancelling it.
 ///
 ///@internal
 ///
@@ -245,11 +302,98 @@ void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 ///
 void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 {
+    MIP_MUTEX_LOCK(&queue->_mutex);
+
     if( queue->_first_pending_cmd == cmd )
     {
         queue->_first_pending_cmd = NULL;
-        cmd->_status = MIP_STATUS_CANCELLED;
     }
+
+    MIP_MUTEX_UNLOCK(&queue->_mutex);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Removes a pending command from the queue (if present) and cancels it.
+///
+///@internal
+///
+///@param queue
+///@param cmd
+///
+void mip_cmd_queue_cancel(mip_cmd_queue* queue, mip_pending_cmd* cmd)
+{
+    mip_cmd_queue_dequeue(queue, cmd);
+
+    mip_pending_cmd_signal(cmd, MIP_STATUS_CANCELLED);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Flushes the queue by terminating commands with MIP_STATUS_CANCELLED.
+///
+/// If multithreading is disabled, this must be called from same context as the
+/// command queue update function.
+///
+///@param queue
+///
+void mip_cmd_queue_clear(mip_cmd_queue* queue)
+{
+    MIP_MUTEX_LOCK(&queue->_mutex);
+
+    while( queue->_first_pending_cmd )
+    {
+        mip_pending_cmd* pending = queue->_first_pending_cmd;
+
+        queue->_first_pending_cmd = pending->_next;
+
+        // This may deallocate the pending command in another thread,
+        // so make sure to dequeue the command first.
+        mip_pending_cmd_signal(pending, MIP_STATUS_CANCELLED);
+    }
+
+    MIP_MUTEX_UNLOCK(&queue->_mutex);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Call periodically to make sure commands time out if no packets are
+///       received.
+///
+/// Call this during the device update if no calls to mip_cmd_queue_process_packet
+/// are made (e.g. because no packets were received). It is safe to call this
+/// in either case.
+///
+///@param queue
+///@param now
+///
+void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
+{
+    MIP_MUTEX_LOCK(&queue->_mutex);
+
+    if( queue->_first_pending_cmd )
+    {
+        mip_pending_cmd* pending = queue->_first_pending_cmd;
+
+        if( pending->_status == MIP_STATUS_PENDING )
+        {
+            // Update the timeout to the timestamp of the timeout time.
+            pending->_timeout_time = now + queue->_base_timeout + pending->_extra_timeout;
+            pending->_status = MIP_STATUS_WAITING;
+        }
+        else if( mip_pending_cmd_check_timeout(pending, now) )
+        {
+            queue->_first_pending_cmd = queue->_first_pending_cmd->_next;
+
+            // Clear response length and mark when it timed out.
+            pending->_response_length = 0;
+            pending->_reply_time = now;
+
+            // This must be last! Pending may be deallocated.
+            mip_pending_cmd_signal(pending, MIP_STATUS_TIMEDOUT);
+
+            MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
+        }
+    }
+
+    MIP_MUTEX_UNLOCK(&queue->_mutex);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -381,6 +525,8 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
     if( descriptor_set >= 0x80 && descriptor_set < 0xF0 )
         return;
 
+    MIP_MUTEX_LOCK(&queue->_mutex);
+
     if( queue->_first_pending_cmd )
     {
         mip_pending_cmd* pending = queue->_first_pending_cmd;
@@ -393,7 +539,7 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
 
             // This must be done last b/c it may trigger the thread which queued the command.
             // The command could go out of scope or its attributes inspected.
-            pending->_status = status;
+            mip_pending_cmd_signal(pending, status);
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
             if( mip_cmd_result_is_ack(status) )
@@ -407,64 +553,8 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
 #endif // MIP_ENABLE_DIAGNOSTICS
         }
     }
-}
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Clears the command queue.
-///
-/// This must be called from the same thread context as the update function.
-///
-///@param queue
-///
-void mip_cmd_queue_clear(mip_cmd_queue* queue)
-{
-    while( queue->_first_pending_cmd )
-    {
-        mip_pending_cmd* pending = queue->_first_pending_cmd;
-        queue->_first_pending_cmd = pending->_next;
-
-        // This may deallocate the pending command in another thread (make sure to fetch the next cmd first).
-        pending->_status = MIP_STATUS_CANCELLED;
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Call periodically to make sure commands time out if no packets are
-///       received.
-///
-/// Call this during the device update if no calls to mip_cmd_queue_process_packet
-/// are made (e.g. because no packets were received). It is safe to call this
-/// in either case.
-///
-///@param queue
-///@param now
-///
-void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
-{
-    if( queue->_first_pending_cmd )
-    {
-        mip_pending_cmd* pending = queue->_first_pending_cmd;
-
-        if( pending->_status == MIP_STATUS_PENDING )
-        {
-            // Update the timeout to the timestamp of the timeout time.
-            pending->_timeout_time = now + queue->_base_timeout + pending->_extra_timeout;
-            pending->_status = MIP_STATUS_WAITING;
-        }
-        else if( mip_pending_cmd_check_timeout(pending, now) )
-        {
-            queue->_first_pending_cmd = queue->_first_pending_cmd->_next;
-
-            // Clear response length and mark when it timed out.
-            pending->_response_length = 0;
-            pending->_reply_time = now;
-
-            // This must be last!
-            pending->_status = MIP_STATUS_TIMEDOUT;
-
-            MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
-        }
-    }
+    MIP_MUTEX_UNLOCK(&queue->_mutex);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
