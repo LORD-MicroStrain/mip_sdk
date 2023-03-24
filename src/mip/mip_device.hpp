@@ -497,8 +497,8 @@ void DeviceInterface::setCallbacks(T* object)
     };
 
     C::mip_interface_set_user_pointer(this, object);
-    C::mip_interface_set_send_function(this, Send != nullptr ? send : nullptr);
-    C::mip_interface_set_recv_function(this, Recv != nullptr ? recv : nullptr);
+    C::mip_interface_set_send_function(this, Send != nullptr ? (C::mip_send_callback)send : (C::mip_send_callback)nullptr);
+    C::mip_interface_set_recv_function(this, Recv != nullptr ? (C::mip_recv_callback)recv : (C::mip_recv_callback)nullptr);
 
     if( Update != nullptr )
         C::mip_interface_set_update_function(this, update);
