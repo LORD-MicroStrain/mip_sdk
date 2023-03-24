@@ -11,10 +11,10 @@
 using namespace mip;
 
 
-uint8_t packetBuffer[PACKET_LENGTH_MAX];
+uint8_t packetBuffer[mip::PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+Field fields[mip::C::MIP_PACKET_PAYLOAD_LENGTH_MAX / mip::C::MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -83,7 +83,7 @@ int main(int argc, const char* argv[])
         for(numFields = 0; ; numFields++)
         {
             const uint8_t fieldDescriptor = (rand() % 255) + 1;
-            const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
+            const uint8_t payloadLength = (rand() % mip::C::MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
             uint8_t* payload;
             RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
