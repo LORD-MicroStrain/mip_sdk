@@ -11,6 +11,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+#include <functional>
 #include <deque>
 #include <cstring>
 #include <stdio.h>
@@ -172,6 +173,11 @@ FakeDevice fake;
 class CommandThread
 {
 public:
+    CommandThread(unsigned int N = 10, std::function<mip::CmdResult (mip::DeviceInterface&)> command = &mip::commands_base::ping) : mResults(N), mCommand(command) {}
+
+    void setCount(unsigned int n) { assert(!mThread.joinable()); mResults.resize(n); }
+    void setCommand(std::function<mip::CmdResult (mip::DeviceInterface&)> command) { mCommand = command; }
+
     void start() { mThread = std::thread(&CommandThread::run, this); }
     void stop() { mThread.join(); }
 
@@ -180,14 +186,15 @@ public:
 private:
     void run()
     {
-        for(unsigned int i=0; i<10; i++)
+        for(mip::CmdResult& result : mResults)
         {
-            mResults.push_back( mip::commands_base::ping(device) );
+            result = mCommand(device);
         }
     }
 
 private:
     std::thread mThread;
+    std::function<mip::CmdResult (mip::DeviceInterface&)> mCommand;
     std::vector<mip::CmdResult> mResults;
 };
 
@@ -206,15 +213,24 @@ int main(int argc, const char* argv[])
         for(unsigned int i=0; i<N; i++)
         {
             mip::CmdResult result = mip::commands_base::ping(device);
-            std::printf("Result (%2d/%2d): %d (%s)\n", i+1, N, result.value, result.name());
+            std::printf("Result (%2d/%d): %d (%s)\n", i+1, N, result.value, result.name());
         }
 
         unsigned int M = 2;
         std::printf("Running %d threads...\n", M);
 
         std::vector<CommandThread> threads(M);
+        unsigned int i=0;
         for(auto& thread : threads)
+        {
+            thread.setCount( i*10 + 5 );
+            i++;
+        }
+        for(auto& thread : threads)
+        {
+            //std::this_thread::sleep_for(std::chrono::milliseconds(200));
             thread.start();
+        }
 
         for(auto& thread : threads)
             thread.stop();
@@ -226,7 +242,7 @@ int main(int argc, const char* argv[])
             std::printf("Thread %d/%d:\n", i+1, M);
             for(unsigned int j=0; j<results.size(); j++)
             {
-                std::printf("  Result %2d/%2d: %d (%s)\n", j+1, int(results.size()), results[j].value, results[j].name());
+                std::printf("  Result %2d/%d: %d (%s)\n", j+1, int(results.size()), results[j].value, results[j].name());
             }
         }
     }
