@@ -98,6 +98,7 @@ static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_ST
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRP                 = 0x0C000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRQ                 = 0x30000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SINR                 = 0xC0000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_ALL                  = 0xFFFFFFFF;
 
 typedef uint32_t mip_rtk_get_status_flags_command_status_flags;
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NONE                    = 0x00000000;
@@ -108,11 +109,12 @@ static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FL
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_TOWER_CHANGE_INDICATOR  = 0x00F00000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_NMEA_TIMEOUT            = 0x01000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_SERVER_TIMEOUT          = 0x02000000; ///<  
-static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RTCM_TIMEOUT            = 0x04000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_TIMEOUT     = 0x04000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_DEVICE_OUT_OF_RANGE     = 0x08000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_CORRECTIONS_UNAVAILABLE = 0x10000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RESERVED                = 0x20000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_VERSION                 = 0xC0000000; ///<  
+static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_ALL                     = 0xFFFFFFFF;
 
 void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self);
 void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct mip_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self);
@@ -286,6 +288,7 @@ static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_THROTTLE                = 0x01; ///<  
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_CORRECTIONS_UNAVAILABLE = 0x02; ///<  
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_RESERVED                = 0xFC; ///<  
+static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_ALL                     = 0xFF;
 
 struct mip_rtk_service_status_command
 {

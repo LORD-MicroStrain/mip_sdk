@@ -105,6 +105,7 @@ struct GetStatusFlags
             RSRP                 = 0x0C000000,  ///<  
             RSRQ                 = 0x30000000,  ///<  
             SINR                 = 0xC0000000,  ///<  
+            ALL                  = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -138,6 +139,9 @@ struct GetStatusFlags
         void rsrq(uint32_t val) { value = (value & ~RSRQ) | (val << 28); }
         uint32_t sinr() const { return (value & SINR) >> 30; }
         void sinr(uint32_t val) { value = (value & ~SINR) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct StatusFlags : Bitfield<StatusFlags>
@@ -152,11 +156,12 @@ struct GetStatusFlags
             TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<  
             NMEA_TIMEOUT            = 0x01000000,  ///<  
             SERVER_TIMEOUT          = 0x02000000,  ///<  
-            RTCM_TIMEOUT            = 0x04000000,  ///<  
+            CORRECTIONS_TIMEOUT     = 0x04000000,  ///<  
             DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
             RESERVED                = 0x20000000,  ///<  
             VERSION                 = 0xC0000000,  ///<  
+            ALL                     = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -182,8 +187,8 @@ struct GetStatusFlags
         void nmeaTimeout(bool val) { if(val) value |= NMEA_TIMEOUT; else value &= ~NMEA_TIMEOUT; }
         bool serverTimeout() const { return (value & SERVER_TIMEOUT) > 0; }
         void serverTimeout(bool val) { if(val) value |= SERVER_TIMEOUT; else value &= ~SERVER_TIMEOUT; }
-        bool rtcmTimeout() const { return (value & RTCM_TIMEOUT) > 0; }
-        void rtcmTimeout(bool val) { if(val) value |= RTCM_TIMEOUT; else value &= ~RTCM_TIMEOUT; }
+        bool correctionsTimeout() const { return (value & CORRECTIONS_TIMEOUT) > 0; }
+        void correctionsTimeout(bool val) { if(val) value |= CORRECTIONS_TIMEOUT; else value &= ~CORRECTIONS_TIMEOUT; }
         bool deviceOutOfRange() const { return (value & DEVICE_OUT_OF_RANGE) > 0; }
         void deviceOutOfRange(bool val) { if(val) value |= DEVICE_OUT_OF_RANGE; else value &= ~DEVICE_OUT_OF_RANGE; }
         bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
@@ -192,6 +197,9 @@ struct GetStatusFlags
         void reserved(bool val) { if(val) value |= RESERVED; else value &= ~RESERVED; }
         uint32_t version() const { return (value & VERSION) >> 30; }
         void version(uint32_t val) { value = (value & ~VERSION) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     
@@ -470,6 +478,7 @@ struct ServiceStatus
             THROTTLE                = 0x01,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x02,  ///<  
             RESERVED                = 0xFC,  ///<  
+            ALL                     = 0xFF,
         };
         uint8_t value = NONE;
         
@@ -487,6 +496,9 @@ struct ServiceStatus
         void correctionsUnavailable(bool val) { if(val) value |= CORRECTIONS_UNAVAILABLE; else value &= ~CORRECTIONS_UNAVAILABLE; }
         uint8_t reserved() const { return (value & RESERVED) >> 2; }
         void reserved(uint8_t val) { value = (value & ~RESERVED) | (val << 2); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint32_t reserved1 = 0;

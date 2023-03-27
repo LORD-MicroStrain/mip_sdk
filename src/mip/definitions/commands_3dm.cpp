@@ -4227,7 +4227,7 @@ CmdResult calibratedSensorRanges(C::mip_interface& device, SensorRangeType senso
     }
     return result;
 }
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self)
+void insert(Serializer& serializer, const LowpassFilter& self)
 {
     insert(serializer, self.function);
     
@@ -4245,7 +4245,7 @@ void insert(Serializer& serializer, const MipCmd3dmLowpassFilter& self)
         
     }
 }
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self)
+void extract(Serializer& serializer, LowpassFilter& self)
 {
     extract(serializer, self.function);
     
@@ -4264,7 +4264,7 @@ void extract(Serializer& serializer, MipCmd3dmLowpassFilter& self)
     }
 }
 
-void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self)
+void insert(Serializer& serializer, const LowpassFilter::Response& self)
 {
     insert(serializer, self.desc_set);
     
@@ -4277,7 +4277,7 @@ void insert(Serializer& serializer, const MipCmd3dmLowpassFilter::Response& self
     insert(serializer, self.frequency);
     
 }
-void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self)
+void extract(Serializer& serializer, LowpassFilter::Response& self)
 {
     extract(serializer, self.desc_set);
     
@@ -4291,7 +4291,7 @@ void extract(Serializer& serializer, MipCmd3dmLowpassFilter::Response& self)
     
 }
 
-CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency)
+CmdResult writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4311,7 +4311,7 @@ CmdResult writeMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet,
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut)
+CmdResult readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4348,7 +4348,7 @@ CmdResult readMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, 
     }
     return result;
 }
-CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
+CmdResult saveLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4362,7 +4362,7 @@ CmdResult saveMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, 
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
+CmdResult loadLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4376,7 +4376,7 @@ CmdResult loadMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, 
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult defaultMipCmd3dmLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
+CmdResult defaultLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));

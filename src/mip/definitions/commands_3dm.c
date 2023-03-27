@@ -4761,7 +4761,7 @@ mip_cmd_result mip_3dm_calibrated_sensor_ranges(struct mip_interface* device, mi
     }
     return result;
 }
-void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_command* self)
+void insert_mip_3dm_lowpass_filter_command(mip_serializer* serializer, const mip_3dm_lowpass_filter_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -4779,7 +4779,7 @@ void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serialize
         
     }
 }
-void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_command* self)
+void extract_mip_3dm_lowpass_filter_command(mip_serializer* serializer, mip_3dm_lowpass_filter_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -4798,7 +4798,7 @@ void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_command(mip_serializer* serializ
     }
 }
 
-void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* serializer, const mip_3dm_mip_cmd_3dm_lowpass_filter_response* self)
+void insert_mip_3dm_lowpass_filter_response(mip_serializer* serializer, const mip_3dm_lowpass_filter_response* self)
 {
     insert_u8(serializer, self->desc_set);
     
@@ -4811,7 +4811,7 @@ void insert_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* serializ
     insert_float(serializer, self->frequency);
     
 }
-void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* serializer, mip_3dm_mip_cmd_3dm_lowpass_filter_response* self)
+void extract_mip_3dm_lowpass_filter_response(mip_serializer* serializer, mip_3dm_lowpass_filter_response* self)
 {
     extract_u8(serializer, &self->desc_set);
     
@@ -4825,7 +4825,7 @@ void extract_mip_3dm_mip_cmd_3dm_lowpass_filter_response(mip_serializer* seriali
     
 }
 
-mip_cmd_result mip_3dm_write_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency)
+mip_cmd_result mip_3dm_write_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool enable, bool manual, float frequency)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4847,7 +4847,7 @@ mip_cmd_result mip_3dm_write_mip_cmd_3dm_lowpass_filter(struct mip_interface* de
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_read_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out)
+mip_cmd_result mip_3dm_read_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc, bool* enable_out, bool* manual_out, float* frequency_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4887,7 +4887,7 @@ mip_cmd_result mip_3dm_read_mip_cmd_3dm_lowpass_filter(struct mip_interface* dev
     }
     return result;
 }
-mip_cmd_result mip_3dm_save_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+mip_cmd_result mip_3dm_save_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4903,7 +4903,7 @@ mip_cmd_result mip_3dm_save_mip_cmd_3dm_lowpass_filter(struct mip_interface* dev
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_load_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+mip_cmd_result mip_3dm_load_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4919,7 +4919,7 @@ mip_cmd_result mip_3dm_load_mip_cmd_3dm_lowpass_filter(struct mip_interface* dev
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_LOWPASS_FILTER, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_3dm_default_mip_cmd_3dm_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
+mip_cmd_result mip_3dm_default_lowpass_filter(struct mip_interface* device, uint8_t desc_set, uint8_t field_desc)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];

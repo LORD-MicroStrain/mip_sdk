@@ -251,6 +251,7 @@ static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIM
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ANTENNA_OFFSET     = 0x0010; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x0020; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x0040; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ALL                = 0x007F;
 
 struct mip_filter_estimation_control_command
 {
@@ -395,6 +396,7 @@ static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_O
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x1; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4; ///<  
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ALL   = 0x7;
 
 struct mip_filter_tare_orientation_command
 {
@@ -1484,6 +1486,7 @@ static const mip_filter_initialization_configuration_command_alignment_selector 
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01; ///<  Dual-antenna GNSS alignment
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02; ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04; ///<  Magnetometer heading alignment
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_ALL          = 0x07;
 
 typedef uint8_t mip_filter_initialization_configuration_command_initial_condition_source;
 static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT        = 0; ///<  Automatic position, velocity and attitude
