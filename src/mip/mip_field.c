@@ -117,10 +117,9 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 {
     mip_field field;
 
-    field._payload         = header + MIP_INDEX_FIELD_PAYLOAD;
-    field._descriptor_set   = descriptor_set;
-
     // Default invalid values.
+    field._payload          = NULL;
+    field._descriptor_set   = descriptor_set;
     field._payload_length   = 0;
     field._field_descriptor = 0x00;  // This makes the field invalid.
     field._remaining_length = 0;
@@ -139,6 +138,7 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
         {
             field._field_descriptor = header[MIP_INDEX_FIELD_DESC];
             field._payload_length   = field_length - MIP_FIELD_HEADER_LENGTH;
+            field._payload          = header + MIP_INDEX_FIELD_PAYLOAD;
             field._remaining_length = total_length - field_length;
         }
     }
@@ -178,6 +178,9 @@ mip_field mip_field_first_from_packet(const mip_packet* packet)
 ///
 mip_field mip_field_next_after(const mip_field* field)
 {
+    // Payload length must be zero if payload is NULL.
+    assert(!(field->_payload == NULL) || (field->_payload_length == 0));
+
     const uint8_t* next_header = field->_payload + field->_payload_length;
 
     return mip_field_from_header_ptr(next_header, field->_remaining_length, field->_descriptor_set);

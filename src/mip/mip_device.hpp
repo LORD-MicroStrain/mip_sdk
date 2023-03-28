@@ -21,6 +21,11 @@ struct Dispatcher : public C::mip_dispatcher
         ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
         ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
     };
+
+    void addHandler(DispatchHandler& handler) { C::mip_dispatcher_add_handler(this, &handler); }
+    void removeHandler(DispatchHandler& handler) { C::mip_dispatcher_remove_handler(this, &handler); }
+
+    void removeAllHandlers() { C::mip_dispatcher_remove_all_handlers(this); }
 };
 
 
@@ -109,6 +114,9 @@ struct PendingCmd : public C::mip_pending_cmd
     ///
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
+    ///@copydoc mip::C::mip_pending_cmd_response_descriptor
+    uint8_t responseDescriptor() const { return C::mip_pending_cmd_response_descriptor(this); }
+
     ///@copydoc mip::C::mip_pending_cmd_response
     const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
 
@@ -135,6 +143,8 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
+    virtual ~Connection() {}
+
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
 
@@ -243,8 +253,8 @@ public:
     bool           sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
     bool           recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) { return C::mip_interface_recv_from_device(this, buffer, max_length, wait_time, length_out, timestamp); }
-    bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
-    bool           defaultUpdate(bool blocking=false) { return C::mip_interface_default_update(this, blocking); }
+    bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
+    bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
 
     RemainingCount receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
