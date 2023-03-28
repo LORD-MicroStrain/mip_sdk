@@ -65,7 +65,7 @@ void mip_mutex_lock(mip_mutex_type* mutex)
 {
 #ifdef WIN32
 
-        DWORD result = WaitForSinglObject(mutex->_handle, INFINITE);
+        DWORD result = WaitForSingleObject(mutex->_handle, INFINITE);
 
         if(result != WAIT_OBJECT_0)
         {
