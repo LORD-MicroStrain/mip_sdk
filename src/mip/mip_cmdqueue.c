@@ -3,7 +3,9 @@
 
 #include "mip_field.h"
 #include "mip_packet.h"
+#include "mip_logging.h"
 #include "utils/mip_mutex.h"
+#include "definitions/descriptors.h"
 
 #include <string.h>
 #include <assert.h>
@@ -190,7 +192,6 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signal a pending command that it has finished.
 ///
@@ -214,11 +215,17 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 ///       The final command status. This should be the finished result, i.e.
 ///       mip_cmd_result_is_finished(status) should return true.
 ///
-void mip_pending_cmd_signal(mip_pending_cmd* cmd, mip_cmd_result status)
+void mip_pending_cmd_notify(mip_pending_cmd* cmd, mip_cmd_result status)
 {
     assert(mip_cmd_result_is_finished(status));
 
+    MIP_MUTEX_LOCK(&cmd->_signal.mutex);
+
     cmd->_status = status;
+
+    MIP_THREAD_SIGNAL(&cmd->_signal);
+
+    MIP_MUTEX_UNLOCK(&cmd->_signal.mutex);
 }
 
 
@@ -236,6 +243,8 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout)
 {
     queue->_first_pending_cmd = NULL;
     queue->_base_timeout = base_reply_timeout;
+    queue->_last_timeout_desc_set   = MIP_INVALID_DESCRIPTOR_SET;
+    queue->_last_timeout_field_desc = MIP_INVALID_FIELD_DESCRIPTOR;
 
     MIP_DIAG_ZERO(queue->_diag_cmds_queued);
     MIP_DIAG_ZERO(queue->_diag_cmds_acked);
@@ -265,6 +274,10 @@ void mip_cmd_queue_deinit(mip_cmd_queue* queue)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Queue a command to wait for replies.
 ///
+/// If multithreading support (MIP_ENABLE_THREADING) is disabled:
+///@li The update function cannot interrupt mip_cmd_queue_enque(), or
+///@li Only one command is queued at a time.
+///
 ///@param queue
 ///@param cmd Listens for replies to this command.
 ///
@@ -273,21 +286,42 @@ void mip_cmd_queue_deinit(mip_cmd_queue* queue)
 ///
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 {
+    // Sanity check: cmd should not have a next queue element.
+    assert(cmd->_next == NULL);
+
+    cmd->_status = MIP_STATUS_PENDING;
+
     MIP_MUTEX_LOCK(&queue->_mutex);
 
-    // For now only one command can be queued at a time.
     if( queue->_first_pending_cmd )
     {
-        //mip_pending_cmd_signal(cmd, MIP_STATUS_CANCELLED);
-        cmd->_status = MIP_STATUS_CANCELLED;
+#ifndef MIP_ENABLE_THREADING
+        MIP_LOG_DEBUG("Attempting to queue more than one command without MIP_ENABLE_THREADING - this is unsafe if the update is run from another thread.");
+//        cmd->status = MIP_STATUS_CANCELLED;
+//        return;
+#endif
+
+        mip_pending_cmd* tail = queue->_first_pending_cmd;
+
+        // Sanity check: cmd is not already in the queue.
+        assert(tail != cmd);
+
+        while(tail->_next)
+        {
+            tail = tail->_next;
+
+             // Sanity check: cmd is not already in the queue.
+            assert(tail != cmd);
+        }
+
+        tail->_next = cmd;
     }
     else
-    {
-        MIP_DIAG_INC(queue->_diag_cmds_queued, 1);
-
-        cmd->_status = MIP_STATUS_PENDING;
         queue->_first_pending_cmd = cmd;
-    }
+
+    cmd->_next = NULL;
+
+    MIP_DIAG_INC(queue->_diag_cmds_queued, 1);
 
     MIP_MUTEX_UNLOCK(&queue->_mutex);
 }
@@ -295,25 +329,56 @@ void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes a pending command from the queue without cancelling it.
 ///
+/// This is a no-op if the command is not in this queue.
+///
+/// Thread-safe if MIP_ENABLE_THREADING is enabled.
+///
 ///@internal
 ///
 ///@param queue
 ///@param cmd
 ///
-void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
+///@returns true if the command was dequeued, or false if it wasn't in the queue.
+///
+bool mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 {
+    bool found = false;
+
     MIP_MUTEX_LOCK(&queue->_mutex);
 
-    if( queue->_first_pending_cmd == cmd )
+    if(queue->_first_pending_cmd == cmd)
     {
-        queue->_first_pending_cmd = NULL;
+        queue->_first_pending_cmd = cmd->_next;
+        cmd->_next = NULL;
+        found = true;
+    }
+    else
+    {
+        // Search the queue and unlink the command if it's found.
+        for(mip_pending_cmd* item = queue->_first_pending_cmd; item; item=item->_next)
+        {
+            if(item->_next == cmd)
+            {
+                item->_next = cmd->_next;
+                cmd->_next = NULL;
+                found = true;
+                break;
+            }
+
+            // Sanity check that the queue is not somehow circular.
+            assert(item != queue->_first_pending_cmd);
+        }
     }
 
     MIP_MUTEX_UNLOCK(&queue->_mutex);
+
+    return found;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Removes a pending command from the queue (if present) and cancels it.
+///
+/// Thread-safe if MIP_ENABLE_THREADING is enabled (see mip_cmd_queue_dequeue).
 ///
 ///@internal
 ///
@@ -324,14 +389,13 @@ void mip_cmd_queue_cancel(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 {
     mip_cmd_queue_dequeue(queue, cmd);
 
-    mip_pending_cmd_signal(cmd, MIP_STATUS_CANCELLED);
+    mip_pending_cmd_notify(cmd, MIP_STATUS_CANCELLED);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Flushes the queue by terminating commands with MIP_STATUS_CANCELLED.
 ///
-/// If multithreading is disabled, this must be called from same context as the
-/// command queue update function.
+/// Thread-safe if MIP_ENABLE_THREADING is enabled.
 ///
 ///@param queue
 ///
@@ -345,9 +409,13 @@ void mip_cmd_queue_clear(mip_cmd_queue* queue)
 
         queue->_first_pending_cmd = pending->_next;
 
+        // Ensure the removed cmds are fully unlinked to help avoid nasty surprises.
+        // This is similar to setting a pointer to NULL after freeing it.
+        pending->_next = NULL;
+
         // This may deallocate the pending command in another thread,
         // so make sure to dequeue the command first.
-        mip_pending_cmd_signal(pending, MIP_STATUS_CANCELLED);
+        mip_pending_cmd_notify(pending, MIP_STATUS_CANCELLED);
     }
 
     MIP_MUTEX_UNLOCK(&queue->_mutex);
@@ -368,145 +436,221 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
 {
     MIP_MUTEX_LOCK(&queue->_mutex);
 
-    if( queue->_first_pending_cmd )
+    // +-----------+-----------+-----------+-----------+--
+    // |  WAITING  |  WAITING  |  PENDING  |  PENDING  |
+    // +-----------+-----------+-----------+-----------+--
+
+    // Waiting commands get the timeout checked in this function because there might not be any packets arriving.
+    // Only the first command in the queue can time out; out-of-order timeouts are not allowed.
+    // All preceding commands must be processed by the device first, so a long-running command should not
+    // cause a subsequent command to time out before the device has even had a chance to process it.
+    while( (queue->_first_pending_cmd != NULL) && (queue->_first_pending_cmd->_status == MIP_STATUS_WAITING) )
     {
         mip_pending_cmd* pending = queue->_first_pending_cmd;
 
-        if( pending->_status == MIP_STATUS_PENDING )
+        if( mip_pending_cmd_check_timeout(pending, now) )
         {
-            // Update the timeout to the timestamp of the timeout time.
-            pending->_timeout_time = now + queue->_base_timeout + pending->_extra_timeout;
-            pending->_status = MIP_STATUS_WAITING;
-        }
-        else if( mip_pending_cmd_check_timeout(pending, now) )
-        {
-            queue->_first_pending_cmd = queue->_first_pending_cmd->_next;
+            // Drop this cmd from the head of the queue.
+            queue->_first_pending_cmd = pending->_next;
 
             // Clear response length and mark when it timed out.
             pending->_response_length = 0;
             pending->_reply_time = now;
 
+            // Set the last timed-out command descriptor.
+            queue->_last_timeout_desc_set   = pending->_descriptor_set;
+            queue->_last_timeout_field_desc = pending->_field_descriptor;
+
             // This must be last! Pending may be deallocated.
-            mip_pending_cmd_signal(pending, MIP_STATUS_TIMEDOUT);
+            mip_pending_cmd_notify(pending, MIP_STATUS_TIMEDOUT);
 
             MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
         }
     }
 
+    //for(mip_pending_cmd* pending = queue->_first_pending_cmd; pending; pending = pending->_next )
+    //{
+    //    // PENDING commands get their timeout_time set and move to the WAITING state.
+    //    if( pending->_status == MIP_STATUS_PENDING )
+    //    {
+    //        // Update the timeout to the timestamp of the timeout time.
+    //        pending->_timeout_time = now + queue->_base_timeout + pending->_extra_timeout;
+    //        pending->_status = MIP_STATUS_WAITING;
+    //    }
+    //}
+
     MIP_MUTEX_UNLOCK(&queue->_mutex);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Iterate over a packet, checking for replies to the pending command.
+///@brief Completes the pending command given a reply field.
 ///
-///@internal
+///@warning The pending command may be deallocated.
 ///
 ///@param pending
-///       Pending command which is awaiting replies
-///@param packet
-///@param base_timeout
+///       The pending command (may be deallocated as a result!)
+///@param[in,out] field
+///       The mip field in the packet. The field pointer may be advanced to the
+///       next field if reponse data is consumed.
 ///@param timestamp
+///       Timestamp of the received packet.
 ///
-///@returns The new status of the pending command (the command status field is
-///         not updated). The caller should set pending->_status to this value
-///         after doing any additional processing requiring the pending struct.
+///@returns The status of the pending command. This will always be a
+///         "reply code" status.
 ///
-static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pending, const mip_packet* packet, timeout_type base_timeout, timestamp_type timestamp)
+static mip_cmd_result mip_pending_cmd_process_reply(mip_pending_cmd* pending, /*not const*/ mip_field* field, timestamp_type timestamp)
 {
-    assert( pending->_status != MIP_STATUS_NONE );         // pending->_status must be set to MIP_STATUS_PENDING in mip_cmd_queue_enqueue to get here.
-    assert( !mip_cmd_result_is_finished(pending->_status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
+    // Payload is already validated by mip_cmd_queue_process_reply.
+    const uint8_t ack_code = mip_field_payload(field)[MIP_INDEX_REPLY_ACK_CODE];
 
-    if( pending->_status == MIP_STATUS_PENDING )
-    {
-        // Update the timeout to the timestamp of the timeout time.
-        pending->_timeout_time = timestamp + base_timeout + pending->_extra_timeout;
-        pending->_status = MIP_STATUS_WAITING;
-    }
+    uint8_t response_length = 0;
+    mip_field response_field;
 
     // ------+------+------+------+------+------+------+------+------+------------------------
     //  ...  | 0x02 | 0xF1 | cmd1 | nack | 0x02 | 0xF1 | cmd2 |  ack |  response field ...
     // ------+------+------+------+------+------+------+------+------+------------------------
 
-    if( mip_packet_descriptor_set(packet) == pending->_descriptor_set )
+    // If the command was ACK'd, check if response data is expected.
+    if( pending->_response_descriptor != 0x00 && ack_code == MIP_ACK_OK )
     {
-        mip_field field = {0};
-        while( mip_field_next_in_packet(&field, packet) )
+        // Look ahead one field for response data.
+        response_field = mip_field_next_after(&field);
+        if( mip_field_is_valid(&response_field) )
         {
-            // Not an ack/nack reply field, skip it.
-            if( mip_field_field_descriptor(&field) != MIP_REPLY_DESC_GLOBAL_ACK_NACK )
-                continue;
+            const uint8_t response_descriptor = mip_field_field_descriptor(&response_field);
 
-            // Sanity check payload length before accessing it.
-            if( mip_field_payload_length(&field) != 2 )
-                continue;
+            // This is a wildcard to accept any response data descriptor.
+            // Needed when the response descriptor is not known or is wrong.
+            if( pending->_response_descriptor == MIP_REPLY_DESC_GLOBAL_ACK_NACK )
+                pending->_response_descriptor = response_descriptor;
 
-            const uint8_t* const payload = mip_field_payload(&field);
-
-            const uint8_t cmd_descriptor = payload[MIP_INDEX_REPLY_DESCRIPTOR];
-            const uint8_t ack_code       = payload[MIP_INDEX_REPLY_ACK_CODE];
-
-            // Is this the right command reply?
-            if( pending->_field_descriptor != cmd_descriptor )
-                continue;
-
-            // Descriptor matches!
-
-            uint8_t response_length = 0;
-            mip_field response_field;
-
-            // If the command was ACK'd, check if response data is expected.
-            if( pending->_response_descriptor != 0x00 && ack_code == MIP_ACK_OK )
+            // Make sure the response descriptor matches what is expected.
+            if( response_descriptor == pending->_response_descriptor )
             {
-                // Look ahead one field for response data.
-                response_field = mip_field_next_after(&field);
-                if( mip_field_is_valid(&response_field) )
-                {
-                    const uint8_t response_descriptor = mip_field_field_descriptor(&response_field);
+                // Update the response_size field to reflect the actual size.
+                response_length = mip_field_payload_length(&response_field);
 
-                    // This is a wildcard to accept any response data descriptor.
-                    // Needed when the response descriptor is not known or is wrong.
-                    if( pending->_response_descriptor == MIP_REPLY_DESC_GLOBAL_ACK_NACK )
-                        pending->_response_descriptor = response_descriptor;
-
-                    // Make sure the response descriptor matches what is expected.
-                    if( response_descriptor == pending->_response_descriptor )
-                    {
-                        // Update the response_size field to reflect the actual size.
-                        response_length = mip_field_payload_length(&response_field);
-
-                        // Skip this field when iterating for next ack/nack reply.
-                        field = response_field;
-                    }
-                }
+                // Skip this field when iterating for next ack/nack reply.
+                // This assigns the struct metadata which points at the field, and not the actual field data in the packet.
+                *field = response_field;
             }
-
-            // Limit response data size to lesser of buffer size or actual response length.
-            pending->_response_length = (response_length < pending->_response_buffer_size) ? response_length : pending->_response_buffer_size;
-
-            // Copy response data to the pending buffer (skip if response_field is invalid).
-            if( pending->_response_length > 0 )
-                memcpy(pending->_response_buffer, mip_field_payload(&response_field), pending->_response_length);
-
-            // pending->_ack_code   = ack_code;
-            pending->_reply_time = timestamp;  // Completion time
-
-            return (enum mip_cmd_result)ack_code;
         }
     }
 
-    // No matching reply descriptors in this packet.
+    // Limit response data size to lesser of buffer size or actual response length (zero if nack or no data).
+    pending->_response_length = (response_length < pending->_response_buffer_size) ? response_length : pending->_response_buffer_size;
 
-    // Check for timeout
-    if( mip_pending_cmd_check_timeout(pending, timestamp) )
+    // Copy response data to the pending buffer (skip if response_field is invalid).
+    if( pending->_response_length > 0 )
+        memcpy(pending->_response_buffer, mip_field_payload(&response_field), pending->_response_length);
+
+    pending->_reply_time = timestamp;  // Completion time
+
+    // This may deallocate the pending command - do it last!
+    mip_pending_cmd_notify(pending, ack_code);
+
+    return (mip_cmd_result)ack_code;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Processes a MIP command reply field by attempting to match it with a
+///       queued pending command.
+///
+///@param queue
+///
+///@param[in,out] field
+///       The mip field in the packet. The field pointer may be advanced to the
+///       next field if reponse data is consumed.
+///@param timestamp
+///       Timestamp of the received packet.
+///
+///@returns MIP_STATUS_NONE if no matching command was found.
+///@returns A mip reply code if a matching command was found.
+///
+static mip_cmd_result mip_cmd_queue_process_reply(mip_cmd_queue* queue, /*not const*/ mip_field* field, timestamp_type timestamp)
+{
+    const uint8_t descriptor_set = mip_field_descriptor_set(field);
+    const uint8_t* const reply_payload = mip_field_payload(field);
+
+    const uint8_t cmd_descriptor = reply_payload[MIP_INDEX_REPLY_DESCRIPTOR];
+
+    const bool might_be_stale_reply = (
+        (descriptor_set == queue->_last_timeout_desc_set) &&
+        (cmd_descriptor == queue->_last_timeout_field_desc)
+    );
+
+    // Iterate the pending command queue looking for the request to this reply.
+    //
+    // If the reply is not for the first thing in the queue, either:
+    // A) it's a stale reply for a previously command that timed out,
+    // B) the command (or reply) got lost and this reply goes with one of the following commands, or
+    // C) the reply goes to something else and the command queue isn't aware of it.
+    //
+    // The control logic works as follows, assuming the queue contains commands A,B,C,...:
+    // (Down is YES, right is NO)
+    //
+    // reply --> A? -----> B? -----------------> C? --------------> ... ---> Stop
+    //           |         |                     |
+    //           V         V                     V
+    //         A done,   stale? --> B done,    stale? --> C done,
+    //          Stop       |        A T.O.,      |        A T.O.,
+    //                     V        Stop         V        B T.O.,
+    //                    Stop                  Stop      Stop
+    //
+    mip_pending_cmd* prev_pending = NULL;
+    for(mip_pending_cmd* pending = queue->_first_pending_cmd; pending != NULL; pending = pending->_next )
     {
-        pending->_response_length = 0;
-        // pending->_ack_code        = MIP_NACK_COMMAND_TIMEOUT;
+        // If the command in the queue matches the reply descriptor, process the reply.
+        // In the above diagram, this implements the line at the top going from left to right.
+        if( pending->_descriptor_set == descriptor_set && pending->_field_descriptor == cmd_descriptor )
+        {
+            if( might_be_stale_reply )
+            {
+                // Assume that a match to the first thing in the queue is not a stale reply.
+                //
+                // If there are two identical commands in a row, say "AA", and one times out, it's
+                // impossible to know which was which without contextual information.
+                // Therefore, assume the user has set appropriate timeouts and that the previous
+                // command really did time out; that this reply goes with the newer one.
+                //
+                if(pending != queue->_first_pending_cmd)
+                    return MIP_STATUS_NONE;
 
-        // Must be last!
-        return MIP_STATUS_TIMEDOUT;
+                // fall through if first queued command.
+            }
+
+            // Pop all preceding elements off the queue.
+            for(mip_pending_cmd* skipped = queue->_first_pending_cmd; skipped != pending; )
+            {
+                assert(skipped->_status == MIP_STATUS_WAITING); // Sanity check: queue has only waiting commands up to this point.
+
+                mip_pending_cmd* tmp = skipped;
+                skipped = skipped->_next;
+
+                // This may deallocate tmp, so make sure "skipped" has been moved to the next element.
+                mip_pending_cmd_notify(tmp, MIP_STATUS_TIMEDOUT);
+
+                MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
+            }
+
+            // Advance the queue to the next pending command.
+            queue->_first_pending_cmd = pending->_next;
+
+            // Process the ack/nack and any reply data.
+            // This may cause "pending" to be deallocated.
+            // This may advance the mip field.
+            mip_cmd_result result = mip_pending_cmd_process_reply(pending, field, timestamp);
+
+            if( mip_cmd_result_is_ack(result) )
+                MIP_DIAG_INC(queue->_diag_cmds_acked, 1);
+            else
+                MIP_DIAG_INC(queue->_diag_cmds_nacked, 1);
+
+            return result;
+        }
     }
 
-    return pending->_status;
+    return MIP_STATUS_NONE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -522,36 +666,21 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
 {
     // Check if the packet is a command descriptor set.
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
-    if( descriptor_set >= 0x80 && descriptor_set < 0xF0 )
+    if( !mip_is_cmd_descriptor_set(descriptor_set) )
         return;
 
     MIP_MUTEX_LOCK(&queue->_mutex);
 
-    if( queue->_first_pending_cmd )
+    mip_field field = {0};
+    while( mip_field_next_in_packet(&field, packet) )
     {
-        mip_pending_cmd* pending = queue->_first_pending_cmd;
+        if( mip_field_field_descriptor(&field) != MIP_REPLY_DESC_GLOBAL_ACK_NACK )
+            continue;
 
-        const enum mip_cmd_result status = process_fields_for_pending_cmd(pending, packet, queue->_base_timeout, timestamp);
+        if( mip_field_payload_length(&field) != 2 )
+            continue;
 
-        if( mip_cmd_result_is_finished(status) )
-        {
-            queue->_first_pending_cmd = queue->_first_pending_cmd->_next;
-
-            // This must be done last b/c it may trigger the thread which queued the command.
-            // The command could go out of scope or its attributes inspected.
-            mip_pending_cmd_signal(pending, status);
-
-#ifdef MIP_ENABLE_DIAGNOSTICS
-            if( mip_cmd_result_is_ack(status) )
-                MIP_DIAG_INC(queue->_diag_cmds_acked, 1);
-            else if( mip_cmd_result_is_reply(status) )
-                MIP_DIAG_INC(queue->_diag_cmds_nacked, 1);
-            else if( status == MIP_STATUS_TIMEDOUT )
-                MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
-            else
-                MIP_DIAG_INC(queue->_diag_cmds_failed, 1);
-#endif // MIP_ENABLE_DIAGNOSTICS
-        }
+        mip_cmd_queue_process_reply(queue, &field, timestamp);
     }
 
     MIP_MUTEX_UNLOCK(&queue->_mutex);

@@ -11,6 +11,10 @@
 
 #ifdef MIP_ENABLE_THREADING
 
+//
+// Mutex
+//
+
 void mip_mutex_init(mip_mutex_type* mutex)
 {
 #ifdef WIN32
@@ -65,22 +69,22 @@ void mip_mutex_lock(mip_mutex_type* mutex)
 {
 #ifdef WIN32
 
-        DWORD result = WaitForSingleObject(mutex->_handle, INFINITE);
+    DWORD result = WaitForSingleObject(mutex->_handle, INFINITE);
 
-        if(result != WAIT_OBJECT_0)
-        {
-            if( result == WAIT_ABANDONED )
-                MIP_LOG_ERROR("Mutex was abandoned!\n");
-            else
-                MIP_LOG_ERROR("Failed to lock mutex: %d\n", GetLastError());
-        }
+    if(result != WAIT_OBJECT_0)
+    {
+        if( result == WAIT_ABANDONED )
+            MIP_LOG_ERROR("Mutex was abandoned!\n");
+        else
+            MIP_LOG_ERROR("Failed to lock mutex: %d\n", GetLastError());
+    }
 
 #else
 
-        int result = pthread_mutex_lock(&mutex->_mutex);
+    int result = pthread_mutex_lock(&mutex->_mutex);
 
-        if( result != 0 )
-            MIP_LOG_ERROR("Failed to lock mutex: %s (%d)\n", strerror(result), result);
+    if( result != 0 )
+        MIP_LOG_ERROR("Failed to lock mutex: %s (%d)\n", strerror(result), result);
 
 #endif
 }
@@ -90,17 +94,80 @@ void mip_mutex_unlock(mip_mutex_type* mutex)
 {
 #ifdef WIN32
 
-        if( !ReleaseMutex(mutex->_handle) )
-            MIP_LOG_ERROR("Failed to unlock mutex: %d\n", GetLastError());
+    if( !ReleaseMutex(mutex->_handle) )
+        MIP_LOG_ERROR("Failed to unlock mutex: %d\n", GetLastError());
 
 #else
 
-        int result = pthread_mutex_unlock(&mutex->_mutex);
+    int result = pthread_mutex_unlock(&mutex->_mutex);
 
-        if( result != 0 )
-            MIP_LOG_ERROR("Failed to unlock mutex: %d (%d)\n", strerror(result), result);
+    if( result != 0 )
+        MIP_LOG_ERROR("Failed to unlock mutex: %s (%d)\n", strerror(result), result);
 
 #endif
 }
+
+//
+// Thread Signaling
+//
+
+void mip_thread_signal_init(mip_thread_signal* sig)
+{
+    mip_mutex_init(&sig->_mutex);
+
+#ifdef WIN32
+#else
+    int result = pthread_cond_init(&sig->_cond);
+
+    if( result != 0 )
+        MIP_LOG_ERROR("Failed to initialize condition variable: %s (%d)\n", strerr(result), result);
+#endif
+}
+
+void mip_thread_signal_deinit(mip_thread_signal* sig)
+{
+#ifdef WIN32
+
+
+
+#else
+
+    int result = pthread_cond_destroy(&sig->_cond);
+
+    if( result != 0 )
+        MIP_LOG_ERROR("Failed to destroy condition variable: %s (%d)\n", strerr(result), result);
+
+#endif
+
+    mip_mutex_deinit(&sig->_mutex);
+}
+
+void mip_thread_wait(mip_thread_signal* sig)
+{
+#ifdef WIN32
+
+
+
+#else
+
+    pthread_cond_wait(&sig->_cond, &sig->_mutex._mutex);
+
+#endif
+}
+
+void mip_thread_notify(mip_thread_signal* sig)
+{
+#ifdef WIN32
+
+
+
+#else
+
+
+
+#endif
+}
+
+
 
 #endif // MIP_ENABLE_THREADING

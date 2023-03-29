@@ -179,7 +179,7 @@ public:
     DeviceInterface(const DeviceInterface&) = delete;
     DeviceInterface& operator=(const DeviceInterface&) = delete;
 
-    ~DeviceInterface() = default;
+    ~DeviceInterface() { mip_interface_deinit(this); }
 
     //
     // Callback functions

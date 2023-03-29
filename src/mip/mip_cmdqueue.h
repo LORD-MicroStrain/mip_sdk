@@ -59,7 +59,7 @@ typedef struct mip_pending_cmd
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 
 //#ifdef MIP_ENABLE_THREADING
-//    mip_mutex_type              _mutex;
+//    mip_thread_signal           _signal;               ///<@private Used to signal/wake up a waiting thread when the command has completed.
 //#endif
 
 } mip_pending_cmd;
@@ -77,7 +77,7 @@ uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd);
 int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type now);
 bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type now);
 
-void mip_pending_cmd_signal(mip_pending_cmd* cmd, mip_cmd_result status);
+void mip_pending_cmd_notify(mip_pending_cmd* cmd, mip_cmd_result status);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,9 +103,12 @@ typedef struct mip_cmd_queue
 {
     mip_pending_cmd* _first_pending_cmd;
     timeout_type     _base_timeout;
+    uint8_t          _last_timeout_desc_set;
+    uint8_t          _last_timeout_field_desc;
 
 #ifdef MIP_ENABLE_THREADING
     mip_mutex_type   _mutex;
+    mip_thread_signal _signal;
 #endif // MIP_ENABLE_THREADING
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
@@ -122,7 +125,7 @@ void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout);
 void mip_cmd_queue_deinit(mip_cmd_queue* queue);
 
 void mip_cmd_queue_enqueue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
-void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
+bool mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 void mip_cmd_queue_cancel(mip_cmd_queue* queue, mip_pending_cmd* cmd);
 
 void mip_cmd_queue_clear(mip_cmd_queue* queue);

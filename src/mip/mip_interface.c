@@ -110,6 +110,14 @@ void mip_interface_init(
 
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief Clean up any resources used by the mip interface.
+///
+void mip_interface_deinit(mip_interface* device)
+{
+    mip_cmd_queue_deinit(&device->_queue);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //
 // Accessors
 //
@@ -365,6 +373,15 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
     if( !device->_recv_callback )
         return false;
 
+#ifdef MIP_ENABLE_THREADING
+    // If multithreading is enabled, assume the update thread is run separately.
+    if(wait_time > 0)
+    {
+        mip_cmd_queue_wait(mip_interface_cmd_queue(device));
+        return true;
+    }
+#endif
+
     uint8_t* ptr;
     mip_parser* parser = mip_interface_parser(device);
     size_t max_count   = mip_parser_get_write_ptr(parser, &ptr);
@@ -485,8 +502,8 @@ enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pend
             // reception, unless that thread is not running. Generally such updates shouldn't
             // fail as long as the other thread is working normally anyway.
 
-            mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
-            cmd->_status = MIP_STATUS_ERROR;
+            if( mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd) )
+                cmd->_status = MIP_STATUS_ERROR;
 
             return MIP_STATUS_ERROR;
         }
@@ -582,10 +599,20 @@ enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, cons
 ///
 bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
 {
-    // The command queue should be locked to ensure the queue matches the order of sent commands.
-    // This also protects mip_interface_send_to_device.
-    // This requires that the mutex is recursive.
-    MIP_MUTEX_LOCK(&mip_interface_cmd_queue(device)->_mutex);
+#ifdef MIP_ENABLE_THREADING
+
+    if( !mip_interface_send_to_device(device, mip_packet_pointer(packet), mip_packet_total_length(packet)) )
+        return false;
+
+    // This is thread-safe.
+    mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
+
+    return true;
+
+#else
+
+    // If thread synchronization is disabled, the command must be queued before being sent.
+    // Otherwise, the update thread may discard the reply before the command is queued.
 
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 
@@ -594,9 +621,8 @@ bool mip_interface_start_command_packet(mip_interface* device, const mip_packet*
     if(!ok)
         mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
 
-    MIP_MUTEX_UNLOCK(&mip_interface_cmd_queue(device)->_mutex);
-
     return ok;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

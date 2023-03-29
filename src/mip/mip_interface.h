@@ -60,6 +60,7 @@ void mip_interface_init(
     mip_send_callback send, mip_recv_callback recv,
     mip_update_callback update, void* user_pointer
 );
+void mip_interface_deinit(mip_interface* device);
 
 //
 // Communications
