@@ -61,7 +61,7 @@ int main(int argc, const char* argv[])
 
         // Now iterate the fields and verify they match.
         unsigned int scanned_fields = 0;
-        for(struct mip_field field = mip_field_from_packet(&packet); mip_field_is_valid(&field); mip_field_next(&field))
+        for(struct mip_field field = mip_field_first_from_packet(&packet); mip_field_is_valid(&field); mip_field_next(&field))
         {
             const uint8_t test_field_desc      = mip_field_field_descriptor(&field);
             const uint8_t test_desc_set        = mip_field_descriptor_set(&field);

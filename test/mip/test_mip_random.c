@@ -166,13 +166,13 @@ int main(int argc, const char* argv[])
         {
             num_errors++;
             error = true;
-            fprintf(stderr, "Parsed packet has wrong timestamp %d\n", parsed_packet_timestamp);
+            fprintf(stderr, "Parsed packet has wrong timestamp %ld\n", parsed_packet_timestamp);
         }
         last_parsed = num_packets_parsed;
 
         if( error )
         {
-            fprintf(stderr, "  packet_size=%ld, last_count=%ld, extra=%ld, start_time=%d\n", packet_size, count, extra, start_time);
+            fprintf(stderr, "  packet_size=%ld, last_count=%ld, extra=%ld, start_time=%ld\n", packet_size, count, extra, start_time);
 
             fprintf(stderr, "  Sent chunks:");
             for(unsigned int d=0; d<c; d++)
@@ -181,7 +181,7 @@ int main(int argc, const char* argv[])
 
             fprintf(stderr, "  Sent timestamps:");
             for(unsigned int d=0; d<c; d++)
-                fprintf(stderr, " %d", timestamps[d]);
+                fprintf(stderr, " %ld", timestamps[d]);
             fputc('\n', stderr);
 
             fprintf(stderr, "  Expected packet:");
