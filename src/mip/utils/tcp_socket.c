@@ -2,7 +2,18 @@
 #include "tcp_socket.h"
 
 #ifdef WIN32
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#include "../mip_loggging.h"
+
 #else
+
 #include <errno.h>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -10,13 +21,15 @@
 #include <netdb.h>
 #include <string.h>
 #include <stdio.h>
+
+#define INVALID_SOCKET -1
+
 #endif
 
-bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port, size_t timeout_ms)
+static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
 {
-#ifdef WIN32
-    return false;  // TODO: Windows
-#else
+    socket_ptr->handle = INVALID_SOCKET;
+
     // https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
     struct addrinfo hints, *info;
     memset(&hints, 0, sizeof(hints));
@@ -35,19 +48,19 @@ bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port
     for(struct addrinfo* addr=info; addr!=NULL; addr=addr->ai_next)
     {
         socket_ptr->handle = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); //socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
-        if( socket_ptr->handle == -1 )
+        if( socket_ptr->handle == INVALID_SOCKET )
             continue;
 
         if( connect(socket_ptr->handle, addr->ai_addr, addr->ai_addrlen) == 0 )
             break;
 
         close(socket_ptr->handle);
-        socket_ptr->handle = -1;
+        socket_ptr->handle = INVALID_SOCKET;
     }
 
     freeaddrinfo(info);
 
-    if( socket_ptr->handle == -1 )
+    if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
     struct timeval timeout_option;
@@ -61,23 +74,83 @@ bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port
         return false;
 
     return true;
+}
+
+bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
+{
+#ifdef WIN32
+
+    // Initialize winsock for each connection since there's no global init function.
+    // This is safe to do multiple times, as long as it's shutdown the same number of times.
+    WSAData wsaData;
+    int result = WSAStartup(MAKEWORD(2,2), &wsaData);
+    if(result != 0)
+    {
+        MIP_LOG_ERROR("WSAStartup() failed: %d\n", result);
+        return false;
+    }
+
+//    struct addrinfo* address = NULL;
+//    struct addrinfo* ptr = NULL;
+//    struct addrinfo hints;
+//
+//    ZeroMemory(&hints, sizeof(hints));
+//    hints.ai_family = AF_UNSPEC;
+//    hints.ai_socktype = SOCK_STREAM;
+//    hints.ai_protocol = IPPROTO_TCP;
+//
+//    result = getaddrinfo(hostname, port, &hints, &address);
+//    if(result != 0)
+//    {
+//        MIP_LOG_WARNING("getaddrinfo() failed for hostname=%s, port=%d: %d\n", hostname, port, result);
+//        WSACleanup();
+//        return false;
+//    }
+//
+//    *socket_ptr = socket(address->ai_family, address->ai_socktype, address->ai_protocol);
+//    if(*socket_ptr == INVALID_SOCKET)
+//    {
+//        MIP_LOG_WARNING("socket() failed for hostname=%s, port=%d: %d\n", hostname, port, WSAGetLastError());
+//        freeaddrinfo(address);
+//        WSACleanup();
+//        return false;
+//    }
+//
+//
+//
+//    result = connect(*socket_ptr, address->ai_addr, (int)address->ai_addrlen);
+//
+//    freeaddrinfo(address);
+//
+//    if(result == SOCKET_ERROR)
+//    {
+//        closesocket(*socket_ptr);
+//        *socket_ptr = INVALID_SOCKET;
+//        WSACleanup();
+//        return false;
+//    }
+//
+//    return true;
+
 #endif
+
+    return tcp_socket_open_common(socket_ptr, hostname, port ,timeout_ms);
 }
 
 bool tcp_socket_close(tcp_socket* socket_ptr)
 {
-#ifdef WIN32
-    return false;  // TODO: Windows
-#else
-    if( socket_ptr->handle != -1 )
-    {
-        close(socket_ptr->handle);
-        socket_ptr->handle = -1;
-        return true;
-    }
-    else
+    if( socket_ptr->handle == INVALID_SOCKET )
         return false;
+
+#ifdef WIN32
+    closesocket(socket_ptr->handle);
+    WSACleanup(); // See tcp_socket_open
+#else
+    close(socket_ptr->handle);
 #endif
+
+    socket_ptr->handle = INVALID_SOCKET;
+    return true;
 }
 
 bool tcp_socket_send(tcp_socket* socket_ptr, const void* buffer, size_t num_bytes, size_t* bytes_written)
