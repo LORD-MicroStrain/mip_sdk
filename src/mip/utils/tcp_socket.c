@@ -20,7 +20,7 @@ typedef int ssize_t;
 #include <netdb.h>
 #include <string.h>
 
-static const int INVALID_SOCKET -1
+static const int INVALID_SOCKET = -1;
 static const int SEND_FLAGS = MSG_NOSIGNAL;
 
 #endif
@@ -68,15 +68,18 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
     if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
-//    struct timeval timeout_option;
-//    timeout_option.tv_sec  = timeout_ms / 1000;
-//    timeout_option.tv_usec = (timeout_ms % 1000) * 1000;
-//
-//    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, (void*)&timeout_option, sizeof(timeout_option)) != 0 )
-//        return false;
-//
-//    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, (void*)&timeout_option, sizeof(timeout_option)) != 0 )
-//        return false;
+#ifndef WIN32
+    // Todo: timeouts on windows
+    struct timeval timeout_option;
+    timeout_option.tv_sec  = timeout_ms / 1000;
+    timeout_option.tv_usec = (timeout_ms % 1000) * 1000;
+
+    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, &timeout_option, sizeof(timeout_option)) != 0 )
+        return false;
+
+    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, &timeout_option, sizeof(timeout_option)) != 0 )
+        return false;
+#endif
 
     return true;
 }
