@@ -98,48 +98,6 @@ bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port
         return false;
     }
 
-//    struct addrinfo* address = NULL;
-//    struct addrinfo* ptr = NULL;
-//    struct addrinfo hints;
-//
-//    ZeroMemory(&hints, sizeof(hints));
-//    hints.ai_family = AF_UNSPEC;
-//    hints.ai_socktype = SOCK_STREAM;
-//    hints.ai_protocol = IPPROTO_TCP;
-//
-//    result = getaddrinfo(hostname, port, &hints, &address);
-//    if(result != 0)
-//    {
-//        MIP_LOG_WARNING("getaddrinfo() failed for hostname=%s, port=%d: %d\n", hostname, port, result);
-//        WSACleanup();
-//        return false;
-//    }
-//
-//    *socket_ptr = socket(address->ai_family, address->ai_socktype, address->ai_protocol);
-//    if(*socket_ptr == INVALID_SOCKET)
-//    {
-//        MIP_LOG_WARNING("socket() failed for hostname=%s, port=%d: %d\n", hostname, port, WSAGetLastError());
-//        freeaddrinfo(address);
-//        WSACleanup();
-//        return false;
-//    }
-//
-//
-//
-//    result = connect(*socket_ptr, address->ai_addr, (int)address->ai_addrlen);
-//
-//    freeaddrinfo(address);
-//
-//    if(result == SOCKET_ERROR)
-//    {
-//        closesocket(*socket_ptr);
-//        *socket_ptr = INVALID_SOCKET;
-//        WSACleanup();
-//        return false;
-//    }
-//
-//    return true;
-
 #endif
 
     return tcp_socket_open_common(socket_ptr, hostname, port ,timeout_ms);
