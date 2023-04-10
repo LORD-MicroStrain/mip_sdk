@@ -1,16 +1,15 @@
 
 #include "tcp_socket.h"
 
-#ifdef WIN32
+#include "mip/mip_logging.h"
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
+#ifdef _WIN32
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#include "../mip_loggging.h"
+static const int SEND_FLAGS = 0;
+typedef int ssize_t;
 
 #else
 
@@ -20,11 +19,13 @@
 #include <netinet/ip.h>
 #include <netdb.h>
 #include <string.h>
-#include <stdio.h>
 
-#define INVALID_SOCKET -1
+static const int INVALID_SOCKET -1
+static const int SEND_FLAGS = MSG_NOSIGNAL;
 
 #endif
+
+#include <stdio.h>
 
 static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
 {
@@ -54,7 +55,11 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
         if( connect(socket_ptr->handle, addr->ai_addr, addr->ai_addrlen) == 0 )
             break;
 
+#ifdef WIN32
+        closesocket(socket_ptr->handle);
+#else
         close(socket_ptr->handle);
+#endif
         socket_ptr->handle = INVALID_SOCKET;
     }
 
@@ -63,15 +68,15 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
     if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
-    struct timeval timeout_option;
-    timeout_option.tv_sec  = timeout_ms / 1000;
-    timeout_option.tv_usec = (timeout_ms % 1000) * 1000;
-
-    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, &timeout_option, sizeof(timeout_option)) != 0 )
-        return false;
-
-    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, &timeout_option, sizeof(timeout_option)) != 0 )
-        return false;
+//    struct timeval timeout_option;
+//    timeout_option.tv_sec  = timeout_ms / 1000;
+//    timeout_option.tv_usec = (timeout_ms % 1000) * 1000;
+//
+//    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, (void*)&timeout_option, sizeof(timeout_option)) != 0 )
+//        return false;
+//
+//    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, (void*)&timeout_option, sizeof(timeout_option)) != 0 )
+//        return false;
 
     return true;
 }
@@ -82,7 +87,7 @@ bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port
 
     // Initialize winsock for each connection since there's no global init function.
     // This is safe to do multiple times, as long as it's shutdown the same number of times.
-    WSAData wsaData;
+    struct WSAData wsaData;
     int result = WSAStartup(MAKEWORD(2,2), &wsaData);
     if(result != 0)
     {
@@ -155,34 +160,31 @@ bool tcp_socket_close(tcp_socket* socket_ptr)
 
 bool tcp_socket_send(tcp_socket* socket_ptr, const void* buffer, size_t num_bytes, size_t* bytes_written)
 {
-#ifdef WIN32
-    return false;  // TODO: Windows
-#else
     for(*bytes_written = 0; *bytes_written < num_bytes; )
     {
-        ssize_t sent = send(socket_ptr->handle, buffer, num_bytes, MSG_NOSIGNAL);
+        ssize_t sent = send(socket_ptr->handle, buffer, num_bytes, SEND_FLAGS);
         if(sent < 0)
             return false;
 
         *bytes_written += sent;
     }
     return true;
-#endif
 }
 
 bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, size_t* bytes_read)
 {
-#ifdef WIN32
-    return false;  // TODO: Windows
-#else
-    ssize_t local_bytes_read = recv(socket_ptr->handle, buffer, num_bytes, MSG_NOSIGNAL);
+    ssize_t local_bytes_read = recv(socket_ptr->handle, buffer, num_bytes, SEND_FLAGS);
 
-    if( local_bytes_read == -1 )
+    if( local_bytes_read < 0 )
     {
+#ifdef WIN32
+        return false;
+#else
         if(errno != EAGAIN && errno != EWOULDBLOCK)
             return false;
         else
             return true;
+#endif
     }
     // Throw an error if the connection has been closed by the other side.
     else if( local_bytes_read == 0 )
@@ -190,5 +192,4 @@ bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, siz
 
     *bytes_read = local_bytes_read;
     return true;
-#endif
 }
