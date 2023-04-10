@@ -1172,7 +1172,7 @@ struct GpioConfig
         PPS       = 2,  ///<  Pulse per second input or output.
         ENCODER   = 3,  ///<  Motor encoder/odometer input.
         TIMESTAMP = 4,  ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
-        POWER     = 5,  ///<  Controls the device power state (e.g. enter low power mode).
+        UART      = 5,  ///<  UART data or control lines.
     };
     
     enum class Behavior : uint8_t
@@ -1188,6 +1188,12 @@ struct GpioConfig
         TIMESTAMP_RISING  = 1,  ///<  Rising edges will be timestamped.
         TIMESTAMP_FALLING = 2,  ///<  Falling edges will be timestamped.
         TIMESTAMP_EITHER  = 3,  ///<  Both rising and falling edges will be timestamped.
+        UART_TX_DEFAULT   = 1,  ///<  UART transmit line (auto-select port).
+        UART_RX_DEFAULT   = 2,  ///<  UART receive line (auto-select port).
+        UART_TX_AUX1      = 33,  ///<  UART transmit line, port 2 (aux port 1).
+        UART_RX_AUX1      = 34,  ///<  UART receive line, port 2 (aux port 1).
+        UART_TX_AUX2      = 49,  ///<  UART transmit line, port 3 (aux port 2).
+        UART_RX_AUX2      = 50,  ///<  UART receive line, port 3 (aux port 2).
         POWER_SHUTDOWN    = 1,  ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
     };
     

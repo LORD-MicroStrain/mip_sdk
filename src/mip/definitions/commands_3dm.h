@@ -956,21 +956,27 @@ static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEA
 static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_PPS       = 2; ///<  Pulse per second input or output.
 static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_ENCODER   = 3; ///<  Motor encoder/odometer input.
 static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_TIMESTAMP = 4; ///<  Precision Timestamping. Use with Event Trigger Configuration (0x0C,0x2E).
-static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_POWER     = 5; ///<  Controls the device power state (e.g. enter low power mode).
+static const mip_3dm_gpio_config_command_feature MIP_3DM_GPIO_CONFIG_COMMAND_FEATURE_UART      = 5; ///<  UART data or control lines.
 
 typedef uint8_t mip_3dm_gpio_config_command_behavior;
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0; ///<  Use 0 unless otherwise specified.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1; ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2; ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3; ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1; ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2; ///<  Pin will transmit the pulse-per-second signal from the device.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1; ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2; ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1; ///<  Rising edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2; ///<  Falling edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3; ///<  Both rising and falling edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_POWER_SHUTDOWN    = 1; ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UNUSED            = 0;  ///<  Use 0 unless otherwise specified.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_INPUT        = 1;  ///<  Pin will be an input. This can be used to stream or poll the value and is the default setting.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_LOW   = 2;  ///<  Pin is an output initially in the LOW state. This state will be restored during system startup if the configuration is saved.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_GPIO_OUTPUT_HIGH  = 3;  ///<  Pin is an output initially in the HIGH state. This state will be restored during system startup if the configuration is saved.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_INPUT         = 1;  ///<  Pin will receive the pulse-per-second signal. Only one pin can have this behavior. This will only work if the PPS Source command is configured to GPIO.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_PPS_OUTPUT        = 2;  ///<  Pin will transmit the pulse-per-second signal from the device.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_A         = 1;  ///<  Encoder "A" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_ENCODER_B         = 2;  ///<  Encoder "B" quadrature input. Only one pin can have this behavior. The last command to set this behavior will take precedence.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1;  ///<  Rising edges will be timestamped.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2;  ///<  Falling edges will be timestamped.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3;  ///<  Both rising and falling edges will be timestamped.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_DEFAULT   = 1;  ///<  UART transmit line (auto-select port).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_DEFAULT   = 2;  ///<  UART receive line (auto-select port).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_AUX1      = 33; ///<  UART transmit line, port 2 (aux port 1).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_AUX1      = 34; ///<  UART receive line, port 2 (aux port 1).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_AUX2      = 49; ///<  UART transmit line, port 3 (aux port 2).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_AUX2      = 50; ///<  UART receive line, port 3 (aux port 2).
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_POWER_SHUTDOWN    = 1;  ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
 
 typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;
