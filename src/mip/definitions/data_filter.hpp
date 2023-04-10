@@ -91,6 +91,7 @@ enum
     DATA_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     DATA_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
+    DATA_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP        = 0x50,
     
 };
 
@@ -1967,6 +1968,38 @@ struct GnssDualAntennaStatus
 };
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);
 void extract(Serializer& serializer, GnssDualAntennaStatus& self);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_vehicle_frame_vel_with_unc_and_timestamp  (0x82,0x50) Vehicle Frame Vel With Unc And Timestamp [CPP]
+/// Estimate of velocity in the vehicle frame at specified time, with associated uncertainties.
+///
+///@{
+
+struct VehicleFrameVelWithUncAndTimestamp
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(source_id,gps_time,gps_week,velocity[0],velocity[1],velocity[2],velocity_uncertainty[0],velocity_uncertainty[1],velocity_uncertainty[2],reserved,valid_flags);
+    }
+    
+    uint8_t source_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    double gps_time = 0; ///< [seconds]
+    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
+    float velocity[3] = {0}; ///< [meters/second]
+    float velocity_uncertainty[3] = {0}; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    uint8_t reserved[4] = {0};
+    uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
+    
+};
+void insert(Serializer& serializer, const VehicleFrameVelWithUncAndTimestamp& self);
+void extract(Serializer& serializer, VehicleFrameVelWithUncAndTimestamp& self);
 
 ///@}
 ///

@@ -5058,6 +5058,71 @@ mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, floa
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SET_INITIAL_HEADING, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command(mip_serializer* serializer, const mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command* self)
+{
+    insert_u8(serializer, self->source_id);
+    
+    insert_double(serializer, self->gps_time);
+    
+    insert_u16(serializer, self->gps_week);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity_uncertainty[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        insert_u8(serializer, self->reserved[i]);
+    
+}
+void extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command(mip_serializer* serializer, mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command* self)
+{
+    extract_u8(serializer, &self->source_id);
+    
+    extract_double(serializer, &self->gps_time);
+    
+    extract_u16(serializer, &self->gps_week);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity_uncertainty[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        extract_u8(serializer, &self->reserved[i]);
+    
+}
+
+mip_cmd_result mip_filter_vehicle_frame_vel_with_unc_and_timestamp(struct mip_interface* device, uint8_t source_id, double gps_time, uint16_t gps_week, const float* velocity, const float* velocity_uncertainty, const uint8_t* reserved)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_u8(&serializer, source_id);
+    
+    insert_double(&serializer, gps_time);
+    
+    insert_u16(&serializer, gps_week);
+    
+    assert(velocity || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, velocity[i]);
+    
+    assert(velocity_uncertainty || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, velocity_uncertainty[i]);
+    
+    assert(reserved || (4 == 0));
+    for(unsigned int i=0; i < 4; i++)
+        insert_u8(&serializer, reserved[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 
 #ifdef __cplusplus
 } // namespace C

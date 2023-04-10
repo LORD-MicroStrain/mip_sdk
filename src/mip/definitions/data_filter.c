@@ -1687,6 +1687,56 @@ void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(
     *self = tmp;
 }
 
+void insert_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data(mip_serializer* serializer, const mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data* self)
+{
+    insert_u8(serializer, self->source_id);
+    
+    insert_double(serializer, self->gps_time);
+    
+    insert_u16(serializer, self->gps_week);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity_uncertainty[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        insert_u8(serializer, self->reserved[i]);
+    
+    insert_u16(serializer, self->valid_flags);
+    
+}
+void extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data(mip_serializer* serializer, mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data* self)
+{
+    extract_u8(serializer, &self->source_id);
+    
+    extract_double(serializer, &self->gps_time);
+    
+    extract_u16(serializer, &self->gps_week);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity_uncertainty[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        extract_u8(serializer, &self->reserved[i]);
+    
+    extract_u16(serializer, &self->valid_flags);
+    
+}
+bool extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data_from_field(const mip_field* field, void* ptr)
+{
+    assert(ptr);
+    mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data(&serializer, self);
+    return mip_serializer_is_complete(&serializer);
+}
+
 
 #ifdef __cplusplus
 } // namespace C

@@ -92,6 +92,7 @@ enum
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
+    MIP_DATA_DESC_FILTER_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP        = 0x50,
     
 };
 
@@ -1368,6 +1369,30 @@ void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serial
 
 void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self);
 void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_vehicle_frame_vel_with_unc_and_timestamp  (0x82,0x50) Vehicle Frame Vel With Unc And Timestamp [C]
+/// Estimate of velocity in the vehicle frame at specified time, with associated uncertainties.
+///
+///@{
+
+struct mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data
+{
+    uint8_t source_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    double gps_time; ///< [seconds]
+    uint16_t gps_week; ///< [GPS week number, not modulus 1024]
+    float velocity[3]; ///< [meters/second]
+    float velocity_uncertainty[3]; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    uint8_t reserved[4];
+    uint16_t valid_flags; ///< 0 - invalid, 1 - valid
+    
+};
+typedef struct mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data;
+void insert_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data(struct mip_serializer* serializer, const mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data* self);
+void extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data(struct mip_serializer* serializer, mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data* self);
+bool extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
 ///@}
 ///
