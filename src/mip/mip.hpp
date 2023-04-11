@@ -74,6 +74,8 @@ public:
     ///@returns payload byte
     uint8_t payload(unsigned int index) const { return payload()[index]; }
 
+    uint8_t operator[](unsigned int index) const { return payload(index); }
+
     ///@copydoc mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }
 
@@ -181,6 +183,7 @@ public:
     void reset(uint8_t descSet) { C::mip_packet_reset(this, descSet); }  ///<@copydoc mip::C::mip_packet_reset
     void reset() { reset(descriptorSet()); }  ///<@brief Resets the packet using the same descriptor set.
 
+    uint8_t operator[](unsigned int index) const { return pointer()[index]; }
 
     //
     // Additional functions which have no C equivalent
