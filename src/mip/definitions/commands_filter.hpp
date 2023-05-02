@@ -1846,8 +1846,9 @@ struct InitializationConfiguration
             NONE         = 0x00,
             DUAL_ANTENNA = 0x01,  ///<  Dual-antenna GNSS alignment
             KINEMATIC    = 0x02,  ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
-            MAGNETOMETER = 0x04,  ///<  Magnetometer heading alignment
-            ALL          = 0x07,
+            MAGNETOMETER = 0x04,  ///<  Magnetometer heading alignment (Internal magnetometer determines initial heading)
+            EXTERNAL     = 0x08,  ///<  External heading alignment (External heading input determines heading)
+            ALL          = 0x0F,
         };
         uint8_t value = NONE;
         
@@ -1865,6 +1866,8 @@ struct InitializationConfiguration
         void kinematic(bool val) { if(val) value |= KINEMATIC; else value &= ~KINEMATIC; }
         bool magnetometer() const { return (value & MAGNETOMETER) > 0; }
         void magnetometer(bool val) { if(val) value |= MAGNETOMETER; else value &= ~MAGNETOMETER; }
+        bool external() const { return (value & EXTERNAL) > 0; }
+        void external(bool val) { if(val) value |= EXTERNAL; else value &= ~EXTERNAL; }
         
         bool allSet() const { return value == ALL; }
         void setAll() { value |= ALL; }
