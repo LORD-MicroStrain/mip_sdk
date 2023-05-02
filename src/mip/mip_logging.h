@@ -50,7 +50,7 @@ void* mip_logging_user_data();
 void mip_logging_log(mip_log_level level, const char* fmt, ...);
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Helper macro used to initialize the MIP logger. 
+///@brief Helper macro used to initialize the MIP logger.
 ///       This function does not need to be called unless the user wants logging
 ///
 ///@param callback The callback to execute when there is data to log
@@ -69,9 +69,9 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ///@copydetails mip::C::mip_log_callback
 ///
 #ifdef MIP_ENABLE_LOGGING
-#define MIP_LOG_LOG(level, fmt, ...) mip_logging_log(level, fmt, __VA_ARGS__)
+#define MIP_LOG_LOG(level, ...) mip_logging_log(level, __VA_ARGS__)
 #else
-#define MIP_LOG_LOG(level, fmt, ...) (void)0
+#define MIP_LOG_LOG(level, ...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,54 +82,54 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ///@param ...     Variadic args used to populate the fmt string
 ///
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_FATAL
-#define MIP_LOG_FATAL(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_FATAL, fmt, __VA_ARGS__)
+#define MIP_LOG_FATAL(...) MIP_LOG_LOG(MIP_LOG_LEVEL_FATAL, __VA_ARGS__)
 #else
-#define MIP_LOG_FATAL(fmt, ...) (void)0
+#define MIP_LOG_FATAL(...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at error level
 ///@copydetails mip::C::MIP_LOG_FATAL
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_ERROR
-#define MIP_LOG_ERROR(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_ERROR, fmt, __VA_ARGS__)
+#define MIP_LOG_ERROR(...) MIP_LOG_LOG(MIP_LOG_LEVEL_ERROR, __VA_ARGS__)
 #else
-#define MIP_LOG_ERROR(fmt, ...) (void)0
+#define MIP_LOG_ERROR(...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at warn level
 ///@copydetails mip::C::MIP_LOG_FATAL
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_WARN
-#define MIP_LOG_WARN(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_WARN, fmt, __VA_ARGS__)
+#define MIP_LOG_WARN(...) MIP_LOG_LOG(MIP_LOG_LEVEL_WARN, __VA_ARGS__)
 #else
-#define MIP_LOG_WARN(fmt, ...) (void)0
+#define MIP_LOG_WARN(...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at info level
 ///@copydetails mip::C::MIP_LOG_FATAL
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_INFO
-#define MIP_LOG_INFO(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_INFO, fmt, __VA_ARGS__)
+#define MIP_LOG_INFO(...) MIP_LOG_LOG(MIP_LOG_LEVEL_INFO, __VA_ARGS__)
 #else
-#define MIP_LOG_INFO(fmt, ...) (void)0
+#define MIP_LOG_INFO(...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at debug level
 ///@copydetails mip::C::MIP_LOG_FATAL
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_DEBUG
-#define MIP_LOG_DEBUG(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_DEBUG, fmt, __VA_ARGS__)
+#define MIP_LOG_DEBUG(...) MIP_LOG_LOG(MIP_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #else
-#define MIP_LOG_DEBUG(fmt, ...) (void)0
+#define MIP_LOG_DEBUG(...) (void)0
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at trace level
 ///@copydetails mip::C::MIP_LOG_FATAL
 #if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_TRACE
-#define MIP_LOG_TRACE(fmt, ...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, fmt, __VA_ARGS__)
+#define MIP_LOG_TRACE(...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, __VA_ARGS__)
 #else
-#define MIP_LOG_TRACE(fmt, ...) (void)0
+#define MIP_LOG_TRACE(...) (void)0
 #endif
 
 ///@}
