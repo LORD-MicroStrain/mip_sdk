@@ -2419,7 +2419,7 @@ void extract_mip_3dm_get_event_support_response(mip_serializer* serializer, mip_
     extract_u8(serializer, &self->max_instances);
     
     assert(self->num_entries);
-    extract_count(serializer, &self->num_entries, self->num_entries);
+    extract_count(serializer, &self->num_entries, sizeof(self->entries)/sizeof(self->entries[0]));
     
     for(unsigned int i=0; i < self->num_entries; i++)
         extract_mip_3dm_get_event_support_command_info(serializer, &self->entries[i]);
@@ -2638,7 +2638,7 @@ void insert_mip_3dm_get_event_trigger_status_command(mip_serializer* serializer,
 void extract_mip_3dm_get_event_trigger_status_command(mip_serializer* serializer, mip_3dm_get_event_trigger_status_command* self)
 {
     assert(self->requested_count);
-    extract_count(serializer, &self->requested_count, self->requested_count);
+    extract_count(serializer, &self->requested_count, sizeof(self->requested_instances)/sizeof(self->requested_instances[0]));
     
     for(unsigned int i=0; i < self->requested_count; i++)
         extract_u8(serializer, &self->requested_instances[i]);
@@ -2657,7 +2657,7 @@ void insert_mip_3dm_get_event_trigger_status_response(mip_serializer* serializer
 void extract_mip_3dm_get_event_trigger_status_response(mip_serializer* serializer, mip_3dm_get_event_trigger_status_response* self)
 {
     assert(self->count);
-    extract_count(serializer, &self->count, self->count);
+    extract_count(serializer, &self->count, sizeof(self->triggers)/sizeof(self->triggers[0]));
     
     for(unsigned int i=0; i < self->count; i++)
         extract_mip_3dm_get_event_trigger_status_command_entry(serializer, &self->triggers[i]);
@@ -2736,7 +2736,7 @@ void insert_mip_3dm_get_event_action_status_command(mip_serializer* serializer, 
 void extract_mip_3dm_get_event_action_status_command(mip_serializer* serializer, mip_3dm_get_event_action_status_command* self)
 {
     assert(self->requested_count);
-    extract_count(serializer, &self->requested_count, self->requested_count);
+    extract_count(serializer, &self->requested_count, sizeof(self->requested_instances)/sizeof(self->requested_instances[0]));
     
     for(unsigned int i=0; i < self->requested_count; i++)
         extract_u8(serializer, &self->requested_instances[i]);
@@ -2755,7 +2755,7 @@ void insert_mip_3dm_get_event_action_status_response(mip_serializer* serializer,
 void extract_mip_3dm_get_event_action_status_response(mip_serializer* serializer, mip_3dm_get_event_action_status_response* self)
 {
     assert(self->count);
-    extract_count(serializer, &self->count, self->count);
+    extract_count(serializer, &self->count, sizeof(self->actions)/sizeof(self->actions[0]));
     
     for(unsigned int i=0; i < self->count; i++)
         extract_mip_3dm_get_event_action_status_command_entry(serializer, &self->actions[i]);
@@ -3291,7 +3291,7 @@ void extract_mip_3dm_event_action_command_message_params(mip_serializer* seriali
     extract_u16(serializer, &self->decimation);
     
     assert(self->num_fields);
-    extract_count(serializer, &self->num_fields, self->num_fields);
+    extract_count(serializer, &self->num_fields, sizeof(self->descriptors)/sizeof(self->descriptors[0]));
     
     for(unsigned int i=0; i < self->num_fields; i++)
         extract_u8(serializer, &self->descriptors[i]);
@@ -4707,7 +4707,7 @@ void extract_mip_3dm_calibrated_sensor_ranges_response(mip_serializer* serialize
     extract_mip_sensor_range_type(serializer, &self->sensor);
     
     assert(self->num_ranges);
-    extract_count(serializer, &self->num_ranges, self->num_ranges);
+    extract_count(serializer, &self->num_ranges, sizeof(self->ranges)/sizeof(self->ranges[0]));
     
     for(unsigned int i=0; i < self->num_ranges; i++)
         extract_mip_3dm_calibrated_sensor_ranges_command_entry(serializer, &self->ranges[i]);

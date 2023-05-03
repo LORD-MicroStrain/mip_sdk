@@ -2153,7 +2153,7 @@ void extract(Serializer& serializer, GetEventSupport::Response& self)
     
     extract(serializer, self.max_instances);
     
-    C::extract_count(&serializer, &self.num_entries, self.num_entries);
+    C::extract_count(&serializer, &self.num_entries, sizeof(self.entries)/sizeof(self.entries[0]));
     for(unsigned int i=0; i < self.num_entries; i++)
         extract(serializer, self.entries[i]);
     
@@ -2332,7 +2332,7 @@ void insert(Serializer& serializer, const GetEventTriggerStatus& self)
 }
 void extract(Serializer& serializer, GetEventTriggerStatus& self)
 {
-    C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    C::extract_count(&serializer, &self.requested_count, sizeof(self.requested_instances)/sizeof(self.requested_instances[0]));
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
     
@@ -2348,7 +2348,7 @@ void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self)
 }
 void extract(Serializer& serializer, GetEventTriggerStatus::Response& self)
 {
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.triggers)/sizeof(self.triggers[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.triggers[i]);
     
@@ -2409,7 +2409,7 @@ void insert(Serializer& serializer, const GetEventActionStatus& self)
 }
 void extract(Serializer& serializer, GetEventActionStatus& self)
 {
-    C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    C::extract_count(&serializer, &self.requested_count, sizeof(self.requested_instances)/sizeof(self.requested_instances[0]));
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
     
@@ -2425,7 +2425,7 @@ void insert(Serializer& serializer, const GetEventActionStatus::Response& self)
 }
 void extract(Serializer& serializer, GetEventActionStatus::Response& self)
 {
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.actions)/sizeof(self.actions[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.actions[i]);
     
@@ -2899,7 +2899,7 @@ void extract(Serializer& serializer, EventAction::MessageParams& self)
     
     extract(serializer, self.decimation);
     
-    C::extract_count(&serializer, &self.num_fields, self.num_fields);
+    C::extract_count(&serializer, &self.num_fields, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_fields; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -4178,7 +4178,7 @@ void extract(Serializer& serializer, CalibratedSensorRanges::Response& self)
 {
     extract(serializer, self.sensor);
     
-    C::extract_count(&serializer, &self.num_ranges, self.num_ranges);
+    C::extract_count(&serializer, &self.num_ranges, sizeof(self.ranges)/sizeof(self.ranges[0]));
     for(unsigned int i=0; i < self.num_ranges; i++)
         extract(serializer, self.ranges[i]);
     
