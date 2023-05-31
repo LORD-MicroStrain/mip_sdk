@@ -15,9 +15,6 @@ namespace platform
 ///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to
 SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
 {
-    if (!serial_port_open(&mPort, portName.c_str(), baudrate))
-        throw std::runtime_error("Unable to open serial port");
-
     mPortName = portName;
     mBaudrate = baudrate;
     mType     = TYPE;
@@ -26,8 +23,39 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
 ///@brief Closes the underlying serial port
 SerialConnection::~SerialConnection()
 {
-    serial_port_close(&mPort);
+    if(mConnected)
+      disconnect(); 
 }
+
+///@brief Check if the port is connected
+bool SerialConnection::isConnected()
+{
+  return mConnected;
+}
+
+///@brief Connect to the port
+bool SerialConnection::connect()
+{
+   if(mConnected)
+     return false;
+
+   mConnected = serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
+   
+   return mConnected;
+}
+
+///@brief Disconnect from the port
+bool SerialConnection::disconnect()
+{
+   if(!mConnected)
+     return false;
+
+   mConnected = serial_port_close(&mPort);
+
+   return mConnected;
+}
+
+
 
 ///@copydoc mip::Connection::recvFromDevice
 bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp)
