@@ -13,6 +13,7 @@ namespace extras
 RecordingConnection::RecordingConnection(Connection* connection, std::ostream* recvStream, std::ostream* sendStream) :
     mConnection(connection), mRecvFile(recvStream), mSendFile(sendStream)
 {
+    mType = TYPE;
 }
 
 ///@copydoc mip::Connection::sendToDevice

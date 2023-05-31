@@ -17,6 +17,10 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
 {
     if (!serial_port_open(&mPort, portName.c_str(), baudrate))
         throw std::runtime_error("Unable to open serial port");
+
+    mPortName = portName;
+    mBaudrate = baudrate;
+    mType     = TYPE;
 }
 
 ///@brief Closes the underlying serial port
