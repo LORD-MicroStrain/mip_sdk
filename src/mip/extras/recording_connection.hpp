@@ -28,16 +28,25 @@ public:
     bool sendToDevice(const uint8_t* data, size_t length) final;
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) final;
 
-    bool isConnected() {return mConnected;};
+    bool isConnected() 
+    {
+        if(mConnection)
+            return mConnection->isConnected();
+
+        return false;
+    };
+
     bool connect()
     {
-        mConnected = true;
-        return true;
+        if (mConnection) return mConnection->connect();
+
+        return false;
     };
     bool disconnect()
     {
-        mConnected = false;
-        return true;
+        if (mConnection) return mConnection->disconnect();
+
+        return false;
     };
 
 protected:
@@ -46,8 +55,6 @@ protected:
     // Files may be NULL to not record one direction or the other
     std::ostream* mRecvFile;
     std::ostream* mSendFile;
-
-    bool mConnected = false;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

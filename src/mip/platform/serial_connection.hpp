@@ -46,7 +46,6 @@ private:
     serial_port mPort;
     std::string mPortName;
     uint32_t    mBaudrate;
-    bool        mConnected = false;
 };
 
 
