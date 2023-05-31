@@ -18,13 +18,18 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
     mPortName = portName;
     mBaudrate = baudrate;
     mType     = TYPE;
+
+    #ifdef WIN32
+    mPort.handle = INVALID_HANDLE_VALUE;
+#else
+    mPort.handle = 0;
+#endif
 }
 
 ///@brief Closes the underlying serial port
 SerialConnection::~SerialConnection()
 {
-    if (serial_port_is_open(&mPort))
-      disconnect(); 
+    disconnect(); 
 }
 
 ///@brief Check if the port is connected
@@ -46,7 +51,7 @@ bool SerialConnection::connect()
 bool SerialConnection::disconnect()
 {
    if (!serial_port_is_open(&mPort))
-     return false;
+     return true;
 
    return serial_port_close(&mPort);
 }
