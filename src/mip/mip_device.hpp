@@ -155,11 +155,11 @@ public:
 
     void connect_interface(C::mip_interface* device);
 
-    std::string type() { return mType; };
+    const char* type() { return mType; };
 
 protected:
 
-    std::string mType;
+    const char *mType;
 
 };
 
