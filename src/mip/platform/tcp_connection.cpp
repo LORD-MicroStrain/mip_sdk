@@ -16,14 +16,45 @@ namespace platform
 ///@param port     Port on hostName to connect to
 TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
 {
-    if (!tcp_socket_open(&mSocket, hostname.c_str(), port, 3000))
-        throw std::runtime_error("Unable to open TCP socket");
+    mHostname = hostname;
+    mPort     = port;
+    mType     = TYPE;
 }
 
 ///@brief Closes the underlying TCP socket
 TcpConnection::~TcpConnection()
 {
-    tcp_socket_close(&mSocket);
+    if(mConnected)
+      disconnect();
+}
+
+///@brief Check if the socket is connected
+bool TcpConnection::isConnected()
+{
+  return mConnected;
+}
+
+///@brief Connect to the socket
+bool TcpConnection::connect()
+{
+   if(mConnected)
+     return false;
+
+    mConnected = tcp_socket_open(&mSocket, mHostname.c_str(), mPort, 3000);
+   
+   return mConnected;
+}
+
+
+///@brief Disconnect from the socket
+bool TcpConnection::disconnect()
+{
+   if(!mConnected)
+     return false;
+
+   mConnected = tcp_socket_close(&mSocket);
+
+   return mConnected;
 }
 
 ///@copydoc mip::Connection::sendToDevice

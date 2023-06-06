@@ -196,9 +196,11 @@ bool serial_port_close(serial_port *port)
 
     //Close the serial port
     CloseHandle(port->handle);
+    port->handle = INVALID_HANDLE_VALUE;
 
 #else //Linux
     close(port->handle);
+    port->handle   = 0;
 #endif
 
     return true;

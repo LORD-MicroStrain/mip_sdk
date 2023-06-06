@@ -1,8 +1,11 @@
 
 #include "serialization.h"
 #include "../mip_field.h"
+#include "../mip_packet.h"
+#include "../mip_offsets.h"
 
 #include <string.h>
+#include <assert.h>
 
 #ifdef __cplusplus
 namespace mip {
@@ -26,7 +29,7 @@ void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Initialize a serialization struct for extract from a buffer.
+///@brief Initialize a serialization struct for extraction from a buffer.
 ///
 ///@param serializer
 ///@param buffer
@@ -39,6 +42,53 @@ void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* b
     serializer->_buffer      = (uint8_t*)buffer;
     serializer->_buffer_size = buffer_size;
     serializer->_offset      = 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Initializer a serialization struct for creation of a new field at the
+///       end of the packet.
+///
+///@note Call mip_serializer_finiish_new_field after the data has been serialized.
+///
+///@note Only one new field per packet can be in progress at a time.
+///
+///@param serializer
+///@param packet
+///       Allocate the new field on the end of this packet.
+///@param field_descriptor
+///       Field descriptor of the new field.
+///
+void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packet, uint8_t field_descriptor)
+{
+    assert(packet);
+
+    serializer->_buffer      = NULL;
+    serializer->_buffer_size = 0;
+    serializer->_offset      = 0;
+
+    const remaining_count length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
+
+    if( length >= 0 )
+        serializer->_buffer_size = length;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Call this after a new field allocated by mip_serializer_init_new_field
+///       has been written.
+///
+/// This will either finish the field, or abort it if the serializer overflowed.
+///
+///@param serializer Must be created from mip_serializer_init_new_field.
+///@param packet     Must be the original packet.
+///
+void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packet* packet)
+{
+    assert(packet);
+
+    if( mip_serializer_is_ok(serializer) )
+        mip_packet_realloc_last_field(packet, serializer->_buffer, serializer->_offset);
+    else if( serializer->_buffer )
+        mip_packet_cancel_last_field(packet, serializer->_buffer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

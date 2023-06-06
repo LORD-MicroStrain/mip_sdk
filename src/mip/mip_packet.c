@@ -41,7 +41,7 @@ void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
     if( length > MIP_PACKET_LENGTH_MAX )
         length = MIP_PACKET_LENGTH_MAX;
 
-    packet->_buffer       = buffer;
+    packet->_buffer        = buffer;
     packet->_buffer_length = length;
 }
 
@@ -69,10 +69,10 @@ void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, 
         return;
     }
 
-    packet->_buffer[MIP_INDEX_SYNC1] = MIP_SYNC1;
-    packet->_buffer[MIP_INDEX_SYNC2] = MIP_SYNC2;
+    packet->_buffer[MIP_INDEX_SYNC1]   = MIP_SYNC1;
+    packet->_buffer[MIP_INDEX_SYNC2]   = MIP_SYNC2;
     packet->_buffer[MIP_INDEX_DESCSET] = descriptor_set;
-    packet->_buffer[MIP_INDEX_LENGTH] = 0;
+    packet->_buffer[MIP_INDEX_LENGTH]  = 0;
 }
 
 
@@ -178,7 +178,7 @@ uint16_t mip_packet_compute_checksum(const mip_packet* packet)
 ///
 bool mip_packet_is_sane(const mip_packet* packet)
 {
-    return packet->_buffer && (mip_packet_buffer_size(packet) >= MIP_PACKET_LENGTH_MIN);
+    return packet->_buffer && (packet->_buffer_length >= MIP_PACKET_LENGTH_MIN) && (packet->_buffer_length >= mip_packet_payload_length(packet)+MIP_PACKET_LENGTH_MIN);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -382,7 +382,7 @@ remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* paylo
 
     const remaining_count delta_length = new_field_length - old_field_length;
 
-    remaining_count remaining = mip_packet_remaining_space(packet) + delta_length;
+    const remaining_count remaining = mip_packet_remaining_space(packet) - delta_length;
 
     if( remaining >= 0 )
     {
@@ -412,9 +412,9 @@ remaining_count mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payloa
     assert(payload_ptr != NULL);
 
     uint8_t* field_ptr = payload_ptr - MIP_INDEX_FIELD_PAYLOAD;
-    const uint8_t old_payload_length = field_ptr[MIP_INDEX_FIELD_LEN];
+    const uint8_t old_field_length = field_ptr[MIP_INDEX_FIELD_LEN];
 
-    packet->_buffer[MIP_INDEX_LENGTH] -= MIP_FIELD_HEADER_LENGTH + old_payload_length;
+    packet->_buffer[MIP_INDEX_LENGTH] -= old_field_length;
 
     return mip_packet_remaining_space(packet);
 }

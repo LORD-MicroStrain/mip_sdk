@@ -9,7 +9,7 @@
 
 
 using namespace mip;
-
+using namespace mip::C;
 
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
