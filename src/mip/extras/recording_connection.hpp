@@ -21,10 +21,33 @@ namespace extras
 class RecordingConnection : public Connection
 {
 public:
-    RecordingConnection(Connection* connection, std::ostream* recvStream=nullptr, std::ostream* sendStream=nullptr);
+    static constexpr auto TYPE = "Recording";
+
+    RecordingConnection(Connection *connection, std::ostream *recvStream = nullptr, std::ostream *sendStream = nullptr);
 
     bool sendToDevice(const uint8_t* data, size_t length) final;
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) final;
+
+    bool isConnected() 
+    {
+        if(mConnection)
+            return mConnection->isConnected();
+
+        return false;
+    };
+
+    bool connect()
+    {
+        if (mConnection) return mConnection->connect();
+
+        return false;
+    };
+    bool disconnect()
+    {
+        if (mConnection) return mConnection->disconnect();
+
+        return false;
+    };
 
 protected:
     Connection* mConnection;

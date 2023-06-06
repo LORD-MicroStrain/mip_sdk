@@ -5,6 +5,7 @@
 
 #include "definitions/descriptors.h"
 
+#include <string>
 
 namespace mip
 {
@@ -143,12 +144,27 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
+
+    static constexpr auto TYPE = "None";
+
+    Connection() { mType = TYPE; };
     virtual ~Connection() {}
 
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
 
+    virtual bool isConnected() = 0;
+    virtual bool connect() = 0;
+    virtual bool disconnect() = 0;
+
     void connect_interface(C::mip_interface* device);
+
+    const char* type() { return mType; };
+
+protected:
+
+    const char *mType;
+
 };
 
 
