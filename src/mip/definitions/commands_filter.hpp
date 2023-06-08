@@ -94,7 +94,6 @@ enum
     CMD_VEHICLE_CONSTRAINT_CONTROL                            = 0x63,
     CMD_ANTENNA_CALIBRATION_CONTROL                           = 0x64,
     CMD_TO_VEHICLE_CALIBRATION_CONTROL                        = 0x65,
-    CMD_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP                  = 0x66,
     
     REPLY_VEHICLE_DYNAMICS_MODE                               = 0x80,
     REPLY_SENSOR2VEHICLE_ROTATION_EULER                       = 0x81,
@@ -2454,34 +2453,6 @@ void insert(Serializer& serializer, const SetInitialHeading& self);
 void extract(Serializer& serializer, SetInitialHeading& self);
 
 CmdResult setInitialHeading(C::mip_interface& device, float heading);
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_filter_vehicle_frame_vel_with_unc_and_timestamp  (0x0D,0x66) Vehicle Frame Vel With Unc And Timestamp [CPP]
-/// Send and estimate of velocity in the vehicle frame at specified time, with associated uncertainties, to be incorporated by the Navigation Filter in the state estimation process.
-/// The source_id field is used to differentiate between different physical measurement sources; note that source_id == 0 is reserved, and will result an invalid command response.
-///
-///@{
-
-struct VehicleFrameVelWithUncAndTimestamp
-{
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    uint8_t source_id = 0; ///< Source ID for this estimate
-    double gps_time = 0; ///< [seconds]
-    uint16_t gps_week = 0; ///< [GPS week number, not modulus 1024]
-    float velocity[3] = {0}; ///< [meters/second]
-    float velocity_uncertainty[3] = {0}; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
-    uint8_t reserved[4] = {0};
-    
-};
-void insert(Serializer& serializer, const VehicleFrameVelWithUncAndTimestamp& self);
-void extract(Serializer& serializer, VehicleFrameVelWithUncAndTimestamp& self);
-
-CmdResult vehicleFrameVelWithUncAndTimestamp(C::mip_interface& device, uint8_t sourceId, double gpsTime, uint16_t gpsWeek, const float* velocity, const float* velocityUncertainty, const uint8_t* reserved);
 ///@}
 ///
 

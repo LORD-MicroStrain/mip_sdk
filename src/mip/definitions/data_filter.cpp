@@ -1084,47 +1084,6 @@ void extract(Serializer& serializer, GnssDualAntennaStatus& self)
     
 }
 
-void insert(Serializer& serializer, const VehicleFrameVelWithUncAndTimestamp& self)
-{
-    insert(serializer, self.source_id);
-    
-    insert(serializer, self.gps_time);
-    
-    insert(serializer, self.gps_week);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.velocity[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        insert(serializer, self.velocity_uncertainty[i]);
-    
-    for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.reserved[i]);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(Serializer& serializer, VehicleFrameVelWithUncAndTimestamp& self)
-{
-    extract(serializer, self.source_id);
-    
-    extract(serializer, self.gps_time);
-    
-    extract(serializer, self.gps_week);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.velocity[i]);
-    
-    for(unsigned int i=0; i < 3; i++)
-        extract(serializer, self.velocity_uncertainty[i]);
-    
-    for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.reserved[i]);
-    
-    extract(serializer, self.valid_flags);
-    
-}
-
 
 } // namespace data_filter
 } // namespace mip

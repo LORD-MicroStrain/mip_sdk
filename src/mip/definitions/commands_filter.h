@@ -95,7 +95,6 @@ enum
     MIP_CMD_DESC_WHEELED_VEHICLE_CONSTRAINT_CONTROL                           = 0x63,
     MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL                             = 0x64,
     MIP_CMD_DESC_SENSOR_TO_VEHICLE_CALIBRATION_CONTROL                        = 0x65,
-    MIP_CMD_DESC_FILTER_VEH_FRAME_VEL_WITH_UNC_AND_TIMESTAMP                  = 0x66,
     
     MIP_REPLY_DESC_FILTER_VEHICLE_DYNAMICS_MODE                               = 0x80,
     MIP_REPLY_DESC_FILTER_SENSOR2VEHICLE_ROTATION_EULER                       = 0x81,
@@ -1969,30 +1968,6 @@ void insert_mip_filter_set_initial_heading_command(struct mip_serializer* serial
 void extract_mip_filter_set_initial_heading_command(struct mip_serializer* serializer, mip_filter_set_initial_heading_command* self);
 
 mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, float heading);
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_vehicle_frame_vel_with_unc_and_timestamp  (0x0D,0x66) Vehicle Frame Vel With Unc And Timestamp [C]
-/// Send and estimate of velocity in the vehicle frame at specified time, with associated uncertainties, to be incorporated by the Navigation Filter in the state estimation process.
-/// The source_id field is used to differentiate between different physical measurement sources; note that source_id == 0 is reserved, and will result an invalid command response.
-///
-///@{
-
-struct mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command
-{
-    uint8_t source_id; ///< Source ID for this estimate
-    double gps_time; ///< [seconds]
-    uint16_t gps_week; ///< [GPS week number, not modulus 1024]
-    float velocity[3]; ///< [meters/second]
-    float velocity_uncertainty[3]; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
-    uint8_t reserved[4];
-    
-};
-typedef struct mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command;
-void insert_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command(struct mip_serializer* serializer, const mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command* self);
-void extract_mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command(struct mip_serializer* serializer, mip_filter_vehicle_frame_vel_with_unc_and_timestamp_command* self);
-
-mip_cmd_result mip_filter_vehicle_frame_vel_with_unc_and_timestamp(struct mip_interface* device, uint8_t source_id, double gps_time, uint16_t gps_week, const float* velocity, const float* velocity_uncertainty, const uint8_t* reserved);
 ///@}
 ///
 
