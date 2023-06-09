@@ -84,6 +84,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
     //Set the timeouts
+    
     COMMTIMEOUTS timeouts;
     GetCommTimeouts(port->handle, &timeouts);
 
@@ -93,9 +94,9 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     timeouts.ReadTotalTimeoutConstant    = 1;
     timeouts.WriteTotalTimeoutMultiplier = 1;
     timeouts.WriteTotalTimeoutConstant   = 1;
-
+    
     SetCommTimeouts(port->handle, &timeouts);
-
+    
     //Setup the com port parameters
     ready = GetCommState(port->handle, &dcb);
 
@@ -249,13 +250,19 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
+    uint32_t bytes_available = serial_port_read_count(port);
+
 #ifdef WIN32 //Windows
 
     if( wait_time <= 0 )
     {
-        if( serial_port_read_count(port) == 0 )
+        if(bytes_available == 0 )
             return true;
     }
+
+    //Don't let windows block on the read
+    if(bytes_available < num_bytes)
+        num_bytes = (bytes_available > 0) ? bytes_available : 1;
 
     DWORD  local_bytes_read;
 
