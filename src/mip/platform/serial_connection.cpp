@@ -22,7 +22,7 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
     #ifdef WIN32
     mPort.handle = INVALID_HANDLE_VALUE;
 #else
-    mPort.handle = 0;
+    mPort.handle = -1;
 #endif
 }
 

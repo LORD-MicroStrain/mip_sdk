@@ -127,9 +127,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
 #else //Linux
-
+    
+#ifdef __APPLE__
+    port->handle = open(port_str, O_RDWR | O_NOCTTY | O_NDELAY);
+#else
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
-
+#endif
+    
+    
     if (port->handle < 0)
     {
         MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
@@ -200,7 +205,7 @@ bool serial_port_close(serial_port *port)
 
 #else //Linux
     close(port->handle);
-    port->handle   = 0;
+    port->handle   = -1;
 #endif
 
     return true;
