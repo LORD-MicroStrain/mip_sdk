@@ -38,7 +38,7 @@ bool SerialConnection::isConnected()
 bool SerialConnection::connect()
 {
     if (serial_port_is_open(&mPort))
-        return false;
+        return true;
 
    return serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
 }

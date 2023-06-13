@@ -280,7 +280,13 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
         MIP_LOG_ERROR("Failed to poll serial port (%d): %s\n", errno, strerror(errno));
         return false;
     }
-    else if (poll_fd.revents & POLLERR || poll_fd.revents & POLLHUP || poll_fd.revents & POLLNVAL)
+    else if (poll_fd.revents & POLLHUP)
+    {
+        MIP_LOG_ERROR("Poll encountered HUP, closing device");
+        serial_port_close(port);
+        return false;
+    }
+    else if (poll_fd.revents & POLLERR || poll_fd.revents & POLLNVAL)
     {
         MIP_LOG_ERROR("Poll encountered error\n");
         return false;
