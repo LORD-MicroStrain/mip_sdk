@@ -19,11 +19,7 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
     mBaudrate = baudrate;
     mType     = TYPE;
 
-    #ifdef WIN32
-    mPort.handle = INVALID_HANDLE_VALUE;
-#else
-    mPort.handle = 0;
-#endif
+    serial_port_init(&mPort);
 }
 
 ///@brief Closes the underlying serial port
@@ -42,7 +38,7 @@ bool SerialConnection::isConnected()
 bool SerialConnection::connect()
 {
     if (serial_port_is_open(&mPort))
-     return false;
+        return true;
 
    return serial_port_open(&mPort, mPortName.c_str(), mBaudrate);
 }
@@ -51,7 +47,7 @@ bool SerialConnection::connect()
 bool SerialConnection::disconnect()
 {
    if (!serial_port_is_open(&mPort))
-     return true;
+        return true;
 
    return serial_port_close(&mPort);
 }

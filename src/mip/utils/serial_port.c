@@ -6,6 +6,9 @@
 #define COM_PORT_BUFFER_SIZE  0x200
 
 #ifndef WIN32 //Unix only
+
+#define INVALID_HANDLE_VALUE -1
+
 speed_t baud_rate_to_speed(int baud_rate)
 {
     switch(baud_rate)
@@ -53,6 +56,11 @@ speed_t baud_rate_to_speed(int baud_rate)
     }
 }
 #endif
+
+void serial_port_init(serial_port *port)
+{
+    port->handle = INVALID_HANDLE_VALUE;
+}
 
 bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 {
@@ -194,15 +202,12 @@ bool serial_port_close(serial_port *port)
         return false;
 
 #ifdef WIN32 //Windows
-
     //Close the serial port
     CloseHandle(port->handle);
-    port->handle = INVALID_HANDLE_VALUE;
-
 #else //Linux
     close(port->handle);
-    port->handle   = 0;
 #endif
+    port->handle = INVALID_HANDLE_VALUE;
 
     return true;
 }
@@ -277,7 +282,23 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     int poll_status = poll(&poll_fd, 1, wait_time);
 
     // Keep reading and polling while there is still data available
-    if (poll_status > 0 && poll_fd.revents & POLLIN)
+    if (poll_status == -1)
+    {
+        MIP_LOG_ERROR("Failed to poll serial port (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+    else if (poll_fd.revents & POLLHUP)
+    {
+        MIP_LOG_ERROR("Poll encountered HUP, closing device");
+        serial_port_close(port);
+        return false;
+    }
+    else if (poll_fd.revents & POLLERR || poll_fd.revents & POLLNVAL)
+    {
+        MIP_LOG_ERROR("Poll encountered error\n");
+        return false;
+    }
+    else if (poll_status > 0 && poll_fd.revents & POLLIN)
     {
         ssize_t local_bytes_read = read(port->handle, buffer, num_bytes);
 
