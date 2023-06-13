@@ -203,9 +203,9 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 ///@returns true if sufficient space was available, false otherwise.
 ///
 template<typename T>
-bool insert(const T& value, uint8_t* buffer, size_t bufferSize)
+bool insert(const T& value, uint8_t* buffer, size_t bufferSize, size_t offset=0)
 {
-    Serializer serializer(buffer, bufferSize);
+    Serializer serializer(buffer, bufferSize, offset);
     insert(serializer, value);
     return !!serializer;
 }
