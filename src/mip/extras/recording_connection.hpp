@@ -28,7 +28,7 @@ public:
     bool sendToDevice(const uint8_t* data, size_t length) final;
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) final;
 
-    bool isConnected() 
+    bool isConnected() const
     {
         if(mConnection)
             return mConnection->isConnected();

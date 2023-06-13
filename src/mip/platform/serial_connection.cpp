@@ -25,11 +25,11 @@ SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrat
 ///@brief Closes the underlying serial port
 SerialConnection::~SerialConnection()
 {
-    disconnect(); 
+    SerialConnection::disconnect();
 }
 
 ///@brief Check if the port is connected
-bool SerialConnection::isConnected()
+bool SerialConnection::isConnected() const
 {
     return serial_port_is_open(&mPort);
 }

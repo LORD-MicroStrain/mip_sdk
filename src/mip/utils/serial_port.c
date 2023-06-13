@@ -92,7 +92,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
     //Set the timeouts
-    
+
     COMMTIMEOUTS timeouts;
     GetCommTimeouts(port->handle, &timeouts);
 
@@ -102,9 +102,9 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     timeouts.ReadTotalTimeoutConstant    = 1;
     timeouts.WriteTotalTimeoutMultiplier = 1;
     timeouts.WriteTotalTimeoutConstant   = 1;
-    
+
     SetCommTimeouts(port->handle, &timeouts);
-    
+
     //Setup the com port parameters
     ready = GetCommState(port->handle, &dcb);
 
@@ -344,7 +344,7 @@ uint32_t serial_port_read_count(serial_port *port)
     return 0;
 }
 
-bool serial_port_is_open(serial_port *port)
+bool serial_port_is_open(const serial_port *port)
 {
 #ifdef WIN32
     return port->handle != INVALID_HANDLE_VALUE;

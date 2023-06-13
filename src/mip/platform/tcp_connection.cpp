@@ -25,11 +25,11 @@ TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
 TcpConnection::~TcpConnection()
 {
     if(mConnected)
-      disconnect();
+      TcpConnection::disconnect();
 }
 
 ///@brief Check if the socket is connected
-bool TcpConnection::isConnected()
+bool TcpConnection::isConnected() const
 {
   return mConnected;
 }
@@ -41,7 +41,7 @@ bool TcpConnection::connect()
      return false;
 
     mConnected = tcp_socket_open(&mSocket, mHostname.c_str(), mPort, 3000);
-   
+
    return mConnected;
 }
 
