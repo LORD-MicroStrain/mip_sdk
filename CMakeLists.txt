@@ -148,6 +148,8 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/commands_gnss.h"
     "${MIP_DIR}/definitions/commands_rtk.c"
     "${MIP_DIR}/definitions/commands_rtk.h"
+    "${MIP_DIR}/definitions/commands_aiding.c"
+    "${MIP_DIR}/definitions/commands_aiding.h"
     "${MIP_DIR}/definitions/commands_system.c"
     "${MIP_DIR}/definitions/commands_system.h"
     "${MIP_DIR}/definitions/data_filter.c"
