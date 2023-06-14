@@ -30,13 +30,13 @@ public:
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
-    bool isConnected();
+    bool isConnected() const;
     bool connect();
     bool disconnect();
 
 
 
-    void connectionInfo(std::string &name, uint32_t &baudrate)
+    void connectionInfo(std::string &name, uint32_t &baudrate) const
     {
         name     = mPortName;
         baudrate = mBaudrate;

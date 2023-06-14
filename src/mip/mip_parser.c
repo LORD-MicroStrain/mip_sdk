@@ -58,6 +58,7 @@ void mip_parser_reset(mip_parser* parser)
     byte_ring_clear(&parser->_ring);
 
     MIP_DIAG_ZERO(parser->_diag_bytes_read);
+    MIP_DIAG_ZERO(parser->_diag_bytes_skipped);
     MIP_DIAG_ZERO(parser->_diag_packet_bytes);
     MIP_DIAG_ZERO(parser->_diag_valid_packets);
     MIP_DIAG_ZERO(parser->_diag_invalid_packets);
@@ -117,7 +118,10 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
     if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
     {
         if( byte_ring_count(&parser->_ring) > 0 )
+        {
             byte_ring_pop(&parser->_ring, 1);
+            MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
+        }
 
         parser->_expected_length = MIPPARSER_RESET_LENGTH;
 
@@ -183,7 +187,11 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
         if( parser->_expected_length == MIPPARSER_RESET_LENGTH )
         {
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
+            {
                 byte_ring_pop(&parser->_ring, 1);
+
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
+            }
             else
             {
                 // Synchronized - set the start time and expect more data.
@@ -197,6 +205,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
             {
                 byte_ring_pop(&parser->_ring, 1);
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
                 parser->_expected_length = MIPPARSER_RESET_LENGTH;
             }
             else
@@ -218,7 +227,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             {
                 // Invalid packet, drop just the first sync byte and restart.
                 byte_ring_pop(&parser->_ring, 1);
-
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
                 MIP_DIAG_INC(parser->_diag_invalid_packets, 1);
             }
             else // Checksum is valid
@@ -411,7 +420,7 @@ uint32_t mip_parser_diagnostic_packet_bytes(const mip_parser* parser)
 ///
 uint32_t mip_parser_diagnostic_bytes_skipped(const mip_parser* parser)
 {
-    return parser->_diag_bytes_read - parser->_diag_packet_bytes;
+    return parser->_diag_bytes_skipped;
 }
 
 
@@ -429,7 +438,7 @@ uint32_t mip_parser_diagnostic_valid_packets(const mip_parser* parser)
 /// These invalid packets are not emitted by the parser and are not included in
 /// the "valid packets" or "packet bytes" counters.
 ///
-uint16_t mip_parser_diagnostic_invalid_packets(const mip_parser* parser)
+uint32_t mip_parser_diagnostic_invalid_packets(const mip_parser* parser)
 {
     return parser->_diag_invalid_packets;
 }
@@ -443,7 +452,7 @@ uint16_t mip_parser_diagnostic_invalid_packets(const mip_parser* parser)
 ///@li The length byte is corrupted to make the packet look longer
 ///@li The connection bandwidth and/or latency is too low
 ///
-uint16_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
+uint32_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
 {
     return parser->_diag_timeouts;
 }
