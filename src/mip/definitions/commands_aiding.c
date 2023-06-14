@@ -328,6 +328,258 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
     }
     return result;
 }
+void insert_mip_aiding_ecef_vel_command(mip_serializer* serializer, const mip_aiding_ecef_vel_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->uncertainty[i]);
+    
+    insert_mip_aiding_ecef_vel_command_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_ecef_vel_command(mip_serializer* serializer, mip_aiding_ecef_vel_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->uncertainty[i]);
+    
+    extract_mip_aiding_ecef_vel_command_valid_flags(serializer, &self->valid_flags);
+    
+}
+
+void insert_mip_aiding_ecef_vel_response(mip_serializer* serializer, const mip_aiding_ecef_vel_response* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->uncertainty[i]);
+    
+    insert_mip_aiding_ecef_vel_command_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_ecef_vel_response(mip_serializer* serializer, mip_aiding_ecef_vel_response* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->uncertainty[i]);
+    
+    extract_mip_aiding_ecef_vel_command_valid_flags(serializer, &self->valid_flags);
+    
+}
+
+void insert_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self)
+{
+    insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags, mip_time* time_out, uint8_t* sensor_id_out, float* velocity_out, float* uncertainty_out, mip_aiding_ecef_vel_command_valid_flags* valid_flags_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, sensor_id);
+    
+    assert(velocity || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, velocity[i]);
+    
+    assert(uncertainty || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, uncertainty[i]);
+    
+    insert_mip_aiding_ecef_vel_command_valid_flags(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_ECEF_VEL, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_AIDING_ECEF_VEL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(time_out);
+        extract_mip_time(&deserializer, time_out);
+        
+        assert(sensor_id_out);
+        extract_u8(&deserializer, sensor_id_out);
+        
+        assert(velocity_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &velocity_out[i]);
+        
+        assert(uncertainty_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &uncertainty_out[i]);
+        
+        assert(valid_flags_out);
+        extract_mip_aiding_ecef_vel_command_valid_flags(&deserializer, valid_flags_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+void insert_mip_aiding_ned_vel_command(mip_serializer* serializer, const mip_aiding_ned_vel_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->uncertainty[i]);
+    
+    insert_mip_aiding_ned_vel_command_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_ned_vel_command(mip_serializer* serializer, mip_aiding_ned_vel_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->uncertainty[i]);
+    
+    extract_mip_aiding_ned_vel_command_valid_flags(serializer, &self->valid_flags);
+    
+}
+
+void insert_mip_aiding_ned_vel_response(mip_serializer* serializer, const mip_aiding_ned_vel_response* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->uncertainty[i]);
+    
+    insert_mip_aiding_ned_vel_command_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_ned_vel_response(mip_serializer* serializer, mip_aiding_ned_vel_response* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->velocity[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->uncertainty[i]);
+    
+    extract_mip_aiding_ned_vel_command_valid_flags(serializer, &self->valid_flags);
+    
+}
+
+void insert_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self)
+{
+    insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags, mip_time* time_out, uint8_t* sensor_id_out, float* velocity_out, float* uncertainty_out, mip_aiding_ned_vel_command_valid_flags* valid_flags_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, sensor_id);
+    
+    assert(velocity || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, velocity[i]);
+    
+    assert(uncertainty || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, uncertainty[i]);
+    
+    insert_mip_aiding_ned_vel_command_valid_flags(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_NED_VEL, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_AIDING_NED_VEL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(time_out);
+        extract_mip_time(&deserializer, time_out);
+        
+        assert(sensor_id_out);
+        extract_u8(&deserializer, sensor_id_out);
+        
+        assert(velocity_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &velocity_out[i]);
+        
+        assert(uncertainty_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &uncertainty_out[i]);
+        
+        assert(valid_flags_out);
+        extract_mip_aiding_ned_vel_command_valid_flags(&deserializer, valid_flags_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
 void insert_mip_aiding_vehicle_fixed_frame_velocity_command(mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command* self)
 {
     insert_mip_time(serializer, &self->time);

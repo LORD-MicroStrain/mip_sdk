@@ -48,6 +48,8 @@ enum
     
     REPLY_ECEF_POS         = 0x81,
     REPLY_LLH_POS          = 0x82,
+    REPLY_ECEF_VEL         = 0x88,
+    REPLY_NED_VEL          = 0x89,
     REPLY_ODOM_VEL         = 0x8A,
     REPLY_HEADING_TRUE     = 0x91,
     REPLY_ECHO_CONTROL     = 0xEF,
@@ -80,6 +82,7 @@ void extract(Serializer& serializer, Time& self);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_ecef_pos  (0x13,0x01) Ecef Pos [CPP]
+/// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
 
@@ -123,8 +126,8 @@ struct EcefPos
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Sensor ID.
-    double position[3] = {0}; ///< ECEF position.
-    float uncertainty[3] = {0}; ///< ECEF position uncertainty.
+    double position[3] = {0}; ///< ECEF position [m].
+    float uncertainty[3] = {0}; ///< ECEF position uncertainty [m].
     ValidFlags valid_flags; ///< Valid flags.
     
     struct Response
@@ -134,8 +137,8 @@ struct EcefPos
         
         Time time; ///< Timestamp of the measurement.
         uint8_t sensor_id = 0; ///< Sensor ID.
-        double position[3] = {0}; ///< ECEF position.
-        float uncertainty[3] = {0}; ///< ECEF position uncertainty.
+        double position[3] = {0}; ///< ECEF position [m].
+        float uncertainty[3] = {0}; ///< ECEF position uncertainty [m].
         ValidFlags valid_flags; ///< Valid flags.
         
     };
@@ -151,6 +154,8 @@ CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, 
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_llh_pos  (0x13,0x02) Llh Pos [CPP]
+/// Geodetic position aiding command. Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
+/// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
 ///
 ///@{
 
@@ -194,10 +199,10 @@ struct LlhPos
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Sensor ID.
-    double latitude = 0;
-    double longitude = 0;
-    double height = 0;
-    float uncertainty[3] = {0}; ///< ECEF position uncertainty.
+    double latitude = 0; ///< [deg]
+    double longitude = 0; ///< [deg]
+    double height = 0; ///< [m]
+    float uncertainty[3] = {0}; ///< NED position uncertainty.
     ValidFlags valid_flags; ///< Valid flags.
     
     struct Response
@@ -207,10 +212,10 @@ struct LlhPos
         
         Time time; ///< Timestamp of the measurement.
         uint8_t sensor_id = 0; ///< Sensor ID.
-        double latitude = 0;
-        double longitude = 0;
-        double height = 0;
-        float uncertainty[3] = {0}; ///< ECEF position uncertainty.
+        double latitude = 0; ///< [deg]
+        double longitude = 0; ///< [deg]
+        double height = 0; ///< [m]
+        float uncertainty[3] = {0}; ///< NED position uncertainty.
         ValidFlags valid_flags; ///< Valid flags.
         
     };
@@ -222,6 +227,150 @@ void insert(Serializer& serializer, const LlhPos::Response& self);
 void extract(Serializer& serializer, LlhPos::Response& self);
 
 CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags, Time* timeOut, uint8_t* sensorIdOut, double* latitudeOut, double* longitudeOut, double* heightOut, float* uncertaintyOut, LlhPos::ValidFlags* validFlagsOut);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_ecef_vel  (0x13,0x08) Ecef Vel [CPP]
+/// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
+///
+///@{
+
+struct EcefVel
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECEF_VEL;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        enum _enumType : uint16_t
+        {
+            NONE = 0x0000,
+            X    = 0x0002,  ///<  
+            Y    = 0x0004,  ///<  
+            Z    = 0x0008,  ///<  
+            ALL  = 0x000E,
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { if(val) value |= X; else value &= ~X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    
+    Time time; ///< Timestamp of the measurement.
+    uint8_t sensor_id = 0; ///< Sensor ID.
+    float velocity[3] = {0}; ///< ECEF velocity [m/s].
+    float uncertainty[3] = {0}; ///< ECEF velocity uncertainty [m/s].
+    ValidFlags valid_flags; ///< Valid flags.
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECEF_VEL;
+        
+        Time time; ///< Timestamp of the measurement.
+        uint8_t sensor_id = 0; ///< Sensor ID.
+        float velocity[3] = {0}; ///< ECEF velocity [m/s].
+        float uncertainty[3] = {0}; ///< ECEF velocity uncertainty [m/s].
+        ValidFlags valid_flags; ///< Valid flags.
+        
+    };
+};
+void insert(Serializer& serializer, const EcefVel& self);
+void extract(Serializer& serializer, EcefVel& self);
+
+void insert(Serializer& serializer, const EcefVel::Response& self);
+void extract(Serializer& serializer, EcefVel::Response& self);
+
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags, Time* timeOut, uint8_t* sensorIdOut, float* velocityOut, float* uncertaintyOut, EcefVel::ValidFlags* validFlagsOut);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_ned_vel  (0x13,0x09) Ned Vel [CPP]
+/// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
+///
+///@{
+
+struct NedVel
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_NED_VEL;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        enum _enumType : uint16_t
+        {
+            NONE = 0x0000,
+            X    = 0x0002,  ///<  
+            Y    = 0x0004,  ///<  
+            Z    = 0x0008,  ///<  
+            ALL  = 0x000E,
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { if(val) value |= X; else value &= ~X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    
+    Time time; ///< Timestamp of the measurement.
+    uint8_t sensor_id = 0; ///< Sensor ID.
+    float velocity[3] = {0}; ///< NED velocity [m/s].
+    float uncertainty[3] = {0}; ///< NED velocity uncertainty [m/s].
+    ValidFlags valid_flags; ///< Valid flags.
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_NED_VEL;
+        
+        Time time; ///< Timestamp of the measurement.
+        uint8_t sensor_id = 0; ///< Sensor ID.
+        float velocity[3] = {0}; ///< NED velocity [m/s].
+        float uncertainty[3] = {0}; ///< NED velocity uncertainty [m/s].
+        ValidFlags valid_flags; ///< Valid flags.
+        
+    };
+};
+void insert(Serializer& serializer, const NedVel& self);
+void extract(Serializer& serializer, NedVel& self);
+
+void insert(Serializer& serializer, const NedVel::Response& self);
+void extract(Serializer& serializer, NedVel::Response& self);
+
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags, Time* timeOut, uint8_t* sensorIdOut, float* velocityOut, float* uncertaintyOut, NedVel::ValidFlags* validFlagsOut);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -271,8 +420,8 @@ struct VehicleFixedFrameVelocity
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
-    float velocity[3] = {0}; ///< [meters/second]
-    float uncertainty[3] = {0}; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    float velocity[3] = {0}; ///< [m/s]
+    float uncertainty[3] = {0}; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     ValidFlags valid_flags;
     
     struct Response
@@ -282,8 +431,8 @@ struct VehicleFixedFrameVelocity
         
         Time time; ///< Timestamp of the measurement.
         uint8_t sensor_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
-        float velocity[3] = {0}; ///< [meters/second]
-        float uncertainty[3] = {0}; ///< [meters/second] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+        float velocity[3] = {0}; ///< [m/s]
+        float uncertainty[3] = {0}; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
         ValidFlags valid_flags;
         
     };
