@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@typedef mip_send_callback
 ///
@@ -377,6 +376,7 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
     assert(count <= max_count);
 
     mip_parser_process_written(parser, count, timestamp, 0);
+ 
     mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
 
     return true;
