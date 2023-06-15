@@ -889,6 +889,117 @@ CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t descSet);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_3dm_constellation_settings  (0x0C,0x21) Constellation Settings [CPP]
+/// This command configures which satellite constellations are enabled and how many channels are dedicated to tracking each constellation.
+/// 
+/// Maximum number of tracking channels to use (total for all constellations):
+/// 0 to max_channels_available (from reply message)
+/// 
+/// For each constellation you wish to use, include a ConstellationSettings struct.  Note the following:
+/// 
+/// Total number of tracking channels (sum of "reserved_channels" for all constellations) must be <= 32:
+/// 0 -> 32 Number of reserved channels
+/// 0 -> 32 Max number of channels (>= reserved channels)
+/// 
+/// The factory default setting is: GPS and GLONASS enabled.  Min/Max for GPS = 8/16, GLONASS = 8/14, SBAS = 1/3, QZSS = 0/3.
+/// 
+/// Warning: SBAS functionality shall not be used in "safety of life" applications!
+/// Warning: Any setting that causes the total reserved channels to exceed 32 will result in a NACK.
+/// Warning: You cannot enable GLONASS and BeiDou at the same time.
+/// Note:    Enabling SBAS and QZSS augments GPS accuracy.
+/// Note:    It is recommended to disable GLONASS and BeiDou if a GPS-only antenna or GPS-only SAW filter is used.
+///
+///@{
+
+struct ConstellationSettings
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_CONSTELLATION_SETTINGS;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    enum class ConstellationId : uint8_t
+    {
+        GPS     = 0,  ///<  GPS (G1-G32)
+        SBAS    = 1,  ///<  SBAS (S120-S158)
+        GALILEO = 2,  ///<  GALILEO (E1-E36)
+        BEIDOU  = 3,  ///<  BeiDou (B1-B37)
+        QZSS    = 5,  ///<  QZSS (Q1-Q5)
+        GLONASS = 6,  ///<  GLONASS (R1-R32)
+    };
+    
+    struct OptionFlags : Bitfield<OptionFlags>
+    {
+        enum _enumType : uint16_t
+        {
+            NONE   = 0x0000,
+            L1SAIF = 0x0001,  ///<  Available only for QZSS
+            ALL    = 0x0001,
+        };
+        uint16_t value = NONE;
+        
+        OptionFlags() : value(NONE) {}
+        OptionFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        OptionFlags& operator=(uint16_t val) { value = val; return *this; }
+        OptionFlags& operator=(int val) { value = val; return *this; }
+        OptionFlags& operator|=(uint16_t val) { return *this = value | val; }
+        OptionFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool l1saif() const { return (value & L1SAIF) > 0; }
+        void l1saif(bool val) { if(val) value |= L1SAIF; else value &= ~L1SAIF; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    
+    struct Settings
+    {
+        ConstellationId constellation_id = static_cast<ConstellationId>(0); ///< Constellation ID
+        uint8_t enable = 0; ///< Enable/Disable constellation
+        uint8_t reserved_channels = 0; ///< Minimum number of channels reserved for this constellation
+        uint8_t max_channels = 0; ///< Maximum number of channels to use for this constallation
+        OptionFlags option_flags; ///< Constellation option Flags
+        
+    };
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint16_t max_channels = 0;
+    uint8_t config_count = 0;
+    Settings* settings = {nullptr};
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_CONSTELLATION_SETTINGS;
+        
+        uint16_t max_channels_available = 0; ///< Maximum channels available
+        uint16_t max_channels_use = 0; ///< Maximum channels to use
+        uint8_t config_count = 0; ///< Number of constellation configurations
+        Settings* settings = {nullptr}; ///< Constellation Settings
+        
+    };
+};
+void insert(Serializer& serializer, const ConstellationSettings& self);
+void extract(Serializer& serializer, ConstellationSettings& self);
+
+void insert(Serializer& serializer, const ConstellationSettings::Settings& self);
+void extract(Serializer& serializer, ConstellationSettings::Settings& self);
+
+void insert(Serializer& serializer, const ConstellationSettings::Response& self);
+void extract(Serializer& serializer, ConstellationSettings::Response& self);
+
+CmdResult writeConstellationSettings(C::mip_interface& device, uint16_t maxChannels, uint8_t configCount, const ConstellationSettings::Settings* settings);
+CmdResult readConstellationSettings(C::mip_interface& device, uint16_t* maxChannelsAvailableOut, uint16_t* maxChannelsUseOut, uint8_t* configCountOut, uint8_t configCountOutMax, ConstellationSettings::Settings* settingsOut);
+CmdResult saveConstellationSettings(C::mip_interface& device);
+CmdResult loadConstellationSettings(C::mip_interface& device);
+CmdResult defaultConstellationSettings(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_3dm_gnss_sbas_settings  (0x0C,0x22) Gnss Sbas Settings [CPP]
 /// Configure the SBAS subsystem
 /// 
@@ -968,6 +1079,66 @@ CmdResult readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut,
 CmdResult saveGnssSbasSettings(C::mip_interface& device);
 CmdResult loadGnssSbasSettings(C::mip_interface& device);
 CmdResult defaultGnssSbasSettings(C::mip_interface& device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_3dm_gnss_assisted_fix  (0x0C,0x23) Gnss Assisted Fix [CPP]
+/// Set the options for assisted GNSS fix.
+/// 
+/// Devices that implement this command have a dedicated GNSS flash memory and a non-volatile FRAM.
+/// These storage mechanisms are used to retain information about the last good GNSS fix. This can greatly reduces the TTFF (Time To First Fix) depending on the age of the stored information.
+/// The TTFF can be as low as one second, or up to the equivalent of a cold start. There is a small increase in power used when enabling assisted fix.
+/// 
+/// The fastest fix will be obtained by supplying the device with a GNSS Assist Time Update message containing the current GPS time immediately after subsequent power up.
+/// This allows the device to determine if the last GNSS information saved is still fresh enough to improve the TTFF.
+/// 
+/// NOTE: Non-volatile GNSS memory is cleared when going from an enabled state to a disabled state.
+/// WARNING: The clearing operation results in an erase operation on the GNSS Flash. The flash has a limited durability of 100,000 write/erase cycles
+///
+///@{
+
+struct GnssAssistedFix
+{
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_ASSISTED_FIX_SETTINGS;
+    
+    static const bool HAS_WRITE_FUNCTION = true;
+    static const bool HAS_READ_FUNCTION = true;
+    static const bool HAS_SAVE_FUNCTION = true;
+    static const bool HAS_LOAD_FUNCTION = true;
+    static const bool HAS_RESET_FUNCTION = true;
+    
+    enum class AssistedFixOption : uint8_t
+    {
+        NONE    = 0,  ///<  No assisted fix (default)
+        ENABLED = 1,  ///<  Enable assisted fix
+    };
+    
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
+    uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
+    
+    struct Response
+    {
+        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_ASSISTED_FIX_SETTINGS;
+        
+        AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
+        uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
+        
+    };
+};
+void insert(Serializer& serializer, const GnssAssistedFix& self);
+void extract(Serializer& serializer, GnssAssistedFix& self);
+
+void insert(Serializer& serializer, const GnssAssistedFix::Response& self);
+void extract(Serializer& serializer, GnssAssistedFix::Response& self);
+
+CmdResult writeGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption option, uint8_t flags);
+CmdResult readGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption* optionOut, uint8_t* flagsOut);
+CmdResult saveGnssAssistedFix(C::mip_interface& device);
+CmdResult loadGnssAssistedFix(C::mip_interface& device);
+CmdResult defaultGnssAssistedFix(C::mip_interface& device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
