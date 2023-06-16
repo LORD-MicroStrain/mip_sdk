@@ -1361,11 +1361,8 @@ void insert(Serializer& serializer, const AccelNoise& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.x);
-        
-        insert(serializer, self.y);
-        
-        insert(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
         
     }
 }
@@ -1375,51 +1372,40 @@ void extract(Serializer& serializer, AccelNoise& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.x);
-        
-        extract(serializer, self.y);
-        
-        extract(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
         
     }
 }
 
 void insert(Serializer& serializer, const AccelNoise::Response& self)
 {
-    insert(serializer, self.x);
-    
-    insert(serializer, self.y);
-    
-    insert(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
     
 }
 void extract(Serializer& serializer, AccelNoise::Response& self)
 {
-    extract(serializer, self.x);
-    
-    extract(serializer, self.y);
-    
-    extract(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
     
 }
 
-CmdResult writeAccelNoise(C::mip_interface& device, float x, float y, float z)
+CmdResult writeAccelNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, x);
-    
-    insert(serializer, y);
-    
-    insert(serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readAccelNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
+CmdResult readAccelNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -1434,14 +1420,9 @@ CmdResult readAccelNoise(C::mip_interface& device, float* xOut, float* yOut, flo
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(xOut);
-        extract(deserializer, *xOut);
-        
-        assert(yOut);
-        extract(deserializer, *yOut);
-        
-        assert(zOut);
-        extract(deserializer, *zOut);
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
@@ -1484,11 +1465,8 @@ void insert(Serializer& serializer, const GyroNoise& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.x);
-        
-        insert(serializer, self.y);
-        
-        insert(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
         
     }
 }
@@ -1498,51 +1476,40 @@ void extract(Serializer& serializer, GyroNoise& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.x);
-        
-        extract(serializer, self.y);
-        
-        extract(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
         
     }
 }
 
 void insert(Serializer& serializer, const GyroNoise::Response& self)
 {
-    insert(serializer, self.x);
-    
-    insert(serializer, self.y);
-    
-    insert(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
     
 }
 void extract(Serializer& serializer, GyroNoise::Response& self)
 {
-    extract(serializer, self.x);
-    
-    extract(serializer, self.y);
-    
-    extract(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
     
 }
 
-CmdResult writeGyroNoise(C::mip_interface& device, float x, float y, float z)
+CmdResult writeGyroNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, x);
-    
-    insert(serializer, y);
-    
-    insert(serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readGyroNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
+CmdResult readGyroNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -1557,14 +1524,9 @@ CmdResult readGyroNoise(C::mip_interface& device, float* xOut, float* yOut, floa
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(xOut);
-        extract(deserializer, *xOut);
-        
-        assert(yOut);
-        extract(deserializer, *yOut);
-        
-        assert(zOut);
-        extract(deserializer, *zOut);
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
@@ -1607,17 +1569,11 @@ void insert(Serializer& serializer, const AccelBiasModel& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.beta[i]);
         
-        insert(serializer, self.y_beta);
-        
-        insert(serializer, self.z_beta);
-        
-        insert(serializer, self.x);
-        
-        insert(serializer, self.y);
-        
-        insert(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
         
     }
 }
@@ -1627,75 +1583,53 @@ void extract(Serializer& serializer, AccelBiasModel& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.beta[i]);
         
-        extract(serializer, self.y_beta);
-        
-        extract(serializer, self.z_beta);
-        
-        extract(serializer, self.x);
-        
-        extract(serializer, self.y);
-        
-        extract(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
         
     }
 }
 
 void insert(Serializer& serializer, const AccelBiasModel::Response& self)
 {
-    insert(serializer, self.x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.beta[i]);
     
-    insert(serializer, self.y_beta);
-    
-    insert(serializer, self.z_beta);
-    
-    insert(serializer, self.x);
-    
-    insert(serializer, self.y);
-    
-    insert(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
     
 }
 void extract(Serializer& serializer, AccelBiasModel::Response& self)
 {
-    extract(serializer, self.x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.beta[i]);
     
-    extract(serializer, self.y_beta);
-    
-    extract(serializer, self.z_beta);
-    
-    extract(serializer, self.x);
-    
-    extract(serializer, self.y);
-    
-    extract(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
     
 }
 
-CmdResult writeAccelBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z)
+CmdResult writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, xBeta);
+    assert(beta || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, beta[i]);
     
-    insert(serializer, yBeta);
-    
-    insert(serializer, zBeta);
-    
-    insert(serializer, x);
-    
-    insert(serializer, y);
-    
-    insert(serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readAccelBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut)
+CmdResult readAccelBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -1710,23 +1644,13 @@ CmdResult readAccelBiasModel(C::mip_interface& device, float* xBetaOut, float* y
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(xBetaOut);
-        extract(deserializer, *xBetaOut);
+        assert(betaOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, betaOut[i]);
         
-        assert(yBetaOut);
-        extract(deserializer, *yBetaOut);
-        
-        assert(zBetaOut);
-        extract(deserializer, *zBetaOut);
-        
-        assert(xOut);
-        extract(deserializer, *xOut);
-        
-        assert(yOut);
-        extract(deserializer, *yOut);
-        
-        assert(zOut);
-        extract(deserializer, *zOut);
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
@@ -1769,17 +1693,11 @@ void insert(Serializer& serializer, const GyroBiasModel& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.beta[i]);
         
-        insert(serializer, self.y_beta);
-        
-        insert(serializer, self.z_beta);
-        
-        insert(serializer, self.x);
-        
-        insert(serializer, self.y);
-        
-        insert(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
         
     }
 }
@@ -1789,75 +1707,53 @@ void extract(Serializer& serializer, GyroBiasModel& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.beta[i]);
         
-        extract(serializer, self.y_beta);
-        
-        extract(serializer, self.z_beta);
-        
-        extract(serializer, self.x);
-        
-        extract(serializer, self.y);
-        
-        extract(serializer, self.z);
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
         
     }
 }
 
 void insert(Serializer& serializer, const GyroBiasModel::Response& self)
 {
-    insert(serializer, self.x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.beta[i]);
     
-    insert(serializer, self.y_beta);
-    
-    insert(serializer, self.z_beta);
-    
-    insert(serializer, self.x);
-    
-    insert(serializer, self.y);
-    
-    insert(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
     
 }
 void extract(Serializer& serializer, GyroBiasModel::Response& self)
 {
-    extract(serializer, self.x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.beta[i]);
     
-    extract(serializer, self.y_beta);
-    
-    extract(serializer, self.z_beta);
-    
-    extract(serializer, self.x);
-    
-    extract(serializer, self.y);
-    
-    extract(serializer, self.z);
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
     
 }
 
-CmdResult writeGyroBiasModel(C::mip_interface& device, float xBeta, float yBeta, float zBeta, float x, float y, float z)
+CmdResult writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, xBeta);
+    assert(beta || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, beta[i]);
     
-    insert(serializer, yBeta);
-    
-    insert(serializer, zBeta);
-    
-    insert(serializer, x);
-    
-    insert(serializer, y);
-    
-    insert(serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readGyroBiasModel(C::mip_interface& device, float* xBetaOut, float* yBetaOut, float* zBetaOut, float* xOut, float* yOut, float* zOut)
+CmdResult readGyroBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -1872,23 +1768,13 @@ CmdResult readGyroBiasModel(C::mip_interface& device, float* xBetaOut, float* yB
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(xBetaOut);
-        extract(deserializer, *xBetaOut);
+        assert(betaOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, betaOut[i]);
         
-        assert(yBetaOut);
-        extract(deserializer, *yBetaOut);
-        
-        assert(zBetaOut);
-        extract(deserializer, *zBetaOut);
-        
-        assert(xOut);
-        extract(deserializer, *xOut);
-        
-        assert(yOut);
-        extract(deserializer, *yOut);
-        
-        assert(zOut);
-        extract(deserializer, *zOut);
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
@@ -1931,7 +1817,7 @@ void insert(Serializer& serializer, const AltitudeAiding& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.aiding_selector);
+        insert(serializer, self.selector);
         
     }
 }
@@ -1941,35 +1827,35 @@ void extract(Serializer& serializer, AltitudeAiding& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.aiding_selector);
+        extract(serializer, self.selector);
         
     }
 }
 
 void insert(Serializer& serializer, const AltitudeAiding::Response& self)
 {
-    insert(serializer, self.aiding_selector);
+    insert(serializer, self.selector);
     
 }
 void extract(Serializer& serializer, AltitudeAiding::Response& self)
 {
-    extract(serializer, self.aiding_selector);
+    extract(serializer, self.selector);
     
 }
 
-CmdResult writeAltitudeAiding(C::mip_interface& device, uint8_t aidingSelector)
+CmdResult writeAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, aidingSelector);
+    insert(serializer, selector);
     
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readAltitudeAiding(C::mip_interface& device, uint8_t* aidingSelectorOut)
+CmdResult readAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector* selectorOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -1984,8 +1870,8 @@ CmdResult readAltitudeAiding(C::mip_interface& device, uint8_t* aidingSelectorOu
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(aidingSelectorOut);
-        extract(deserializer, *aidingSelectorOut);
+        assert(selectorOut);
+        extract(deserializer, *selectorOut);
         
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
@@ -2021,6 +1907,103 @@ CmdResult defaultAltitudeAiding(C::mip_interface& device)
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const PitchRollAiding& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+    }
+}
+void extract(Serializer& serializer, PitchRollAiding& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+    }
+}
+
+void insert(Serializer& serializer, const PitchRollAiding::Response& self)
+{
+    insert(serializer, self.source);
+    
+}
+void extract(Serializer& serializer, PitchRollAiding::Response& self)
+{
+    extract(serializer, self.source);
+    
+}
+
+CmdResult writePitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource source)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, source);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readPitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource* sourceOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(sourceOut);
+        extract(deserializer, *sourceOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult savePitchRollAiding(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadPitchRollAiding(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultPitchRollAiding(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const AutoZupt& self)
 {
@@ -2271,6 +2254,880 @@ void extract(Serializer& serializer, CommandedAngularZupt& self)
 CmdResult commandedAngularZupt(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMMANDED_ANGULAR_ZUPT, NULL, 0);
+}
+void insert(Serializer& serializer, const MagCaptureAutoCal& self)
+{
+    insert(serializer, self.function);
+    
+}
+void extract(Serializer& serializer, MagCaptureAutoCal& self)
+{
+    extract(serializer, self.function);
+    
+}
+
+CmdResult writeMagCaptureAutoCal(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult saveMagCaptureAutoCal(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const GravityNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
+        
+    }
+}
+void extract(Serializer& serializer, GravityNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GravityNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
+    
+}
+void extract(Serializer& serializer, GravityNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
+    
+}
+
+CmdResult writeGravityNoise(C::mip_interface& device, const float* noise)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readGravityNoise(C::mip_interface& device, float* noiseOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_GRAVITY_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveGravityNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadGravityNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultGravityNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const PressureAltitudeNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.noise);
+        
+    }
+}
+void extract(Serializer& serializer, PressureAltitudeNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.noise);
+        
+    }
+}
+
+void insert(Serializer& serializer, const PressureAltitudeNoise::Response& self)
+{
+    insert(serializer, self.noise);
+    
+}
+void extract(Serializer& serializer, PressureAltitudeNoise::Response& self)
+{
+    extract(serializer, self.noise);
+    
+}
+
+CmdResult writePressureAltitudeNoise(C::mip_interface& device, float noise)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, noise);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readPressureAltitudeNoise(C::mip_interface& device, float* noiseOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), CMD_PRESSURE_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(noiseOut);
+        extract(deserializer, *noiseOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult savePressureAltitudeNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadPressureAltitudeNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultPressureAltitudeNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const HardIronOffsetNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
+        
+    }
+}
+void extract(Serializer& serializer, HardIronOffsetNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
+    
+}
+void extract(Serializer& serializer, HardIronOffsetNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
+    
+}
+
+CmdResult writeHardIronOffsetNoise(C::mip_interface& device, const float* noise)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readHardIronOffsetNoise(C::mip_interface& device, float* noiseOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultHardIronOffsetNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const SoftIronMatrixNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert(serializer, self.noise[i]);
+        
+    }
+}
+void extract(Serializer& serializer, SoftIronMatrixNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract(serializer, self.noise[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const SoftIronMatrixNoise::Response& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        insert(serializer, self.noise[i]);
+    
+}
+void extract(Serializer& serializer, SoftIronMatrixNoise::Response& self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        extract(serializer, self.noise[i]);
+    
+}
+
+CmdResult writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    assert(noise || (9 == 0));
+    for(unsigned int i=0; i < 9; i++)
+        insert(serializer, noise[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readSoftIronMatrixNoise(C::mip_interface& device, float* noiseOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SOFT_IRON_MATRIX_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(noiseOut || (9 == 0));
+        for(unsigned int i=0; i < 9; i++)
+            extract(deserializer, noiseOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveSoftIronMatrixNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadSoftIronMatrixNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultSoftIronMatrixNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagNoise& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert(serializer, self.noise[i]);
+        
+    }
+}
+void extract(Serializer& serializer, MagNoise& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract(serializer, self.noise[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.noise[i]);
+    
+}
+void extract(Serializer& serializer, MagNoise::Response& self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.noise[i]);
+    
+}
+
+CmdResult writeMagNoise(C::mip_interface& device, const float* noise)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, noise[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readMagNoise(C::mip_interface& device, float* noiseOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_MAG_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(noiseOut || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract(deserializer, noiseOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveMagNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadMagNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultMagNoise(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const InclinationSource& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+        insert(serializer, self.inclination);
+        
+    }
+}
+void extract(Serializer& serializer, InclinationSource& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+        extract(serializer, self.inclination);
+        
+    }
+}
+
+void insert(Serializer& serializer, const InclinationSource::Response& self)
+{
+    insert(serializer, self.source);
+    
+    insert(serializer, self.inclination);
+    
+}
+void extract(Serializer& serializer, InclinationSource::Response& self)
+{
+    extract(serializer, self.source);
+    
+    extract(serializer, self.inclination);
+    
+}
+
+CmdResult writeInclinationSource(C::mip_interface& device, FilterMagParamSource source, float inclination)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, source);
+    
+    insert(serializer, inclination);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readInclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* inclinationOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_INCLINATION_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(sourceOut);
+        extract(deserializer, *sourceOut);
+        
+        assert(inclinationOut);
+        extract(deserializer, *inclinationOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveInclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadInclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultInclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagneticDeclinationSource& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+        insert(serializer, self.declination);
+        
+    }
+}
+void extract(Serializer& serializer, MagneticDeclinationSource& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+        extract(serializer, self.declination);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagneticDeclinationSource::Response& self)
+{
+    insert(serializer, self.source);
+    
+    insert(serializer, self.declination);
+    
+}
+void extract(Serializer& serializer, MagneticDeclinationSource::Response& self)
+{
+    extract(serializer, self.source);
+    
+    extract(serializer, self.declination);
+    
+}
+
+CmdResult writeMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource source, float declination)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, source);
+    
+    insert(serializer, declination);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* declinationOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_DECLINATION_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(sourceOut);
+        extract(deserializer, *sourceOut);
+        
+        assert(declinationOut);
+        extract(deserializer, *declinationOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveMagneticDeclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadMagneticDeclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultMagneticDeclinationSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagFieldMagnitudeSource& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.source);
+        
+        insert(serializer, self.magnitude);
+        
+    }
+}
+void extract(Serializer& serializer, MagFieldMagnitudeSource& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.source);
+        
+        extract(serializer, self.magnitude);
+        
+    }
+}
+
+void insert(Serializer& serializer, const MagFieldMagnitudeSource::Response& self)
+{
+    insert(serializer, self.source);
+    
+    insert(serializer, self.magnitude);
+    
+}
+void extract(Serializer& serializer, MagFieldMagnitudeSource::Response& self)
+{
+    extract(serializer, self.source);
+    
+    extract(serializer, self.magnitude);
+    
+}
+
+CmdResult writeMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource source, float magnitude)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, source);
+    
+    insert(serializer, magnitude);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* magnitudeOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_MAGNETIC_MAGNITUDE_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(sourceOut);
+        extract(deserializer, *sourceOut);
+        
+        assert(magnitudeOut);
+        extract(deserializer, *magnitudeOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveMagFieldMagnitudeSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadMagFieldMagnitudeSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultMagFieldMagnitudeSource(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const ReferencePosition& self)
 {
@@ -4325,239 +5182,6 @@ CmdResult defaultGnssAntennaCalControl(C::mip_interface& device)
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-void insert(Serializer& serializer, const HardIronOffsetNoise& self)
-{
-    insert(serializer, self.function);
-    
-    if( self.function == FunctionSelector::WRITE )
-    {
-        insert(serializer, self.x);
-        
-        insert(serializer, self.y);
-        
-        insert(serializer, self.z);
-        
-    }
-}
-void extract(Serializer& serializer, HardIronOffsetNoise& self)
-{
-    extract(serializer, self.function);
-    
-    if( self.function == FunctionSelector::WRITE )
-    {
-        extract(serializer, self.x);
-        
-        extract(serializer, self.y);
-        
-        extract(serializer, self.z);
-        
-    }
-}
-
-void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self)
-{
-    insert(serializer, self.x);
-    
-    insert(serializer, self.y);
-    
-    insert(serializer, self.z);
-    
-}
-void extract(Serializer& serializer, HardIronOffsetNoise::Response& self)
-{
-    extract(serializer, self.x);
-    
-    extract(serializer, self.y);
-    
-    extract(serializer, self.z);
-    
-}
-
-CmdResult writeHardIronOffsetNoise(C::mip_interface& device, float x, float y, float z)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, x);
-    
-    insert(serializer, y);
-    
-    insert(serializer, z);
-    
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult readHardIronOffsetNoise(C::mip_interface& device, float* xOut, float* yOut, float* zOut)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::READ);
-    assert(serializer.isOk());
-    
-    uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
-    
-    if( result == MIP_ACK_OK )
-    {
-        Serializer deserializer(buffer, responseLength);
-        
-        assert(xOut);
-        extract(deserializer, *xOut);
-        
-        assert(yOut);
-        extract(deserializer, *yOut);
-        
-        assert(zOut);
-        extract(deserializer, *zOut);
-        
-        if( deserializer.remaining() != 0 )
-            result = MIP_STATUS_ERROR;
-    }
-    return result;
-}
-CmdResult saveHardIronOffsetNoise(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::SAVE);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult loadHardIronOffsetNoise(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::LOAD);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult defaultHardIronOffsetNoise(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::RESET);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-void insert(Serializer& serializer, const MagneticDeclinationSource& self)
-{
-    insert(serializer, self.function);
-    
-    if( self.function == FunctionSelector::WRITE )
-    {
-        insert(serializer, self.source);
-        
-        insert(serializer, self.declination);
-        
-    }
-}
-void extract(Serializer& serializer, MagneticDeclinationSource& self)
-{
-    extract(serializer, self.function);
-    
-    if( self.function == FunctionSelector::WRITE )
-    {
-        extract(serializer, self.source);
-        
-        extract(serializer, self.declination);
-        
-    }
-}
-
-void insert(Serializer& serializer, const MagneticDeclinationSource::Response& self)
-{
-    insert(serializer, self.source);
-    
-    insert(serializer, self.declination);
-    
-}
-void extract(Serializer& serializer, MagneticDeclinationSource::Response& self)
-{
-    extract(serializer, self.source);
-    
-    extract(serializer, self.declination);
-    
-}
-
-CmdResult writeMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource source, float declination)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::WRITE);
-    insert(serializer, source);
-    
-    insert(serializer, declination);
-    
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult readMagneticDeclinationSource(C::mip_interface& device, FilterMagDeclinationSource* sourceOut, float* declinationOut)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::READ);
-    assert(serializer.isOk());
-    
-    uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_DECLINATION_SOURCE, buffer, &responseLength);
-    
-    if( result == MIP_ACK_OK )
-    {
-        Serializer deserializer(buffer, responseLength);
-        
-        assert(sourceOut);
-        extract(deserializer, *sourceOut);
-        
-        assert(declinationOut);
-        extract(deserializer, *declinationOut);
-        
-        if( deserializer.remaining() != 0 )
-            result = MIP_STATUS_ERROR;
-    }
-    return result;
-}
-CmdResult saveMagneticDeclinationSource(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::SAVE);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult loadMagneticDeclinationSource(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::LOAD);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-CmdResult defaultMagneticDeclinationSource(C::mip_interface& device)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, FunctionSelector::RESET);
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const SetInitialHeading& self)
 {

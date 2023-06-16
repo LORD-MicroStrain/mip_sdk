@@ -1286,6 +1286,166 @@ CmdResult defaultDatastreamControl(C::mip_interface& device, uint8_t descSet)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL_DATA_STREAM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert(Serializer& serializer, const ConstellationSettings& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.max_channels);
+        
+        insert(serializer, self.config_count);
+        
+        for(unsigned int i=0; i < self.config_count; i++)
+            insert(serializer, self.settings[i]);
+        
+    }
+}
+void extract(Serializer& serializer, ConstellationSettings& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.max_channels);
+        
+        C::extract_count(&serializer, &self.config_count, self.config_count);
+        for(unsigned int i=0; i < self.config_count; i++)
+            extract(serializer, self.settings[i]);
+        
+    }
+}
+
+void insert(Serializer& serializer, const ConstellationSettings::Response& self)
+{
+    insert(serializer, self.max_channels_available);
+    
+    insert(serializer, self.max_channels_use);
+    
+    insert(serializer, self.config_count);
+    
+    for(unsigned int i=0; i < self.config_count; i++)
+        insert(serializer, self.settings[i]);
+    
+}
+void extract(Serializer& serializer, ConstellationSettings::Response& self)
+{
+    extract(serializer, self.max_channels_available);
+    
+    extract(serializer, self.max_channels_use);
+    
+    C::extract_count(&serializer, &self.config_count, self.config_count);
+    for(unsigned int i=0; i < self.config_count; i++)
+        extract(serializer, self.settings[i]);
+    
+}
+
+void insert(Serializer& serializer, const ConstellationSettings::Settings& self)
+{
+    insert(serializer, self.constellation_id);
+    
+    insert(serializer, self.enable);
+    
+    insert(serializer, self.reserved_channels);
+    
+    insert(serializer, self.max_channels);
+    
+    insert(serializer, self.option_flags);
+    
+}
+void extract(Serializer& serializer, ConstellationSettings::Settings& self)
+{
+    extract(serializer, self.constellation_id);
+    
+    extract(serializer, self.enable);
+    
+    extract(serializer, self.reserved_channels);
+    
+    extract(serializer, self.max_channels);
+    
+    extract(serializer, self.option_flags);
+    
+}
+
+CmdResult writeConstellationSettings(C::mip_interface& device, uint16_t maxChannels, uint8_t configCount, const ConstellationSettings::Settings* settings)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, maxChannels);
+    
+    insert(serializer, configCount);
+    
+    assert(settings || (configCount == 0));
+    for(unsigned int i=0; i < configCount; i++)
+        insert(serializer, settings[i]);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readConstellationSettings(C::mip_interface& device, uint16_t* maxChannelsAvailableOut, uint16_t* maxChannelsUseOut, uint8_t* configCountOut, uint8_t configCountOutMax, ConstellationSettings::Settings* settingsOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_GNSS_CONSTELLATION_SETTINGS, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(maxChannelsAvailableOut);
+        extract(deserializer, *maxChannelsAvailableOut);
+        
+        assert(maxChannelsUseOut);
+        extract(deserializer, *maxChannelsUseOut);
+        
+        C::extract_count(&deserializer, configCountOut, configCountOutMax);
+        assert(settingsOut || (configCountOut == 0));
+        for(unsigned int i=0; i < *configCountOut; i++)
+            extract(deserializer, settingsOut[i]);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveConstellationSettings(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadConstellationSettings(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultConstellationSettings(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert(Serializer& serializer, const GnssSbasSettings& self)
 {
     insert(serializer, self.function);
@@ -1424,6 +1584,116 @@ CmdResult defaultGnssSbasSettings(C::mip_interface& device)
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SBAS_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const GnssAssistedFix& self)
+{
+    insert(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        insert(serializer, self.option);
+        
+        insert(serializer, self.flags);
+        
+    }
+}
+void extract(Serializer& serializer, GnssAssistedFix& self)
+{
+    extract(serializer, self.function);
+    
+    if( self.function == FunctionSelector::WRITE )
+    {
+        extract(serializer, self.option);
+        
+        extract(serializer, self.flags);
+        
+    }
+}
+
+void insert(Serializer& serializer, const GnssAssistedFix::Response& self)
+{
+    insert(serializer, self.option);
+    
+    insert(serializer, self.flags);
+    
+}
+void extract(Serializer& serializer, GnssAssistedFix::Response& self)
+{
+    extract(serializer, self.option);
+    
+    extract(serializer, self.flags);
+    
+}
+
+CmdResult writeGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption option, uint8_t flags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::WRITE);
+    insert(serializer, option);
+    
+    insert(serializer, flags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult readGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption* optionOut, uint8_t* flagsOut)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::READ);
+    assert(serializer.isOk());
+    
+    uint8_t responseLength = sizeof(buffer);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_GNSS_ASSISTED_FIX_SETTINGS, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        Serializer deserializer(buffer, responseLength);
+        
+        assert(optionOut);
+        extract(deserializer, *optionOut);
+        
+        assert(flagsOut);
+        extract(deserializer, *flagsOut);
+        
+        if( deserializer.remaining() != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+CmdResult saveGnssAssistedFix(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::SAVE);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult loadGnssAssistedFix(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::LOAD);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+CmdResult defaultGnssAssistedFix(C::mip_interface& device)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, FunctionSelector::RESET);
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert(Serializer& serializer, const GnssTimeAssistance& self)
 {

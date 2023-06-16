@@ -1411,6 +1411,207 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_CONTROL_DATA_STREAM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert_mip_3dm_constellation_settings_command(mip_serializer* serializer, const mip_3dm_constellation_settings_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_u16(serializer, self->max_channels);
+        
+        insert_u8(serializer, self->config_count);
+        
+        
+        for(unsigned int i=0; i < self->config_count; i++)
+            insert_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+        
+    }
+}
+void extract_mip_3dm_constellation_settings_command(mip_serializer* serializer, mip_3dm_constellation_settings_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_u16(serializer, &self->max_channels);
+        
+        assert(self->config_count);
+        extract_count(serializer, &self->config_count, self->config_count);
+        
+        for(unsigned int i=0; i < self->config_count; i++)
+            extract_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+        
+    }
+}
+
+void insert_mip_3dm_constellation_settings_response(mip_serializer* serializer, const mip_3dm_constellation_settings_response* self)
+{
+    insert_u16(serializer, self->max_channels_available);
+    
+    insert_u16(serializer, self->max_channels_use);
+    
+    insert_u8(serializer, self->config_count);
+    
+    
+    for(unsigned int i=0; i < self->config_count; i++)
+        insert_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+    
+}
+void extract_mip_3dm_constellation_settings_response(mip_serializer* serializer, mip_3dm_constellation_settings_response* self)
+{
+    extract_u16(serializer, &self->max_channels_available);
+    
+    extract_u16(serializer, &self->max_channels_use);
+    
+    assert(self->config_count);
+    extract_count(serializer, &self->config_count, self->config_count);
+    
+    for(unsigned int i=0; i < self->config_count; i++)
+        extract_mip_3dm_constellation_settings_command_settings(serializer, &self->settings[i]);
+    
+}
+
+void insert_mip_3dm_constellation_settings_command_constellation_id(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self)
+{
+    insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_3dm_constellation_settings_command_constellation_id(struct mip_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_3dm_constellation_settings_command_option_flags(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self)
+{
+    insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_3dm_constellation_settings_command_option_flags(struct mip_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+void insert_mip_3dm_constellation_settings_command_settings(mip_serializer* serializer, const mip_3dm_constellation_settings_command_settings* self)
+{
+    insert_mip_3dm_constellation_settings_command_constellation_id(serializer, self->constellation_id);
+    
+    insert_u8(serializer, self->enable);
+    
+    insert_u8(serializer, self->reserved_channels);
+    
+    insert_u8(serializer, self->max_channels);
+    
+    insert_mip_3dm_constellation_settings_command_option_flags(serializer, self->option_flags);
+    
+}
+void extract_mip_3dm_constellation_settings_command_settings(mip_serializer* serializer, mip_3dm_constellation_settings_command_settings* self)
+{
+    extract_mip_3dm_constellation_settings_command_constellation_id(serializer, &self->constellation_id);
+    
+    extract_u8(serializer, &self->enable);
+    
+    extract_u8(serializer, &self->reserved_channels);
+    
+    extract_u8(serializer, &self->max_channels);
+    
+    extract_mip_3dm_constellation_settings_command_option_flags(serializer, &self->option_flags);
+    
+}
+
+mip_cmd_result mip_3dm_write_constellation_settings(struct mip_interface* device, uint16_t max_channels, uint8_t config_count, const mip_3dm_constellation_settings_command_settings* settings)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_u16(&serializer, max_channels);
+    
+    insert_u8(&serializer, config_count);
+    
+    assert(settings || (config_count == 0));
+    for(unsigned int i=0; i < config_count; i++)
+        insert_mip_3dm_constellation_settings_command_settings(&serializer, &settings[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_read_constellation_settings(struct mip_interface* device, uint16_t* max_channels_available_out, uint16_t* max_channels_use_out, uint8_t* config_count_out, uint8_t config_count_out_max, mip_3dm_constellation_settings_command_settings* settings_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(max_channels_available_out);
+        extract_u16(&deserializer, max_channels_available_out);
+        
+        assert(max_channels_use_out);
+        extract_u16(&deserializer, max_channels_use_out);
+        
+        assert(config_count_out);
+        extract_count(&deserializer, config_count_out, config_count_out_max);
+        
+        assert(settings_out || (config_count_out == 0));
+        for(unsigned int i=0; i < *config_count_out; i++)
+            extract_mip_3dm_constellation_settings_command_settings(&deserializer, &settings_out[i]);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_3dm_save_constellation_settings(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_load_constellation_settings(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_default_constellation_settings(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_CONSTELLATION_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert_mip_3dm_gnss_sbas_settings_command(mip_serializer* serializer, const mip_3dm_gnss_sbas_settings_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
@@ -1579,6 +1780,138 @@ mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device)
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_SBAS_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_3dm_gnss_assisted_fix_command(mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, self->option);
+        
+        insert_u8(serializer, self->flags);
+        
+    }
+}
+void extract_mip_3dm_gnss_assisted_fix_command(mip_serializer* serializer, mip_3dm_gnss_assisted_fix_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, &self->option);
+        
+        extract_u8(serializer, &self->flags);
+        
+    }
+}
+
+void insert_mip_3dm_gnss_assisted_fix_response(mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_response* self)
+{
+    insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, self->option);
+    
+    insert_u8(serializer, self->flags);
+    
+}
+void extract_mip_3dm_gnss_assisted_fix_response(mip_serializer* serializer, mip_3dm_gnss_assisted_fix_response* self)
+{
+    extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(serializer, &self->option);
+    
+    extract_u8(serializer, &self->flags);
+    
+}
+
+void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(struct mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self)
+{
+    insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(struct mip_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_3dm_write_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option option, uint8_t flags)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(&serializer, option);
+    
+    insert_u8(&serializer, flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_read_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* option_out, uint8_t* flags_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(option_out);
+        extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(&deserializer, option_out);
+        
+        assert(flags_out);
+        extract_u8(&deserializer, flags_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_3dm_save_gnss_assisted_fix(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_load_gnss_assisted_fix(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_3dm_default_gnss_assisted_fix(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_3DM_CMD_DESC_SET, MIP_CMD_DESC_3DM_GNSS_ASSISTED_FIX_SETTINGS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_3dm_gnss_time_assistance_command(mip_serializer* serializer, const mip_3dm_gnss_time_assistance_command* self)
 {

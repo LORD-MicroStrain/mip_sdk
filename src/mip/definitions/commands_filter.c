@@ -33,11 +33,11 @@ void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_f
     *self = tmp;
 }
 
-void insert_mip_filter_mag_declination_source(struct mip_serializer* serializer, const mip_filter_mag_declination_source self)
+void insert_mip_filter_mag_param_source(struct mip_serializer* serializer, const mip_filter_mag_param_source self)
 {
     insert_u8(serializer, (uint8_t)(self));
 }
-void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer, mip_filter_mag_declination_source* self)
+void extract_mip_filter_mag_param_source(struct mip_serializer* serializer, mip_filter_mag_param_source* self)
 {
     uint8_t tmp = 0;
     extract_u8(serializer, &tmp);
@@ -1561,11 +1561,8 @@ void insert_mip_filter_accel_noise_command(mip_serializer* serializer, const mip
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_float(serializer, self->x);
-        
-        insert_float(serializer, self->y);
-        
-        insert_float(serializer, self->z);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
         
     }
 }
@@ -1575,35 +1572,26 @@ void extract_mip_filter_accel_noise_command(mip_serializer* serializer, mip_filt
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_float(serializer, &self->x);
-        
-        extract_float(serializer, &self->y);
-        
-        extract_float(serializer, &self->z);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
         
     }
 }
 
 void insert_mip_filter_accel_noise_response(mip_serializer* serializer, const mip_filter_accel_noise_response* self)
 {
-    insert_float(serializer, self->x);
-    
-    insert_float(serializer, self->y);
-    
-    insert_float(serializer, self->z);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
     
 }
 void extract_mip_filter_accel_noise_response(mip_serializer* serializer, mip_filter_accel_noise_response* self)
 {
-    extract_float(serializer, &self->x);
-    
-    extract_float(serializer, &self->y);
-    
-    extract_float(serializer, &self->z);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
     
 }
 
-mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, float x, float y, float z)
+mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, const float* noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1611,17 +1599,15 @@ mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, float 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_float(&serializer, x);
-    
-    insert_float(&serializer, y);
-    
-    insert_float(&serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* x_out, float* y_out, float* z_out)
+mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1639,14 +1625,9 @@ mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* 
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(x_out);
-        extract_float(&deserializer, x_out);
-        
-        assert(y_out);
-        extract_float(&deserializer, y_out);
-        
-        assert(z_out);
-        extract_float(&deserializer, z_out);
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1695,11 +1676,8 @@ void insert_mip_filter_gyro_noise_command(mip_serializer* serializer, const mip_
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_float(serializer, self->x);
-        
-        insert_float(serializer, self->y);
-        
-        insert_float(serializer, self->z);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
         
     }
 }
@@ -1709,35 +1687,26 @@ void extract_mip_filter_gyro_noise_command(mip_serializer* serializer, mip_filte
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_float(serializer, &self->x);
-        
-        extract_float(serializer, &self->y);
-        
-        extract_float(serializer, &self->z);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
         
     }
 }
 
 void insert_mip_filter_gyro_noise_response(mip_serializer* serializer, const mip_filter_gyro_noise_response* self)
 {
-    insert_float(serializer, self->x);
-    
-    insert_float(serializer, self->y);
-    
-    insert_float(serializer, self->z);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
     
 }
 void extract_mip_filter_gyro_noise_response(mip_serializer* serializer, mip_filter_gyro_noise_response* self)
 {
-    extract_float(serializer, &self->x);
-    
-    extract_float(serializer, &self->y);
-    
-    extract_float(serializer, &self->z);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
     
 }
 
-mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, float x, float y, float z)
+mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, const float* noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1745,17 +1714,15 @@ mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, float x
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_float(&serializer, x);
-    
-    insert_float(&serializer, y);
-    
-    insert_float(&serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* x_out, float* y_out, float* z_out)
+mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1773,14 +1740,9 @@ mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* x
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(x_out);
-        extract_float(&deserializer, x_out);
-        
-        assert(y_out);
-        extract_float(&deserializer, y_out);
-        
-        assert(z_out);
-        extract_float(&deserializer, z_out);
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1829,17 +1791,11 @@ void insert_mip_filter_accel_bias_model_command(mip_serializer* serializer, cons
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_float(serializer, self->x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->beta[i]);
         
-        insert_float(serializer, self->y_beta);
-        
-        insert_float(serializer, self->z_beta);
-        
-        insert_float(serializer, self->x);
-        
-        insert_float(serializer, self->y);
-        
-        insert_float(serializer, self->z);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
         
     }
 }
@@ -1849,53 +1805,35 @@ void extract_mip_filter_accel_bias_model_command(mip_serializer* serializer, mip
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_float(serializer, &self->x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->beta[i]);
         
-        extract_float(serializer, &self->y_beta);
-        
-        extract_float(serializer, &self->z_beta);
-        
-        extract_float(serializer, &self->x);
-        
-        extract_float(serializer, &self->y);
-        
-        extract_float(serializer, &self->z);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
         
     }
 }
 
 void insert_mip_filter_accel_bias_model_response(mip_serializer* serializer, const mip_filter_accel_bias_model_response* self)
 {
-    insert_float(serializer, self->x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->beta[i]);
     
-    insert_float(serializer, self->y_beta);
-    
-    insert_float(serializer, self->z_beta);
-    
-    insert_float(serializer, self->x);
-    
-    insert_float(serializer, self->y);
-    
-    insert_float(serializer, self->z);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
     
 }
 void extract_mip_filter_accel_bias_model_response(mip_serializer* serializer, mip_filter_accel_bias_model_response* self)
 {
-    extract_float(serializer, &self->x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->beta[i]);
     
-    extract_float(serializer, &self->y_beta);
-    
-    extract_float(serializer, &self->z_beta);
-    
-    extract_float(serializer, &self->x);
-    
-    extract_float(serializer, &self->y);
-    
-    extract_float(serializer, &self->z);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
     
 }
 
-mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, float x_beta, float y_beta, float z_beta, float x, float y, float z)
+mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, const float* beta, const float* noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1903,23 +1841,19 @@ mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, f
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_float(&serializer, x_beta);
+    assert(beta || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, beta[i]);
     
-    insert_float(&serializer, y_beta);
-    
-    insert_float(&serializer, z_beta);
-    
-    insert_float(&serializer, x);
-    
-    insert_float(&serializer, y);
-    
-    insert_float(&serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, float* x_beta_out, float* y_beta_out, float* z_beta_out, float* x_out, float* y_out, float* z_out)
+mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, float* beta_out, float* noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1937,23 +1871,13 @@ mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, fl
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(x_beta_out);
-        extract_float(&deserializer, x_beta_out);
+        assert(beta_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &beta_out[i]);
         
-        assert(y_beta_out);
-        extract_float(&deserializer, y_beta_out);
-        
-        assert(z_beta_out);
-        extract_float(&deserializer, z_beta_out);
-        
-        assert(x_out);
-        extract_float(&deserializer, x_out);
-        
-        assert(y_out);
-        extract_float(&deserializer, y_out);
-        
-        assert(z_out);
-        extract_float(&deserializer, z_out);
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2002,17 +1926,11 @@ void insert_mip_filter_gyro_bias_model_command(mip_serializer* serializer, const
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_float(serializer, self->x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->beta[i]);
         
-        insert_float(serializer, self->y_beta);
-        
-        insert_float(serializer, self->z_beta);
-        
-        insert_float(serializer, self->x);
-        
-        insert_float(serializer, self->y);
-        
-        insert_float(serializer, self->z);
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
         
     }
 }
@@ -2022,53 +1940,35 @@ void extract_mip_filter_gyro_bias_model_command(mip_serializer* serializer, mip_
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_float(serializer, &self->x_beta);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->beta[i]);
         
-        extract_float(serializer, &self->y_beta);
-        
-        extract_float(serializer, &self->z_beta);
-        
-        extract_float(serializer, &self->x);
-        
-        extract_float(serializer, &self->y);
-        
-        extract_float(serializer, &self->z);
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
         
     }
 }
 
 void insert_mip_filter_gyro_bias_model_response(mip_serializer* serializer, const mip_filter_gyro_bias_model_response* self)
 {
-    insert_float(serializer, self->x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->beta[i]);
     
-    insert_float(serializer, self->y_beta);
-    
-    insert_float(serializer, self->z_beta);
-    
-    insert_float(serializer, self->x);
-    
-    insert_float(serializer, self->y);
-    
-    insert_float(serializer, self->z);
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
     
 }
 void extract_mip_filter_gyro_bias_model_response(mip_serializer* serializer, mip_filter_gyro_bias_model_response* self)
 {
-    extract_float(serializer, &self->x_beta);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->beta[i]);
     
-    extract_float(serializer, &self->y_beta);
-    
-    extract_float(serializer, &self->z_beta);
-    
-    extract_float(serializer, &self->x);
-    
-    extract_float(serializer, &self->y);
-    
-    extract_float(serializer, &self->z);
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
     
 }
 
-mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, float x_beta, float y_beta, float z_beta, float x, float y, float z)
+mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, const float* beta, const float* noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2076,23 +1976,19 @@ mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, fl
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_float(&serializer, x_beta);
+    assert(beta || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, beta[i]);
     
-    insert_float(&serializer, y_beta);
-    
-    insert_float(&serializer, z_beta);
-    
-    insert_float(&serializer, x);
-    
-    insert_float(&serializer, y);
-    
-    insert_float(&serializer, z);
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, float* x_beta_out, float* y_beta_out, float* z_beta_out, float* x_out, float* y_out, float* z_out)
+mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, float* beta_out, float* noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2110,23 +2006,13 @@ mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, flo
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(x_beta_out);
-        extract_float(&deserializer, x_beta_out);
+        assert(beta_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &beta_out[i]);
         
-        assert(y_beta_out);
-        extract_float(&deserializer, y_beta_out);
-        
-        assert(z_beta_out);
-        extract_float(&deserializer, z_beta_out);
-        
-        assert(x_out);
-        extract_float(&deserializer, x_out);
-        
-        assert(y_out);
-        extract_float(&deserializer, y_out);
-        
-        assert(z_out);
-        extract_float(&deserializer, z_out);
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2175,7 +2061,7 @@ void insert_mip_filter_altitude_aiding_command(mip_serializer* serializer, const
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_u8(serializer, self->aiding_selector);
+        insert_mip_filter_altitude_aiding_command_aiding_selector(serializer, self->selector);
         
     }
 }
@@ -2185,23 +2071,34 @@ void extract_mip_filter_altitude_aiding_command(mip_serializer* serializer, mip_
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_u8(serializer, &self->aiding_selector);
+        extract_mip_filter_altitude_aiding_command_aiding_selector(serializer, &self->selector);
         
     }
 }
 
 void insert_mip_filter_altitude_aiding_response(mip_serializer* serializer, const mip_filter_altitude_aiding_response* self)
 {
-    insert_u8(serializer, self->aiding_selector);
+    insert_mip_filter_altitude_aiding_command_aiding_selector(serializer, self->selector);
     
 }
 void extract_mip_filter_altitude_aiding_response(mip_serializer* serializer, mip_filter_altitude_aiding_response* self)
 {
-    extract_u8(serializer, &self->aiding_selector);
+    extract_mip_filter_altitude_aiding_command_aiding_selector(serializer, &self->selector);
     
 }
 
-mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, uint8_t aiding_selector)
+void insert_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self)
+{
+    insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector selector)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2209,13 +2106,13 @@ mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, ui
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    insert_u8(&serializer, aiding_selector);
+    insert_mip_filter_altitude_aiding_command_aiding_selector(&serializer, selector);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, uint8_t* aiding_selector_out)
+mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector* selector_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2233,8 +2130,8 @@ mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, uin
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(aiding_selector_out);
-        extract_u8(&deserializer, aiding_selector_out);
+        assert(selector_out);
+        extract_mip_filter_altitude_aiding_command_aiding_selector(&deserializer, selector_out);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2276,6 +2173,125 @@ mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* device)
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_pitch_roll_aiding_command(mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, self->source);
+        
+    }
+}
+void extract_mip_filter_pitch_roll_aiding_command(mip_serializer* serializer, mip_filter_pitch_roll_aiding_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, &self->source);
+        
+    }
+}
+
+void insert_mip_filter_pitch_roll_aiding_response(mip_serializer* serializer, const mip_filter_pitch_roll_aiding_response* self)
+{
+    insert_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, self->source);
+    
+}
+void extract_mip_filter_pitch_roll_aiding_response(mip_serializer* serializer, mip_filter_pitch_roll_aiding_response* self)
+{
+    extract_mip_filter_pitch_roll_aiding_command_aiding_source(serializer, &self->source);
+    
+}
+
+void insert_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self)
+{
+    insert_u8(serializer, (uint8_t)(self));
+}
+void extract_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self)
+{
+    uint8_t tmp = 0;
+    extract_u8(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_filter_write_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source source)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_mip_filter_pitch_roll_aiding_command_aiding_source(&serializer, source);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source* source_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(source_out);
+        extract_mip_filter_pitch_roll_aiding_command_aiding_source(&deserializer, source_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_pitch_roll_aiding(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_pitch_roll_aiding(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_pitch_roll_aiding(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_filter_auto_zupt_command(mip_serializer* serializer, const mip_filter_auto_zupt_command* self)
 {
@@ -2526,6 +2542,972 @@ mip_cmd_result mip_filter_commanded_zupt(struct mip_interface* device)
 mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* device)
 {
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_COMMANDED_ANGULAR_ZUPT, NULL, 0);
+}
+void insert_mip_filter_mag_capture_auto_cal_command(mip_serializer* serializer, const mip_filter_mag_capture_auto_cal_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+}
+void extract_mip_filter_mag_capture_auto_cal_command(mip_serializer* serializer, mip_filter_mag_capture_auto_cal_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+}
+
+mip_cmd_result mip_filter_write_mag_capture_auto_cal(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_save_mag_capture_auto_cal(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_gravity_noise_command(mip_serializer* serializer, const mip_filter_gravity_noise_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
+        
+    }
+}
+void extract_mip_filter_gravity_noise_command(mip_serializer* serializer, mip_filter_gravity_noise_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
+        
+    }
+}
+
+void insert_mip_filter_gravity_noise_response(mip_serializer* serializer, const mip_filter_gravity_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
+    
+}
+void extract_mip_filter_gravity_noise_response(mip_serializer* serializer, mip_filter_gravity_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
+    
+}
+
+mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, const float* noise)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, float* noise_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_GRAVITY_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_gravity_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_gravity_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_gravity_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_pressure_altitude_noise_command(mip_serializer* serializer, const mip_filter_pressure_altitude_noise_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_float(serializer, self->noise);
+        
+    }
+}
+void extract_mip_filter_pressure_altitude_noise_command(mip_serializer* serializer, mip_filter_pressure_altitude_noise_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_float(serializer, &self->noise);
+        
+    }
+}
+
+void insert_mip_filter_pressure_altitude_noise_response(mip_serializer* serializer, const mip_filter_pressure_altitude_noise_response* self)
+{
+    insert_float(serializer, self->noise);
+    
+}
+void extract_mip_filter_pressure_altitude_noise_response(mip_serializer* serializer, mip_filter_pressure_altitude_noise_response* self)
+{
+    extract_float(serializer, &self->noise);
+    
+}
+
+mip_cmd_result mip_filter_write_pressure_altitude_noise(struct mip_interface* device, float noise)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_float(&serializer, noise);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_pressure_altitude_noise(struct mip_interface* device, float* noise_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(noise_out);
+        extract_float(&deserializer, noise_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_pressure_altitude_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_pressure_altitude_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_pressure_altitude_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_hard_iron_offset_noise_command(mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
+        
+    }
+}
+void extract_mip_filter_hard_iron_offset_noise_command(mip_serializer* serializer, mip_filter_hard_iron_offset_noise_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
+        
+    }
+}
+
+void insert_mip_filter_hard_iron_offset_noise_response(mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
+    
+}
+void extract_mip_filter_hard_iron_offset_noise_response(mip_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
+    
+}
+
+mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, const float* noise)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, float* noise_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_hard_iron_offset_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_hard_iron_offset_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_hard_iron_offset_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_soft_iron_matrix_noise_command(mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            insert_float(serializer, self->noise[i]);
+        
+    }
+}
+void extract_mip_filter_soft_iron_matrix_noise_command(mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 9; i++)
+            extract_float(serializer, &self->noise[i]);
+        
+    }
+}
+
+void insert_mip_filter_soft_iron_matrix_noise_response(mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_response* self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        insert_float(serializer, self->noise[i]);
+    
+}
+void extract_mip_filter_soft_iron_matrix_noise_response(mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_response* self)
+{
+    for(unsigned int i=0; i < 9; i++)
+        extract_float(serializer, &self->noise[i]);
+    
+}
+
+mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* device, const float* noise)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    assert(noise || (9 == 0));
+    for(unsigned int i=0; i < 9; i++)
+        insert_float(&serializer, noise[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* device, float* noise_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(noise_out || (9 == 0));
+        for(unsigned int i=0; i < 9; i++)
+            extract_float(&deserializer, &noise_out[i]);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_soft_iron_matrix_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_soft_iron_matrix_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_soft_iron_matrix_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_mag_noise_command(mip_serializer* serializer, const mip_filter_mag_noise_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            insert_float(serializer, self->noise[i]);
+        
+    }
+}
+void extract_mip_filter_mag_noise_command(mip_serializer* serializer, mip_filter_mag_noise_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(serializer, &self->noise[i]);
+        
+    }
+}
+
+void insert_mip_filter_mag_noise_response(mip_serializer* serializer, const mip_filter_mag_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->noise[i]);
+    
+}
+void extract_mip_filter_mag_noise_response(mip_serializer* serializer, mip_filter_mag_noise_response* self)
+{
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->noise[i]);
+    
+}
+
+mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, const float* noise)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    assert(noise || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, noise[i]);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, float* noise_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_MAG_NOISE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(noise_out || (3 == 0));
+        for(unsigned int i=0; i < 3; i++)
+            extract_float(&deserializer, &noise_out[i]);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_mag_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_mag_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_mag_noise(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_inclination_source_command(mip_serializer* serializer, const mip_filter_inclination_source_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_mag_param_source(serializer, self->source);
+        
+        insert_float(serializer, self->inclination);
+        
+    }
+}
+void extract_mip_filter_inclination_source_command(mip_serializer* serializer, mip_filter_inclination_source_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_mag_param_source(serializer, &self->source);
+        
+        extract_float(serializer, &self->inclination);
+        
+    }
+}
+
+void insert_mip_filter_inclination_source_response(mip_serializer* serializer, const mip_filter_inclination_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    insert_float(serializer, self->inclination);
+    
+}
+void extract_mip_filter_inclination_source_response(mip_serializer* serializer, mip_filter_inclination_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    extract_float(serializer, &self->inclination);
+    
+}
+
+mip_cmd_result mip_filter_write_inclination_source(struct mip_interface* device, mip_filter_mag_param_source source, float inclination)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_mip_filter_mag_param_source(&serializer, source);
+    
+    insert_float(&serializer, inclination);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_inclination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* inclination_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_INCLINATION_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(source_out);
+        extract_mip_filter_mag_param_source(&deserializer, source_out);
+        
+        assert(inclination_out);
+        extract_float(&deserializer, inclination_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_inclination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_inclination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_inclination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INCLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_magnetic_declination_source_command(mip_serializer* serializer, const mip_filter_magnetic_declination_source_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_mag_param_source(serializer, self->source);
+        
+        insert_float(serializer, self->declination);
+        
+    }
+}
+void extract_mip_filter_magnetic_declination_source_command(mip_serializer* serializer, mip_filter_magnetic_declination_source_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_mag_param_source(serializer, &self->source);
+        
+        extract_float(serializer, &self->declination);
+        
+    }
+}
+
+void insert_mip_filter_magnetic_declination_source_response(mip_serializer* serializer, const mip_filter_magnetic_declination_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    insert_float(serializer, self->declination);
+    
+}
+void extract_mip_filter_magnetic_declination_source_response(mip_serializer* serializer, mip_filter_magnetic_declination_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    extract_float(serializer, &self->declination);
+    
+}
+
+mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source source, float declination)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_mip_filter_mag_param_source(&serializer, source);
+    
+    insert_float(&serializer, declination);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* declination_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(source_out);
+        extract_mip_filter_mag_param_source(&deserializer, source_out);
+        
+        assert(declination_out);
+        extract_float(&deserializer, declination_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_magnetic_declination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_magnetic_declination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_filter_mag_field_magnitude_source_command(mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_command* self)
+{
+    insert_mip_function_selector(serializer, self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        insert_mip_filter_mag_param_source(serializer, self->source);
+        
+        insert_float(serializer, self->magnitude);
+        
+    }
+}
+void extract_mip_filter_mag_field_magnitude_source_command(mip_serializer* serializer, mip_filter_mag_field_magnitude_source_command* self)
+{
+    extract_mip_function_selector(serializer, &self->function);
+    
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
+        extract_mip_filter_mag_param_source(serializer, &self->source);
+        
+        extract_float(serializer, &self->magnitude);
+        
+    }
+}
+
+void insert_mip_filter_mag_field_magnitude_source_response(mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_response* self)
+{
+    insert_mip_filter_mag_param_source(serializer, self->source);
+    
+    insert_float(serializer, self->magnitude);
+    
+}
+void extract_mip_filter_mag_field_magnitude_source_response(mip_serializer* serializer, mip_filter_mag_field_magnitude_source_response* self)
+{
+    extract_mip_filter_mag_param_source(serializer, &self->source);
+    
+    extract_float(serializer, &self->magnitude);
+    
+}
+
+mip_cmd_result mip_filter_write_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source source, float magnitude)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+    
+    insert_mip_filter_mag_param_source(&serializer, source);
+    
+    insert_float(&serializer, magnitude);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_read_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* magnitude_out)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    uint8_t responseLength = sizeof(buffer);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, &responseLength);
+    
+    if( result == MIP_ACK_OK )
+    {
+        mip_serializer deserializer;
+        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        
+        assert(source_out);
+        extract_mip_filter_mag_param_source(&deserializer, source_out);
+        
+        assert(magnitude_out);
+        extract_float(&deserializer, magnitude_out);
+        
+        if( mip_serializer_remaining(&deserializer) != 0 )
+            result = MIP_STATUS_ERROR;
+    }
+    return result;
+}
+mip_cmd_result mip_filter_save_mag_field_magnitude_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_load_mag_field_magnitude_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+mip_cmd_result mip_filter_default_mag_field_magnitude_source(struct mip_interface* device)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_filter_reference_position_command(mip_serializer* serializer, const mip_filter_reference_position_command* self)
 {
@@ -4779,261 +5761,6 @@ mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_interface*
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_GNSS_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-void insert_mip_filter_hard_iron_offset_noise_command(mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_command* self)
-{
-    insert_mip_function_selector(serializer, self->function);
-    
-    if( self->function == MIP_FUNCTION_WRITE )
-    {
-        insert_float(serializer, self->x);
-        
-        insert_float(serializer, self->y);
-        
-        insert_float(serializer, self->z);
-        
-    }
-}
-void extract_mip_filter_hard_iron_offset_noise_command(mip_serializer* serializer, mip_filter_hard_iron_offset_noise_command* self)
-{
-    extract_mip_function_selector(serializer, &self->function);
-    
-    if( self->function == MIP_FUNCTION_WRITE )
-    {
-        extract_float(serializer, &self->x);
-        
-        extract_float(serializer, &self->y);
-        
-        extract_float(serializer, &self->z);
-        
-    }
-}
-
-void insert_mip_filter_hard_iron_offset_noise_response(mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self)
-{
-    insert_float(serializer, self->x);
-    
-    insert_float(serializer, self->y);
-    
-    insert_float(serializer, self->z);
-    
-}
-void extract_mip_filter_hard_iron_offset_noise_response(mip_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self)
-{
-    extract_float(serializer, &self->x);
-    
-    extract_float(serializer, &self->y);
-    
-    extract_float(serializer, &self->z);
-    
-}
-
-mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, float x, float y, float z)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
-    
-    insert_float(&serializer, x);
-    
-    insert_float(&serializer, y);
-    
-    insert_float(&serializer, z);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, float* x_out, float* y_out, float* z_out)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
-    
-    if( result == MIP_ACK_OK )
-    {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
-        
-        assert(x_out);
-        extract_float(&deserializer, x_out);
-        
-        assert(y_out);
-        extract_float(&deserializer, y_out);
-        
-        assert(z_out);
-        extract_float(&deserializer, z_out);
-        
-        if( mip_serializer_remaining(&deserializer) != 0 )
-            result = MIP_STATUS_ERROR;
-    }
-    return result;
-}
-mip_cmd_result mip_filter_save_hard_iron_offset_noise(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_load_hard_iron_offset_noise(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_default_hard_iron_offset_noise(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-void insert_mip_filter_magnetic_declination_source_command(mip_serializer* serializer, const mip_filter_magnetic_declination_source_command* self)
-{
-    insert_mip_function_selector(serializer, self->function);
-    
-    if( self->function == MIP_FUNCTION_WRITE )
-    {
-        insert_mip_filter_mag_declination_source(serializer, self->source);
-        
-        insert_float(serializer, self->declination);
-        
-    }
-}
-void extract_mip_filter_magnetic_declination_source_command(mip_serializer* serializer, mip_filter_magnetic_declination_source_command* self)
-{
-    extract_mip_function_selector(serializer, &self->function);
-    
-    if( self->function == MIP_FUNCTION_WRITE )
-    {
-        extract_mip_filter_mag_declination_source(serializer, &self->source);
-        
-        extract_float(serializer, &self->declination);
-        
-    }
-}
-
-void insert_mip_filter_magnetic_declination_source_response(mip_serializer* serializer, const mip_filter_magnetic_declination_source_response* self)
-{
-    insert_mip_filter_mag_declination_source(serializer, self->source);
-    
-    insert_float(serializer, self->declination);
-    
-}
-void extract_mip_filter_magnetic_declination_source_response(mip_serializer* serializer, mip_filter_magnetic_declination_source_response* self)
-{
-    extract_mip_filter_mag_declination_source(serializer, &self->source);
-    
-    extract_float(serializer, &self->declination);
-    
-}
-
-mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_declination_source source, float declination)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
-    
-    insert_mip_filter_mag_declination_source(&serializer, source);
-    
-    insert_float(&serializer, declination);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_declination_source* source_out, float* declination_out)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_DECLINATION_SOURCE, buffer, &responseLength);
-    
-    if( result == MIP_ACK_OK )
-    {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
-        
-        assert(source_out);
-        extract_mip_filter_mag_declination_source(&deserializer, source_out);
-        
-        assert(declination_out);
-        extract_float(&deserializer, declination_out);
-        
-        if( mip_serializer_remaining(&deserializer) != 0 )
-            result = MIP_STATUS_ERROR;
-    }
-    return result;
-}
-mip_cmd_result mip_filter_save_magnetic_declination_source(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_load_magnetic_declination_source(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
-mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_interface* device)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_DECLINATION_SOURCE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 void insert_mip_filter_set_initial_heading_command(mip_serializer* serializer, const mip_filter_set_initial_heading_command* self)
 {
