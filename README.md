@@ -1,3 +1,5 @@
+Arduino development discontinued
+
 MIP SDK
 =======
 
