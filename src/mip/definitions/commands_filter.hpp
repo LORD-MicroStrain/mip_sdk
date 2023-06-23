@@ -1572,7 +1572,7 @@ struct PressureAltitudeNoise
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_PRESSURE_NOISE;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_PRESSURE_NOISE;
         
         float noise = 0; ///< Pressure Altitude Noise 1-sigma [m]
         
