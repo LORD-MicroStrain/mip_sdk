@@ -2750,7 +2750,7 @@ mip_cmd_result mip_filter_read_pressure_altitude_noise(struct mip_interface* dev
     assert(mip_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_FILTER_PRESSURE_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
