@@ -136,9 +136,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
 #else //Linux
-
+    
+#ifdef __APPLE__
+    port->handle = open(port_str, O_RDWR | O_NOCTTY | O_NDELAY);
+#else
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
-
+#endif
+    
+    
     if (port->handle < 0)
     {
         MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
@@ -204,7 +209,7 @@ bool serial_port_close(serial_port *port)
 #ifdef WIN32 //Windows
     //Close the serial port
     CloseHandle(port->handle);
-#else //Linux
+#else //Linux & Mac
     close(port->handle);
 #endif
     port->handle = INVALID_HANDLE_VALUE;
