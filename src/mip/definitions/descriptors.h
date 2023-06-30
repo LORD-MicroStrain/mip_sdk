@@ -9,6 +9,7 @@
 
 #include <tuple>
 #include <type_traits>
+#include <functional>
 
 namespace mip {
 namespace C {
