@@ -124,6 +124,8 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_result.c"
     "${MIP_DIR}/mip_result.h"
     "${MIP_DIR}/mip_types.h"
+    "${MIP_DIR}/definitions/common.c"
+    "${MIP_DIR}/definitions/common.h"
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
