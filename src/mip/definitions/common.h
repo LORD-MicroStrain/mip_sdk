@@ -41,6 +41,8 @@ DECLARE_MIP_VECTOR_TYPE(3,double,vector3d)
 DECLARE_MIP_VECTOR_TYPE(4,double,vector4d)
 DECLARE_MIP_VECTOR_TYPE(9,double,matrix3d)
 
+typedef mip_vector4f mip_quatf;
+
 #undef DECLARE_MIP_VECTOR_TYPE
 
 //typedef struct mip_vector3f
