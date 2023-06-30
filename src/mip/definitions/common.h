@@ -40,8 +40,7 @@ DECLARE_MIP_VECTOR_TYPE(9,float,matrix3f)
 DECLARE_MIP_VECTOR_TYPE(3,double,vector3d)
 DECLARE_MIP_VECTOR_TYPE(4,double,vector4d)
 DECLARE_MIP_VECTOR_TYPE(9,double,matrix3d)
-
-typedef mip_vector4f mip_quatf;
+DECLARE_MIP_VECTOR_TYPE(4,float,quatf)
 
 #undef DECLARE_MIP_VECTOR_TYPE
 
