@@ -52,14 +52,6 @@ typedef enum mip_function_selector mip_function_selector;
 void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self);
 void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self);
 
-typedef struct mip_descriptor_rate
-{
-    uint8_t  descriptor;
-    uint16_t decimation;
-} mip_descriptor_rate;
-
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self);
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
 
 #ifdef __cplusplus
 
@@ -107,8 +99,6 @@ enum class FunctionSelector : uint8_t
     RESET = C::MIP_FUNCTION_RESET,
 };
 
-using DescriptorRate = C::mip_descriptor_rate;
-
 static constexpr uint8_t INVALID_FIELD_DESCRIPTOR = C::MIP_INVALID_FIELD_DESCRIPTOR;
 static constexpr uint8_t INVALID_DESCRIPTOR_SET   = C::MIP_INVALID_DESCRIPTOR_SET;
 
@@ -123,10 +113,6 @@ inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip
 inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
 inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
 inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
-
-
-inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 } // namespace mip
 

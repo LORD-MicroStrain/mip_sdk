@@ -152,19 +152,6 @@ void extract_mip_function_selector(mip_serializer* serializer, enum mip_function
 }
 
 
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self)
-{
-    insert_u8(serializer, self->descriptor);
-    insert_u16(serializer, self->decimation);
-}
-
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self)
-{
-    extract_u8(serializer, &self->descriptor);
-    extract_u16(serializer, &self->decimation);
-}
-
-
 #ifdef __cplusplus
 } // namespace mip
 } // extern "C"
