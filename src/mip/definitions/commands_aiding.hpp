@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -86,26 +87,50 @@ void extract(Serializer& serializer, Time& self);
 
 struct SensorFrameMapping
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_SENSOR_FRAME_MAP;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t sensor_id = 0; ///< Sensor ID to configure. Cannot be 0.
     uint8_t frame_id = 0; ///< Frame ID to assign to the sensor. Defaults to 1.
+    
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_SENSOR_FRAME_MAP;
+    
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x8003;
+    static const uint32_t READ_PARAMS    = 0x8000;
+    static const uint32_t SAVE_PARAMS    = 0x8000;
+    static const uint32_t LOAD_PARAMS    = 0x8000;
+    static const uint32_t DEFAULT_PARAMS = 0x8000;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(sensor_id,frame_id);
+    }
+    
+    
+    static SensorFrameMapping create_sld_all(::mip::FunctionSelector function)
+    {
+        SensorFrameMapping cmd;
+        cmd.function = function;
+        return cmd;
+    }
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_SENSOR_FRAME_MAP;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t sensor_id = 0; ///< Sensor ID to configure. Cannot be 0.
         uint8_t frame_id = 0; ///< Frame ID to assign to the sensor. Defaults to 1.
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(sensor_id),std::ref(frame_id));
+        }
         
     };
 };
@@ -120,6 +145,7 @@ CmdResult readSensorFrameMapping(C::mip_interface& device, uint8_t* sensorIdOut,
 CmdResult saveSensorFrameMapping(C::mip_interface& device);
 CmdResult loadSensorFrameMapping(C::mip_interface& device);
 CmdResult defaultSensorFrameMapping(C::mip_interface& device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,15 +155,6 @@ CmdResult defaultSensorFrameMapping(C::mip_interface& device);
 
 struct ReferenceFrame
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     enum class Format : uint8_t
     {
         EULER      = 1,  ///<  Translation vector followed by euler angles (roll, pitch, yaw).
@@ -147,18 +164,52 @@ struct ReferenceFrame
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
     Format format = static_cast<Format>(0); ///< Format of the transformation.
-    float translation[3] = {0}; ///< Translation X, Y, and Z.
-    float rotation[4] = {0}; ///< Depends on the format parameter. Unused values are ignored.
+    Vector3f translation; ///< Translation X, Y, and Z.
+    Quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
+    
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
+    
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x800F;
+    static const uint32_t READ_PARAMS    = 0x8001;
+    static const uint32_t SAVE_PARAMS    = 0x8001;
+    static const uint32_t LOAD_PARAMS    = 0x8001;
+    static const uint32_t DEFAULT_PARAMS = 0x8001;
+    static const uint32_t ECHOED_PARAMS  = 0x0001;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(frame_id,format,translation,rotation);
+    }
+    
+    
+    static ReferenceFrame create_sld_all(::mip::FunctionSelector function)
+    {
+        ReferenceFrame cmd;
+        cmd.function = function;
+        cmd.frame_id = 0;
+        return cmd;
+    }
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_FRAME_CONFIG;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0001;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
-        float translation[3] = {0}; ///< Translation X, Y, and Z.
-        float rotation[4] = {0}; ///< Depends on the format parameter. Unused values are ignored.
+        Vector3f translation; ///< Translation X, Y, and Z.
+        Quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
+        }
         
     };
 };
@@ -168,11 +219,12 @@ void extract(Serializer& serializer, ReferenceFrame& self);
 void insert(Serializer& serializer, const ReferenceFrame::Response& self);
 void extract(Serializer& serializer, ReferenceFrame::Response& self);
 
-CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation);
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t* frameIdOut, ReferenceFrame::Format* formatOut, float* translationOut, float* rotationOut);
-CmdResult saveReferenceFrame(C::mip_interface& device);
-CmdResult loadReferenceFrame(C::mip_interface& device);
-CmdResult defaultReferenceFrame(C::mip_interface& device);
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, Vector3f translation, Quatf rotation);
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, Vector3f translationOut, Quatf rotationOut);
+CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
+CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
+CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -182,15 +234,6 @@ CmdResult defaultReferenceFrame(C::mip_interface& device);
 
 struct AidingEchoControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     enum class Mode : uint8_t
     {
         SUPPRESS_ACK = 0,  ///<  Suppresses the usual command ack field for aiding messages.
@@ -201,12 +244,45 @@ struct AidingEchoControl
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Mode mode = static_cast<Mode>(0); ///< Controls data echoing.
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
+    
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x8001;
+    static const uint32_t READ_PARAMS    = 0x8000;
+    static const uint32_t SAVE_PARAMS    = 0x8000;
+    static const uint32_t LOAD_PARAMS    = 0x8000;
+    static const uint32_t DEFAULT_PARAMS = 0x8000;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(mode);
+    }
+    
+    
+    static AidingEchoControl create_sld_all(::mip::FunctionSelector function)
+    {
+        AidingEchoControl cmd;
+        cmd.function = function;
+        return cmd;
+    }
+    
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         Mode mode = static_cast<Mode>(0); ///< Controls data echoing.
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(mode));
+        }
         
     };
 };
@@ -221,6 +297,7 @@ CmdResult readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mod
 CmdResult saveAidingEchoControl(C::mip_interface& device);
 CmdResult loadAidingEchoControl(C::mip_interface& device);
 CmdResult defaultAidingEchoControl(C::mip_interface& device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -231,20 +308,15 @@ CmdResult defaultAidingEchoControl(C::mip_interface& device);
 
 struct EcefPos
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
         {
             NONE = 0x0000,
-            X    = 0x0002,  ///<  
-            Y    = 0x0004,  ///<  
-            Z    = 0x0008,  ///<  
-            ALL  = 0x000E,
+            X    = 0x0001,  ///<  
+            Y    = 0x0002,  ///<  
+            Z    = 0x0004,  ///<  
+            ALL  = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -269,15 +341,28 @@ struct EcefPos
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Sensor ID.
-    double position[3] = {0}; ///< ECEF position [m].
-    float uncertainty[3] = {0}; ///< ECEF position uncertainty [m].
+    Vector3d position; ///< ECEF position [m].
+    Vector3f uncertainty; ///< ECEF position uncertainty [m].
     ValidFlags valid_flags; ///< Valid flags.
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,position,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const EcefPos& self);
 void extract(Serializer& serializer, EcefPos& self);
 
-CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
+CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3d position, Vector3f uncertainty, EcefPos::ValidFlags validFlags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -289,20 +374,15 @@ CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, 
 
 struct LlhPos
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
         {
             NONE      = 0x0000,
-            LATITUDE  = 0x0002,  ///<  
-            LONGITUDE = 0x0004,  ///<  
-            HEIGHT    = 0x0008,  ///<  
-            ALL       = 0x000E,
+            LATITUDE  = 0x0001,  ///<  
+            LONGITUDE = 0x0002,  ///<  
+            HEIGHT    = 0x0004,  ///<  
+            ALL       = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -330,14 +410,27 @@ struct LlhPos
     double latitude = 0; ///< [deg]
     double longitude = 0; ///< [deg]
     double height = 0; ///< [m]
-    float uncertainty[3] = {0}; ///< NED position uncertainty.
+    Vector3f uncertainty; ///< NED position uncertainty.
     ValidFlags valid_flags; ///< Valid flags.
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,latitude,longitude,height,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const LlhPos& self);
 void extract(Serializer& serializer, LlhPos& self);
 
-CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
+CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, Vector3f uncertainty, LlhPos::ValidFlags validFlags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -348,20 +441,15 @@ CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, d
 
 struct EcefVel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
         {
             NONE = 0x0000,
-            X    = 0x0002,  ///<  
-            Y    = 0x0004,  ///<  
-            Z    = 0x0008,  ///<  
-            ALL  = 0x000E,
+            X    = 0x0001,  ///<  
+            Y    = 0x0002,  ///<  
+            Z    = 0x0004,  ///<  
+            ALL  = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -386,15 +474,28 @@ struct EcefVel
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Sensor ID.
-    float velocity[3] = {0}; ///< ECEF velocity [m/s].
-    float uncertainty[3] = {0}; ///< ECEF velocity uncertainty [m/s].
+    Vector3f velocity; ///< ECEF velocity [m/s].
+    Vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
     ValidFlags valid_flags; ///< Valid flags.
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const EcefVel& self);
 void extract(Serializer& serializer, EcefVel& self);
 
-CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, EcefVel::ValidFlags validFlags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -405,20 +506,15 @@ CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, 
 
 struct NedVel
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
         {
             NONE = 0x0000,
-            X    = 0x0002,  ///<  
-            Y    = 0x0004,  ///<  
-            Z    = 0x0008,  ///<  
-            ALL  = 0x000E,
+            X    = 0x0001,  ///<  
+            Y    = 0x0002,  ///<  
+            Z    = 0x0004,  ///<  
+            ALL  = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -443,15 +539,28 @@ struct NedVel
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Sensor ID.
-    float velocity[3] = {0}; ///< NED velocity [m/s].
-    float uncertainty[3] = {0}; ///< NED velocity uncertainty [m/s].
+    Vector3f velocity; ///< NED velocity [m/s].
+    Vector3f uncertainty; ///< NED velocity uncertainty [m/s].
     ValidFlags valid_flags; ///< Valid flags.
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const NedVel& self);
 void extract(Serializer& serializer, NedVel& self);
 
-CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, NedVel::ValidFlags validFlags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -463,20 +572,15 @@ CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, c
 
 struct VehicleFixedFrameVelocity
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
         {
             NONE = 0x0000,
-            X    = 0x0002,  ///<  
-            Y    = 0x0004,  ///<  
-            Z    = 0x0008,  ///<  
-            ALL  = 0x000E,
+            X    = 0x0001,  ///<  
+            Y    = 0x0002,  ///<  
+            Z    = 0x0004,  ///<  
+            ALL  = 0x0007,
         };
         uint16_t value = NONE;
         
@@ -501,15 +605,28 @@ struct VehicleFixedFrameVelocity
     
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
-    float velocity[3] = {0}; ///< [m/s]
-    float uncertainty[3] = {0}; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    Vector3f velocity; ///< [m/s]
+    Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     ValidFlags valid_flags;
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self);
 void extract(Serializer& serializer, VehicleFixedFrameVelocity& self);
 
-CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
+CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -519,22 +636,30 @@ CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, 
 
 struct TrueHeading
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     Time time;
     uint8_t sensor_id = 0;
     float heading = 0; ///< Heading in [radians]
     float uncertainty = 0;
     uint16_t valid_flags = 0;
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,heading,uncertainty,valid_flags);
+    }
+    
+    typedef void Response;
 };
 void insert(Serializer& serializer, const TrueHeading& self);
 void extract(Serializer& serializer, TrueHeading& self);
 
 CmdResult trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags);
+
 ///@}
 ///
 

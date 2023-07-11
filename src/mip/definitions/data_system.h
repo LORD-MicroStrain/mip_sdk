@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -82,6 +83,7 @@ void insert_mip_system_built_in_test_data(struct mip_serializer* serializer, con
 void extract_mip_system_built_in_test_data(struct mip_serializer* serializer, mip_system_built_in_test_data* self);
 bool extract_mip_system_built_in_test_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +102,7 @@ typedef struct mip_system_time_sync_status_data mip_system_time_sync_status_data
 void insert_mip_system_time_sync_status_data(struct mip_serializer* serializer, const mip_system_time_sync_status_data* self);
 void extract_mip_system_time_sync_status_data(struct mip_serializer* serializer, mip_system_time_sync_status_data* self);
 bool extract_mip_system_time_sync_status_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -137,6 +140,7 @@ void insert_mip_system_gpio_state_data(struct mip_serializer* serializer, const 
 void extract_mip_system_gpio_state_data(struct mip_serializer* serializer, mip_system_gpio_state_data* self);
 bool extract_mip_system_gpio_state_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +160,7 @@ typedef struct mip_system_gpio_analog_value_data mip_system_gpio_analog_value_da
 void insert_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, const mip_system_gpio_analog_value_data* self);
 void extract_mip_system_gpio_analog_value_data(struct mip_serializer* serializer, mip_system_gpio_analog_value_data* self);
 bool extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///

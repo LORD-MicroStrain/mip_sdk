@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -113,6 +114,7 @@ mip_cmd_result mip_aiding_read_sensor_frame_mapping(struct mip_interface* device
 mip_cmd_result mip_aiding_save_sensor_frame_mapping(struct mip_interface* device);
 mip_cmd_result mip_aiding_load_sensor_frame_mapping(struct mip_interface* device);
 mip_cmd_result mip_aiding_default_sensor_frame_mapping(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,8 +131,8 @@ struct mip_aiding_reference_frame_command
     mip_function_selector function;
     uint8_t frame_id; ///< Reference frame number. Cannot be 0.
     mip_aiding_reference_frame_command_format format; ///< Format of the transformation.
-    float translation[3]; ///< Translation X, Y, and Z.
-    float rotation[4]; ///< Depends on the format parameter. Unused values are ignored.
+    mip_vector3f translation; ///< Translation X, Y, and Z.
+    mip_quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
     
 };
 typedef struct mip_aiding_reference_frame_command mip_aiding_reference_frame_command;
@@ -144,19 +146,20 @@ struct mip_aiding_reference_frame_response
 {
     uint8_t frame_id; ///< Reference frame number. Cannot be 0.
     mip_aiding_reference_frame_command_format format; ///< Format of the transformation.
-    float translation[3]; ///< Translation X, Y, and Z.
-    float rotation[4]; ///< Depends on the format parameter. Unused values are ignored.
+    mip_vector3f translation; ///< Translation X, Y, and Z.
+    mip_quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
     
 };
 typedef struct mip_aiding_reference_frame_response mip_aiding_reference_frame_response;
 void insert_mip_aiding_reference_frame_response(struct mip_serializer* serializer, const mip_aiding_reference_frame_response* self);
 void extract_mip_aiding_reference_frame_response(struct mip_serializer* serializer, mip_aiding_reference_frame_response* self);
 
-mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const float* rotation);
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t* frame_id_out, mip_aiding_reference_frame_command_format* format_out, float* translation_out, float* rotation_out);
-mip_cmd_result mip_aiding_save_reference_frame(struct mip_interface* device);
-mip_cmd_result mip_aiding_load_reference_frame(struct mip_interface* device);
-mip_cmd_result mip_aiding_default_reference_frame(struct mip_interface* device);
+mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, mip_vector3f translation, mip_quatf rotation);
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, mip_vector3f translation_out, mip_quatf rotation_out);
+mip_cmd_result mip_aiding_save_reference_frame(struct mip_interface* device, uint8_t frame_id);
+mip_cmd_result mip_aiding_load_reference_frame(struct mip_interface* device, uint8_t frame_id);
+mip_cmd_result mip_aiding_default_reference_frame(struct mip_interface* device, uint8_t frame_id);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -196,6 +199,7 @@ mip_cmd_result mip_aiding_read_aiding_echo_control(struct mip_interface* device,
 mip_cmd_result mip_aiding_save_aiding_echo_control(struct mip_interface* device);
 mip_cmd_result mip_aiding_load_aiding_echo_control(struct mip_interface* device);
 mip_cmd_result mip_aiding_default_aiding_echo_control(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,17 +210,17 @@ mip_cmd_result mip_aiding_default_aiding_echo_control(struct mip_interface* devi
 
 typedef uint16_t mip_aiding_ecef_pos_command_valid_flags;
 static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_X    = 0x0002; ///<  
-static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Y    = 0x0004; ///<  
-static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Z    = 0x0008; ///<  
-static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_ALL  = 0x000E;
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND_VALID_FLAGS_ALL  = 0x0007;
 
 struct mip_aiding_ecef_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t sensor_id; ///< Sensor ID.
-    double position[3]; ///< ECEF position [m].
-    float uncertainty[3]; ///< ECEF position uncertainty [m].
+    mip_vector3d position; ///< ECEF position [m].
+    mip_vector3f uncertainty; ///< ECEF position uncertainty [m].
     mip_aiding_ecef_pos_command_valid_flags valid_flags; ///< Valid flags.
     
 };
@@ -227,7 +231,8 @@ void extract_mip_aiding_ecef_pos_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self);
 void extract_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3d position, mip_vector3f uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -239,10 +244,10 @@ mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time*
 
 typedef uint16_t mip_aiding_llh_pos_command_valid_flags;
 static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_NONE      = 0x0000;
-static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LATITUDE  = 0x0002; ///<  
-static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LONGITUDE = 0x0004; ///<  
-static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_HEIGHT    = 0x0008; ///<  
-static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_ALL       = 0x000E;
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LATITUDE  = 0x0001; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_LONGITUDE = 0x0002; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_HEIGHT    = 0x0004; ///<  
+static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_VALID_FLAGS_ALL       = 0x0007;
 
 struct mip_aiding_llh_pos_command
 {
@@ -251,7 +256,7 @@ struct mip_aiding_llh_pos_command
     double latitude; ///< [deg]
     double longitude; ///< [deg]
     double height; ///< [m]
-    float uncertainty[3]; ///< NED position uncertainty.
+    mip_vector3f uncertainty; ///< NED position uncertainty.
     mip_aiding_llh_pos_command_valid_flags valid_flags; ///< Valid flags.
     
 };
@@ -262,7 +267,8 @@ void extract_mip_aiding_llh_pos_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self);
 void extract_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, mip_vector3f uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -273,17 +279,17 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
 
 typedef uint16_t mip_aiding_ecef_vel_command_valid_flags;
 static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_X    = 0x0002; ///<  
-static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Y    = 0x0004; ///<  
-static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Z    = 0x0008; ///<  
-static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_ALL  = 0x000E;
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND_VALID_FLAGS_ALL  = 0x0007;
 
 struct mip_aiding_ecef_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t sensor_id; ///< Sensor ID.
-    float velocity[3]; ///< ECEF velocity [m/s].
-    float uncertainty[3]; ///< ECEF velocity uncertainty [m/s].
+    mip_vector3f velocity; ///< ECEF velocity [m/s].
+    mip_vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
     mip_aiding_ecef_vel_command_valid_flags valid_flags; ///< Valid flags.
     
 };
@@ -294,7 +300,8 @@ void extract_mip_aiding_ecef_vel_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self);
 void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -305,17 +312,17 @@ mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time*
 
 typedef uint16_t mip_aiding_ned_vel_command_valid_flags;
 static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_X    = 0x0002; ///<  
-static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Y    = 0x0004; ///<  
-static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Z    = 0x0008; ///<  
-static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_ALL  = 0x000E;
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_VALID_FLAGS_ALL  = 0x0007;
 
 struct mip_aiding_ned_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t sensor_id; ///< Sensor ID.
-    float velocity[3]; ///< NED velocity [m/s].
-    float uncertainty[3]; ///< NED velocity uncertainty [m/s].
+    mip_vector3f velocity; ///< NED velocity [m/s].
+    mip_vector3f uncertainty; ///< NED velocity uncertainty [m/s].
     mip_aiding_ned_vel_command_valid_flags valid_flags; ///< Valid flags.
     
 };
@@ -326,7 +333,8 @@ void extract_mip_aiding_ned_vel_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self);
 void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -338,17 +346,17 @@ mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* 
 
 typedef uint16_t mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags;
 static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_NONE = 0x0000;
-static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_X    = 0x0002; ///<  
-static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Y    = 0x0004; ///<  
-static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Z    = 0x0008; ///<  
-static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_ALL  = 0x000E;
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_X    = 0x0001; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Y    = 0x0002; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_Z    = 0x0004; ///<  
+static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AIDING_VEHICLE_FIXED_FRAME_VELOCITY_COMMAND_VALID_FLAGS_ALL  = 0x0007;
 
 struct mip_aiding_vehicle_fixed_frame_velocity_command
 {
     mip_time time; ///< Timestamp of the measurement.
     uint8_t sensor_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
-    float velocity[3]; ///< [m/s]
-    float uncertainty[3]; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    mip_vector3f velocity; ///< [m/s]
+    mip_vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags;
     
 };
@@ -359,7 +367,8 @@ void extract_mip_aiding_vehicle_fixed_frame_velocity_command(struct mip_serializ
 void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self);
 void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -381,6 +390,7 @@ void insert_mip_aiding_true_heading_command(struct mip_serializer* serializer, c
 void extract_mip_aiding_true_heading_command(struct mip_serializer* serializer, mip_aiding_true_heading_command* self);
 
 mip_cmd_result mip_aiding_true_heading(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float heading, float uncertainty, uint16_t valid_flags);
+
 ///@}
 ///
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -91,6 +92,7 @@ void extract_mip_system_comm_mode_response(struct mip_serializer* serializer, mi
 mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
 mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);
 mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device);
+
 ///@}
 ///
 

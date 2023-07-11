@@ -162,10 +162,10 @@ void insert(Serializer& serializer, const ReferenceFrame& self)
 {
     insert(serializer, self.function);
     
+    insert(serializer, self.frame_id);
+    
     if( self.function == FunctionSelector::WRITE )
     {
-        insert(serializer, self.frame_id);
-        
         insert(serializer, self.format);
         
         for(unsigned int i=0; i < 3; i++)
@@ -180,10 +180,10 @@ void extract(Serializer& serializer, ReferenceFrame& self)
 {
     extract(serializer, self.function);
     
+    extract(serializer, self.frame_id);
+    
     if( self.function == FunctionSelector::WRITE )
     {
-        extract(serializer, self.frame_id);
-        
         extract(serializer, self.format);
         
         for(unsigned int i=0; i < 3; i++)
@@ -222,7 +222,7 @@ void extract(Serializer& serializer, ReferenceFrame::Response& self)
     
 }
 
-CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation)
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, Vector3f translation, Quatf rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -232,11 +232,9 @@ CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, Referen
     
     insert(serializer, format);
     
-    assert(translation || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, translation[i]);
     
-    assert(rotation || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, rotation[i]);
     
@@ -244,12 +242,14 @@ CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, Referen
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t* frameIdOut, ReferenceFrame::Format* formatOut, float* translationOut, float* rotationOut)
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, Vector3f translationOut, Quatf rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
+    insert(serializer, frameId);
+    
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
@@ -259,17 +259,14 @@ CmdResult readReferenceFrame(C::mip_interface& device, uint8_t* frameIdOut, Refe
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(frameIdOut);
-        extract(deserializer, *frameIdOut);
+        extract(deserializer, frameId);
         
         assert(formatOut);
         extract(deserializer, *formatOut);
         
-        assert(translationOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, translationOut[i]);
         
-        assert(rotationOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, rotationOut[i]);
         
@@ -278,32 +275,38 @@ CmdResult readReferenceFrame(C::mip_interface& device, uint8_t* frameIdOut, Refe
     }
     return result;
 }
-CmdResult saveReferenceFrame(C::mip_interface& device)
+CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
+    insert(serializer, frameId);
+    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult loadReferenceFrame(C::mip_interface& device)
+CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
+    insert(serializer, frameId);
+    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult defaultReferenceFrame(C::mip_interface& device)
+CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
+    insert(serializer, frameId);
+    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
@@ -436,7 +439,7 @@ void extract(Serializer& serializer, EcefPos& self)
     
 }
 
-CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags)
+CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3d position, Vector3f uncertainty, EcefPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -445,11 +448,9 @@ CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, 
     
     insert(serializer, sensorId);
     
-    assert(position || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, position[i]);
     
-    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, uncertainty[i]);
     
@@ -496,7 +497,7 @@ void extract(Serializer& serializer, LlhPos& self)
     
 }
 
-CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags)
+CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, Vector3f uncertainty, LlhPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -511,7 +512,6 @@ CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, d
     
     insert(serializer, height);
     
-    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, uncertainty[i]);
     
@@ -552,7 +552,7 @@ void extract(Serializer& serializer, EcefVel& self)
     
 }
 
-CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags)
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, EcefVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -561,11 +561,9 @@ CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, 
     
     insert(serializer, sensorId);
     
-    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, velocity[i]);
     
-    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, uncertainty[i]);
     
@@ -606,7 +604,7 @@ void extract(Serializer& serializer, NedVel& self)
     
 }
 
-CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags)
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, NedVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -615,11 +613,9 @@ CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, c
     
     insert(serializer, sensorId);
     
-    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, velocity[i]);
     
-    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, uncertainty[i]);
     
@@ -660,7 +656,7 @@ void extract(Serializer& serializer, VehicleFixedFrameVelocity& self)
     
 }
 
-CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
+CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -669,11 +665,9 @@ CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, 
     
     insert(serializer, sensorId);
     
-    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, velocity[i]);
     
-    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, uncertainty[i]);
     
