@@ -26,21 +26,18 @@ void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor
 void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
 
 #define DECLARE_MIP_VECTOR_TYPE(n,type,name) \
-typedef struct mip_##name \
-{ \
-    type v[n]; \
-} mip_##name; \
+typedef type name[n]; \
 \
-void insert_mip_##name(mip_serializer* serializer, const mip_##name* self); \
-void extract_mip_##name(mip_serializer* serializer, mip_##name* self);
+void insert_##name(mip_serializer* serializer, const name self); \
+void extract_##name(mip_serializer* serializer, name self);
 
-DECLARE_MIP_VECTOR_TYPE(3,float,vector3f)
-DECLARE_MIP_VECTOR_TYPE(4,float,vector4f)
-DECLARE_MIP_VECTOR_TYPE(9,float,matrix3f)
-DECLARE_MIP_VECTOR_TYPE(3,double,vector3d)
-DECLARE_MIP_VECTOR_TYPE(4,double,vector4d)
-DECLARE_MIP_VECTOR_TYPE(9,double,matrix3d)
-DECLARE_MIP_VECTOR_TYPE(4,float,quatf)
+DECLARE_MIP_VECTOR_TYPE(3, float,  mip_vector3f)
+DECLARE_MIP_VECTOR_TYPE(4, float,  mip_vector4f)
+DECLARE_MIP_VECTOR_TYPE(9, float,  mip_matrix3f)
+DECLARE_MIP_VECTOR_TYPE(3, double, mip_vector3d)
+DECLARE_MIP_VECTOR_TYPE(4, double, mip_vector4d)
+DECLARE_MIP_VECTOR_TYPE(9, double, mip_matrix3d)
+DECLARE_MIP_VECTOR_TYPE(4, float,  mip_quatf)
 
 #undef DECLARE_MIP_VECTOR_TYPE
 
@@ -91,7 +88,7 @@ using Vector3d = Vector<double,3>;
 using Vector4d = Vector<double,4>;
 using Matrix3d = Vector<double,9>;
 
-using Quatf = float[4];
+using Quatf = Vector4f;
 
 template<typename T, size_t N>
 void insert(Serializer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
