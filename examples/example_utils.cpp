@@ -99,11 +99,16 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         using SerialConnection = mip::platform::SerialConnection;
         example_utils->connection = std::unique_ptr<SerialConnection>(new SerialConnection(port_or_hostname, baud));
 #endif  // MIP_USE_EXTRAS
+
         example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
 #else  // MIP_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
 #endif //MIP_USE_SERIAL
     }
+
+    if( !example_utils->connection->connect() )
+        throw std::runtime_error("Failed to open the connection");
+
     return example_utils;
 }
 
