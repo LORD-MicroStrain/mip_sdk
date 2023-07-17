@@ -6,6 +6,9 @@
 #define COM_PORT_BUFFER_SIZE  0x200
 
 #ifndef WIN32 //Unix only
+
+#define INVALID_HANDLE_VALUE -1
+
 speed_t baud_rate_to_speed(int baud_rate)
 {
     switch(baud_rate)
@@ -54,6 +57,11 @@ speed_t baud_rate_to_speed(int baud_rate)
 }
 #endif
 
+void serial_port_init(serial_port *port)
+{
+    port->handle = INVALID_HANDLE_VALUE;
+}
+
 bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 {
     if(port_str == NULL)
@@ -84,6 +92,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
     //Set the timeouts
+
     COMMTIMEOUTS timeouts;
     GetCommTimeouts(port->handle, &timeouts);
 
@@ -127,9 +136,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
 #else //Linux
-
+    
+#ifdef __APPLE__
+    port->handle = open(port_str, O_RDWR | O_NOCTTY | O_NDELAY);
+#else
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
-
+#endif
+    
+    
     if (port->handle < 0)
     {
         MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
@@ -193,13 +207,12 @@ bool serial_port_close(serial_port *port)
         return false;
 
 #ifdef WIN32 //Windows
-
     //Close the serial port
     CloseHandle(port->handle);
-
-#else //Linux
+#else //Linux & Mac
     close(port->handle);
 #endif
+    port->handle = INVALID_HANDLE_VALUE;
 
     return true;
 }
@@ -247,13 +260,19 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
+    uint32_t bytes_available = serial_port_read_count(port);
+
 #ifdef WIN32 //Windows
 
     if( wait_time <= 0 )
     {
-        if( serial_port_read_count(port) == 0 )
+        if(bytes_available == 0 )
             return true;
     }
+
+    //Don't let windows block on the read
+    if(bytes_available < num_bytes)
+        num_bytes = (bytes_available > 0) ? bytes_available : 1;
 
     DWORD  local_bytes_read;
 
@@ -268,7 +287,23 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     int poll_status = poll(&poll_fd, 1, wait_time);
 
     // Keep reading and polling while there is still data available
-    if (poll_status > 0 && poll_fd.revents & POLLIN)
+    if (poll_status == -1)
+    {
+        MIP_LOG_ERROR("Failed to poll serial port (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+    else if (poll_fd.revents & POLLHUP)
+    {
+        MIP_LOG_ERROR("Poll encountered HUP, closing device");
+        serial_port_close(port);
+        return false;
+    }
+    else if (poll_fd.revents & POLLERR || poll_fd.revents & POLLNVAL)
+    {
+        MIP_LOG_ERROR("Poll encountered error\n");
+        return false;
+    }
+    else if (poll_status > 0 && poll_fd.revents & POLLIN)
     {
         ssize_t local_bytes_read = read(port->handle, buffer, num_bytes);
 
@@ -314,7 +349,7 @@ uint32_t serial_port_read_count(serial_port *port)
     return 0;
 }
 
-bool serial_port_is_open(serial_port *port)
+bool serial_port_is_open(const serial_port *port)
 {
 #ifdef WIN32
     return port->handle != INVALID_HANDLE_VALUE;

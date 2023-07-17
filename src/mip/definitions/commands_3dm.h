@@ -745,6 +745,92 @@ mip_cmd_result mip_3dm_default_datastream_control(struct mip_interface* device, 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_3dm_constellation_settings  (0x0C,0x21) Constellation Settings [C]
+/// This command configures which satellite constellations are enabled and how many channels are dedicated to tracking each constellation.
+/// 
+/// Maximum number of tracking channels to use (total for all constellations):
+/// 0 to max_channels_available (from reply message)
+/// 
+/// For each constellation you wish to use, include a ConstellationSettings struct.  Note the following:
+/// 
+/// Total number of tracking channels (sum of "reserved_channels" for all constellations) must be <= 32:
+/// 0 -> 32 Number of reserved channels
+/// 0 -> 32 Max number of channels (>= reserved channels)
+/// 
+/// The factory default setting is: GPS and GLONASS enabled.  Min/Max for GPS = 8/16, GLONASS = 8/14, SBAS = 1/3, QZSS = 0/3.
+/// 
+/// Warning: SBAS functionality shall not be used in "safety of life" applications!
+/// Warning: Any setting that causes the total reserved channels to exceed 32 will result in a NACK.
+/// Warning: You cannot enable GLONASS and BeiDou at the same time.
+/// Note:    Enabling SBAS and QZSS augments GPS accuracy.
+/// Note:    It is recommended to disable GLONASS and BeiDou if a GPS-only antenna or GPS-only SAW filter is used.
+///
+///@{
+
+typedef uint8_t mip_3dm_constellation_settings_command_constellation_id;
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GPS     = 0; ///<  GPS (G1-G32)
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_SBAS    = 1; ///<  SBAS (S120-S158)
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GALILEO = 2; ///<  GALILEO (E1-E36)
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_BEIDOU  = 3; ///<  BeiDou (B1-B37)
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_QZSS    = 5; ///<  QZSS (Q1-Q5)
+static const mip_3dm_constellation_settings_command_constellation_id MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_CONSTELLATION_ID_GLONASS = 6; ///<  GLONASS (R1-R32)
+
+typedef uint16_t mip_3dm_constellation_settings_command_option_flags;
+static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_NONE   = 0x0000;
+static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_L1SAIF = 0x0001; ///<  Available only for QZSS
+static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_ALL    = 0x0001;
+
+struct mip_3dm_constellation_settings_command_settings
+{
+    mip_3dm_constellation_settings_command_constellation_id constellation_id; ///< Constellation ID
+    uint8_t enable; ///< Enable/Disable constellation
+    uint8_t reserved_channels; ///< Minimum number of channels reserved for this constellation
+    uint8_t max_channels; ///< Maximum number of channels to use for this constallation
+    mip_3dm_constellation_settings_command_option_flags option_flags; ///< Constellation option Flags
+    
+};
+typedef struct mip_3dm_constellation_settings_command_settings mip_3dm_constellation_settings_command_settings;
+struct mip_3dm_constellation_settings_command
+{
+    mip_function_selector function;
+    uint16_t max_channels;
+    uint8_t config_count;
+    mip_3dm_constellation_settings_command_settings* settings;
+    
+};
+typedef struct mip_3dm_constellation_settings_command mip_3dm_constellation_settings_command;
+void insert_mip_3dm_constellation_settings_command(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command* self);
+void extract_mip_3dm_constellation_settings_command(struct mip_serializer* serializer, mip_3dm_constellation_settings_command* self);
+
+void insert_mip_3dm_constellation_settings_command_constellation_id(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self);
+void extract_mip_3dm_constellation_settings_command_constellation_id(struct mip_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self);
+
+void insert_mip_3dm_constellation_settings_command_option_flags(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self);
+void extract_mip_3dm_constellation_settings_command_option_flags(struct mip_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self);
+
+void insert_mip_3dm_constellation_settings_command_settings(struct mip_serializer* serializer, const mip_3dm_constellation_settings_command_settings* self);
+void extract_mip_3dm_constellation_settings_command_settings(struct mip_serializer* serializer, mip_3dm_constellation_settings_command_settings* self);
+
+struct mip_3dm_constellation_settings_response
+{
+    uint16_t max_channels_available; ///< Maximum channels available
+    uint16_t max_channels_use; ///< Maximum channels to use
+    uint8_t config_count; ///< Number of constellation configurations
+    mip_3dm_constellation_settings_command_settings* settings; ///< Constellation Settings
+    
+};
+typedef struct mip_3dm_constellation_settings_response mip_3dm_constellation_settings_response;
+void insert_mip_3dm_constellation_settings_response(struct mip_serializer* serializer, const mip_3dm_constellation_settings_response* self);
+void extract_mip_3dm_constellation_settings_response(struct mip_serializer* serializer, mip_3dm_constellation_settings_response* self);
+
+mip_cmd_result mip_3dm_write_constellation_settings(struct mip_interface* device, uint16_t max_channels, uint8_t config_count, const mip_3dm_constellation_settings_command_settings* settings);
+mip_cmd_result mip_3dm_read_constellation_settings(struct mip_interface* device, uint16_t* max_channels_available_out, uint16_t* max_channels_use_out, uint8_t* config_count_out, uint8_t config_count_out_max, mip_3dm_constellation_settings_command_settings* settings_out);
+mip_cmd_result mip_3dm_save_constellation_settings(struct mip_interface* device);
+mip_cmd_result mip_3dm_load_constellation_settings(struct mip_interface* device);
+mip_cmd_result mip_3dm_default_constellation_settings(struct mip_interface* device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_3dm_gnss_sbas_settings  (0x0C,0x22) Gnss Sbas Settings [C]
 /// Configure the SBAS subsystem
 /// 
@@ -793,6 +879,57 @@ mip_cmd_result mip_3dm_read_gnss_sbas_settings(struct mip_interface* device, uin
 mip_cmd_result mip_3dm_save_gnss_sbas_settings(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_gnss_sbas_settings(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_gnss_sbas_settings(struct mip_interface* device);
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_3dm_gnss_assisted_fix  (0x0C,0x23) Gnss Assisted Fix [C]
+/// Set the options for assisted GNSS fix.
+/// 
+/// Devices that implement this command have a dedicated GNSS flash memory and a non-volatile FRAM.
+/// These storage mechanisms are used to retain information about the last good GNSS fix. This can greatly reduces the TTFF (Time To First Fix) depending on the age of the stored information.
+/// The TTFF can be as low as one second, or up to the equivalent of a cold start. There is a small increase in power used when enabling assisted fix.
+/// 
+/// The fastest fix will be obtained by supplying the device with a GNSS Assist Time Update message containing the current GPS time immediately after subsequent power up.
+/// This allows the device to determine if the last GNSS information saved is still fresh enough to improve the TTFF.
+/// 
+/// NOTE: Non-volatile GNSS memory is cleared when going from an enabled state to a disabled state.
+/// WARNING: The clearing operation results in an erase operation on the GNSS Flash. The flash has a limited durability of 100,000 write/erase cycles
+///
+///@{
+
+typedef uint8_t mip_3dm_gnss_assisted_fix_command_assisted_fix_option;
+static const mip_3dm_gnss_assisted_fix_command_assisted_fix_option MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_NONE    = 0; ///<  No assisted fix (default)
+static const mip_3dm_gnss_assisted_fix_command_assisted_fix_option MIP_3DM_GNSS_ASSISTED_FIX_COMMAND_ASSISTED_FIX_OPTION_ENABLED = 1; ///<  Enable assisted fix
+
+struct mip_3dm_gnss_assisted_fix_command
+{
+    mip_function_selector function;
+    mip_3dm_gnss_assisted_fix_command_assisted_fix_option option; ///< Assisted fix options
+    uint8_t flags; ///< Assisted fix flags (set to 0xFF)
+    
+};
+typedef struct mip_3dm_gnss_assisted_fix_command mip_3dm_gnss_assisted_fix_command;
+void insert_mip_3dm_gnss_assisted_fix_command(struct mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_command* self);
+void extract_mip_3dm_gnss_assisted_fix_command(struct mip_serializer* serializer, mip_3dm_gnss_assisted_fix_command* self);
+
+void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(struct mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self);
+void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(struct mip_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self);
+
+struct mip_3dm_gnss_assisted_fix_response
+{
+    mip_3dm_gnss_assisted_fix_command_assisted_fix_option option; ///< Assisted fix options
+    uint8_t flags; ///< Assisted fix flags (set to 0xFF)
+    
+};
+typedef struct mip_3dm_gnss_assisted_fix_response mip_3dm_gnss_assisted_fix_response;
+void insert_mip_3dm_gnss_assisted_fix_response(struct mip_serializer* serializer, const mip_3dm_gnss_assisted_fix_response* self);
+void extract_mip_3dm_gnss_assisted_fix_response(struct mip_serializer* serializer, mip_3dm_gnss_assisted_fix_response* self);
+
+mip_cmd_result mip_3dm_write_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option option, uint8_t flags);
+mip_cmd_result mip_3dm_read_gnss_assisted_fix(struct mip_interface* device, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* option_out, uint8_t* flags_out);
+mip_cmd_result mip_3dm_save_gnss_assisted_fix(struct mip_interface* device);
+mip_cmd_result mip_3dm_load_gnss_assisted_fix(struct mip_interface* device);
+mip_cmd_result mip_3dm_default_gnss_assisted_fix(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
