@@ -27,9 +27,19 @@ static const int SEND_FLAGS = MSG_NOSIGNAL;
 
 #include <stdio.h>
 
-static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
+void tcp_socket_init(tcp_socket* socket_ptr)
 {
     socket_ptr->handle = INVALID_SOCKET;
+}
+
+bool tcp_socket_is_open(const tcp_socket* socket_ptr)
+{
+    return socket_ptr->handle != INVALID_SOCKET;
+}
+
+static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
+{
+    //assert(socket_ptr->handle == INVALID_SOCKET);
 
     // https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
     struct addrinfo hints, *info;

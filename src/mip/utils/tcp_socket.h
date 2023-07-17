@@ -41,6 +41,8 @@ typedef struct tcp_socket
 
 
 
+void tcp_socket_init(tcp_socket* socket_ptr);
+bool tcp_socket_is_open(const tcp_socket* socket_ptr);
 bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms);
 bool tcp_socket_close(tcp_socket* socket_ptr);
 bool tcp_socket_send(tcp_socket* socket_ptr, const void* buffer, size_t num_bytes, size_t* bytes_written);
