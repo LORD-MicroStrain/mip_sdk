@@ -372,13 +372,20 @@ public:
     ///@returns true if successful.
     ///@returns false if maxLength is too short.
     ///
-    bool copyTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, mData, copyLength); }
+    bool copyTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, mData, copyLength); return true; }
 
 private:
     uint8_t mData[BufferSize];
 };
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Typedef for SizedPacketBuf of max possible size.
+///
+/// Generally you should use this instead of SizedPacketBuf directly, unless you
+/// know the maximum size of your packet will be less than PACKET_LENGTH_MAX.
+///
 typedef SizedPacketBuf<mip::PACKET_LENGTH_MAX> PacketBuf;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP parser.
