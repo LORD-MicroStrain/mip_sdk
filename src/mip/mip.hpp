@@ -313,7 +313,7 @@ template<size_t BufferSize>
 class SizedPacketBuf : public PacketRef
 {
 public:
-    SizedPacketBuf(uint8_t descriptorSet) : PacketRef(mData, sizeof(mData), descriptorSet) {}
+    SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketRef(mData, sizeof(mData), descriptorSet) {}
 
     ///@brief Creates a PacketBuf by copying existing data.
     ///
