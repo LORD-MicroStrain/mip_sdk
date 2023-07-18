@@ -19,7 +19,7 @@
 
 mip::data_sensor::ScaledAccel scaled_accel;
 
-void handlePacket(void*, const mip::Packet& packet, mip::Timestamp timestamp)
+void handlePacket(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
 {
     // if(packet.descriptorSet() != mip::MIP_SENSOR_DATA_DESC_SET)
     //     return;
