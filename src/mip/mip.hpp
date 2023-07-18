@@ -320,8 +320,10 @@ public:
     explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketRef(mData, sizeof(mData)) { copyFrom(data, length); }
     explicit SizedPacketBuf(const PacketRef& packet) : PacketRef(mData, sizeof(mData)) { copyFrom(packet); }
 
-    // No copying or moving allowed - use the explicit functions copyFrom or copyTo.
-    SizedPacketBuf(const SizedPacketBuf& other) = delete;
+    // Copy constructor, required to put packets into std::vector.
+    explicit SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+
+    // No moving allowed - use the explicit functions copyFrom or copyTo.
     SizedPacketBuf(SizedPacketBuf&&) = delete;
     SizedPacketBuf& operator=(const SizedPacketBuf& other) = delete;
     SizedPacketBuf& operator=(SizedPacketBuf&&) = delete;
