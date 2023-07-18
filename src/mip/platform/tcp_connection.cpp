@@ -19,42 +19,40 @@ TcpConnection::TcpConnection(const std::string& hostname, uint16_t port)
     mHostname = hostname;
     mPort     = port;
     mType     = TYPE;
+
+    tcp_socket_init(&mSocket);
 }
 
 ///@brief Closes the underlying TCP socket
 TcpConnection::~TcpConnection()
 {
-    if(mConnected)
+    if(isConnected())
       TcpConnection::disconnect();
 }
 
 ///@brief Check if the socket is connected
 bool TcpConnection::isConnected() const
 {
-  return mConnected;
+  return tcp_socket_is_open(&mSocket);
 }
 
 ///@brief Connect to the socket
 bool TcpConnection::connect()
 {
-   if(mConnected)
-     return false;
+  if(isConnected())
+    return true;
 
-    mConnected = tcp_socket_open(&mSocket, mHostname.c_str(), mPort, 3000);
-
-   return mConnected;
+  return tcp_socket_open(&mSocket, mHostname.c_str(), mPort, 3000);
 }
 
 
 ///@brief Disconnect from the socket
 bool TcpConnection::disconnect()
 {
-   if(!mConnected)
-     return false;
+   if(!isConnected())
+     return true;
 
-   mConnected = tcp_socket_close(&mSocket);
-
-   return mConnected;
+   return tcp_socket_close(&mSocket);
 }
 
 ///@copydoc mip::Connection::sendToDevice
