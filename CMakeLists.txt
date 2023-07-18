@@ -236,8 +236,9 @@ if(${MIP_ENABLE_DIAGNOSTICS})
 endif()
 
 # Disable windows defined min/max
+# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-  list(APPEND MIP_DEFINES "NOMINMAX=1")
+  list(APPEND MIP_DEFINES "NOMINMAX=1" "_WIN32_WINNT=0x0501")
 endif()
 
 if(MSVC)
@@ -247,6 +248,13 @@ else()
 endif()
 
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
+
+#
+# Libraries
+#
+if(WIN32 AND MIP_USE_TCP)
+    target_link_libraries(mip PUBLIC "ws2_32")
+endif()
 
 #
 # TESTING
