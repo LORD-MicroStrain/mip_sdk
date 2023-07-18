@@ -3,6 +3,11 @@
 
 #include "serial_port.h"
 
+#ifdef __APPLE__
+#include <IOKit/serial/ioss.h>
+#endif
+
+
 #define COM_PORT_BUFFER_SIZE  0x200
 
 #ifndef WIN32 //Unix only
@@ -165,6 +170,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         return false;
     }
 
+#ifndef __APPLE__
     if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
     {
         MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
@@ -172,6 +178,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         port->handle = -1;
         return false;
     }
+#endif
 
     // Other serial settings to match MSCL
     serial_port_settings.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
@@ -191,6 +198,18 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         port->handle = -1;
         return false;
     }
+
+
+#ifdef __APPLE__
+    speed_t speed = baudrate;
+    if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0) 
+    {
+        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        close(port->handle);
+        port->handle = -1;
+        return false;
+    }
+#endif
 
     // Flush any waiting data
     tcflush(port->handle, TCIOFLUSH);
