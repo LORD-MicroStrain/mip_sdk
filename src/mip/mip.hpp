@@ -121,7 +121,7 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief C++ class representing a MIP Packet.
+///@brief C++ class representing a MIP PacketRef.
 ///
 /// This is a thin wrapper around the mip_packet C structure. Like the C
 /// version, it does not contain or own the data buffer. Any of the C functions
@@ -130,24 +130,24 @@ public:
 /// Fields may be iterated over using the C-style methods, with an iterator, or
 /// with a range-based for loop:
 ///@code{.cpp}
-/// for(Packet::Iterator iter = packet.begin(); iter != packet.end(); ++iter) { ... }
+/// for(PacketRef::Iterator iter = packet.begin(); iter != packet.end(); ++iter) { ... }
 /// for(Field field : packet) { ... }
 ///@endcode
 ///
-class Packet : public C::mip_packet
+class PacketRef : public C::mip_packet
 {
 public:
     class FieldIterator;
 
 public:
     ///@copydoc mip::C::mip_packet_create
-    Packet(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
+    PacketRef(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip_packet_from_buffer
-    Packet(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
-    /// Constructs a C++ %Packet class from the base C object.
-    Packet(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
-    /// Constructs a C++ %Packet class from the base C object.
-    Packet(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
+    PacketRef(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
+    /// Constructs a C++ %PacketRef class from the base C object.
+    PacketRef(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
+    /// Constructs a C++ %PacketRef class from the base C object.
+    PacketRef(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
 
 
     //
@@ -235,7 +235,7 @@ public:
         return serializer.isOk();
     }
 
-    ///@brief Creates a new Packet containing a single MIP field from an instance of the field type.
+    ///@brief Creates a new PacketRef containing a single MIP field from an instance of the field type.
     ///
     /// This works just like the addField<FieldType>() function but also initializes and finalizes the packet.
     /// It is assumed that the field will fit in an empty packet; otherwise the field can't ever be used.
@@ -248,14 +248,14 @@ public:
     ///@param field           Instance of the field to add to the packet.
     ///@param fieldDescriptor If specified, overrides the field descriptor.
     ///
-    ///@returns A Packet object containing the field.
+    ///@returns A PacketRef object containing the field.
     ///
     template<class FieldType>
-    static Packet createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    static PacketRef createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
-        Packet packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
+        PacketRef packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
         packet.addField<FieldType>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -264,7 +264,7 @@ public:
 
     /// Iterator class for use with the range-based for loop or iterators.
     ///
-    /// You should generally use the begin()/end() functions on the Packet
+    /// You should generally use the begin()/end() functions on the PacketRef
     /// class instead of using this class directly.
     ///
     class FieldIterator
@@ -307,6 +307,89 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////
+///@brief A mip packet with a self-contained buffer (useful with std::vector).
+///
+template<size_t BufferSize>
+class SizedPacketBuf : public PacketRef
+{
+public:
+    SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketRef(mData, sizeof(mData), descriptorSet) {}
+
+    ///@brief Creates a PacketBuf by copying existing data.
+    ///
+    explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketRef(mData, sizeof(mData)) { copyFrom(data, length); }
+    explicit SizedPacketBuf(const PacketRef& packet) : PacketRef(mData, sizeof(mData)) { copyFrom(packet); }
+
+    // Copy constructor, required to put packets into std::vector.
+    explicit SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+
+    // No moving allowed - use the explicit functions copyFrom or copyTo.
+    SizedPacketBuf(SizedPacketBuf&&) = delete;
+    SizedPacketBuf& operator=(const SizedPacketBuf& other) = delete;
+    SizedPacketBuf& operator=(SizedPacketBuf&&) = delete;
+
+    ///@brief Create a packet containing just the given field.
+    ///
+    ///@tparam FieldType Type of the MIP field. This can't be explicitly specified due to being a constructor.
+    ///
+    ///@param field           The field object to serialize.
+    ///@param fieldDescriptor If specified (not INVALID_FIELD_DESCRIPTOR), overrides the field descriptor.
+    ///
+    template<class FieldType>
+    SizedPacketBuf(const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR) : PacketRef(mData, sizeof(mData)) { createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor); }
+
+
+    ///@brief Explicitly obtains a reference to the packet data.
+    ///
+    PacketRef ref() { return *this; }
+
+    ///@brief Explicitly obtains a const reference to the packet data.
+    ///
+    const PacketRef& ref() const { return *this; }
+
+    ///@brief Returns a pointer to the underlying buffer.
+    /// This is technically the same as PacketRef::pointer but is writable.
+    uint8_t* buffer() { return mData; }
+
+    ///@brief Copies the data from the pointer to this buffer. The data is not inspected.
+    ///
+    ///@param data   Pointer to the start of the packet.
+    ///@param length Total length of the packet.
+    ///
+    void copyFrom(const uint8_t* data, size_t length) { assert(length <= sizeof(mData)); std::memcpy(mData, data, length); }
+
+    ///@brief Copies an existing packet. The packet is assumed to be valid (undefined behavior otherwise).
+    ///
+    ///@param packet A "sane" (isSane()) mip packet.
+    ///
+    void copyFrom(const PacketRef& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.totalLength()); }
+
+    ///@brief Copies this packet to an external buffer.
+    ///
+    /// This packet must be sane (see isSane()). Undefined behavior otherwise due to lookup of totalLength().
+    ///
+    ///@param buffer    Data is copied into this location.
+    ///@param maxLength Maximum number of bytes to copy.
+    ///
+    ///@returns true if successful.
+    ///@returns false if maxLength is too short.
+    ///
+    bool copyTo(uint8_t* buffer, size_t maxLength) { assert(isSane()); size_t copyLength = this->totalLength(); if(copyLength > maxLength) return false; std::memcpy(buffer, mData, copyLength); return true; }
+
+private:
+    uint8_t mData[BufferSize];
+};
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Typedef for SizedPacketBuf of max possible size.
+///
+/// Generally you should use this instead of SizedPacketBuf directly, unless you
+/// know the maximum size of your packet will be less than PACKET_LENGTH_MAX.
+///
+typedef SizedPacketBuf<mip::PACKET_LENGTH_MAX> PacketBuf;
+
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP parser.
 ///
 /// See @ref parsing_packets
@@ -317,11 +400,11 @@ public:
     ///@copydoc mip::C::mip_parser_init
     Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const Packet*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
     Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
 
-    template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
+    template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
     void setCallback(T& object);
 
     ///@copydoc mip::C::mip_parser_reset
@@ -344,7 +427,7 @@ public:
 ///@code{.cpp}
 /// struct MyClass
 /// {
-///     void handlePacket(const Packet& packet, Timeout timeout);
+///     void handlePacket(const PacketRef& packet, Timeout timeout);
 /// };
 /// MyClass myInstance;
 /// Parser parser<MyClass, &MyClass::handlePacket>(myInstance);
@@ -357,12 +440,12 @@ public:
 ///@param object
 ///       Instance of T to call the callback.
 ///
-template<class T, bool (T::*Callback)(const Packet&, Timestamp)>
+template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
 void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet* pkt, Timestamp timestamp)->bool
     {
-        return (static_cast<T*>(obj)->*Callback)(Packet(pkt), timestamp);
+        return (static_cast<T*>(obj)->*Callback)(PacketRef(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);

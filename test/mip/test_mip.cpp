@@ -23,7 +23,7 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const Packet* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
         bool error = false;
@@ -78,7 +78,7 @@ int main(int argc, const char* argv[])
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        PacketRef packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
