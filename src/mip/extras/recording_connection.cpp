@@ -21,7 +21,10 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     const bool ok = mConnection->sendToDevice(data, length);
     if( ok && mSendFile != nullptr && mConnection->isConnected())
+    {
         mSendFile->write(reinterpret_cast<const char*>(data), length);
+    }
+
     return ok;
 }
 
@@ -30,7 +33,12 @@ bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Tim
 {
     const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time, count_out, timestamp_out);
     if (ok && mRecvFile != nullptr && mConnection->isConnected())
+    {
         mRecvFile->write(reinterpret_cast<char*>(buffer), *count_out);
+
+        mRecvFileWritten += *count_out;
+    }
+
     return ok;
 }
 
