@@ -5,7 +5,6 @@
 #include <memory>
 #include <ostream>
 #include <iostream>
-#include <chrono>
 
 namespace mip
 {
