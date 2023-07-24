@@ -49,12 +49,25 @@ public:
         return false;
     };
 
+    uint64_t recvFileBytesWritten()
+    {
+        return mRecvFileWritten;
+    }
+
+    uint64_t sendFileBytesWritten()
+    {
+        return mSendFileWritten;
+    }
+
 protected:
     Connection* mConnection;
 
     // Files may be NULL to not record one direction or the other
     std::ostream* mRecvFile;
     std::ostream* mSendFile;
+
+    uint64_t mRecvFileWritten = 0;
+    uint64_t mSendFileWritten = 0;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
