@@ -23,6 +23,8 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
     if( ok && mSendFile != nullptr && mConnection->isConnected())
     {
         mSendFile->write(reinterpret_cast<const char*>(data), length);
+
+        mSendFileWritten += length;
     }
 
     return ok;
