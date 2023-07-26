@@ -9,7 +9,10 @@
 #include <ws2tcpip.h>
 
 static const int SEND_FLAGS = 0;
+
+#ifdef _MSC_VER
 typedef int ssize_t;
+#endif
 
 #else
 
