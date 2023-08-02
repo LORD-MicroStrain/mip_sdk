@@ -44,7 +44,6 @@ private:
     tcp_socket mSocket;
     std::string mHostname;
     uint16_t mPort = 0;
-    bool     mConnected = false;
 };
 
 ///@}
