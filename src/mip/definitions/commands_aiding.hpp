@@ -63,8 +63,9 @@ struct Time
 {
     enum class Timebase : uint8_t
     {
-        INTERNAL_REFERENCE = 1,  ///<  Internal reference time from the device.
-        EXTERNAL_TIME      = 2,  ///<  External reference time from PPS.
+        INTERNAL_REFERENCE = 1,  ///<  Timestamp provided is with respect to internal clock.
+        EXTERNAL_TIME      = 2,  ///<  Timestamp provided is with respect to external clock, synced by PPS source.
+        TIME_OF_ARRIVAL    = 3,  ///<  Timestamp provided is a fixed latency relative to time of message arrival.
     };
     
     Timebase timebase = static_cast<Timebase>(0); ///< Timebase reference, e.g. internal, external, GPS, UTC, etc.

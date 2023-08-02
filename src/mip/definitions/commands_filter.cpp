@@ -2418,7 +2418,7 @@ CmdResult readPressureAltitudeNoise(C::mip_interface& device, float* noiseOut)
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), CMD_PRESSURE_NOISE, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_PRESSURE_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {

@@ -61,8 +61,9 @@ enum
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef uint8_t mip_time_timebase;
-static const mip_time_timebase MIP_TIME_TIMEBASE_INTERNAL_REFERENCE = 1; ///<  Internal reference time from the device.
-static const mip_time_timebase MIP_TIME_TIMEBASE_EXTERNAL_TIME      = 2; ///<  External reference time from PPS.
+static const mip_time_timebase MIP_TIME_TIMEBASE_INTERNAL_REFERENCE = 1; ///<  Timestamp provided is with respect to internal clock.
+static const mip_time_timebase MIP_TIME_TIMEBASE_EXTERNAL_TIME      = 2; ///<  Timestamp provided is with respect to external clock, synced by PPS source.
+static const mip_time_timebase MIP_TIME_TIMEBASE_TIME_OF_ARRIVAL    = 3; ///<  Timestamp provided is a fixed latency relative to time of message arrival.
 
 struct mip_time
 {

@@ -2162,16 +2162,16 @@ struct PressureAltitudeNoise
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_filter::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::CMD_PRESSURE_NOISE;
+        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_filter::REPLY_PRESSURE_NOISE;
         
         static const uint32_t ECHOED_PARAMS  = 0x0000;
         static const uint32_t COUNTER_PARAMS = 0x00000000;
         float noise = 0; ///< Pressure Altitude Noise 1-sigma [m]
         
         
-        auto as_tuple() const
+        auto as_tuple()
         {
-            return std::make_tuple(noise);
+            return std::make_tuple(std::ref(noise));
         }
         
     };
