@@ -66,7 +66,7 @@ void extract(Serializer& serializer, PollImuMessage& self)
 {
     extract(serializer, self.suppress_ack);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -103,7 +103,7 @@ void extract(Serializer& serializer, PollGnssMessage& self)
 {
     extract(serializer, self.suppress_ack);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -140,7 +140,7 @@ void extract(Serializer& serializer, PollFilterMessage& self)
 {
     extract(serializer, self.suppress_ack);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -182,7 +182,7 @@ void extract(Serializer& serializer, ImuMessageFormat& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
         for(unsigned int i=0; i < self.num_descriptors; i++)
             extract(serializer, self.descriptors[i]);
         
@@ -199,7 +199,7 @@ void insert(Serializer& serializer, const ImuMessageFormat::Response& self)
 }
 void extract(Serializer& serializer, ImuMessageFormat::Response& self)
 {
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -295,7 +295,7 @@ void extract(Serializer& serializer, GpsMessageFormat& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
         for(unsigned int i=0; i < self.num_descriptors; i++)
             extract(serializer, self.descriptors[i]);
         
@@ -312,7 +312,7 @@ void insert(Serializer& serializer, const GpsMessageFormat::Response& self)
 }
 void extract(Serializer& serializer, GpsMessageFormat::Response& self)
 {
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -408,7 +408,7 @@ void extract(Serializer& serializer, FilterMessageFormat& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
         for(unsigned int i=0; i < self.num_descriptors; i++)
             extract(serializer, self.descriptors[i]);
         
@@ -425,7 +425,7 @@ void insert(Serializer& serializer, const FilterMessageFormat::Response& self)
 }
 void extract(Serializer& serializer, FilterMessageFormat::Response& self)
 {
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -643,7 +643,7 @@ void extract(Serializer& serializer, PollData& self)
     
     extract(serializer, self.suppress_ack);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -743,7 +743,7 @@ void extract(Serializer& serializer, MessageFormat& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+        C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
         for(unsigned int i=0; i < self.num_descriptors; i++)
             extract(serializer, self.descriptors[i]);
         
@@ -764,7 +764,7 @@ void extract(Serializer& serializer, MessageFormat::Response& self)
 {
     extract(serializer, self.desc_set);
     
-    C::extract_count(&serializer, &self.num_descriptors, self.num_descriptors);
+    C::extract_count(&serializer, &self.num_descriptors, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_descriptors; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -867,7 +867,7 @@ void extract(Serializer& serializer, NmeaPollData& self)
 {
     extract(serializer, self.suppress_ack);
     
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.format_entries)/sizeof(self.format_entries[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.format_entries[i]);
     
@@ -909,7 +909,7 @@ void extract(Serializer& serializer, NmeaMessageFormat& self)
     
     if( self.function == FunctionSelector::WRITE )
     {
-        C::extract_count(&serializer, &self.count, self.count);
+        C::extract_count(&serializer, &self.count, sizeof(self.format_entries)/sizeof(self.format_entries[0]));
         for(unsigned int i=0; i < self.count; i++)
             extract(serializer, self.format_entries[i]);
         
@@ -926,7 +926,7 @@ void insert(Serializer& serializer, const NmeaMessageFormat::Response& self)
 }
 void extract(Serializer& serializer, NmeaMessageFormat::Response& self)
 {
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.format_entries)/sizeof(self.format_entries[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.format_entries[i]);
     
@@ -1309,7 +1309,7 @@ void extract(Serializer& serializer, ConstellationSettings& self)
     {
         extract(serializer, self.max_channels);
         
-        C::extract_count(&serializer, &self.config_count, self.config_count);
+        C::extract_count(&serializer, &self.config_count, sizeof(self.settings)/sizeof(self.settings[0]));
         for(unsigned int i=0; i < self.config_count; i++)
             extract(serializer, self.settings[i]);
         
@@ -1334,7 +1334,7 @@ void extract(Serializer& serializer, ConstellationSettings::Response& self)
     
     extract(serializer, self.max_channels_use);
     
-    C::extract_count(&serializer, &self.config_count, self.config_count);
+    C::extract_count(&serializer, &self.config_count, sizeof(self.settings)/sizeof(self.settings[0]));
     for(unsigned int i=0; i < self.config_count; i++)
         extract(serializer, self.settings[i]);
     
@@ -1473,7 +1473,7 @@ void extract(Serializer& serializer, GnssSbasSettings& self)
         
         extract(serializer, self.sbas_options);
         
-        C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+        C::extract_count(&serializer, &self.num_included_prns, sizeof(self.included_prns)/sizeof(self.included_prns[0]));
         for(unsigned int i=0; i < self.num_included_prns; i++)
             extract(serializer, self.included_prns[i]);
         
@@ -1498,7 +1498,7 @@ void extract(Serializer& serializer, GnssSbasSettings::Response& self)
     
     extract(serializer, self.sbas_options);
     
-    C::extract_count(&serializer, &self.num_included_prns, self.num_included_prns);
+    C::extract_count(&serializer, &self.num_included_prns, sizeof(self.included_prns)/sizeof(self.included_prns[0]));
     for(unsigned int i=0; i < self.num_included_prns; i++)
         extract(serializer, self.included_prns[i]);
     
@@ -2423,7 +2423,7 @@ void extract(Serializer& serializer, GetEventSupport::Response& self)
     
     extract(serializer, self.max_instances);
     
-    C::extract_count(&serializer, &self.num_entries, self.num_entries);
+    C::extract_count(&serializer, &self.num_entries, sizeof(self.entries)/sizeof(self.entries[0]));
     for(unsigned int i=0; i < self.num_entries; i++)
         extract(serializer, self.entries[i]);
     
@@ -2602,7 +2602,7 @@ void insert(Serializer& serializer, const GetEventTriggerStatus& self)
 }
 void extract(Serializer& serializer, GetEventTriggerStatus& self)
 {
-    C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    C::extract_count(&serializer, &self.requested_count, sizeof(self.requested_instances)/sizeof(self.requested_instances[0]));
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
     
@@ -2618,7 +2618,7 @@ void insert(Serializer& serializer, const GetEventTriggerStatus::Response& self)
 }
 void extract(Serializer& serializer, GetEventTriggerStatus::Response& self)
 {
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.triggers)/sizeof(self.triggers[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.triggers[i]);
     
@@ -2679,7 +2679,7 @@ void insert(Serializer& serializer, const GetEventActionStatus& self)
 }
 void extract(Serializer& serializer, GetEventActionStatus& self)
 {
-    C::extract_count(&serializer, &self.requested_count, self.requested_count);
+    C::extract_count(&serializer, &self.requested_count, sizeof(self.requested_instances)/sizeof(self.requested_instances[0]));
     for(unsigned int i=0; i < self.requested_count; i++)
         extract(serializer, self.requested_instances[i]);
     
@@ -2695,7 +2695,7 @@ void insert(Serializer& serializer, const GetEventActionStatus::Response& self)
 }
 void extract(Serializer& serializer, GetEventActionStatus::Response& self)
 {
-    C::extract_count(&serializer, &self.count, self.count);
+    C::extract_count(&serializer, &self.count, sizeof(self.actions)/sizeof(self.actions[0]));
     for(unsigned int i=0; i < self.count; i++)
         extract(serializer, self.actions[i]);
     
@@ -3169,7 +3169,7 @@ void extract(Serializer& serializer, EventAction::MessageParams& self)
     
     extract(serializer, self.decimation);
     
-    C::extract_count(&serializer, &self.num_fields, self.num_fields);
+    C::extract_count(&serializer, &self.num_fields, sizeof(self.descriptors)/sizeof(self.descriptors[0]));
     for(unsigned int i=0; i < self.num_fields; i++)
         extract(serializer, self.descriptors[i]);
     
@@ -3313,13 +3313,12 @@ void extract(Serializer& serializer, AccelBias::Response& self)
     
 }
 
-CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
+CmdResult writeAccelBias(C::mip_interface& device, Vector3f bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3327,7 +3326,7 @@ CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
+CmdResult readAccelBias(C::mip_interface& device, Vector3f biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3342,7 +3341,6 @@ CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3417,13 +3415,12 @@ void extract(Serializer& serializer, GyroBias::Response& self)
     
 }
 
-CmdResult writeGyroBias(C::mip_interface& device, const float* bias)
+CmdResult writeGyroBias(C::mip_interface& device, Vector3f bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3431,7 +3428,7 @@ CmdResult writeGyroBias(C::mip_interface& device, const float* bias)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
+CmdResult readGyroBias(C::mip_interface& device, Vector3f biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3446,7 +3443,6 @@ CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3509,7 +3505,7 @@ void extract(Serializer& serializer, CaptureGyroBias::Response& self)
     
 }
 
-CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut)
+CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, Vector3f biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3525,7 +3521,6 @@ CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, fl
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3570,13 +3565,12 @@ void extract(Serializer& serializer, MagHardIronOffset::Response& self)
     
 }
 
-CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
+CmdResult writeMagHardIronOffset(C::mip_interface& device, Vector3f offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -3584,7 +3578,7 @@ CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
+CmdResult readMagHardIronOffset(C::mip_interface& device, Vector3f offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3599,7 +3593,6 @@ CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3674,13 +3667,12 @@ void extract(Serializer& serializer, MagSoftIronMatrix::Response& self)
     
 }
 
-CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
+CmdResult writeMagSoftIronMatrix(C::mip_interface& device, Matrix3f offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(offset || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, offset[i]);
     
@@ -3688,7 +3680,7 @@ CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
+CmdResult readMagSoftIronMatrix(C::mip_interface& device, Matrix3f offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3703,7 +3695,6 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(offsetOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3998,13 +3989,12 @@ void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response
     
 }
 
-CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q)
+CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(q || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, q[i]);
     
@@ -4012,7 +4002,7 @@ CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut)
+CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf qOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4027,7 +4017,6 @@ CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float*
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(qOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, qOut[i]);
         
@@ -4102,13 +4091,12 @@ void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self)
     
 }
 
-CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm)
+CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
-    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
     
@@ -4116,7 +4104,7 @@ CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float*
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut)
+CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcmOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4131,7 +4119,6 @@ CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut
     {
         Serializer deserializer(buffer, responseLength);
         
-        assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         
@@ -4448,7 +4435,7 @@ void extract(Serializer& serializer, CalibratedSensorRanges::Response& self)
 {
     extract(serializer, self.sensor);
     
-    C::extract_count(&serializer, &self.num_ranges, self.num_ranges);
+    C::extract_count(&serializer, &self.num_ranges, sizeof(self.ranges)/sizeof(self.ranges[0]));
     for(unsigned int i=0; i < self.num_ranges; i++)
         extract(serializer, self.ranges[i]);
     

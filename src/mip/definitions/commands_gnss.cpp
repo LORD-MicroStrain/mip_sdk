@@ -50,7 +50,7 @@ void insert(Serializer& serializer, const ReceiverInfo::Response& self)
 }
 void extract(Serializer& serializer, ReceiverInfo::Response& self)
 {
-    C::extract_count(&serializer, &self.num_receivers, self.num_receivers);
+    C::extract_count(&serializer, &self.num_receivers, sizeof(self.receiver_info)/sizeof(self.receiver_info[0]));
     for(unsigned int i=0; i < self.num_receivers; i++)
         extract(serializer, self.receiver_info[i]);
     

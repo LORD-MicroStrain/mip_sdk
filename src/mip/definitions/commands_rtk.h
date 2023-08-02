@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -132,6 +133,7 @@ void insert_mip_rtk_get_status_flags_response(struct mip_serializer* serializer,
 void extract_mip_rtk_get_status_flags_response(struct mip_serializer* serializer, mip_rtk_get_status_flags_response* self);
 
 mip_cmd_result mip_rtk_get_status_flags(struct mip_interface* device, mip_rtk_get_status_flags_command_status_flags* flags_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +151,7 @@ void insert_mip_rtk_get_imei_response(struct mip_serializer* serializer, const m
 void extract_mip_rtk_get_imei_response(struct mip_serializer* serializer, mip_rtk_get_imei_response* self);
 
 mip_cmd_result mip_rtk_get_imei(struct mip_interface* device, char* imei_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -166,6 +169,7 @@ void insert_mip_rtk_get_imsi_response(struct mip_serializer* serializer, const m
 void extract_mip_rtk_get_imsi_response(struct mip_serializer* serializer, mip_rtk_get_imsi_response* self);
 
 mip_cmd_result mip_rtk_get_imsi(struct mip_interface* device, char* imsi_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -183,6 +187,7 @@ void insert_mip_rtk_get_iccid_response(struct mip_serializer* serializer, const 
 void extract_mip_rtk_get_iccid_response(struct mip_serializer* serializer, mip_rtk_get_iccid_response* self);
 
 mip_cmd_result mip_rtk_get_iccid(struct mip_interface* device, char* iccid_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -221,6 +226,7 @@ mip_cmd_result mip_rtk_read_connected_device_type(struct mip_interface* device, 
 mip_cmd_result mip_rtk_save_connected_device_type(struct mip_interface* device);
 mip_cmd_result mip_rtk_load_connected_device_type(struct mip_interface* device);
 mip_cmd_result mip_rtk_default_connected_device_type(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +244,7 @@ void insert_mip_rtk_get_act_code_response(struct mip_serializer* serializer, con
 void extract_mip_rtk_get_act_code_response(struct mip_serializer* serializer, mip_rtk_get_act_code_response* self);
 
 mip_cmd_result mip_rtk_get_act_code(struct mip_interface* device, char* activation_code_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +262,7 @@ void insert_mip_rtk_get_modem_firmware_version_response(struct mip_serializer* s
 void extract_mip_rtk_get_modem_firmware_version_response(struct mip_serializer* serializer, mip_rtk_get_modem_firmware_version_response* self);
 
 mip_cmd_result mip_rtk_get_modem_firmware_version(struct mip_interface* device, char* modem_firmware_version_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +283,7 @@ void insert_mip_rtk_get_rssi_response(struct mip_serializer* serializer, const m
 void extract_mip_rtk_get_rssi_response(struct mip_serializer* serializer, mip_rtk_get_rssi_response* self);
 
 mip_cmd_result mip_rtk_get_rssi(struct mip_interface* device, bool* valid_out, int32_t* rssi_out, int32_t* signal_quality_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,6 +325,7 @@ void insert_mip_rtk_service_status_response(struct mip_serializer* serializer, c
 void extract_mip_rtk_service_status_response(struct mip_serializer* serializer, mip_rtk_service_status_response* self);
 
 mip_cmd_result mip_rtk_service_status(struct mip_interface* device, uint32_t reserved1, uint32_t reserved2, mip_rtk_service_status_command_service_flags* flags_out, uint32_t* received_bytes_out, uint32_t* last_bytes_out, uint64_t* last_bytes_time_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -335,6 +345,7 @@ void insert_mip_rtk_prod_erase_storage_command(struct mip_serializer* serializer
 void extract_mip_rtk_prod_erase_storage_command(struct mip_serializer* serializer, mip_rtk_prod_erase_storage_command* self);
 
 mip_cmd_result mip_rtk_prod_erase_storage(struct mip_interface* device, mip_media_selector media);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -356,6 +367,7 @@ void insert_mip_rtk_led_control_command(struct mip_serializer* serializer, const
 void extract_mip_rtk_led_control_command(struct mip_serializer* serializer, mip_rtk_led_control_command* self);
 
 mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint8_t* primary_color, const uint8_t* alt_color, mip_led_action act, uint32_t period);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -366,6 +378,7 @@ mip_cmd_result mip_rtk_led_control(struct mip_interface* device, const uint8_t* 
 ///@{
 
 mip_cmd_result mip_rtk_modem_hard_reset(struct mip_interface* device);
+
 ///@}
 ///
 

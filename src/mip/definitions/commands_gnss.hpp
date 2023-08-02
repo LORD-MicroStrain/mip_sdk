@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -66,11 +67,6 @@ static const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 
 struct ReceiverInfo
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct Info
     {
         uint8_t receiver_id = 0; ///< Receiver id: e.g. 1, 2, etc.
@@ -79,13 +75,33 @@ struct ReceiverInfo
         
     };
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
+    
+    static const bool HAS_FUNCTION_SELECTOR = false;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_receivers = 0; ///< Number of physical receivers in the device
-        Info* receiver_info = {nullptr};
+        Info receiver_info[5];
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(num_receivers),std::ref(receiver_info));
+        }
         
     };
 };
@@ -99,6 +115,7 @@ void insert(Serializer& serializer, const ReceiverInfo::Response& self);
 void extract(Serializer& serializer, ReceiverInfo::Response& self);
 
 CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,15 +127,6 @@ CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8
 
 struct SignalConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
     uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
@@ -126,16 +134,49 @@ struct SignalConfiguration
     uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
     uint8_t reserved[4] = {0};
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
+    
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x801F;
+    static const uint32_t READ_PARAMS    = 0x8000;
+    static const uint32_t SAVE_PARAMS    = 0x8000;
+    static const uint32_t LOAD_PARAMS    = 0x8000;
+    static const uint32_t DEFAULT_PARAMS = 0x8000;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(gps_enable,glonass_enable,galileo_enable,beidou_enable,reserved);
+    }
+    
+    
+    static SignalConfiguration create_sld_all(::mip::FunctionSelector function)
+    {
+        SignalConfiguration cmd;
+        cmd.function = function;
+        return cmd;
+    }
+    
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
         uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
         uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
         uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
         uint8_t reserved[4] = {0};
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(gps_enable),std::ref(glonass_enable),std::ref(galileo_enable),std::ref(beidou_enable),std::ref(reserved));
+        }
         
     };
 };
@@ -150,6 +191,7 @@ CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOu
 CmdResult saveSignalConfiguration(C::mip_interface& device);
 CmdResult loadSignalConfiguration(C::mip_interface& device);
 CmdResult defaultSignalConfiguration(C::mip_interface& device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,26 +203,50 @@ CmdResult defaultSignalConfiguration(C::mip_interface& device);
 
 struct RtkDongleConfiguration
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t enable = 0; ///< 0 - Disabled, 1- Enabled
     uint8_t reserved[3] = {0};
+    
+    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
+    
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x8003;
+    static const uint32_t READ_PARAMS    = 0x8000;
+    static const uint32_t SAVE_PARAMS    = 0x8000;
+    static const uint32_t LOAD_PARAMS    = 0x8000;
+    static const uint32_t DEFAULT_PARAMS = 0x8000;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(enable,reserved);
+    }
+    
+    
+    static RtkDongleConfiguration create_sld_all(::mip::FunctionSelector function)
+    {
+        RtkDongleConfiguration cmd;
+        cmd.function = function;
+        return cmd;
+    }
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t enable = 0;
         uint8_t reserved[3] = {0};
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(enable),std::ref(reserved));
+        }
         
     };
 };
@@ -195,6 +261,7 @@ CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOu
 CmdResult saveRtkDongleConfiguration(C::mip_interface& device);
 CmdResult loadRtkDongleConfiguration(C::mip_interface& device);
 CmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
+
 ///@}
 ///
 

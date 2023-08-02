@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -227,6 +228,7 @@ void insert_mip_filter_position_llh_data(struct mip_serializer* serializer, cons
 void extract_mip_filter_position_llh_data(struct mip_serializer* serializer, mip_filter_position_llh_data* self);
 bool extract_mip_filter_position_llh_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -248,6 +250,7 @@ void insert_mip_filter_velocity_ned_data(struct mip_serializer* serializer, cons
 void extract_mip_filter_velocity_ned_data(struct mip_serializer* serializer, mip_filter_velocity_ned_data* self);
 bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -266,7 +269,7 @@ bool extract_mip_filter_velocity_ned_data_from_field(const struct mip_field* fie
 
 struct mip_filter_attitude_quaternion_data
 {
-    float q[4]; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    mip_quatf q; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -274,6 +277,7 @@ typedef struct mip_filter_attitude_quaternion_data mip_filter_attitude_quaternio
 void insert_mip_filter_attitude_quaternion_data(struct mip_serializer* serializer, const mip_filter_attitude_quaternion_data* self);
 void extract_mip_filter_attitude_quaternion_data(struct mip_serializer* serializer, mip_filter_attitude_quaternion_data* self);
 bool extract_mip_filter_attitude_quaternion_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -295,7 +299,7 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const struct mip_fie
 
 struct mip_filter_attitude_dcm_data
 {
-    float dcm[9]; ///< Matrix elements in row-major order.
+    mip_matrix3f dcm; ///< Matrix elements in row-major order.
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -303,6 +307,7 @@ typedef struct mip_filter_attitude_dcm_data mip_filter_attitude_dcm_data;
 void insert_mip_filter_attitude_dcm_data(struct mip_serializer* serializer, const mip_filter_attitude_dcm_data* self);
 void extract_mip_filter_attitude_dcm_data(struct mip_serializer* serializer, mip_filter_attitude_dcm_data* self);
 bool extract_mip_filter_attitude_dcm_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -326,6 +331,7 @@ void insert_mip_filter_euler_angles_data(struct mip_serializer* serializer, cons
 void extract_mip_filter_euler_angles_data(struct mip_serializer* serializer, mip_filter_euler_angles_data* self);
 bool extract_mip_filter_euler_angles_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +342,7 @@ bool extract_mip_filter_euler_angles_data_from_field(const struct mip_field* fie
 
 struct mip_filter_gyro_bias_data
 {
-    float bias[3]; ///< (x, y, z) [radians/second]
+    mip_vector3f bias; ///< (x, y, z) [radians/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -344,6 +350,7 @@ typedef struct mip_filter_gyro_bias_data mip_filter_gyro_bias_data;
 void insert_mip_filter_gyro_bias_data(struct mip_serializer* serializer, const mip_filter_gyro_bias_data* self);
 void extract_mip_filter_gyro_bias_data(struct mip_serializer* serializer, mip_filter_gyro_bias_data* self);
 bool extract_mip_filter_gyro_bias_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -355,7 +362,7 @@ bool extract_mip_filter_gyro_bias_data_from_field(const struct mip_field* field,
 
 struct mip_filter_accel_bias_data
 {
-    float bias[3]; ///< (x, y, z) [meters/second^2]
+    mip_vector3f bias; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -363,6 +370,7 @@ typedef struct mip_filter_accel_bias_data mip_filter_accel_bias_data;
 void insert_mip_filter_accel_bias_data(struct mip_serializer* serializer, const mip_filter_accel_bias_data* self);
 void extract_mip_filter_accel_bias_data(struct mip_serializer* serializer, mip_filter_accel_bias_data* self);
 bool extract_mip_filter_accel_bias_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -385,6 +393,7 @@ void insert_mip_filter_position_llh_uncertainty_data(struct mip_serializer* seri
 void extract_mip_filter_position_llh_uncertainty_data(struct mip_serializer* serializer, mip_filter_position_llh_uncertainty_data* self);
 bool extract_mip_filter_position_llh_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -405,6 +414,7 @@ typedef struct mip_filter_velocity_ned_uncertainty_data mip_filter_velocity_ned_
 void insert_mip_filter_velocity_ned_uncertainty_data(struct mip_serializer* serializer, const mip_filter_velocity_ned_uncertainty_data* self);
 void extract_mip_filter_velocity_ned_uncertainty_data(struct mip_serializer* serializer, mip_filter_velocity_ned_uncertainty_data* self);
 bool extract_mip_filter_velocity_ned_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -428,6 +438,7 @@ void insert_mip_filter_euler_angles_uncertainty_data(struct mip_serializer* seri
 void extract_mip_filter_euler_angles_uncertainty_data(struct mip_serializer* serializer, mip_filter_euler_angles_uncertainty_data* self);
 bool extract_mip_filter_euler_angles_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -438,7 +449,7 @@ bool extract_mip_filter_euler_angles_uncertainty_data_from_field(const struct mi
 
 struct mip_filter_gyro_bias_uncertainty_data
 {
-    float bias_uncert[3]; ///< (x,y,z) [radians/sec]
+    mip_vector3f bias_uncert; ///< (x,y,z) [radians/sec]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -446,6 +457,7 @@ typedef struct mip_filter_gyro_bias_uncertainty_data mip_filter_gyro_bias_uncert
 void insert_mip_filter_gyro_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_gyro_bias_uncertainty_data* self);
 void extract_mip_filter_gyro_bias_uncertainty_data(struct mip_serializer* serializer, mip_filter_gyro_bias_uncertainty_data* self);
 bool extract_mip_filter_gyro_bias_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -457,7 +469,7 @@ bool extract_mip_filter_gyro_bias_uncertainty_data_from_field(const struct mip_f
 
 struct mip_filter_accel_bias_uncertainty_data
 {
-    float bias_uncert[3]; ///< (x,y,z) [meters/second^2]
+    mip_vector3f bias_uncert; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -465,6 +477,7 @@ typedef struct mip_filter_accel_bias_uncertainty_data mip_filter_accel_bias_unce
 void insert_mip_filter_accel_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_accel_bias_uncertainty_data* self);
 void extract_mip_filter_accel_bias_uncertainty_data(struct mip_serializer* serializer, mip_filter_accel_bias_uncertainty_data* self);
 bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -492,6 +505,7 @@ void insert_mip_filter_timestamp_data(struct mip_serializer* serializer, const m
 void extract_mip_filter_timestamp_data(struct mip_serializer* serializer, mip_filter_timestamp_data* self);
 bool extract_mip_filter_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -512,6 +526,7 @@ void insert_mip_filter_status_data(struct mip_serializer* serializer, const mip_
 void extract_mip_filter_status_data(struct mip_serializer* serializer, mip_filter_status_data* self);
 bool extract_mip_filter_status_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -523,7 +538,7 @@ bool extract_mip_filter_status_data_from_field(const struct mip_field* field, vo
 
 struct mip_filter_linear_accel_data
 {
-    float accel[3]; ///< (x,y,z) [meters/second^2]
+    mip_vector3f accel; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -531,6 +546,7 @@ typedef struct mip_filter_linear_accel_data mip_filter_linear_accel_data;
 void insert_mip_filter_linear_accel_data(struct mip_serializer* serializer, const mip_filter_linear_accel_data* self);
 void extract_mip_filter_linear_accel_data(struct mip_serializer* serializer, mip_filter_linear_accel_data* self);
 bool extract_mip_filter_linear_accel_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -542,7 +558,7 @@ bool extract_mip_filter_linear_accel_data_from_field(const struct mip_field* fie
 
 struct mip_filter_gravity_vector_data
 {
-    float gravity[3]; ///< (x, y, z) [meters/second^2]
+    mip_vector3f gravity; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -550,6 +566,7 @@ typedef struct mip_filter_gravity_vector_data mip_filter_gravity_vector_data;
 void insert_mip_filter_gravity_vector_data(struct mip_serializer* serializer, const mip_filter_gravity_vector_data* self);
 void extract_mip_filter_gravity_vector_data(struct mip_serializer* serializer, mip_filter_gravity_vector_data* self);
 bool extract_mip_filter_gravity_vector_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -561,7 +578,7 @@ bool extract_mip_filter_gravity_vector_data_from_field(const struct mip_field* f
 
 struct mip_filter_comp_accel_data
 {
-    float accel[3]; ///< (x,y,z) [meters/second^2]
+    mip_vector3f accel; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -569,6 +586,7 @@ typedef struct mip_filter_comp_accel_data mip_filter_comp_accel_data;
 void insert_mip_filter_comp_accel_data(struct mip_serializer* serializer, const mip_filter_comp_accel_data* self);
 void extract_mip_filter_comp_accel_data(struct mip_serializer* serializer, mip_filter_comp_accel_data* self);
 bool extract_mip_filter_comp_accel_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -580,7 +598,7 @@ bool extract_mip_filter_comp_accel_data_from_field(const struct mip_field* field
 
 struct mip_filter_comp_angular_rate_data
 {
-    float gyro[3]; ///< (x, y, z) [radians/second]
+    mip_vector3f gyro; ///< (x, y, z) [radians/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -588,6 +606,7 @@ typedef struct mip_filter_comp_angular_rate_data mip_filter_comp_angular_rate_da
 void insert_mip_filter_comp_angular_rate_data(struct mip_serializer* serializer, const mip_filter_comp_angular_rate_data* self);
 void extract_mip_filter_comp_angular_rate_data(struct mip_serializer* serializer, mip_filter_comp_angular_rate_data* self);
 bool extract_mip_filter_comp_angular_rate_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -599,7 +618,7 @@ bool extract_mip_filter_comp_angular_rate_data_from_field(const struct mip_field
 
 struct mip_filter_quaternion_attitude_uncertainty_data
 {
-    float q[4]; ///< [dimensionless]
+    mip_quatf q; ///< [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -607,6 +626,7 @@ typedef struct mip_filter_quaternion_attitude_uncertainty_data mip_filter_quater
 void insert_mip_filter_quaternion_attitude_uncertainty_data(struct mip_serializer* serializer, const mip_filter_quaternion_attitude_uncertainty_data* self);
 void extract_mip_filter_quaternion_attitude_uncertainty_data(struct mip_serializer* serializer, mip_filter_quaternion_attitude_uncertainty_data* self);
 bool extract_mip_filter_quaternion_attitude_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -626,6 +646,7 @@ typedef struct mip_filter_wgs84_gravity_mag_data mip_filter_wgs84_gravity_mag_da
 void insert_mip_filter_wgs84_gravity_mag_data(struct mip_serializer* serializer, const mip_filter_wgs84_gravity_mag_data* self);
 void extract_mip_filter_wgs84_gravity_mag_data(struct mip_serializer* serializer, mip_filter_wgs84_gravity_mag_data* self);
 bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -661,6 +682,7 @@ bool extract_mip_filter_heading_update_state_data_from_field(const struct mip_fi
 void insert_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self);
 void extract_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -685,6 +707,7 @@ void insert_mip_filter_magnetic_model_data(struct mip_serializer* serializer, co
 void extract_mip_filter_magnetic_model_data(struct mip_serializer* serializer, mip_filter_magnetic_model_data* self);
 bool extract_mip_filter_magnetic_model_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -695,7 +718,7 @@ bool extract_mip_filter_magnetic_model_data_from_field(const struct mip_field* f
 
 struct mip_filter_accel_scale_factor_data
 {
-    float scale_factor[3]; ///< (x,y,z) [dimensionless]
+    mip_vector3f scale_factor; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -703,6 +726,7 @@ typedef struct mip_filter_accel_scale_factor_data mip_filter_accel_scale_factor_
 void insert_mip_filter_accel_scale_factor_data(struct mip_serializer* serializer, const mip_filter_accel_scale_factor_data* self);
 void extract_mip_filter_accel_scale_factor_data(struct mip_serializer* serializer, mip_filter_accel_scale_factor_data* self);
 bool extract_mip_filter_accel_scale_factor_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -714,7 +738,7 @@ bool extract_mip_filter_accel_scale_factor_data_from_field(const struct mip_fiel
 
 struct mip_filter_accel_scale_factor_uncertainty_data
 {
-    float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
+    mip_vector3f scale_factor_uncert; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -722,6 +746,7 @@ typedef struct mip_filter_accel_scale_factor_uncertainty_data mip_filter_accel_s
 void insert_mip_filter_accel_scale_factor_uncertainty_data(struct mip_serializer* serializer, const mip_filter_accel_scale_factor_uncertainty_data* self);
 void extract_mip_filter_accel_scale_factor_uncertainty_data(struct mip_serializer* serializer, mip_filter_accel_scale_factor_uncertainty_data* self);
 bool extract_mip_filter_accel_scale_factor_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -733,7 +758,7 @@ bool extract_mip_filter_accel_scale_factor_uncertainty_data_from_field(const str
 
 struct mip_filter_gyro_scale_factor_data
 {
-    float scale_factor[3]; ///< (x,y,z) [dimensionless]
+    mip_vector3f scale_factor; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -741,6 +766,7 @@ typedef struct mip_filter_gyro_scale_factor_data mip_filter_gyro_scale_factor_da
 void insert_mip_filter_gyro_scale_factor_data(struct mip_serializer* serializer, const mip_filter_gyro_scale_factor_data* self);
 void extract_mip_filter_gyro_scale_factor_data(struct mip_serializer* serializer, mip_filter_gyro_scale_factor_data* self);
 bool extract_mip_filter_gyro_scale_factor_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -752,7 +778,7 @@ bool extract_mip_filter_gyro_scale_factor_data_from_field(const struct mip_field
 
 struct mip_filter_gyro_scale_factor_uncertainty_data
 {
-    float scale_factor_uncert[3]; ///< (x,y,z) [dimensionless]
+    mip_vector3f scale_factor_uncert; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -760,6 +786,7 @@ typedef struct mip_filter_gyro_scale_factor_uncertainty_data mip_filter_gyro_sca
 void insert_mip_filter_gyro_scale_factor_uncertainty_data(struct mip_serializer* serializer, const mip_filter_gyro_scale_factor_uncertainty_data* self);
 void extract_mip_filter_gyro_scale_factor_uncertainty_data(struct mip_serializer* serializer, mip_filter_gyro_scale_factor_uncertainty_data* self);
 bool extract_mip_filter_gyro_scale_factor_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -771,7 +798,7 @@ bool extract_mip_filter_gyro_scale_factor_uncertainty_data_from_field(const stru
 
 struct mip_filter_mag_bias_data
 {
-    float bias[3]; ///< (x,y,z) [Gauss]
+    mip_vector3f bias; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -779,6 +806,7 @@ typedef struct mip_filter_mag_bias_data mip_filter_mag_bias_data;
 void insert_mip_filter_mag_bias_data(struct mip_serializer* serializer, const mip_filter_mag_bias_data* self);
 void extract_mip_filter_mag_bias_data(struct mip_serializer* serializer, mip_filter_mag_bias_data* self);
 bool extract_mip_filter_mag_bias_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -790,7 +818,7 @@ bool extract_mip_filter_mag_bias_data_from_field(const struct mip_field* field, 
 
 struct mip_filter_mag_bias_uncertainty_data
 {
-    float bias_uncert[3]; ///< (x,y,z) [Gauss]
+    mip_vector3f bias_uncert; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -798,6 +826,7 @@ typedef struct mip_filter_mag_bias_uncertainty_data mip_filter_mag_bias_uncertai
 void insert_mip_filter_mag_bias_uncertainty_data(struct mip_serializer* serializer, const mip_filter_mag_bias_uncertainty_data* self);
 void extract_mip_filter_mag_bias_uncertainty_data(struct mip_serializer* serializer, mip_filter_mag_bias_uncertainty_data* self);
 bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -824,6 +853,7 @@ void insert_mip_filter_standard_atmosphere_data(struct mip_serializer* serialize
 void extract_mip_filter_standard_atmosphere_data(struct mip_serializer* serializer, mip_filter_standard_atmosphere_data* self);
 bool extract_mip_filter_standard_atmosphere_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -847,6 +877,7 @@ void insert_mip_filter_pressure_altitude_data(struct mip_serializer* serializer,
 void extract_mip_filter_pressure_altitude_data(struct mip_serializer* serializer, mip_filter_pressure_altitude_data* self);
 bool extract_mip_filter_pressure_altitude_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -865,6 +896,7 @@ void insert_mip_filter_density_altitude_data(struct mip_serializer* serializer, 
 void extract_mip_filter_density_altitude_data(struct mip_serializer* serializer, mip_filter_density_altitude_data* self);
 bool extract_mip_filter_density_altitude_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -877,7 +909,7 @@ bool extract_mip_filter_density_altitude_data_from_field(const struct mip_field*
 
 struct mip_filter_antenna_offset_correction_data
 {
-    float offset[3]; ///< (x,y,z) [meters]
+    mip_vector3f offset; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -885,6 +917,7 @@ typedef struct mip_filter_antenna_offset_correction_data mip_filter_antenna_offs
 void insert_mip_filter_antenna_offset_correction_data(struct mip_serializer* serializer, const mip_filter_antenna_offset_correction_data* self);
 void extract_mip_filter_antenna_offset_correction_data(struct mip_serializer* serializer, mip_filter_antenna_offset_correction_data* self);
 bool extract_mip_filter_antenna_offset_correction_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -896,7 +929,7 @@ bool extract_mip_filter_antenna_offset_correction_data_from_field(const struct m
 
 struct mip_filter_antenna_offset_correction_uncertainty_data
 {
-    float offset_uncert[3]; ///< (x,y,z) [meters]
+    mip_vector3f offset_uncert; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -904,6 +937,7 @@ typedef struct mip_filter_antenna_offset_correction_uncertainty_data mip_filter_
 void insert_mip_filter_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_antenna_offset_correction_uncertainty_data* self);
 void extract_mip_filter_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, mip_filter_antenna_offset_correction_uncertainty_data* self);
 bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -918,7 +952,7 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 struct mip_filter_multi_antenna_offset_correction_data
 {
     uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
-    float offset[3]; ///< (x,y,z) [meters]
+    mip_vector3f offset; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -926,6 +960,7 @@ typedef struct mip_filter_multi_antenna_offset_correction_data mip_filter_multi_
 void insert_mip_filter_multi_antenna_offset_correction_data(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_data* self);
 void extract_mip_filter_multi_antenna_offset_correction_data(struct mip_serializer* serializer, mip_filter_multi_antenna_offset_correction_data* self);
 bool extract_mip_filter_multi_antenna_offset_correction_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -938,7 +973,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_data_from_field(const st
 struct mip_filter_multi_antenna_offset_correction_uncertainty_data
 {
     uint8_t receiver_id; ///< Receiver ID for the receiver to which the antenna is attached
-    float offset_uncert[3]; ///< (x,y,z) [meters]
+    mip_vector3f offset_uncert; ///< (x,y,z) [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -946,6 +981,7 @@ typedef struct mip_filter_multi_antenna_offset_correction_uncertainty_data mip_f
 void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_uncertainty_data* self);
 void extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(struct mip_serializer* serializer, mip_filter_multi_antenna_offset_correction_uncertainty_data* self);
 bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -959,7 +995,7 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 
 struct mip_filter_magnetometer_offset_data
 {
-    float hard_iron[3]; ///< (x,y,z) [Gauss]
+    mip_vector3f hard_iron; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -967,6 +1003,7 @@ typedef struct mip_filter_magnetometer_offset_data mip_filter_magnetometer_offse
 void insert_mip_filter_magnetometer_offset_data(struct mip_serializer* serializer, const mip_filter_magnetometer_offset_data* self);
 void extract_mip_filter_magnetometer_offset_data(struct mip_serializer* serializer, mip_filter_magnetometer_offset_data* self);
 bool extract_mip_filter_magnetometer_offset_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -980,7 +1017,7 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const struct mip_fie
 
 struct mip_filter_magnetometer_matrix_data
 {
-    float soft_iron[9]; ///< Row-major [dimensionless]
+    mip_matrix3f soft_iron; ///< Row-major [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -988,6 +1025,7 @@ typedef struct mip_filter_magnetometer_matrix_data mip_filter_magnetometer_matri
 void insert_mip_filter_magnetometer_matrix_data(struct mip_serializer* serializer, const mip_filter_magnetometer_matrix_data* self);
 void extract_mip_filter_magnetometer_matrix_data(struct mip_serializer* serializer, mip_filter_magnetometer_matrix_data* self);
 bool extract_mip_filter_magnetometer_matrix_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -999,7 +1037,7 @@ bool extract_mip_filter_magnetometer_matrix_data_from_field(const struct mip_fie
 
 struct mip_filter_magnetometer_offset_uncertainty_data
 {
-    float hard_iron_uncertainty[3]; ///< (x,y,z) [Gauss]
+    mip_vector3f hard_iron_uncertainty; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1007,6 +1045,7 @@ typedef struct mip_filter_magnetometer_offset_uncertainty_data mip_filter_magnet
 void insert_mip_filter_magnetometer_offset_uncertainty_data(struct mip_serializer* serializer, const mip_filter_magnetometer_offset_uncertainty_data* self);
 void extract_mip_filter_magnetometer_offset_uncertainty_data(struct mip_serializer* serializer, mip_filter_magnetometer_offset_uncertainty_data* self);
 bool extract_mip_filter_magnetometer_offset_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1018,7 +1057,7 @@ bool extract_mip_filter_magnetometer_offset_uncertainty_data_from_field(const st
 
 struct mip_filter_magnetometer_matrix_uncertainty_data
 {
-    float soft_iron_uncertainty[9]; ///< Row-major [dimensionless]
+    mip_matrix3f soft_iron_uncertainty; ///< Row-major [dimensionless]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1026,6 +1065,7 @@ typedef struct mip_filter_magnetometer_matrix_uncertainty_data mip_filter_magnet
 void insert_mip_filter_magnetometer_matrix_uncertainty_data(struct mip_serializer* serializer, const mip_filter_magnetometer_matrix_uncertainty_data* self);
 void extract_mip_filter_magnetometer_matrix_uncertainty_data(struct mip_serializer* serializer, mip_filter_magnetometer_matrix_uncertainty_data* self);
 bool extract_mip_filter_magnetometer_matrix_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1036,7 +1076,7 @@ bool extract_mip_filter_magnetometer_matrix_uncertainty_data_from_field(const st
 
 struct mip_filter_magnetometer_covariance_matrix_data
 {
-    float covariance[9];
+    mip_matrix3f covariance;
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1044,6 +1084,7 @@ typedef struct mip_filter_magnetometer_covariance_matrix_data mip_filter_magneto
 void insert_mip_filter_magnetometer_covariance_matrix_data(struct mip_serializer* serializer, const mip_filter_magnetometer_covariance_matrix_data* self);
 void extract_mip_filter_magnetometer_covariance_matrix_data(struct mip_serializer* serializer, mip_filter_magnetometer_covariance_matrix_data* self);
 bool extract_mip_filter_magnetometer_covariance_matrix_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1055,7 +1096,7 @@ bool extract_mip_filter_magnetometer_covariance_matrix_data_from_field(const str
 
 struct mip_filter_magnetometer_residual_vector_data
 {
-    float residual[3]; ///< (x,y,z) [Gauss]
+    mip_vector3f residual; ///< (x,y,z) [Gauss]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1063,6 +1104,7 @@ typedef struct mip_filter_magnetometer_residual_vector_data mip_filter_magnetome
 void insert_mip_filter_magnetometer_residual_vector_data(struct mip_serializer* serializer, const mip_filter_magnetometer_residual_vector_data* self);
 void extract_mip_filter_magnetometer_residual_vector_data(struct mip_serializer* serializer, mip_filter_magnetometer_residual_vector_data* self);
 bool extract_mip_filter_magnetometer_residual_vector_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1085,6 +1127,7 @@ void insert_mip_filter_clock_correction_data(struct mip_serializer* serializer, 
 void extract_mip_filter_clock_correction_data(struct mip_serializer* serializer, mip_filter_clock_correction_data* self);
 bool extract_mip_filter_clock_correction_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1105,6 +1148,7 @@ typedef struct mip_filter_clock_correction_uncertainty_data mip_filter_clock_cor
 void insert_mip_filter_clock_correction_uncertainty_data(struct mip_serializer* serializer, const mip_filter_clock_correction_uncertainty_data* self);
 void extract_mip_filter_clock_correction_uncertainty_data(struct mip_serializer* serializer, mip_filter_clock_correction_uncertainty_data* self);
 bool extract_mip_filter_clock_correction_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1127,6 +1171,7 @@ void insert_mip_filter_gnss_pos_aid_status_data(struct mip_serializer* serialize
 void extract_mip_filter_gnss_pos_aid_status_data(struct mip_serializer* serializer, mip_filter_gnss_pos_aid_status_data* self);
 bool extract_mip_filter_gnss_pos_aid_status_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1146,6 +1191,7 @@ typedef struct mip_filter_gnss_att_aid_status_data mip_filter_gnss_att_aid_statu
 void insert_mip_filter_gnss_att_aid_status_data(struct mip_serializer* serializer, const mip_filter_gnss_att_aid_status_data* self);
 void extract_mip_filter_gnss_att_aid_status_data(struct mip_serializer* serializer, mip_filter_gnss_att_aid_status_data* self);
 bool extract_mip_filter_gnss_att_aid_status_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1174,6 +1220,7 @@ bool extract_mip_filter_head_aid_status_data_from_field(const struct mip_field* 
 void insert_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self);
 void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1184,7 +1231,7 @@ void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_seriali
 
 struct mip_filter_rel_pos_ned_data
 {
-    double relative_position[3]; ///< [meters, NED]
+    mip_vector3d relative_position; ///< [meters, NED]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1192,6 +1239,7 @@ typedef struct mip_filter_rel_pos_ned_data mip_filter_rel_pos_ned_data;
 void insert_mip_filter_rel_pos_ned_data(struct mip_serializer* serializer, const mip_filter_rel_pos_ned_data* self);
 void extract_mip_filter_rel_pos_ned_data(struct mip_serializer* serializer, mip_filter_rel_pos_ned_data* self);
 bool extract_mip_filter_rel_pos_ned_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1203,7 +1251,7 @@ bool extract_mip_filter_rel_pos_ned_data_from_field(const struct mip_field* fiel
 
 struct mip_filter_ecef_pos_data
 {
-    double position_ecef[3]; ///< [meters, ECEF]
+    mip_vector3d position_ecef; ///< [meters, ECEF]
     uint16_t valid_flags; ///< 0 - invalid, 1 valid
     
 };
@@ -1211,6 +1259,7 @@ typedef struct mip_filter_ecef_pos_data mip_filter_ecef_pos_data;
 void insert_mip_filter_ecef_pos_data(struct mip_serializer* serializer, const mip_filter_ecef_pos_data* self);
 void extract_mip_filter_ecef_pos_data(struct mip_serializer* serializer, mip_filter_ecef_pos_data* self);
 bool extract_mip_filter_ecef_pos_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1222,7 +1271,7 @@ bool extract_mip_filter_ecef_pos_data_from_field(const struct mip_field* field, 
 
 struct mip_filter_ecef_vel_data
 {
-    float velocity_ecef[3]; ///< [meters/second, ECEF]
+    mip_vector3f velocity_ecef; ///< [meters/second, ECEF]
     uint16_t valid_flags; ///< 0 - invalid, 1 valid
     
 };
@@ -1230,6 +1279,7 @@ typedef struct mip_filter_ecef_vel_data mip_filter_ecef_vel_data;
 void insert_mip_filter_ecef_vel_data(struct mip_serializer* serializer, const mip_filter_ecef_vel_data* self);
 void extract_mip_filter_ecef_vel_data(struct mip_serializer* serializer, mip_filter_ecef_vel_data* self);
 bool extract_mip_filter_ecef_vel_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1241,7 +1291,7 @@ bool extract_mip_filter_ecef_vel_data_from_field(const struct mip_field* field, 
 
 struct mip_filter_ecef_pos_uncertainty_data
 {
-    float pos_uncertainty[3]; ///< [meters]
+    mip_vector3f pos_uncertainty; ///< [meters]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1249,6 +1299,7 @@ typedef struct mip_filter_ecef_pos_uncertainty_data mip_filter_ecef_pos_uncertai
 void insert_mip_filter_ecef_pos_uncertainty_data(struct mip_serializer* serializer, const mip_filter_ecef_pos_uncertainty_data* self);
 void extract_mip_filter_ecef_pos_uncertainty_data(struct mip_serializer* serializer, mip_filter_ecef_pos_uncertainty_data* self);
 bool extract_mip_filter_ecef_pos_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1260,7 +1311,7 @@ bool extract_mip_filter_ecef_pos_uncertainty_data_from_field(const struct mip_fi
 
 struct mip_filter_ecef_vel_uncertainty_data
 {
-    float vel_uncertainty[3]; ///< [meters/second]
+    mip_vector3f vel_uncertainty; ///< [meters/second]
     uint16_t valid_flags; ///< 0 - invalid, 1 - valid
     
 };
@@ -1268,6 +1319,7 @@ typedef struct mip_filter_ecef_vel_uncertainty_data mip_filter_ecef_vel_uncertai
 void insert_mip_filter_ecef_vel_uncertainty_data(struct mip_serializer* serializer, const mip_filter_ecef_vel_uncertainty_data* self);
 void extract_mip_filter_ecef_vel_uncertainty_data(struct mip_serializer* serializer, mip_filter_ecef_vel_uncertainty_data* self);
 bool extract_mip_filter_ecef_vel_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1290,6 +1342,7 @@ void insert_mip_filter_aiding_measurement_summary_data(struct mip_serializer* se
 void extract_mip_filter_aiding_measurement_summary_data(struct mip_serializer* serializer, mip_filter_aiding_measurement_summary_data* self);
 bool extract_mip_filter_aiding_measurement_summary_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1309,6 +1362,7 @@ void insert_mip_filter_odometer_scale_factor_error_data(struct mip_serializer* s
 void extract_mip_filter_odometer_scale_factor_error_data(struct mip_serializer* serializer, mip_filter_odometer_scale_factor_error_data* self);
 bool extract_mip_filter_odometer_scale_factor_error_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1327,6 +1381,7 @@ typedef struct mip_filter_odometer_scale_factor_error_uncertainty_data mip_filte
 void insert_mip_filter_odometer_scale_factor_error_uncertainty_data(struct mip_serializer* serializer, const mip_filter_odometer_scale_factor_error_uncertainty_data* self);
 void extract_mip_filter_odometer_scale_factor_error_uncertainty_data(struct mip_serializer* serializer, mip_filter_odometer_scale_factor_error_uncertainty_data* self);
 bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -1368,6 +1423,7 @@ void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serial
 
 void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self);
 void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self);
+
 
 ///@}
 ///

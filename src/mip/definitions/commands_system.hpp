@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -70,24 +71,48 @@ static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 
 struct CommMode
 {
+    FunctionSelector function = static_cast<FunctionSelector>(0);
+    uint8_t mode = 0;
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
     
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = false;
-    static const bool HAS_LOAD_FUNCTION = false;
-    static const bool HAS_RESET_FUNCTION = true;
+    static const bool HAS_FUNCTION_SELECTOR = true;
+    static const uint32_t WRITE_PARAMS   = 0x8001;
+    static const uint32_t READ_PARAMS    = 0x8000;
+    static const uint32_t SAVE_PARAMS    = 0x0000;
+    static const uint32_t LOAD_PARAMS    = 0x0000;
+    static const uint32_t DEFAULT_PARAMS = 0x8000;
+    static const uint32_t ECHOED_PARAMS  = 0x0000;
+    static const uint32_t COUNTER_PARAMS = 0x00000000;
     
-    FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t mode = 0;
+    auto as_tuple() const
+    {
+        return std::make_tuple(mode);
+    }
+    
+    
+    static CommMode create_sld_all(::mip::FunctionSelector function)
+    {
+        CommMode cmd;
+        cmd.function = function;
+        return cmd;
+    }
     
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
         static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
         
+        static const uint32_t ECHOED_PARAMS  = 0x0000;
+        static const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t mode = 0;
+        
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(mode));
+        }
         
     };
 };
@@ -100,6 +125,7 @@ void extract(Serializer& serializer, CommMode::Response& self);
 CmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
 CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut);
 CmdResult defaultCommMode(C::mip_interface& device);
+
 ///@}
 ///
 
