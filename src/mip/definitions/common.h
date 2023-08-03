@@ -78,8 +78,41 @@ inline void insert(Serializer& serializer, const DescriptorRate& self) { return 
 inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 
+//////////////////////////////////////////////////////////////////////////////////
+///@brief Vector is a wrapper around an array of some type T, usually float or double.
+///
+/// Implicit conversion to/from C-style pointers is provided to allow simple
+/// integration with code using plain arrays.
+///
 template<typename T, size_t N>
-using Vector = T[N];
+struct Vector : public std::array<T,N>
+{
+    Vector() {}
+
+    template<typename U>
+    Vector(U value) { this->fill(value); }
+
+    template<typename U>
+    Vector(const U (&ptr)[N]) { copyFrom(ptr, N); }
+
+    template<typename U, size_t M>
+    explicit Vector(const U (&ptr)[M]) { static_assert(M>=N, "Input array is too small"); copyFrom(ptr, M); }
+
+    template<typename U>
+    explicit Vector(const U* ptr, size_t n) { copyFrom(ptr, n); }
+
+    Vector(const Vector&) = default;
+    Vector& operator=(const Vector&) = default;
+
+    template<typename U>
+    Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); }
+
+    operator const T*() const { return this->data(); }
+    operator T*() { return this->data(); }
+
+    template<typename U>
+    void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) (*this)[i] = ptr[i]; }
+};
 
 using Vector3f = Vector<float,3>;
 using Vector4f = Vector<float,4>;
