@@ -320,13 +320,13 @@ public:
     explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketRef(mData, sizeof(mData)) { copyFrom(data, length); }
     explicit SizedPacketBuf(const PacketRef& packet) : PacketRef(mData, sizeof(mData)) { copyFrom(packet); }
 
-    // Copy constructor, required to put packets into std::vector.
-    explicit SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+    ///@brief Copy constructor (required to put packets into std::vector in some cases).
+    template<size_t OtherSize>
+    explicit SizedPacketBuf(const SizedPacketBuf<BufferSize>& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
 
-    // No moving allowed - use the explicit functions copyFrom or copyTo.
-    SizedPacketBuf(SizedPacketBuf&&) = delete;
-    SizedPacketBuf& operator=(const SizedPacketBuf& other) = delete;
-    SizedPacketBuf& operator=(SizedPacketBuf&&) = delete;
+    ///@brief Assignment operator, copies data from another buffer to this one.
+    template<size_t OtherSize>
+    SizedPacketBuf& operator=(const SizedPacketBuf<OtherSize>& other) { copyFrom(other); }
 
     ///@brief Create a packet containing just the given field.
     ///
