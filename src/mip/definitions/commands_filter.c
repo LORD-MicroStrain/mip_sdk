@@ -263,7 +263,7 @@ void extract_mip_filter_external_gnss_update_command(mip_serializer* serializer,
     
 }
 
-mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty)
+mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, mip_vector3f velocity, mip_vector3f pos_uncertainty, mip_vector3f vel_uncertainty)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -279,17 +279,14 @@ mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device, dou
     
     insert_double(&serializer, height);
     
-    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, velocity[i]);
+        insert_mip_vector3f(&serializer, &velocity[i]);
     
-    assert(pos_uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, pos_uncertainty[i]);
+        insert_mip_vector3f(&serializer, &pos_uncertainty[i]);
     
-    assert(vel_uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, vel_uncertainty[i]);
+        insert_mip_vector3f(&serializer, &vel_uncertainty[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
@@ -785,7 +782,7 @@ void extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(mip_serializer* 
     
 }
 
-mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, const float* dcm)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, mip_matrix3f dcm)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -793,15 +790,14 @@ mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_interf
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
-        insert_float(&serializer, dcm[i]);
+        insert_mip_matrix3f(&serializer, &dcm[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, float* dcm_out)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, mip_matrix3f dcm_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -819,9 +815,8 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interfa
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(dcm_out || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
-            extract_float(&deserializer, &dcm_out[i]);
+            extract_mip_matrix3f(&deserializer, &dcm_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -900,7 +895,7 @@ void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(mip_seria
     
 }
 
-mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, const float* quat)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, mip_quatf quat)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -908,15 +903,14 @@ mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struct mip
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(quat || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
-        insert_float(&serializer, quat[i]);
+        insert_mip_quatf(&serializer, &quat[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, float* quat_out)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, mip_quatf quat_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -934,9 +928,8 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(quat_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
-            extract_float(&deserializer, &quat_out[i]);
+            extract_mip_quatf(&deserializer, &quat_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1015,7 +1008,7 @@ void extract_mip_filter_sensor_to_vehicle_offset_response(mip_serializer* serial
     
 }
 
-mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interface* device, mip_vector3f offset)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1023,15 +1016,14 @@ mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interface* d
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, offset[i]);
+        insert_mip_vector3f(&serializer, &offset[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* device, float* offset_out)
+mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* device, mip_vector3f offset_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1049,9 +1041,8 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* de
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &offset_out[i]);
+            extract_mip_vector3f(&deserializer, &offset_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1130,7 +1121,7 @@ void extract_mip_filter_antenna_offset_response(mip_serializer* serializer, mip_
     
 }
 
-mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device, const float* offset)
+mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device, mip_vector3f offset)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1138,15 +1129,14 @@ mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device, con
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, offset[i]);
+        insert_mip_vector3f(&serializer, &offset[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ANTENNA_OFFSET, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, float* offset_out)
+mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, mip_vector3f offset_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1164,9 +1154,8 @@ mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, floa
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &offset_out[i]);
+            extract_mip_vector3f(&deserializer, &offset_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1591,7 +1580,7 @@ void extract_mip_filter_accel_noise_response(mip_serializer* serializer, mip_fil
     
 }
 
-mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1599,15 +1588,14 @@ mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, const 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ACCEL_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1625,9 +1613,8 @@ mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* 
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1706,7 +1693,7 @@ void extract_mip_filter_gyro_noise_response(mip_serializer* serializer, mip_filt
     
 }
 
-mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1714,15 +1701,14 @@ mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, const f
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GYRO_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1740,9 +1726,8 @@ mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* n
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1833,7 +1818,7 @@ void extract_mip_filter_accel_bias_model_response(mip_serializer* serializer, mi
     
 }
 
-mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, const float* beta, const float* noise)
+mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, mip_vector3f beta, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1841,19 +1826,17 @@ mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, c
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(beta || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, beta[i]);
+        insert_mip_vector3f(&serializer, &beta[i]);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_ACCEL_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, float* beta_out, float* noise_out)
+mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, mip_vector3f beta_out, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1871,13 +1854,11 @@ mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, fl
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(beta_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &beta_out[i]);
+            extract_mip_vector3f(&deserializer, &beta_out[i]);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -1968,7 +1949,7 @@ void extract_mip_filter_gyro_bias_model_response(mip_serializer* serializer, mip
     
 }
 
-mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, const float* beta, const float* noise)
+mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, mip_vector3f beta, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -1976,19 +1957,17 @@ mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, co
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(beta || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, beta[i]);
+        insert_mip_vector3f(&serializer, &beta[i]);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GYRO_BIAS_MODEL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, float* beta_out, float* noise_out)
+mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, mip_vector3f beta_out, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2006,13 +1985,11 @@ mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, flo
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(beta_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &beta_out[i]);
+            extract_mip_vector3f(&deserializer, &beta_out[i]);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2614,7 +2591,7 @@ void extract_mip_filter_gravity_noise_response(mip_serializer* serializer, mip_f
     
 }
 
-mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2622,15 +2599,14 @@ mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, cons
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_GRAVITY_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2648,9 +2624,8 @@ mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, float
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2837,7 +2812,7 @@ void extract_mip_filter_hard_iron_offset_noise_response(mip_serializer* serializ
     
 }
 
-mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2845,15 +2820,14 @@ mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2871,9 +2845,8 @@ mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* devi
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -2952,7 +2925,7 @@ void extract_mip_filter_soft_iron_matrix_noise_response(mip_serializer* serializ
     
 }
 
-mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* device, mip_matrix3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2960,15 +2933,14 @@ mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* dev
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_matrix3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* device, mip_matrix3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -2986,9 +2958,8 @@ mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* devi
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_matrix3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -3067,7 +3038,7 @@ void extract_mip_filter_mag_noise_response(mip_serializer* serializer, mip_filte
     
 }
 
-mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, const float* noise)
+mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, mip_vector3f noise)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3075,15 +3046,14 @@ mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, const fl
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     
-    assert(noise || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, noise[i]);
+        insert_mip_vector3f(&serializer, &noise[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MAG_NOISE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, float* noise_out)
+mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, mip_vector3f noise_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -3101,9 +3071,8 @@ mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, float* no
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(noise_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &noise_out[i]);
+            extract_mip_vector3f(&deserializer, &noise_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -4591,7 +4560,7 @@ void extract_mip_filter_initialization_configuration_command_initial_condition_s
     *self = tmp;
 }
 
-mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interface* device, uint8_t wait_for_run_command, mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, mip_filter_reference_frame reference_frame_selector)
+mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interface* device, uint8_t wait_for_run_command, mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, mip_vector3f initial_position, mip_vector3f initial_velocity, mip_filter_reference_frame reference_frame_selector)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4611,13 +4580,11 @@ mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interfac
     
     insert_float(&serializer, initial_roll);
     
-    assert(initial_position || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, initial_position[i]);
+        insert_mip_vector3f(&serializer, &initial_position[i]);
     
-    assert(initial_velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, initial_velocity[i]);
+        insert_mip_vector3f(&serializer, &initial_velocity[i]);
     
     insert_mip_filter_reference_frame(&serializer, reference_frame_selector);
     
@@ -4625,7 +4592,7 @@ mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interfac
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface* device, uint8_t* wait_for_run_command_out, mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src_out, mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector_out, float* initial_heading_out, float* initial_pitch_out, float* initial_roll_out, float* initial_position_out, float* initial_velocity_out, mip_filter_reference_frame* reference_frame_selector_out)
+mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface* device, uint8_t* wait_for_run_command_out, mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src_out, mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector_out, float* initial_heading_out, float* initial_pitch_out, float* initial_roll_out, mip_vector3f initial_position_out, mip_vector3f initial_velocity_out, mip_filter_reference_frame* reference_frame_selector_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4661,13 +4628,11 @@ mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface
         assert(initial_roll_out);
         extract_float(&deserializer, initial_roll_out);
         
-        assert(initial_position_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &initial_position_out[i]);
+            extract_mip_vector3f(&deserializer, &initial_position_out[i]);
         
-        assert(initial_velocity_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &initial_velocity_out[i]);
+            extract_mip_vector3f(&deserializer, &initial_velocity_out[i]);
         
         assert(reference_frame_selector_out);
         extract_mip_filter_reference_frame(&deserializer, reference_frame_selector_out);
@@ -4878,7 +4843,7 @@ void extract_mip_filter_multi_antenna_offset_response(mip_serializer* serializer
     
 }
 
-mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, const float* antenna_offset)
+mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, mip_vector3f antenna_offset)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4888,15 +4853,14 @@ mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* devic
     
     insert_u8(&serializer, receiver_id);
     
-    assert(antenna_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, antenna_offset[i]);
+        insert_mip_vector3f(&serializer, &antenna_offset[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, float* antenna_offset_out)
+mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, mip_vector3f antenna_offset_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -4918,9 +4882,8 @@ mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device
         
         extract_u8(&deserializer, &receiver_id);
         
-        assert(antenna_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &antenna_offset_out[i]);
+            extract_mip_vector3f(&deserializer, &antenna_offset_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -5021,7 +4984,7 @@ void extract_mip_filter_rel_pos_configuration_response(mip_serializer* serialize
     
 }
 
-mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface* device, uint8_t source, mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates)
+mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface* device, uint8_t source, mip_filter_reference_frame reference_frame_selector, mip_vector3d reference_coordinates)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5033,15 +4996,14 @@ mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface* devi
     
     insert_mip_filter_reference_frame(&serializer, reference_frame_selector);
     
-    assert(reference_coordinates || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_double(&serializer, reference_coordinates[i]);
+        insert_mip_vector3d(&serializer, &reference_coordinates[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_REL_POS_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* device, uint8_t* source_out, mip_filter_reference_frame* reference_frame_selector_out, double* reference_coordinates_out)
+mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* device, uint8_t* source_out, mip_filter_reference_frame* reference_frame_selector_out, mip_vector3d reference_coordinates_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5065,9 +5027,8 @@ mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* devic
         assert(reference_frame_selector_out);
         extract_mip_filter_reference_frame(&deserializer, reference_frame_selector_out);
         
-        assert(reference_coordinates_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_double(&deserializer, &reference_coordinates_out[i]);
+            extract_mip_vector3d(&deserializer, &reference_coordinates_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -5165,7 +5126,7 @@ void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(str
     *self = tmp;
 }
 
-mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset)
+mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, mip_vector3f lever_arm_offset)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5175,15 +5136,14 @@ mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* device
     
     insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(&serializer, ref_point_sel);
     
-    assert(lever_arm_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, lever_arm_offset[i]);
+        insert_mip_vector3f(&serializer, &lever_arm_offset[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_REF_POINT_LEVER_ARM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel_out, float* lever_arm_offset_out)
+mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel_out, mip_vector3f lever_arm_offset_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5204,9 +5164,8 @@ mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device,
         assert(ref_point_sel_out);
         extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(&deserializer, ref_point_sel_out);
         
-        assert(lever_arm_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &lever_arm_offset_out[i]);
+            extract_mip_vector3f(&deserializer, &lever_arm_offset_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -5334,7 +5293,7 @@ void extract_mip_filter_speed_lever_arm_response(mip_serializer* serializer, mip
     
 }
 
-mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* device, uint8_t source, const float* lever_arm_offset)
+mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* device, uint8_t source, mip_vector3f lever_arm_offset)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5344,15 +5303,14 @@ mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* device, ui
     
     insert_u8(&serializer, source);
     
-    assert(lever_arm_offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_float(&serializer, lever_arm_offset[i]);
+        insert_mip_vector3f(&serializer, &lever_arm_offset[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_FILTER_CMD_DESC_SET, MIP_CMD_DESC_FILTER_SPEED_LEVER_ARM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uint8_t source, float* lever_arm_offset_out)
+mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uint8_t source, mip_vector3f lever_arm_offset_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -5374,9 +5332,8 @@ mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uin
         
         extract_u8(&deserializer, &source);
         
-        assert(lever_arm_offset_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_float(&deserializer, &lever_arm_offset_out[i]);
+            extract_mip_vector3f(&deserializer, &lever_arm_offset_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;

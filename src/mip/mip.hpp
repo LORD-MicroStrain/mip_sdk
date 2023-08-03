@@ -324,6 +324,7 @@ public:
     explicit SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
 
     // No moving allowed - use the explicit functions copyFrom or copyTo.
+    SizedPacketBuf(SizedPacketBuf&&) = delete;
     SizedPacketBuf& operator=(const SizedPacketBuf& other) = delete;
     SizedPacketBuf& operator=(SizedPacketBuf&&) = delete;
 

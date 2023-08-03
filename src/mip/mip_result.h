@@ -22,13 +22,17 @@ extern "C" {
 ///
 typedef enum mip_cmd_result
 {
-    MIP_STATUS_ERROR     = -6,  ///< Command could not be executed (error sending/receiving)
-    MIP_STATUS_CANCELLED = -5,  ///< Command was canceled in software.
-    MIP_STATUS_TIMEDOUT  = -4,  ///< Reply was not received before timeout expired.
-    MIP_STATUS_WAITING   = -3,  ///< Waiting for command reply (timeout timer has started).
-    MIP_STATUS_PENDING   = -2,  ///< Command has been queued but the I/O update hasn't run yet.
-    MIP_STATUS_NONE      = -1,  ///< Command has been initialized but not queued yet.
+    MIP_STATUS_USER_START = -10, ///< Values defined by user code must be less than or equal to this value.
 
+    // Status codes < 0
+    MIP_STATUS_ERROR      = -6,  ///< Command could not be executed (error sending/receiving)
+    MIP_STATUS_CANCELLED  = -5,  ///< Command was canceled in software.
+    MIP_STATUS_TIMEDOUT   = -4,  ///< Reply was not received before timeout expired.
+    MIP_STATUS_WAITING    = -3,  ///< Waiting for command reply (timeout timer has started).
+    MIP_STATUS_PENDING    = -2,  ///< Command has been queued but the I/O update hasn't run yet.
+    MIP_STATUS_NONE       = -1,  ///< Command has been initialized but not queued yet.
+
+    // Device replies >= 0
     MIP_ACK_OK                = 0x00,  ///< Command completed successfully.
     MIP_NACK_COMMAND_UNKNOWN  = 0x01,  ///< Command not supported.
     MIP_NACK_INVALID_CHECKSUM = 0x02,  ///< Reserved.
@@ -43,6 +47,7 @@ bool mip_cmd_result_is_finished(enum mip_cmd_result result);
 
 bool mip_cmd_result_is_reply(enum mip_cmd_result result);
 bool mip_cmd_result_is_status(enum mip_cmd_result result);
+bool mip_cmd_result_is_user(enum mip_cmd_result result);
 
 bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 
@@ -65,6 +70,7 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 ///
 struct CmdResult
 {
+    static constexpr C::mip_cmd_result STATUS_USER      = C::MIP_STATUS_USER_START;  ///<@copydoc mip::C::MIP_STATUS_USER_START
     static constexpr C::mip_cmd_result STATUS_ERROR     = C::MIP_STATUS_ERROR;       ///<@copydoc mip::C::MIP_STATUS_ERROR
     static constexpr C::mip_cmd_result STATUS_CANCELLED = C::MIP_STATUS_CANCELLED;   ///<@copydoc mip::C::MIP_STATUS_CANCELLED
     static constexpr C::mip_cmd_result STATUS_TIMEDOUT  = C::MIP_STATUS_TIMEDOUT;    ///<@copydoc mip::C::MIP_STATUS_TIMEDOUT

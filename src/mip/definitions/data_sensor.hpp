@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -78,21 +79,21 @@ enum
 
 struct RawAccel
 {
+    Vector3f raw_accel; ///< Native sensor counts
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_RAW;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(raw_accel[0],raw_accel[1],raw_accel[2]);
     }
     
-    float raw_accel[3] = {0}; ///< Native sensor counts
-    
 };
 void insert(Serializer& serializer, const RawAccel& self);
 void extract(Serializer& serializer, RawAccel& self);
+
 
 ///@}
 ///
@@ -105,21 +106,21 @@ void extract(Serializer& serializer, RawAccel& self);
 
 struct RawGyro
 {
+    Vector3f raw_gyro; ///< Native sensor counts
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_RAW;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(raw_gyro[0],raw_gyro[1],raw_gyro[2]);
     }
     
-    float raw_gyro[3] = {0}; ///< Native sensor counts
-    
 };
 void insert(Serializer& serializer, const RawGyro& self);
 void extract(Serializer& serializer, RawGyro& self);
+
 
 ///@}
 ///
@@ -132,21 +133,21 @@ void extract(Serializer& serializer, RawGyro& self);
 
 struct RawMag
 {
+    Vector3f raw_mag; ///< Native sensor counts
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_RAW;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(raw_mag[0],raw_mag[1],raw_mag[2]);
     }
     
-    float raw_mag[3] = {0}; ///< Native sensor counts
-    
 };
 void insert(Serializer& serializer, const RawMag& self);
 void extract(Serializer& serializer, RawMag& self);
+
 
 ///@}
 ///
@@ -159,21 +160,21 @@ void extract(Serializer& serializer, RawMag& self);
 
 struct RawPressure
 {
+    float raw_pressure = 0; ///< Native sensor counts
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_RAW;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(raw_pressure);
     }
     
-    float raw_pressure = 0; ///< Native sensor counts
-    
 };
 void insert(Serializer& serializer, const RawPressure& self);
 void extract(Serializer& serializer, RawPressure& self);
+
 
 ///@}
 ///
@@ -186,21 +187,21 @@ void extract(Serializer& serializer, RawPressure& self);
 
 struct ScaledAccel
 {
+    Vector3f scaled_accel; ///< (x, y, z)[g]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_SCALED;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(scaled_accel[0],scaled_accel[1],scaled_accel[2]);
     }
     
-    float scaled_accel[3] = {0}; ///< (x, y, z)[g]
-    
 };
 void insert(Serializer& serializer, const ScaledAccel& self);
 void extract(Serializer& serializer, ScaledAccel& self);
+
 
 ///@}
 ///
@@ -213,21 +214,21 @@ void extract(Serializer& serializer, ScaledAccel& self);
 
 struct ScaledGyro
 {
+    Vector3f scaled_gyro; ///< (x, y, z) [radians/second]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_SCALED;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(scaled_gyro[0],scaled_gyro[1],scaled_gyro[2]);
     }
     
-    float scaled_gyro[3] = {0}; ///< (x, y, z) [radians/second]
-    
 };
 void insert(Serializer& serializer, const ScaledGyro& self);
 void extract(Serializer& serializer, ScaledGyro& self);
+
 
 ///@}
 ///
@@ -240,21 +241,21 @@ void extract(Serializer& serializer, ScaledGyro& self);
 
 struct ScaledMag
 {
+    Vector3f scaled_mag; ///< (x, y, z) [Gauss]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_SCALED;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(scaled_mag[0],scaled_mag[1],scaled_mag[2]);
     }
     
-    float scaled_mag[3] = {0}; ///< (x, y, z) [Gauss]
-    
 };
 void insert(Serializer& serializer, const ScaledMag& self);
 void extract(Serializer& serializer, ScaledMag& self);
+
 
 ///@}
 ///
@@ -266,21 +267,21 @@ void extract(Serializer& serializer, ScaledMag& self);
 
 struct ScaledPressure
 {
+    float scaled_pressure = 0; ///< [mBar]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_SCALED;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(scaled_pressure);
     }
     
-    float scaled_pressure = 0; ///< [mBar]
-    
 };
 void insert(Serializer& serializer, const ScaledPressure& self);
 void extract(Serializer& serializer, ScaledPressure& self);
+
 
 ///@}
 ///
@@ -293,21 +294,21 @@ void extract(Serializer& serializer, ScaledPressure& self);
 
 struct DeltaTheta
 {
+    Vector3f delta_theta; ///< (x, y, z) [radians]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_THETA;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(delta_theta[0],delta_theta[1],delta_theta[2]);
     }
     
-    float delta_theta[3] = {0}; ///< (x, y, z) [radians]
-    
 };
 void insert(Serializer& serializer, const DeltaTheta& self);
 void extract(Serializer& serializer, DeltaTheta& self);
+
 
 ///@}
 ///
@@ -320,21 +321,21 @@ void extract(Serializer& serializer, DeltaTheta& self);
 
 struct DeltaVelocity
 {
+    Vector3f delta_velocity; ///< (x, y, z) [g*sec]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_VELOCITY;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(delta_velocity[0],delta_velocity[1],delta_velocity[2]);
     }
     
-    float delta_velocity[3] = {0}; ///< (x, y, z) [g*sec]
-    
 };
 void insert(Serializer& serializer, const DeltaVelocity& self);
 void extract(Serializer& serializer, DeltaVelocity& self);
+
 
 ///@}
 ///
@@ -356,21 +357,21 @@ void extract(Serializer& serializer, DeltaVelocity& self);
 
 struct CompOrientationMatrix
 {
+    Matrix3f m; ///< Matrix elements in row-major order.
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_MATRIX;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
-    float m[9] = {0}; ///< Matrix elements in row-major order.
-    
 };
 void insert(Serializer& serializer, const CompOrientationMatrix& self);
 void extract(Serializer& serializer, CompOrientationMatrix& self);
+
 
 ///@}
 ///
@@ -390,21 +391,21 @@ void extract(Serializer& serializer, CompOrientationMatrix& self);
 
 struct CompQuaternion
 {
+    Quatf q; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_QUATERNION;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(q[0],q[1],q[2],q[3]);
     }
     
-    float q[4] = {0}; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
-    
 };
 void insert(Serializer& serializer, const CompQuaternion& self);
 void extract(Serializer& serializer, CompQuaternion& self);
+
 
 ///@}
 ///
@@ -417,23 +418,23 @@ void extract(Serializer& serializer, CompQuaternion& self);
 
 struct CompEulerAngles
 {
+    float roll = 0; ///< [radians]
+    float pitch = 0; ///< [radians]
+    float yaw = 0; ///< [radians]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_EULER_ANGLES;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(roll,pitch,yaw);
     }
     
-    float roll = 0; ///< [radians]
-    float pitch = 0; ///< [radians]
-    float yaw = 0; ///< [radians]
-    
 };
 void insert(Serializer& serializer, const CompEulerAngles& self);
 void extract(Serializer& serializer, CompEulerAngles& self);
+
 
 ///@}
 ///
@@ -445,21 +446,21 @@ void extract(Serializer& serializer, CompEulerAngles& self);
 
 struct CompOrientationUpdateMatrix
 {
+    Matrix3f m;
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_UPDATE_MATRIX;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
-    float m[9] = {0};
-    
 };
 void insert(Serializer& serializer, const CompOrientationUpdateMatrix& self);
 void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
+
 
 ///@}
 ///
@@ -471,21 +472,21 @@ void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
 
 struct OrientationRawTemp
 {
+    uint16_t raw_temp[4] = {0};
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_RAW;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_temp[0],raw_temp[1],raw_temp[2],raw_temp[3]);
+        return std::make_tuple(raw_temp);
     }
-    
-    uint16_t raw_temp[4] = {0};
     
 };
 void insert(Serializer& serializer, const OrientationRawTemp& self);
 void extract(Serializer& serializer, OrientationRawTemp& self);
+
 
 ///@}
 ///
@@ -497,21 +498,21 @@ void extract(Serializer& serializer, OrientationRawTemp& self);
 
 struct InternalTimestamp
 {
+    uint32_t counts = 0;
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_INTERNAL;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(counts);
     }
     
-    uint32_t counts = 0;
-    
 };
 void insert(Serializer& serializer, const InternalTimestamp& self);
 void extract(Serializer& serializer, InternalTimestamp& self);
+
 
 ///@}
 ///
@@ -523,22 +524,22 @@ void extract(Serializer& serializer, InternalTimestamp& self);
 
 struct PpsTimestamp
 {
+    uint32_t seconds = 0;
+    uint32_t useconds = 0;
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_PPS;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(seconds,useconds);
     }
     
-    uint32_t seconds = 0;
-    uint32_t useconds = 0;
-    
 };
 void insert(Serializer& serializer, const PpsTimestamp& self);
 void extract(Serializer& serializer, PpsTimestamp& self);
+
 
 ///@}
 ///
@@ -556,16 +557,6 @@ void extract(Serializer& serializer, PpsTimestamp& self);
 
 struct GpsTimestamp
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    auto as_tuple() const
-    {
-        return std::make_tuple(tow,week_number,valid_flags);
-    }
-    
     struct ValidFlags : Bitfield<ValidFlags>
     {
         enum _enumType : uint16_t
@@ -607,9 +598,19 @@ struct GpsTimestamp
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(tow,week_number,valid_flags);
+    }
+    
 };
 void insert(Serializer& serializer, const GpsTimestamp& self);
 void extract(Serializer& serializer, GpsTimestamp& self);
+
 
 ///@}
 ///
@@ -625,23 +626,23 @@ void extract(Serializer& serializer, GpsTimestamp& self);
 
 struct TemperatureAbs
 {
+    float min_temp = 0; ///< [degC]
+    float max_temp = 0; ///< [degC]
+    float mean_temp = 0; ///< [degC]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_ABS;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(min_temp,max_temp,mean_temp);
     }
     
-    float min_temp = 0; ///< [degC]
-    float max_temp = 0; ///< [degC]
-    float mean_temp = 0; ///< [degC]
-    
 };
 void insert(Serializer& serializer, const TemperatureAbs& self);
 void extract(Serializer& serializer, TemperatureAbs& self);
+
 
 ///@}
 ///
@@ -659,21 +660,21 @@ void extract(Serializer& serializer, TemperatureAbs& self);
 
 struct UpVector
 {
+    Vector3f up; ///< [Gs]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_ACCEL;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(up[0],up[1],up[2]);
     }
     
-    float up[3] = {0}; ///< [Gs]
-    
 };
 void insert(Serializer& serializer, const UpVector& self);
 void extract(Serializer& serializer, UpVector& self);
+
 
 ///@}
 ///
@@ -688,21 +689,21 @@ void extract(Serializer& serializer, UpVector& self);
 
 struct NorthVector
 {
+    Vector3f north; ///< [Gauss]
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_MAG;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(north[0],north[1],north[2]);
     }
     
-    float north[3] = {0}; ///< [Gauss]
-    
 };
 void insert(Serializer& serializer, const NorthVector& self);
 void extract(Serializer& serializer, NorthVector& self);
+
 
 ///@}
 ///
@@ -713,16 +714,6 @@ void extract(Serializer& serializer, NorthVector& self);
 
 struct OverrangeStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
-    auto as_tuple() const
-    {
-        return std::make_tuple(status);
-    }
-    
     struct Status : Bitfield<Status>
     {
         enum _enumType : uint16_t
@@ -777,9 +768,19 @@ struct OverrangeStatus
     
     Status status;
     
+    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(status);
+    }
+    
 };
 void insert(Serializer& serializer, const OverrangeStatus& self);
 void extract(Serializer& serializer, OverrangeStatus& self);
+
 
 ///@}
 ///
@@ -790,23 +791,23 @@ void extract(Serializer& serializer, OverrangeStatus& self);
 
 struct OdometerData
 {
+    float speed = 0; ///< Average speed over the time interval [m/s]. Can be negative for quadrature encoders.
+    float uncertainty = 0; ///< Uncertainty of velocity [m/s].
+    uint16_t valid_flags = 0; ///< If odometer is configured, bit 0 will be set to 1.
+    
     static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
     static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ODOMETER;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
     
     auto as_tuple() const
     {
         return std::make_tuple(speed,uncertainty,valid_flags);
     }
     
-    float speed = 0; ///< Average speed over the time interval [m/s]. Can be negative for quadrature encoders.
-    float uncertainty = 0; ///< Uncertainty of velocity [m/s].
-    uint16_t valid_flags = 0; ///< If odometer is configured, bit 0 will be set to 1.
-    
 };
 void insert(Serializer& serializer, const OdometerData& self);
 void extract(Serializer& serializer, OdometerData& self);
+
 
 ///@}
 ///
