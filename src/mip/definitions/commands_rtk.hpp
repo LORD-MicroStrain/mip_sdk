@@ -409,7 +409,7 @@ struct ConnectedDeviceType
     
     auto as_tuple() const
     {
-        return std::make_tuple(devType);
+        return std::make_tuple(std::ref(devType));
     }
     
     
@@ -646,7 +646,7 @@ struct ServiceStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(reserved1,reserved2);
+        return std::make_tuple(std::ref(reserved1),std::ref(reserved2));
     }
     
     struct Response
@@ -698,7 +698,7 @@ struct ProdEraseStorage
     
     auto as_tuple() const
     {
-        return std::make_tuple(media);
+        return std::make_tuple(std::ref(media));
     }
     
     typedef void Response;
@@ -731,7 +731,7 @@ struct LedControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(primaryColor,altColor,act,period);
+        return std::make_tuple(std::ref(primaryColor),std::ref(altColor),std::ref(act),std::ref(period));
     }
     
     typedef void Response;

@@ -82,7 +82,7 @@ struct BuiltInTest
     
     auto as_tuple() const
     {
-        return std::make_tuple(result);
+        return std::make_tuple(std::ref(result));
     }
     
 };
@@ -109,7 +109,7 @@ struct TimeSyncStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_sync,last_pps_rcvd);
+        return std::make_tuple(std::ref(time_sync),std::ref(last_pps_rcvd));
     }
     
 };
@@ -153,7 +153,7 @@ struct GpioState
     
     auto as_tuple() const
     {
-        return std::make_tuple(states);
+        return std::make_tuple(std::ref(states));
     }
     
 };
@@ -181,7 +181,7 @@ struct GpioAnalogValue
     
     auto as_tuple() const
     {
-        return std::make_tuple(gpio_id,value);
+        return std::make_tuple(std::ref(gpio_id),std::ref(value));
     }
     
 };

@@ -87,7 +87,7 @@ struct RawAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_accel[0],raw_accel[1],raw_accel[2]);
+        return std::make_tuple(std::ref(raw_accel[0]),std::ref(raw_accel[1]),std::ref(raw_accel[2]));
     }
     
 };
@@ -114,7 +114,7 @@ struct RawGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_gyro[0],raw_gyro[1],raw_gyro[2]);
+        return std::make_tuple(std::ref(raw_gyro[0]),std::ref(raw_gyro[1]),std::ref(raw_gyro[2]));
     }
     
 };
@@ -141,7 +141,7 @@ struct RawMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_mag[0],raw_mag[1],raw_mag[2]);
+        return std::make_tuple(std::ref(raw_mag[0]),std::ref(raw_mag[1]),std::ref(raw_mag[2]));
     }
     
 };
@@ -168,7 +168,7 @@ struct RawPressure
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_pressure);
+        return std::make_tuple(std::ref(raw_pressure));
     }
     
 };
@@ -195,7 +195,7 @@ struct ScaledAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_accel[0],scaled_accel[1],scaled_accel[2]);
+        return std::make_tuple(std::ref(scaled_accel[0]),std::ref(scaled_accel[1]),std::ref(scaled_accel[2]));
     }
     
 };
@@ -222,7 +222,7 @@ struct ScaledGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_gyro[0],scaled_gyro[1],scaled_gyro[2]);
+        return std::make_tuple(std::ref(scaled_gyro[0]),std::ref(scaled_gyro[1]),std::ref(scaled_gyro[2]));
     }
     
 };
@@ -249,7 +249,7 @@ struct ScaledMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_mag[0],scaled_mag[1],scaled_mag[2]);
+        return std::make_tuple(std::ref(scaled_mag[0]),std::ref(scaled_mag[1]),std::ref(scaled_mag[2]));
     }
     
 };
@@ -275,7 +275,7 @@ struct ScaledPressure
     
     auto as_tuple() const
     {
-        return std::make_tuple(scaled_pressure);
+        return std::make_tuple(std::ref(scaled_pressure));
     }
     
 };
@@ -302,7 +302,7 @@ struct DeltaTheta
     
     auto as_tuple() const
     {
-        return std::make_tuple(delta_theta[0],delta_theta[1],delta_theta[2]);
+        return std::make_tuple(std::ref(delta_theta[0]),std::ref(delta_theta[1]),std::ref(delta_theta[2]));
     }
     
 };
@@ -329,7 +329,7 @@ struct DeltaVelocity
     
     auto as_tuple() const
     {
-        return std::make_tuple(delta_velocity[0],delta_velocity[1],delta_velocity[2]);
+        return std::make_tuple(std::ref(delta_velocity[0]),std::ref(delta_velocity[1]),std::ref(delta_velocity[2]));
     }
     
 };
@@ -365,7 +365,7 @@ struct CompOrientationMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
+        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
     }
     
 };
@@ -399,7 +399,7 @@ struct CompQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(q[0],q[1],q[2],q[3]);
+        return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]));
     }
     
 };
@@ -428,7 +428,7 @@ struct CompEulerAngles
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
     
 };
@@ -454,7 +454,7 @@ struct CompOrientationUpdateMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
+        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
     }
     
 };
@@ -480,7 +480,7 @@ struct OrientationRawTemp
     
     auto as_tuple() const
     {
-        return std::make_tuple(raw_temp);
+        return std::make_tuple(std::ref(raw_temp));
     }
     
 };
@@ -506,7 +506,7 @@ struct InternalTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(counts);
+        return std::make_tuple(std::ref(counts));
     }
     
 };
@@ -533,7 +533,7 @@ struct PpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(seconds,useconds);
+        return std::make_tuple(std::ref(seconds),std::ref(useconds));
     }
     
 };
@@ -604,7 +604,7 @@ struct GpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
     
 };
@@ -636,7 +636,7 @@ struct TemperatureAbs
     
     auto as_tuple() const
     {
-        return std::make_tuple(min_temp,max_temp,mean_temp);
+        return std::make_tuple(std::ref(min_temp),std::ref(max_temp),std::ref(mean_temp));
     }
     
 };
@@ -668,7 +668,7 @@ struct UpVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(up[0],up[1],up[2]);
+        return std::make_tuple(std::ref(up[0]),std::ref(up[1]),std::ref(up[2]));
     }
     
 };
@@ -697,7 +697,7 @@ struct NorthVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(north[0],north[1],north[2]);
+        return std::make_tuple(std::ref(north[0]),std::ref(north[1]),std::ref(north[2]));
     }
     
 };
@@ -774,7 +774,7 @@ struct OverrangeStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(status);
+        return std::make_tuple(std::ref(status));
     }
     
 };
@@ -801,7 +801,7 @@ struct OdometerData
     
     auto as_tuple() const
     {
-        return std::make_tuple(speed,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(speed),std::ref(uncertainty),std::ref(valid_flags));
     }
     
 };

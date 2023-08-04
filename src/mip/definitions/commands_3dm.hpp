@@ -218,7 +218,7 @@ struct PollImuMessage
     
     auto as_tuple() const
     {
-        return std::make_tuple(suppress_ack,num_descriptors,descriptors);
+        return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
     
     typedef void Response;
@@ -257,7 +257,7 @@ struct PollGnssMessage
     
     auto as_tuple() const
     {
-        return std::make_tuple(suppress_ack,num_descriptors,descriptors);
+        return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
     
     typedef void Response;
@@ -296,7 +296,7 @@ struct PollFilterMessage
     
     auto as_tuple() const
     {
-        return std::make_tuple(suppress_ack,num_descriptors,descriptors);
+        return std::make_tuple(std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
     
     typedef void Response;
@@ -336,7 +336,7 @@ struct ImuMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(num_descriptors,descriptors);
+        return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
     
     
@@ -407,7 +407,7 @@ struct GpsMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(num_descriptors,descriptors);
+        return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
     
     
@@ -478,7 +478,7 @@ struct FilterMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(num_descriptors,descriptors);
+        return std::make_tuple(std::ref(num_descriptors),std::ref(descriptors));
     }
     
     
@@ -702,7 +702,7 @@ struct PollData
     
     auto as_tuple() const
     {
-        return std::make_tuple(desc_set,suppress_ack,num_descriptors,descriptors);
+        return std::make_tuple(std::ref(desc_set),std::ref(suppress_ack),std::ref(num_descriptors),std::ref(descriptors));
     }
     
     typedef void Response;
@@ -733,7 +733,7 @@ struct GetBaseRate
     
     auto as_tuple() const
     {
-        return std::make_tuple(desc_set);
+        return std::make_tuple(std::ref(desc_set));
     }
     
     struct Response
@@ -793,7 +793,7 @@ struct MessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(desc_set,num_descriptors,descriptors);
+        return std::make_tuple(std::ref(desc_set),std::ref(num_descriptors),std::ref(descriptors));
     }
     
     
@@ -864,7 +864,7 @@ struct NmeaPollData
     
     auto as_tuple() const
     {
-        return std::make_tuple(suppress_ack,count,format_entries);
+        return std::make_tuple(std::ref(suppress_ack),std::ref(count),std::ref(format_entries));
     }
     
     typedef void Response;
@@ -902,7 +902,7 @@ struct NmeaMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(count,format_entries);
+        return std::make_tuple(std::ref(count),std::ref(format_entries));
     }
     
     
@@ -1033,7 +1033,7 @@ struct UartBaudrate
     
     auto as_tuple() const
     {
-        return std::make_tuple(baud);
+        return std::make_tuple(std::ref(baud));
     }
     
     
@@ -1104,7 +1104,7 @@ struct FactoryStreaming
     
     auto as_tuple() const
     {
-        return std::make_tuple(action,reserved);
+        return std::make_tuple(std::ref(action),std::ref(reserved));
     }
     
     typedef void Response;
@@ -1151,7 +1151,7 @@ struct DatastreamControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(desc_set,enable);
+        return std::make_tuple(std::ref(desc_set),std::ref(enable));
     }
     
     
@@ -1283,7 +1283,7 @@ struct ConstellationSettings
     
     auto as_tuple() const
     {
-        return std::make_tuple(max_channels,config_count,settings);
+        return std::make_tuple(std::ref(max_channels),std::ref(config_count),std::ref(settings));
     }
     
     
@@ -1393,7 +1393,7 @@ struct GnssSbasSettings
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable_sbas,sbas_options,num_included_prns,included_prns);
+        return std::make_tuple(std::ref(enable_sbas),std::ref(sbas_options),std::ref(num_included_prns),std::ref(included_prns));
     }
     
     
@@ -1480,7 +1480,7 @@ struct GnssAssistedFix
     
     auto as_tuple() const
     {
-        return std::make_tuple(option,flags);
+        return std::make_tuple(std::ref(option),std::ref(flags));
     }
     
     
@@ -1553,7 +1553,7 @@ struct GnssTimeAssistance
     
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,accuracy);
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(accuracy));
     }
     
     
@@ -1638,7 +1638,7 @@ struct ImuLowpassFilter
     
     auto as_tuple() const
     {
-        return std::make_tuple(target_descriptor,enable,manual,frequency,reserved);
+        return std::make_tuple(std::ref(target_descriptor),std::ref(enable),std::ref(manual),std::ref(frequency),std::ref(reserved));
     }
     
     
@@ -1719,7 +1719,7 @@ struct PpsSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source);
+        return std::make_tuple(std::ref(source));
     }
     
     
@@ -1868,7 +1868,7 @@ struct GpioConfig
     
     auto as_tuple() const
     {
-        return std::make_tuple(pin,feature,behavior,pin_mode);
+        return std::make_tuple(std::ref(pin),std::ref(feature),std::ref(behavior),std::ref(pin_mode));
     }
     
     
@@ -1955,7 +1955,7 @@ struct GpioState
     
     auto as_tuple() const
     {
-        return std::make_tuple(pin,state);
+        return std::make_tuple(std::ref(pin),std::ref(state));
     }
     
     
@@ -2029,7 +2029,7 @@ struct Odometer
     
     auto as_tuple() const
     {
-        return std::make_tuple(mode,scaling,uncertainty);
+        return std::make_tuple(std::ref(mode),std::ref(scaling),std::ref(uncertainty));
     }
     
     
@@ -2120,7 +2120,7 @@ struct GetEventSupport
     
     auto as_tuple() const
     {
-        return std::make_tuple(query);
+        return std::make_tuple(std::ref(query));
     }
     
     struct Response
@@ -2199,7 +2199,7 @@ struct EventControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(instance,mode);
+        return std::make_tuple(std::ref(instance),std::ref(mode));
     }
     
     
@@ -2299,7 +2299,7 @@ struct GetEventTriggerStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(requested_count,requested_instances);
+        return std::make_tuple(std::ref(requested_count),std::ref(requested_instances));
     }
     
     struct Response
@@ -2358,7 +2358,7 @@ struct GetEventActionStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(requested_count,requested_instances);
+        return std::make_tuple(std::ref(requested_count),std::ref(requested_instances));
     }
     
     struct Response
@@ -2492,7 +2492,7 @@ struct EventTrigger
     
     auto as_tuple() const
     {
-        return std::make_tuple(instance,type,parameters);
+        return std::make_tuple(std::ref(instance),std::ref(type),std::ref(parameters));
     }
     
     
@@ -2612,7 +2612,7 @@ struct EventAction
     
     auto as_tuple() const
     {
-        return std::make_tuple(instance,trigger,type,parameters);
+        return std::make_tuple(std::ref(instance),std::ref(trigger),std::ref(type),std::ref(parameters));
     }
     
     
@@ -2691,7 +2691,7 @@ struct AccelBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias);
+        return std::make_tuple(std::ref(bias));
     }
     
     
@@ -2760,7 +2760,7 @@ struct GyroBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias);
+        return std::make_tuple(std::ref(bias));
     }
     
     
@@ -2826,7 +2826,7 @@ struct CaptureGyroBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(averaging_time_ms);
+        return std::make_tuple(std::ref(averaging_time_ms));
     }
     
     struct Response
@@ -2887,7 +2887,7 @@ struct MagHardIronOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset);
+        return std::make_tuple(std::ref(offset));
     }
     
     
@@ -2964,7 +2964,7 @@ struct MagSoftIronMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset);
+        return std::make_tuple(std::ref(offset));
     }
     
     
@@ -3031,7 +3031,7 @@ struct ConingScullingEnable
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable);
+        return std::make_tuple(std::ref(enable));
     }
     
     
@@ -3124,7 +3124,7 @@ struct Sensor2VehicleTransformEuler
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
     
     
@@ -3225,7 +3225,7 @@ struct Sensor2VehicleTransformQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(q);
+        return std::make_tuple(std::ref(q));
     }
     
     
@@ -3322,7 +3322,7 @@ struct Sensor2VehicleTransformDcm
     
     auto as_tuple() const
     {
-        return std::make_tuple(dcm);
+        return std::make_tuple(std::ref(dcm));
     }
     
     
@@ -3396,7 +3396,7 @@ struct ComplementaryFilter
     
     auto as_tuple() const
     {
-        return std::make_tuple(pitch_roll_enable,heading_enable,pitch_roll_time_constant,heading_time_constant);
+        return std::make_tuple(std::ref(pitch_roll_enable),std::ref(heading_enable),std::ref(pitch_roll_time_constant),std::ref(heading_time_constant));
     }
     
     
@@ -3474,7 +3474,7 @@ struct SensorRange
     
     auto as_tuple() const
     {
-        return std::make_tuple(sensor,setting);
+        return std::make_tuple(std::ref(sensor),std::ref(setting));
     }
     
     
@@ -3546,7 +3546,7 @@ struct CalibratedSensorRanges
     
     auto as_tuple() const
     {
-        return std::make_tuple(sensor);
+        return std::make_tuple(std::ref(sensor));
     }
     
     struct Response
@@ -3623,7 +3623,7 @@ struct LowpassFilter
     
     auto as_tuple() const
     {
-        return std::make_tuple(desc_set,field_desc,enable,manual,frequency);
+        return std::make_tuple(std::ref(desc_set),std::ref(field_desc),std::ref(enable),std::ref(manual),std::ref(frequency));
     }
     
     

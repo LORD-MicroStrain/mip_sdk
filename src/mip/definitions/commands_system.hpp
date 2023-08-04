@@ -88,7 +88,7 @@ struct CommMode
     
     auto as_tuple() const
     {
-        return std::make_tuple(mode);
+        return std::make_tuple(std::ref(mode));
     }
     
     

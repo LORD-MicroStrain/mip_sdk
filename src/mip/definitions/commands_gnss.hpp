@@ -148,7 +148,7 @@ struct SignalConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(gps_enable,glonass_enable,galileo_enable,beidou_enable,reserved);
+        return std::make_tuple(std::ref(gps_enable),std::ref(glonass_enable),std::ref(galileo_enable),std::ref(beidou_enable),std::ref(reserved));
     }
     
     
@@ -221,7 +221,7 @@ struct RtkDongleConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,reserved);
+        return std::make_tuple(std::ref(enable),std::ref(reserved));
     }
     
     

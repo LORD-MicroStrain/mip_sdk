@@ -106,7 +106,7 @@ struct SensorFrameMapping
     
     auto as_tuple() const
     {
-        return std::make_tuple(sensor_id,frame_id);
+        return std::make_tuple(std::ref(sensor_id),std::ref(frame_id));
     }
     
     
@@ -182,7 +182,7 @@ struct ReferenceFrame
     
     auto as_tuple() const
     {
-        return std::make_tuple(frame_id,format,translation,rotation);
+        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
     }
     
     
@@ -259,7 +259,7 @@ struct AidingEchoControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(mode);
+        return std::make_tuple(std::ref(mode));
     }
     
     
@@ -354,7 +354,7 @@ struct EcefPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,position,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(position),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;
@@ -422,7 +422,7 @@ struct LlhPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,latitude,longitude,height,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;
@@ -487,7 +487,7 @@ struct EcefVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;
@@ -552,7 +552,7 @@ struct NedVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;
@@ -618,7 +618,7 @@ struct VehicleFixedFrameVelocity
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;
@@ -651,7 +651,7 @@ struct TrueHeading
     
     auto as_tuple() const
     {
-        return std::make_tuple(time,sensor_id,heading,uncertainty,valid_flags);
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(heading),std::ref(uncertainty),std::ref(valid_flags));
     }
     
     typedef void Response;

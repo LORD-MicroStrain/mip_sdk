@@ -369,7 +369,7 @@ struct PositionLlh
     
     auto as_tuple() const
     {
-        return std::make_tuple(latitude,longitude,ellipsoid_height,valid_flags);
+        return std::make_tuple(std::ref(latitude),std::ref(longitude),std::ref(ellipsoid_height),std::ref(valid_flags));
     }
     
 };
@@ -398,7 +398,7 @@ struct VelocityNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(std::ref(north),std::ref(east),std::ref(down),std::ref(valid_flags));
     }
     
 };
@@ -433,7 +433,7 @@ struct AttitudeQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(q[0],q[1],q[2],q[3],valid_flags);
+        return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]),std::ref(valid_flags));
     }
     
 };
@@ -470,7 +470,7 @@ struct AttitudeDcm
     
     auto as_tuple() const
     {
-        return std::make_tuple(dcm[0],dcm[1],dcm[2],dcm[3],dcm[4],dcm[5],dcm[6],dcm[7],dcm[8],valid_flags);
+        return std::make_tuple(std::ref(dcm[0]),std::ref(dcm[1]),std::ref(dcm[2]),std::ref(dcm[3]),std::ref(dcm[4]),std::ref(dcm[5]),std::ref(dcm[6]),std::ref(dcm[7]),std::ref(dcm[8]),std::ref(valid_flags));
     }
     
 };
@@ -500,7 +500,7 @@ struct EulerAngles
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw,valid_flags);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw),std::ref(valid_flags));
     }
     
 };
@@ -527,7 +527,7 @@ struct GyroBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
+        return std::make_tuple(std::ref(bias[0]),std::ref(bias[1]),std::ref(bias[2]),std::ref(valid_flags));
     }
     
 };
@@ -554,7 +554,7 @@ struct AccelBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
+        return std::make_tuple(std::ref(bias[0]),std::ref(bias[1]),std::ref(bias[2]),std::ref(valid_flags));
     }
     
 };
@@ -583,7 +583,7 @@ struct PositionLlhUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(std::ref(north),std::ref(east),std::ref(down),std::ref(valid_flags));
     }
     
 };
@@ -612,7 +612,7 @@ struct VelocityNedUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(north,east,down,valid_flags);
+        return std::make_tuple(std::ref(north),std::ref(east),std::ref(down),std::ref(valid_flags));
     }
     
 };
@@ -642,7 +642,7 @@ struct EulerAnglesUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw,valid_flags);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw),std::ref(valid_flags));
     }
     
 };
@@ -669,7 +669,7 @@ struct GyroBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(bias_uncert[0]),std::ref(bias_uncert[1]),std::ref(bias_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -696,7 +696,7 @@ struct AccelBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(bias_uncert[0]),std::ref(bias_uncert[1]),std::ref(bias_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -730,7 +730,7 @@ struct Timestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
     
 };
@@ -758,7 +758,7 @@ struct Status
     
     auto as_tuple() const
     {
-        return std::make_tuple(filter_state,dynamics_mode,status_flags);
+        return std::make_tuple(std::ref(filter_state),std::ref(dynamics_mode),std::ref(status_flags));
     }
     
 };
@@ -786,7 +786,7 @@ struct LinearAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(accel[0],accel[1],accel[2],valid_flags);
+        return std::make_tuple(std::ref(accel[0]),std::ref(accel[1]),std::ref(accel[2]),std::ref(valid_flags));
     }
     
 };
@@ -813,7 +813,7 @@ struct GravityVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(gravity[0],gravity[1],gravity[2],valid_flags);
+        return std::make_tuple(std::ref(gravity[0]),std::ref(gravity[1]),std::ref(gravity[2]),std::ref(valid_flags));
     }
     
 };
@@ -840,7 +840,7 @@ struct CompAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(accel[0],accel[1],accel[2],valid_flags);
+        return std::make_tuple(std::ref(accel[0]),std::ref(accel[1]),std::ref(accel[2]),std::ref(valid_flags));
     }
     
 };
@@ -867,7 +867,7 @@ struct CompAngularRate
     
     auto as_tuple() const
     {
-        return std::make_tuple(gyro[0],gyro[1],gyro[2],valid_flags);
+        return std::make_tuple(std::ref(gyro[0]),std::ref(gyro[1]),std::ref(gyro[2]),std::ref(valid_flags));
     }
     
 };
@@ -894,7 +894,7 @@ struct QuaternionAttitudeUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(q[0],q[1],q[2],q[3],valid_flags);
+        return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]),std::ref(valid_flags));
     }
     
 };
@@ -921,7 +921,7 @@ struct Wgs84GravityMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(magnitude,valid_flags);
+        return std::make_tuple(std::ref(magnitude),std::ref(valid_flags));
     }
     
 };
@@ -962,7 +962,7 @@ struct HeadingUpdateState
     
     auto as_tuple() const
     {
-        return std::make_tuple(heading,heading_1sigma,source,valid_flags);
+        return std::make_tuple(std::ref(heading),std::ref(heading_1sigma),std::ref(source),std::ref(valid_flags));
     }
     
 };
@@ -994,7 +994,7 @@ struct MagneticModel
     
     auto as_tuple() const
     {
-        return std::make_tuple(intensity_north,intensity_east,intensity_down,inclination,declination,valid_flags);
+        return std::make_tuple(std::ref(intensity_north),std::ref(intensity_east),std::ref(intensity_down),std::ref(inclination),std::ref(declination),std::ref(valid_flags));
     }
     
 };
@@ -1021,7 +1021,7 @@ struct AccelScaleFactor
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor[0],scale_factor[1],scale_factor[2],valid_flags);
+        return std::make_tuple(std::ref(scale_factor[0]),std::ref(scale_factor[1]),std::ref(scale_factor[2]),std::ref(valid_flags));
     }
     
 };
@@ -1048,7 +1048,7 @@ struct AccelScaleFactorUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert[0],scale_factor_uncert[1],scale_factor_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(scale_factor_uncert[0]),std::ref(scale_factor_uncert[1]),std::ref(scale_factor_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -1075,7 +1075,7 @@ struct GyroScaleFactor
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor[0],scale_factor[1],scale_factor[2],valid_flags);
+        return std::make_tuple(std::ref(scale_factor[0]),std::ref(scale_factor[1]),std::ref(scale_factor[2]),std::ref(valid_flags));
     }
     
 };
@@ -1102,7 +1102,7 @@ struct GyroScaleFactorUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_uncert[0],scale_factor_uncert[1],scale_factor_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(scale_factor_uncert[0]),std::ref(scale_factor_uncert[1]),std::ref(scale_factor_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -1129,7 +1129,7 @@ struct MagBias
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias[0],bias[1],bias[2],valid_flags);
+        return std::make_tuple(std::ref(bias[0]),std::ref(bias[1]),std::ref(bias[2]),std::ref(valid_flags));
     }
     
 };
@@ -1156,7 +1156,7 @@ struct MagBiasUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias_uncert[0],bias_uncert[1],bias_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(bias_uncert[0]),std::ref(bias_uncert[1]),std::ref(bias_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -1189,7 +1189,7 @@ struct StandardAtmosphere
     
     auto as_tuple() const
     {
-        return std::make_tuple(geometric_altitude,geopotential_altitude,standard_temperature,standard_pressure,standard_density,valid_flags);
+        return std::make_tuple(std::ref(geometric_altitude),std::ref(geopotential_altitude),std::ref(standard_temperature),std::ref(standard_pressure),std::ref(standard_density),std::ref(valid_flags));
     }
     
 };
@@ -1220,7 +1220,7 @@ struct PressureAltitude
     
     auto as_tuple() const
     {
-        return std::make_tuple(pressure_altitude,valid_flags);
+        return std::make_tuple(std::ref(pressure_altitude),std::ref(valid_flags));
     }
     
 };
@@ -1246,7 +1246,7 @@ struct DensityAltitude
     
     auto as_tuple() const
     {
-        return std::make_tuple(density_altitude,valid_flags);
+        return std::make_tuple(std::ref(density_altitude),std::ref(valid_flags));
     }
     
 };
@@ -1275,7 +1275,7 @@ struct AntennaOffsetCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset[0],offset[1],offset[2],valid_flags);
+        return std::make_tuple(std::ref(offset[0]),std::ref(offset[1]),std::ref(offset[2]),std::ref(valid_flags));
     }
     
 };
@@ -1302,7 +1302,7 @@ struct AntennaOffsetCorrectionUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset_uncert[0],offset_uncert[1],offset_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(offset_uncert[0]),std::ref(offset_uncert[1]),std::ref(offset_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -1332,7 +1332,7 @@ struct MultiAntennaOffsetCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset[0],offset[1],offset[2],valid_flags);
+        return std::make_tuple(std::ref(receiver_id),std::ref(offset[0]),std::ref(offset[1]),std::ref(offset[2]),std::ref(valid_flags));
     }
     
 };
@@ -1360,7 +1360,7 @@ struct MultiAntennaOffsetCorrectionUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,offset_uncert[0],offset_uncert[1],offset_uncert[2],valid_flags);
+        return std::make_tuple(std::ref(receiver_id),std::ref(offset_uncert[0]),std::ref(offset_uncert[1]),std::ref(offset_uncert[2]),std::ref(valid_flags));
     }
     
 };
@@ -1389,7 +1389,7 @@ struct MagnetometerOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron[0],hard_iron[1],hard_iron[2],valid_flags);
+        return std::make_tuple(std::ref(hard_iron[0]),std::ref(hard_iron[1]),std::ref(hard_iron[2]),std::ref(valid_flags));
     }
     
 };
@@ -1418,7 +1418,7 @@ struct MagnetometerMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron[0],soft_iron[1],soft_iron[2],soft_iron[3],soft_iron[4],soft_iron[5],soft_iron[6],soft_iron[7],soft_iron[8],valid_flags);
+        return std::make_tuple(std::ref(soft_iron[0]),std::ref(soft_iron[1]),std::ref(soft_iron[2]),std::ref(soft_iron[3]),std::ref(soft_iron[4]),std::ref(soft_iron[5]),std::ref(soft_iron[6]),std::ref(soft_iron[7]),std::ref(soft_iron[8]),std::ref(valid_flags));
     }
     
 };
@@ -1445,7 +1445,7 @@ struct MagnetometerOffsetUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(hard_iron_uncertainty[0],hard_iron_uncertainty[1],hard_iron_uncertainty[2],valid_flags);
+        return std::make_tuple(std::ref(hard_iron_uncertainty[0]),std::ref(hard_iron_uncertainty[1]),std::ref(hard_iron_uncertainty[2]),std::ref(valid_flags));
     }
     
 };
@@ -1472,7 +1472,7 @@ struct MagnetometerMatrixUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(soft_iron_uncertainty[0],soft_iron_uncertainty[1],soft_iron_uncertainty[2],soft_iron_uncertainty[3],soft_iron_uncertainty[4],soft_iron_uncertainty[5],soft_iron_uncertainty[6],soft_iron_uncertainty[7],soft_iron_uncertainty[8],valid_flags);
+        return std::make_tuple(std::ref(soft_iron_uncertainty[0]),std::ref(soft_iron_uncertainty[1]),std::ref(soft_iron_uncertainty[2]),std::ref(soft_iron_uncertainty[3]),std::ref(soft_iron_uncertainty[4]),std::ref(soft_iron_uncertainty[5]),std::ref(soft_iron_uncertainty[6]),std::ref(soft_iron_uncertainty[7]),std::ref(soft_iron_uncertainty[8]),std::ref(valid_flags));
     }
     
 };
@@ -1498,7 +1498,7 @@ struct MagnetometerCovarianceMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(covariance[0],covariance[1],covariance[2],covariance[3],covariance[4],covariance[5],covariance[6],covariance[7],covariance[8],valid_flags);
+        return std::make_tuple(std::ref(covariance[0]),std::ref(covariance[1]),std::ref(covariance[2]),std::ref(covariance[3]),std::ref(covariance[4]),std::ref(covariance[5]),std::ref(covariance[6]),std::ref(covariance[7]),std::ref(covariance[8]),std::ref(valid_flags));
     }
     
 };
@@ -1525,7 +1525,7 @@ struct MagnetometerResidualVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(residual[0],residual[1],residual[2],valid_flags);
+        return std::make_tuple(std::ref(residual[0]),std::ref(residual[1]),std::ref(residual[2]),std::ref(valid_flags));
     }
     
 };
@@ -1554,7 +1554,7 @@ struct ClockCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,bias,bias_drift,valid_flags);
+        return std::make_tuple(std::ref(receiver_id),std::ref(bias),std::ref(bias_drift),std::ref(valid_flags));
     }
     
 };
@@ -1583,7 +1583,7 @@ struct ClockCorrectionUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,bias_uncertainty,bias_drift_uncertainty,valid_flags);
+        return std::make_tuple(std::ref(receiver_id),std::ref(bias_uncertainty),std::ref(bias_drift_uncertainty),std::ref(valid_flags));
     }
     
 };
@@ -1612,7 +1612,7 @@ struct GnssPosAidStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,time_of_week,status,reserved);
+        return std::make_tuple(std::ref(receiver_id),std::ref(time_of_week),std::ref(status),std::ref(reserved));
     }
     
 };
@@ -1640,7 +1640,7 @@ struct GnssAttAidStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,status,reserved);
+        return std::make_tuple(std::ref(time_of_week),std::ref(status),std::ref(reserved));
     }
     
 };
@@ -1674,7 +1674,7 @@ struct HeadAidStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,type,reserved);
+        return std::make_tuple(std::ref(time_of_week),std::ref(type),std::ref(reserved));
     }
     
 };
@@ -1701,7 +1701,7 @@ struct RelPosNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(relative_position[0],relative_position[1],relative_position[2],valid_flags);
+        return std::make_tuple(std::ref(relative_position[0]),std::ref(relative_position[1]),std::ref(relative_position[2]),std::ref(valid_flags));
     }
     
 };
@@ -1728,7 +1728,7 @@ struct EcefPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(position_ecef[0],position_ecef[1],position_ecef[2],valid_flags);
+        return std::make_tuple(std::ref(position_ecef[0]),std::ref(position_ecef[1]),std::ref(position_ecef[2]),std::ref(valid_flags));
     }
     
 };
@@ -1755,7 +1755,7 @@ struct EcefVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(velocity_ecef[0],velocity_ecef[1],velocity_ecef[2],valid_flags);
+        return std::make_tuple(std::ref(velocity_ecef[0]),std::ref(velocity_ecef[1]),std::ref(velocity_ecef[2]),std::ref(valid_flags));
     }
     
 };
@@ -1782,7 +1782,7 @@ struct EcefPosUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(pos_uncertainty[0],pos_uncertainty[1],pos_uncertainty[2],valid_flags);
+        return std::make_tuple(std::ref(pos_uncertainty[0]),std::ref(pos_uncertainty[1]),std::ref(pos_uncertainty[2]),std::ref(valid_flags));
     }
     
 };
@@ -1809,7 +1809,7 @@ struct EcefVelUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(vel_uncertainty[0],vel_uncertainty[1],vel_uncertainty[2],valid_flags);
+        return std::make_tuple(std::ref(vel_uncertainty[0]),std::ref(vel_uncertainty[1]),std::ref(vel_uncertainty[2]),std::ref(valid_flags));
     }
     
 };
@@ -1838,7 +1838,7 @@ struct AidingMeasurementSummary
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,source,type,indicator);
+        return std::make_tuple(std::ref(time_of_week),std::ref(source),std::ref(type),std::ref(indicator));
     }
     
 };
@@ -1865,7 +1865,7 @@ struct OdometerScaleFactorError
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_error,valid_flags);
+        return std::make_tuple(std::ref(scale_factor_error),std::ref(valid_flags));
     }
     
 };
@@ -1892,7 +1892,7 @@ struct OdometerScaleFactorErrorUncertainty
     
     auto as_tuple() const
     {
-        return std::make_tuple(scale_factor_error_uncertainty,valid_flags);
+        return std::make_tuple(std::ref(scale_factor_error_uncertainty),std::ref(valid_flags));
     }
     
 };
@@ -1961,7 +1961,7 @@ struct GnssDualAntennaStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,heading,heading_unc,fix_type,status_flags,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(heading),std::ref(heading_unc),std::ref(fix_type),std::ref(status_flags),std::ref(valid_flags));
     }
     
 };

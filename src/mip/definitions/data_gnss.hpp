@@ -230,7 +230,7 @@ struct PosLlh
     
     auto as_tuple() const
     {
-        return std::make_tuple(latitude,longitude,ellipsoid_height,msl_height,horizontal_accuracy,vertical_accuracy,valid_flags);
+        return std::make_tuple(std::ref(latitude),std::ref(longitude),std::ref(ellipsoid_height),std::ref(msl_height),std::ref(horizontal_accuracy),std::ref(vertical_accuracy),std::ref(valid_flags));
     }
     
 };
@@ -289,7 +289,7 @@ struct PosEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(x[0],x[1],x[2],x_accuracy,valid_flags);
+        return std::make_tuple(std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(x_accuracy),std::ref(valid_flags));
     }
     
 };
@@ -364,7 +364,7 @@ struct VelNed
     
     auto as_tuple() const
     {
-        return std::make_tuple(v[0],v[1],v[2],speed,ground_speed,heading,speed_accuracy,heading_accuracy,valid_flags);
+        return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(speed),std::ref(ground_speed),std::ref(heading),std::ref(speed_accuracy),std::ref(heading_accuracy),std::ref(valid_flags));
     }
     
 };
@@ -423,7 +423,7 @@ struct VelEcef
     
     auto as_tuple() const
     {
-        return std::make_tuple(v[0],v[1],v[2],v_accuracy,valid_flags);
+        return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(v_accuracy),std::ref(valid_flags));
     }
     
 };
@@ -502,7 +502,7 @@ struct Dop
     
     auto as_tuple() const
     {
-        return std::make_tuple(gdop,pdop,hdop,vdop,tdop,ndop,edop,valid_flags);
+        return std::make_tuple(std::ref(gdop),std::ref(pdop),std::ref(hdop),std::ref(vdop),std::ref(tdop),std::ref(ndop),std::ref(edop),std::ref(valid_flags));
     }
     
 };
@@ -566,7 +566,7 @@ struct UtcTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(year,month,day,hour,min,sec,msec,valid_flags);
+        return std::make_tuple(std::ref(year),std::ref(month),std::ref(day),std::ref(hour),std::ref(min),std::ref(sec),std::ref(msec),std::ref(valid_flags));
     }
     
 };
@@ -625,7 +625,7 @@ struct GpsTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
     
 };
@@ -688,7 +688,7 @@ struct ClockInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias,drift,accuracy_estimate,valid_flags);
+        return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(accuracy_estimate),std::ref(valid_flags));
     }
     
 };
@@ -790,7 +790,7 @@ struct FixInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(fix_type,num_sv,fix_flags,valid_flags);
+        return std::make_tuple(std::ref(fix_type),std::ref(num_sv),std::ref(fix_flags),std::ref(valid_flags));
     }
     
 };
@@ -895,7 +895,7 @@ struct SvInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(channel,sv_id,carrier_noise_ratio,azimuth,elevation,sv_flags,valid_flags);
+        return std::make_tuple(std::ref(channel),std::ref(sv_id),std::ref(carrier_noise_ratio),std::ref(azimuth),std::ref(elevation),std::ref(sv_flags),std::ref(valid_flags));
     }
     
 };
@@ -981,7 +981,7 @@ struct HwStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_state,antenna_state,antenna_power,valid_flags);
+        return std::make_tuple(std::ref(receiver_state),std::ref(antenna_state),std::ref(antenna_power),std::ref(valid_flags));
     }
     
 };
@@ -1060,7 +1060,7 @@ struct DgpsInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
+        return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
     
 };
@@ -1129,7 +1129,7 @@ struct DgpsChannel
     
     auto as_tuple() const
     {
-        return std::make_tuple(sv_id,age,range_correction,range_rate_correction,valid_flags);
+        return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
     
 };
@@ -1198,7 +1198,7 @@ struct ClockInfo2
     
     auto as_tuple() const
     {
-        return std::make_tuple(bias,drift,bias_accuracy_estimate,drift_accuracy_estimate,valid_flags);
+        return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(bias_accuracy_estimate),std::ref(drift_accuracy_estimate),std::ref(valid_flags));
     }
     
 };
@@ -1250,7 +1250,7 @@ struct GpsLeapSeconds
     
     auto as_tuple() const
     {
-        return std::make_tuple(leap_seconds,valid_flags);
+        return std::make_tuple(std::ref(leap_seconds),std::ref(valid_flags));
     }
     
 };
@@ -1359,7 +1359,7 @@ struct SbasInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,sbas_system,sbas_id,count,sbas_status,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(sbas_system),std::ref(sbas_id),std::ref(count),std::ref(sbas_status),std::ref(valid_flags));
     }
     
 };
@@ -1450,7 +1450,7 @@ struct SbasCorrection
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,gnss_id,sv_id,udrei,pseudorange_correction,iono_correction,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(sv_id),std::ref(udrei),std::ref(pseudorange_correction),std::ref(iono_correction),std::ref(valid_flags));
     }
     
 };
@@ -1538,7 +1538,7 @@ struct RfErrorDetection
     
     auto as_tuple() const
     {
-        return std::make_tuple(rf_band,jamming_state,spoofing_state,reserved,valid_flags);
+        return std::make_tuple(std::ref(rf_band),std::ref(jamming_state),std::ref(spoofing_state),std::ref(reserved),std::ref(valid_flags));
     }
     
 };
@@ -1664,7 +1664,7 @@ struct BaseStationInfo
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,ecef_pos[0],ecef_pos[1],ecef_pos[2],height,station_id,indicators,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(ecef_pos[0]),std::ref(ecef_pos[1]),std::ref(ecef_pos[2]),std::ref(height),std::ref(station_id),std::ref(indicators),std::ref(valid_flags));
     }
     
 };
@@ -1796,7 +1796,7 @@ struct RtkCorrectionsStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,epoch_status,dongle_status,gps_correction_latency,glonass_correction_latency,galileo_correction_latency,beidou_correction_latency,reserved,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(epoch_status),std::ref(dongle_status),std::ref(gps_correction_latency),std::ref(glonass_correction_latency),std::ref(galileo_correction_latency),std::ref(beidou_correction_latency),std::ref(reserved),std::ref(valid_flags));
     }
     
 };
@@ -1877,7 +1877,7 @@ struct SatelliteStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,gnss_id,satellite_id,elevation,azimuth,health,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(satellite_id),std::ref(elevation),std::ref(azimuth),std::ref(health),std::ref(valid_flags));
     }
     
 };
@@ -2004,7 +2004,7 @@ struct Raw
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,receiver_id,tracking_channel,gnss_id,satellite_id,signal_id,signal_strength,quality,pseudorange,carrier_phase,doppler,range_uncert,phase_uncert,doppler_uncert,lock_time,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(receiver_id),std::ref(tracking_channel),std::ref(gnss_id),std::ref(satellite_id),std::ref(signal_id),std::ref(signal_strength),std::ref(quality),std::ref(pseudorange),std::ref(carrier_phase),std::ref(doppler),std::ref(range_uncert),std::ref(phase_uncert),std::ref(doppler_uncert),std::ref(lock_time),std::ref(valid_flags));
     }
     
 };
@@ -2094,7 +2094,7 @@ struct GpsEphemeris
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
     
 };
@@ -2184,7 +2184,7 @@ struct GalileoEphemeris
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,health,iodc,iode,t_oc,af0,af1,af2,t_gd,ISC_L1CA,ISC_L2C,t_oe,a,a_dot,mean_anomaly,delta_mean_motion,delta_mean_motion_dot,eccentricity,argument_of_perigee,omega,omega_dot,inclination,inclination_dot,c_ic,c_is,c_uc,c_us,c_rc,c_rs,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
     
 };
@@ -2262,7 +2262,7 @@ struct GloEphemeris
     
     auto as_tuple() const
     {
-        return std::make_tuple(index,count,time_of_week,week_number,satellite_id,freq_number,tk,tb,sat_type,gamma,tau_n,x[0],x[1],x[2],v[0],v[1],v[2],a[0],a[1],a[2],health,P,NT,delta_tau_n,Ft,En,P1,P2,P3,P4,valid_flags);
+        return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(freq_number),std::ref(tk),std::ref(tb),std::ref(sat_type),std::ref(gamma),std::ref(tau_n),std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(a[0]),std::ref(a[1]),std::ref(a[2]),std::ref(health),std::ref(P),std::ref(NT),std::ref(delta_tau_n),std::ref(Ft),std::ref(En),std::ref(P1),std::ref(P2),std::ref(P3),std::ref(P4),std::ref(valid_flags));
     }
     
 };
@@ -2329,7 +2329,7 @@ struct GpsIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha,beta,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha),std::ref(beta),std::ref(valid_flags));
     }
     
 };
@@ -2396,7 +2396,7 @@ struct GalileoIonoCorr
     
     auto as_tuple() const
     {
-        return std::make_tuple(time_of_week,week_number,alpha[0],alpha[1],alpha[2],disturbance_flags,valid_flags);
+        return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha[0]),std::ref(alpha[1]),std::ref(alpha[2]),std::ref(disturbance_flags),std::ref(valid_flags));
     }
     
 };

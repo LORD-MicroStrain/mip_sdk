@@ -578,7 +578,7 @@ struct CommSpeed
     
     auto as_tuple() const
     {
-        return std::make_tuple(port,baud);
+        return std::make_tuple(std::ref(port),std::ref(baud));
     }
     
     
@@ -656,7 +656,7 @@ struct GpsTimeUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(field_id,value);
+        return std::make_tuple(std::ref(field_id),std::ref(value));
     }
     
     

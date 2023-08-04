@@ -243,7 +243,7 @@ struct SetInitialAttitude
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,heading);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(heading));
     }
     
     typedef void Response;
@@ -333,7 +333,7 @@ struct EstimationControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable);
+        return std::make_tuple(std::ref(enable));
     }
     
     
@@ -404,7 +404,7 @@ struct ExternalGnssUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(gps_time,gps_week,latitude,longitude,height,velocity,pos_uncertainty,vel_uncertainty);
+        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(velocity),std::ref(pos_uncertainty),std::ref(vel_uncertainty));
     }
     
     typedef void Response;
@@ -448,7 +448,7 @@ struct ExternalHeadingUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(heading,heading_uncertainty,type);
+        return std::make_tuple(std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
     }
     
     typedef void Response;
@@ -498,7 +498,7 @@ struct ExternalHeadingUpdateWithTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(gps_time,gps_week,heading,heading_uncertainty,type);
+        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
     }
     
     typedef void Response;
@@ -570,7 +570,7 @@ struct TareOrientation
     
     auto as_tuple() const
     {
-        return std::make_tuple(axes);
+        return std::make_tuple(std::ref(axes));
     }
     
     
@@ -645,7 +645,7 @@ struct VehicleDynamicsMode
     
     auto as_tuple() const
     {
-        return std::make_tuple(mode);
+        return std::make_tuple(std::ref(mode));
     }
     
     
@@ -736,7 +736,7 @@ struct SensorToVehicleRotationEuler
     
     auto as_tuple() const
     {
-        return std::make_tuple(roll,pitch,yaw);
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
     
     
@@ -833,7 +833,7 @@ struct SensorToVehicleRotationDcm
     
     auto as_tuple() const
     {
-        return std::make_tuple(dcm);
+        return std::make_tuple(std::ref(dcm));
     }
     
     
@@ -927,7 +927,7 @@ struct SensorToVehicleRotationQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(quat);
+        return std::make_tuple(std::ref(quat));
     }
     
     
@@ -1002,7 +1002,7 @@ struct SensorToVehicleOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset);
+        return std::make_tuple(std::ref(offset));
     }
     
     
@@ -1074,7 +1074,7 @@ struct AntennaOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(offset);
+        return std::make_tuple(std::ref(offset));
     }
     
     
@@ -1153,7 +1153,7 @@ struct GnssSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source);
+        return std::make_tuple(std::ref(source));
     }
     
     
@@ -1243,7 +1243,7 @@ struct HeadingSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source);
+        return std::make_tuple(std::ref(source));
     }
     
     
@@ -1318,7 +1318,7 @@ struct AutoInitControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable);
+        return std::make_tuple(std::ref(enable));
     }
     
     
@@ -1391,7 +1391,7 @@ struct AccelNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -1464,7 +1464,7 @@ struct GyroNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -1535,7 +1535,7 @@ struct AccelBiasModel
     
     auto as_tuple() const
     {
-        return std::make_tuple(beta,noise);
+        return std::make_tuple(std::ref(beta),std::ref(noise));
     }
     
     
@@ -1607,7 +1607,7 @@ struct GyroBiasModel
     
     auto as_tuple() const
     {
-        return std::make_tuple(beta,noise);
+        return std::make_tuple(std::ref(beta),std::ref(noise));
     }
     
     
@@ -1685,7 +1685,7 @@ struct AltitudeAiding
     
     auto as_tuple() const
     {
-        return std::make_tuple(selector);
+        return std::make_tuple(std::ref(selector));
     }
     
     
@@ -1759,7 +1759,7 @@ struct PitchRollAiding
     
     auto as_tuple() const
     {
-        return std::make_tuple(source);
+        return std::make_tuple(std::ref(source));
     }
     
     
@@ -1828,7 +1828,7 @@ struct AutoZupt
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,threshold);
+        return std::make_tuple(std::ref(enable),std::ref(threshold));
     }
     
     
@@ -1899,7 +1899,7 @@ struct AutoAngularZupt
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,threshold);
+        return std::make_tuple(std::ref(enable),std::ref(threshold));
     }
     
     
@@ -2076,7 +2076,7 @@ struct GravityNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -2148,7 +2148,7 @@ struct PressureAltitudeNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -2222,7 +2222,7 @@ struct HardIronOffsetNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -2295,7 +2295,7 @@ struct SoftIronMatrixNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -2368,7 +2368,7 @@ struct MagNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(noise);
+        return std::make_tuple(std::ref(noise));
     }
     
     
@@ -2440,7 +2440,7 @@ struct InclinationSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,inclination);
+        return std::make_tuple(std::ref(source),std::ref(inclination));
     }
     
     
@@ -2513,7 +2513,7 @@ struct MagneticDeclinationSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,declination);
+        return std::make_tuple(std::ref(source),std::ref(declination));
     }
     
     
@@ -2585,7 +2585,7 @@ struct MagFieldMagnitudeSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,magnitude);
+        return std::make_tuple(std::ref(source),std::ref(magnitude));
     }
     
     
@@ -2659,7 +2659,7 @@ struct ReferencePosition
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,latitude,longitude,altitude);
+        return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
     }
     
     
@@ -2748,7 +2748,7 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
+        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
     
     
@@ -2835,7 +2835,7 @@ struct MagMagnitudeErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
+        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
     
     
@@ -2922,7 +2922,7 @@ struct MagDipAngleErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,frequency,high_limit,high_limit_uncertainty,minimum_uncertainty);
+        return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
     }
     
     
@@ -3007,7 +3007,7 @@ struct AidingMeasurementEnable
     
     auto as_tuple() const
     {
-        return std::make_tuple(aiding_source,enable);
+        return std::make_tuple(std::ref(aiding_source),std::ref(enable));
     }
     
     
@@ -3111,7 +3111,7 @@ struct KinematicConstraint
     
     auto as_tuple() const
     {
-        return std::make_tuple(acceleration_constraint_selection,velocity_constraint_selection,angular_constraint_selection);
+        return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
     }
     
     
@@ -3234,7 +3234,7 @@ struct InitializationConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(wait_for_run_command,initial_cond_src,auto_heading_alignment_selector,initial_heading,initial_pitch,initial_roll,initial_position,initial_velocity,reference_frame_selector);
+        return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
     }
     
     
@@ -3310,7 +3310,7 @@ struct AdaptiveFilterOptions
     
     auto as_tuple() const
     {
-        return std::make_tuple(level,time_limit);
+        return std::make_tuple(std::ref(level),std::ref(time_limit));
     }
     
     
@@ -3382,7 +3382,7 @@ struct MultiAntennaOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(receiver_id,antenna_offset);
+        return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
     }
     
     
@@ -3453,7 +3453,7 @@ struct RelPosConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,reference_frame_selector,reference_coordinates);
+        return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
     }
     
     
@@ -3535,7 +3535,7 @@ struct RefPointLeverArm
     
     auto as_tuple() const
     {
-        return std::make_tuple(ref_point_sel,lever_arm_offset);
+        return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
     }
     
     
@@ -3601,7 +3601,7 @@ struct SpeedMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,time_of_week,speed,speed_uncertainty);
+        return std::make_tuple(std::ref(source),std::ref(time_of_week),std::ref(speed),std::ref(speed_uncertainty));
     }
     
     typedef void Response;
@@ -3645,7 +3645,7 @@ struct SpeedLeverArm
     
     auto as_tuple() const
     {
-        return std::make_tuple(source,lever_arm_offset);
+        return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
     }
     
     
@@ -3720,7 +3720,7 @@ struct WheeledVehicleConstraintControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable);
+        return std::make_tuple(std::ref(enable));
     }
     
     
@@ -3791,7 +3791,7 @@ struct VerticalGyroConstraintControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable);
+        return std::make_tuple(std::ref(enable));
     }
     
     
@@ -3861,7 +3861,7 @@ struct GnssAntennaCalControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(enable,max_offset);
+        return std::make_tuple(std::ref(enable),std::ref(max_offset));
     }
     
     
@@ -3925,7 +3925,7 @@ struct SetInitialHeading
     
     auto as_tuple() const
     {
-        return std::make_tuple(heading);
+        return std::make_tuple(std::ref(heading));
     }
     
     typedef void Response;

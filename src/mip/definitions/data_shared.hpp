@@ -74,7 +74,7 @@ struct EventSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(trigger_id);
+        return std::make_tuple(std::ref(trigger_id));
     }
     
 };
@@ -103,7 +103,7 @@ struct Ticks
     
     auto as_tuple() const
     {
-        return std::make_tuple(ticks);
+        return std::make_tuple(std::ref(ticks));
     }
     
 };
@@ -133,7 +133,7 @@ struct DeltaTicks
     
     auto as_tuple() const
     {
-        return std::make_tuple(ticks);
+        return std::make_tuple(std::ref(ticks));
     }
     
 };
@@ -195,7 +195,7 @@ struct GpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(tow,week_number,valid_flags);
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
     
 };
@@ -230,7 +230,7 @@ struct DeltaTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(seconds);
+        return std::make_tuple(std::ref(seconds));
     }
     
 };
@@ -263,7 +263,7 @@ struct ReferenceTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(nanoseconds);
+        return std::make_tuple(std::ref(nanoseconds));
     }
     
 };
@@ -298,7 +298,7 @@ struct ReferenceTimeDelta
     
     auto as_tuple() const
     {
-        return std::make_tuple(dt_nanos);
+        return std::make_tuple(std::ref(dt_nanos));
     }
     
 };
@@ -358,7 +358,7 @@ struct ExternalTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(nanoseconds,valid_flags);
+        return std::make_tuple(std::ref(nanoseconds),std::ref(valid_flags));
     }
     
 };
@@ -422,7 +422,7 @@ struct ExternalTimeDelta
     
     auto as_tuple() const
     {
-        return std::make_tuple(dt_nanos,valid_flags);
+        return std::make_tuple(std::ref(dt_nanos),std::ref(valid_flags));
     }
     
 };
