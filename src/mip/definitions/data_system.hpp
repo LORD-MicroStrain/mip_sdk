@@ -82,9 +82,13 @@ struct BuiltInTest
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(result));
+        return std::make_tuple(result);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(result));
+    }
 };
 void insert(Serializer& serializer, const BuiltInTest& self);
 void extract(Serializer& serializer, BuiltInTest& self);
@@ -109,9 +113,13 @@ struct TimeSyncStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time_sync),std::ref(last_pps_rcvd));
+        return std::make_tuple(time_sync,last_pps_rcvd);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time_sync),std::ref(last_pps_rcvd));
+    }
 };
 void insert(Serializer& serializer, const TimeSyncStatus& self);
 void extract(Serializer& serializer, TimeSyncStatus& self);
@@ -153,9 +161,13 @@ struct GpioState
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(states));
+        return std::make_tuple(states);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(states));
+    }
 };
 void insert(Serializer& serializer, const GpioState& self);
 void extract(Serializer& serializer, GpioState& self);
@@ -181,9 +193,13 @@ struct GpioAnalogValue
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(gpio_id),std::ref(value));
+        return std::make_tuple(gpio_id,value);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(gpio_id),std::ref(value));
+    }
 };
 void insert(Serializer& serializer, const GpioAnalogValue& self);
 void extract(Serializer& serializer, GpioAnalogValue& self);

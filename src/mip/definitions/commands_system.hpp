@@ -88,9 +88,13 @@ struct CommMode
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(mode));
+        return std::make_tuple(mode);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(mode));
+    }
     
     static CommMode create_sld_all(::mip::FunctionSelector function)
     {
@@ -113,7 +117,6 @@ struct CommMode
         {
             return std::make_tuple(std::ref(mode));
         }
-        
     };
 };
 void insert(Serializer& serializer, const CommMode& self);

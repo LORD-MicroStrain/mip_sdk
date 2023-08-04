@@ -106,9 +106,13 @@ struct SensorFrameMapping
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(sensor_id),std::ref(frame_id));
+        return std::make_tuple(sensor_id,frame_id);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(sensor_id),std::ref(frame_id));
+    }
     
     static SensorFrameMapping create_sld_all(::mip::FunctionSelector function)
     {
@@ -132,7 +136,6 @@ struct SensorFrameMapping
         {
             return std::make_tuple(std::ref(sensor_id),std::ref(frame_id));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SensorFrameMapping& self);
@@ -182,9 +185,13 @@ struct ReferenceFrame
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
+        return std::make_tuple(frame_id,format,translation,rotation);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
+    }
     
     static ReferenceFrame create_sld_all(::mip::FunctionSelector function)
     {
@@ -211,7 +218,6 @@ struct ReferenceFrame
         {
             return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ReferenceFrame& self);
@@ -259,9 +265,13 @@ struct AidingEchoControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(mode));
+        return std::make_tuple(mode);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(mode));
+    }
     
     static AidingEchoControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -284,7 +294,6 @@ struct AidingEchoControl
         {
             return std::make_tuple(std::ref(mode));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AidingEchoControl& self);
@@ -354,9 +363,13 @@ struct EcefPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(position),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,position,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(position),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const EcefPos& self);
@@ -422,9 +435,13 @@ struct LlhPos
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,latitude,longitude,height,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const LlhPos& self);
@@ -487,9 +504,13 @@ struct EcefVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const EcefVel& self);
@@ -552,9 +573,13 @@ struct NedVel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const NedVel& self);
@@ -618,9 +643,13 @@ struct VehicleFixedFrameVelocity
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,velocity,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(velocity),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self);
@@ -651,9 +680,13 @@ struct TrueHeading
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(heading),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(time,sensor_id,heading,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(heading),std::ref(uncertainty),std::ref(valid_flags));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const TrueHeading& self);

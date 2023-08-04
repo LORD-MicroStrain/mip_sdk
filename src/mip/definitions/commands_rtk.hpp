@@ -211,6 +211,10 @@ struct GetStatusFlags
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -225,7 +229,6 @@ struct GetStatusFlags
         {
             return std::make_tuple(std::ref(flags));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetStatusFlags& self);
@@ -258,6 +261,10 @@ struct GetImei
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -272,7 +279,6 @@ struct GetImei
         {
             return std::make_tuple(std::ref(IMEI));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetImei& self);
@@ -305,6 +311,10 @@ struct GetImsi
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -319,7 +329,6 @@ struct GetImsi
         {
             return std::make_tuple(std::ref(IMSI));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetImsi& self);
@@ -352,6 +361,10 @@ struct GetIccid
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -366,7 +379,6 @@ struct GetIccid
         {
             return std::make_tuple(std::ref(ICCID));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetIccid& self);
@@ -409,9 +421,13 @@ struct ConnectedDeviceType
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(devType));
+        return std::make_tuple(devType);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(devType));
+    }
     
     static ConnectedDeviceType create_sld_all(::mip::FunctionSelector function)
     {
@@ -434,7 +450,6 @@ struct ConnectedDeviceType
         {
             return std::make_tuple(std::ref(devType));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ConnectedDeviceType& self);
@@ -471,6 +486,10 @@ struct GetActCode
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -485,7 +504,6 @@ struct GetActCode
         {
             return std::make_tuple(std::ref(ActivationCode));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetActCode& self);
@@ -518,6 +536,10 @@ struct GetModemFirmwareVersion
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -532,7 +554,6 @@ struct GetModemFirmwareVersion
         {
             return std::make_tuple(std::ref(ModemFirmwareVersion));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
@@ -566,6 +587,10 @@ struct GetRssi
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -582,7 +607,6 @@ struct GetRssi
         {
             return std::make_tuple(std::ref(valid),std::ref(rssi),std::ref(signalQuality));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetRssi& self);
@@ -646,9 +670,13 @@ struct ServiceStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(reserved1),std::ref(reserved2));
+        return std::make_tuple(reserved1,reserved2);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(reserved1),std::ref(reserved2));
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
@@ -666,7 +694,6 @@ struct ServiceStatus
         {
             return std::make_tuple(std::ref(flags),std::ref(receivedBytes),std::ref(lastBytes),std::ref(lastBytesTime));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ServiceStatus& self);
@@ -698,9 +725,13 @@ struct ProdEraseStorage
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(media));
+        return std::make_tuple(media);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(media));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const ProdEraseStorage& self);
@@ -731,9 +762,13 @@ struct LedControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(primaryColor),std::ref(altColor),std::ref(act),std::ref(period));
+        return std::make_tuple(primaryColor,altColor,act,period);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(primaryColor),std::ref(altColor),std::ref(act),std::ref(period));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const LedControl& self);
@@ -764,6 +799,10 @@ struct ModemHardReset
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const ModemHardReset& self);

@@ -210,6 +210,10 @@ struct Ping
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const Ping& self);
@@ -243,6 +247,10 @@ struct SetIdle
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const SetIdle& self);
@@ -273,6 +281,10 @@ struct GetDeviceInfo
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -287,7 +299,6 @@ struct GetDeviceInfo
         {
             return std::make_tuple(std::ref(device_info));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetDeviceInfo& self);
@@ -324,6 +335,10 @@ struct GetDeviceDescriptors
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -339,7 +354,6 @@ struct GetDeviceDescriptors
         {
             return std::make_tuple(std::ref(descriptors),std::ref(descriptors_count));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetDeviceDescriptors& self);
@@ -378,6 +392,10 @@ struct BuiltInTest
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -392,7 +410,6 @@ struct BuiltInTest
         {
             return std::make_tuple(std::ref(result));
         }
-        
     };
 };
 void insert(Serializer& serializer, const BuiltInTest& self);
@@ -427,6 +444,10 @@ struct Resume
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const Resume& self);
@@ -460,6 +481,10 @@ struct GetExtendedDescriptors
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -475,7 +500,6 @@ struct GetExtendedDescriptors
         {
             return std::make_tuple(std::ref(descriptors),std::ref(descriptors_count));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GetExtendedDescriptors& self);
@@ -511,6 +535,10 @@ struct ContinuousBit
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -525,7 +553,6 @@ struct ContinuousBit
         {
             return std::make_tuple(std::ref(result));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ContinuousBit& self);
@@ -578,9 +605,13 @@ struct CommSpeed
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(port),std::ref(baud));
+        return std::make_tuple(port,baud);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(port),std::ref(baud));
+    }
     
     static CommSpeed create_sld_all(::mip::FunctionSelector function)
     {
@@ -605,7 +636,6 @@ struct CommSpeed
         {
             return std::make_tuple(std::ref(port),std::ref(baud));
         }
-        
     };
 };
 void insert(Serializer& serializer, const CommSpeed& self);
@@ -656,9 +686,13 @@ struct GpsTimeUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(field_id),std::ref(value));
+        return std::make_tuple(field_id,value);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(field_id),std::ref(value));
+    }
     
     static GpsTimeUpdate create_sld_all(::mip::FunctionSelector function)
     {
@@ -698,6 +732,10 @@ struct SoftReset
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const SoftReset& self);

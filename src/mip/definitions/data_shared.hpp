@@ -74,9 +74,13 @@ struct EventSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(trigger_id));
+        return std::make_tuple(trigger_id);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(trigger_id));
+    }
 };
 void insert(Serializer& serializer, const EventSource& self);
 void extract(Serializer& serializer, EventSource& self);
@@ -103,9 +107,13 @@ struct Ticks
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(ticks));
+        return std::make_tuple(ticks);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(ticks));
+    }
 };
 void insert(Serializer& serializer, const Ticks& self);
 void extract(Serializer& serializer, Ticks& self);
@@ -133,9 +141,13 @@ struct DeltaTicks
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(ticks));
+        return std::make_tuple(ticks);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(ticks));
+    }
 };
 void insert(Serializer& serializer, const DeltaTicks& self);
 void extract(Serializer& serializer, DeltaTicks& self);
@@ -195,9 +207,13 @@ struct GpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
+        return std::make_tuple(tow,week_number,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
+    }
 };
 void insert(Serializer& serializer, const GpsTimestamp& self);
 void extract(Serializer& serializer, GpsTimestamp& self);
@@ -230,9 +246,13 @@ struct DeltaTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(seconds));
+        return std::make_tuple(seconds);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(seconds));
+    }
 };
 void insert(Serializer& serializer, const DeltaTime& self);
 void extract(Serializer& serializer, DeltaTime& self);
@@ -263,9 +283,13 @@ struct ReferenceTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(nanoseconds));
+        return std::make_tuple(nanoseconds);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(nanoseconds));
+    }
 };
 void insert(Serializer& serializer, const ReferenceTimestamp& self);
 void extract(Serializer& serializer, ReferenceTimestamp& self);
@@ -298,9 +322,13 @@ struct ReferenceTimeDelta
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(dt_nanos));
+        return std::make_tuple(dt_nanos);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(dt_nanos));
+    }
 };
 void insert(Serializer& serializer, const ReferenceTimeDelta& self);
 void extract(Serializer& serializer, ReferenceTimeDelta& self);
@@ -358,9 +386,13 @@ struct ExternalTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(nanoseconds),std::ref(valid_flags));
+        return std::make_tuple(nanoseconds,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(nanoseconds),std::ref(valid_flags));
+    }
 };
 void insert(Serializer& serializer, const ExternalTimestamp& self);
 void extract(Serializer& serializer, ExternalTimestamp& self);
@@ -422,9 +454,13 @@ struct ExternalTimeDelta
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(dt_nanos),std::ref(valid_flags));
+        return std::make_tuple(dt_nanos,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(dt_nanos),std::ref(valid_flags));
+    }
 };
 void insert(Serializer& serializer, const ExternalTimeDelta& self);
 void extract(Serializer& serializer, ExternalTimeDelta& self);

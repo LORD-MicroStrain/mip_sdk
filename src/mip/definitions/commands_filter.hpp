@@ -203,6 +203,10 @@ struct Reset
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const Reset& self);
@@ -243,9 +247,13 @@ struct SetInitialAttitude
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(heading));
+        return std::make_tuple(roll,pitch,heading);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(heading));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const SetInitialAttitude& self);
@@ -333,9 +341,13 @@ struct EstimationControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable));
+        return std::make_tuple(enable);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable));
+    }
     
     static EstimationControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -358,7 +370,6 @@ struct EstimationControl
         {
             return std::make_tuple(std::ref(enable));
         }
-        
     };
 };
 void insert(Serializer& serializer, const EstimationControl& self);
@@ -404,9 +415,13 @@ struct ExternalGnssUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(velocity),std::ref(pos_uncertainty),std::ref(vel_uncertainty));
+        return std::make_tuple(gps_time,gps_week,latitude,longitude,height,velocity,pos_uncertainty,vel_uncertainty);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(latitude),std::ref(longitude),std::ref(height),std::ref(velocity),std::ref(pos_uncertainty),std::ref(vel_uncertainty));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const ExternalGnssUpdate& self);
@@ -448,9 +463,13 @@ struct ExternalHeadingUpdate
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
+        return std::make_tuple(heading,heading_uncertainty,type);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdate& self);
@@ -498,9 +517,13 @@ struct ExternalHeadingUpdateWithTime
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
+        return std::make_tuple(gps_time,gps_week,heading,heading_uncertainty,type);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(gps_time),std::ref(gps_week),std::ref(heading),std::ref(heading_uncertainty),std::ref(type));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
@@ -570,9 +593,13 @@ struct TareOrientation
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(axes));
+        return std::make_tuple(axes);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(axes));
+    }
     
     static TareOrientation create_sld_all(::mip::FunctionSelector function)
     {
@@ -595,7 +622,6 @@ struct TareOrientation
         {
             return std::make_tuple(std::ref(axes));
         }
-        
     };
 };
 void insert(Serializer& serializer, const TareOrientation& self);
@@ -645,9 +671,13 @@ struct VehicleDynamicsMode
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(mode));
+        return std::make_tuple(mode);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(mode));
+    }
     
     static VehicleDynamicsMode create_sld_all(::mip::FunctionSelector function)
     {
@@ -670,7 +700,6 @@ struct VehicleDynamicsMode
         {
             return std::make_tuple(std::ref(mode));
         }
-        
     };
 };
 void insert(Serializer& serializer, const VehicleDynamicsMode& self);
@@ -736,9 +765,13 @@ struct SensorToVehicleRotationEuler
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
+        return std::make_tuple(roll,pitch,yaw);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
+    }
     
     static SensorToVehicleRotationEuler create_sld_all(::mip::FunctionSelector function)
     {
@@ -763,7 +796,6 @@ struct SensorToVehicleRotationEuler
         {
             return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self);
@@ -833,9 +865,13 @@ struct SensorToVehicleRotationDcm
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(dcm));
+        return std::make_tuple(dcm);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(dcm));
+    }
     
     static SensorToVehicleRotationDcm create_sld_all(::mip::FunctionSelector function)
     {
@@ -858,7 +894,6 @@ struct SensorToVehicleRotationDcm
         {
             return std::make_tuple(std::ref(dcm));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SensorToVehicleRotationDcm& self);
@@ -927,9 +962,13 @@ struct SensorToVehicleRotationQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(quat));
+        return std::make_tuple(quat);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(quat));
+    }
     
     static SensorToVehicleRotationQuaternion create_sld_all(::mip::FunctionSelector function)
     {
@@ -952,7 +991,6 @@ struct SensorToVehicleRotationQuaternion
         {
             return std::make_tuple(std::ref(quat));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion& self);
@@ -1002,9 +1040,13 @@ struct SensorToVehicleOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(offset));
+        return std::make_tuple(offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(offset));
+    }
     
     static SensorToVehicleOffset create_sld_all(::mip::FunctionSelector function)
     {
@@ -1027,7 +1069,6 @@ struct SensorToVehicleOffset
         {
             return std::make_tuple(std::ref(offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SensorToVehicleOffset& self);
@@ -1074,9 +1115,13 @@ struct AntennaOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(offset));
+        return std::make_tuple(offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(offset));
+    }
     
     static AntennaOffset create_sld_all(::mip::FunctionSelector function)
     {
@@ -1099,7 +1144,6 @@ struct AntennaOffset
         {
             return std::make_tuple(std::ref(offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AntennaOffset& self);
@@ -1153,9 +1197,13 @@ struct GnssSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source));
+        return std::make_tuple(source);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source));
+    }
     
     static GnssSource create_sld_all(::mip::FunctionSelector function)
     {
@@ -1178,7 +1226,6 @@ struct GnssSource
         {
             return std::make_tuple(std::ref(source));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GnssSource& self);
@@ -1243,9 +1290,13 @@ struct HeadingSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source));
+        return std::make_tuple(source);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source));
+    }
     
     static HeadingSource create_sld_all(::mip::FunctionSelector function)
     {
@@ -1268,7 +1319,6 @@ struct HeadingSource
         {
             return std::make_tuple(std::ref(source));
         }
-        
     };
 };
 void insert(Serializer& serializer, const HeadingSource& self);
@@ -1318,9 +1368,13 @@ struct AutoInitControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable));
+        return std::make_tuple(enable);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable));
+    }
     
     static AutoInitControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -1343,7 +1397,6 @@ struct AutoInitControl
         {
             return std::make_tuple(std::ref(enable));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AutoInitControl& self);
@@ -1391,9 +1444,13 @@ struct AccelNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static AccelNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -1416,7 +1473,6 @@ struct AccelNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AccelNoise& self);
@@ -1464,9 +1520,13 @@ struct GyroNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static GyroNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -1489,7 +1549,6 @@ struct GyroNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GyroNoise& self);
@@ -1535,9 +1594,13 @@ struct AccelBiasModel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(beta),std::ref(noise));
+        return std::make_tuple(beta,noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(beta),std::ref(noise));
+    }
     
     static AccelBiasModel create_sld_all(::mip::FunctionSelector function)
     {
@@ -1561,7 +1624,6 @@ struct AccelBiasModel
         {
             return std::make_tuple(std::ref(beta),std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AccelBiasModel& self);
@@ -1607,9 +1669,13 @@ struct GyroBiasModel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(beta),std::ref(noise));
+        return std::make_tuple(beta,noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(beta),std::ref(noise));
+    }
     
     static GyroBiasModel create_sld_all(::mip::FunctionSelector function)
     {
@@ -1633,7 +1699,6 @@ struct GyroBiasModel
         {
             return std::make_tuple(std::ref(beta),std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GyroBiasModel& self);
@@ -1685,9 +1750,13 @@ struct AltitudeAiding
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(selector));
+        return std::make_tuple(selector);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(selector));
+    }
     
     static AltitudeAiding create_sld_all(::mip::FunctionSelector function)
     {
@@ -1710,7 +1779,6 @@ struct AltitudeAiding
         {
             return std::make_tuple(std::ref(selector));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AltitudeAiding& self);
@@ -1759,9 +1827,13 @@ struct PitchRollAiding
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source));
+        return std::make_tuple(source);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source));
+    }
     
     static PitchRollAiding create_sld_all(::mip::FunctionSelector function)
     {
@@ -1784,7 +1856,6 @@ struct PitchRollAiding
         {
             return std::make_tuple(std::ref(source));
         }
-        
     };
 };
 void insert(Serializer& serializer, const PitchRollAiding& self);
@@ -1828,9 +1899,13 @@ struct AutoZupt
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(threshold));
+        return std::make_tuple(enable,threshold);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(threshold));
+    }
     
     static AutoZupt create_sld_all(::mip::FunctionSelector function)
     {
@@ -1854,7 +1929,6 @@ struct AutoZupt
         {
             return std::make_tuple(std::ref(enable),std::ref(threshold));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AutoZupt& self);
@@ -1899,9 +1973,13 @@ struct AutoAngularZupt
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(threshold));
+        return std::make_tuple(enable,threshold);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(threshold));
+    }
     
     static AutoAngularZupt create_sld_all(::mip::FunctionSelector function)
     {
@@ -1925,7 +2003,6 @@ struct AutoAngularZupt
         {
             return std::make_tuple(std::ref(enable),std::ref(threshold));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AutoAngularZupt& self);
@@ -1962,6 +2039,10 @@ struct CommandedZupt
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const CommandedZupt& self);
@@ -1991,6 +2072,10 @@ struct CommandedAngularZupt
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const CommandedAngularZupt& self);
@@ -2028,6 +2113,10 @@ struct MagCaptureAutoCal
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     
     static MagCaptureAutoCal create_sld_all(::mip::FunctionSelector function)
     {
@@ -2076,9 +2165,13 @@ struct GravityNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static GravityNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -2101,7 +2194,6 @@ struct GravityNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GravityNoise& self);
@@ -2148,9 +2240,13 @@ struct PressureAltitudeNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static PressureAltitudeNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -2173,7 +2269,6 @@ struct PressureAltitudeNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const PressureAltitudeNoise& self);
@@ -2222,9 +2317,13 @@ struct HardIronOffsetNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static HardIronOffsetNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -2247,7 +2346,6 @@ struct HardIronOffsetNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const HardIronOffsetNoise& self);
@@ -2295,9 +2393,13 @@ struct SoftIronMatrixNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static SoftIronMatrixNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -2320,7 +2422,6 @@ struct SoftIronMatrixNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SoftIronMatrixNoise& self);
@@ -2368,9 +2469,13 @@ struct MagNoise
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(noise));
+        return std::make_tuple(noise);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(noise));
+    }
     
     static MagNoise create_sld_all(::mip::FunctionSelector function)
     {
@@ -2393,7 +2498,6 @@ struct MagNoise
         {
             return std::make_tuple(std::ref(noise));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MagNoise& self);
@@ -2440,9 +2544,13 @@ struct InclinationSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(inclination));
+        return std::make_tuple(source,inclination);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(inclination));
+    }
     
     static InclinationSource create_sld_all(::mip::FunctionSelector function)
     {
@@ -2466,7 +2574,6 @@ struct InclinationSource
         {
             return std::make_tuple(std::ref(source),std::ref(inclination));
         }
-        
     };
 };
 void insert(Serializer& serializer, const InclinationSource& self);
@@ -2513,9 +2620,13 @@ struct MagneticDeclinationSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(declination));
+        return std::make_tuple(source,declination);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(declination));
+    }
     
     static MagneticDeclinationSource create_sld_all(::mip::FunctionSelector function)
     {
@@ -2539,7 +2650,6 @@ struct MagneticDeclinationSource
         {
             return std::make_tuple(std::ref(source),std::ref(declination));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MagneticDeclinationSource& self);
@@ -2585,9 +2695,13 @@ struct MagFieldMagnitudeSource
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(magnitude));
+        return std::make_tuple(source,magnitude);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(magnitude));
+    }
     
     static MagFieldMagnitudeSource create_sld_all(::mip::FunctionSelector function)
     {
@@ -2611,7 +2725,6 @@ struct MagFieldMagnitudeSource
         {
             return std::make_tuple(std::ref(source),std::ref(magnitude));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MagFieldMagnitudeSource& self);
@@ -2659,9 +2772,13 @@ struct ReferencePosition
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
+        return std::make_tuple(enable,latitude,longitude,altitude);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
+    }
     
     static ReferencePosition create_sld_all(::mip::FunctionSelector function)
     {
@@ -2687,7 +2804,6 @@ struct ReferencePosition
         {
             return std::make_tuple(std::ref(enable),std::ref(latitude),std::ref(longitude),std::ref(altitude));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ReferencePosition& self);
@@ -2748,9 +2864,13 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+        return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+    }
     
     static AccelMagnitudeErrorAdaptiveMeasurement create_sld_all(::mip::FunctionSelector function)
     {
@@ -2779,7 +2899,6 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
         {
             return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self);
@@ -2835,9 +2954,13 @@ struct MagMagnitudeErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+        return std::make_tuple(adaptive_measurement,frequency,low_limit,high_limit,low_limit_uncertainty,high_limit_uncertainty,minimum_uncertainty);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+    }
     
     static MagMagnitudeErrorAdaptiveMeasurement create_sld_all(::mip::FunctionSelector function)
     {
@@ -2866,7 +2989,6 @@ struct MagMagnitudeErrorAdaptiveMeasurement
         {
             return std::make_tuple(std::ref(adaptive_measurement),std::ref(frequency),std::ref(low_limit),std::ref(high_limit),std::ref(low_limit_uncertainty),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self);
@@ -2922,9 +3044,13 @@ struct MagDipAngleErrorAdaptiveMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+        return std::make_tuple(enable,frequency,high_limit,high_limit_uncertainty,minimum_uncertainty);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
+    }
     
     static MagDipAngleErrorAdaptiveMeasurement create_sld_all(::mip::FunctionSelector function)
     {
@@ -2951,7 +3077,6 @@ struct MagDipAngleErrorAdaptiveMeasurement
         {
             return std::make_tuple(std::ref(enable),std::ref(frequency),std::ref(high_limit),std::ref(high_limit_uncertainty),std::ref(minimum_uncertainty));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self);
@@ -3007,9 +3132,13 @@ struct AidingMeasurementEnable
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(aiding_source),std::ref(enable));
+        return std::make_tuple(aiding_source,enable);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(aiding_source),std::ref(enable));
+    }
     
     static AidingMeasurementEnable create_sld_all(::mip::FunctionSelector function)
     {
@@ -3034,7 +3163,6 @@ struct AidingMeasurementEnable
         {
             return std::make_tuple(std::ref(aiding_source),std::ref(enable));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AidingMeasurementEnable& self);
@@ -3073,6 +3201,10 @@ struct Run
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const Run& self);
@@ -3111,9 +3243,13 @@ struct KinematicConstraint
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
+        return std::make_tuple(acceleration_constraint_selection,velocity_constraint_selection,angular_constraint_selection);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
+    }
     
     static KinematicConstraint create_sld_all(::mip::FunctionSelector function)
     {
@@ -3138,7 +3274,6 @@ struct KinematicConstraint
         {
             return std::make_tuple(std::ref(acceleration_constraint_selection),std::ref(velocity_constraint_selection),std::ref(angular_constraint_selection));
         }
-        
     };
 };
 void insert(Serializer& serializer, const KinematicConstraint& self);
@@ -3234,9 +3369,13 @@ struct InitializationConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
+        return std::make_tuple(wait_for_run_command,initial_cond_src,auto_heading_alignment_selector,initial_heading,initial_pitch,initial_roll,initial_position,initial_velocity,reference_frame_selector);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
+    }
     
     static InitializationConfiguration create_sld_all(::mip::FunctionSelector function)
     {
@@ -3267,7 +3406,6 @@ struct InitializationConfiguration
         {
             return std::make_tuple(std::ref(wait_for_run_command),std::ref(initial_cond_src),std::ref(auto_heading_alignment_selector),std::ref(initial_heading),std::ref(initial_pitch),std::ref(initial_roll),std::ref(initial_position),std::ref(initial_velocity),std::ref(reference_frame_selector));
         }
-        
     };
 };
 void insert(Serializer& serializer, const InitializationConfiguration& self);
@@ -3310,9 +3448,13 @@ struct AdaptiveFilterOptions
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(level),std::ref(time_limit));
+        return std::make_tuple(level,time_limit);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(level),std::ref(time_limit));
+    }
     
     static AdaptiveFilterOptions create_sld_all(::mip::FunctionSelector function)
     {
@@ -3336,7 +3478,6 @@ struct AdaptiveFilterOptions
         {
             return std::make_tuple(std::ref(level),std::ref(time_limit));
         }
-        
     };
 };
 void insert(Serializer& serializer, const AdaptiveFilterOptions& self);
@@ -3382,9 +3523,13 @@ struct MultiAntennaOffset
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
+        return std::make_tuple(receiver_id,antenna_offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
+    }
     
     static MultiAntennaOffset create_sld_all(::mip::FunctionSelector function)
     {
@@ -3409,7 +3554,6 @@ struct MultiAntennaOffset
         {
             return std::make_tuple(std::ref(receiver_id),std::ref(antenna_offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const MultiAntennaOffset& self);
@@ -3453,9 +3597,13 @@ struct RelPosConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
+        return std::make_tuple(source,reference_frame_selector,reference_coordinates);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
+    }
     
     static RelPosConfiguration create_sld_all(::mip::FunctionSelector function)
     {
@@ -3480,7 +3628,6 @@ struct RelPosConfiguration
         {
             return std::make_tuple(std::ref(source),std::ref(reference_frame_selector),std::ref(reference_coordinates));
         }
-        
     };
 };
 void insert(Serializer& serializer, const RelPosConfiguration& self);
@@ -3535,9 +3682,13 @@ struct RefPointLeverArm
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
+        return std::make_tuple(ref_point_sel,lever_arm_offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
+    }
     
     static RefPointLeverArm create_sld_all(::mip::FunctionSelector function)
     {
@@ -3561,7 +3712,6 @@ struct RefPointLeverArm
         {
             return std::make_tuple(std::ref(ref_point_sel),std::ref(lever_arm_offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const RefPointLeverArm& self);
@@ -3601,9 +3751,13 @@ struct SpeedMeasurement
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(time_of_week),std::ref(speed),std::ref(speed_uncertainty));
+        return std::make_tuple(source,time_of_week,speed,speed_uncertainty);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(time_of_week),std::ref(speed),std::ref(speed_uncertainty));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const SpeedMeasurement& self);
@@ -3645,9 +3799,13 @@ struct SpeedLeverArm
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
+        return std::make_tuple(source,lever_arm_offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
+    }
     
     static SpeedLeverArm create_sld_all(::mip::FunctionSelector function)
     {
@@ -3672,7 +3830,6 @@ struct SpeedLeverArm
         {
             return std::make_tuple(std::ref(source),std::ref(lever_arm_offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SpeedLeverArm& self);
@@ -3720,9 +3877,13 @@ struct WheeledVehicleConstraintControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable));
+        return std::make_tuple(enable);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable));
+    }
     
     static WheeledVehicleConstraintControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -3745,7 +3906,6 @@ struct WheeledVehicleConstraintControl
         {
             return std::make_tuple(std::ref(enable));
         }
-        
     };
 };
 void insert(Serializer& serializer, const WheeledVehicleConstraintControl& self);
@@ -3791,9 +3951,13 @@ struct VerticalGyroConstraintControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable));
+        return std::make_tuple(enable);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable));
+    }
     
     static VerticalGyroConstraintControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -3816,7 +3980,6 @@ struct VerticalGyroConstraintControl
         {
             return std::make_tuple(std::ref(enable));
         }
-        
     };
 };
 void insert(Serializer& serializer, const VerticalGyroConstraintControl& self);
@@ -3861,9 +4024,13 @@ struct GnssAntennaCalControl
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(max_offset));
+        return std::make_tuple(enable,max_offset);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(max_offset));
+    }
     
     static GnssAntennaCalControl create_sld_all(::mip::FunctionSelector function)
     {
@@ -3887,7 +4054,6 @@ struct GnssAntennaCalControl
         {
             return std::make_tuple(std::ref(enable),std::ref(max_offset));
         }
-        
     };
 };
 void insert(Serializer& serializer, const GnssAntennaCalControl& self);
@@ -3925,9 +4091,13 @@ struct SetInitialHeading
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(heading));
+        return std::make_tuple(heading);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(heading));
+    }
     typedef void Response;
 };
 void insert(Serializer& serializer, const SetInitialHeading& self);

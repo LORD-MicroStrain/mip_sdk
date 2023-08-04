@@ -87,9 +87,13 @@ struct RawAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(raw_accel[0]),std::ref(raw_accel[1]),std::ref(raw_accel[2]));
+        return std::make_tuple(raw_accel[0],raw_accel[1],raw_accel[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(raw_accel[0]),std::ref(raw_accel[1]),std::ref(raw_accel[2]));
+    }
 };
 void insert(Serializer& serializer, const RawAccel& self);
 void extract(Serializer& serializer, RawAccel& self);
@@ -114,9 +118,13 @@ struct RawGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(raw_gyro[0]),std::ref(raw_gyro[1]),std::ref(raw_gyro[2]));
+        return std::make_tuple(raw_gyro[0],raw_gyro[1],raw_gyro[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(raw_gyro[0]),std::ref(raw_gyro[1]),std::ref(raw_gyro[2]));
+    }
 };
 void insert(Serializer& serializer, const RawGyro& self);
 void extract(Serializer& serializer, RawGyro& self);
@@ -141,9 +149,13 @@ struct RawMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(raw_mag[0]),std::ref(raw_mag[1]),std::ref(raw_mag[2]));
+        return std::make_tuple(raw_mag[0],raw_mag[1],raw_mag[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(raw_mag[0]),std::ref(raw_mag[1]),std::ref(raw_mag[2]));
+    }
 };
 void insert(Serializer& serializer, const RawMag& self);
 void extract(Serializer& serializer, RawMag& self);
@@ -168,9 +180,13 @@ struct RawPressure
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(raw_pressure));
+        return std::make_tuple(raw_pressure);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(raw_pressure));
+    }
 };
 void insert(Serializer& serializer, const RawPressure& self);
 void extract(Serializer& serializer, RawPressure& self);
@@ -195,9 +211,13 @@ struct ScaledAccel
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(scaled_accel[0]),std::ref(scaled_accel[1]),std::ref(scaled_accel[2]));
+        return std::make_tuple(scaled_accel[0],scaled_accel[1],scaled_accel[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(scaled_accel[0]),std::ref(scaled_accel[1]),std::ref(scaled_accel[2]));
+    }
 };
 void insert(Serializer& serializer, const ScaledAccel& self);
 void extract(Serializer& serializer, ScaledAccel& self);
@@ -222,9 +242,13 @@ struct ScaledGyro
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(scaled_gyro[0]),std::ref(scaled_gyro[1]),std::ref(scaled_gyro[2]));
+        return std::make_tuple(scaled_gyro[0],scaled_gyro[1],scaled_gyro[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(scaled_gyro[0]),std::ref(scaled_gyro[1]),std::ref(scaled_gyro[2]));
+    }
 };
 void insert(Serializer& serializer, const ScaledGyro& self);
 void extract(Serializer& serializer, ScaledGyro& self);
@@ -249,9 +273,13 @@ struct ScaledMag
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(scaled_mag[0]),std::ref(scaled_mag[1]),std::ref(scaled_mag[2]));
+        return std::make_tuple(scaled_mag[0],scaled_mag[1],scaled_mag[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(scaled_mag[0]),std::ref(scaled_mag[1]),std::ref(scaled_mag[2]));
+    }
 };
 void insert(Serializer& serializer, const ScaledMag& self);
 void extract(Serializer& serializer, ScaledMag& self);
@@ -275,9 +303,13 @@ struct ScaledPressure
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(scaled_pressure));
+        return std::make_tuple(scaled_pressure);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(scaled_pressure));
+    }
 };
 void insert(Serializer& serializer, const ScaledPressure& self);
 void extract(Serializer& serializer, ScaledPressure& self);
@@ -302,9 +334,13 @@ struct DeltaTheta
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(delta_theta[0]),std::ref(delta_theta[1]),std::ref(delta_theta[2]));
+        return std::make_tuple(delta_theta[0],delta_theta[1],delta_theta[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(delta_theta[0]),std::ref(delta_theta[1]),std::ref(delta_theta[2]));
+    }
 };
 void insert(Serializer& serializer, const DeltaTheta& self);
 void extract(Serializer& serializer, DeltaTheta& self);
@@ -329,9 +365,13 @@ struct DeltaVelocity
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(delta_velocity[0]),std::ref(delta_velocity[1]),std::ref(delta_velocity[2]));
+        return std::make_tuple(delta_velocity[0],delta_velocity[1],delta_velocity[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(delta_velocity[0]),std::ref(delta_velocity[1]),std::ref(delta_velocity[2]));
+    }
 };
 void insert(Serializer& serializer, const DeltaVelocity& self);
 void extract(Serializer& serializer, DeltaVelocity& self);
@@ -365,9 +405,13 @@ struct CompOrientationMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
+        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
+    }
 };
 void insert(Serializer& serializer, const CompOrientationMatrix& self);
 void extract(Serializer& serializer, CompOrientationMatrix& self);
@@ -399,9 +443,13 @@ struct CompQuaternion
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]));
+        return std::make_tuple(q[0],q[1],q[2],q[3]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]));
+    }
 };
 void insert(Serializer& serializer, const CompQuaternion& self);
 void extract(Serializer& serializer, CompQuaternion& self);
@@ -428,9 +476,13 @@ struct CompEulerAngles
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
+        return std::make_tuple(roll,pitch,yaw);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
+    }
 };
 void insert(Serializer& serializer, const CompEulerAngles& self);
 void extract(Serializer& serializer, CompEulerAngles& self);
@@ -454,9 +506,13 @@ struct CompOrientationUpdateMatrix
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
+        return std::make_tuple(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
+    }
 };
 void insert(Serializer& serializer, const CompOrientationUpdateMatrix& self);
 void extract(Serializer& serializer, CompOrientationUpdateMatrix& self);
@@ -480,9 +536,13 @@ struct OrientationRawTemp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(raw_temp));
+        return std::make_tuple(raw_temp);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(raw_temp));
+    }
 };
 void insert(Serializer& serializer, const OrientationRawTemp& self);
 void extract(Serializer& serializer, OrientationRawTemp& self);
@@ -506,9 +566,13 @@ struct InternalTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(counts));
+        return std::make_tuple(counts);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(counts));
+    }
 };
 void insert(Serializer& serializer, const InternalTimestamp& self);
 void extract(Serializer& serializer, InternalTimestamp& self);
@@ -533,9 +597,13 @@ struct PpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(seconds),std::ref(useconds));
+        return std::make_tuple(seconds,useconds);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(seconds),std::ref(useconds));
+    }
 };
 void insert(Serializer& serializer, const PpsTimestamp& self);
 void extract(Serializer& serializer, PpsTimestamp& self);
@@ -604,9 +672,13 @@ struct GpsTimestamp
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
+        return std::make_tuple(tow,week_number,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
+    }
 };
 void insert(Serializer& serializer, const GpsTimestamp& self);
 void extract(Serializer& serializer, GpsTimestamp& self);
@@ -636,9 +708,13 @@ struct TemperatureAbs
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(min_temp),std::ref(max_temp),std::ref(mean_temp));
+        return std::make_tuple(min_temp,max_temp,mean_temp);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(min_temp),std::ref(max_temp),std::ref(mean_temp));
+    }
 };
 void insert(Serializer& serializer, const TemperatureAbs& self);
 void extract(Serializer& serializer, TemperatureAbs& self);
@@ -668,9 +744,13 @@ struct UpVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(up[0]),std::ref(up[1]),std::ref(up[2]));
+        return std::make_tuple(up[0],up[1],up[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(up[0]),std::ref(up[1]),std::ref(up[2]));
+    }
 };
 void insert(Serializer& serializer, const UpVector& self);
 void extract(Serializer& serializer, UpVector& self);
@@ -697,9 +777,13 @@ struct NorthVector
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(north[0]),std::ref(north[1]),std::ref(north[2]));
+        return std::make_tuple(north[0],north[1],north[2]);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(north[0]),std::ref(north[1]),std::ref(north[2]));
+    }
 };
 void insert(Serializer& serializer, const NorthVector& self);
 void extract(Serializer& serializer, NorthVector& self);
@@ -774,9 +858,13 @@ struct OverrangeStatus
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(status));
+        return std::make_tuple(status);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(status));
+    }
 };
 void insert(Serializer& serializer, const OverrangeStatus& self);
 void extract(Serializer& serializer, OverrangeStatus& self);
@@ -801,9 +889,13 @@ struct OdometerData
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(speed),std::ref(uncertainty),std::ref(valid_flags));
+        return std::make_tuple(speed,uncertainty,valid_flags);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(speed),std::ref(uncertainty),std::ref(valid_flags));
+    }
 };
 void insert(Serializer& serializer, const OdometerData& self);
 void extract(Serializer& serializer, OdometerData& self);

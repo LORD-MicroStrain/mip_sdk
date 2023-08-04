@@ -87,6 +87,10 @@ struct ReceiverInfo
         return std::make_tuple();
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
         static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
@@ -102,7 +106,6 @@ struct ReceiverInfo
         {
             return std::make_tuple(std::ref(num_receivers),std::ref(receiver_info));
         }
-        
     };
 };
 void insert(Serializer& serializer, const ReceiverInfo& self);
@@ -148,9 +151,13 @@ struct SignalConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(gps_enable),std::ref(glonass_enable),std::ref(galileo_enable),std::ref(beidou_enable),std::ref(reserved));
+        return std::make_tuple(gps_enable,glonass_enable,galileo_enable,beidou_enable,reserved);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(gps_enable),std::ref(glonass_enable),std::ref(galileo_enable),std::ref(beidou_enable),std::ref(reserved));
+    }
     
     static SignalConfiguration create_sld_all(::mip::FunctionSelector function)
     {
@@ -177,7 +184,6 @@ struct SignalConfiguration
         {
             return std::make_tuple(std::ref(gps_enable),std::ref(glonass_enable),std::ref(galileo_enable),std::ref(beidou_enable),std::ref(reserved));
         }
-        
     };
 };
 void insert(Serializer& serializer, const SignalConfiguration& self);
@@ -221,9 +227,13 @@ struct RtkDongleConfiguration
     
     auto as_tuple() const
     {
-        return std::make_tuple(std::ref(enable),std::ref(reserved));
+        return std::make_tuple(enable,reserved);
     }
     
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(enable),std::ref(reserved));
+    }
     
     static RtkDongleConfiguration create_sld_all(::mip::FunctionSelector function)
     {
@@ -247,7 +257,6 @@ struct RtkDongleConfiguration
         {
             return std::make_tuple(std::ref(enable),std::ref(reserved));
         }
-        
     };
 };
 void insert(Serializer& serializer, const RtkDongleConfiguration& self);
