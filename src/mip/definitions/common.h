@@ -7,6 +7,7 @@
 
 #ifdef __cplusplus
 
+#include <array>
 #include <tuple>
 #include <type_traits>
 
