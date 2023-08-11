@@ -127,7 +127,7 @@ struct Vector
 
     /// Assignment operator from different type (e.g. float to double).
     template<typename U>
-    Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); }
+    Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); return *this; }
 
 
     typedef T Array[N];
