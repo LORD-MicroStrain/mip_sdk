@@ -131,15 +131,15 @@ struct Vector
 
 
     typedef T Array[N];
-    /// Implicitly convert to a C-style array (rather than a pointer) so size information is preserved.
-    operator Array&() { return m_data; }
 
 #if _MSC_VER < 1930
     // MSVC 2017 has a bug which causes operator[] to be ambiguous.
     // See https://stackoverflow.com/questions/48250560/msvc-error-c2593-when-overloading-const-and-non-const-conversion-operator-return
+    operator T*() { return m_data; }
     operator const T*() const { return m_data; }
 #else
-    // Normally an array ref is returned so that the size information is preserved.
+    /// Implicitly convert to a C-style array (rather than a pointer) so size information is preserved.
+    operator Array&() { return m_data; }
     operator const Array&() const { return m_data; }
 #endif
 
