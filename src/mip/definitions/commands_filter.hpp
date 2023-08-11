@@ -427,7 +427,7 @@ struct ExternalGnssUpdate
 void insert(Serializer& serializer, const ExternalGnssUpdate& self);
 void extract(Serializer& serializer, ExternalGnssUpdate& self);
 
-CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, Vector3f velocity, Vector3f posUncertainty, Vector3f velUncertainty);
+CmdResult externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty);
 
 ///@}
 ///
@@ -902,8 +902,8 @@ void extract(Serializer& serializer, SensorToVehicleRotationDcm& self);
 void insert(Serializer& serializer, const SensorToVehicleRotationDcm::Response& self);
 void extract(Serializer& serializer, SensorToVehicleRotationDcm::Response& self);
 
-CmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, Matrix3f dcm);
-CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, Matrix3f dcmOut);
+CmdResult writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm);
+CmdResult readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut);
 CmdResult saveSensorToVehicleRotationDcm(C::mip_interface& device);
 CmdResult loadSensorToVehicleRotationDcm(C::mip_interface& device);
 CmdResult defaultSensorToVehicleRotationDcm(C::mip_interface& device);
@@ -999,8 +999,8 @@ void extract(Serializer& serializer, SensorToVehicleRotationQuaternion& self);
 void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion::Response& self);
 void extract(Serializer& serializer, SensorToVehicleRotationQuaternion::Response& self);
 
-CmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, Quatf quat);
-CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, Quatf quatOut);
+CmdResult writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat);
+CmdResult readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quatOut);
 CmdResult saveSensorToVehicleRotationQuaternion(C::mip_interface& device);
 CmdResult loadSensorToVehicleRotationQuaternion(C::mip_interface& device);
 CmdResult defaultSensorToVehicleRotationQuaternion(C::mip_interface& device);
@@ -1077,8 +1077,8 @@ void extract(Serializer& serializer, SensorToVehicleOffset& self);
 void insert(Serializer& serializer, const SensorToVehicleOffset::Response& self);
 void extract(Serializer& serializer, SensorToVehicleOffset::Response& self);
 
-CmdResult writeSensorToVehicleOffset(C::mip_interface& device, Vector3f offset);
-CmdResult readSensorToVehicleOffset(C::mip_interface& device, Vector3f offsetOut);
+CmdResult writeSensorToVehicleOffset(C::mip_interface& device, const float* offset);
+CmdResult readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut);
 CmdResult saveSensorToVehicleOffset(C::mip_interface& device);
 CmdResult loadSensorToVehicleOffset(C::mip_interface& device);
 CmdResult defaultSensorToVehicleOffset(C::mip_interface& device);
@@ -1152,8 +1152,8 @@ void extract(Serializer& serializer, AntennaOffset& self);
 void insert(Serializer& serializer, const AntennaOffset::Response& self);
 void extract(Serializer& serializer, AntennaOffset::Response& self);
 
-CmdResult writeAntennaOffset(C::mip_interface& device, Vector3f offset);
-CmdResult readAntennaOffset(C::mip_interface& device, Vector3f offsetOut);
+CmdResult writeAntennaOffset(C::mip_interface& device, const float* offset);
+CmdResult readAntennaOffset(C::mip_interface& device, float* offsetOut);
 CmdResult saveAntennaOffset(C::mip_interface& device);
 CmdResult loadAntennaOffset(C::mip_interface& device);
 CmdResult defaultAntennaOffset(C::mip_interface& device);
@@ -1481,8 +1481,8 @@ void extract(Serializer& serializer, AccelNoise& self);
 void insert(Serializer& serializer, const AccelNoise::Response& self);
 void extract(Serializer& serializer, AccelNoise::Response& self);
 
-CmdResult writeAccelNoise(C::mip_interface& device, Vector3f noise);
-CmdResult readAccelNoise(C::mip_interface& device, Vector3f noiseOut);
+CmdResult writeAccelNoise(C::mip_interface& device, const float* noise);
+CmdResult readAccelNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveAccelNoise(C::mip_interface& device);
 CmdResult loadAccelNoise(C::mip_interface& device);
 CmdResult defaultAccelNoise(C::mip_interface& device);
@@ -1557,8 +1557,8 @@ void extract(Serializer& serializer, GyroNoise& self);
 void insert(Serializer& serializer, const GyroNoise::Response& self);
 void extract(Serializer& serializer, GyroNoise::Response& self);
 
-CmdResult writeGyroNoise(C::mip_interface& device, Vector3f noise);
-CmdResult readGyroNoise(C::mip_interface& device, Vector3f noiseOut);
+CmdResult writeGyroNoise(C::mip_interface& device, const float* noise);
+CmdResult readGyroNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveGyroNoise(C::mip_interface& device);
 CmdResult loadGyroNoise(C::mip_interface& device);
 CmdResult defaultGyroNoise(C::mip_interface& device);
@@ -1632,8 +1632,8 @@ void extract(Serializer& serializer, AccelBiasModel& self);
 void insert(Serializer& serializer, const AccelBiasModel::Response& self);
 void extract(Serializer& serializer, AccelBiasModel::Response& self);
 
-CmdResult writeAccelBiasModel(C::mip_interface& device, Vector3f beta, Vector3f noise);
-CmdResult readAccelBiasModel(C::mip_interface& device, Vector3f betaOut, Vector3f noiseOut);
+CmdResult writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise);
+CmdResult readAccelBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
 CmdResult saveAccelBiasModel(C::mip_interface& device);
 CmdResult loadAccelBiasModel(C::mip_interface& device);
 CmdResult defaultAccelBiasModel(C::mip_interface& device);
@@ -1707,8 +1707,8 @@ void extract(Serializer& serializer, GyroBiasModel& self);
 void insert(Serializer& serializer, const GyroBiasModel::Response& self);
 void extract(Serializer& serializer, GyroBiasModel::Response& self);
 
-CmdResult writeGyroBiasModel(C::mip_interface& device, Vector3f beta, Vector3f noise);
-CmdResult readGyroBiasModel(C::mip_interface& device, Vector3f betaOut, Vector3f noiseOut);
+CmdResult writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise);
+CmdResult readGyroBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
 CmdResult saveGyroBiasModel(C::mip_interface& device);
 CmdResult loadGyroBiasModel(C::mip_interface& device);
 CmdResult defaultGyroBiasModel(C::mip_interface& device);
@@ -2202,8 +2202,8 @@ void extract(Serializer& serializer, GravityNoise& self);
 void insert(Serializer& serializer, const GravityNoise::Response& self);
 void extract(Serializer& serializer, GravityNoise::Response& self);
 
-CmdResult writeGravityNoise(C::mip_interface& device, Vector3f noise);
-CmdResult readGravityNoise(C::mip_interface& device, Vector3f noiseOut);
+CmdResult writeGravityNoise(C::mip_interface& device, const float* noise);
+CmdResult readGravityNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveGravityNoise(C::mip_interface& device);
 CmdResult loadGravityNoise(C::mip_interface& device);
 CmdResult defaultGravityNoise(C::mip_interface& device);
@@ -2354,8 +2354,8 @@ void extract(Serializer& serializer, HardIronOffsetNoise& self);
 void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self);
 void extract(Serializer& serializer, HardIronOffsetNoise::Response& self);
 
-CmdResult writeHardIronOffsetNoise(C::mip_interface& device, Vector3f noise);
-CmdResult readHardIronOffsetNoise(C::mip_interface& device, Vector3f noiseOut);
+CmdResult writeHardIronOffsetNoise(C::mip_interface& device, const float* noise);
+CmdResult readHardIronOffsetNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveHardIronOffsetNoise(C::mip_interface& device);
 CmdResult loadHardIronOffsetNoise(C::mip_interface& device);
 CmdResult defaultHardIronOffsetNoise(C::mip_interface& device);
@@ -2430,8 +2430,8 @@ void extract(Serializer& serializer, SoftIronMatrixNoise& self);
 void insert(Serializer& serializer, const SoftIronMatrixNoise::Response& self);
 void extract(Serializer& serializer, SoftIronMatrixNoise::Response& self);
 
-CmdResult writeSoftIronMatrixNoise(C::mip_interface& device, Matrix3f noise);
-CmdResult readSoftIronMatrixNoise(C::mip_interface& device, Matrix3f noiseOut);
+CmdResult writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise);
+CmdResult readSoftIronMatrixNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveSoftIronMatrixNoise(C::mip_interface& device);
 CmdResult loadSoftIronMatrixNoise(C::mip_interface& device);
 CmdResult defaultSoftIronMatrixNoise(C::mip_interface& device);
@@ -2506,8 +2506,8 @@ void extract(Serializer& serializer, MagNoise& self);
 void insert(Serializer& serializer, const MagNoise::Response& self);
 void extract(Serializer& serializer, MagNoise::Response& self);
 
-CmdResult writeMagNoise(C::mip_interface& device, Vector3f noise);
-CmdResult readMagNoise(C::mip_interface& device, Vector3f noiseOut);
+CmdResult writeMagNoise(C::mip_interface& device, const float* noise);
+CmdResult readMagNoise(C::mip_interface& device, float* noiseOut);
 CmdResult saveMagNoise(C::mip_interface& device);
 CmdResult loadMagNoise(C::mip_interface& device);
 CmdResult defaultMagNoise(C::mip_interface& device);
@@ -3414,8 +3414,8 @@ void extract(Serializer& serializer, InitializationConfiguration& self);
 void insert(Serializer& serializer, const InitializationConfiguration::Response& self);
 void extract(Serializer& serializer, InitializationConfiguration::Response& self);
 
-CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, Vector3f initialPosition, Vector3f initialVelocity, FilterReferenceFrame referenceFrameSelector);
-CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, Vector3f initialPositionOut, Vector3f initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut);
+CmdResult writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector);
+CmdResult readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut);
 CmdResult saveInitializationConfiguration(C::mip_interface& device);
 CmdResult loadInitializationConfiguration(C::mip_interface& device);
 CmdResult defaultInitializationConfiguration(C::mip_interface& device);
@@ -3562,8 +3562,8 @@ void extract(Serializer& serializer, MultiAntennaOffset& self);
 void insert(Serializer& serializer, const MultiAntennaOffset::Response& self);
 void extract(Serializer& serializer, MultiAntennaOffset::Response& self);
 
-CmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, Vector3f antennaOffset);
-CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, Vector3f antennaOffsetOut);
+CmdResult writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, const float* antennaOffset);
+CmdResult readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, float* antennaOffsetOut);
 CmdResult saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId);
 CmdResult loadMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId);
 CmdResult defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId);
@@ -3636,8 +3636,8 @@ void extract(Serializer& serializer, RelPosConfiguration& self);
 void insert(Serializer& serializer, const RelPosConfiguration::Response& self);
 void extract(Serializer& serializer, RelPosConfiguration::Response& self);
 
-CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, Vector3d referenceCoordinates);
-CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, Vector3d referenceCoordinatesOut);
+CmdResult writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates);
+CmdResult readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut);
 CmdResult saveRelPosConfiguration(C::mip_interface& device);
 CmdResult loadRelPosConfiguration(C::mip_interface& device);
 CmdResult defaultRelPosConfiguration(C::mip_interface& device);
@@ -3720,8 +3720,8 @@ void extract(Serializer& serializer, RefPointLeverArm& self);
 void insert(Serializer& serializer, const RefPointLeverArm::Response& self);
 void extract(Serializer& serializer, RefPointLeverArm::Response& self);
 
-CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, Vector3f leverArmOffset);
-CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, Vector3f leverArmOffsetOut);
+CmdResult writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset);
+CmdResult readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, float* leverArmOffsetOut);
 CmdResult saveRefPointLeverArm(C::mip_interface& device);
 CmdResult loadRefPointLeverArm(C::mip_interface& device);
 CmdResult defaultRefPointLeverArm(C::mip_interface& device);
@@ -3838,8 +3838,8 @@ void extract(Serializer& serializer, SpeedLeverArm& self);
 void insert(Serializer& serializer, const SpeedLeverArm::Response& self);
 void extract(Serializer& serializer, SpeedLeverArm::Response& self);
 
-CmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, Vector3f leverArmOffset);
-CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, Vector3f leverArmOffsetOut);
+CmdResult writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* leverArmOffset);
+CmdResult readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* leverArmOffsetOut);
 CmdResult saveSpeedLeverArm(C::mip_interface& device, uint8_t source);
 CmdResult loadSpeedLeverArm(C::mip_interface& device, uint8_t source);
 CmdResult defaultSpeedLeverArm(C::mip_interface& device, uint8_t source);

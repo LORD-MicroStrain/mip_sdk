@@ -1725,8 +1725,8 @@ typedef struct mip_3dm_accel_bias_response mip_3dm_accel_bias_response;
 void insert_mip_3dm_accel_bias_response(struct mip_serializer* serializer, const mip_3dm_accel_bias_response* self);
 void extract_mip_3dm_accel_bias_response(struct mip_serializer* serializer, mip_3dm_accel_bias_response* self);
 
-mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, mip_vector3f bias);
-mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, mip_vector3f bias_out);
+mip_cmd_result mip_3dm_write_accel_bias(struct mip_interface* device, const float* bias);
+mip_cmd_result mip_3dm_read_accel_bias(struct mip_interface* device, float* bias_out);
 mip_cmd_result mip_3dm_save_accel_bias(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_accel_bias(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_accel_bias(struct mip_interface* device);
@@ -1760,8 +1760,8 @@ typedef struct mip_3dm_gyro_bias_response mip_3dm_gyro_bias_response;
 void insert_mip_3dm_gyro_bias_response(struct mip_serializer* serializer, const mip_3dm_gyro_bias_response* self);
 void extract_mip_3dm_gyro_bias_response(struct mip_serializer* serializer, mip_3dm_gyro_bias_response* self);
 
-mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, mip_vector3f bias);
-mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, mip_vector3f bias_out);
+mip_cmd_result mip_3dm_write_gyro_bias(struct mip_interface* device, const float* bias);
+mip_cmd_result mip_3dm_read_gyro_bias(struct mip_interface* device, float* bias_out);
 mip_cmd_result mip_3dm_save_gyro_bias(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_gyro_bias(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_gyro_bias(struct mip_interface* device);
@@ -1797,7 +1797,7 @@ typedef struct mip_3dm_capture_gyro_bias_response mip_3dm_capture_gyro_bias_resp
 void insert_mip_3dm_capture_gyro_bias_response(struct mip_serializer* serializer, const mip_3dm_capture_gyro_bias_response* self);
 void extract_mip_3dm_capture_gyro_bias_response(struct mip_serializer* serializer, mip_3dm_capture_gyro_bias_response* self);
 
-mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint16_t averaging_time_ms, mip_vector3f bias_out);
+mip_cmd_result mip_3dm_capture_gyro_bias(struct mip_interface* device, uint16_t averaging_time_ms, float* bias_out);
 
 ///@}
 ///
@@ -1832,8 +1832,8 @@ typedef struct mip_3dm_mag_hard_iron_offset_response mip_3dm_mag_hard_iron_offse
 void insert_mip_3dm_mag_hard_iron_offset_response(struct mip_serializer* serializer, const mip_3dm_mag_hard_iron_offset_response* self);
 void extract_mip_3dm_mag_hard_iron_offset_response(struct mip_serializer* serializer, mip_3dm_mag_hard_iron_offset_response* self);
 
-mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* device, mip_vector3f offset);
-mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* device, mip_vector3f offset_out);
+mip_cmd_result mip_3dm_write_mag_hard_iron_offset(struct mip_interface* device, const float* offset);
+mip_cmd_result mip_3dm_read_mag_hard_iron_offset(struct mip_interface* device, float* offset_out);
 mip_cmd_result mip_3dm_save_mag_hard_iron_offset(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_mag_hard_iron_offset(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_mag_hard_iron_offset(struct mip_interface* device);
@@ -1875,8 +1875,8 @@ typedef struct mip_3dm_mag_soft_iron_matrix_response mip_3dm_mag_soft_iron_matri
 void insert_mip_3dm_mag_soft_iron_matrix_response(struct mip_serializer* serializer, const mip_3dm_mag_soft_iron_matrix_response* self);
 void extract_mip_3dm_mag_soft_iron_matrix_response(struct mip_serializer* serializer, mip_3dm_mag_soft_iron_matrix_response* self);
 
-mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* device, mip_matrix3f offset);
-mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* device, mip_matrix3f offset_out);
+mip_cmd_result mip_3dm_write_mag_soft_iron_matrix(struct mip_interface* device, const float* offset);
+mip_cmd_result mip_3dm_read_mag_soft_iron_matrix(struct mip_interface* device, float* offset_out);
 mip_cmd_result mip_3dm_save_mag_soft_iron_matrix(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_mag_soft_iron_matrix(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_mag_soft_iron_matrix(struct mip_interface* device);
@@ -2034,8 +2034,8 @@ typedef struct mip_3dm_sensor_2_vehicle_transform_quaternion_response mip_3dm_se
 void insert_mip_3dm_sensor_2_vehicle_transform_quaternion_response(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_quaternion_response(struct mip_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_quaternion_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, mip_quatf q);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, mip_quatf q_out);
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, const float* q);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_quaternion(struct mip_interface* device, float* q_out);
 mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_quaternion(struct mip_interface* device);
@@ -2097,8 +2097,8 @@ typedef struct mip_3dm_sensor_2_vehicle_transform_dcm_response mip_3dm_sensor_2_
 void insert_mip_3dm_sensor_2_vehicle_transform_dcm_response(struct mip_serializer* serializer, const mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
 void extract_mip_3dm_sensor_2_vehicle_transform_dcm_response(struct mip_serializer* serializer, mip_3dm_sensor_2_vehicle_transform_dcm_response* self);
 
-mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_interface* device, mip_matrix3f dcm);
-mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_interface* device, mip_matrix3f dcm_out);
+mip_cmd_result mip_3dm_write_sensor_2_vehicle_transform_dcm(struct mip_interface* device, const float* dcm);
+mip_cmd_result mip_3dm_read_sensor_2_vehicle_transform_dcm(struct mip_interface* device, float* dcm_out);
 mip_cmd_result mip_3dm_save_sensor_2_vehicle_transform_dcm(struct mip_interface* device);
 mip_cmd_result mip_3dm_load_sensor_2_vehicle_transform_dcm(struct mip_interface* device);
 mip_cmd_result mip_3dm_default_sensor_2_vehicle_transform_dcm(struct mip_interface* device);

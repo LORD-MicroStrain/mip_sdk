@@ -253,7 +253,7 @@ void extract_mip_aiding_reference_frame_command_format(struct mip_serializer* se
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, mip_vector3f translation, mip_quatf rotation)
+mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const float* rotation)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -265,17 +265,19 @@ mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, ui
     
     insert_mip_aiding_reference_frame_command_format(&serializer, format);
     
+    assert(translation || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &translation[i]);
+        insert_float(&serializer, translation[i]);
     
+    assert(rotation || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
-        insert_mip_quatf(&serializer, &rotation[i]);
+        insert_float(&serializer, rotation[i]);
     
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, mip_vector3f translation_out, mip_quatf rotation_out)
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, float* translation_out, float* rotation_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -300,11 +302,13 @@ mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uin
         assert(format_out);
         extract_mip_aiding_reference_frame_command_format(&deserializer, format_out);
         
+        assert(translation_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
-            extract_mip_vector3f(&deserializer, &translation_out[i]);
+            extract_float(&deserializer, &translation_out[i]);
         
+        assert(rotation_out || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
-            extract_mip_quatf(&deserializer, &rotation_out[i]);
+            extract_float(&deserializer, &rotation_out[i]);
         
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
@@ -514,7 +518,7 @@ void extract_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* seri
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3d position, mip_vector3f uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -525,11 +529,13 @@ mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time*
     
     insert_u8(&serializer, sensor_id);
     
+    assert(position || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3d(&serializer, &position[i]);
+        insert_double(&serializer, position[i]);
     
+    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &uncertainty[i]);
+        insert_float(&serializer, uncertainty[i]);
     
     insert_mip_aiding_ecef_pos_command_valid_flags(&serializer, valid_flags);
     
@@ -585,7 +591,7 @@ void extract_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* seria
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, mip_vector3f uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -602,8 +608,9 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
     
     insert_double(&serializer, height);
     
+    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &uncertainty[i]);
+        insert_float(&serializer, uncertainty[i]);
     
     insert_mip_aiding_llh_pos_command_valid_flags(&serializer, valid_flags);
     
@@ -653,7 +660,7 @@ void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* seri
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -664,11 +671,13 @@ mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time*
     
     insert_u8(&serializer, sensor_id);
     
+    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &velocity[i]);
+        insert_float(&serializer, velocity[i]);
     
+    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &uncertainty[i]);
+        insert_float(&serializer, uncertainty[i]);
     
     insert_mip_aiding_ecef_vel_command_valid_flags(&serializer, valid_flags);
     
@@ -718,7 +727,7 @@ void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* seria
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -729,11 +738,13 @@ mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* 
     
     insert_u8(&serializer, sensor_id);
     
+    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &velocity[i]);
+        insert_float(&serializer, velocity[i]);
     
+    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &uncertainty[i]);
+        insert_float(&serializer, uncertainty[i]);
     
     insert_mip_aiding_ned_vel_command_valid_flags(&serializer, valid_flags);
     
@@ -783,7 +794,7 @@ void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct 
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags)
+mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -794,11 +805,13 @@ mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* dev
     
     insert_u8(&serializer, sensor_id);
     
+    assert(velocity || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &velocity[i]);
+        insert_float(&serializer, velocity[i]);
     
+    assert(uncertainty || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
-        insert_mip_vector3f(&serializer, &uncertainty[i]);
+        insert_float(&serializer, uncertainty[i]);
     
     insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(&serializer, valid_flags);
     

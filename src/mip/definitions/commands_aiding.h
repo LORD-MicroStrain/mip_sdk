@@ -155,8 +155,8 @@ typedef struct mip_aiding_reference_frame_response mip_aiding_reference_frame_re
 void insert_mip_aiding_reference_frame_response(struct mip_serializer* serializer, const mip_aiding_reference_frame_response* self);
 void extract_mip_aiding_reference_frame_response(struct mip_serializer* serializer, mip_aiding_reference_frame_response* self);
 
-mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, mip_vector3f translation, mip_quatf rotation);
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, mip_vector3f translation_out, mip_quatf rotation_out);
+mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const float* rotation);
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, float* translation_out, float* rotation_out);
 mip_cmd_result mip_aiding_save_reference_frame(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_load_reference_frame(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_default_reference_frame(struct mip_interface* device, uint8_t frame_id);
@@ -232,7 +232,7 @@ void extract_mip_aiding_ecef_pos_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self);
 void extract_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3d position, mip_vector3f uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -268,7 +268,7 @@ void extract_mip_aiding_llh_pos_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self);
 void extract_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, mip_vector3f uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -301,7 +301,7 @@ void extract_mip_aiding_ecef_vel_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self);
 void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -334,7 +334,7 @@ void extract_mip_aiding_ned_vel_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self);
 void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -368,7 +368,7 @@ void extract_mip_aiding_vehicle_fixed_frame_velocity_command(struct mip_serializ
 void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self);
 void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, mip_vector3f velocity, mip_vector3f uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
 
 ///@}
 ///

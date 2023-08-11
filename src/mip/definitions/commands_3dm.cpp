@@ -3313,12 +3313,13 @@ void extract(Serializer& serializer, AccelBias::Response& self)
     
 }
 
-CmdResult writeAccelBias(C::mip_interface& device, Vector3f bias)
+CmdResult writeAccelBias(C::mip_interface& device, const float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3326,7 +3327,7 @@ CmdResult writeAccelBias(C::mip_interface& device, Vector3f bias)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readAccelBias(C::mip_interface& device, Vector3f biasOut)
+CmdResult readAccelBias(C::mip_interface& device, float* biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3341,6 +3342,7 @@ CmdResult readAccelBias(C::mip_interface& device, Vector3f biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3415,12 +3417,13 @@ void extract(Serializer& serializer, GyroBias::Response& self)
     
 }
 
-CmdResult writeGyroBias(C::mip_interface& device, Vector3f bias)
+CmdResult writeGyroBias(C::mip_interface& device, const float* bias)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(bias || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, bias[i]);
     
@@ -3428,7 +3431,7 @@ CmdResult writeGyroBias(C::mip_interface& device, Vector3f bias)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readGyroBias(C::mip_interface& device, Vector3f biasOut)
+CmdResult readGyroBias(C::mip_interface& device, float* biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3443,6 +3446,7 @@ CmdResult readGyroBias(C::mip_interface& device, Vector3f biasOut)
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3505,7 +3509,7 @@ void extract(Serializer& serializer, CaptureGyroBias::Response& self)
     
 }
 
-CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, Vector3f biasOut)
+CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3521,6 +3525,7 @@ CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, Ve
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(biasOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, biasOut[i]);
         
@@ -3565,12 +3570,13 @@ void extract(Serializer& serializer, MagHardIronOffset::Response& self)
     
 }
 
-CmdResult writeMagHardIronOffset(C::mip_interface& device, Vector3f offset)
+CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(offset || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, offset[i]);
     
@@ -3578,7 +3584,7 @@ CmdResult writeMagHardIronOffset(C::mip_interface& device, Vector3f offset)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readMagHardIronOffset(C::mip_interface& device, Vector3f offsetOut)
+CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3593,6 +3599,7 @@ CmdResult readMagHardIronOffset(C::mip_interface& device, Vector3f offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3667,12 +3674,13 @@ void extract(Serializer& serializer, MagSoftIronMatrix::Response& self)
     
 }
 
-CmdResult writeMagSoftIronMatrix(C::mip_interface& device, Matrix3f offset)
+CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(offset || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, offset[i]);
     
@@ -3680,7 +3688,7 @@ CmdResult writeMagSoftIronMatrix(C::mip_interface& device, Matrix3f offset)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readMagSoftIronMatrix(C::mip_interface& device, Matrix3f offsetOut)
+CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -3695,6 +3703,7 @@ CmdResult readMagSoftIronMatrix(C::mip_interface& device, Matrix3f offsetOut)
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(offsetOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, offsetOut[i]);
         
@@ -3989,12 +3998,13 @@ void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response
     
 }
 
-CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf q)
+CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(q || (4 == 0));
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, q[i]);
     
@@ -4002,7 +4012,7 @@ CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_TRANSFORM_QUAT, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf qOut)
+CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4017,6 +4027,7 @@ CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf 
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(qOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
             extract(deserializer, qOut[i]);
         
@@ -4091,12 +4102,13 @@ void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self)
     
 }
 
-CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcm)
+CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
+    assert(dcm || (9 == 0));
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, dcm[i]);
     
@@ -4104,7 +4116,7 @@ CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcm
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_TRANSFORM_DCM, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcmOut)
+CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -4119,6 +4131,7 @@ CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcmO
     {
         Serializer deserializer(buffer, responseLength);
         
+        assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
             extract(deserializer, dcmOut[i]);
         

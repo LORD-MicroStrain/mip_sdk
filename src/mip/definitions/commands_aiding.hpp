@@ -226,8 +226,8 @@ void extract(Serializer& serializer, ReferenceFrame& self);
 void insert(Serializer& serializer, const ReferenceFrame::Response& self);
 void extract(Serializer& serializer, ReferenceFrame::Response& self);
 
-CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, Vector3f translation, Quatf rotation);
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, Vector3f translationOut, Quatf rotationOut);
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation);
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, float* translationOut, float* rotationOut);
 CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
@@ -375,7 +375,7 @@ struct EcefPos
 void insert(Serializer& serializer, const EcefPos& self);
 void extract(Serializer& serializer, EcefPos& self);
 
-CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3d position, Vector3f uncertainty, EcefPos::ValidFlags validFlags);
+CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
 
 ///@}
 ///
@@ -447,7 +447,7 @@ struct LlhPos
 void insert(Serializer& serializer, const LlhPos& self);
 void extract(Serializer& serializer, LlhPos& self);
 
-CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, Vector3f uncertainty, LlhPos::ValidFlags validFlags);
+CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
 
 ///@}
 ///
@@ -516,7 +516,7 @@ struct EcefVel
 void insert(Serializer& serializer, const EcefVel& self);
 void extract(Serializer& serializer, EcefVel& self);
 
-CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, EcefVel::ValidFlags validFlags);
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
 
 ///@}
 ///
@@ -585,7 +585,7 @@ struct NedVel
 void insert(Serializer& serializer, const NedVel& self);
 void extract(Serializer& serializer, NedVel& self);
 
-CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, NedVel::ValidFlags validFlags);
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
 
 ///@}
 ///
@@ -655,7 +655,7 @@ struct VehicleFixedFrameVelocity
 void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self);
 void extract(Serializer& serializer, VehicleFixedFrameVelocity& self);
 
-CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, Vector3f velocity, Vector3f uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
+CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
 
 ///@}
 ///
