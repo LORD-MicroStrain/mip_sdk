@@ -7,7 +7,6 @@
 
 #ifdef __cplusplus
 
-#include <array>
 #include <tuple>
 #include <type_traits>
 
@@ -86,12 +85,12 @@ inline void extract(Serializer& serializer, DescriptorRate& self) { return C::ex
 /// integration with code using plain arrays.
 ///
 template<typename T, size_t N>
-struct Vector : public std::array<T,N>
+struct Vector
 {
     Vector() {}
 
     template<typename U>
-    Vector(U value) { this->fill(value); }
+    Vector(U value) { fill(value); }
 
     template<typename U>
     Vector(const U (&ptr)[N]) { copyFrom(ptr, N); }
@@ -102,17 +101,33 @@ struct Vector : public std::array<T,N>
     template<typename U>
     explicit Vector(const U* ptr, size_t n) { copyFrom(ptr, n); }
 
+    template<typename U>
+    Vector(std::initializer_list<U> values) : Vector(values, std::make_index_sequence<N>()) {}
+
     Vector(const Vector&) = default;
     Vector& operator=(const Vector&) = default;
 
     template<typename U>
     Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); }
 
-    operator const T*() const { return this->data(); }
-    operator T*() { return this->data(); }
+    typedef T Array[N];
+    operator Array&() { return m_data; }
+    operator const Array&() const { return m_data; }
+
+    Array& data() { return m_data; }
+    const Array& data() const { return m_data; }
 
     template<typename U>
-    void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) (*this)[i] = ptr[i]; }
+    void fill(U value) { for(size_t i=0; i<N; i++) m_data[i]=value; }
+
+    template<typename U>
+    void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = ptr[i]; }
+
+private:
+    template<typename U, size_t... Is>
+    Vector(std::initializer_list<U> values, std::index_sequence<Is...>) : m_data{ *(values.begin()+Is)... } {}
+
+    T m_data[N];
 };
 
 using Vector3f = Vector<float,3>;
