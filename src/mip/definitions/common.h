@@ -102,8 +102,8 @@ struct Vector
     template<typename U>
     explicit Vector(const U* ptr, size_t n) { copyFrom(ptr, n); }
 
-    template<typename U>
-    Vector(std::initializer_list<U> values) : Vector(values, std::make_index_sequence<N>()) {}
+    template<typename U, typename V, typename... Rest>
+    Vector(U u, V v, Rest... rest) : m_data{u, v, rest...} {}
 
     Vector(const Vector&) = default;
     Vector& operator=(const Vector&) = default;
@@ -125,9 +125,6 @@ struct Vector
     void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = ptr[i]; }
 
 private:
-    template<typename U, size_t... Is>
-    Vector(std::initializer_list<U> values, std::index_sequence<Is...>) : m_data{ *(values.begin()+Is)... } {}
-
     T m_data[N];
 };
 
