@@ -322,11 +322,11 @@ public:
 
     ///@brief Copy constructor (required to put packets into std::vector in some cases).
     template<size_t OtherSize>
-    explicit SizedPacketBuf(const SizedPacketBuf<BufferSize>& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+    explicit SizedPacketBuf(const SizedPacketBuf<OtherSize>& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
 
     ///@brief Assignment operator, copies data from another buffer to this one.
     template<size_t OtherSize>
-    SizedPacketBuf& operator=(const SizedPacketBuf<OtherSize>& other) { copyFrom(other); }
+    SizedPacketBuf& operator=(const SizedPacketBuf<OtherSize>& other) { copyFrom(other); return *this; }
 
     ///@brief Create a packet containing just the given field.
     ///

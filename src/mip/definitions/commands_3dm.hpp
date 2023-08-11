@@ -2834,8 +2834,8 @@ void extract(Serializer& serializer, AccelBias& self);
 void insert(Serializer& serializer, const AccelBias::Response& self);
 void extract(Serializer& serializer, AccelBias::Response& self);
 
-CmdResult writeAccelBias(C::mip_interface& device, Vector3f bias);
-CmdResult readAccelBias(C::mip_interface& device, Vector3f biasOut);
+CmdResult writeAccelBias(C::mip_interface& device, const float* bias);
+CmdResult readAccelBias(C::mip_interface& device, float* biasOut);
 CmdResult saveAccelBias(C::mip_interface& device);
 CmdResult loadAccelBias(C::mip_interface& device);
 CmdResult defaultAccelBias(C::mip_interface& device);
@@ -2906,8 +2906,8 @@ void extract(Serializer& serializer, GyroBias& self);
 void insert(Serializer& serializer, const GyroBias::Response& self);
 void extract(Serializer& serializer, GyroBias::Response& self);
 
-CmdResult writeGyroBias(C::mip_interface& device, Vector3f bias);
-CmdResult readGyroBias(C::mip_interface& device, Vector3f biasOut);
+CmdResult writeGyroBias(C::mip_interface& device, const float* bias);
+CmdResult readGyroBias(C::mip_interface& device, float* biasOut);
 CmdResult saveGyroBias(C::mip_interface& device);
 CmdResult loadGyroBias(C::mip_interface& device);
 CmdResult defaultGyroBias(C::mip_interface& device);
@@ -2967,7 +2967,7 @@ void extract(Serializer& serializer, CaptureGyroBias& self);
 void insert(Serializer& serializer, const CaptureGyroBias::Response& self);
 void extract(Serializer& serializer, CaptureGyroBias::Response& self);
 
-CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, Vector3f biasOut);
+CmdResult captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut);
 
 ///@}
 ///
@@ -3039,8 +3039,8 @@ void extract(Serializer& serializer, MagHardIronOffset& self);
 void insert(Serializer& serializer, const MagHardIronOffset::Response& self);
 void extract(Serializer& serializer, MagHardIronOffset::Response& self);
 
-CmdResult writeMagHardIronOffset(C::mip_interface& device, Vector3f offset);
-CmdResult readMagHardIronOffset(C::mip_interface& device, Vector3f offsetOut);
+CmdResult writeMagHardIronOffset(C::mip_interface& device, const float* offset);
+CmdResult readMagHardIronOffset(C::mip_interface& device, float* offsetOut);
 CmdResult saveMagHardIronOffset(C::mip_interface& device);
 CmdResult loadMagHardIronOffset(C::mip_interface& device);
 CmdResult defaultMagHardIronOffset(C::mip_interface& device);
@@ -3119,8 +3119,8 @@ void extract(Serializer& serializer, MagSoftIronMatrix& self);
 void insert(Serializer& serializer, const MagSoftIronMatrix::Response& self);
 void extract(Serializer& serializer, MagSoftIronMatrix::Response& self);
 
-CmdResult writeMagSoftIronMatrix(C::mip_interface& device, Matrix3f offset);
-CmdResult readMagSoftIronMatrix(C::mip_interface& device, Matrix3f offsetOut);
+CmdResult writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
+CmdResult readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
 CmdResult saveMagSoftIronMatrix(C::mip_interface& device);
 CmdResult loadMagSoftIronMatrix(C::mip_interface& device);
 CmdResult defaultMagSoftIronMatrix(C::mip_interface& device);
@@ -3389,8 +3389,8 @@ void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion& self);
 void insert(Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
 void extract(Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
 
-CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf q);
-CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, Quatf qOut);
+CmdResult writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
+CmdResult readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut);
 CmdResult saveSensor2VehicleTransformQuaternion(C::mip_interface& device);
 CmdResult loadSensor2VehicleTransformQuaternion(C::mip_interface& device);
 CmdResult defaultSensor2VehicleTransformQuaternion(C::mip_interface& device);
@@ -3489,8 +3489,8 @@ void extract(Serializer& serializer, Sensor2VehicleTransformDcm& self);
 void insert(Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self);
 void extract(Serializer& serializer, Sensor2VehicleTransformDcm::Response& self);
 
-CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcm);
-CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, Matrix3f dcmOut);
+CmdResult writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
+CmdResult readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut);
 CmdResult saveSensor2VehicleTransformDcm(C::mip_interface& device);
 CmdResult loadSensor2VehicleTransformDcm(C::mip_interface& device);
 CmdResult defaultSensor2VehicleTransformDcm(C::mip_interface& device);

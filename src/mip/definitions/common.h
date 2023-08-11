@@ -88,39 +88,72 @@ inline void extract(Serializer& serializer, DescriptorRate& self) { return C::ex
 template<typename T, size_t N>
 struct Vector
 {
+    /// Default constructor, no initialization.
     Vector() {}
 
+    /// Set all elements to this value (typically 0).
+    ///@param value
     template<typename U>
     Vector(U value) { fill(value); }
 
+    /// Construct from a C array of known size.
+    ///@param ptr
     template<typename U>
     Vector(const U (&ptr)[N]) { copyFrom(ptr, N); }
 
+    /// Construct from a C array of different size (smaller or larger vector).
+    ///@param ptr
     template<typename U, size_t M>
     explicit Vector(const U (&ptr)[M]) { static_assert(M>=N, "Input array is too small"); copyFrom(ptr, M); }
 
+    /// Construct from a pointer and size.
+    ///@param ptr Pointer to data to copy. Can be NULL if n==0.
+    ///@param n   Number of elements to copy. Clamped to N.
     template<typename U>
     explicit Vector(const U* ptr, size_t n) { copyFrom(ptr, n); }
 
+    /// Construct from individual elements or a braced init list.
+    ///@param u The first value (typically X).
+    ///@param v The value value (typically Y).
+    ///@param reset Additional optional values (typically none, Z, or Z and W).
     template<typename U, typename V, typename... Rest>
     Vector(U u, V v, Rest... rest) : m_data{u, v, rest...} {}
 
+    /// Copy constructor.
     Vector(const Vector&) = default;
+
+    /// Assignment operator.
     Vector& operator=(const Vector&) = default;
 
+    /// Assignment operator from different type (e.g. float to double).
     template<typename U>
-    Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); }
+    Vector& operator=(const Vector<U,N>& other) { copyFrom(other, N); return *this; }
+
 
     typedef T Array[N];
+
+#if _MSC_VER < 1930
+    // MSVC 2017 has a bug which causes operator[] to be ambiguous.
+    // See https://stackoverflow.com/questions/48250560/msvc-error-c2593-when-overloading-const-and-non-const-conversion-operator-return
+    operator T*() { return m_data; }
+    operator const T*() const { return m_data; }
+#else
+    /// Implicitly convert to a C-style array (rather than a pointer) so size information is preserved.
     operator Array&() { return m_data; }
     operator const Array&() const { return m_data; }
+#endif
 
+    /// Explicitly convert to a C-style array.
     Array& data() { return m_data; }
     const Array& data() const { return m_data; }
 
+    /// Fill all elements with a given value.
     template<typename U>
     void fill(U value) { for(size_t i=0; i<N; i++) m_data[i]=value; }
 
+    /// Copy data from a pointer and size to this vector.
+    ///@param ptr Pointer to data. Can be NULL if n==0.
+    ///@param n   Number of elements in ptr. Clamped to N.
     template<typename U>
     void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = ptr[i]; }
 
