@@ -22,10 +22,11 @@ include_directories(
 )
 
 if(WITH_INTERNAL)
-    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
-    if(MIP_INTERNAL_DIR)
-        add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+    if(NOT DEFINED MIP_INTERNAL_DIR)
+		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
+	
+	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
