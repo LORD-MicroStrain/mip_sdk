@@ -17,8 +17,6 @@
 #include <type_traits>
 
 namespace mip {
-namespace C {
-extern "C" {
 #endif // __cplusplus
 
 
@@ -68,6 +66,7 @@ private:
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifdef __cplusplus
 } // namespace mip
 #endif // __cplusplus
 
