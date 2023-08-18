@@ -118,6 +118,8 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_dispatch.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
+	"${MIP_DIR}/mip_models.c"
+	"${MIP_DIR}/mip_models.h"
     "${MIP_DIR}/mip_offsets.h"
     "${MIP_DIR}/mip_packet.c"
     "${MIP_DIR}/mip_packet.h"
