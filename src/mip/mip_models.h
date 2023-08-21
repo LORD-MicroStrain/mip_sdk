@@ -48,6 +48,7 @@ namespace mip {
     };
 
     enum Model getModelFromSerial(const char* serial);
+    enum Model getModelFromModelString(const char* model);
 
 #ifdef __cplusplus
     std::string getModelNameFromSerial(const char* serial);

@@ -11,12 +11,13 @@ namespace mip {
     {
         char model_str[16];
         bool found = false;
-        // The model number is just the portion of the serial before the dot
-        // serial number field is 16 chars
+        // The model number is just the portion of the serial or model string before the dot or dash
+        // serial and model number fields are 16 chars
         for (uint8_t i = 0; i < 16; i++)
         {
             model_str[i] = serial[i];
-            if (serial[i] == '.')
+            if (serial[i] == '.'
+                || serial[i] == '-')
             {
                 found = true;
                 break;
@@ -29,6 +30,14 @@ namespace mip {
         }
 
         return atoi(model_str);
+    }
+
+    enum Model getModelFromModelString(const char* model)
+    {
+        // same logic can be used on either serial or model number string
+        // serial:  model.deviceid
+        // model:   model-specifier
+        return getModelFromSerial(model);
     }
 
 #ifdef __cplusplus
