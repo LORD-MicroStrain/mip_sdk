@@ -199,6 +199,8 @@ if(MIP_USE_EXTRAS)
     set(MIP_EXTRA_SOURCES
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.hpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.cpp"
     )
 endif()
 
