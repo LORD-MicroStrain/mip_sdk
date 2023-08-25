@@ -210,11 +210,12 @@ struct PollImuMessage
     uint8_t num_descriptors = 0; ///< Number of descriptors in the descriptor list.
     DescriptorRate descriptors[83]; ///< Descriptor list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_IMU_MESSAGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_IMU_MESSAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -253,11 +254,12 @@ struct PollGnssMessage
     uint8_t num_descriptors = 0; ///< Number of descriptors in the descriptor list.
     DescriptorRate descriptors[83]; ///< Descriptor list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_GNSS_MESSAGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_GNSS_MESSAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -296,11 +298,12 @@ struct PollFilterMessage
     uint8_t num_descriptors = 0; ///< Number of descriptors in the format list.
     DescriptorRate descriptors[83]; ///< Descriptor format list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_FILTER_MESSAGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_FILTER_MESSAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -334,17 +337,18 @@ struct ImuMessageFormat
     uint8_t num_descriptors = 0; ///< Number of descriptors
     DescriptorRate descriptors[82]; ///< Descriptor format list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_MESSAGE_FORMAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -365,11 +369,12 @@ struct ImuMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_MESSAGE_FORMAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_descriptors = 0; ///< Number of descriptors
         DescriptorRate descriptors[82]; ///< Descriptor format list.
         
@@ -408,17 +413,18 @@ struct GpsMessageFormat
     uint8_t num_descriptors = 0; ///< Number of descriptors
     DescriptorRate descriptors[82]; ///< Descriptor format list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_MESSAGE_FORMAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -439,11 +445,12 @@ struct GpsMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_MESSAGE_FORMAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_descriptors = 0; ///< Number of descriptors
         DescriptorRate descriptors[82]; ///< Descriptor format list.
         
@@ -482,17 +489,18 @@ struct FilterMessageFormat
     uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
     DescriptorRate descriptors[82];
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_FILTER_MESSAGE_FORMAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -513,11 +521,12 @@ struct FilterMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_MESSAGE_FORMAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
         DescriptorRate descriptors[82];
         
@@ -554,12 +563,13 @@ CmdResult defaultFilterMessageFormat(C::mip_interface& device);
 struct ImuGetBaseRate
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_IMU_BASE_RATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_IMU_BASE_RATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -572,11 +582,12 @@ struct ImuGetBaseRate
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_IMU_BASE_RATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint16_t rate = 0; ///< [hz]
         
         
@@ -608,12 +619,13 @@ CmdResult imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 struct GpsGetBaseRate
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_GNSS_BASE_RATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_GNSS_BASE_RATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -626,11 +638,12 @@ struct GpsGetBaseRate
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_BASE_RATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint16_t rate = 0; ///< [hz]
         
         
@@ -662,12 +675,13 @@ CmdResult gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 struct FilterGetBaseRate
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_FILTER_BASE_RATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_FILTER_BASE_RATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -680,11 +694,12 @@ struct FilterGetBaseRate
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_FILTER_BASE_RATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint16_t rate = 0; ///< [hz]
         
         
@@ -724,11 +739,12 @@ struct PollData
     uint8_t num_descriptors = 0; ///< Number of descriptors in the format list.
     uint8_t descriptors[82] = {0}; ///< Descriptor format list.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_DATA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_DATA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x000000C0;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
     
     auto as_tuple() const
     {
@@ -758,12 +774,13 @@ struct GetBaseRate
 {
     uint8_t desc_set = 0; ///< This is the data descriptor set. It must be a supported descriptor.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_BASE_RATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GET_BASE_RATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -776,11 +793,12 @@ struct GetBaseRate
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_BASE_RATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t desc_set = 0; ///< Echoes the parameter in the command.
         uint16_t rate = 0; ///< Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).
         
@@ -816,17 +834,18 @@ struct MessageFormat
     uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
     DescriptorRate descriptors[82]; ///< List of descriptors and decimations.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_MESSAGE_FORMAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_MESSAGE_FORMAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -848,11 +867,12 @@ struct MessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_MESSAGE_FORMAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000030;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
         uint8_t desc_set = 0; ///< Echoes the descriptor set from the command.
         uint8_t num_descriptors = 0; ///< Number of descriptors in the list.
         DescriptorRate descriptors[82]; ///< List of descriptors and decimations.
@@ -896,11 +916,12 @@ struct NmeaPollData
     uint8_t count = 0; ///< Number of format entries (limited by payload size)
     NmeaMessage format_entries[40]; ///< List of format entries.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_NMEA_MESSAGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_POLL_NMEA_MESSAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -932,17 +953,18 @@ struct NmeaMessageFormat
     uint8_t count = 0; ///< Number of format entries (limited by payload size)
     NmeaMessage format_entries[40]; ///< List of format entries.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_NMEA_MESSAGE_FORMAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -963,11 +985,12 @@ struct NmeaMessageFormat
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_NMEA_MESSAGE_FORMAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t count = 0; ///< Number of format entries (limited by payload size)
         NmeaMessage format_entries[40]; ///< List of format entries.
         
@@ -1006,16 +1029,17 @@ struct DeviceSettings
 {
     FunctionSelector function = static_cast<FunctionSelector>(0);
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_DEVICE_STARTUP_SETTINGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x0000;
-    static const uint32_t READ_PARAMS    = 0x0000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x0000;
+    static constexpr const uint32_t READ_PARAMS    = 0x0000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1070,17 +1094,18 @@ struct UartBaudrate
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint32_t baud = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_UART_BAUDRATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_UART_BAUDRATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1101,11 +1126,12 @@ struct UartBaudrate
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_UART_BAUDRATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint32_t baud = 0;
         
         
@@ -1150,11 +1176,12 @@ struct FactoryStreaming
     Action action = static_cast<Action>(0);
     uint8_t reserved = 0; ///< Reserved. Set to 0x00.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONFIGURE_FACTORY_STREAMING;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1187,25 +1214,26 @@ CmdResult factoryStreaming(C::mip_interface& device, FactoryStreaming::Action ac
 
 struct DatastreamControl
 {
-    static const uint8_t LEGACY_IMU_STREAM = 0x01;
-    static const uint8_t LEGACY_GNSS_STREAM = 0x02;
-    static const uint8_t LEGACY_FILTER_STREAM = 0x03;
-    static const uint8_t ALL_STREAMS = 0x00;
+    static constexpr const uint8_t LEGACY_IMU_STREAM = 0x01;
+    static constexpr const uint8_t LEGACY_GNSS_STREAM = 0x02;
+    static constexpr const uint8_t LEGACY_FILTER_STREAM = 0x03;
+    static constexpr const uint8_t ALL_STREAMS = 0x00;
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t desc_set = 0; ///< The descriptor set of the stream to control. When function is SAVE, LOAD, or DEFAULT, can be ALL_STREAMS(0) to apply to all descriptor sets. On Generation 5 products, this must be one of the above legacy constants.
     bool enable = 0; ///< True or false to enable or disable the stream.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONTROL_DATA_STREAM;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONTROL_DATA_STREAM;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1227,11 +1255,12 @@ struct DatastreamControl
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_DATASTREAM_ENABLE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t desc_set = 0;
         bool enabled = 0;
         
@@ -1330,17 +1359,18 @@ struct ConstellationSettings
     uint8_t config_count = 0;
     Settings settings[42];
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_CONSTELLATION_SETTINGS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_CONSTELLATION_SETTINGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000030;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
     
     auto as_tuple() const
     {
@@ -1361,11 +1391,12 @@ struct ConstellationSettings
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_CONSTELLATION_SETTINGS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_CONSTELLATION_SETTINGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x000000C0;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
         uint16_t max_channels_available = 0; ///< Maximum channels available
         uint16_t max_channels_use = 0; ///< Maximum channels to use
         uint8_t config_count = 0; ///< Number of constellation configurations
@@ -1443,17 +1474,18 @@ struct GnssSbasSettings
     uint8_t num_included_prns = 0; ///< Number of SBAS PRNs to include in search (0 = include all)
     uint16_t included_prns[39] = {0}; ///< List of specific SBAS PRNs to search for
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_SBAS_SETTINGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x800F;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x000000C0;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
     
     auto as_tuple() const
     {
@@ -1474,11 +1506,12 @@ struct GnssSbasSettings
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_SBAS_SETTINGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x000000C0;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
         uint8_t enable_sbas = 0; ///< 0 - SBAS Disabled, 1 - SBAS enabled
         SBASOptions sbas_options; ///< SBAS options, see definition
         uint8_t num_included_prns = 0; ///< Number of SBAS PRNs to include in search (0 = include all)
@@ -1533,17 +1566,18 @@ struct GnssAssistedFix
     AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
     uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_ASSISTED_FIX_SETTINGS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_ASSISTED_FIX_SETTINGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1564,11 +1598,12 @@ struct GnssAssistedFix
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_ASSISTED_FIX_SETTINGS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_ASSISTED_FIX_SETTINGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         AssistedFixOption option = static_cast<AssistedFixOption>(0); ///< Assisted fix options
         uint8_t flags = 0; ///< Assisted fix flags (set to 0xFF)
         
@@ -1609,17 +1644,18 @@ struct GnssTimeAssistance
     uint16_t week_number = 0; ///< GPS Weeks since 1980 [weeks]
     float accuracy = 0; ///< Accuracy of time information [seconds]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GNSS_TIME_ASSISTANCE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x0000;
-    static const uint32_t LOAD_PARAMS    = 0x0000;
-    static const uint32_t DEFAULT_PARAMS = 0x0000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x0000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1640,11 +1676,12 @@ struct GnssTimeAssistance
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GNSS_TIME_ASSISTANCE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         double tow = 0; ///< GPS Time of week [seconds]
         uint16_t week_number = 0; ///< GPS Weeks since 1980 [weeks]
         float accuracy = 0; ///< Accuracy of time information [seconds]
@@ -1697,17 +1734,18 @@ struct ImuLowpassFilter
     uint16_t frequency = 0; ///< -3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.
     uint8_t reserved = 0; ///< Reserved, set to 0x00.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_LOWPASS_FILTER;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_IMU_LOWPASS_FILTER;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x801F;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1729,11 +1767,12 @@ struct ImuLowpassFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ADVANCED_DATA_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t target_descriptor = 0;
         bool enable = 0; ///< True if the filter is currently enabled.
         bool manual = 0; ///< True if the filter cutoff was manually configured.
@@ -1781,17 +1820,18 @@ struct PpsSource
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Source source = static_cast<Source>(0);
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_PPS_SOURCE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_PPS_SOURCE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1812,11 +1852,12 @@ struct PpsSource
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_PPS_SOURCE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Source source = static_cast<Source>(0);
         
         
@@ -1933,17 +1974,18 @@ struct GpioConfig
     Behavior behavior = static_cast<Behavior>(0); ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
     PinMode pin_mode; ///< GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_CONFIG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_CONFIG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x800F;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -1965,11 +2007,12 @@ struct GpioConfig
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t pin = 0; ///< GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.
         Feature feature = static_cast<Feature>(0); ///< Determines how the pin will be used.
         Behavior behavior = static_cast<Behavior>(0); ///< Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)
@@ -2023,17 +2066,18 @@ struct GpioState
     uint8_t pin = 0; ///< GPIO pin number counting from 1. Cannot be 0.
     bool state = 0; ///< The pin state.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_STATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GPIO_STATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x0000;
-    static const uint32_t LOAD_PARAMS    = 0x0000;
-    static const uint32_t DEFAULT_PARAMS = 0x0000;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x0000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2054,11 +2098,12 @@ struct GpioState
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GPIO_STATE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t pin = 0; ///< GPIO pin number counting from 1. Cannot be 0.
         bool state = 0; ///< The pin state.
         
@@ -2100,17 +2145,18 @@ struct Odometer
     float scaling = 0; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
     float uncertainty = 0; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ODOMETER_CONFIG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ODOMETER_CONFIG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2131,11 +2177,12 @@ struct Odometer
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ODOMETER_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Mode mode = static_cast<Mode>(0); ///< Mode setting.
         float scaling = 0; ///< Encoder pulses per meter of distance traveled [pulses/m]. Distance traveled is computed using the formula d = p / N * 2R * pi, where d is distance, p is the number of pulses received, N is the encoder resolution, and R is the wheel radius. By simplifying all of the parameters into one, the formula d = p / S is obtained, where s is the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and has units of pulses / meter. N is in units of "A" pulses per revolution and R is in meters. Make this value negative if the odometer is mounted so that it rotates backwards.
         float uncertainty = 0; ///< Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].
@@ -2199,12 +2246,13 @@ struct GetEventSupport
     };
     Query query = static_cast<Query>(0); ///< What type of information to retrieve.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_SUPPORT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_SUPPORT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2217,11 +2265,12 @@ struct GetEventSupport
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_SUPPORT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x000000C0;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x000000C0;
         Query query = static_cast<Query>(0); ///< Query type specified in the command.
         uint8_t max_instances = 0; ///< Number of slots available. The 'instance' number for the configuration or control commands must be between 1 and this value.
         uint8_t num_entries = 0; ///< Number of supported types.
@@ -2276,17 +2325,18 @@ struct EventControl
     uint8_t instance = 0; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
     Mode mode = static_cast<Mode>(0); ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_CONTROL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_CONTROL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2308,11 +2358,12 @@ struct EventControl
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_CONTROL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t instance = 0; ///< Trigger instance to affect. 0 can be used to apply the mode to all configured triggers, except when the function selector is READ.
         Mode mode = static_cast<Mode>(0); ///< How to change the trigger state. Except when instance is 0, the corresponding trigger must be configured, i.e. not have type 0.
         
@@ -2384,12 +2435,13 @@ struct GetEventTriggerStatus
     uint8_t requested_count = 0; ///< Number of entries requested. If 0, requests all trigger slots.
     uint8_t requested_instances[20] = {0}; ///< List of trigger instances to query.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -2402,11 +2454,12 @@ struct GetEventTriggerStatus
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_STATUS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.
         Entry triggers[20]; ///< A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.
         
@@ -2446,12 +2499,13 @@ struct GetEventActionStatus
     uint8_t requested_count = 0; ///< Number of entries requested. If 0, requests all action slots.
     uint8_t requested_instances[20] = {0}; ///< List of action instances to query.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x0000000C;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
     
     auto as_tuple() const
     {
@@ -2464,11 +2518,12 @@ struct GetEventActionStatus
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_STATUS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t count = 0; ///< Number of entries requested. If requested_count was 0, this is the number of supported action slots.
         Entry actions[20]; ///< A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.
         
@@ -2540,19 +2595,19 @@ struct EventTrigger
     };
     struct CombinationParams
     {
-        static const uint16_t LOGIC_NEVER = 0x0000;
-        static const uint16_t LOGIC_ALWAYS = 0xFFFF;
-        static const uint16_t LOGIC_NONE = 0x0001;
-        static const uint16_t LOGIC_OR = 0xFFFE;
-        static const uint16_t LOGIC_NAND = 0x7FFF;
-        static const uint16_t LOGIC_XOR_ONE = 0x0116;
-        static const uint16_t LOGIC_ONLY_A = 0x0002;
-        static const uint16_t LOGIC_ONLY_B = 0x0004;
-        static const uint16_t LOGIC_ONLY_C = 0x0010;
-        static const uint16_t LOGIC_ONLY_D = 0x0100;
-        static const uint16_t LOGIC_AND_AB = 0x8888;
-        static const uint16_t LOGIC_AB_OR_C = 0xF8F8;
-        static const uint16_t LOGIC_AND = 0x8000;
+        static constexpr const uint16_t LOGIC_NEVER = 0x0000;
+        static constexpr const uint16_t LOGIC_ALWAYS = 0xFFFF;
+        static constexpr const uint16_t LOGIC_NONE = 0x0001;
+        static constexpr const uint16_t LOGIC_OR = 0xFFFE;
+        static constexpr const uint16_t LOGIC_NAND = 0x7FFF;
+        static constexpr const uint16_t LOGIC_XOR_ONE = 0x0116;
+        static constexpr const uint16_t LOGIC_ONLY_A = 0x0002;
+        static constexpr const uint16_t LOGIC_ONLY_B = 0x0004;
+        static constexpr const uint16_t LOGIC_ONLY_C = 0x0010;
+        static constexpr const uint16_t LOGIC_ONLY_D = 0x0100;
+        static constexpr const uint16_t LOGIC_AND_AB = 0x8888;
+        static constexpr const uint16_t LOGIC_AB_OR_C = 0xF8F8;
+        static constexpr const uint16_t LOGIC_AND = 0x8000;
         uint16_t logic_table = 0; ///< The last column of a truth table describing the output given the state of each input.
         uint8_t input_triggers[4] = {0}; ///< List of trigger IDs for inputs. Use 0 for unused inputs.
         
@@ -2578,17 +2633,18 @@ struct EventTrigger
     Type type = static_cast<Type>(0); ///< Type of trigger to configure.
     Parameters parameters;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_TRIGGER_CONFIG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2610,11 +2666,12 @@ struct EventTrigger
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_TRIGGER_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t instance = 0; ///< Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
         Type type = static_cast<Type>(0); ///< Type of trigger to configure.
         Parameters parameters;
@@ -2701,17 +2758,18 @@ struct EventAction
     Type type = static_cast<Type>(0); ///< Type of action to configure.
     Parameters parameters;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_CONFIG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_EVENT_ACTION_CONFIG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x800F;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2733,11 +2791,12 @@ struct EventAction
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_EVENT_ACTION_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t instance = 0; ///< Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.
         uint8_t trigger = 0; ///< Trigger ID number.
         Type type = static_cast<Type>(0); ///< Type of action to configure.
@@ -2783,17 +2842,18 @@ struct AccelBias
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ACCEL_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_ACCEL_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2814,11 +2874,12 @@ struct AccelBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_ACCEL_BIAS_VECTOR;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Vector3f bias; ///< accelerometer bias in the sensor frame (x,y,z) [g]
         
         
@@ -2855,17 +2916,18 @@ struct GyroBias
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GYRO_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_GYRO_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2886,11 +2948,12 @@ struct GyroBias
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
         
         
@@ -2929,12 +2992,13 @@ struct CaptureGyroBias
 {
     uint16_t averaging_time_ms = 0; ///< Averaging time [milliseconds]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CAPTURE_GYRO_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -2947,11 +3011,12 @@ struct CaptureGyroBias
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_GYRO_BIAS_VECTOR;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Vector3f bias; ///< gyro bias in the sensor frame (x,y,z) [radians/second]
         
         
@@ -2988,17 +3053,18 @@ struct MagHardIronOffset
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_HARD_IRON_OFFSET;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_HARD_IRON_OFFSET;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3019,11 +3085,12 @@ struct MagHardIronOffset
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_HARD_IRON_OFFSET_VECTOR;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Vector3f offset; ///< hard iron offset in the sensor frame (x,y,z) [Gauss]
         
         
@@ -3068,17 +3135,18 @@ struct MagSoftIronMatrix
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f offset; ///< soft iron matrix [dimensionless]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SOFT_IRON_MATRIX;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SOFT_IRON_MATRIX;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3099,11 +3167,12 @@ struct MagSoftIronMatrix
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SOFT_IRON_COMP_MATRIX;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Matrix3f offset; ///< soft iron matrix [dimensionless]
         
         
@@ -3138,17 +3207,18 @@ struct ConingScullingEnable
     FunctionSelector function = static_cast<FunctionSelector>(0);
     bool enable = 0; ///< If true, coning and sculling compensation is enabled.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONING_AND_SCULLING_ENABLE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CONING_AND_SCULLING_ENABLE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3169,11 +3239,12 @@ struct ConingScullingEnable
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CONING_AND_SCULLING_ENABLE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CONING_AND_SCULLING_ENABLE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         bool enable = 0; ///< If true, coning and sculling compensation is enabled.
         
         
@@ -3234,17 +3305,18 @@ struct Sensor2VehicleTransformEuler
     float pitch = 0; ///< [radians]
     float yaw = 0; ///< [radians]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_EUL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8007;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8007;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3265,11 +3337,12 @@ struct Sensor2VehicleTransformEuler
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_EUL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         float roll = 0; ///< [radians]
         float pitch = 0; ///< [radians]
         float yaw = 0; ///< [radians]
@@ -3338,17 +3411,18 @@ struct Sensor2VehicleTransformQuaternion
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_QUAT;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3369,11 +3443,12 @@ struct Sensor2VehicleTransformQuaternion
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_QUAT;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Quatf q; ///< Unit length quaternion representing transform [w, i, j, k]
         
         
@@ -3438,17 +3513,18 @@ struct Sensor2VehicleTransformDcm
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR2VEHICLE_TRANSFORM_DCM;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3469,11 +3545,12 @@ struct Sensor2VehicleTransformDcm
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR2VEHICLE_TRANSFORM_DCM;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Matrix3f dcm; ///< 3 x 3 direction cosine matrix, stored in row-major order
         
         
@@ -3515,17 +3592,18 @@ struct ComplementaryFilter
     float pitch_roll_time_constant = 0; ///< Time constant associated with the pitch/roll corrections [s]
     float heading_time_constant = 0; ///< Time constant associated with the heading corrections [s]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LEGACY_COMP_FILTER;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LEGACY_COMP_FILTER;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x800F;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3546,11 +3624,12 @@ struct ComplementaryFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LEGACY_COMP_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         bool pitch_roll_enable = 0; ///< Enable Pitch/Roll corrections
         bool heading_enable = 0; ///< Enable Heading corrections (only available on devices with magnetometer)
         float pitch_roll_time_constant = 0; ///< Time constant associated with the pitch/roll corrections [s]
@@ -3596,17 +3675,18 @@ struct SensorRange
     SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< Which type of sensor will get the new range value.
     uint8_t setting = 0; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR_RANGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_SENSOR_RANGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3628,11 +3708,12 @@ struct SensorRange
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_SENSOR_RANGE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< Which type of sensor will get the new range value.
         uint8_t setting = 0; ///< Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.
         
@@ -3676,12 +3757,13 @@ struct CalibratedSensorRanges
     };
     SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< The sensor to query. Cannot be ALL.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CALIBRATED_RANGES;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_CALIBRATED_RANGES;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3694,11 +3776,12 @@ struct CalibratedSensorRanges
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_CALIBRATED_RANGES;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000030;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000030;
         SensorRangeType sensor = static_cast<SensorRangeType>(0); ///< The sensor type from the command.
         uint8_t num_ranges = 0; ///< Number of supported ranges.
         Entry ranges[50]; ///< List of possible range settings.
@@ -3751,17 +3834,18 @@ struct LowpassFilter
     bool manual = 0; ///< If false, the frequency parameter is ignored and the filter will track to half of the configured message format frequency.
     float frequency = 0; ///< Cutoff frequency in Hz. This will return the actual frequency when read out in automatic mode.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::CMD_LOWPASS_FILTER;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x801F;
-    static const uint32_t READ_PARAMS    = 0x8003;
-    static const uint32_t SAVE_PARAMS    = 0x8003;
-    static const uint32_t LOAD_PARAMS    = 0x8003;
-    static const uint32_t DEFAULT_PARAMS = 0x8003;
-    static const uint32_t ECHOED_PARAMS  = 0x0003;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8003;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8003;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8003;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8003;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -3784,11 +3868,12 @@ struct LowpassFilter
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LOWPASS_FILTER;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_3dm::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_3dm::REPLY_LOWPASS_FILTER;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0003;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t desc_set = 0; ///< Descriptor set of the quantity to be filtered.
         uint8_t field_desc = 0; ///< Field descriptor of the quantity to be filtered.
         bool enable = 0; ///< The filter will be enabled if this is true.

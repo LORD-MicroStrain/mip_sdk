@@ -92,17 +92,18 @@ struct SensorFrameMapping
     uint8_t sensor_id = 0; ///< Sensor ID to configure. Cannot be 0.
     uint8_t frame_id = 0; ///< Frame ID to assign to the sensor. Defaults to 1.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_SENSOR_FRAME_MAP;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_SENSOR_FRAME_MAP;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -123,11 +124,12 @@ struct SensorFrameMapping
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_SENSOR_FRAME_MAP;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_SENSOR_FRAME_MAP;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t sensor_id = 0; ///< Sensor ID to configure. Cannot be 0.
         uint8_t frame_id = 0; ///< Frame ID to assign to the sensor. Defaults to 1.
         
@@ -171,17 +173,18 @@ struct ReferenceFrame
     Vector3f translation; ///< Translation X, Y, and Z.
     Quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x800F;
-    static const uint32_t READ_PARAMS    = 0x8001;
-    static const uint32_t SAVE_PARAMS    = 0x8001;
-    static const uint32_t LOAD_PARAMS    = 0x8001;
-    static const uint32_t DEFAULT_PARAMS = 0x8001;
-    static const uint32_t ECHOED_PARAMS  = 0x0001;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -203,11 +206,12 @@ struct ReferenceFrame
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_FRAME_CONFIG;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_FRAME_CONFIG;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0001;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
         Vector3f translation; ///< Translation X, Y, and Z.
@@ -251,17 +255,18 @@ struct AidingEchoControl
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Mode mode = static_cast<Mode>(0); ///< Controls data echoing.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -282,11 +287,12 @@ struct AidingEchoControl
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Mode mode = static_cast<Mode>(0); ///< Controls data echoing.
         
         
@@ -355,11 +361,12 @@ struct EcefPos
     Vector3f uncertainty; ///< ECEF position uncertainty [m].
     ValidFlags valid_flags; ///< Valid flags.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -427,11 +434,12 @@ struct LlhPos
     Vector3f uncertainty; ///< NED position uncertainty.
     ValidFlags valid_flags; ///< Valid flags.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -496,11 +504,12 @@ struct EcefVel
     Vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
     ValidFlags valid_flags; ///< Valid flags.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -565,11 +574,12 @@ struct NedVel
     Vector3f uncertainty; ///< NED velocity uncertainty [m/s].
     ValidFlags valid_flags; ///< Valid flags.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -635,11 +645,12 @@ struct VehicleFixedFrameVelocity
     Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -672,11 +683,12 @@ struct TrueHeading
     float uncertainty = 0;
     uint16_t valid_flags = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {

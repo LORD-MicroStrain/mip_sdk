@@ -68,11 +68,11 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-static const uint8_t MIP_GNSS1_DATA_DESC_SET = 0x91;
-static const uint8_t MIP_GNSS2_DATA_DESC_SET = 0x92;
-static const uint8_t MIP_GNSS3_DATA_DESC_SET = 0x93;
-static const uint8_t MIP_GNSS4_DATA_DESC_SET = 0x94;
-static const uint8_t MIP_GNSS5_DATA_DESC_SET = 0x95;
+static constexpr const uint8_t MIP_GNSS1_DATA_DESC_SET = 0x91;
+static constexpr const uint8_t MIP_GNSS2_DATA_DESC_SET = 0x92;
+static constexpr const uint8_t MIP_GNSS3_DATA_DESC_SET = 0x93;
+static constexpr const uint8_t MIP_GNSS4_DATA_DESC_SET = 0x94;
+static constexpr const uint8_t MIP_GNSS5_DATA_DESC_SET = 0x95;
 enum class GnssConstellationId : uint8_t
 {
     UNKNOWN = 0,  ///<  
@@ -161,8 +161,8 @@ enum class SbasSystem : uint8_t
     GAGAN   = 4,  ///<  
 };
 
-static const uint32_t GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32;
-static const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
+static constexpr const uint32_t GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32;
+static constexpr const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -224,8 +224,9 @@ struct PosLlh
     float vertical_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -287,8 +288,9 @@ struct PosEcef
     float x_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -366,8 +368,9 @@ struct VelNed
     float heading_accuracy = 0; ///< [degrees]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -429,8 +432,9 @@ struct VelEcef
     float v_accuracy = 0; ///< [meters/second]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -512,8 +516,9 @@ struct Dop
     float edop = 0; ///< Easting DOP
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -580,8 +585,9 @@ struct UtcTime
     uint32_t msec = 0; ///< [Milliseconds]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -643,8 +649,9 @@ struct GpsTime
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -710,8 +717,9 @@ struct ClockInfo
     double accuracy_estimate = 0; ///< [seconds]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -816,8 +824,9 @@ struct FixInfo
     FixFlags fix_flags;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -925,8 +934,9 @@ struct SvInfo
     SVFlags sv_flags;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1015,8 +1025,9 @@ struct HwStatus
     AntennaPower antenna_power = static_cast<AntennaPower>(0);
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1098,8 +1109,9 @@ struct DgpsInfo
     float range_rate_correction = 0;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1171,8 +1183,9 @@ struct DgpsChannel
     float range_rate_correction = 0; ///< [m/s]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1244,8 +1257,9 @@ struct ClockInfo2
     double drift_accuracy_estimate = 0;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1300,8 +1314,9 @@ struct GpsLeapSeconds
     uint8_t leap_seconds = 0; ///< [s]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1413,8 +1428,9 @@ struct SbasInfo
     SbasStatus sbas_status; ///< Status of the SBAS service
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1508,8 +1524,9 @@ struct SbasCorrection
     float iono_correction = 0; ///< Ionospheric correction [meters].
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1600,8 +1617,9 @@ struct RfErrorDetection
     uint8_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1730,8 +1748,9 @@ struct BaseStationInfo
     IndicatorFlags indicators; ///< Bitfield
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1866,8 +1885,9 @@ struct RtkCorrectionsStatus
     uint32_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1951,8 +1971,9 @@ struct SatelliteStatus
     bool health = 0; ///< True if the satellite is healthy.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2082,8 +2103,9 @@ struct Raw
     float lock_time = 0; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2176,8 +2198,9 @@ struct GpsEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2270,8 +2293,9 @@ struct GalileoEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2352,8 +2376,9 @@ struct GloEphemeris
     uint8_t P4 = 0; ///< Flag indicating ephemeris parameters are present
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2423,8 +2448,9 @@ struct GpsIonoCorr
     double beta[4] = {0}; ///< Ionospheric Correction Terms.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2494,8 +2520,9 @@ struct GalileoIonoCorr
     uint8_t disturbance_flags = 0; ///< Region disturbance flags (bits 1-5).
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const

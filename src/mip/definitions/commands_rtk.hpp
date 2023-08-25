@@ -199,12 +199,13 @@ struct GetStatusFlags
     };
     
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -217,11 +218,12 @@ struct GetStatusFlags
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         StatusFlags flags; ///< Model number dependent. See above structures.
         
         
@@ -249,12 +251,13 @@ CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* 
 struct GetImei
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -267,11 +270,12 @@ struct GetImei
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char IMEI[32] = {0};
         
         
@@ -299,12 +303,13 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut);
 struct GetImsi
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -317,11 +322,12 @@ struct GetImsi
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char IMSI[32] = {0};
         
         
@@ -349,12 +355,13 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut);
 struct GetIccid
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -367,11 +374,12 @@ struct GetIccid
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ICCID[32] = {0};
         
         
@@ -407,17 +415,18 @@ struct ConnectedDeviceType
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Type devType = static_cast<Type>(0);
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -438,11 +447,12 @@ struct ConnectedDeviceType
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Type devType = static_cast<Type>(0);
         
         
@@ -474,12 +484,13 @@ CmdResult defaultConnectedDeviceType(C::mip_interface& device);
 struct GetActCode
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -492,11 +503,12 @@ struct GetActCode
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ActivationCode[32] = {0};
         
         
@@ -524,12 +536,13 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut);
 struct GetModemFirmwareVersion
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -542,11 +555,12 @@ struct GetModemFirmwareVersion
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ModemFirmwareVersion[32] = {0};
         
         
@@ -575,12 +589,13 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
 struct GetRssi
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -593,11 +608,12 @@ struct GetRssi
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         bool valid = 0;
         int32_t rssi = 0;
         int32_t signalQuality = 0;
@@ -661,12 +677,13 @@ struct ServiceStatus
     uint32_t reserved1 = 0;
     uint32_t reserved2 = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -679,11 +696,12 @@ struct ServiceStatus
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         ServiceFlags flags;
         uint32_t receivedBytes = 0;
         uint32_t lastBytes = 0;
@@ -717,11 +735,12 @@ struct ProdEraseStorage
 {
     MediaSelector media = static_cast<MediaSelector>(0);
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -754,11 +773,12 @@ struct LedControl
     LedAction act = static_cast<LedAction>(0);
     uint32_t period = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -788,11 +808,12 @@ CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, cons
 struct ModemHardReset
 {
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {

@@ -49,7 +49,7 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-static const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
+static constexpr const uint8_t MIP_DATA_DESC_SHARED_START = 0xD0;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -68,8 +68,9 @@ struct EventSource
 {
     uint8_t trigger_id = 0; ///< Trigger ID number. If 0, this message was emitted due to being scheduled in the 3DM Message Format Command (0x0C,0x0F).
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -101,8 +102,9 @@ struct Ticks
 {
     uint32_t ticks = 0; ///< Ticks since powerup.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -135,8 +137,9 @@ struct DeltaTicks
 {
     uint32_t ticks = 0; ///< Ticks since last output.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -201,8 +204,9 @@ struct GpsTimestamp
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -240,8 +244,9 @@ struct DeltaTime
 {
     double seconds = 0; ///< Seconds since last output.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -277,8 +282,9 @@ struct ReferenceTimestamp
 {
     uint64_t nanoseconds = 0; ///< Nanoseconds since initialization.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -316,8 +322,9 @@ struct ReferenceTimeDelta
 {
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -380,8 +387,9 @@ struct ExternalTimestamp
     uint64_t nanoseconds = 0;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -448,8 +456,9 @@ struct ExternalTimeDelta
     uint64_t dt_nanos = 0; ///< Nanoseconds since the last occurrence of this field in a packet of the same descriptor set and event source.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
