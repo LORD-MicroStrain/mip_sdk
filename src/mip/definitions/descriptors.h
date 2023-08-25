@@ -71,7 +71,7 @@ struct CompositeDescriptor
     constexpr CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
     constexpr CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
 
-    constexpr CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
+    CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
     constexpr uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
