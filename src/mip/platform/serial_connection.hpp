@@ -34,8 +34,6 @@ public:
     bool connect();
     bool disconnect();
 
-
-
     void connectionInfo(std::string &name, uint32_t &baudrate) const
     {
         name     = mPortName;
@@ -46,6 +44,10 @@ private:
     serial_port mPort;
     std::string mPortName;
     uint32_t    mBaudrate;
+
+public:
+    const char* interfaceName() const override { return mPortName.c_str(); }
+    uint32_t parameter() const override { return mBaudrate; }
 };
 
 
