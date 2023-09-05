@@ -20,6 +20,7 @@
 #include "definitions/commands_gnss.hpp"
 #include "definitions/commands_rtk.hpp"
 #include "definitions/commands_system.hpp"
+#include "definitions/commands_aiding.hpp"
 
 //MIP Data
 #include "definitions/data_shared.hpp"

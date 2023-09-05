@@ -20,6 +20,7 @@
 #include "definitions/commands_gnss.h"
 #include "definitions/commands_rtk.h"
 #include "definitions/commands_system.h"
+#include "definitions/commands_aiding.h"
 
 //MIP Data
 #include "definitions/data_shared.h"
