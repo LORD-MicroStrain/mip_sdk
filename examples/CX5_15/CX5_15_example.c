@@ -224,15 +224,6 @@ int main(int argc, const char* argv[])
     if(mip_filter_write_auto_init_control(&device, 1) != MIP_ACK_OK)
         exit_gracefully("ERROR: Could not set filter autoinit control!");
 
-
-    //
-    //Reset the filter (note: this is good to do after filter setup is complete)
-    //
-
-    if(mip_filter_reset(&device) != MIP_ACK_OK)
-        exit_gracefully("ERROR: Could not reset the filter!");
-
-
     //
     // Register data callbacks
     //
