@@ -1,11 +1,10 @@
-
 /////////////////////////////////////////////////////////////////////////////
 //
-// CV7_Example.cpp
+// CV7_INS_simple_example.cpp
 //
-// C++ Example set-up program for the CV7
+// C++ Example usage program for the CV7-INS
 //
-// This example shows a typical setup for the CV7 sensor using C++.
+// This example shows a the basic setup for a CV-INS sensor using external aiding measurements.
 // It is not an exhaustive example of all CV7 settings.
 // If your specific setup needs are not met by this example, please consult
 // the MSCL-embedded API documentation for the proper commands.
@@ -101,8 +100,8 @@ int main(int argc, const char* argv[])
     //Load the device default settings (so the device is in a known state)
     //
 
-//    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
-//        exit_gracefully("ERROR: Could not load default device settings!");
+    if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not load default device settings!");
 
 
     //
@@ -164,7 +163,6 @@ int main(int argc, const char* argv[])
         exit_gracefully("ERROR: Could not set filter message format!");
 
 
-
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
@@ -202,7 +200,7 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to initialize\n");
+    printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running)
     {
@@ -218,6 +216,7 @@ int main(int argc, const char* argv[])
         // Check that enough time has elapsed to send a new measurement update
         mip::Timestamp current_timestamp = getCurrentTimestamp();
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
+        mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
 
         if (elapsed_time_from_last_measurement_update > 500)
         {
@@ -226,7 +225,7 @@ int main(int argc, const char* argv[])
             external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
 
             // External heading command
-            float external_heading = 0;
+            float external_heading = 0.0;
             float external_heading_uncertainty = .001;
             if(commands_aiding::trueHeading(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external heading to CV7-INS\n");
@@ -234,7 +233,7 @@ int main(int argc, const char* argv[])
             // External position command
             double latitude = 44.43729093897896; // Lat/Lon for MicroStrain headquarters
             double longitude = -73.10628129871753;
-            double height = 0;
+            double height = 0.0;
             float llh_uncertainty[3] = {1.0, 1.0, 1.0};
             if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
@@ -254,19 +253,16 @@ int main(int argc, const char* argv[])
             prev_measurement_update_timestamp = current_timestamp;
         }
 
-        //Once in full nav, print out data at 10 Hz
-        if(filter_status.filter_state == data_filter::FilterMode::FULL_NAV)
+        //Once in full nav, print out data at 1 Hz
+        if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
         {
-            if(current_timestamp - prev_print_timestamp >= 1000)
-            {
-                printf("\n\n****Filter navigation state****\n");
-                printf("TIMESTAMP: %f\n", filter_gps_time.tow);
-                printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
-                printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
-                printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);
+            printf("\n\n****Filter navigation state****\n");
+            printf("TIMESTAMP: %f\n", filter_gps_time.tow);
+            printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
+            printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
+            printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);
 
-                prev_print_timestamp = current_timestamp;
-            }
+            prev_print_timestamp = current_timestamp;
         }
 
         running = !should_exit();
@@ -340,6 +336,5 @@ void exit_gracefully(const char *message)
 bool should_exit()
 {
     return false;
-
 }
 
