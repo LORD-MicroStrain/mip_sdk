@@ -26,8 +26,7 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <mip/mip_all.hpp>
+#include "mip/mip_all.hpp"
 #include <array>
 #include "../example_utils.hpp"
 

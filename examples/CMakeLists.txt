@@ -47,7 +47,7 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         target_link_libraries(CV7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CV7_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
 
-        add_executable(CV7_INS_Simple_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7/CV7_INS_simple_example.cpp" ${DEVICE_SOURCES})
+        add_executable(CV7_INS_Simple_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(CV7_INS_Simple_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CV7_INS_Simple_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
 
