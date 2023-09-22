@@ -42,9 +42,9 @@ data_filter::EulerAngles  filter_euler_angles;
 data_filter::PositionLlh  filter_llh_position;
 data_filter::VelocityNed  filter_ned_velocity;
 
-uint8_t external_heading_sensor_id = 0;
-uint8_t gnss_antenna_sensor_id = 1;
-uint8_t vehicle_frame_velocity_sensor_id = 2;
+uint8_t external_heading_sensor_id = 1;
+uint8_t gnss_antenna_sensor_id = 2;
+uint8_t vehicle_frame_velocity_sensor_id = 3;
 
 bool filter_state_full_nav = false;
 
