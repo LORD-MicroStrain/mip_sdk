@@ -167,11 +167,18 @@ struct ReferenceFrame
         QUATERNION = 2,  ///<  Translation vector followed by quaternion (w, x, y, z).
     };
     
+    union Rotation
+    {
+        Rotation() {}
+        Vector3f euler;
+        Quatf quaternion;
+    };
+    
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
     Format format = static_cast<Format>(0); ///< Format of the transformation.
     Vector3f translation; ///< Translation X, Y, and Z.
-    Quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
+    Rotation rotation; ///< Rotation as specified by format.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
@@ -215,7 +222,7 @@ struct ReferenceFrame
         uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
         Vector3f translation; ///< Translation X, Y, and Z.
-        Quatf rotation; ///< Depends on the format parameter. Unused values are ignored.
+        Rotation rotation; ///< Rotation as specified by format.
         
         
         auto as_tuple()
@@ -230,8 +237,8 @@ void extract(Serializer& serializer, ReferenceFrame& self);
 void insert(Serializer& serializer, const ReferenceFrame::Response& self);
 void extract(Serializer& serializer, ReferenceFrame::Response& self);
 
-CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation);
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, float* rotationOut);
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation);
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut);
 CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);

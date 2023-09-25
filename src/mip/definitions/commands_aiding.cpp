@@ -174,9 +174,16 @@ void insert(Serializer& serializer, const ReferenceFrame& self)
         for(unsigned int i=0; i < 3; i++)
             insert(serializer, self.translation[i]);
         
-        for(unsigned int i=0; i < 4; i++)
-            insert(serializer, self.rotation[i]);
-        
+        if( self.format == ReferenceFrame::Format::EULER )
+        {
+            insert(serializer, self.rotation.euler);
+            
+        }
+        if( self.format == ReferenceFrame::Format::QUATERNION )
+        {
+            insert(serializer, self.rotation.quaternion);
+            
+        }
     }
 }
 void extract(Serializer& serializer, ReferenceFrame& self)
@@ -195,9 +202,16 @@ void extract(Serializer& serializer, ReferenceFrame& self)
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, self.translation[i]);
         
-        for(unsigned int i=0; i < 4; i++)
-            extract(serializer, self.rotation[i]);
-        
+        if( self.format == ReferenceFrame::Format::EULER )
+        {
+            extract(serializer, self.rotation.euler);
+            
+        }
+        if( self.format == ReferenceFrame::Format::QUATERNION )
+        {
+            extract(serializer, self.rotation.quaternion);
+            
+        }
     }
 }
 
@@ -210,9 +224,16 @@ void insert(Serializer& serializer, const ReferenceFrame::Response& self)
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.translation[i]);
     
-    for(unsigned int i=0; i < 4; i++)
-        insert(serializer, self.rotation[i]);
-    
+    if( self.format == ReferenceFrame::Format::EULER )
+    {
+        insert(serializer, self.rotation.euler);
+        
+    }
+    if( self.format == ReferenceFrame::Format::QUATERNION )
+    {
+        insert(serializer, self.rotation.quaternion);
+        
+    }
 }
 void extract(Serializer& serializer, ReferenceFrame::Response& self)
 {
@@ -223,12 +244,19 @@ void extract(Serializer& serializer, ReferenceFrame::Response& self)
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.translation[i]);
     
-    for(unsigned int i=0; i < 4; i++)
-        extract(serializer, self.rotation[i]);
-    
+    if( self.format == ReferenceFrame::Format::EULER )
+    {
+        extract(serializer, self.rotation.euler);
+        
+    }
+    if( self.format == ReferenceFrame::Format::QUATERNION )
+    {
+        extract(serializer, self.rotation.quaternion);
+        
+    }
 }
 
-CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation)
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -242,15 +270,21 @@ CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, Referen
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, translation[i]);
     
-    assert(rotation || (4 == 0));
-    for(unsigned int i=0; i < 4; i++)
-        insert(serializer, rotation[i]);
-    
+    if( format == ReferenceFrame::Format::EULER )
+    {
+        insert(serializer, rotation.euler);
+        
+    }
+    if( format == ReferenceFrame::Format::QUATERNION )
+    {
+        insert(serializer, rotation.quaternion);
+        
+    }
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, float* rotationOut)
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -277,10 +311,16 @@ CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, Referenc
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, translationOut[i]);
         
-        assert(rotationOut || (4 == 0));
-        for(unsigned int i=0; i < 4; i++)
-            extract(deserializer, rotationOut[i]);
-        
+        if( format == ReferenceFrame::Format::EULER )
+        {
+            extract(deserializer, rotationOut->euler);
+            
+        }
+        if( format == ReferenceFrame::Format::QUATERNION )
+        {
+            extract(deserializer, rotationOut->quaternion);
+            
+        }
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }

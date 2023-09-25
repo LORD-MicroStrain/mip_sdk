@@ -194,9 +194,16 @@ void insert_mip_aiding_reference_frame_command(mip_serializer* serializer, const
         for(unsigned int i=0; i < 3; i++)
             insert_float(serializer, self->translation[i]);
         
-        for(unsigned int i=0; i < 4; i++)
-            insert_float(serializer, self->rotation[i]);
-        
+        if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+        {
+            insert_mip_vector3f(serializer, &self->rotation.euler);
+            
+        }
+        if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+        {
+            insert_mip_quatf(serializer, &self->rotation.quaternion);
+            
+        }
     }
 }
 void extract_mip_aiding_reference_frame_command(mip_serializer* serializer, mip_aiding_reference_frame_command* self)
@@ -215,9 +222,16 @@ void extract_mip_aiding_reference_frame_command(mip_serializer* serializer, mip_
         for(unsigned int i=0; i < 3; i++)
             extract_float(serializer, &self->translation[i]);
         
-        for(unsigned int i=0; i < 4; i++)
-            extract_float(serializer, &self->rotation[i]);
-        
+        if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+        {
+            extract_mip_vector3f(serializer, &self->rotation.euler);
+            
+        }
+        if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+        {
+            extract_mip_quatf(serializer, &self->rotation.quaternion);
+            
+        }
     }
 }
 
@@ -230,9 +244,16 @@ void insert_mip_aiding_reference_frame_response(mip_serializer* serializer, cons
     for(unsigned int i=0; i < 3; i++)
         insert_float(serializer, self->translation[i]);
     
-    for(unsigned int i=0; i < 4; i++)
-        insert_float(serializer, self->rotation[i]);
-    
+    if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+    {
+        insert_mip_vector3f(serializer, &self->rotation.euler);
+        
+    }
+    if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+    {
+        insert_mip_quatf(serializer, &self->rotation.quaternion);
+        
+    }
 }
 void extract_mip_aiding_reference_frame_response(mip_serializer* serializer, mip_aiding_reference_frame_response* self)
 {
@@ -243,9 +264,16 @@ void extract_mip_aiding_reference_frame_response(mip_serializer* serializer, mip
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->translation[i]);
     
-    for(unsigned int i=0; i < 4; i++)
-        extract_float(serializer, &self->rotation[i]);
-    
+    if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+    {
+        extract_mip_vector3f(serializer, &self->rotation.euler);
+        
+    }
+    if( self->format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+    {
+        extract_mip_quatf(serializer, &self->rotation.quaternion);
+        
+    }
 }
 
 void insert_mip_aiding_reference_frame_command_format(struct mip_serializer* serializer, const mip_aiding_reference_frame_command_format self)
@@ -259,7 +287,7 @@ void extract_mip_aiding_reference_frame_command_format(struct mip_serializer* se
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const float* rotation)
+mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const mip_aiding_reference_frame_command_rotation* rotation)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -275,15 +303,21 @@ mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, ui
     for(unsigned int i=0; i < 3; i++)
         insert_float(&serializer, translation[i]);
     
-    assert(rotation || (4 == 0));
-    for(unsigned int i=0; i < 4; i++)
-        insert_float(&serializer, rotation[i]);
-    
+    if( format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+    {
+        insert_mip_vector3f(&serializer, &rotation->euler);
+        
+    }
+    if( format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+    {
+        insert_mip_quatf(&serializer, &rotation->quaternion);
+        
+    }
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, float* translation_out, float* rotation_out)
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, float* translation_out, mip_aiding_reference_frame_command_rotation* rotation_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -313,10 +347,16 @@ mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uin
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &translation_out[i]);
         
-        assert(rotation_out || (4 == 0));
-        for(unsigned int i=0; i < 4; i++)
-            extract_float(&deserializer, &rotation_out[i]);
-        
+        if( format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_EULER )
+        {
+            extract_mip_vector3f(&deserializer, &rotation_out->euler);
+            
+        }
+        if( format == MIP_AIDING_REFERENCE_FRAME_COMMAND_FORMAT_QUATERNION )
+        {
+            extract_mip_quatf(&deserializer, &rotation_out->quaternion);
+            
+        }
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
