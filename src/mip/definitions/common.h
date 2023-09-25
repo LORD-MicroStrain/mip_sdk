@@ -157,6 +157,9 @@ struct Vector
     template<typename U>
     void copyFrom(const U* ptr, size_t n) { if(n>N) n=N; for(size_t i=0; i<n; i++) m_data[i] = ptr[i]; }
 
+    /// Get the size of the array
+    size_t size() const { return N; }
+
 private:
     T m_data[N];
 };
