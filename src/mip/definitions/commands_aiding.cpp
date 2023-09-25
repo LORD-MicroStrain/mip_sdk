@@ -164,10 +164,13 @@ void insert(Serializer& serializer, const ReferenceFrame& self)
     
     insert(serializer, self.frame_id);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
     {
         insert(serializer, self.format);
         
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
         for(unsigned int i=0; i < 3; i++)
             insert(serializer, self.translation[i]);
         
@@ -182,10 +185,13 @@ void extract(Serializer& serializer, ReferenceFrame& self)
     
     extract(serializer, self.frame_id);
     
-    if( self.function == FunctionSelector::WRITE )
+    if( self.function == FunctionSelector::WRITE || self.function == FunctionSelector::READ )
     {
         extract(serializer, self.format);
         
+    }
+    if( self.function == FunctionSelector::WRITE )
+    {
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, self.translation[i]);
         
@@ -244,13 +250,15 @@ CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, Referen
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, float* translationOut, float* rotationOut)
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, float* rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, frameId);
+    
+    insert(serializer, format);
     
     assert(serializer.isOk());
     
@@ -263,8 +271,7 @@ CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, Referenc
         
         extract(deserializer, frameId);
         
-        assert(formatOut);
-        extract(deserializer, *formatOut);
+        extract(deserializer, format);
         
         assert(translationOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)

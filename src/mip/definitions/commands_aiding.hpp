@@ -179,11 +179,11 @@ struct ReferenceFrame
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
-    static constexpr const uint32_t READ_PARAMS    = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8003;
     static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
     static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
     static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
-    static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
@@ -210,7 +210,7 @@ struct ReferenceFrame
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_FRAME_CONFIG;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
@@ -231,7 +231,7 @@ void insert(Serializer& serializer, const ReferenceFrame::Response& self);
 void extract(Serializer& serializer, ReferenceFrame::Response& self);
 
 CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const float* rotation);
-CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format* formatOut, float* translationOut, float* rotationOut);
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, float* rotationOut);
 CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
 CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);

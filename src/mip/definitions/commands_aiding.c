@@ -184,10 +184,13 @@ void insert_mip_aiding_reference_frame_command(mip_serializer* serializer, const
     
     insert_u8(serializer, self->frame_id);
     
-    if( self->function == MIP_FUNCTION_WRITE )
+    if( self->function == MIP_FUNCTION_WRITE || self->function == MIP_FUNCTION_READ )
     {
         insert_mip_aiding_reference_frame_command_format(serializer, self->format);
         
+    }
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
         for(unsigned int i=0; i < 3; i++)
             insert_float(serializer, self->translation[i]);
         
@@ -202,10 +205,13 @@ void extract_mip_aiding_reference_frame_command(mip_serializer* serializer, mip_
     
     extract_u8(serializer, &self->frame_id);
     
-    if( self->function == MIP_FUNCTION_WRITE )
+    if( self->function == MIP_FUNCTION_WRITE || self->function == MIP_FUNCTION_READ )
     {
         extract_mip_aiding_reference_frame_command_format(serializer, &self->format);
         
+    }
+    if( self->function == MIP_FUNCTION_WRITE )
+    {
         for(unsigned int i=0; i < 3; i++)
             extract_float(serializer, &self->translation[i]);
         
@@ -277,7 +283,7 @@ mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, ui
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, float* translation_out, float* rotation_out)
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, float* translation_out, float* rotation_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -286,6 +292,8 @@ mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uin
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
     insert_u8(&serializer, frame_id);
+    
+    insert_mip_aiding_reference_frame_command_format(&serializer, format);
     
     assert(mip_serializer_is_ok(&serializer));
     
@@ -299,8 +307,7 @@ mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uin
         
         extract_u8(&deserializer, &frame_id);
         
-        assert(format_out);
-        extract_mip_aiding_reference_frame_command_format(&deserializer, format_out);
+        extract_mip_aiding_reference_frame_command_format(&deserializer, &format);
         
         assert(translation_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)

@@ -156,7 +156,7 @@ void insert_mip_aiding_reference_frame_response(struct mip_serializer* serialize
 void extract_mip_aiding_reference_frame_response(struct mip_serializer* serializer, mip_aiding_reference_frame_response* self);
 
 mip_cmd_result mip_aiding_write_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, const float* translation, const float* rotation);
-mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format* format_out, float* translation_out, float* rotation_out);
+mip_cmd_result mip_aiding_read_reference_frame(struct mip_interface* device, uint8_t frame_id, mip_aiding_reference_frame_command_format format, float* translation_out, float* rotation_out);
 mip_cmd_result mip_aiding_save_reference_frame(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_load_reference_frame(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_default_reference_frame(struct mip_interface* device, uint8_t frame_id);
