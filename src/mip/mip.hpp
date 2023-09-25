@@ -320,9 +320,15 @@ public:
     explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketRef(mData, sizeof(mData)) { copyFrom(data, length); }
     explicit SizedPacketBuf(const PacketRef& packet) : PacketRef(mData, sizeof(mData)) { copyFrom(packet); }
 
+    ///@brief Copy constructor
+    SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); }
+
     ///@brief Copy constructor (required to put packets into std::vector in some cases).
     template<size_t OtherSize>
     explicit SizedPacketBuf(const SizedPacketBuf<OtherSize>& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+
+    ///@brief Copy assignment operator
+    SizedPacketBuf& operator=(const SizedPacketBuf& other) { copyFrom(other); return *this; }
 
     ///@brief Assignment operator, copies data from another buffer to this one.
     template<size_t OtherSize>
