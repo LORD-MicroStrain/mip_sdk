@@ -51,6 +51,11 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         target_link_libraries(GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(GX5_45_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
 
+        add_executable(MIP_Binary_To_CSV_Converter "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/MIP_binary_to_CSV_converter/mip_binary_to_csv_converter.cpp" ${DEVICE_SOURCES}
+                MIP_binary_to_CSV_converter/string_utilities.h)
+        target_link_libraries(MIP_Binary_To_CSV_Converter mip stdc++fs)
+        target_compile_definitions(MIP_Binary_To_CSV_Converter PUBLIC "${MIP_EXAMPLE_DEFS}")
+
     endif()
 
 endif()
