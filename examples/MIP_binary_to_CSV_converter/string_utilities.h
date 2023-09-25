@@ -27,19 +27,6 @@ const std::vector<uint8_t> GNSS_DESCRIPTOR_SETS = {mip::data_gnss::DESCRIPTOR_SE
                                                    mip::data_gnss::MIP_GNSS4_DATA_DESC_SET,
                                                    mip::data_gnss::MIP_GNSS5_DATA_DESC_SET};
 
-
-const std::vector<uint8_t> SHARED_FIELD_DESCRIPTORS = {mip::data_shared::DATA_EVENT_SOURCE,
-                                                       mip::data_shared::DATA_TICKS,
-                                                       mip::data_shared::DATA_DELTA_TICKS,
-                                                       mip::data_shared::DATA_GPS_TIME,
-                                                       mip::data_shared::DATA_DELTA_TIME,
-                                                       mip::data_shared::DATA_REFERENCE_TIME,
-                                                       mip::data_shared::DATA_REF_TIME_DELTA,
-                                                       mip::data_shared::DATA_EXTERNAL_TIME,
-                                                       mip::data_shared::DATA_SYS_TIME_DELTA};
-
-
-bool is_shared_field_descriptor(uint8_t descriptor){return std::find(SHARED_FIELD_DESCRIPTORS.begin(), SHARED_FIELD_DESCRIPTORS.end(), descriptor) != SHARED_FIELD_DESCRIPTORS.end();}
 bool is_gnss_descriptor(uint8_t descriptor){return std::find(GNSS_DESCRIPTOR_SETS.begin(), GNSS_DESCRIPTOR_SETS.end(), descriptor) != GNSS_DESCRIPTOR_SETS.end();}
 
 template<typename T>
@@ -100,7 +87,7 @@ std::vector<std::string> get_field_as_string(const mip::Field& field)
 
 std::vector<std::string> get_field_as_string(const mip::Field& field)
 {
-    if (is_shared_field_descriptor(field.fieldDescriptor()))
+    if (mip::C::mip_is_shared_data_field_descriptor(field.fieldDescriptor()))
     {
         switch (field.fieldDescriptor())
         {
