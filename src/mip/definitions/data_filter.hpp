@@ -92,6 +92,8 @@ enum
     DATA_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     DATA_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
+    DATA_FRAME_CONFIG_ERROR                          = 0x50,
+    DATA_FRAME_CONFIG_ERROR_UNCERTAINTY              = 0x51,
     
 };
 
@@ -227,12 +229,18 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
 
 enum class FilterAidingMeasurementType : uint8_t
 {
-    GNSS         = 1,  ///<  
-    DUAL_ANTENNA = 2,  ///<  
-    HEADING      = 3,  ///<  
-    PRESSURE     = 4,  ///<  
-    MAGNETOMETER = 5,  ///<  
-    SPEED        = 6,  ///<  
+    GNSS              = 1,  ///<  
+    DUAL_ANTENNA      = 2,  ///<  
+    HEADING           = 3,  ///<  
+    PRESSURE          = 4,  ///<  
+    MAGNETOMETER      = 5,  ///<  
+    SPEED             = 6,  ///<  
+    POS_ECEF          = 33,  ///<  
+    POS_LLH           = 34,  ///<  
+    VEL_ECEF          = 40,  ///<  
+    VEL_NED           = 41,  ///<  
+    VEL_VEHICLE_FRAME = 42,  ///<  
+    HEADING_TRUE      = 49,  ///<  
 };
 
 struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
@@ -2084,7 +2092,7 @@ struct AidingMeasurementSummary
 {
     float time_of_week = 0; ///< [seconds]
     uint8_t source = 0;
-    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types)
+    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types) Note: values 0x20 and above correspond to commanded aiding measurements in the 0x13 Aiding command set.
     FilterMeasurementIndicator indicator;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
@@ -2242,6 +2250,76 @@ struct GnssDualAntennaStatus
 };
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);
 void extract(Serializer& serializer, GnssDualAntennaStatus& self);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_aiding_frame_config_error  (0x82,0x50) Aiding Frame Config Error [CPP]
+/// Filter reported aiding source frame configuration error
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct AidingFrameConfigError
+{
+    uint8_t frame_id = 0; ///< Frame ID for the receiver to which the antenna is attached
+    Vector3f translation; ///< Translation config X, Y, and Z (m).
+    Quatf attitude; ///< Attitude quaternion
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(frame_id,translation[0],translation[1],translation[2],attitude[0],attitude[1],attitude[2],attitude[3]);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(frame_id),std::ref(translation[0]),std::ref(translation[1]),std::ref(translation[2]),std::ref(attitude[0]),std::ref(attitude[1]),std::ref(attitude[2]),std::ref(attitude[3]));
+    }
+};
+void insert(Serializer& serializer, const AidingFrameConfigError& self);
+void extract(Serializer& serializer, AidingFrameConfigError& self);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_aiding_frame_config_error_uncertainty  (0x82,0x51) Aiding Frame Config Error Uncertainty [CPP]
+/// Filter reported aiding source frame configuration error uncertainty
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct AidingFrameConfigErrorUncertainty
+{
+    uint8_t frame_id = 0; ///< Frame ID for the receiver to which the antenna is attached
+    Vector3f translation_unc; ///< Translation uncertaint X, Y, and Z (m).
+    Vector3f attitude_unc; ///< Attitude uncertainty, X, Y, and Z (radians).
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(frame_id,translation_unc[0],translation_unc[1],translation_unc[2],attitude_unc[0],attitude_unc[1],attitude_unc[2]);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(frame_id),std::ref(translation_unc[0]),std::ref(translation_unc[1]),std::ref(translation_unc[2]),std::ref(attitude_unc[0]),std::ref(attitude_unc[1]),std::ref(attitude_unc[2]));
+    }
+};
+void insert(Serializer& serializer, const AidingFrameConfigErrorUncertainty& self);
+void extract(Serializer& serializer, AidingFrameConfigErrorUncertainty& self);
 
 
 ///@}
