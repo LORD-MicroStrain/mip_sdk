@@ -81,8 +81,13 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
     if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
-#ifndef WIN32
-    // Todo: timeouts on windows
+#ifdef WIN32
+    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout_ms, sizeof(timeout_ms)) != 0 )
+        return false;
+
+    if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_SNDTIMEO, (char*)&timeout_ms, sizeof(timeout_ms)) != 0 )
+        return false;
+#else
     struct timeval timeout_option;
     timeout_option.tv_sec  = timeout_ms / 1000;
     timeout_option.tv_usec = (timeout_ms % 1000) * 1000;
