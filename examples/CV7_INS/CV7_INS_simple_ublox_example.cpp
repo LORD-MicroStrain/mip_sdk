@@ -4,15 +4,7 @@
 
 #include "mip/mip_all.hpp"
 #include "../example_utils.hpp"
-#include <iostream>
-#include <cstdint>
-#include <fstream>
-#include <array>
 #include <map>
-#include <algorithm>
-#include <iterator>
-#include <unistd.h>
-#include <vector>
 #include <cmath>
 
 using namespace mip;
@@ -169,7 +161,7 @@ int main(int argc, const char* argv[])
 
     std::unique_ptr<ExampleUtils> utils_ublox = handleCommonArgs(3, ublox_argv);
     printf("Connecting to UBlox receiver ..." );
-    std::cout << "Connected to " << std::string(ublox_argv[1]) << " at " << std::string(ublox_argv[2]) << std::endl;
+    printf("Connected to %d at %d\n", std::string(ublox_argv[1]), std::string(ublox_argv[2]));
    
     //
     //Idle the device (note: this is good to do during setup)
@@ -288,15 +280,17 @@ int main(int argc, const char* argv[])
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running) { 
+        std::unique_ptr<UBlox_PVT_Message> ublox_message;
 
         // Poll ublox receiver for PVT message ... 
         mip::Timestamp timestamp = getCurrentTimestamp();
         if (!utils_ublox->connection->recvFromDevice(ublox_message_bytes, max_length, wait_time, length_out, &timestamp)) {
-            std::cerr << "Error reading from the serial port." << std::endl;
+            exit_gracefully("ERROR: Error reading from serial port");
         }
 
         // Here's the message!
-        std::unique_ptr<UBlox_PVT_Message> ublox_message = parse_PVT_ublox_message(ublox_message_bytes);
+        if (read_out == max_length)
+            ublox_message = parse_PVT_ublox_message(ublox_message_bytes);
         device->update();
 
         //Check for full nav filter state transition
@@ -318,11 +312,15 @@ int main(int argc, const char* argv[])
             external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
 
             // External position command
-            if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->latitude, ublox_message->longitude, ublox_message->height_above_ellipsoid, ublox_message->llh_uncertainty, 1) != CmdResult::ACK_OK)
-                printf("WARNING: Failed to send external position to CV7-INS\n");
+            if(!ublox_message->lat_lon_valid_flag) {
+               if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->latitude, ublox_message->longitude, ublox_message->height_above_ellipsoid, ublox_message->llh_uncertainty, 1) != CmdResult::ACK_OK)
+                printf("WARNING: Failed to send external position to CV7-INS\n"); 
+            }
+            else
+                printf("WARNING: Invalid lon, lat, height and hMSL from ublox receiver");
 
             // External global velocity command
-            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->ned_velocity, ublox_message->ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->ned_velocity, ublox_message->ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
         }
 
@@ -346,15 +344,15 @@ std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t ublox_m
 
     // Check header
     if (ublox_message_bytes[0] != 0xB5 || ublox_message_bytes[1] != 0x62)
-        return NULL;
+        exit_gracefully("ERROR: Incorrect message header");
 
     // Check class and ID to make sure its a UBX-NAV-PVT message
     if (ublox_message_bytes[2] != 0x01 || ublox_message_bytes[3] != 0x07)
-        return NULL;
+        exit_gracefully("ERROR: Not a UBX-NAV-PVT message");
 
     // Check payload length
     if (ublox_message_bytes[4] != 0x5C)
-        return NULL;
+        exit_gracefully("ERROR: Incorrect payload size for PVT message");
     
     payload_size = ublox_message_bytes[4];
     uint8_t payload[payload_size];
