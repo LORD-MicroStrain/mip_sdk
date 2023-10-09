@@ -169,7 +169,7 @@ int main(int argc, const char* argv[])
 
     std::unique_ptr<ExampleUtils> utils_ublox = handleCommonArgs(3, ublox_argv);
     printf("Connecting to UBlox receiver ..." );
-    std::cout << "Connected to " << std::string(argv[1]) << " at " << std::string(argv[2]) << std::endl;
+    std::cout << "Connected to " << std::string(ublox_argv[1]) << " at " << std::string(ublox_argv[2]) << std::endl;
    
     //
     //Idle the device (note: this is good to do during setup)
