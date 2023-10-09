@@ -2,8 +2,7 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "../../src/mip/mip_all.hpp"
-#include <vector>
+#include "mip/mip_all.hpp"
 #include "../example_utils.hpp"
 #include <iostream>
 #include <cstdint>
@@ -13,6 +12,7 @@
 #include <algorithm>
 #include <iterator>
 #include <unistd.h>
+#include <vector>
 #include <cmath>
 
 using namespace mip;
