@@ -6,6 +6,7 @@
 #include "../example_utils.hpp"
 #include <map>
 #include <cmath>
+#include <cstring>
 
 using namespace mip;
 
@@ -118,6 +119,8 @@ double parse_4_bytes(const uint8_t payload[92], int start_index);
 double parse_long_lat(const uint8_t payload[92], int start_index);
 
 HANDLE open_uBlox_serial_port(const char* com_port, const int baud_rate);
+
+bool verify_checksum(uint8_t *data);
 
 int usage(const char* argv0);
 
@@ -271,26 +274,89 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
     
-    mip::Timeout wait_time;
-    uint8_t ublox_message_bytes[PVT_message_size];
+    mip::Timeout wait_time = 60000;
+    int buffer_length = 1024;
+    uint8_t ublox_message_bytes[buffer_length];
     size_t max_length = sizeof(ublox_message_bytes);
     size_t read_out = 0;
     size_t* length_out = &read_out;
+    mip::Timestamp timestamp;
+    uint8_t PVT_message[PVT_message_size];
 
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running) { 
         std::unique_ptr<UBlox_PVT_Message> ublox_message;
-
+        bool pvt_message_found = false;
+        bool pvt_message_overflow = false;
         // Poll ublox receiver for PVT message ... 
-        mip::Timestamp timestamp = getCurrentTimestamp();
         if (!utils_ublox->connection->recvFromDevice(ublox_message_bytes, max_length, wait_time, length_out, &timestamp)) {
             exit_gracefully("ERROR: Error reading from serial port");
         }
 
-        // Here's the message!
-        if (read_out == max_length)
-            ublox_message = parse_PVT_ublox_message(ublox_message_bytes);
+        for (int i = buffer_length - 1 - 4; i >= 0; i--) {
+            // look for 0xB5
+            if (ublox_message_bytes[i] != 0xB5)
+                continue;
+            if (ublox_message_bytes[i+1] != 0x62)
+                continue;
+            if (ublox_message_bytes[i+2] != 0x01)
+                continue;
+            if (ublox_message_bytes[i+3] != 0x07)
+                continue;
+
+            // If there are 100 bytes in buffer after (0xB5) is found and there were at least 100 bytes read
+            if (i + (PVT_message_size - 1) < buffer_length && (*length_out - i) >= PVT_message_size ) {
+                
+                // Extract payload
+                int payload_index = 0;
+                
+                for (int z = i; z < PVT_message_size; z++) {
+                    PVT_message[payload_index] = ublox_message_bytes[z];
+                    payload_index += 1;
+                }
+                // If checksum valid
+                if (verify_checksum(PVT_message)) {
+                   ublox_message = parse_PVT_ublox_message(PVT_message); 
+                   // send parsed ublox_message to CV7
+                   break;
+                }
+                else {
+                    printf("Found packet, failed checksum verification");
+                    break;
+                }
+            }
+
+            size_t start_index = *length_out - i;
+            size_t package_bytes_remaining = PVT_message_size - start_index;
+
+            while (*length_out == package_bytes_remaining) {
+                std::memmove(ublox_message_bytes, ublox_message_bytes + start_index, package_bytes_remaining);
+
+                if (!utils_ublox->connection->recvFromDevice(&ublox_message_bytes[start_index], package_bytes_remaining, wait_time, length_out, &timestamp))
+                    exit_gracefully("ERROR: Error reading from serial port");
+                
+                start_index += *length_out;
+                package_bytes_remaining = PVT_message_size - start_index;
+            }
+
+            for (int i = 0; i < payload_size; i++) {
+                PVT_message[i] = ublox_message_bytes[i];
+            }
+
+            // check checksum
+            if (verify_checksum(PVT_message)) {
+                
+                ublox_message = parse_PVT_ublox_message(PVT_message);
+                // send parsed ublox_message to CV7
+                break;
+            }
+            // else then I clear ublox_message bytes and break;
+            std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
+            break;
+        }
+        
+
         device->update();
 
         //Check for full nav filter state transition
@@ -305,7 +371,7 @@ int main(int argc, const char* argv[])
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
         mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
 
-        if (elapsed_time_from_last_measurement_update > 500 && read_out == max_length)
+        if (elapsed_time_from_last_measurement_update > 500 && pvt_message_found)
         {
             // Use measurement time of arrival for timestamping method
             commands_aiding::Time external_measurement_time;
@@ -332,10 +398,34 @@ int main(int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Verify UBX-NAV-PVT Checksum
+////////////////////////////////////////////////////////////////////////////////
+
+bool verify_checksum(uint8_t *data) {
+    unsigned i, j;
+    uint8_t a, b;
+
+    j = ((unsigned)data[4] + ((unsigned)data[5] << 8) + 6);
+
+    a = 0;
+    b = 0;
+
+    for(i=2; i<j; i++) {
+        a += data[i];
+        b += a;
+    }
+
+    if (a == data[i+0] && b == data[i+1])
+        return true;
+    
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Parse UBX-NAV-PVT Message
 ////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t ublox_message_bytes[100]) {
+std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t ublox_message_bytes[]) {
 
     // TODO: Needs some refactoring but works!!
 
