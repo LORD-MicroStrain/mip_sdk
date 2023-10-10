@@ -3,7 +3,10 @@
 
 #include "serial_port.h"
 
-#ifdef __APPLE__
+#if defined WIN32
+#include <stdlib.h>
+#include <ctype.h>
+#elif defined __APPLE__
 #include <IOKit/serial/ioss.h>
 #endif
 
@@ -77,20 +80,52 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     BOOL   ready;
     DCB    dcb;
 
+    // Prepend '\\.\' to the com port if not already present.
+    bool added_prefix = false;
+    const char* tmp_port_str = port_str;
+    size_t port_str_len = strlen(port_str);
+
+    // Only prepend if port_str is of the form 'COMx'
+    if(port_str_len >= 4 && toupper(port_str[0]) == 'C' && toupper(port_str[1]) == 'O' && toupper(port_str[2]) == 'M' && isdigit(port_str[3]))
+    {
+        char* tmp = (char*)malloc(port_str_len + 4 + 1);
+        if (!tmp)
+            return false;
+
+        tmp[0] = '\\';
+        tmp[1] = '\\';
+        tmp[2] = '.';
+        tmp[3] = '\\';
+        memcpy(&tmp[4], port_str, port_str_len+1);
+
+        added_prefix = true;
+        tmp_port_str = tmp;
+    }
+
     //Connect to the provided com port
-    port->handle = CreateFile(port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    port->handle = CreateFile(tmp_port_str, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+
+    // Ensure that the free() call in the following 'if' block doesn't clobber an error value
+    DWORD last_error = GetLastError();
+
+    // If the port string was modified
+    if (added_prefix)
+    {
+        free(tmp_port_str);
+        tmp_port_str = NULL;
+    }
 
     //Check for an invalid handle
     if(port->handle == INVALID_HANDLE_VALUE)
     {
-        MIP_LOG_ERROR("Unable to open com port (%d)\n", GetLastError());
+        MIP_LOG_ERROR("Unable to open com port (%d)\n", last_error);
         return false;
     }
 
     //Setup the com port buffer sizes
     if(SetupComm(port->handle, COM_PORT_BUFFER_SIZE, COM_PORT_BUFFER_SIZE) == 0)
     {
-        MIP_LOG_ERROR("Unable to setup com port buffer size (%d)\n", GetLastError());
+        MIP_LOG_ERROR("Unable to setup com port buffer size (%d)\n", last_error);
         CloseHandle(port->handle);
         port->handle = INVALID_HANDLE_VALUE;
         return false;
