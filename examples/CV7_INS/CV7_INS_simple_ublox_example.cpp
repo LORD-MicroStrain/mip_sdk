@@ -104,7 +104,7 @@ std::map<std::string, UBlox_Payload_Part> PAYLOAD_PART_MAP = {
 // Function Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t test_ublox_message[100]);
+std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_message[100]);
 
 template <typename T> 
 void convert_mm_to_m(T& value);
@@ -132,9 +132,6 @@ bool should_exit();
 
 int main(int argc, const char* argv[])
 {
-    // for (int i = 0; i < argc; ++i) {
-    //     std::cout << "Argument " << i << ": " << argv[i] << std::endl;
-    // }
     
     std::unique_ptr<ExampleUtils> utils = handleCommonArgs(3, argv);
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
@@ -158,13 +155,14 @@ int main(int argc, const char* argv[])
     //
     // Open ublox serial port
     // TODO: Needs be refactored but works
-    const char* ublox_argv[2];
+    const char* ublox_argv[3];
+    ublox_argv[0] = argv[0];
     ublox_argv[1] = argv[3];
     ublox_argv[2] = argv[4];
 
     std::unique_ptr<ExampleUtils> utils_ublox = handleCommonArgs(3, ublox_argv);
-    printf("Connecting to UBlox receiver ..." );
-    printf("Connected to %d at %d\n", std::string(ublox_argv[1]), std::string(ublox_argv[2]));
+    printf("Connecting to UBlox F9P ..." );
+    printf("Connected to %s at %s\n", ublox_argv[1], ublox_argv[2]);
    
     //
     //Idle the device (note: this is good to do during setup)
@@ -274,21 +272,22 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
     
-    mip::Timeout wait_time = 60000;
-    int buffer_length = 1024;
-    uint8_t ublox_message_bytes[buffer_length];
+    mip::Timeout wait_time = 3000;
+    size_t buffer_length = 1024;
+    uint8_t ublox_message_bytes[1024];
     size_t max_length = sizeof(ublox_message_bytes);
     size_t read_out = 0;
     size_t* length_out = &read_out;
     mip::Timestamp timestamp;
-    uint8_t PVT_message[PVT_message_size];
+    uint8_t PVT_message[100];
 
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
-    while(running) { 
+    while(running) {
         std::unique_ptr<UBlox_PVT_Message> ublox_message;
         bool pvt_message_found = false;
-        bool pvt_message_overflow = false;
+        // else then I clear ublox_message bytes and break;
++        std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
         // Poll ublox receiver for PVT message ... 
         if (!utils_ublox->connection->recvFromDevice(ublox_message_bytes, max_length, wait_time, length_out, &timestamp)) {
             exit_gracefully("ERROR: Error reading from serial port");
@@ -311,13 +310,14 @@ int main(int argc, const char* argv[])
                 // Extract payload
                 int payload_index = 0;
                 
-                for (int z = i; z < PVT_message_size; z++) {
+                for (int z = i; z < PVT_message_size + i; z++) {
                     PVT_message[payload_index] = ublox_message_bytes[z];
                     payload_index += 1;
                 }
                 // If checksum valid
                 if (verify_checksum(PVT_message)) {
-                   ublox_message = parse_PVT_ublox_message(PVT_message); 
+                    ublox_message = parse_PVT_ublox_message(PVT_message); 
+                    pvt_message_found = true;
                    // send parsed ublox_message to CV7
                    break;
                 }
@@ -346,16 +346,15 @@ int main(int argc, const char* argv[])
 
             // check checksum
             if (verify_checksum(PVT_message)) {
-                
                 ublox_message = parse_PVT_ublox_message(PVT_message);
                 // send parsed ublox_message to CV7
+                pvt_message_found = true;
                 break;
             }
             // else then I clear ublox_message bytes and break;
             std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
             break;
         }
-        
 
         device->update();
 
@@ -403,19 +402,19 @@ int main(int argc, const char* argv[])
 
 bool verify_checksum(uint8_t *data) {
     unsigned i, j;
-    uint8_t a, b;
+    uint8_t ck_a, ck_b;
 
     j = ((unsigned)data[4] + ((unsigned)data[5] << 8) + 6);
 
-    a = 0;
-    b = 0;
+    ck_a = 0;
+    ck_b = 0;
 
-    for(i=2; i<j; i++) {
-        a += data[i];
-        b += a;
+    for (i = 2; i < j; i++) {
+        ck_a += data[i];
+        ck_b += ck_a;
     }
 
-    if (a == data[i+0] && b == data[i+1])
+    if (ck_a == data[i+0] && ck_b == data[i+1])
         return true;
     
     return false;
@@ -425,31 +424,17 @@ bool verify_checksum(uint8_t *data) {
 // Parse UBX-NAV-PVT Message
 ////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t ublox_message_bytes[]) {
+std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_message[]) {
 
     // TODO: Needs some refactoring but works!!
 
     std::unique_ptr<UBlox_PVT_Message> ublox_message = std::make_unique<UBlox_PVT_Message>();
     int payload_index = 0;
-
-    // Check header
-    if (ublox_message_bytes[0] != 0xB5 || ublox_message_bytes[1] != 0x62)
-        exit_gracefully("ERROR: Incorrect message header");
-
-    // Check class and ID to make sure its a UBX-NAV-PVT message
-    if (ublox_message_bytes[2] != 0x01 || ublox_message_bytes[3] != 0x07)
-        exit_gracefully("ERROR: Not a UBX-NAV-PVT message");
-
-    // Check payload length
-    if (ublox_message_bytes[4] != 0x5C)
-        exit_gracefully("ERROR: Incorrect payload size for PVT message");
-    
-    payload_size = ublox_message_bytes[4];
-    uint8_t payload[payload_size];
+    uint8_t payload[92];
 
     // Extract payload
     for (int i = header_size; i < (PVT_message_size - checksum_size); i++) {
-         payload[payload_index] = ublox_message_bytes[i];
+         payload[payload_index] = PVT_message[i];
          payload_index += 1;
     }
 
@@ -612,5 +597,4 @@ bool should_exit()
 {
     return false;
 }
-
 
