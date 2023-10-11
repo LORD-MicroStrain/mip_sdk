@@ -470,7 +470,7 @@ int main(int argc, const char* argv[])
         }
 
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
-        if (elapsed_time_from_last_measurement_update > 500)
+        if (elapsed_time_from_last_measurement_update > 250)
         {
             printf("Sending measurement update...\n");
 
