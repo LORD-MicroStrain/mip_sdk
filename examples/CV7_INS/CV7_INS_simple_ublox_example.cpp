@@ -7,6 +7,8 @@
 #include <map>
 #include <cmath>
 #include <cstring>
+#include <string>
+#include <time.h>
 
 using namespace mip;
 
@@ -14,11 +16,12 @@ using namespace mip;
 // Global Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-data_shared::GpsTimestamp filter_gps_time;
-data_filter::Status       filter_status;
-data_filter::EulerAngles  filter_euler_angles;
-data_filter::PositionLlh  filter_llh_position;
-data_filter::VelocityNed  filter_ned_velocity;
+data_shared::GpsTimestamp    filter_gps_time;
+data_filter::Status          filter_status;
+data_filter::EulerAngles     filter_euler_angles;
+data_filter::PositionLlh     filter_llh_position;
+data_filter::VelocityNed     filter_ned_velocity;
+data_system::TimeSyncStatus  system_time_sync_status;
 
 uint8_t external_heading_sensor_id = 1;
 uint8_t gnss_antenna_sensor_id = 2;
@@ -98,6 +101,24 @@ std::map<std::string, UBlox_Payload_Part> PAYLOAD_PART_MAP = {
      {"MAG_ACC", {90, 2}}
 };
 
+struct InputArguments
+{
+    std::string mip_device_port_name;
+    std::string mip_device_baudrate;
+    std::string mip_binary_filepath;
+
+    std::string ublox_device_port_name;
+    std::string ublox_device_baudrate;
+
+    bool enable_pps_sync = false;
+
+    int pps_input_pin_id = 1;
+
+    commands_filter::InitializationConfiguration::AlignmentSelector filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
+
+    float gnss_antenna_lever_arm[3] = {0,0,0};
+};
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +139,7 @@ double parse_4_bytes(const uint8_t payload[92], int start_index);
 
 double parse_long_lat(const uint8_t payload[92], int start_index);
 
-HANDLE open_uBlox_serial_port(const char* com_port, const int baud_rate);
+//HANDLE open_uBlox_serial_port(const char* com_port, const int baud_rate);
 
 bool verify_checksum(uint8_t *data);
 
@@ -129,15 +150,25 @@ void print_device_information(const commands_base::BaseDeviceInfo& device_info);
 void exit_gracefully(const char *message);
 bool should_exit();
 
+InputArguments parse_input_arguments(int argc, const char* argv[]);
+
+uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week);
+
+int get_gps_week(int year, int month, int day);
+
 
 int main(int argc, const char* argv[])
 {
-    for (int i = 0; i < argc; ++i) {
-        std::cout << "Argument " << i << ": " << argv[i] << std::endl;
-     }
-    
-    std::unique_ptr<ExampleUtils> utils = handleCommonArgs(3, argv);
+
+    InputArguments input_arguments = parse_input_arguments(argc, argv);
+
+    std::unique_ptr<ExampleUtils> utils = openFromArgs(input_arguments.mip_device_port_name, input_arguments.mip_device_baudrate, input_arguments.mip_binary_filepath);
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+
+    //
+    //Attempt to idle the device before pinging
+    //
+    commands_base::setIdle(*device);
 
     //
     //Ping the device (note: this is good to do to make sure the device is present)
@@ -156,19 +187,12 @@ int main(int argc, const char* argv[])
     print_device_information(device_info);
 
     //
-    // Open ublox serial port
-    // TODO: Needs be refactored but works
-    const char* ublox_argv[3];
-    ublox_argv[0] = argv[0];
-    ublox_argv[1] = argv[3];
-    ublox_argv[2] = argv[4];
+    // Open uBlox serial port
+    //
 
+    printf("Connecting to UBlox F9P on %s at %s...", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
+    std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
 
-
-    std::unique_ptr<ExampleUtils> utils_ublox = handleCommonArgs(3, ublox_argv);
-    printf("Connecting to UBlox F9P ..." );
-    printf("Connected to %s at %s\n", ublox_argv[1], ublox_argv[2]);
-   
     //
     //Idle the device (note: this is good to do during setup)
     //
@@ -184,39 +208,24 @@ int main(int argc, const char* argv[])
     if(commands_3dm::defaultDeviceSettings(*device) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not load default device settings!");
 
-    //
-    //Setup external aiding sensor reference frames
-    //
-
-
-    //
-    //External heading sensor reference frame.
-    //
-    float external_heading_sensor_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 0.0, 0.0};  // External heading sensor is aligned with vehicle frame
-    float external_heading_sensor_to_vehicle_frame_translation[3] = {0.0, 0.0, 0.0};  // Heading measurements are agnostic to translation, translation set to zero
-    if(commands_aiding::writeReferenceFrame(*device, external_heading_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_heading_sensor_to_vehicle_frame_translation, external_heading_sensor_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Unable to configure external heading sensor frame ID");
-
 
     //
     //External GNSS antenna reference frame
     //
     float external_gnss_antenna_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 0.0, 0.0};  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
-    float external_gnss_antenna_to_vehicle_frame_translation[3] = {0.0, 1.0, 0.0};  // Antenna is translated 1 meter in vehicle frame Y direction
     if(commands_aiding::writeReferenceFrame(*device, gnss_antenna_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_gnss_antenna_to_vehicle_frame_translation, external_gnss_antenna_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
+                                            input_arguments.gnss_antenna_lever_arm, external_gnss_antenna_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external GNSS antenna frame ID");
 
 
     //
-    //External bodyframe velocity reference frame
+    // Set heading initialization source
     //
-    float external_velocity_sensor_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 1.57, 0.0};  // Rotated 90 deg around yaw axis
-    float external_velocity_sensor_to_vehicle_frame_translation[3] = {1.0, 0.0, 0.0};  // Sensor is translated 1 meter in X direction
-    if(commands_aiding::writeReferenceFrame(*device, vehicle_frame_velocity_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Unable to configure external vehicle frame velocity sensor ID");
+
+    float default_init[3] = {0,0,0};
+    if(commands_filter::writeInitializationConfiguration(*device, false, commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_ATT, input_arguments.filter_heading_alignment_method,
+                                                         0, 0, 0, default_init, default_init, commands_filter::FilterReferenceFrame::ECEF) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not load default device settings!");
 
 
     //
@@ -227,7 +236,7 @@ int main(int argc, const char* argv[])
     if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not get filter base rate format!");
 
-    const uint16_t filter_sample_rate = 100; // Hz
+    const uint16_t filter_sample_rate = 10; // Hz
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
     std::array<DescriptorRate, 5> filter_descriptors = {{
@@ -240,6 +249,48 @@ int main(int argc, const char* argv[])
 
     if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
+
+
+    if (input_arguments.enable_pps_sync)
+    {
+
+        //
+        //Setup SYSTEM data format to monitor PPS status
+        //
+
+        uint16_t system_data_base_rate;
+        if(commands_3dm::getBaseRate(*device, data_system::DESCRIPTOR_SET, &system_data_base_rate) != CmdResult::ACK_OK)
+            exit_gracefully("ERROR: Could not get system data base rate format!");
+
+        const uint16_t system_data_sample_rate = 10; // Hz
+        const uint16_t system_data_decimation = system_data_base_rate / system_data_sample_rate;
+
+        std::array<DescriptorRate, 2> system_data_descriptors = {{
+                                                                    { data_shared::DATA_GPS_TIME,         system_data_decimation },
+                                                                    { data_system::DATA_TIME_SYNC_STATUS, system_data_decimation },
+                                                            }};
+
+        if(commands_3dm::writeMessageFormat(*device, data_system::DESCRIPTOR_SET, system_data_descriptors.size(), system_data_descriptors.data()) != CmdResult::ACK_OK)
+            exit_gracefully("ERROR: Could not set system data message format!");
+
+
+        //
+        // Setup GPIO for PPS input functionality
+        //
+
+        if (commands_3dm::writeGpioConfig(*device, input_arguments.pps_input_pin_id, mip::commands_3dm::GpioConfig::Feature::PPS, mip::commands_3dm::GpioConfig::Behavior::PPS_INPUT, mip::commands_3dm::GpioConfig::PinMode::NONE) != CmdResult::ACK_OK)
+            exit_gracefully("ERROR: Could not set GPIO to PPS input!");
+
+
+        //
+        // Setup PPS source as GPIO
+        //
+
+        if (mip::commands_3dm::writePpsSource(*device, mip::commands_3dm::PpsSource::Source::GPIO) != CmdResult::ACK_OK)
+            exit_gracefully("ERROR: Failed to set PPS source to GPIO!");
+
+    }
+
 
 
     //
@@ -263,6 +314,11 @@ int main(int argc, const char* argv[])
     device->registerExtractor(filter_data_handlers[3], &filter_llh_position);
     device->registerExtractor(filter_data_handlers[4], &filter_ned_velocity);
 
+    //System Data
+    DispatchHandler system_data_handlers[1];
+
+    device->registerExtractor(system_data_handlers[0], &system_time_sync_status, data_system::DESCRIPTOR_SET);
+
     //
     //Resume the device
     //
@@ -274,6 +330,7 @@ int main(int argc, const char* argv[])
     //
 
     bool running = true;
+    bool pps_sync_valid = false;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
     
@@ -289,6 +346,25 @@ int main(int argc, const char* argv[])
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running) {
+
+        device->update();
+
+        // Wait for valid PPS lock
+        if (input_arguments.enable_pps_sync && !pps_sync_valid)
+        {
+            pps_sync_valid = system_time_sync_status.time_sync;
+
+            mip::Timestamp current_timestamp = getCurrentTimestamp();
+            mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
+            if (elapsed_time_from_last_message_print > 1000)
+            {
+                printf("Waiting for valid PPS lock...\n");
+                prev_print_timestamp = current_timestamp;
+            }
+            continue;
+        }
+
+
         std::unique_ptr<UBlox_PVT_Message> ublox_message;
         bool pvt_message_found = false;
         std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
@@ -363,8 +439,6 @@ int main(int argc, const char* argv[])
         if (!pvt_message_found)
             continue;
 
-        device->update();
-
         //Check for full nav filter state transition
         if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
         {
@@ -374,26 +448,65 @@ int main(int argc, const char* argv[])
 
         // Check that enough time has elapsed to send a new measurement update
         mip::Timestamp current_timestamp = getCurrentTimestamp();
-        mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
-        mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
 
+        bool ublox_data_valid = ublox_message->time_valid_flag && ublox_message->lat_lon_valid_flag;
+        if (!ublox_data_valid)
+        {
+            printf("WARNING: Ublox data invalid");
+            continue;
+        }
+
+        mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
+        //Once in full nav, print out data at 1 Hz
+        if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
+        {
+            printf("\n\n****Filter navigation state****\n");
+            printf("TIMESTAMP: %f\n", filter_gps_time.tow);
+            printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
+            printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
+            printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);
+
+            prev_print_timestamp = current_timestamp;
+        }
+
+        mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
         if (elapsed_time_from_last_measurement_update > 500)
         {
-            // Use measurement time of arrival for timestamping method
-            commands_aiding::Time external_measurement_time;
-            external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+            printf("Sending measurement update...\n");
 
-            // External position command
-            if(!ublox_message->lat_lon_valid_flag) {
-               if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->latitude, ublox_message->longitude, ublox_message->height_above_ellipsoid, ublox_message->llh_uncertainty, 1) != CmdResult::ACK_OK)
-                printf("WARNING: Failed to send external position to CV7-INS\n"); 
+            commands_aiding::Time external_measurement_time;
+
+            if (input_arguments.enable_pps_sync)
+            {
+                // Update week number
+                uint32_t week_number = get_gps_week(ublox_message->utc_year, ublox_message->utc_month, ublox_message->utc_day);
+                if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
+                    printf("WARNING: Failed to send week number time update to CV7-INS\n");
+
+                // Update time of week
+                float time_of_week = float(ublox_message->iTOW) * 1e-3;
+                uint32_t time_of_week_int = floor(time_of_week);
+                if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
+                    printf("WARNING: Failed to send time of week update to CV7-INS\n");
+
+                external_measurement_time.timebase = commands_aiding::Time::Timebase::EXTERNAL_TIME;
+                external_measurement_time.nanoseconds = convert_gps_tow_to_nanoseconds(week_number, time_of_week);
             }
             else
-                printf("WARNING: Invalid lon, lat, height and hMSL from ublox receiver");
+            {
+                // If no PPS sync is supplied use device time of arrival for data timestamping method
+                external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+            }
+
+            // External position command
+            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id,ublox_message->latitude, ublox_message->longitude,ublox_message->height_above_ellipsoid, ublox_message->llh_uncertainty, 1) != CmdResult::ACK_OK)
+                printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            if(commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id, ublox_message->ned_velocity, ublox_message->ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id,ublox_message->ned_velocity, ublox_message->ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
+
+            prev_measurement_update_timestamp = current_timestamp;
         }
 
         running = !should_exit();
@@ -473,11 +586,11 @@ std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_mes
     convert_mm_to_m(ublox_message->height_above_ellipsoid);
 
     // TODO: Make sure UBlox values are mapped correctly here
-    ublox_message->llh_uncertainty[0] = parse_4_bytes(payload, PAYLOAD_PART_MAP["V_ACC"].start_index);
-    convert_mm_to_m(ublox_message->llh_uncertainty[0]);
+    double horizontal_uncertainty = parse_4_bytes(payload, PAYLOAD_PART_MAP["H_ACC"].start_index);
+    convert_mm_to_m(horizontal_uncertainty);
 
-    ublox_message->llh_uncertainty[1] = parse_4_bytes(payload, PAYLOAD_PART_MAP["H_ACC"].start_index);
-    convert_mm_to_m(ublox_message->llh_uncertainty[1]);
+    ublox_message->llh_uncertainty[0] = horizontal_uncertainty;
+    ublox_message->llh_uncertainty[1] = horizontal_uncertainty;
 
     ublox_message->llh_uncertainty[2] = parse_4_bytes(payload, PAYLOAD_PART_MAP["V_ACC"].start_index);
     convert_mm_to_m(ublox_message->llh_uncertainty[2]);
@@ -490,13 +603,18 @@ std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_mes
     
     ublox_message->ned_velocity[2] = parse_4_bytes(payload, PAYLOAD_PART_MAP["VEL_D"].start_index);
     convert_mm_to_m(ublox_message->ned_velocity[2]);
+
+    float speed_accuracy = parse_4_bytes(payload, PAYLOAD_PART_MAP["S_ACC"].start_index);
+    convert_mm_to_m(speed_accuracy);
+    for (int i = 0; i<3; i++)
+        ublox_message->ned_velocity_uncertainty[i] = speed_accuracy;
     
     ublox_message->heading_of_motion_2d = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_MOT"].start_index);
 
     ublox_message->heading_accuracy = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_ACC"].start_index) * 1e-5;
     convert_degrees_to_radians(ublox_message->heading_accuracy);
 
-    ublox_message->lat_lon_valid_flag = payload[PAYLOAD_PART_MAP["FLAGS_3"].start_index];
+    ublox_message->lat_lon_valid_flag = !payload[PAYLOAD_PART_MAP["FLAGS_3"].start_index];
 
     ublox_message->heading_of_vehicle = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_VEH"].start_index);
     convert_degrees_to_radians(ublox_message->heading_of_vehicle);
@@ -522,7 +640,7 @@ double parse_4_bytes(const uint8_t payload[92], int start_index) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Print device information
+// Utility functions
 ////////////////////////////////////////////////////////////////////////////////
 
 double parse_long_lat(const uint8_t payload[92], int start_index) {
@@ -537,6 +655,29 @@ void convert_mm_to_m(T& value) {
 template<typename T>
 void convert_degrees_to_radians(T& degrees) {
    degrees = degrees * (M_PI / 180.0);
+}
+
+uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week)
+{
+    return floor(float(week_number) * 604800 * 1e9 + time_of_week * 1e9);
+}
+
+time_t time_from_ymd(int year, int month, int day)
+{
+    struct tm tm = {0};
+    tm.tm_year = year - 1900;
+    tm.tm_mon = month - 1;
+    tm.tm_mday = day;
+    return mktime(&tm);
+}
+
+#define SECS_PER_WEEK (60L*60*24*7)
+
+int get_gps_week(int year, int month, int day)
+{
+    // See update below
+    double diff = difftime(time_from_ymd(year, month, day), time_from_ymd(1980, 1, 1));  // See update
+    return (int) (diff / SECS_PER_WEEK);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -568,13 +709,61 @@ void print_device_information(const commands_base::BaseDeviceInfo& device_info)
 }
 
 
+InputArguments parse_input_arguments(int argc, const char* argv[])
+{
+    if (argc < 5)
+    {
+        usage(argv[0]);
+        exit_gracefully("ERROR: Incorrect input arguments");
+    }
+
+    // Look for help flag
+    for (int i = 1; i < argc; i++)
+    {
+        if(strcmp(argv[i], "-h") == 0)
+        {
+            usage(argv[0]);
+            exit_gracefully("");
+        }
+    }
+
+    InputArguments input_arguments;
+
+    input_arguments.mip_device_port_name = argv[1];
+    input_arguments.mip_device_baudrate = argv[2];
+
+    input_arguments.ublox_device_port_name = argv[3];
+    input_arguments.ublox_device_baudrate = argv[4];
+
+    if (argc >= 6)
+    {
+        int heading_alignment_int = std::stoi(argv[5]);
+
+        if (heading_alignment_int == 0)
+            input_arguments.filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
+        else if (heading_alignment_int == 1)
+            input_arguments.filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::MAGNETOMETER;
+        else
+            exit_gracefully("Heading alignment selector out of range");
+    }
+
+    if (argc >= 7)
+        input_arguments.mip_binary_filepath = argv[6];
+
+    if (argc >= 8)
+        input_arguments.enable_pps_sync = std::stoi(argv[7]);
+
+    return input_arguments;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // Print Usage Function
 ////////////////////////////////////////////////////////////////////////////////
 
 int usage(const char* argv0)
 {
-    printf("Usage: %s <port> <baudrate>\n", argv0);
+    printf("Usage: %s <mip_port> <mip_baudrate> <ublox_port> <ublox_baudrate> [OPTIONAL, (0=Kinematic, 1=Magnetometer)] <heading_alignment_method> [OPTIONAL] <binary_filepath> [OPTIONAL, (bool, 0|1)] <use_pps> [OPTIONAL, (int, 1-4)] <pps_pin_id> \n", argv0);
     return 1;
 }
 
