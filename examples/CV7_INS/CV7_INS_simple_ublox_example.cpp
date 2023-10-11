@@ -132,6 +132,9 @@ bool should_exit();
 
 int main(int argc, const char* argv[])
 {
+    for (int i = 0; i < argc; ++i) {
+        std::cout << "Argument " << i << ": " << argv[i] << std::endl;
+     }
     
     std::unique_ptr<ExampleUtils> utils = handleCommonArgs(3, argv);
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
@@ -159,6 +162,8 @@ int main(int argc, const char* argv[])
     ublox_argv[0] = argv[0];
     ublox_argv[1] = argv[3];
     ublox_argv[2] = argv[4];
+
+
 
     std::unique_ptr<ExampleUtils> utils_ublox = handleCommonArgs(3, ublox_argv);
     printf("Connecting to UBlox F9P ..." );
@@ -286,14 +291,14 @@ int main(int argc, const char* argv[])
     while(running) {
         std::unique_ptr<UBlox_PVT_Message> ublox_message;
         bool pvt_message_found = false;
-        // else then I clear ublox_message bytes and break;
-+        std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
+        std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
         // Poll ublox receiver for PVT message ... 
         if (!utils_ublox->connection->recvFromDevice(ublox_message_bytes, max_length, wait_time, length_out, &timestamp)) {
             exit_gracefully("ERROR: Error reading from serial port");
         }
 
         for (int i = buffer_length - 1 - 4; i >= 0; i--) {
+
             // look for 0xB5
             if (ublox_message_bytes[i] != 0xB5)
                 continue;
@@ -320,10 +325,8 @@ int main(int argc, const char* argv[])
                     pvt_message_found = true;
                    // send parsed ublox_message to CV7
                    break;
-                }
-                else {
+                } else {
                     printf("Found packet, failed checksum verification");
-                    break;
                 }
             }
 
@@ -332,6 +335,7 @@ int main(int argc, const char* argv[])
 
             while (*length_out == package_bytes_remaining) {
                 std::memmove(ublox_message_bytes, ublox_message_bytes + start_index, package_bytes_remaining);
+                std::memset(&ublox_message_bytes[*length_out], 0, buffer_length-*length_out);
 
                 if (!utils_ublox->connection->recvFromDevice(&ublox_message_bytes[start_index], package_bytes_remaining, wait_time, length_out, &timestamp))
                     exit_gracefully("ERROR: Error reading from serial port");
@@ -350,11 +354,14 @@ int main(int argc, const char* argv[])
                 // send parsed ublox_message to CV7
                 pvt_message_found = true;
                 break;
+            } else {
+                printf("Found packet, failed checksum verification");
+                break;
             }
-            // else then I clear ublox_message bytes and break;
-            std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
-            break;
         }
+
+        if (!pvt_message_found)
+            continue;
 
         device->update();
 
@@ -370,7 +377,7 @@ int main(int argc, const char* argv[])
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
         mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
 
-        if (elapsed_time_from_last_measurement_update > 500 && pvt_message_found)
+        if (elapsed_time_from_last_measurement_update > 500)
         {
             // Use measurement time of arrival for timestamping method
             commands_aiding::Time external_measurement_time;
