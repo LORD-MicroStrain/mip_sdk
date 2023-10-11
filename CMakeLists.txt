@@ -191,6 +191,7 @@ if(MIP_USE_TCP)
     )
 endif()
 if(MIP_USE_EXTRAS)
+    list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
