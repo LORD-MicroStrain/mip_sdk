@@ -1,3 +1,24 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// CV7_INS_simple_ublox_example.cpp
+//
+// C++ Example usage program for the CV7-INS with a UBlox receiver
+//
+// This example shows the basic interface between the CV7-INS and a UBlox receiver configured to stream a the UBX-NAV-PVT message.
+// It is intended to demonstrate the relevant MIP API calls to input GNSS data to the CV7-INS
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,8 +67,6 @@ struct InputArguments
     float gnss_antenna_lever_arm[3] = {0,0,0};
 };
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +83,6 @@ InputArguments parse_input_arguments(int argc, const char* argv[]);
 uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week);
 
 int get_gps_week(int year, int month, int day);
-
 
 int main(int argc, const char* argv[])
 {
@@ -201,8 +219,6 @@ int main(int argc, const char* argv[])
 
     }
 
-
-
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
@@ -247,6 +263,7 @@ int main(int argc, const char* argv[])
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running) {
+        mip::Timestamp current_timestamp = getCurrentTimestamp();
 
         // Spin MIP device
         device->update();
@@ -255,19 +272,12 @@ int main(int argc, const char* argv[])
         std::pair<bool, ublox::UBlox_PVT_Message> ubox_parser_result = ublox_device.update();
         bool pvt_message_valid = ubox_parser_result.first;
         ublox::UBlox_PVT_Message pvt_message = ubox_parser_result.second;
-
-        if (pvt_message_valid)
-        {
-            std::cout << pvt_message.latitude << std::endl;
-        }
-        continue;
         
         // Wait for valid PPS lock
         if (input_arguments.enable_pps_sync && !pps_sync_valid)
         {
             pps_sync_valid = system_time_sync_status.time_sync;
 
-            mip::Timestamp current_timestamp = getCurrentTimestamp();
             mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
             if (elapsed_time_from_last_message_print > 1000)
             {
@@ -283,8 +293,6 @@ int main(int argc, const char* argv[])
             printf("NOTE: Filter has entered full navigation mode.\n");
             filter_state_full_nav = true;
         }
-        
-        mip::Timestamp current_timestamp = getCurrentTimestamp();
 
         //Once in full nav, print out data at 1 Hz
         mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
@@ -405,6 +413,9 @@ void print_device_information(const commands_base::BaseDeviceInfo& device_info)
     );
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Parse input arguments
+////////////////////////////////////////////////////////////////////////////////
 
 InputArguments parse_input_arguments(int argc, const char* argv[])
 {
