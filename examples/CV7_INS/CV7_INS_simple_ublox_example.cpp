@@ -4,6 +4,7 @@
 
 #include "mip/mip_all.hpp"
 #include "../example_utils.hpp"
+#include "ublox_parser.h"
 #include <map>
 #include <cmath>
 #include <cstring>
@@ -23,83 +24,9 @@ data_filter::PositionLlh     filter_llh_position;
 data_filter::VelocityNed     filter_ned_velocity;
 data_system::TimeSyncStatus  system_time_sync_status;
 
-uint8_t external_heading_sensor_id = 1;
-uint8_t gnss_antenna_sensor_id = 2;
-uint8_t vehicle_frame_velocity_sensor_id = 3;
-uint8_t header_size = 6;
-uint8_t checksum_size = 2;
-uint8_t payload_size = 92;
-uint8_t PVT_message_size = header_size + checksum_size + payload_size;
+uint8_t gnss_antenna_sensor_id = 1;
 
 bool filter_state_full_nav = false;
-
-struct UBlox_PVT_Message {
-        uint32_t iTOW;
-        uint16_t utc_year;
-        uint8_t utc_month;
-        uint8_t utc_day;
-        uint8_t utc_hour;
-        uint8_t utc_minute;
-        double utc_second;
-        uint8_t lat_lon_valid_flag;
-        double nano_second;
-        uint8_t time_valid_flag;
-        double utc_time_accuracy;
-        double latitude;
-        double longitude;
-        uint8_t number_of_satellites;
-        float ned_velocity_uncertainty[3];
-        double height_above_ellipsoid;
-        double horizontal_accuracy;
-        double vertical_accuracy;
-        float ned_velocity[3];
-        float llh_uncertainty[3];
-        double ground_speed;
-        double heading_of_motion_2d;
-        double heading_accuracy;
-        double heading_of_vehicle;
-        double magnetic_declination;
-        double magnetic_declination_accuracy;  
-};
-
-struct UBlox_Payload_Part{
-    uint8_t start_index;
-    uint8_t num_bytes;
-};
-
-std::map<std::string, UBlox_Payload_Part> PAYLOAD_PART_MAP = {
-     {"iTOW", {0, 4}},
-     {"YEAR", {4, 2}}, 
-     {"MONTH", {6, 1}}, 
-     {"DAY", {7, 1}}, 
-     {"HOUR", {8, 1}}, 
-     {"MIN", {9, 1}}, 
-     {"SEC", {10, 1}}, 
-     {"VALID", {11, 1}}, 
-     {"T_ACC", {12, 4}}, 
-     {"NANO_SEC", {16, 4}},
-     {"FIX_TYPE", {20, 1}},
-     {"FLAGS", {21, 1}}, 
-     {"FLAGS_2", {22, 1}}, 
-     {"NUM_SV", {23, 1}},
-     {"LON", {24, 4}}, 
-     {"LAT", {28, 4}}, 
-     {"HEIGHT", {32, 4}}, 
-     {"H_MSL", {36, 4}},
-     {"H_ACC", {40, 4}}, 
-     {"V_ACC", {44, 4}}, 
-     {"VEL_N", {48, 4}}, 
-     {"VEL_E", {52, 4}}, 
-     {"VEL_D", {56, 4}}, 
-     {"G_SPEED", {60, 4}}, 
-     {"HEAD_MOT", {64, 4}}, 
-     {"S_ACC", {68, 4}}, 
-     {"HEAD_ACC", {72, 4}}, 
-     {"FLAGS_3", {78, 1}}, 
-     {"HEAD_VEH", {84, 4}}, 
-     {"MAG_DEC", {88, 2}}, 
-     {"MAG_ACC", {90, 2}}
-};
 
 struct InputArguments
 {
@@ -125,24 +52,6 @@ struct InputArguments
 // Function Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_message[100]);
-
-template <typename T> 
-void convert_mm_to_m(T& value);
-
-template<typename T>
-void convert_degrees_to_radians(T& degrees);
-
-float parse_2_bytes(const uint8_t payload[92], int start_index);
-
-double parse_4_bytes(const uint8_t payload[92], int start_index);
-
-double parse_long_lat(const uint8_t payload[92], int start_index);
-
-//HANDLE open_uBlox_serial_port(const char* com_port, const int baud_rate);
-
-bool verify_checksum(uint8_t *data);
-
 int usage(const char* argv0);
 
 void print_device_information(const commands_base::BaseDeviceInfo& device_info);
@@ -164,6 +73,14 @@ int main(int argc, const char* argv[])
 
     std::unique_ptr<ExampleUtils> utils = openFromArgs(input_arguments.mip_device_port_name, input_arguments.mip_device_baudrate, input_arguments.mip_binary_filepath);
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+    
+    //
+    // Open uBlox serial port
+    //
+
+    printf("Connecting to UBlox F9P on %s at %s...", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
+    std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
+    UbloxDevice ublox_device(std::move(utils_ublox->connection));
 
     //
     //Attempt to idle the device before pinging
@@ -185,13 +102,6 @@ int main(int argc, const char* argv[])
     if(commands_base::getDeviceInfo(*device, &device_info) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Failed to get device info");
     print_device_information(device_info);
-
-    //
-    // Open uBlox serial port
-    //
-
-    printf("Connecting to UBlox F9P on %s at %s...", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
-    std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
 
     //
     //Idle the device (note: this is good to do during setup)
@@ -333,22 +243,19 @@ int main(int argc, const char* argv[])
     bool pps_sync_valid = false;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
-    
-    mip::Timeout wait_time = 3000;
-    size_t buffer_length = 1024;
-    uint8_t ublox_message_bytes[1024];
-    size_t max_length = sizeof(ublox_message_bytes);
-    size_t read_out = 0;
-    size_t* length_out = &read_out;
-    mip::Timestamp timestamp;
-    uint8_t PVT_message[100];
 
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
     while(running) {
 
+        // Spin MIP device
         device->update();
 
+        // Get ublox data
+        std::pair<bool, UBlox_PVT_Message> ubox_parser_result = ublox_device.update();
+        bool pvt_message_valid = ubox_parser_result.first;
+        UBlox_PVT_Message pvt_message = ubox_parser_result.second;
+        
         // Wait for valid PPS lock
         if (input_arguments.enable_pps_sync && !pps_sync_valid)
         {
@@ -363,101 +270,18 @@ int main(int argc, const char* argv[])
             }
             continue;
         }
-
-
-        std::unique_ptr<UBlox_PVT_Message> ublox_message;
-        bool pvt_message_found = false;
-        std::memset(ublox_message_bytes, 0, sizeof(ublox_message_bytes));
-        // Poll ublox receiver for PVT message ... 
-        if (!utils_ublox->connection->recvFromDevice(ublox_message_bytes, max_length, wait_time, length_out, &timestamp)) {
-            exit_gracefully("ERROR: Error reading from serial port");
-        }
-
-        for (int i = buffer_length - 1 - 4; i >= 0; i--) {
-
-            // look for 0xB5
-            if (ublox_message_bytes[i] != 0xB5)
-                continue;
-            if (ublox_message_bytes[i+1] != 0x62)
-                continue;
-            if (ublox_message_bytes[i+2] != 0x01)
-                continue;
-            if (ublox_message_bytes[i+3] != 0x07)
-                continue;
-
-            // If there are 100 bytes in buffer after (0xB5) is found and there were at least 100 bytes read
-            if (i + (PVT_message_size - 1) < buffer_length && (*length_out - i) >= PVT_message_size ) {
-                
-                // Extract payload
-                int payload_index = 0;
-                
-                for (int z = i; z < PVT_message_size + i; z++) {
-                    PVT_message[payload_index] = ublox_message_bytes[z];
-                    payload_index += 1;
-                }
-                // If checksum valid
-                if (verify_checksum(PVT_message)) {
-                    ublox_message = parse_PVT_ublox_message(PVT_message); 
-                    pvt_message_found = true;
-                   // send parsed ublox_message to CV7
-                   break;
-                } else {
-                    printf("Found packet, failed checksum verification");
-                }
-            }
-
-            size_t start_index = *length_out - i;
-            size_t package_bytes_remaining = PVT_message_size - start_index;
-
-            while (*length_out == package_bytes_remaining) {
-                std::memmove(ublox_message_bytes, ublox_message_bytes + start_index, package_bytes_remaining);
-                std::memset(&ublox_message_bytes[*length_out], 0, buffer_length-*length_out);
-
-                if (!utils_ublox->connection->recvFromDevice(&ublox_message_bytes[start_index], package_bytes_remaining, wait_time, length_out, &timestamp))
-                    exit_gracefully("ERROR: Error reading from serial port");
-                
-                start_index += *length_out;
-                package_bytes_remaining = PVT_message_size - start_index;
-            }
-
-            for (int i = 0; i < payload_size; i++) {
-                PVT_message[i] = ublox_message_bytes[i];
-            }
-
-            // check checksum
-            if (verify_checksum(PVT_message)) {
-                ublox_message = parse_PVT_ublox_message(PVT_message);
-                // send parsed ublox_message to CV7
-                pvt_message_found = true;
-                break;
-            } else {
-                printf("Found packet, failed checksum verification");
-                break;
-            }
-        }
-
-        if (!pvt_message_found)
-            continue;
-
+        
         //Check for full nav filter state transition
         if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
         {
             printf("NOTE: Filter has entered full navigation mode.\n");
             filter_state_full_nav = true;
         }
-
-        // Check that enough time has elapsed to send a new measurement update
+        
         mip::Timestamp current_timestamp = getCurrentTimestamp();
 
-        bool ublox_data_valid = ublox_message->time_valid_flag && ublox_message->lat_lon_valid_flag;
-        if (!ublox_data_valid)
-        {
-            printf("WARNING: Ublox data invalid");
-            continue;
-        }
-
-        mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
         //Once in full nav, print out data at 1 Hz
+        mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
         if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
         {
             printf("\n\n****Filter navigation state****\n");
@@ -469,8 +293,12 @@ int main(int argc, const char* argv[])
             prev_print_timestamp = current_timestamp;
         }
 
+        // Check if measurement update is valid to send
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
-        if (elapsed_time_from_last_measurement_update > 250)
+        bool ublox_data_valid = pvt_message_valid && pvt_message.time_valid_flag && pvt_message.lat_lon_valid_flag;
+        bool send_measurement_update = ublox_data_valid && elapsed_time_from_last_measurement_update > 250;
+
+        if (send_measurement_update)
         {
             printf("Sending measurement update...\n");
 
@@ -478,13 +306,13 @@ int main(int argc, const char* argv[])
 
             if (input_arguments.enable_pps_sync)
             {
-                // Update week number
-                uint32_t week_number = get_gps_week(ublox_message->utc_year, ublox_message->utc_month, ublox_message->utc_day);
+                // Send week number update to device
+                uint32_t week_number = get_gps_week(pvt_message.utc_year, pvt_message.utc_month, pvt_message.utc_day);
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
                     printf("WARNING: Failed to send week number time update to CV7-INS\n");
 
-                // Update time of week
-                float time_of_week = float(ublox_message->iTOW) * 1e-3;
+                // Send time of week update to device
+                float time_of_week = float(pvt_message.iTOW) * 1e-3;
                 uint32_t time_of_week_int = floor(time_of_week);
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
                     printf("WARNING: Failed to send time of week update to CV7-INS\n");
@@ -499,11 +327,11 @@ int main(int argc, const char* argv[])
             }
 
             // External position command
-            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id,ublox_message->latitude, ublox_message->longitude,ublox_message->height_above_ellipsoid, ublox_message->llh_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.latitude, pvt_message.longitude,pvt_message.height_above_ellipsoid, pvt_message.llh_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id,ublox_message->ned_velocity, ublox_message->ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;
@@ -517,145 +345,8 @@ int main(int argc, const char* argv[])
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Verify UBX-NAV-PVT Checksum
-////////////////////////////////////////////////////////////////////////////////
-
-bool verify_checksum(uint8_t *data) {
-    unsigned i, j;
-    uint8_t ck_a, ck_b;
-
-    j = ((unsigned)data[4] + ((unsigned)data[5] << 8) + 6);
-
-    ck_a = 0;
-    ck_b = 0;
-
-    for (i = 2; i < j; i++) {
-        ck_a += data[i];
-        ck_b += ck_a;
-    }
-
-    if (ck_a == data[i+0] && ck_b == data[i+1])
-        return true;
-    
-    return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Parse UBX-NAV-PVT Message
-////////////////////////////////////////////////////////////////////////////////
-
-std::unique_ptr<UBlox_PVT_Message> parse_PVT_ublox_message(const uint8_t PVT_message[]) {
-
-    // TODO: Needs some refactoring but works!!
-
-    std::unique_ptr<UBlox_PVT_Message> ublox_message = std::make_unique<UBlox_PVT_Message>();
-    int payload_index = 0;
-    uint8_t payload[92];
-
-    // Extract payload
-    for (int i = header_size; i < (PVT_message_size - checksum_size); i++) {
-         payload[payload_index] = PVT_message[i];
-         payload_index += 1;
-    }
-
-    ublox_message->iTOW = parse_4_bytes(payload, PAYLOAD_PART_MAP["iTOW"].start_index);
-
-    ublox_message->utc_year = parse_2_bytes(payload, PAYLOAD_PART_MAP["YEAR"].start_index);
-    
-    ublox_message->utc_month = payload[PAYLOAD_PART_MAP["MONTH"].start_index];
-
-    ublox_message->utc_day = payload[PAYLOAD_PART_MAP["DAY"].start_index];
-
-    ublox_message->utc_hour = payload[PAYLOAD_PART_MAP["HOUR"].start_index];
-
-    ublox_message->utc_minute = payload[PAYLOAD_PART_MAP["MIN"].start_index];
-
-    ublox_message->utc_second = payload[PAYLOAD_PART_MAP["SEC"].start_index];
-
-    ublox_message->time_valid_flag = payload[PAYLOAD_PART_MAP["VALID"].start_index];
-
-    ublox_message->utc_time_accuracy = parse_4_bytes(payload, PAYLOAD_PART_MAP["T_ACC"].start_index);
-
-    ublox_message->nano_second = parse_4_bytes(payload, PAYLOAD_PART_MAP["NANO_SEC"].start_index); 
-    
-    ublox_message->longitude = parse_long_lat(payload, PAYLOAD_PART_MAP["LON"].start_index);
-
-    ublox_message->latitude = parse_long_lat(payload, PAYLOAD_PART_MAP["LAT"].start_index);
-
-    ublox_message->height_above_ellipsoid = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEIGHT"].start_index);
-    convert_mm_to_m(ublox_message->height_above_ellipsoid);
-
-    // TODO: Make sure UBlox values are mapped correctly here
-    double horizontal_uncertainty = parse_4_bytes(payload, PAYLOAD_PART_MAP["H_ACC"].start_index);
-    convert_mm_to_m(horizontal_uncertainty);
-
-    ublox_message->llh_uncertainty[0] = horizontal_uncertainty;
-    ublox_message->llh_uncertainty[1] = horizontal_uncertainty;
-
-    ublox_message->llh_uncertainty[2] = parse_4_bytes(payload, PAYLOAD_PART_MAP["V_ACC"].start_index);
-    convert_mm_to_m(ublox_message->llh_uncertainty[2]);
-
-    ublox_message->ned_velocity[0] = parse_4_bytes(payload, PAYLOAD_PART_MAP["VEL_N"].start_index);
-    convert_mm_to_m(ublox_message->ned_velocity[0]);
-    
-    ublox_message->ned_velocity[1] = parse_4_bytes(payload, PAYLOAD_PART_MAP["VEL_E"].start_index);
-    convert_mm_to_m(ublox_message->ned_velocity[1]);
-    
-    ublox_message->ned_velocity[2] = parse_4_bytes(payload, PAYLOAD_PART_MAP["VEL_D"].start_index);
-    convert_mm_to_m(ublox_message->ned_velocity[2]);
-
-    float speed_accuracy = parse_4_bytes(payload, PAYLOAD_PART_MAP["S_ACC"].start_index);
-    convert_mm_to_m(speed_accuracy);
-    for (int i = 0; i<3; i++)
-        ublox_message->ned_velocity_uncertainty[i] = speed_accuracy;
-    
-    ublox_message->heading_of_motion_2d = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_MOT"].start_index);
-
-    ublox_message->heading_accuracy = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_ACC"].start_index) * 1e-5;
-    convert_degrees_to_radians(ublox_message->heading_accuracy);
-
-    ublox_message->lat_lon_valid_flag = !payload[PAYLOAD_PART_MAP["FLAGS_3"].start_index];
-
-    ublox_message->heading_of_vehicle = parse_4_bytes(payload, PAYLOAD_PART_MAP["HEAD_VEH"].start_index);
-    convert_degrees_to_radians(ublox_message->heading_of_vehicle);
-
-    return ublox_message;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Parse 2 bytes
-////////////////////////////////////////////////////////////////////////////////
-
-float parse_2_bytes(const uint8_t payload[92], int start_index) { 
-        return (float)(*((int16_t *)&payload[start_index]));
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Parse 4 bytes
-////////////////////////////////////////////////////////////////////////////////
-
-double parse_4_bytes(const uint8_t payload[92], int start_index) { 
-        return (double)(*((int32_t *)&payload[start_index]));
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Utility functions
 ////////////////////////////////////////////////////////////////////////////////
-
-double parse_long_lat(const uint8_t payload[92], int start_index) {
-    return (parse_4_bytes(payload, start_index) * 1e-7);
-}
-
-template<typename T>
-void convert_mm_to_m(T& value) {
-    value = value / 1000.0;
-}
-
-template<typename T>
-void convert_degrees_to_radians(T& degrees) {
-   degrees = degrees * (M_PI / 180.0);
-}
 
 uint64_t convert_gps_tow_to_nanoseconds(int week_number, float time_of_week)
 {
