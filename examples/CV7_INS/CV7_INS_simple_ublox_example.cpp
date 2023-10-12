@@ -159,23 +159,23 @@ int main(int argc, const char* argv[])
     //Setup FILTER data format
     //
 
-    uint16_t filter_base_rate;
-    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not get filter base rate format!");
-
-    const uint16_t filter_sample_rate = 10; // Hz
-    const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
-
-    std::array<DescriptorRate, 5> filter_descriptors = {{
-                                                                { data_shared::DATA_GPS_TIME,         filter_decimation },
-                                                                { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-                                                                { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-                                                                { data_filter::DATA_POS_LLH,          filter_decimation },
-                                                                { data_filter::DATA_VEL_NED,          filter_decimation },
-                                                        }};
-
-    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
-        exit_gracefully("ERROR: Could not set filter message format!");
+//    uint16_t filter_base_rate;
+//    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
+//        exit_gracefully("ERROR: Could not get filter base rate format!");
+//
+//    const uint16_t filter_sample_rate = 10; // Hz
+//    const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
+//
+//    std::array<DescriptorRate, 5> filter_descriptors = {{
+//                                                                { data_shared::DATA_GPS_TIME,         filter_decimation },
+//                                                                { data_filter::DATA_FILTER_STATUS,    filter_decimation },
+//                                                                { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+//                                                                { data_filter::DATA_POS_LLH,          filter_decimation },
+//                                                                { data_filter::DATA_VEL_NED,          filter_decimation },
+//                                                        }};
+//
+//    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
+//        exit_gracefully("ERROR: Could not set filter message format!");
 
 
     if (input_arguments.enable_pps_sync)
@@ -217,6 +217,13 @@ int main(int argc, const char* argv[])
             exit_gracefully("ERROR: Failed to set PPS source to GPIO!");
 
     }
+
+    //
+    //Configure factory streaming data
+    //
+
+    if(commands_3dm::factoryStreaming(*device, commands_3dm::FactoryStreaming::Action::MERGE, 0) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not enable factory streaming support!");
 
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
@@ -327,7 +334,6 @@ int main(int argc, const char* argv[])
 
             if (input_arguments.enable_pps_sync)
             {
-                // Send week number update to device
                 uint32_t week_number = get_gps_week(pvt_message.utc_year, pvt_message.utc_month, pvt_message.utc_day);
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
                     printf("WARNING: Failed to send week number time update to CV7-INS\n");
@@ -426,7 +432,7 @@ void print_device_information(const commands_base::BaseDeviceInfo& device_info)
 
 InputArguments parse_input_arguments(int argc, const char* argv[])
 {
-    if (argc < 5)
+    if (argc < 8)
     {
         usage(argv[0]);
         exit_gracefully("ERROR: Incorrect input arguments");
@@ -444,15 +450,23 @@ InputArguments parse_input_arguments(int argc, const char* argv[])
 
     InputArguments input_arguments;
 
+    // MIP device port parameters
     input_arguments.mip_device_port_name = argv[1];
     input_arguments.mip_device_baudrate = argv[2];
 
+    // UBlox device port parameters
     input_arguments.ublox_device_port_name = argv[3];
     input_arguments.ublox_device_baudrate = argv[4];
 
-    if (argc >= 6)
+    // GNSS antenna lever arm
+    input_arguments.gnss_antenna_lever_arm[0] = std::stof(argv[5]);
+    input_arguments.gnss_antenna_lever_arm[1] = std::stof(argv[6]);
+    input_arguments.gnss_antenna_lever_arm[2] = std::stof(argv[7]);
+
+    // Heading alignment method
+    if (argc >= 9)
     {
-        int heading_alignment_int = std::stoi(argv[5]);
+        int heading_alignment_int = std::stoi(argv[8]);
 
         if (heading_alignment_int == 0)
             input_arguments.filter_heading_alignment_method = commands_filter::InitializationConfiguration::AlignmentSelector::KINEMATIC;
@@ -462,11 +476,17 @@ InputArguments parse_input_arguments(int argc, const char* argv[])
             exit_gracefully("Heading alignment selector out of range");
     }
 
-    if (argc >= 7)
-        input_arguments.mip_binary_filepath = argv[6];
+    // Output binary data filepath
+    if (argc >= 10)
+        input_arguments.mip_binary_filepath = argv[9];
 
-    if (argc >= 8)
-        input_arguments.enable_pps_sync = std::stoi(argv[7]);
+    // PPS sync enable
+    if (argc >= 11)
+        input_arguments.enable_pps_sync = std::stoi(argv[10]);
+
+    // PPS input pin ID
+    if (argc >= 12)
+        input_arguments.pps_input_pin_id = std::stoi(argv[11]);
 
     return input_arguments;
 }
@@ -478,7 +498,7 @@ InputArguments parse_input_arguments(int argc, const char* argv[])
 
 int usage(const char* argv0)
 {
-    printf("Usage: %s <mip_port> <mip_baudrate> <ublox_port> <ublox_baudrate> [OPTIONAL, (0=Kinematic, 1=Magnetometer)] <heading_alignment_method> [OPTIONAL] <binary_filepath> [OPTIONAL, (bool, 0|1)] <use_pps> [OPTIONAL, (int, 1-4)] <pps_pin_id> \n", argv0);
+    printf("Usage: %s <mip_port> <mip_baudrate> <ublox_port> <ublox_baudrate> <antenna_x> <antenna_y> <antenna_z> [OPTIONAL, (0=Kinematic, 1=Magnetometer)] <heading_alignment_method> [OPTIONAL] <binary_filepath> [OPTIONAL, (bool, (0|1)] <use_pps> [OPTIONAL, (int, 1-4)] <pps_pin_id> \n", argv0);
     return 1;
 }
 
