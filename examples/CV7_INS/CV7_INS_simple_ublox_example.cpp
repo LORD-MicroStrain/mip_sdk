@@ -4,7 +4,7 @@
 //
 // C++ Example usage program for the CV7-INS with a UBlox receiver
 //
-// This example shows the basic interface between the CV7-INS and a UBlox receiver configured to stream a the UBX-NAV-PVT message.
+// This example shows the basic interface between the CV7-INS and a UBlox receiver preconfigured to stream a the UBX-NAV-PVT message.
 // It is intended to demonstrate the relevant MIP API calls to input GNSS data to the CV7-INS
 //
 //!@section LICENSE
@@ -86,7 +86,6 @@ int get_gps_week(int year, int month, int day);
 
 int main(int argc, const char* argv[])
 {
-
     InputArguments input_arguments = parse_input_arguments(argc, argv);
 
     std::unique_ptr<ExampleUtils> utils = openFromArgs(input_arguments.mip_device_port_name, input_arguments.mip_device_baudrate, input_arguments.mip_binary_filepath);
@@ -294,15 +293,21 @@ int main(int argc, const char* argv[])
             filter_state_full_nav = true;
         }
 
-        //Once in full nav, print out data at 1 Hz
+        //Print status at 1Hz
         mip::Timestamp elapsed_time_from_last_message_print = current_timestamp - prev_print_timestamp;
-        if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
+        bool print_new_update_message = elapsed_time_from_last_message_print >= 1000;
+        if (print_new_update_message)
         {
-            printf("\n\n****Filter navigation state****\n");
-            printf("TIMESTAMP: %f\n", filter_gps_time.tow);
-            printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
-            printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
-            printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);
+            if(filter_status.filter_state == data_filter::FilterMode::FULL_NAV)
+            {
+                printf("\n\n****Filter navigation state****\n");
+                printf("TIMESTAMP: %f\n", filter_gps_time.tow);
+                printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
+                printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
+                printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);
+            }
+            else
+                printf("Waiting for navigation filter to initialize...\n");
 
             prev_print_timestamp = current_timestamp;
         }
@@ -314,7 +319,9 @@ int main(int argc, const char* argv[])
 
         if (send_measurement_update)
         {
-            printf("Sending measurement update...\n");
+            printf("\n\n****Sending Measurement Update****\n");
+            printf("LLH_POSITION_GNSS_MEAS = [%f %f %f]\n", pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid);
+            printf("NED_VELOCITY_GNSS_MEAS = [%f %f %f]\n", pvt_message.ned_velocity[0], pvt_message.ned_velocity[1], pvt_message.ned_velocity[2]);
 
             commands_aiding::Time external_measurement_time;
 
@@ -341,7 +348,7 @@ int main(int argc, const char* argv[])
             }
 
             // External position command
-            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.latitude, pvt_message.longitude,pvt_message.height_above_ellipsoid, pvt_message.llh_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude,pvt_message.height_above_ellipsoid, pvt_message.llh_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command

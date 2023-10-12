@@ -1,9 +1,24 @@
+/////////////////////////////////////////////////////////////////////////////
 //
-// Created by davidrobbins on 10/12/23.
+// ublox_device.hpp
 //
+// Basic UBlox serial device interface to parse out the UBlox UBX-NAV-PVT message from a serial port
+//
+// This class intends to be a simple helper utility for an example to demonstrate CV7-INS functionality and is not intended
+// to be reused for any other application
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIP_SDK_UBLOX_DEVICE_HPP
-#define MIP_SDK_UBLOX_DEVICE_HPP
+#pragma once
 
 #include <cmath>
 
@@ -131,11 +146,11 @@ namespace mip::ublox
         ublox_message.height_above_ellipsoid = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEIGHT.start_index);
         convert_mm_to_m(ublox_message.height_above_ellipsoid);
 
-        ublox_message.llh_uncertainty[0] = parse_bytes(four_bytes, payload, PAYLOAD_PART_V_ACC.start_index);
-        convert_mm_to_m(ublox_message.llh_uncertainty[0]);
+        float horizontal_uncertainty = parse_bytes(four_bytes, payload, PAYLOAD_PART_H_ACC.start_index);
+        convert_mm_to_m(horizontal_uncertainty);
 
-        ublox_message.llh_uncertainty[1] = parse_bytes(four_bytes, payload, PAYLOAD_PART_H_ACC.start_index);
-        convert_mm_to_m(ublox_message.llh_uncertainty[1]);
+        ublox_message.llh_uncertainty[0] = horizontal_uncertainty;
+        ublox_message.llh_uncertainty[1] = horizontal_uncertainty;
 
         ublox_message.llh_uncertainty[2] = parse_bytes(four_bytes, payload, PAYLOAD_PART_V_ACC.start_index);
         convert_mm_to_m(ublox_message.llh_uncertainty[2]);
@@ -149,12 +164,16 @@ namespace mip::ublox
         ublox_message.ned_velocity[2] = parse_bytes(four_bytes, payload, PAYLOAD_PART_VEL_D.start_index);
         convert_mm_to_m(ublox_message.ned_velocity[2]);
 
-        ublox_message.heading_of_motion_2d = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEAD_MOT.start_index);
+        float speed_uncertainty = parse_bytes(four_bytes, payload, PAYLOAD_PART_S_ACC.start_index);
+        convert_mm_to_m(speed_uncertainty);
+        for (int i =0; i<3; i++)
+            ublox_message.ned_velocity_uncertainty[i] = speed_uncertainty;
 
         ublox_message.heading_accuracy = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEAD_ACC.start_index) * 1e-5;
         convert_degrees_to_radians(ublox_message.heading_accuracy);
 
         ublox_message.lat_lon_valid_flag = parse_bytes(four_bytes, payload, PAYLOAD_PART_FLAGS_3.start_index);
+        ublox_message.lat_lon_valid_flag = !ublox_message.lat_lon_valid_flag;
 
         ublox_message.heading_of_vehicle = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEAD_VEH.start_index);
         convert_degrees_to_radians(ublox_message.heading_of_vehicle);
@@ -214,7 +233,3 @@ namespace mip::ublox
         UBlox_PVT_Message _current_message;
     };
 }
-
-
-
-#endif //MIP_SDK_UBLOX_DEVICE_HPP

@@ -1,9 +1,24 @@
+/////////////////////////////////////////////////////////////////////////////
 //
-// Created by davidrobbins on 10/12/23.
+// simple_ublox_parser.hpp
 //
+// Basic UBlox binary message parser
+//
+// This class intends to be a simple helper utility for an example to demonstrate CV7-INS functionality and is not intended
+// to be reused for any other application
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
 
-#ifndef MIP_SDK_SIMPLE_UBLOX_PARSER_HPP
-#define MIP_SDK_SIMPLE_UBLOX_PARSER_HPP
+#pragma once
 
 #include <vector>
 #include <deque>
@@ -114,6 +129,3 @@ namespace mip::ublox
         std::deque<uint8_t> _buffer;
     };
 }
-
-
-#endif //MIP_SDK_SIMPLE_UBLOX_PARSER_HPP
