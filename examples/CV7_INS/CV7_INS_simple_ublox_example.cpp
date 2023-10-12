@@ -4,7 +4,7 @@
 
 #include "mip/mip_all.hpp"
 #include "../example_utils.hpp"
-#include "ublox_parser.h"
+#include "ublox_device.hpp"
 #include <map>
 #include <cmath>
 #include <cstring>
@@ -80,7 +80,7 @@ int main(int argc, const char* argv[])
 
     printf("Connecting to UBlox F9P on %s at %s...", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
     std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
-    UbloxDevice ublox_device(std::move(utils_ublox->connection));
+    ublox::UbloxDevice ublox_device(std::move(utils_ublox->connection));
 
     //
     //Attempt to idle the device before pinging
@@ -252,9 +252,15 @@ int main(int argc, const char* argv[])
         device->update();
 
         // Get ublox data
-        std::pair<bool, UBlox_PVT_Message> ubox_parser_result = ublox_device.update();
+        std::pair<bool, ublox::UBlox_PVT_Message> ubox_parser_result = ublox_device.update();
         bool pvt_message_valid = ubox_parser_result.first;
-        UBlox_PVT_Message pvt_message = ubox_parser_result.second;
+        ublox::UBlox_PVT_Message pvt_message = ubox_parser_result.second;
+
+        if (pvt_message_valid)
+        {
+            std::cout << pvt_message.latitude << std::endl;
+        }
+        continue;
         
         // Wait for valid PPS lock
         if (input_arguments.enable_pps_sync && !pps_sync_valid)
