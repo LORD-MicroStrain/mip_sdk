@@ -11,7 +11,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -105,13 +105,15 @@ namespace mip::ublox
             // Validate checksum
             if (verify_checksum(packet))
             {
+                // Call packet callback
                 _packet_callback(packet);
+
+                // Clear packet from buffer
                 for (int i = 0; i<total_message_length; i++)
                     _buffer.pop_front();
             }
             else
                 _buffer.pop_front();
-
         }
 
         bool header_found()

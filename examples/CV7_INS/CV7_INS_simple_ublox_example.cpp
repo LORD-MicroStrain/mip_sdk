@@ -11,7 +11,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -30,7 +30,7 @@
 #include <cmath>
 #include <cstring>
 #include <string>
-#include <time.h>
+#include <ctime>
 
 using namespace mip;
 
@@ -95,7 +95,7 @@ int main(int argc, const char* argv[])
     // Open uBlox serial port
     //
 
-    printf("Connecting to UBlox F9P on %s at %s...", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
+    printf("Connecting to UBlox F9P on %s at %s...\n", input_arguments.ublox_device_port_name.c_str(), input_arguments.ublox_device_baudrate.c_str());
     std::unique_ptr<ExampleUtils> utils_ublox = openFromArgs(input_arguments.ublox_device_port_name, input_arguments.ublox_device_baudrate, {});
     ublox::UbloxDevice ublox_device(std::move(utils_ublox->connection));
 
@@ -155,29 +155,6 @@ int main(int argc, const char* argv[])
         exit_gracefully("ERROR: Could not load default device settings!");
 
 
-    //
-    //Setup FILTER data format
-    //
-
-//    uint16_t filter_base_rate;
-//    if(commands_3dm::getBaseRate(*device, data_filter::DESCRIPTOR_SET, &filter_base_rate) != CmdResult::ACK_OK)
-//        exit_gracefully("ERROR: Could not get filter base rate format!");
-//
-//    const uint16_t filter_sample_rate = 10; // Hz
-//    const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
-//
-//    std::array<DescriptorRate, 5> filter_descriptors = {{
-//                                                                { data_shared::DATA_GPS_TIME,         filter_decimation },
-//                                                                { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-//                                                                { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-//                                                                { data_filter::DATA_POS_LLH,          filter_decimation },
-//                                                                { data_filter::DATA_VEL_NED,          filter_decimation },
-//                                                        }};
-//
-//    if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
-//        exit_gracefully("ERROR: Could not set filter message format!");
-
-
     if (input_arguments.enable_pps_sync)
     {
 
@@ -219,7 +196,7 @@ int main(int argc, const char* argv[])
     }
 
     //
-    //Configure factory streaming data
+    //Configure factory streaming data.  This enables all critical data channels required for post-processing analysis
     //
 
     if(commands_3dm::factoryStreaming(*device, commands_3dm::FactoryStreaming::Action::MERGE, 0) != CmdResult::ACK_OK)
@@ -275,9 +252,9 @@ int main(int argc, const char* argv[])
         device->update();
 
         // Get ublox data
-        std::pair<bool, ublox::UBlox_PVT_Message> ubox_parser_result = ublox_device.update();
+        std::pair<bool, ublox::UbloxPVTMessage> ubox_parser_result = ublox_device.update();
         bool pvt_message_valid = ubox_parser_result.first;
-        ublox::UBlox_PVT_Message pvt_message = ubox_parser_result.second;
+        ublox::UbloxPVTMessage pvt_message = ubox_parser_result.second;
         
         // Wait for valid PPS lock
         if (input_arguments.enable_pps_sync && !pps_sync_valid)
@@ -321,8 +298,8 @@ int main(int argc, const char* argv[])
 
         // Check if measurement update is valid to send
         mip::Timestamp elapsed_time_from_last_measurement_update = current_timestamp - prev_measurement_update_timestamp;
-        bool ublox_data_valid = pvt_message_valid && pvt_message.time_valid_flag && pvt_message.lat_lon_valid_flag;
-        bool send_measurement_update = ublox_data_valid && elapsed_time_from_last_measurement_update > 250;
+        bool ublox_data_valid = pvt_message_valid && pvt_message.time_valid && pvt_message.llh_position_valid;
+        bool send_measurement_update = ublox_data_valid && elapsed_time_from_last_measurement_update > 250; // Cap maximum GNSS measurement input rate to 4hz
 
         if (send_measurement_update)
         {
@@ -334,27 +311,28 @@ int main(int argc, const char* argv[])
 
             if (input_arguments.enable_pps_sync)
             {
+                // Send week number update to device
                 uint32_t week_number = get_gps_week(pvt_message.utc_year, pvt_message.utc_month, pvt_message.utc_day);
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::WEEK_NUMBER, week_number))
                     printf("WARNING: Failed to send week number time update to CV7-INS\n");
 
                 // Send time of week update to device
-                float time_of_week = float(pvt_message.iTOW) * 1e-3;
-                uint32_t time_of_week_int = floor(time_of_week);
+                uint32_t time_of_week_int = floor(pvt_message.time_of_week);
                 if (!commands_base::writeGpsTimeUpdate(*device, commands_base::GpsTimeUpdate::FieldId::TIME_OF_WEEK, time_of_week_int))
                     printf("WARNING: Failed to send time of week update to CV7-INS\n");
 
+                // Mark timestamp for aiding message input
                 external_measurement_time.timebase = commands_aiding::Time::Timebase::EXTERNAL_TIME;
-                external_measurement_time.nanoseconds = convert_gps_tow_to_nanoseconds(week_number, time_of_week);
+                external_measurement_time.nanoseconds = convert_gps_tow_to_nanoseconds(week_number, pvt_message.time_of_week);
             }
             else
             {
-                // If no PPS sync is supplied use device time of arrival for data timestamping method
+                // If no PPS sync is supplied, use device time of arrival for data timestamping method
                 external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
             }
 
             // External position command
-            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude,pvt_message.height_above_ellipsoid, pvt_message.llh_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command

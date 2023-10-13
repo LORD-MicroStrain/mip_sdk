@@ -11,7 +11,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -30,153 +30,96 @@
 
 namespace mip::ublox
 {
-    struct UBlox_PVT_Message {
+    struct UbloxPVTMessageRaw {
         uint32_t iTOW;
         uint16_t utc_year;
         uint8_t utc_month;
         uint8_t utc_day;
         uint8_t utc_hour;
         uint8_t utc_minute;
-        double utc_second;
-        uint8_t lat_lon_valid_flag;
-        double nano_second;
+        uint8_t utc_second;
         uint8_t time_valid_flag;
-        double utc_time_accuracy;
-        double latitude;
-        double longitude;
+        uint32_t time_accuracy;
+        int32_t nano_second;
+        uint8_t fix_type;
+        uint8_t fix_valid_flags;
+        uint8_t confirmed_time_date_flags;
         uint8_t number_of_satellites;
-        float ned_velocity_uncertainty[3];
-        double height_above_ellipsoid;
-        double horizontal_accuracy;
-        double vertical_accuracy;
-        float ned_velocity[3];
-        float llh_uncertainty[3];
-        double ground_speed;
-        double heading_of_motion_2d;
-        double heading_accuracy;
-        double heading_of_vehicle;
-        double magnetic_declination;
-        double magnetic_declination_accuracy;
+        int32_t longitude;
+        int32_t latitude;
+        int32_t height_above_ellipsoid;
+        int32_t height_above_sea_level;
+        uint32_t horizontal_accuracy;
+        uint32_t vertical_accuracy;
+        int32_t north_velocity;
+        int32_t east_velocity;
+        int32_t down_velocity;
+        int32_t ground_speed;
+        int32_t heading_of_motion_2d;
+        uint32_t speed_accuracy;
+        uint32_t heading_accuracy;
+        uint16_t pDOP;
+        uint8_t llh_invalid_flag;
+        uint8_t reserved_bytes[5];
+        int32_t heading_of_vehicle;
+        int16_t magnetic_declination;
+        uint16_t magnetic_declination_accuracy;
     };
 
-    struct UBlox_Payload_Part {
-        uint8_t start_index;
-        uint8_t num_bytes;
-    };
 
-    constexpr UBlox_Payload_Part PAYLOAD_PART_ITOW = {0, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_YEAR = {4, 2};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_MONTH = {6, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_DAY = {7, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_HOUR = {8, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_MIN = {9, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_SEC = {10, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_VALID = {11, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_T_ACC = {12, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_NANO_SEC = {16, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_FIX_TYPE = {20, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_FLAGS = {21, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_FLAGS_2 = {22, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_NUM_SV = {23, 1};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_LON = {24, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_LAT = {28, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_HEIGHT = {32, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_H_MSL = {36, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_H_ACC = {40, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_V_ACC = {44, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_VEL_N = {48, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_VEL_E = {52, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_VEL_D = {56, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_G_SPEED = {60, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_HEAD_MOT= {64, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_S_ACC = {68, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_HEAD_ACC = {72, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_FLAGS_3 = {78, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_HEAD_VEH = {84, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_MAG_DEC= {88, 4};
-    constexpr UBlox_Payload_Part PAYLOAD_PART_MAG_ACC = {90, 4};
-
-
-    template<typename T>
-    T parse_bytes(T data_type, const uint8_t* payload_start, int data_start_index) {
-        std::memcpy(&data_type, &payload_start[data_start_index], sizeof(data_type));
-        return data_type;
-    }
-
-    template<typename T>
-    void convert_mm_to_m(T& value) {
-        value = value / 1000.0;
-    }
-
-    template<typename T>
-    void convert_degrees_to_radians(T& degrees) {
-        degrees = degrees * (M_PI / 180.0);
-    }
-
-    UBlox_PVT_Message extract_pvt_message(const uint8_t payload[PVT_PAYLOAD_SIZE])
+    struct UbloxPVTMessage
     {
-        UBlox_PVT_Message ublox_message;
+        // Time
+        uint16_t utc_year = 0;
+        uint8_t utc_month = 0;
+        uint8_t utc_day = 0;
+        float time_of_week = 0;
+        bool time_valid = false;
 
-        int32_t four_bytes;
-        int16_t two_bytes;
+        // LLH position
+        double latitude = 0;
+        double longitude = 0;
+        double height_above_ellipsoid = 0;
+        float llh_position_uncertainty[3] = {0,0,0};
+        bool llh_position_valid = false;
 
-        ublox_message.iTOW = parse_bytes(four_bytes, payload, PAYLOAD_PART_ITOW.start_index);
+        // NED velocity
+        float ned_velocity[3] = {0,0,0};
+        float ned_velocity_uncertainty[3] = {0,0,0};
+    };
 
-        ublox_message.utc_year = parse_bytes(two_bytes, payload, PAYLOAD_PART_YEAR.start_index);
 
-        ublox_message.utc_month = payload[PAYLOAD_PART_MONTH.start_index];
+    UbloxPVTMessage extract_pvt_message(const uint8_t payload[PVT_PAYLOAD_SIZE])
+    {
+        // Unpack raw UBlox message data
+        UbloxPVTMessageRaw ublox_message_raw;
+        std::memcpy(&ublox_message_raw, payload, sizeof(ublox_message_raw));
 
-        ublox_message.utc_day = payload[PAYLOAD_PART_DAY.start_index];
+        // Build output message with properly scaled units
+        UbloxPVTMessage ublox_message;
 
-        ublox_message.utc_hour = payload[PAYLOAD_PART_HOUR.start_index];
+        // Time
+        ublox_message.utc_year = ublox_message_raw.utc_year;
+        ublox_message.utc_month = ublox_message_raw.utc_month;
+        ublox_message.utc_day = ublox_message_raw.utc_day;
+        ublox_message.time_of_week = ublox_message_raw.iTOW * 1e-3;
+        ublox_message.time_valid = ublox_message_raw.time_valid_flag;
 
-        ublox_message.utc_minute = payload[PAYLOAD_PART_MIN.start_index];
+        // LLH position
+        ublox_message.latitude = ublox_message_raw.latitude * 1e-7;
+        ublox_message.longitude = ublox_message_raw.longitude * 1e-7;;
+        ublox_message.height_above_ellipsoid = ublox_message_raw.height_above_ellipsoid * 1e-3;
+        ublox_message.llh_position_uncertainty[0] = ublox_message_raw.horizontal_accuracy * 1e-3;
+        ublox_message.llh_position_uncertainty[1] = ublox_message_raw.horizontal_accuracy * 1e-3;
+        ublox_message.llh_position_uncertainty[2] = ublox_message_raw.vertical_accuracy * 1e-3;
+        ublox_message.llh_position_valid = !ublox_message_raw.llh_invalid_flag;
 
-        ublox_message.utc_second = payload[PAYLOAD_PART_SEC.start_index];
-
-        ublox_message.time_valid_flag = payload[PAYLOAD_PART_FLAGS.start_index];
-
-        ublox_message.utc_time_accuracy = parse_bytes(four_bytes, payload, PAYLOAD_PART_T_ACC.start_index);
-
-        ublox_message.nano_second = parse_bytes(four_bytes, payload, PAYLOAD_PART_NANO_SEC.start_index);
-
-        ublox_message.longitude = parse_bytes(four_bytes, payload, PAYLOAD_PART_LON.start_index) * 1e-7;
-        ublox_message.latitude = parse_bytes(four_bytes, payload, PAYLOAD_PART_LAT.start_index) * 1e-7;
-
-        ublox_message.height_above_ellipsoid = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEIGHT.start_index);
-        convert_mm_to_m(ublox_message.height_above_ellipsoid);
-
-        float horizontal_uncertainty = parse_bytes(four_bytes, payload, PAYLOAD_PART_H_ACC.start_index);
-        convert_mm_to_m(horizontal_uncertainty);
-
-        ublox_message.llh_uncertainty[0] = horizontal_uncertainty;
-        ublox_message.llh_uncertainty[1] = horizontal_uncertainty;
-
-        ublox_message.llh_uncertainty[2] = parse_bytes(four_bytes, payload, PAYLOAD_PART_V_ACC.start_index);
-        convert_mm_to_m(ublox_message.llh_uncertainty[2]);
-
-        ublox_message.ned_velocity[0] = parse_bytes(four_bytes, payload, PAYLOAD_PART_VEL_N.start_index);
-        convert_mm_to_m(ublox_message.ned_velocity[0]);
-
-        ublox_message.ned_velocity[1] = parse_bytes(four_bytes, payload, PAYLOAD_PART_VEL_E.start_index);
-        convert_mm_to_m(ublox_message.ned_velocity[1]);
-
-        ublox_message.ned_velocity[2] = parse_bytes(four_bytes, payload, PAYLOAD_PART_VEL_D.start_index);
-        convert_mm_to_m(ublox_message.ned_velocity[2]);
-
-        float speed_uncertainty = parse_bytes(four_bytes, payload, PAYLOAD_PART_S_ACC.start_index);
-        convert_mm_to_m(speed_uncertainty);
-        for (int i =0; i<3; i++)
-            ublox_message.ned_velocity_uncertainty[i] = speed_uncertainty;
-
-        ublox_message.heading_accuracy = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEAD_ACC.start_index) * 1e-5;
-        convert_degrees_to_radians(ublox_message.heading_accuracy);
-
-        ublox_message.lat_lon_valid_flag = parse_bytes(four_bytes, payload, PAYLOAD_PART_FLAGS_3.start_index);
-        ublox_message.lat_lon_valid_flag = !ublox_message.lat_lon_valid_flag;
-
-        ublox_message.heading_of_vehicle = parse_bytes(four_bytes, payload, PAYLOAD_PART_HEAD_VEH.start_index);
-        convert_degrees_to_radians(ublox_message.heading_of_vehicle);
+        // NED velocity
+        ublox_message.ned_velocity[0] = ublox_message_raw.north_velocity * 1e-3;
+        ublox_message.ned_velocity[1] = ublox_message_raw.east_velocity * 1e-3;
+        ublox_message.ned_velocity[2] = ublox_message_raw.down_velocity * 1e-3;
+        for (int i = 0; i<3; i++)
+            ublox_message.ned_velocity_uncertainty[i] = ublox_message_raw.speed_accuracy * 1e-3;
 
         return ublox_message;
     }
@@ -206,22 +149,28 @@ namespace mip::ublox
             for (int i = 0; i < PVT_PAYLOAD_SIZE; i++)
                 payload_bytes[i] = packet[i + HEADER_SIZE];
 
+            // Parse message payload
             _current_message = extract_pvt_message(payload_bytes);
-            _new_message_received = true;
+
+            // Mark flag indicating a new message has been received
+            _new_pvt_message_received = true;
         }
 
-        std::pair<bool, UBlox_PVT_Message> update()
+        std::pair<bool, UbloxPVTMessage> update()
         {
-            _new_message_received = false;
+            // Reset new message indicator flag
+            _new_pvt_message_received = false;
 
+            // Get incoming bytes from serial port
             uint8_t input_bytes[1024];
             size_t num_input_bytes;
             mip::Timestamp timestamp_out;
             _connection->recvFromDevice(input_bytes, 1024, 1, &num_input_bytes, &timestamp_out);
 
+            // Spin message parser
             _message_parser.parse_bytes(input_bytes, num_input_bytes);
 
-            return {_new_message_received, _current_message};
+            return {_new_pvt_message_received, _current_message};
         }
 
     protected:
@@ -229,7 +178,7 @@ namespace mip::ublox
         std::unique_ptr<mip::Connection> _connection;
         UbloxMessageParser _message_parser;
 
-        bool _new_message_received = false;
-        UBlox_PVT_Message _current_message;
+        bool _new_pvt_message_received = false;
+        UbloxPVTMessage _current_message;
     };
 }
