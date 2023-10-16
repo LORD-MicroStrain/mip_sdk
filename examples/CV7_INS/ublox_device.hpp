@@ -32,6 +32,8 @@ namespace mip
 {
     namespace ublox
     {
+
+#pragma pack(1)
         struct UbloxPVTMessageRaw
         {
             uint32_t iTOW;
@@ -68,6 +70,7 @@ namespace mip
             int16_t magnetic_declination;
             uint16_t magnetic_declination_accuracy;
         };
+#pragma pack()
 
 
         struct UbloxPVTMessage

@@ -26,11 +26,11 @@
 #include "mip/mip_all.hpp"
 #include "../example_utils.hpp"
 #include "ublox_device.hpp"
-#include <map>
 #include <cmath>
 #include <cstring>
 #include <string>
 #include <ctime>
+#include <array>
 
 using namespace mip;
 
