@@ -103,7 +103,6 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.h"
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
-    "${UTILS_DIR}/version.hpp"
 )
 
 #
@@ -118,8 +117,6 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_dispatch.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
-	"${MIP_DIR}/mip_models.c"
-	"${MIP_DIR}/mip_models.h"
     "${MIP_DIR}/mip_offsets.h"
     "${MIP_DIR}/mip_packet.c"
     "${MIP_DIR}/mip_packet.h"
@@ -198,10 +195,17 @@ if(MIP_USE_EXTRAS)
     list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/composite_result.hpp"
+        "${MIP_EXTRAS_DIR}/descriptor_id.hpp"
+        "${MIP_EXTRAS_DIR}/device_models.h"
+        "${MIP_EXTRAS_DIR}/device_models.c"
+        "${MIP_EXTRAS_DIR}/index.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
         "${MIP_EXTRAS_DIR}/scope_helper.hpp"
         "${MIP_EXTRAS_DIR}/scope_helper.cpp"
+        "${MIP_EXTRAS_DIR}/version.hpp"
+        "${MIP_EXTRAS_DIR}/version.cpp"
     )
 endif()
 

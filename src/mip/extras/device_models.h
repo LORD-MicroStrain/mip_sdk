@@ -1,13 +1,10 @@
 #pragma once
 
 #ifdef __cplusplus
-#include <string>
-#include <map>
-
 namespace mip {
 #endif // __cplusplus
 
-    enum Model
+    enum mip_model_number
     {
         MODEL_UNKNOWN       = 0,
         MODEL_3DM_DH3       = 6219, // 3DM-DH3
@@ -46,11 +43,15 @@ namespace mip {
         MODEL_3DM_GV7_INS   = 6290, // 3DM-GV7-INS
         MODEL_3DM_CV7_INS   = 6291  // 3DM-CV7-INS
     };
+#ifndef __cplusplus
+    typedef enum mip_model_number mip_model_number;
+#endif // __cplusplus
 
-    enum Model getModelFromSerial(const char* serial);
-    enum Model getModelFromModelString(const char* model);
+    mip_model_number getModelFromSerial(const char* serial);
+    mip_model_number getModelFromModelString(const char* model);
+
+    const char* getModelNameFromSerial(const char* serial);
 
 #ifdef __cplusplus
-    std::string getModelNameFromSerial(const char* serial);
 } // namespace mip
 #endif // __cplusplus
