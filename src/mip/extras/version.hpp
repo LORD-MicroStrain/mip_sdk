@@ -33,7 +33,8 @@ public:
     FirmwareVersion& operator=(const FirmwareVersion&) = default;
     FirmwareVersion& operator=(uint16_t version) { m_version = version; return *this; }
 
-    bool isValid()          const { return major() < 10 && minor() < 10 && patch() < 100; }
+    bool isNull()           const { return m_version == 0; }
+    bool isValid()          const { return !isNull() && major() < 10 && minor() < 10 && patch() < 100; }
     bool isDevVersion()     const { return major() == 0; }
     bool isReleaseVersion() const { return major() >  0; }
     bool isSpecialVersion() const { return major() >  1; }

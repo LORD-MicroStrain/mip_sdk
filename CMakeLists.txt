@@ -226,6 +226,7 @@ set(ALL_MIP_SOURCES
     ${MIP_INTERFACE_SOURCES}
     ${MIP_EXTRA_SOURCES}
 )
+message("SRC ${ALL_MIP_SOURCES}")
 
 option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
