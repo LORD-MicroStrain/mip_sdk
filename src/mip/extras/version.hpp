@@ -51,7 +51,7 @@ public:
     bool operator==(FirmwareVersion other) const { return m_version == other.m_version; }
     bool operator!=(FirmwareVersion other) const { return m_version != other.m_version; }
     bool operator<=(FirmwareVersion other) const { return m_version <= other.m_version; }
-    bool operator>=(FirmwareVersion other) const { return m_version <= other.m_version; }
+    bool operator>=(FirmwareVersion other) const { return m_version >= other.m_version; }
     bool operator< (FirmwareVersion other) const { return m_version <  other.m_version; }
     bool operator> (FirmwareVersion other) const { return m_version >  other.m_version; }
 
