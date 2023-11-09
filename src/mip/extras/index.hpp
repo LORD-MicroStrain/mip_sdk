@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include <stddef.h>
+
 namespace mip
 {
     class Id;
@@ -40,7 +43,7 @@ namespace mip
         constexpr bool operator!=(const Index& other) const { return m_index != other.m_index; }
 
         constexpr bool isAssigned() const { return m_index != INVALID; }
-        constexpr bool isValid(unsigned int max_count) const { return m_index < max_count; }
+        constexpr bool isValid(size_t max_count) const { return m_index < max_count; }
 
         constexpr void clear() { m_index = INVALID; }
 
@@ -80,7 +83,7 @@ namespace mip
         constexpr bool operator!=(const Id& other) const { return m_id != other.m_id; }
 
         constexpr bool isAssigned() const { return m_id != INVALID; }
-        constexpr bool isValid(unsigned int max_count) const { return index() < max_count; }
+        constexpr bool isValid(size_t max_count) const { return index() < max_count; }
 
         constexpr void clear() { m_id = INVALID; }
 

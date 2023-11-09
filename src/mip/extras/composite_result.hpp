@@ -8,6 +8,7 @@
 
 
 #include <stddef.h>
+#include <algorithm>
 
 namespace mip
 {
@@ -117,7 +118,7 @@ namespace mip
 
 
     template<class Cmd, class... Args>
-    CompositeResult::Entry runCommand(DeviceInterface& device, const Cmd& cmd, Args&&... args)
+    CompositeResult::Entry runCommandEx(DeviceInterface& device, const Cmd& cmd, Args&&... args)
     {
         CmdResult result = device.runCommand(cmd, std::forward<Args>(args)...);
 
