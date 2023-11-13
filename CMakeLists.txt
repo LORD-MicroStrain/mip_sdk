@@ -191,7 +191,6 @@ if(MIP_USE_TCP)
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
 endif()
-message(STATUS "mip_sdk: MIP_USE_EXTRAS=${MIP_USE_EXTRAS}")
 if(MIP_USE_EXTRAS)
     list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
@@ -227,7 +226,6 @@ set(ALL_MIP_SOURCES
     ${MIP_INTERFACE_SOURCES}
     ${MIP_EXTRA_SOURCES}
 )
-message(STATUS "mip_sdk: ALL_MIP_SOURCES=${ALL_MIP_SOURCES}")
 
 option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
