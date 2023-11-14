@@ -165,7 +165,7 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/data_shared.h"
     "${MIP_DIR}/definitions/data_system.c"
     "${MIP_DIR}/definitions/data_system.h"
-    ${INTDEF_SOURCES}
+    ${MIP_INTDEF_SOURCES}
 )
 
 string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
@@ -206,6 +206,7 @@ if(MIP_USE_EXTRAS)
         "${MIP_EXTRAS_DIR}/scope_helper.cpp"
         "${MIP_EXTRAS_DIR}/version.hpp"
         "${MIP_EXTRAS_DIR}/version.cpp"
+        ${MIP_INTDEF_EXTRAS}
     )
 endif()
 
