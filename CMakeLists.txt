@@ -17,10 +17,6 @@ set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
 set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-include_directories(
-    "${SRC_DIR}"
-)
-
 if(WITH_INTERNAL)
     if(NOT DEFINED MIP_INTERNAL_DIR)
 		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
@@ -234,6 +230,12 @@ if(MIP_DISABLE_CPP)
 endif()
 
 add_library(mip ${ALL_MIP_SOURCES})
+
+target_include_directories(mip PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>)
+
+if(WITH_INTERNAL)
+    target_include_directories(mip PUBLIC $<BUILD_INTERFACE:${MIP_INTERNAL_DIR}>)
+endif()
 
 #
 # Preprocessor definitions
