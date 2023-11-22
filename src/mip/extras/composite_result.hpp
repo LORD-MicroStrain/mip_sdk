@@ -26,6 +26,7 @@ namespace mip
 
             operator bool() const { return result; }
             bool operator!() const { return !result; }
+            operator CmdResult() const { return result; }
 
             Entry(bool r, DescriptorId d={}) : result(r ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR), descriptor(d) {}
             Entry(CmdResult r, DescriptorId d={}) : result(r), descriptor(d) {}
