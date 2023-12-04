@@ -94,8 +94,12 @@ struct CmdResult
     constexpr CmdResult() : value(C::MIP_ACK_OK) {}
     constexpr CmdResult(C::mip_cmd_result result) : value(result) {}
 
-    constexpr CmdResult& operator=(const CmdResult& other)  { value = other.value; return *this;};
-    constexpr CmdResult& operator=(C::mip_cmd_result other) { value = other;       return *this; }
+#if __GNUC__ < 9
+        CmdResult& operator=(const CmdResult& other) = default;
+#else
+        constexpr CmdResult& operator=(const CmdResult& other) = default;
+#endif
+    constexpr CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
     static constexpr CmdResult userResult(uint32_t n) { return static_cast<C::mip_cmd_result>(STATUS_USER - n); }
     static constexpr CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
