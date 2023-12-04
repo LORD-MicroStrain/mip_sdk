@@ -95,10 +95,10 @@ struct CmdResult
     constexpr CmdResult(C::mip_cmd_result result) : value(result) {}
     ~CmdResult() = default;
 
-    constexpr CmdResult& operator=(const CmdResult& other) = default;
-    constexpr CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
+    CmdResult& operator=(const CmdResult& other) = default;
+    CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
-    static constexpr CmdResult userResult(uint32_t n) { return static_cast<C::mip_cmd_result>(STATUS_USER - n); }
+    static constexpr CmdResult userResult(uint32_t n) { return CmdResult(static_cast<C::mip_cmd_result>(STATUS_USER - n)); }
     static constexpr CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
 
     operator const void*() const { return isAck() ? this : nullptr; }
