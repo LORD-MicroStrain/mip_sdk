@@ -665,6 +665,102 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_POS_LLH, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert_mip_aiding_height_command(mip_serializer* serializer, const mip_aiding_height_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    insert_float(serializer, self->height);
+    
+    insert_float(serializer, self->uncertainty);
+    
+    insert_u16(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_height_command(mip_serializer* serializer, mip_aiding_height_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    extract_float(serializer, &self->height);
+    
+    extract_float(serializer, &self->uncertainty);
+    
+    extract_u16(serializer, &self->valid_flags);
+    
+}
+
+mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float height, float uncertainty, uint16_t valid_flags)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, sensor_id);
+    
+    insert_float(&serializer, height);
+    
+    insert_float(&serializer, uncertainty);
+    
+    insert_u16(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_HEIGHT_ABS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_aiding_pressure_command(mip_serializer* serializer, const mip_aiding_pressure_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    insert_float(serializer, self->pressure);
+    
+    insert_float(serializer, self->uncertainty);
+    
+    insert_u16(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_pressure_command(mip_serializer* serializer, mip_aiding_pressure_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    extract_float(serializer, &self->pressure);
+    
+    extract_float(serializer, &self->uncertainty);
+    
+    extract_u16(serializer, &self->valid_flags);
+    
+}
+
+mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float pressure, float uncertainty, uint16_t valid_flags)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, sensor_id);
+    
+    insert_float(&serializer, pressure);
+    
+    insert_float(&serializer, uncertainty);
+    
+    insert_u16(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert_mip_aiding_ecef_vel_command(mip_serializer* serializer, const mip_aiding_ecef_vel_command* self)
 {
     insert_mip_time(serializer, &self->time);
@@ -913,6 +1009,73 @@ mip_cmd_result mip_aiding_true_heading(struct mip_interface* device, const mip_t
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_HEADING_TRUE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_aiding_magnetic_field_command(mip_serializer* serializer, const mip_aiding_magnetic_field_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->magnetic_field[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->uncertainty[i]);
+    
+    insert_mip_aiding_magnetic_field_command_valid_flags(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_magnetic_field_command(mip_serializer* serializer, mip_aiding_magnetic_field_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->magnetic_field[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->uncertainty[i]);
+    
+    extract_mip_aiding_magnetic_field_command_valid_flags(serializer, &self->valid_flags);
+    
+}
+
+void insert_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_magnetic_field_command_valid_flags self)
+{
+    insert_u16(serializer, (uint16_t)(self));
+}
+void extract_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, mip_aiding_magnetic_field_command_valid_flags* self)
+{
+    uint16_t tmp = 0;
+    extract_u16(serializer, &tmp);
+    *self = tmp;
+}
+
+mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* magnetic_field, const float* uncertainty, mip_aiding_magnetic_field_command_valid_flags valid_flags)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, sensor_id);
+    
+    assert(magnetic_field || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, magnetic_field[i]);
+    
+    assert(uncertainty || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(&serializer, uncertainty[i]);
+    
+    insert_mip_aiding_magnetic_field_command_valid_flags(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_MAGNETIC_FIELD, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

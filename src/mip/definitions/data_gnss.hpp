@@ -577,12 +577,12 @@ struct UtcTime
     };
     
     uint16_t year = 0;
-    uint8_t month = 0;
-    uint8_t day = 0;
-    uint8_t hour = 0;
-    uint8_t min = 0;
-    uint8_t sec = 0;
-    uint32_t msec = 0; ///< [Milliseconds]
+    uint8_t month = 0; ///< Month (1-12)
+    uint8_t day = 0; ///< Day (1-31)
+    uint8_t hour = 0; ///< Hour (0-23)
+    uint8_t min = 0; ///< Minute (0-59)
+    uint8_t sec = 0; ///< Second (0-59)
+    uint32_t msec = 0; ///< Millisecond(0-999)
     ValidFlags valid_flags;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;

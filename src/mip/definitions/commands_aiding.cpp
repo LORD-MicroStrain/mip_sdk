@@ -575,6 +575,98 @@ CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, d
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
+void insert(Serializer& serializer, const Height& self)
+{
+    insert(serializer, self.time);
+    
+    insert(serializer, self.sensor_id);
+    
+    insert(serializer, self.height);
+    
+    insert(serializer, self.uncertainty);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, Height& self)
+{
+    extract(serializer, self.time);
+    
+    extract(serializer, self.sensor_id);
+    
+    extract(serializer, self.height);
+    
+    extract(serializer, self.uncertainty);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
+CmdResult height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, time);
+    
+    insert(serializer, sensorId);
+    
+    insert(serializer, height);
+    
+    insert(serializer, uncertainty);
+    
+    insert(serializer, validFlags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const Pressure& self)
+{
+    insert(serializer, self.time);
+    
+    insert(serializer, self.sensor_id);
+    
+    insert(serializer, self.pressure);
+    
+    insert(serializer, self.uncertainty);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, Pressure& self)
+{
+    extract(serializer, self.time);
+    
+    extract(serializer, self.sensor_id);
+    
+    extract(serializer, self.pressure);
+    
+    extract(serializer, self.uncertainty);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
+CmdResult pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, time);
+    
+    insert(serializer, sensorId);
+    
+    insert(serializer, pressure);
+    
+    insert(serializer, uncertainty);
+    
+    insert(serializer, validFlags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
 void insert(Serializer& serializer, const EcefVel& self)
 {
     insert(serializer, self.time);
@@ -782,6 +874,60 @@ CmdResult trueHeading(C::mip_interface& device, const Time& time, uint8_t sensor
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_TRUE, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const MagneticField& self)
+{
+    insert(serializer, self.time);
+    
+    insert(serializer, self.sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.magnetic_field[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.uncertainty[i]);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, MagneticField& self)
+{
+    extract(serializer, self.time);
+    
+    extract(serializer, self.sensor_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.magnetic_field[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.uncertainty[i]);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
+CmdResult magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, time);
+    
+    insert(serializer, sensorId);
+    
+    assert(magneticField || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, magneticField[i]);
+    
+    assert(uncertainty || (3 == 0));
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, uncertainty[i]);
+    
+    insert(serializer, validFlags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 } // namespace commands_aiding

@@ -41,11 +41,13 @@ enum
     CMD_POS_LLH            = 0x22,
     CMD_HEIGHT_ABS         = 0x23,
     CMD_HEIGHT_REL         = 0x24,
+    CMD_PRESSURE           = 0x25,
     CMD_VEL_ECEF           = 0x28,
     CMD_VEL_NED            = 0x29,
     CMD_VEL_ODOM           = 0x2A,
     CMD_WHEELSPEED         = 0x2B,
     CMD_HEADING_TRUE       = 0x31,
+    CMD_MAGNETIC_FIELD     = 0x32,
     CMD_DELTA_POSITION     = 0x38,
     CMD_DELTA_ATTITUDE     = 0x39,
     CMD_LOCAL_ANGULAR_RATE = 0x3A,
@@ -156,6 +158,28 @@ CmdResult defaultSensorFrameMapping(C::mip_interface& device);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_reference_frame  (0x13,0x01) Reference Frame [CPP]
+/// Defines a reference frame associated with a specific sensor frame ID.  The frame ID used in this command
+/// should mirror the frame ID used in the aiding command (if that aiding measurement is measured in this reference frame)
+/// 
+/// This transform satisfies the following relationship:
+/// 
+/// EQSTART p^{veh} = R p^{sensor_frame} + t EQEND<br/>
+/// 
+/// Where:<br/>
+/// EQSTART R EQEND is rotation matrix defined by the rotation component and EQSTART t EQEND is the translation vector<br/><br/>
+/// EQSTART p^{sensor_frame} EQEND is a 3-element position vector expressed in the external sensor frame<br/>
+/// EQSTART p^{veh} EQEND is a 3-element position vector expressed in the vehicle frame<br/>
+/// 
+/// Rotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth element
+/// in the rotation vector is ignored and should be set to 0.
+/// 
+/// Example: GNSS antenna lever arm
+/// 
+/// Frame ID: 1
+/// Format: 1 (Euler)
+/// Translation: [0,1,] (GNSS with a 1 meter Y offset in the vehicle frame)
+/// Rotation: [0,0,0,0] (Rotational component is not relevant for GNSS measurements, set to zero)
+/// 
 ///
 ///@{
 
@@ -247,6 +271,7 @@ CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_aiding_echo_control  (0x13,0x1F) Aiding Echo Control [CPP]
+/// Controls command response behavior to external aiding commands
 ///
 ///@{
 
@@ -467,6 +492,84 @@ CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, d
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_height  (0x13,0x23) Height [CPP]
+/// Estimated value of height.
+///
+///@{
+
+struct Height
+{
+    Time time;
+    uint8_t sensor_id = 0;
+    float height = 0; ///< [m]
+    float uncertainty = 0; ///< [m]
+    uint16_t valid_flags = 0;
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEIGHT_ABS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,height,uncertainty,valid_flags);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(height),std::ref(uncertainty),std::ref(valid_flags));
+    }
+    typedef void Response;
+};
+void insert(Serializer& serializer, const Height& self);
+void extract(Serializer& serializer, Height& self);
+
+CmdResult height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_pressure  (0x13,0x25) Pressure [CPP]
+/// Estimated value of air pressure.
+///
+///@{
+
+struct Pressure
+{
+    Time time;
+    uint8_t sensor_id = 0;
+    float pressure = 0; ///< [mbar]
+    float uncertainty = 0; ///< [mbar]
+    uint16_t valid_flags = 0;
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_PRESSURE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,pressure,uncertainty,valid_flags);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(pressure),std::ref(uncertainty),std::ref(valid_flags));
+    }
+    typedef void Response;
+};
+void insert(Serializer& serializer, const Pressure& self);
+void extract(Serializer& serializer, Pressure& self);
+
+CmdResult pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_ecef_vel  (0x13,0x28) Ecef Vel [CPP]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
@@ -649,7 +752,7 @@ struct VehicleFixedFrameVelocity
     Time time; ///< Timestamp of the measurement.
     uint8_t sensor_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
     Vector3f velocity; ///< [m/s]
-    Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if velocity_uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
+    Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     ValidFlags valid_flags;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
@@ -712,6 +815,76 @@ void insert(Serializer& serializer, const TrueHeading& self);
 void extract(Serializer& serializer, TrueHeading& self);
 
 CmdResult trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_magnetic_field  (0x13,0x32) Magnetic Field [CPP]
+/// Estimate of magnetic field in the frame associated with the given sensor ID.
+///
+///@{
+
+struct MagneticField
+{
+    struct ValidFlags : Bitfield<ValidFlags>
+    {
+        enum _enumType : uint16_t
+        {
+            NONE = 0x0000,
+            X    = 0x0001,  ///<  
+            Y    = 0x0002,  ///<  
+            Z    = 0x0004,  ///<  
+            ALL  = 0x0007,
+        };
+        uint16_t value = NONE;
+        
+        ValidFlags() : value(NONE) {}
+        ValidFlags(int val) : value((uint16_t)val) {}
+        operator uint16_t() const { return value; }
+        ValidFlags& operator=(uint16_t val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
+        ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
+        
+        bool x() const { return (value & X) > 0; }
+        void x(bool val) { if(val) value |= X; else value &= ~X; }
+        bool y() const { return (value & Y) > 0; }
+        void y(bool val) { if(val) value |= Y; else value &= ~Y; }
+        bool z() const { return (value & Z) > 0; }
+        void z(bool val) { if(val) value |= Z; else value &= ~Z; }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
+    };
+    
+    Time time; ///< Timestamp of the measurement.
+    uint8_t sensor_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    Vector3f magnetic_field; ///< [G]
+    Vector3f uncertainty; ///< [G] 1-sigma uncertainty (if uncertainty[i] <= 0, then magnetic_field[i] should be treated as invalid and ingnored)
+    ValidFlags valid_flags;
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_MAGNETIC_FIELD;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,sensor_id,magnetic_field,uncertainty,valid_flags);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(sensor_id),std::ref(magnetic_field),std::ref(uncertainty),std::ref(valid_flags));
+    }
+    typedef void Response;
+};
+void insert(Serializer& serializer, const MagneticField& self);
+void extract(Serializer& serializer, MagneticField& self);
+
+CmdResult magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags);
 
 ///@}
 ///
