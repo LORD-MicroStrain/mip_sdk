@@ -3175,13 +3175,15 @@ struct AidingMeasurementEnable
 {
     enum class AidingSource : uint16_t
     {
-        GNSS_POS_VEL     = 0,  ///<  GNSS Position and Velocity
-        GNSS_HEADING     = 1,  ///<  GNSS Heading (dual antenna)
-        ALTIMETER        = 2,  ///<  Altimeter
-        SPEED            = 3,  ///<  Speed sensor / Odometer
-        MAGNETOMETER     = 4,  ///<  Magnetometer
-        EXTERNAL_HEADING = 5,  ///<  External heading input
-        ALL              = 65535,  ///<  Save/load/reset all options
+        GNSS_POS_VEL          = 0,  ///<  GNSS Position and Velocity
+        GNSS_HEADING          = 1,  ///<  GNSS Heading (dual antenna)
+        ALTIMETER             = 2,  ///<  Pressure altimeter (built-in sensor)
+        SPEED                 = 3,  ///<  Speed sensor / Odometer
+        MAGNETOMETER          = 4,  ///<  Magnetometer (built-in sensor)
+        EXTERNAL_HEADING      = 5,  ///<  External heading input
+        EXTERNAL_ALTIMETER    = 6,  ///<  External pressure altimeter input
+        EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input input
+        ALL                   = 65535,  ///<  Save/load/reset all options
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
