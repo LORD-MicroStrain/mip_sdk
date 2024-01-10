@@ -482,6 +482,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    std::cout << "Press ENTER to exit..." << std::endl;
     int dummy = getchar();
 #endif
 
