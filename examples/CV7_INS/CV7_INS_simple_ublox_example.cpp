@@ -410,20 +410,11 @@ void print_device_information(const commands_base::BaseDeviceInfo& device_info)
 
 InputArguments parse_input_arguments(int argc, const char* argv[])
 {
+    // TODO: Set max arg check for this.
     if (argc < 8)
     {
         usage(argv[0]);
-        exit_gracefully("ERROR: Incorrect input arguments");
-    }
-
-    // Look for help flag
-    for (int i = 1; i < argc; i++)
-    {
-        if(strcmp(argv[i], "-h") == 0)
-        {
-            usage(argv[0]);
-            exit_gracefully("");
-        }
+        exit_gracefully(nullptr);
     }
 
     InputArguments input_arguments;
