@@ -41,7 +41,7 @@ Examples
   * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
   * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
 
-You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
+You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
 The examples take two parameters for the device connection:
 * For a serial connection: Port and baudrate. Port must start with `/dev/` on Linux or `COM` on Windows.
@@ -51,7 +51,7 @@ The examples take two parameters for the device connection:
 Documentation
 -------------
 
-Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation)
+Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation).
 
 
 Communications Interfaces
