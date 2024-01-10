@@ -26,12 +26,20 @@ Features
 Examples
 --------
 
-* Get device information [C++] - queries the device strings and prints them to stdout.
-* Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
-* Product-specific examples:
-  * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
-  * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
-  * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
+<!-- NOTE: I commented out the descriptions below as they seemed like they would
+           be better suited to being in the example code files themselves. Feel
+           free to uncomment these again if you want, or remove them completely.
+-->
+* **Get device information** [[C++](./examples/device_info.cpp)]. <!-- - Queries the device strings and prints them to stdout. -->
+* **Watch IMU** [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)]. <!-- - Configures the IMU for streaming and prints the data to stdout. -->
+* **Threading** [[C++](./examples/threading.cpp)].
+* **Ping** [[C++](./examples/ping.cpp)].
+* **Product-specific examples:**
+  * **GQ7 setup** [[C](./examples/GQ7/GQ7_example.c), [C++](./examples/GQ7/GQ7_example.cpp)]. <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
+  * **CV7 setup** [[C](./examples/CV7/CV7_example.c), [C++](./examples/CV7/CV7_example.cpp)]. <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
+  * **GX5-45 setup** [[C](./examples/GX5_45/GX5_45_example.c), [C++](./examples/GX5_45/GX5_45_example.cpp)]. <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
+  * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
+  * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
 
 You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
 
