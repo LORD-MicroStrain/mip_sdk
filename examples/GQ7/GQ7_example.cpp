@@ -294,15 +294,15 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
+    printf("Sensor is configured... waiting for filter to enter Full Navigation mode (FULL_NAV).\n");
 
-    std::string current_state = ""; 
-    std::string read_state = ""; 
-    while(running)
-    {
+    auto current_state = ""; 
+    auto read_state = ""; 
+    while(running) {
         device->update();
 
         // Display current state for informational purposes.
+        // TODO: Put into utility function.
         switch (filter_status.filter_state) {
             case data_filter::FilterMode::INIT:
                 read_state = "INIT";
@@ -389,6 +389,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    std::cout << "Press ENTER to exit..." << std::endl;
     int dummy = getchar();
 #endif
 
