@@ -266,9 +266,11 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter running mode.\n");
 
+    auto current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state, true);
 
         //Check GNSS fixes and alert the user when they become valid
         if((gnss_fix_info_valid == false) && (gnss_fix_info.fix_type == data_gnss::FixInfo::FixType::FIX_3D) &&

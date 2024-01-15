@@ -37,7 +37,10 @@ std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int
 int printCommonUsage(const char* argv[]);
 
 /// Displays current filter state for the connected device if it has changed. 
-void displayFilterState(const mip::data_filter::FilterMode &filter_status, std::string &current_state);
+void displayFilterState(
+    const mip::data_filter::FilterMode &filter_status, 
+    std::string &current_state, 
+    bool isFiveSeries = false);
 
 /// Exits the example script while displaying an appropriate exit message.
 void exit_gracefully(const char *message);

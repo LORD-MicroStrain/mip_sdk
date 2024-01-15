@@ -136,17 +136,21 @@ int printCommonUsage(const char* argv[])
     return 1;
 }
 
-void displayFilterState(const mip::data_filter::FilterMode &filter_state, std::string &current_state) {
+void displayFilterState(
+    const mip::data_filter::FilterMode &filter_state,
+    std::string &current_state,
+    bool isFiveSeries
+) {
     std::string read_state = "";
     switch (filter_state) {
         case mip::data_filter::FilterMode::INIT:
-            read_state = "INIT";
+            read_state = isFiveSeries ? "GX5_INIT" : "INIT";
             break;
         case mip::data_filter::FilterMode::VERT_GYRO:
-            read_state = "VERT_GYRO";
+            read_state = isFiveSeries ? "GX5_RUN_SOLUTION_VALID" : "VERT_GYRO";
             break;
         case mip::data_filter::FilterMode::AHRS:
-            read_state = "AHRS"; 
+            read_state = isFiveSeries ? "GX5_RUN_SOLUTION_ERROR" : "AHRS"; 
             break;
         case mip::data_filter::FilterMode::FULL_NAV:
             read_state = "FULL_NAV";
