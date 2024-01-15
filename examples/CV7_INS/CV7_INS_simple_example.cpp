@@ -56,7 +56,6 @@ int usage(const char* argv0);
 
 void print_device_information(const commands_base::BaseDeviceInfo& device_info);
 
-void exit_gracefully(const char *message);
 bool should_exit();
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -210,9 +209,11 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to initialize...\n");
 
+    auto current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check for full nav filter state transition
         if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
@@ -317,23 +318,6 @@ int usage(const char* argv0)
 {
     printf("Usage: %s <port> <baudrate>\n", argv0);
     return 1;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Exit Function
-////////////////////////////////////////////////////////////////////////////////
-
-void exit_gracefully(const char *message)
-{
-    if(message)
-        printf("%s\n", message);
-
-#ifdef _WIN32
-    int dummy = getchar();
-#endif
-
-    exit(0);
 }
 
 
