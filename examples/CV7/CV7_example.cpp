@@ -273,7 +273,7 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
+    printf("Sensor is configured... waiting for filter to enter AHRS mode (AHRS).\n");
 
     auto current_state = std::string{""};
     while(running)
