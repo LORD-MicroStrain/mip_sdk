@@ -207,7 +207,7 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to initialize...\n");
+    printf("Sensor is configured... waiting for filter to initialize (FULL_NAV)...\n");
 
     auto current_state = std::string{""};
     while(running)
