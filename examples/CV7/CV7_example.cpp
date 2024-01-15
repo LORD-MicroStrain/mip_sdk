@@ -63,7 +63,6 @@ const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
 
 int usage(const char* argv0);
 
-void exit_gracefully(const char *message);
 bool should_exit();
 
 void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp timestamp);

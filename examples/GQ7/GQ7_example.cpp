@@ -70,7 +70,6 @@ bool filter_state_full_nav = false;
 
 int usage(const char* argv0);
 
-void exit_gracefully(const char *message);
 bool should_exit();
 
 
