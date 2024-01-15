@@ -275,9 +275,11 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
+    auto current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == data_filter::FilterMode::AHRS))
