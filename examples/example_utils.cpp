@@ -160,3 +160,16 @@ void displayFilterState(const mip::data_filter::FilterMode &filter_state, std::s
         current_state = read_state;
     }
 }
+
+void exit_gracefully(const char *message)
+{
+    if(message)
+        printf("%s\n", message);
+
+#ifdef _WIN32
+    std::cout << "Press ENTER to exit..." << std::endl;
+    int dummy = getchar();
+#endif
+
+    exit(0);
+}
