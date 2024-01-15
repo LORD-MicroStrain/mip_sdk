@@ -136,3 +136,27 @@ int printCommonUsage(const char* argv[])
     return 1;
 }
 
+void displayFilterState(const mip::data_filter::FilterMode &filter_state, std::string &current_state) {
+    std::string read_state = "";
+    switch (filter_state) {
+        case mip::data_filter::FilterMode::INIT:
+            read_state = "INIT";
+            break;
+        case mip::data_filter::FilterMode::VERT_GYRO:
+            read_state = "VERT_GYRO";
+            break;
+        case mip::data_filter::FilterMode::AHRS:
+            read_state = "AHRS"; 
+            break;
+        case mip::data_filter::FilterMode::FULL_NAV:
+            read_state = "FULL_NAV";
+            break;
+        default:
+            read_state = "STARTUP";
+            break;
+    }
+    if (read_state != current_state) {
+        std::cout << "Filter state: " << read_state << std::endl;
+        current_state = read_state;
+    }
+}

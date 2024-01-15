@@ -296,34 +296,10 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode (FULL_NAV).\n");
 
-    auto current_state = ""; 
-    auto read_state = ""; 
+    auto current_state = std::string{""};
     while(running) {
         device->update();
-
-        // Display current state for informational purposes.
-        // TODO: Put into utility function.
-        switch (filter_status.filter_state) {
-            case data_filter::FilterMode::INIT:
-                read_state = "INIT";
-                break;
-            case data_filter::FilterMode::VERT_GYRO:
-                read_state = "VERT_GYRO";
-                break;
-            case data_filter::FilterMode::AHRS:
-                read_state = "AHRS"; 
-                break;
-            case data_filter::FilterMode::FULL_NAV:
-                read_state = "FULL_NAV";
-                break;
-            default:
-                read_state = "STARTUP";
-                break;
-        }
-        if (read_state != current_state) {
-            std::cout << "Filter state: " << read_state << std::endl;
-            current_state = read_state;
-        }
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
