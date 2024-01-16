@@ -70,6 +70,7 @@ bool filter_state_full_nav = false;
 
 int usage(const char* argv0);
 
+void exit_gracefully(const char *message);
 bool should_exit();
 
 
@@ -351,6 +352,24 @@ int usage(const char* argv0)
 {
     printf("Usage: %s <port> <baudrate>\n", argv0);
     return 1;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Exit Function
+////////////////////////////////////////////////////////////////////////////////
+
+void exit_gracefully(const char *message)
+{
+    if(message)
+        printf("%s\n", message);
+
+#ifdef _WIN32
+    std::cout << "Press ENTER to exit..." << std::endl;
+    int dummy = getchar();
+#endif
+
+    exit(0);
 }
 
 
