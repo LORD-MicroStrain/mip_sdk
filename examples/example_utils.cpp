@@ -162,6 +162,7 @@ void displayFilterState(
             read_state = "STARTUP (0)";
             break;
     }
+
     if (read_state != current_state) {
         std::cout << "Filter state: " << read_state << std::endl;
         current_state = read_state;

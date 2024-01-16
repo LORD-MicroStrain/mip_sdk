@@ -338,27 +338,13 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
 
-    char *current_state = "";
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);
+        displayFilterState(filter_status.filter_state, current_state, false);
 
-        char *read_state = "";
-        if (filter_status.filter_state == MIP_FILTER_MODE_INIT) {
-            read_state = false ? "GX5_INIT (1)" : "INIT (1)";
-        } else if (filter_status.filter_state == MIP_FILTER_MODE_VERT_GYRO) {
-            read_state = false ? "GX5_RUN_SOLUTION_VALID (2)" : "VERT_GYRO (2)";
-        } else if (filter_status.filter_state == MIP_FILTER_MODE_AHRS) {
-            read_state = false ? "GX5_RUN_SOLUTION_ERROR (3)" : "AHRS (3)";
-        } else if (filter_status.filter_state == MIP_FILTER_MODE_FULL_NAV) {
-            read_state = "FULL_NAV (4)";
-        } else {
-            read_state = "STARTUP (0)";
-        }
-        if (strcmp(read_state, current_state) != 0) {
-            printf("FILTER STATE: %s\n", read_state);
-            current_state = read_state;
-        }
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
@@ -491,5 +477,21 @@ void displayFilterState(
     char **current_state,
     bool isFiveSeries
 ) {
+    char *read_state = "";
+    if (filter_status == MIP_FILTER_MODE_INIT) {
+        read_state = false ? "GX5_INIT (1)" : "INIT (1)";
+    } else if (filter_status == MIP_FILTER_MODE_VERT_GYRO) {
+        read_state = false ? "GX5_RUN_SOLUTION_VALID (2)" : "VERT_GYRO (2)";
+    } else if (filter_status == MIP_FILTER_MODE_AHRS) {
+        read_state = false ? "GX5_RUN_SOLUTION_ERROR (3)" : "AHRS (3)";
+    } else if (filter_status == MIP_FILTER_MODE_FULL_NAV) {
+        read_state = "FULL_NAV (4)";
+    } else {
+        read_state = "STARTUP (0)";
+    }
 
+    if (strcmp(read_state, *current_state) != 0) {
+        printf("FILTER STATE: %s\n", read_state);
+        *current_state = read_state;
+    }
 }
