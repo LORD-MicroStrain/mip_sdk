@@ -88,6 +88,12 @@ int usage(const char* argv0);
 void exit_gracefully(const char *message);
 bool should_exit();
 
+void displayFilterState(
+    const mip_filter_mode filter_status,
+    char **current_state,
+    bool isFiveSeries
+);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Main Function
@@ -332,10 +338,27 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
 
+    char *current_state = "";
     while(running)
     {
         mip_interface_update(&device, false);
 
+        char *read_state = "";
+        if (filter_status.filter_state == MIP_FILTER_MODE_INIT) {
+            read_state = false ? "GX5_INIT (1)" : "INIT (1)";
+        } else if (filter_status.filter_state == MIP_FILTER_MODE_VERT_GYRO) {
+            read_state = false ? "GX5_RUN_SOLUTION_VALID (2)" : "VERT_GYRO (2)";
+        } else if (filter_status.filter_state == MIP_FILTER_MODE_AHRS) {
+            read_state = false ? "GX5_RUN_SOLUTION_ERROR (3)" : "AHRS (3)";
+        } else if (filter_status.filter_state == MIP_FILTER_MODE_FULL_NAV) {
+            read_state = "FULL_NAV (4)";
+        } else {
+            read_state = "STARTUP (0)";
+        }
+        if (strcmp(read_state, current_state) != 0) {
+            printf("FILTER STATE: %s\n", read_state);
+            current_state = read_state;
+        }
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
@@ -458,3 +481,15 @@ bool should_exit()
 
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Displays current filter state for the connected device if it has changed.
+////////////////////////////////////////////////////////////////////////////////
+
+void displayFilterState(
+    const mip_filter_mode filter_status,
+    char **current_state,
+    bool isFiveSeries
+) {
+
+}
