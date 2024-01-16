@@ -341,7 +341,6 @@ int main(int argc, const char* argv[])
         mip_interface_update(&device, false);
         displayFilterState(filter_status.filter_state, current_state, false);
 
-
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
         {

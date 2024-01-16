@@ -67,15 +67,15 @@ endif()
 
 # C examples need serial support
 if(MIP_USE_SERIAL)
-    add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c")
+    add_executable(WatchImuC "${EXAMPLE_DIR}/watch_imu.c" ${DEVICE_SOURCES})
     target_link_libraries(WatchImuC mip)
 
-    add_executable(GQ7_ExampleC "${EXAMPLE_DIR}/GQ7/GQ7_example.c")
+    add_executable(GQ7_ExampleC "${EXAMPLE_DIR}/GQ7/GQ7_example.c" ${DEVICE_SOURCES})
     target_link_libraries(GQ7_ExampleC mip)
 
-    add_executable(CV7_ExampleC "${EXAMPLE_DIR}/CV7/CV7_example.c")
+    add_executable(CV7_ExampleC "${EXAMPLE_DIR}/CV7/CV7_example.c" ${DEVICE_SOURCES})
     target_link_libraries(CV7_ExampleC mip)
 
-    add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c")
+    add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c" ${DEVICE_SOURCES})
     target_link_libraries(GX5_45_ExampleC mip)
 endif()
