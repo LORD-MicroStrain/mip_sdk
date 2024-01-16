@@ -3,6 +3,8 @@ set(EXAMPLE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 
 set(DEVICE_SOURCES
+    "${EXAMPLE_DIR}/example_utils.c"
+    "${EXAMPLE_DIR}/example_utils.h"
     "${EXAMPLE_DIR}/example_utils.cpp"
     "${EXAMPLE_DIR}/example_utils.hpp"
 )
