@@ -21,7 +21,9 @@ mip_model_number get_model_from_string(const char* model_or_serial)
     unsigned int i = 0;
     for (; model_or_serial[i] != '\0'; i++)
     {
-        const char c = model_or_serial[i];
+        // Unsigned is important. Passing a negative value to isdigit or
+        // isspace is undefined behavior and can trigger assertions.
+        const unsigned char c = model_or_serial[i];
 
         if (!isdigit(c))
         {

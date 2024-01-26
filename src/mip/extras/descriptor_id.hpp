@@ -25,7 +25,7 @@ public:
     bool isNull() const { return m_key == 0x00000000; }
 
     bool isMip() const { return descriptor().as_u16() != 0x0000; }
-    bool isNonMip() const { return descriptor().as_u16() == 0x0000; }
+    bool isNonMip() const { return !isMip(); }
 
     CompositeDescriptor descriptor() const { return m_key >> 16; }
     uint16_t                 index() const { return m_key & 0xFFFF; }

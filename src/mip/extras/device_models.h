@@ -64,21 +64,5 @@ inline ModelNumber getModelFromString(const char* model_or_serial) { return C::g
 inline const char* getModelNameFromNumber(ModelNumber model) { return get_model_name_from_number(model); }
 
 
-//class ModelNumber
-//{
-//    ModelNumber(C::mip_model_number number) : m_number(number) {}
-//    ModelNumber(const char* model_or_serial) : m_number(C::get_model_from_string(model_or_serial) {}
-//
-//    const char* getModelName() { return C::get_model_name_from_number(m_number); }
-//
-//    using Model = C::mip_model_number;
-//
-//    uint16_t shortNumber() const { return m_number; }
-//    uint32_t longNumber() const { return m_number * 1000; }
-//
-//private:
-//    C::mip_model_number m_number;
-//};
-
 } // namespace mip
 #endif // __cplusplus
