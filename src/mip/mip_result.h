@@ -91,22 +91,24 @@ struct CmdResult
 
     C::mip_cmd_result value = C::MIP_STATUS_NONE;
 
-    CmdResult() : value(C::MIP_ACK_OK) {}
-    CmdResult(C::mip_cmd_result result) : value(result) {}
+    constexpr CmdResult() : value(C::MIP_ACK_OK) {}
+    constexpr CmdResult(C::mip_cmd_result result) : value(result) {}
+    ~CmdResult() = default;
 
     CmdResult& operator=(const CmdResult& other) = default;
     CmdResult& operator=(C::mip_cmd_result other) { value = other; return *this; }
 
-    static CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
+    static constexpr CmdResult userResult(uint32_t n) { return CmdResult(static_cast<C::mip_cmd_result>(STATUS_USER - n)); }
+    static constexpr CmdResult fromAckNack(uint8_t code) { return CmdResult(static_cast<C::mip_cmd_result>(code)); }
 
     operator const void*() const { return isAck() ? this : nullptr; }
     bool operator!() const { return !isAck(); }
 
-    bool operator==(CmdResult other) const { return value == other.value; }
-    bool operator!=(CmdResult other) const { return value != other.value; }
+    constexpr bool operator==(CmdResult other) const { return value == other.value; }
+    constexpr bool operator!=(CmdResult other) const { return value != other.value; }
 
-    bool operator==(C::mip_cmd_result other) const { return value == other; }
-    bool operator!=(C::mip_cmd_result other) const { return value != other; }
+    constexpr bool operator==(C::mip_cmd_result other) const { return value == other; }
+    constexpr bool operator!=(C::mip_cmd_result other) const { return value != other; }
 
     const char* name() const { return C::mip_cmd_result_to_string(value); }
 

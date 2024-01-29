@@ -3,5 +3,6 @@ build-doc/
 .vscode/
 int/
 .idea/
+.vs/
 
 src/mip/mip_version.h
