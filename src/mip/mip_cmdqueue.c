@@ -94,6 +94,7 @@ void mip_pending_cmd_init_full(mip_pending_cmd* cmd, uint8_t descriptor_set, uin
     cmd->_response_buffer      = response_buffer;
     cmd->_response_buffer_size = response_buffer_size;
     // cmd->_ack_code            = 0xFF; // invalid
+    cmd->_callback             = NULL;
     cmd->_status               = MIP_STATUS_NONE;
 }
 
@@ -186,6 +187,30 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
     }
 
     return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the pending command to a 'finished' state.
+///
+///@warning This might cause the command to be deallocated by another thread.
+///         Do not access cmd after calling this function; consider this
+///         equivalent to free(cmd) from the perspective of the thread running
+///         the device update function.
+///
+///@param cmd    Pending command to complete. Should be in a 'busy' state.
+///@param status Must be a 'finished' status, ie mip_cmd_result_is_finished(status)==true
+///
+static void mip_pending_cmd_finish(mip_pending_cmd* cmd, mip_cmd_result status)
+{
+    assert(!mip_cmd_result_is_finished(cmd->_status));
+    assert(mip_cmd_result_is_finished(status));
+
+    // Only do one of these two. Either one could cause
+    // deallocation thus there is no safe ordering.
+    if(cmd->_callback)
+        cmd->_callback(cmd, status);
+    else
+        cmd->_status = status;
 }
 
 
@@ -392,8 +417,8 @@ void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet
             queue->_first_pending_cmd = queue->_first_pending_cmd->_next;
 
             // This must be done last b/c it may trigger the thread which queued the command.
-            // The command could go out of scope or its attributes inspected.
-            pending->_status = status;
+            // The command could go out of scope or have its attributes inspected.
+            mip_pending_cmd_finish(pending, status);
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
             if( mip_cmd_result_is_ack(status) )
@@ -424,7 +449,7 @@ void mip_cmd_queue_clear(mip_cmd_queue* queue)
         queue->_first_pending_cmd = pending->_next;
 
         // This may deallocate the pending command in another thread (make sure to fetch the next cmd first).
-        pending->_status = MIP_STATUS_CANCELLED;
+        mip_pending_cmd_finish(pending, MIP_STATUS_CANCELLED);
     }
 }
 
@@ -460,7 +485,7 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
             pending->_reply_time = now;
 
             // This must be last!
-            pending->_status = MIP_STATUS_TIMEDOUT;
+            mip_pending_cmd_finish(pending, MIP_STATUS_TIMEDOUT);
 
             MIP_DIAG_INC(queue->_diag_cmds_timedout, 1);
         }

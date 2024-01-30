@@ -30,6 +30,15 @@ extern "C" {
 ///
 ///@{
 
+struct mip_pending_cmd;
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Signature for command completion callbacks.
+///
+///@param cmd Pending command instance.
+///
+typedef void (*mip_cmd_callback)(struct mip_pending_cmd* pending, mip_cmd_result status);
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a command awaiting a reply from the device.
 ///
@@ -54,6 +63,7 @@ typedef struct mip_pending_cmd
         uint8_t                 _response_buffer_size; ///<@private If status < MIP_STATUS_COMPLETED, the size of the reply data buffer.
         uint8_t                 _response_length;      ///<@private If status == MIP_STATUS_COMPLETED, the length of the reply data.
     };                                                 ///<@private
+    mip_cmd_callback             _callback;            ///<@private Called from the device update function when the command is processed.
     volatile enum mip_cmd_result _status;              ///<@private The current status of the command. Writing this to any MipAck value may cause deallocation.
 } mip_pending_cmd;
 
