@@ -188,6 +188,10 @@ if(MIP_USE_TCP)
     )
 endif()
 if(MIP_USE_EXTRAS)
+    list(APPEND MIP_INTERFACE_SOURCES
+        "${MIP_DIR}/platform/platform_connection.hpp"
+        "${MIP_DIR}/platform/platform_connection.cpp"
+    )
     list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
