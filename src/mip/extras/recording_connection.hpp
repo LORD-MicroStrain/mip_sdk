@@ -49,6 +49,9 @@ public:
         return false;
     };
 
+    const char* interfaceName() const override { return mConnection->interfaceName(); }
+    uint32_t parameter() const override { return mConnection->parameter(); }
+
     uint64_t recvFileBytesWritten()
     {
         return mRecvFileWritten;
