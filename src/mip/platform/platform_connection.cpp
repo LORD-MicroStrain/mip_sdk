@@ -57,7 +57,7 @@ namespace platform
     bool isSerialInterfaceName(std::string_view interface_name)
     {
 #ifdef WIN32
-        return (interface_name.find("COM", 0) != std::string::npos; // todo: make case insensitive
+        return interface_name.find("COM", 0) != std::string::npos; // todo: make case insensitive
 #else
         return interface_name.rfind("/dev/", 0) == 0;
 #endif
