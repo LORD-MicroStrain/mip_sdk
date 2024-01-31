@@ -1877,7 +1877,7 @@ struct RtkCorrectionsStatus
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     EpochStatus epoch_status; ///< Status of the corrections received during this epoch
-    uint32_t dongle_status = 0; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see MIP_CMD_DESC_RTK_GET_STATUS_FLAGS for details)
+    uint32_t dongle_status = 0; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see Get RTK Device Status Flags (0x0F,0x01) for details)
     float gps_correction_latency = 0; ///< Latency of last GPS correction [seconds]
     float glonass_correction_latency = 0; ///< Latency of last GLONASS correction [seconds]
     float galileo_correction_latency = 0; ///< Latency of last Galileo correction [seconds]
