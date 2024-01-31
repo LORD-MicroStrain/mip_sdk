@@ -73,6 +73,9 @@ struct CompositeDescriptor
 
     CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
+    template<class MipType>
+    bool compare() const { return MipType::DESCRIPTOR_SET == descriptorSet && MipType::FIELD_DESCRIPTOR == fieldDescriptor; }
+
     uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
 //    operator uint16_t() const { return as_u16(); }
@@ -81,6 +84,10 @@ struct CompositeDescriptor
     bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
 
 };
+
+// Generate a composite descriptor from a mip type
+template<class MipType>
+CompositeDescriptor compositeDescriptor() { return CompositeDescriptor(MipType::DESCRIPTOR_SET, MipType::FIELD_DESCRIPTOR); }
 
 
 ///@brief A dummy struct which is used to mark bitfield objects.

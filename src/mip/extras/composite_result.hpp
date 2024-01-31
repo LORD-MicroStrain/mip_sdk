@@ -73,6 +73,8 @@ namespace mip
         //void append(bool success, uint8_t id=0) { m_results.push_back({success ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR, 0x0000}); }
         void append(CmdResult result, CompositeDescriptor desc=0x0000) { m_results.push_back({result, desc}); }
         void append(Entry result) { m_results.push_back(result); }
+        template<class MipType>
+        void append(CmdResult result, uint16_t index=0) { append({result, DescriptorId(MipType::DESCRIPTOR_SET, MipType::FIELD_DESCRIPTOR, index)}); }
 
         // Append multiple results.
         void extend(const CompositeResult& other) { m_results.insert(m_results.end(), other.m_results.begin(), other.m_results.end()); }
