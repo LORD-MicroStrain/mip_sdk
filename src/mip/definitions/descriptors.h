@@ -17,9 +17,11 @@ extern "C" {
 #endif // __cplusplus
 
 enum {
-    MIP_INVALID_DESCRIPTOR_SET        = 0x00,
-    MIP_DATA_DESCRIPTOR_SET_START     = 0x80,
-    MIP_RESERVED_DESCRIPTOR_SET_START = 0xF0,
+    MIP_INVALID_DESCRIPTOR_SET               = 0x00,
+    MIP_DATA_DESCRIPTOR_SET_START            = 0x80,
+    MIP_GNSS_DATA_DESCRIPTOR_SET             = 0x81,
+    MIP_MULTI_GNSS_DATA_DESCRIPTOR_SET_START = 0x91,
+    MIP_RESERVED_DESCRIPTOR_SET_START        = 0xF0,
 
     MIP_INVALID_FIELD_DESCRIPTOR  = 0x00,
     MIP_REPLY_DESCRIPTOR          = 0xF1,
@@ -33,6 +35,7 @@ bool mip_is_valid_descriptor_set(uint8_t descriptor_set);
 bool mip_is_data_descriptor_set(uint8_t descriptor_set);
 bool mip_is_cmd_descriptor_set(uint8_t descriptor_set);
 bool mip_is_reserved_descriptor_set(uint8_t descriptor_set);
+bool mip_is_gnss_data_descriptor_set(uint8_t descriptor_set);
 
 bool mip_is_valid_field_descriptor(uint8_t field_descriptor);
 bool mip_is_cmd_field_descriptor(uint8_t field_descriptor);
@@ -114,6 +117,7 @@ inline bool isValidDescriptorSet   (uint8_t descriptorSet) { return C::mip_is_va
 inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
+inline bool isGnssDataDescriptorSet(uint8_t descriptorSet) { return C::mip_is_gnss_data_descriptor_set(descriptorSet); }
 
 inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
 inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }
