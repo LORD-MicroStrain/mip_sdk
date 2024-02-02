@@ -23,7 +23,7 @@ public:
 
     static constexpr auto TYPE = "Serial";
 
-    SerialConnection(const std::string& portName, uint32_t baudrate);
+    SerialConnection(std::string portName, uint32_t baudrate);
     ~SerialConnection();
 
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;

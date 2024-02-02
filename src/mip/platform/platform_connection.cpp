@@ -31,17 +31,17 @@ namespace platform
     ///       For serial ports, this is the baud rate.
     ///       For TCP sockets, this is the port number.
     ///
-    std::unique_ptr<mip::Connection> createConnectionFromInterfaceName(std::string_view interface_name, uint32_t parameter)
+    std::unique_ptr<mip::Connection> createConnectionFromInterfaceName(std::string interface_name, uint32_t parameter)
     {
 #ifdef MIP_USE_SERIAL
         // Todo: Detect USB connections (interface_name.find("ttyACM0") or similar)
         if(isSerialInterfaceName(interface_name))
-            return std::make_unique<SerialConnection>(interface_name, parameter);
+            return std::make_unique<SerialConnection>(std::move(interface_name), parameter);
 #endif
 
 #ifdef MIP_USE_TCP
         if(isNetworkInterfaceName(interface_name))
-            return std::make_unique<TcpConnection>(interface_name, parameter);
+            return std::make_unique<TcpConnection>(std::move(interface_name), parameter);
 #endif
 
         return nullptr;

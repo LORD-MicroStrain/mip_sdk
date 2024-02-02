@@ -168,6 +168,7 @@ string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}"
 string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
 if(MIP_USE_SERIAL)
+    list(APPEND MIP_DEFINES "MIP_USE_SERIAL")
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/serial_port.c"
         "${UTILS_DIR}/serial_port.h"
@@ -178,6 +179,7 @@ if(MIP_USE_SERIAL)
     )
 endif()
 if(MIP_USE_TCP)
+    list(APPEND MIP_DEFINES "MIP_USE_TCP")
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/tcp_socket.c"
         "${UTILS_DIR}/tcp_socket.h"

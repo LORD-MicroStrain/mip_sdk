@@ -13,9 +13,9 @@ namespace platform
 ///
 ///@param portName Path to the port to connect to. On Windows, this usually looks like "COM<N>", on linux, "/dev/tty<N>"
 ///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to
-SerialConnection::SerialConnection(const std::string& portName, uint32_t baudrate)
+SerialConnection::SerialConnection(std::string portName, uint32_t baudrate)
 {
-    mPortName = portName;
+    mPortName = std::move(portName);
     mBaudrate = baudrate;
     mType     = TYPE;
 

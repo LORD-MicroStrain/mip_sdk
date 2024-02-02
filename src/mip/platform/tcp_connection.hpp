@@ -24,7 +24,7 @@ public:
     static constexpr auto TYPE = "TCP";
 
     TcpConnection() = default;
-    TcpConnection(const std::string& hostname, uint16_t port);
+    TcpConnection(std::string hostname, uint16_t port);
     ~TcpConnection();
 
     bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;
