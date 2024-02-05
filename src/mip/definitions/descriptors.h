@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "../utils/serialization.h"
+#include "../mip_result.h"
 
 #ifdef __cplusplus
 
@@ -68,17 +69,17 @@ struct CompositeDescriptor
     uint8_t descriptorSet;    ///< MIP descriptor set.
     uint8_t fieldDescriptor;  ///< MIP field descriptor.
 
-    CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
-    CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
+    constexpr CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
+    constexpr CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
 
-    CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
+    constexpr CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
     uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
 //    operator uint16_t() const { return as_u16(); }
 
-    bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+    constexpr bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
+    constexpr bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
 
 };
 
@@ -114,6 +115,26 @@ inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip
 inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
 inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
 inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief A CmdResult that knows the corresponding command type.
+///
+///@tparam MipCmd Type of the command struct.
+///
+template<class MipCmd>
+struct TypedResult : public CmdResult
+{
+    using Cmd = MipCmd;
+
+    ///@brief The command descriptor.
+    ///
+    static constexpr CompositeDescriptor DESCRIPTOR = MipCmd::DESCRIPTOR;
+
+    ///@brief Returns the composite descriptor of the command.
+    ///
+    constexpr CompositeDescriptor descriptor() const { return DESCRIPTOR; }
+};
 
 } // namespace mip
 
