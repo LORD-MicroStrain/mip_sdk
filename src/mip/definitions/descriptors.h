@@ -127,6 +127,9 @@ struct TypedResult : public CmdResult
 {
     using Cmd = MipCmd;
 
+    // Same constructor as CmdResult.
+    using CmdResult::CmdResult;
+
     ///@brief The command descriptor.
     ///
     static constexpr CompositeDescriptor DESCRIPTOR = MipCmd::DESCRIPTOR;
