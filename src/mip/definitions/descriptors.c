@@ -66,8 +66,7 @@ bool mip_is_reserved_descriptor_set(uint8_t descriptor_set)
 ///
 bool mip_is_gnss_data_descriptor_set(uint8_t descriptor_set)
 {
-    return ((descriptor_set == MIP_GNSS_DATA_DESCRIPTOR_SET) ||
-           ((descriptor_set >= MIP_MULTI_GNSS_DATA_DESCRIPTOR_SET_START) && (descriptor_set < MIP_RESERVED_DESCRIPTOR_SET_START)));
+    return ((descriptor_set == 0x81) || ((descriptor_set >= 0x91) && (descriptor_set <= 0x95)));
 }
 
 
