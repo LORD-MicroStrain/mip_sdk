@@ -61,7 +61,7 @@ void extract(Serializer& serializer, CommMode::Response& self)
     
 }
 
-CmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
+TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -73,7 +73,7 @@ CmdResult writeCommMode(C::mip_interface& device, uint8_t mode)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
+TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -82,7 +82,7 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COM_MODE, buffer, &responseLength);
+    TypedResult<CommMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -96,7 +96,7 @@ CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut)
     }
     return result;
 }
-CmdResult defaultCommMode(C::mip_interface& device)
+TypedResult<CommMode> defaultCommMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
