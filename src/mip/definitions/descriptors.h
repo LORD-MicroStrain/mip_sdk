@@ -74,12 +74,12 @@ struct CompositeDescriptor
 
     constexpr CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
-    uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
+    constexpr uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
 //    operator uint16_t() const { return as_u16(); }
 
     constexpr bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    constexpr bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+    constexpr bool operator<(const CompositeDescriptor& other) const { return as_u16() < other.as_u16(); }
 
 };
 
