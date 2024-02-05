@@ -46,10 +46,10 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_PASSTHRU = 0x00;
-static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_NORMAL = 0x01;
-static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_IMU = 0x02;
-static const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
+static constexpr const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_PASSTHRU = 0x00;
+static constexpr const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_NORMAL = 0x01;
+static constexpr const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_IMU = 0x02;
+static constexpr const uint8_t MIP_SYSTEM_COMMAND_COMM_MODE_GPS = 0x03;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -74,17 +74,18 @@ struct CommMode
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t mode = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::CMD_COM_MODE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8001;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x0000;
-    static const uint32_t LOAD_PARAMS    = 0x0000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x0000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x0000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -105,11 +106,12 @@ struct CommMode
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_system::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_system::REPLY_COM_MODE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t mode = 0;
         
         
@@ -125,9 +127,9 @@ void extract(Serializer& serializer, CommMode& self);
 void insert(Serializer& serializer, const CommMode::Response& self);
 void extract(Serializer& serializer, CommMode::Response& self);
 
-CmdResult writeCommMode(C::mip_interface& device, uint8_t mode);
-CmdResult readCommMode(C::mip_interface& device, uint8_t* modeOut);
-CmdResult defaultCommMode(C::mip_interface& device);
+TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode);
+TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut);
+TypedResult<CommMode> defaultCommMode(C::mip_interface& device);
 
 ///@}
 ///

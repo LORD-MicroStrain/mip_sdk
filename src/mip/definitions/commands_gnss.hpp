@@ -45,14 +45,14 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-static const uint16_t GNSS_GPS_ENABLE_L1CA = 0x0001;
-static const uint16_t GNSS_GPS_ENABLE_L2C = 0x0002;
-static const uint16_t GNSS_GLONASS_ENABLE_L1OF = 0x0001;
-static const uint16_t GNSS_GLONASS_ENABLE_L2OF = 0x0002;
-static const uint16_t GNSS_GALILEO_ENABLE_E1 = 0x0001;
-static const uint16_t GNSS_GALILEO_ENABLE_E5B = 0x0002;
-static const uint16_t GNSS_BEIDOU_ENABLE_B1 = 0x0001;
-static const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
+static constexpr const uint16_t GNSS_GPS_ENABLE_L1CA = 0x0001;
+static constexpr const uint16_t GNSS_GPS_ENABLE_L2C = 0x0002;
+static constexpr const uint16_t GNSS_GLONASS_ENABLE_L1OF = 0x0001;
+static constexpr const uint16_t GNSS_GLONASS_ENABLE_L2OF = 0x0002;
+static constexpr const uint16_t GNSS_GALILEO_ENABLE_E1 = 0x0001;
+static constexpr const uint16_t GNSS_GALILEO_ENABLE_E5B = 0x0002;
+static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B1 = 0x0001;
+static constexpr const uint16_t GNSS_BEIDOU_ENABLE_B2 = 0x0002;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -75,12 +75,13 @@ struct ReceiverInfo
         
     };
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -93,11 +94,12 @@ struct ReceiverInfo
     }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x0000000C;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_receivers = 0; ///< Number of physical receivers in the device
         Info receiver_info[5];
         
@@ -117,7 +119,7 @@ void extract(Serializer& serializer, ReceiverInfo::Info& self);
 void insert(Serializer& serializer, const ReceiverInfo::Response& self);
 void extract(Serializer& serializer, ReceiverInfo::Response& self);
 
-CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut);
+TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut);
 
 ///@}
 ///
@@ -137,17 +139,18 @@ struct SignalConfiguration
     uint8_t beidou_enable = 0; ///< Bitfield 0: Enable B1,   1: Enable B2
     uint8_t reserved[4] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x801F;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -168,11 +171,12 @@ struct SignalConfiguration
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t gps_enable = 0; ///< Bitfield 0: Enable L1CA, 1: Enable L2C
         uint8_t glonass_enable = 0; ///< Bitfield 0: Enable L1OF, 1: Enable L2OF
         uint8_t galileo_enable = 0; ///< Bitfield 0: Enable E1,   1: Enable E5B
@@ -192,11 +196,11 @@ void extract(Serializer& serializer, SignalConfiguration& self);
 void insert(Serializer& serializer, const SignalConfiguration::Response& self);
 void extract(Serializer& serializer, SignalConfiguration::Response& self);
 
-CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved);
-CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut);
-CmdResult saveSignalConfiguration(C::mip_interface& device);
-CmdResult loadSignalConfiguration(C::mip_interface& device);
-CmdResult defaultSignalConfiguration(C::mip_interface& device);
+TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved);
+TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut);
+TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& device);
+TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& device);
+TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& device);
 
 ///@}
 ///
@@ -213,17 +217,18 @@ struct RtkDongleConfiguration
     uint8_t enable = 0; ///< 0 - Disabled, 1- Enabled
     uint8_t reserved[3] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
-    static const bool HAS_FUNCTION_SELECTOR = true;
-    static const uint32_t WRITE_PARAMS   = 0x8003;
-    static const uint32_t READ_PARAMS    = 0x8000;
-    static const uint32_t SAVE_PARAMS    = 0x8000;
-    static const uint32_t LOAD_PARAMS    = 0x8000;
-    static const uint32_t DEFAULT_PARAMS = 0x8000;
-    static const uint32_t ECHOED_PARAMS  = 0x0000;
-    static const uint32_t COUNTER_PARAMS = 0x00000000;
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
     auto as_tuple() const
     {
@@ -244,11 +249,12 @@ struct RtkDongleConfiguration
     
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
         
-        static const uint32_t ECHOED_PARAMS  = 0x0000;
-        static const uint32_t COUNTER_PARAMS = 0x00000000;
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t enable = 0;
         uint8_t reserved[3] = {0};
         
@@ -265,11 +271,11 @@ void extract(Serializer& serializer, RtkDongleConfiguration& self);
 void insert(Serializer& serializer, const RtkDongleConfiguration::Response& self);
 void extract(Serializer& serializer, RtkDongleConfiguration::Response& self);
 
-CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved);
-CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut);
-CmdResult saveRtkDongleConfiguration(C::mip_interface& device);
-CmdResult loadRtkDongleConfiguration(C::mip_interface& device);
-CmdResult defaultRtkDongleConfiguration(C::mip_interface& device);
+TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved);
+TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut);
+TypedResult<RtkDongleConfiguration> saveRtkDongleConfiguration(C::mip_interface& device);
+TypedResult<RtkDongleConfiguration> loadRtkDongleConfiguration(C::mip_interface& device);
+TypedResult<RtkDongleConfiguration> defaultRtkDongleConfiguration(C::mip_interface& device);
 
 ///@}
 ///
