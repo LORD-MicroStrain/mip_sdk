@@ -148,11 +148,11 @@ void extract(Serializer& serializer, SensorFrameMapping& self);
 void insert(Serializer& serializer, const SensorFrameMapping::Response& self);
 void extract(Serializer& serializer, SensorFrameMapping::Response& self);
 
-TypedResult<SensorFrameMapping> writeSensorFrameMapping(C::mip_interface& device, uint8_t sensorId, uint8_t frameId);
-TypedResult<SensorFrameMapping> readSensorFrameMapping(C::mip_interface& device, uint8_t* sensorIdOut, uint8_t* frameIdOut);
-TypedResult<SensorFrameMapping> saveSensorFrameMapping(C::mip_interface& device);
-TypedResult<SensorFrameMapping> loadSensorFrameMapping(C::mip_interface& device);
-TypedResult<SensorFrameMapping> defaultSensorFrameMapping(C::mip_interface& device);
+CmdResult writeSensorFrameMapping(C::mip_interface& device, uint8_t sensorId, uint8_t frameId);
+CmdResult readSensorFrameMapping(C::mip_interface& device, uint8_t* sensorIdOut, uint8_t* frameIdOut);
+CmdResult saveSensorFrameMapping(C::mip_interface& device);
+CmdResult loadSensorFrameMapping(C::mip_interface& device);
+CmdResult defaultSensorFrameMapping(C::mip_interface& device);
 
 ///@}
 ///
@@ -261,11 +261,11 @@ void extract(Serializer& serializer, ReferenceFrame& self);
 void insert(Serializer& serializer, const ReferenceFrame::Response& self);
 void extract(Serializer& serializer, ReferenceFrame::Response& self);
 
-TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation);
-TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut);
-TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
-TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
-TypedResult<ReferenceFrame> defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation);
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut);
+CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
+CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
+CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
 
 ///@}
 ///
@@ -340,11 +340,11 @@ void extract(Serializer& serializer, AidingEchoControl& self);
 void insert(Serializer& serializer, const AidingEchoControl::Response& self);
 void extract(Serializer& serializer, AidingEchoControl::Response& self);
 
-TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode);
-TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut);
-TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device);
-TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device);
-TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device);
+CmdResult writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode);
+CmdResult readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut);
+CmdResult saveAidingEchoControl(C::mip_interface& device);
+CmdResult loadAidingEchoControl(C::mip_interface& device);
+CmdResult defaultAidingEchoControl(C::mip_interface& device);
 
 ///@}
 ///
@@ -372,7 +372,7 @@ struct EcefPos
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -414,7 +414,7 @@ struct EcefPos
 void insert(Serializer& serializer, const EcefPos& self);
 void extract(Serializer& serializer, EcefPos& self);
 
-TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
+CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
 
 ///@}
 ///
@@ -443,7 +443,7 @@ struct LlhPos
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -487,7 +487,7 @@ struct LlhPos
 void insert(Serializer& serializer, const LlhPos& self);
 void extract(Serializer& serializer, LlhPos& self);
 
-TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
+CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
 
 ///@}
 ///
@@ -526,7 +526,7 @@ struct Height
 void insert(Serializer& serializer, const Height& self);
 void extract(Serializer& serializer, Height& self);
 
-TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags);
+CmdResult height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
@@ -565,7 +565,7 @@ struct Pressure
 void insert(Serializer& serializer, const Pressure& self);
 void extract(Serializer& serializer, Pressure& self);
 
-TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags);
+CmdResult pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
@@ -593,7 +593,7 @@ struct EcefVel
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -635,7 +635,7 @@ struct EcefVel
 void insert(Serializer& serializer, const EcefVel& self);
 void extract(Serializer& serializer, EcefVel& self);
 
-TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
 
 ///@}
 ///
@@ -663,7 +663,7 @@ struct NedVel
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -705,7 +705,7 @@ struct NedVel
 void insert(Serializer& serializer, const NedVel& self);
 void extract(Serializer& serializer, NedVel& self);
 
-TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
 
 ///@}
 ///
@@ -734,7 +734,7 @@ struct VehicleFixedFrameVelocity
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -776,7 +776,7 @@ struct VehicleFixedFrameVelocity
 void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self);
 void extract(Serializer& serializer, VehicleFixedFrameVelocity& self);
 
-TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
+CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
 
 ///@}
 ///
@@ -814,7 +814,7 @@ struct TrueHeading
 void insert(Serializer& serializer, const TrueHeading& self);
 void extract(Serializer& serializer, TrueHeading& self);
 
-TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags);
+CmdResult trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
@@ -842,7 +842,7 @@ struct MagneticField
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
+        ValidFlags& operator=(int val) { value = val; return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -884,7 +884,7 @@ struct MagneticField
 void insert(Serializer& serializer, const MagneticField& self);
 void extract(Serializer& serializer, MagneticField& self);
 
-TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags);
+CmdResult magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags);
 
 ///@}
 ///

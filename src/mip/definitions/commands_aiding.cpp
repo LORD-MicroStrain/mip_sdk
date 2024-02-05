@@ -88,7 +88,7 @@ void extract(Serializer& serializer, SensorFrameMapping::Response& self)
     
 }
 
-TypedResult<SensorFrameMapping> writeSensorFrameMapping(C::mip_interface& device, uint8_t sensorId, uint8_t frameId)
+CmdResult writeSensorFrameMapping(C::mip_interface& device, uint8_t sensorId, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -102,7 +102,7 @@ TypedResult<SensorFrameMapping> writeSensorFrameMapping(C::mip_interface& device
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR_FRAME_MAP, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SensorFrameMapping> readSensorFrameMapping(C::mip_interface& device, uint8_t* sensorIdOut, uint8_t* frameIdOut)
+CmdResult readSensorFrameMapping(C::mip_interface& device, uint8_t* sensorIdOut, uint8_t* frameIdOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -111,7 +111,7 @@ TypedResult<SensorFrameMapping> readSensorFrameMapping(C::mip_interface& device,
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SensorFrameMapping> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR_FRAME_MAP, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SENSOR_FRAME_MAP, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR_FRAME_MAP, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SENSOR_FRAME_MAP, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -128,7 +128,7 @@ TypedResult<SensorFrameMapping> readSensorFrameMapping(C::mip_interface& device,
     }
     return result;
 }
-TypedResult<SensorFrameMapping> saveSensorFrameMapping(C::mip_interface& device)
+CmdResult saveSensorFrameMapping(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -138,7 +138,7 @@ TypedResult<SensorFrameMapping> saveSensorFrameMapping(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR_FRAME_MAP, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SensorFrameMapping> loadSensorFrameMapping(C::mip_interface& device)
+CmdResult loadSensorFrameMapping(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -148,7 +148,7 @@ TypedResult<SensorFrameMapping> loadSensorFrameMapping(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR_FRAME_MAP, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SensorFrameMapping> defaultSensorFrameMapping(C::mip_interface& device)
+CmdResult defaultSensorFrameMapping(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -256,7 +256,7 @@ void extract(Serializer& serializer, ReferenceFrame::Response& self)
     }
 }
 
-TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation)
+CmdResult writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -284,7 +284,7 @@ TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut)
+CmdResult readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -297,7 +297,7 @@ TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<ReferenceFrame> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_FRAME_CONFIG, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_FRAME_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -326,7 +326,7 @@ TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t
     }
     return result;
 }
-TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t frameId)
+CmdResult saveReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -338,7 +338,7 @@ TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t frameId)
+CmdResult loadReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -350,7 +350,7 @@ TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> defaultReferenceFrame(C::mip_interface& device, uint8_t frameId)
+CmdResult defaultReferenceFrame(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -394,7 +394,7 @@ void extract(Serializer& serializer, AidingEchoControl::Response& self)
     
 }
 
-TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode)
+CmdResult writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -406,7 +406,7 @@ TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, 
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut)
+CmdResult readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -415,7 +415,7 @@ TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, A
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AidingEchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_ECHO_CONTROL, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_ECHO_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -429,7 +429,7 @@ TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, A
     }
     return result;
 }
-TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device)
+CmdResult saveAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -439,7 +439,7 @@ TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device)
+CmdResult loadAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -449,7 +449,7 @@ TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device)
+CmdResult defaultAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -490,7 +490,7 @@ void extract(Serializer& serializer, EcefPos& self)
     
 }
 
-TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags)
+CmdResult ecefPos(C::mip_interface& device, const Time& time, uint8_t sensorId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -550,7 +550,7 @@ void extract(Serializer& serializer, LlhPos& self)
     
 }
 
-TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags)
+CmdResult llhPos(C::mip_interface& device, const Time& time, uint8_t sensorId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -602,7 +602,7 @@ void extract(Serializer& serializer, Height& self)
     
 }
 
-TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags)
+CmdResult height(C::mip_interface& device, const Time& time, uint8_t sensorId, float height, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -648,7 +648,7 @@ void extract(Serializer& serializer, Pressure& self)
     
 }
 
-TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags)
+CmdResult pressure(C::mip_interface& device, const Time& time, uint8_t sensorId, float pressure, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -698,7 +698,7 @@ void extract(Serializer& serializer, EcefVel& self)
     
 }
 
-TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags)
+CmdResult ecefVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -752,7 +752,7 @@ void extract(Serializer& serializer, NedVel& self)
     
 }
 
-TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags)
+CmdResult nedVel(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -806,7 +806,7 @@ void extract(Serializer& serializer, VehicleFixedFrameVelocity& self)
     
 }
 
-TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
+CmdResult vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -856,7 +856,7 @@ void extract(Serializer& serializer, TrueHeading& self)
     
 }
 
-TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags)
+CmdResult trueHeading(C::mip_interface& device, const Time& time, uint8_t sensorId, float heading, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -906,7 +906,7 @@ void extract(Serializer& serializer, MagneticField& self)
     
 }
 
-TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags)
+CmdResult magneticField(C::mip_interface& device, const Time& time, uint8_t sensorId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
