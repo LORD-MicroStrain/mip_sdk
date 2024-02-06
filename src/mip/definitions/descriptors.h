@@ -129,6 +129,7 @@ struct TypedResult : public CmdResult
 
     // Same constructor as CmdResult.
     using CmdResult::CmdResult;
+    TypedResult(CmdResult existing) : CmdResult(existing) {}
 
     ///@brief The command descriptor.
     ///
