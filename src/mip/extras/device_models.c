@@ -12,6 +12,14 @@ namespace C {
 extern "C" {
 #endif// __cplusplus
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Parses a string into a model number.
+///
+///@param model_or_serial Device model or serial number.
+///
+///@returns The model number. Note that it may not be listed in the enum (e.g.
+///         if it's a new model released after this version of source code).
+///
 mip_model_number get_model_from_string(const char* model_or_serial)
 {
     unsigned int start_index = 0;
@@ -44,6 +52,13 @@ mip_model_number get_model_from_string(const char* model_or_serial)
     return atoi(model_or_serial + start_index);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Converts a model number to the product's model name.
+///
+///@param model
+///
+///@returns A string containing the (approximate) model name.
+///
 const char* get_model_name_from_number(mip_model_number model)
 {
     switch (model)
@@ -85,7 +100,7 @@ const char* get_model_name_from_number(mip_model_number model)
     case MODEL_3DM_CV7_INS:   return "3DM-CV7-INS";
 
     default:
-    case MODEL_UNKNOWN: return "";
+    case MODEL_UNKNOWN: return "Unknown";
     }
 }
 
