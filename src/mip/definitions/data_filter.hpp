@@ -374,6 +374,8 @@ struct PositionLlh
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_LLH;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PositionLlh";
+    static constexpr const char* DOC_NAME = "LLH Position";
     
     
     auto as_tuple() const
@@ -408,6 +410,8 @@ struct VelocityNed
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "VelocityNed";
+    static constexpr const char* DOC_NAME = "VelocityNed";
     
     
     auto as_tuple() const
@@ -448,6 +452,8 @@ struct AttitudeQuaternion
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_QUATERNION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AttitudeQuaternion";
+    static constexpr const char* DOC_NAME = "AttitudeQuaternion";
     
     
     auto as_tuple() const
@@ -490,6 +496,8 @@ struct AttitudeDcm
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_MATRIX;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AttitudeDcm";
+    static constexpr const char* DOC_NAME = "AttitudeDcm";
     
     
     auto as_tuple() const
@@ -525,6 +533,8 @@ struct EulerAngles
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EulerAngles";
+    static constexpr const char* DOC_NAME = "EulerAngles";
     
     
     auto as_tuple() const
@@ -557,6 +567,8 @@ struct GyroBias
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GyroBias";
+    static constexpr const char* DOC_NAME = "GyroBias";
     
     
     auto as_tuple() const
@@ -589,6 +601,8 @@ struct AccelBias
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AccelBias";
+    static constexpr const char* DOC_NAME = "AccelBias";
     
     
     auto as_tuple() const
@@ -623,6 +637,8 @@ struct PositionLlhUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PositionLlhUncertainty";
+    static constexpr const char* DOC_NAME = "LLH Position Uncertainty";
     
     
     auto as_tuple() const
@@ -657,6 +673,8 @@ struct VelocityNedUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "VelocityNedUncertainty";
+    static constexpr const char* DOC_NAME = "NED Velocity Uncertainty";
     
     
     auto as_tuple() const
@@ -692,6 +710,8 @@ struct EulerAnglesUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_EULER;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EulerAnglesUncertainty";
+    static constexpr const char* DOC_NAME = "EulerAnglesUncertainty";
     
     
     auto as_tuple() const
@@ -724,6 +744,8 @@ struct GyroBiasUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GyroBiasUncertainty";
+    static constexpr const char* DOC_NAME = "GyroBiasUncertainty";
     
     
     auto as_tuple() const
@@ -756,6 +778,8 @@ struct AccelBiasUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AccelBiasUncertainty";
+    static constexpr const char* DOC_NAME = "AccelBiasUncertainty";
     
     
     auto as_tuple() const
@@ -795,6 +819,8 @@ struct Timestamp
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_TIMESTAMP;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Timestamp";
+    static constexpr const char* DOC_NAME = "Timestamp";
     
     
     auto as_tuple() const
@@ -828,6 +854,8 @@ struct Status
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Status";
+    static constexpr const char* DOC_NAME = "Status";
     
     
     auto as_tuple() const
@@ -861,6 +889,8 @@ struct LinearAccel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_LINEAR_ACCELERATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "LinearAccel";
+    static constexpr const char* DOC_NAME = "LinearAccel";
     
     
     auto as_tuple() const
@@ -893,6 +923,8 @@ struct GravityVector
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GravityVector";
+    static constexpr const char* DOC_NAME = "GravityVector";
     
     
     auto as_tuple() const
@@ -925,6 +957,8 @@ struct CompAccel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ACCELERATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompAccel";
+    static constexpr const char* DOC_NAME = "Compensated Acceleration";
     
     
     auto as_tuple() const
@@ -957,6 +991,8 @@ struct CompAngularRate
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompAngularRate";
+    static constexpr const char* DOC_NAME = "CompAngularRate";
     
     
     auto as_tuple() const
@@ -989,6 +1025,8 @@ struct QuaternionAttitudeUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "QuaternionAttitudeUncertainty";
+    static constexpr const char* DOC_NAME = "QuaternionAttitudeUncertainty";
     
     
     auto as_tuple() const
@@ -1021,6 +1059,8 @@ struct Wgs84GravityMag
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Wgs84GravityMag";
+    static constexpr const char* DOC_NAME = "Wgs84GravityMag";
     
     
     auto as_tuple() const
@@ -1067,6 +1107,8 @@ struct HeadingUpdateState
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "HeadingUpdateState";
+    static constexpr const char* DOC_NAME = "HeadingUpdateState";
     
     
     auto as_tuple() const
@@ -1104,6 +1146,8 @@ struct MagneticModel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAGNETIC_MODEL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagneticModel";
+    static constexpr const char* DOC_NAME = "MagneticModel";
     
     
     auto as_tuple() const
@@ -1136,6 +1180,8 @@ struct AccelScaleFactor
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AccelScaleFactor";
+    static constexpr const char* DOC_NAME = "AccelScaleFactor";
     
     
     auto as_tuple() const
@@ -1168,6 +1214,8 @@ struct AccelScaleFactorUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AccelScaleFactorUncertainty";
+    static constexpr const char* DOC_NAME = "AccelScaleFactorUncertainty";
     
     
     auto as_tuple() const
@@ -1200,6 +1248,8 @@ struct GyroScaleFactor
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GyroScaleFactor";
+    static constexpr const char* DOC_NAME = "GyroScaleFactor";
     
     
     auto as_tuple() const
@@ -1232,6 +1282,8 @@ struct GyroScaleFactorUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GyroScaleFactorUncertainty";
+    static constexpr const char* DOC_NAME = "GyroScaleFactorUncertainty";
     
     
     auto as_tuple() const
@@ -1264,6 +1316,8 @@ struct MagBias
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagBias";
+    static constexpr const char* DOC_NAME = "MagBias";
     
     
     auto as_tuple() const
@@ -1296,6 +1350,8 @@ struct MagBiasUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagBiasUncertainty";
+    static constexpr const char* DOC_NAME = "MagBiasUncertainty";
     
     
     auto as_tuple() const
@@ -1334,6 +1390,8 @@ struct StandardAtmosphere
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "StandardAtmosphere";
+    static constexpr const char* DOC_NAME = "StandardAtmosphere";
     
     
     auto as_tuple() const
@@ -1370,6 +1428,8 @@ struct PressureAltitude
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PressureAltitude";
+    static constexpr const char* DOC_NAME = "PressureAltitude";
     
     
     auto as_tuple() const
@@ -1401,6 +1461,8 @@ struct DensityAltitude
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DensityAltitude";
+    static constexpr const char* DOC_NAME = "DensityAltitude";
     
     
     auto as_tuple() const
@@ -1435,6 +1497,8 @@ struct AntennaOffsetCorrection
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AntennaOffsetCorrection";
+    static constexpr const char* DOC_NAME = "AntennaOffsetCorrection";
     
     
     auto as_tuple() const
@@ -1467,6 +1531,8 @@ struct AntennaOffsetCorrectionUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AntennaOffsetCorrectionUncertainty";
+    static constexpr const char* DOC_NAME = "AntennaOffsetCorrectionUncertainty";
     
     
     auto as_tuple() const
@@ -1502,6 +1568,8 @@ struct MultiAntennaOffsetCorrection
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MultiAntennaOffsetCorrection";
+    static constexpr const char* DOC_NAME = "MultiAntennaOffsetCorrection";
     
     
     auto as_tuple() const
@@ -1535,6 +1603,8 @@ struct MultiAntennaOffsetCorrectionUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MultiAntennaOffsetCorrectionUncertainty";
+    static constexpr const char* DOC_NAME = "MultiAntennaOffsetCorrectionUncertainty";
     
     
     auto as_tuple() const
@@ -1569,6 +1639,8 @@ struct MagnetometerOffset
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerOffset";
+    static constexpr const char* DOC_NAME = "MagnetometerOffset";
     
     
     auto as_tuple() const
@@ -1603,6 +1675,8 @@ struct MagnetometerMatrix
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerMatrix";
+    static constexpr const char* DOC_NAME = "MagnetometerMatrix";
     
     
     auto as_tuple() const
@@ -1635,6 +1709,8 @@ struct MagnetometerOffsetUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerOffsetUncertainty";
+    static constexpr const char* DOC_NAME = "MagnetometerOffsetUncertainty";
     
     
     auto as_tuple() const
@@ -1667,6 +1743,8 @@ struct MagnetometerMatrixUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerMatrixUncertainty";
+    static constexpr const char* DOC_NAME = "MagnetometerMatrixUncertainty";
     
     
     auto as_tuple() const
@@ -1698,6 +1776,8 @@ struct MagnetometerCovarianceMatrix
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerCovarianceMatrix";
+    static constexpr const char* DOC_NAME = "MagnetometerCovarianceMatrix";
     
     
     auto as_tuple() const
@@ -1730,6 +1810,8 @@ struct MagnetometerResidualVector
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_RESIDUAL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "MagnetometerResidualVector";
+    static constexpr const char* DOC_NAME = "MagnetometerResidualVector";
     
     
     auto as_tuple() const
@@ -1764,6 +1846,8 @@ struct ClockCorrection
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ClockCorrection";
+    static constexpr const char* DOC_NAME = "ClockCorrection";
     
     
     auto as_tuple() const
@@ -1798,6 +1882,8 @@ struct ClockCorrectionUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ClockCorrectionUncertainty";
+    static constexpr const char* DOC_NAME = "ClockCorrectionUncertainty";
     
     
     auto as_tuple() const
@@ -1832,6 +1918,8 @@ struct GnssPosAidStatus
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GnssPosAidStatus";
+    static constexpr const char* DOC_NAME = "GNSS Position Aiding Status";
     
     
     auto as_tuple() const
@@ -1865,6 +1953,8 @@ struct GnssAttAidStatus
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_ATT_AID_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GnssAttAidStatus";
+    static constexpr const char* DOC_NAME = "GNSS Attitude Aiding Status";
     
     
     auto as_tuple() const
@@ -1904,6 +1994,8 @@ struct HeadAidStatus
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "HeadAidStatus";
+    static constexpr const char* DOC_NAME = "HeadAidStatus";
     
     
     auto as_tuple() const
@@ -1936,6 +2028,8 @@ struct RelPosNed
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_REL_POS_NED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RelPosNed";
+    static constexpr const char* DOC_NAME = "NED Relative Position";
     
     
     auto as_tuple() const
@@ -1968,6 +2062,8 @@ struct EcefPos
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EcefPos";
+    static constexpr const char* DOC_NAME = "ECEF Position";
     
     
     auto as_tuple() const
@@ -2000,6 +2096,8 @@ struct EcefVel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EcefVel";
+    static constexpr const char* DOC_NAME = "ECEF Velocity";
     
     
     auto as_tuple() const
@@ -2032,6 +2130,8 @@ struct EcefPosUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EcefPosUncertainty";
+    static constexpr const char* DOC_NAME = "ECEF Position Uncertainty";
     
     
     auto as_tuple() const
@@ -2064,6 +2164,8 @@ struct EcefVelUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EcefVelUncertainty";
+    static constexpr const char* DOC_NAME = "ECEF Velocity Uncertainty";
     
     
     auto as_tuple() const
@@ -2098,6 +2200,8 @@ struct AidingMeasurementSummary
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AidingMeasurementSummary";
+    static constexpr const char* DOC_NAME = "AidingMeasurementSummary";
     
     
     auto as_tuple() const
@@ -2130,6 +2234,8 @@ struct OdometerScaleFactorError
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "OdometerScaleFactorError";
+    static constexpr const char* DOC_NAME = "Odometer Scale Factor Error";
     
     
     auto as_tuple() const
@@ -2162,6 +2268,8 @@ struct OdometerScaleFactorErrorUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "OdometerScaleFactorErrorUncertainty";
+    static constexpr const char* DOC_NAME = "Odometer Scale Factor Error Uncertainty";
     
     
     auto as_tuple() const
@@ -2236,6 +2344,8 @@ struct GnssDualAntennaStatus
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GnssDualAntennaStatus";
+    static constexpr const char* DOC_NAME = "GNSS Dual Antenna Status";
     
     
     auto as_tuple() const
@@ -2271,6 +2381,8 @@ struct AidingFrameConfigError
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AidingFrameConfigError";
+    static constexpr const char* DOC_NAME = "Aiding Frame Configuration Error";
     
     
     auto as_tuple() const
@@ -2306,6 +2418,8 @@ struct AidingFrameConfigErrorUncertainty
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR_UNCERTAINTY;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "AidingFrameConfigErrorUncertainty";
+    static constexpr const char* DOC_NAME = "Aiding Frame Configuration Error Uncertainty";
     
     
     auto as_tuple() const
