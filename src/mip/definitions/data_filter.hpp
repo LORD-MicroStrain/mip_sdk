@@ -92,6 +92,8 @@ enum
     DATA_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     DATA_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
+    DATA_FRAME_CONFIG_ERROR                          = 0x50,
+    DATA_FRAME_CONFIG_ERROR_UNCERTAINTY              = 0x51,
     
 };
 
@@ -227,12 +229,18 @@ struct FilterStatusFlags : Bitfield<FilterStatusFlags>
 
 enum class FilterAidingMeasurementType : uint8_t
 {
-    GNSS         = 1,  ///<  
-    DUAL_ANTENNA = 2,  ///<  
-    HEADING      = 3,  ///<  
-    PRESSURE     = 4,  ///<  
-    MAGNETOMETER = 5,  ///<  
-    SPEED        = 6,  ///<  
+    GNSS              = 1,  ///<  
+    DUAL_ANTENNA      = 2,  ///<  
+    HEADING           = 3,  ///<  
+    PRESSURE          = 4,  ///<  
+    MAGNETOMETER      = 5,  ///<  
+    SPEED             = 6,  ///<  
+    POS_ECEF          = 33,  ///<  
+    POS_LLH           = 34,  ///<  
+    VEL_ECEF          = 40,  ///<  
+    VEL_NED           = 41,  ///<  
+    VEL_VEHICLE_FRAME = 42,  ///<  
+    HEADING_TRUE      = 49,  ///<  
 };
 
 struct FilterMeasurementIndicator : Bitfield<FilterMeasurementIndicator>
@@ -363,8 +371,9 @@ struct PositionLlh
     double ellipsoid_height = 0; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_LLH;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_LLH;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -396,8 +405,9 @@ struct VelocityNed
     float down = 0; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - Invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_NED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -435,8 +445,9 @@ struct AttitudeQuaternion
     Quatf q; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_QUATERNION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_QUATERNION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -476,8 +487,9 @@ struct AttitudeDcm
     Matrix3f dcm; ///< Matrix elements in row-major order.
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_MATRIX;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_MATRIX;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -510,8 +522,9 @@ struct EulerAngles
     float yaw = 0; ///< [radians]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_EULER_ANGLES;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -541,8 +554,9 @@ struct GyroBias
     Vector3f bias; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -572,8 +586,9 @@ struct AccelBias
     Vector3f bias; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -605,8 +620,9 @@ struct PositionLlhUncertainty
     float down = 0; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_POS_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -638,8 +654,9 @@ struct VelocityNedUncertainty
     float down = 0; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_VEL_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -672,8 +689,9 @@ struct EulerAnglesUncertainty
     float yaw = 0; ///< [radians]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_EULER;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_EULER;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -703,8 +721,9 @@ struct GyroBiasUncertainty
     Vector3f bias_uncert; ///< (x,y,z) [radians/sec]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_BIAS_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -734,8 +753,9 @@ struct AccelBiasUncertainty
     Vector3f bias_uncert; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_BIAS_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -772,8 +792,9 @@ struct Timestamp
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_TIMESTAMP;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_TIMESTAMP;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -804,8 +825,9 @@ struct Status
     FilterDynamicsMode dynamics_mode = static_cast<FilterDynamicsMode>(0); ///< Device-specific dynamics mode. Please consult the user manual for definition.
     FilterStatusFlags status_flags; ///< Device-specific status flags.  Please consult the user manual for definition.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FILTER_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -836,8 +858,9 @@ struct LinearAccel
     Vector3f accel; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_LINEAR_ACCELERATION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_LINEAR_ACCELERATION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -867,8 +890,9 @@ struct GravityVector
     Vector3f gravity; ///< (x, y, z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GRAVITY_VECTOR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -898,8 +922,9 @@ struct CompAccel
     Vector3f accel; ///< (x,y,z) [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ACCELERATION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ACCELERATION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -929,8 +954,9 @@ struct CompAngularRate
     Vector3f gyro; ///< (x, y, z) [radians/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_COMPENSATED_ANGULAR_RATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -960,8 +986,9 @@ struct QuaternionAttitudeUncertainty
     Quatf q; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ATT_UNCERTAINTY_QUATERNION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -991,8 +1018,9 @@ struct Wgs84GravityMag
     float magnitude = 0; ///< [meters/second^2]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_WGS84_GRAVITY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1036,8 +1064,9 @@ struct HeadingUpdateState
     HeadingSource source = static_cast<HeadingSource>(0);
     uint16_t valid_flags = 0; ///< 1 if a valid heading update was received in 2 seconds, 0 otherwise.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEADING_UPDATE_STATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1072,8 +1101,9 @@ struct MagneticModel
     float declination = 0; ///< [radians]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAGNETIC_MODEL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAGNETIC_MODEL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1103,8 +1133,9 @@ struct AccelScaleFactor
     Vector3f scale_factor; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1134,8 +1165,9 @@ struct AccelScaleFactorUncertainty
     Vector3f scale_factor_uncert; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ACCEL_SCALE_FACTOR_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1165,8 +1197,9 @@ struct GyroScaleFactor
     Vector3f scale_factor; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1196,8 +1229,9 @@ struct GyroScaleFactorUncertainty
     Vector3f scale_factor_uncert; ///< (x,y,z) [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GYRO_SCALE_FACTOR_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1227,8 +1261,9 @@ struct MagBias
     Vector3f bias; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1258,8 +1293,9 @@ struct MagBiasUncertainty
     Vector3f bias_uncert; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_BIAS_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1295,8 +1331,9 @@ struct StandardAtmosphere
     float standard_density = 0; ///< [kilogram/meter^3]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_STANDARD_ATMOSPHERE_DATA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1330,8 +1367,9 @@ struct PressureAltitude
     float pressure_altitude = 0; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_PRESSURE_ALTITUDE_DATA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1360,8 +1398,9 @@ struct DensityAltitude
     float density_altitude = 0; ///< m
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_DENSITY_ALTITUDE_DATA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1393,8 +1432,9 @@ struct AntennaOffsetCorrection
     Vector3f offset; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1424,8 +1464,9 @@ struct AntennaOffsetCorrectionUncertainty
     Vector3f offset_uncert; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1458,8 +1499,9 @@ struct MultiAntennaOffsetCorrection
     Vector3f offset; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1490,8 +1532,9 @@ struct MultiAntennaOffsetCorrectionUncertainty
     Vector3f offset_uncert; ///< (x,y,z) [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MULTI_ANTENNA_OFFSET_CORRECTION_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1523,8 +1566,9 @@ struct MagnetometerOffset
     Vector3f hard_iron; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1556,8 +1600,9 @@ struct MagnetometerMatrix
     Matrix3f soft_iron; ///< Row-major [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1587,8 +1632,9 @@ struct MagnetometerOffsetUncertainty
     Vector3f hard_iron_uncertainty; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_OFFSET_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1618,8 +1664,9 @@ struct MagnetometerMatrixUncertainty
     Matrix3f soft_iron_uncertainty; ///< Row-major [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COMPENSATION_MATRIX_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1648,8 +1695,9 @@ struct MagnetometerCovarianceMatrix
     Matrix3f covariance;
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_COVARIANCE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1679,8 +1727,9 @@ struct MagnetometerResidualVector
     Vector3f residual; ///< (x,y,z) [Gauss]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_RESIDUAL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_MAG_RESIDUAL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1712,8 +1761,9 @@ struct ClockCorrection
     float bias_drift = 0; ///< [seconds/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1745,8 +1795,9 @@ struct ClockCorrectionUncertainty
     float bias_drift_uncertainty = 0; ///< [seconds/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_CLOCK_CORRECTION_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1778,8 +1829,9 @@ struct GnssPosAidStatus
     GnssAidStatusFlags status; ///< Aiding measurement status bitfield
     uint8_t reserved[8] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_POS_AID_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1810,8 +1862,9 @@ struct GnssAttAidStatus
     GnssAidStatusFlags status; ///< Last valid aiding measurement status bitfield
     uint8_t reserved[8] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_ATT_AID_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_ATT_AID_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1848,8 +1901,9 @@ struct HeadAidStatus
     HeadingAidType type = static_cast<HeadingAidType>(0); ///< 1 - Dual antenna, 2 - External heading message (user supplied)
     float reserved[2] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_HEAD_AID_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1879,8 +1933,9 @@ struct RelPosNed
     Vector3d relative_position; ///< [meters, NED]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_REL_POS_NED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_REL_POS_NED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1910,8 +1965,9 @@ struct EcefPos
     Vector3d position_ecef; ///< [meters, ECEF]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1941,8 +1997,9 @@ struct EcefVel
     Vector3f velocity_ecef; ///< [meters/second, ECEF]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -1972,8 +2029,9 @@ struct EcefPosUncertainty
     Vector3f pos_uncertainty; ///< [meters]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_POS_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2003,8 +2061,9 @@ struct EcefVelUncertainty
     Vector3f vel_uncertainty; ///< [meters/second]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ECEF_VEL_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2033,11 +2092,12 @@ struct AidingMeasurementSummary
 {
     float time_of_week = 0; ///< [seconds]
     uint8_t source = 0;
-    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types)
+    FilterAidingMeasurementType type = static_cast<FilterAidingMeasurementType>(0); ///< (see product manual for supported types) Note: values 0x20 and above correspond to commanded aiding measurements in the 0x13 Aiding command set.
     FilterMeasurementIndicator indicator;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_AID_MEAS_SUMMARY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2067,8 +2127,9 @@ struct OdometerScaleFactorError
     float scale_factor_error = 0; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2098,8 +2159,9 @@ struct OdometerScaleFactorErrorUncertainty
     float scale_factor_error_uncertainty = 0; ///< [dimensionless]
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2171,8 +2233,9 @@ struct GnssDualAntennaStatus
     DualAntennaStatusFlags status_flags;
     uint16_t valid_flags = 0; ///< 0 - invalid, 1 - valid
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_GNSS_DUAL_ANTENNA_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     
     
     auto as_tuple() const
@@ -2187,6 +2250,76 @@ struct GnssDualAntennaStatus
 };
 void insert(Serializer& serializer, const GnssDualAntennaStatus& self);
 void extract(Serializer& serializer, GnssDualAntennaStatus& self);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_aiding_frame_config_error  (0x82,0x50) Aiding Frame Config Error [CPP]
+/// Filter reported aiding source frame configuration error
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct AidingFrameConfigError
+{
+    uint8_t frame_id = 0; ///< Frame ID for the receiver to which the antenna is attached
+    Vector3f translation; ///< Translation config X, Y, and Z (m).
+    Quatf attitude; ///< Attitude quaternion
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(frame_id,translation[0],translation[1],translation[2],attitude[0],attitude[1],attitude[2],attitude[3]);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(frame_id),std::ref(translation[0]),std::ref(translation[1]),std::ref(translation[2]),std::ref(attitude[0]),std::ref(attitude[1]),std::ref(attitude[2]),std::ref(attitude[3]));
+    }
+};
+void insert(Serializer& serializer, const AidingFrameConfigError& self);
+void extract(Serializer& serializer, AidingFrameConfigError& self);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_filter_aiding_frame_config_error_uncertainty  (0x82,0x51) Aiding Frame Config Error Uncertainty [CPP]
+/// Filter reported aiding source frame configuration error uncertainty
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct AidingFrameConfigErrorUncertainty
+{
+    uint8_t frame_id = 0; ///< Frame ID for the receiver to which the antenna is attached
+    Vector3f translation_unc; ///< Translation uncertaint X, Y, and Z (m).
+    Vector3f attitude_unc; ///< Attitude uncertainty, X, Y, and Z (radians).
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_filter::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_filter::DATA_FRAME_CONFIG_ERROR_UNCERTAINTY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(frame_id,translation_unc[0],translation_unc[1],translation_unc[2],attitude_unc[0],attitude_unc[1],attitude_unc[2]);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(frame_id),std::ref(translation_unc[0]),std::ref(translation_unc[1]),std::ref(translation_unc[2]),std::ref(attitude_unc[0]),std::ref(attitude_unc[1]),std::ref(attitude_unc[2]));
+    }
+};
+void insert(Serializer& serializer, const AidingFrameConfigErrorUncertainty& self);
+void extract(Serializer& serializer, AidingFrameConfigErrorUncertainty& self);
 
 
 ///@}
