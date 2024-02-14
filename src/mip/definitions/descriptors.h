@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "../utils/serialization.h"
+#include "../mip_result.h"
 
 #ifdef __cplusplus
 
@@ -114,6 +115,29 @@ inline bool isReplyFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip
 inline bool isResponseFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_response_field_descriptor(fieldDescriptor); }
 inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip_is_reserved_cmd_field_descriptor(fieldDescriptor); }
 inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief A CmdResult that knows the corresponding command type.
+///
+///@tparam MipCmd Type of the command struct.
+///
+template<class MipCmd>
+struct TypedResult : public CmdResult
+{
+    using Cmd = MipCmd;
+
+    // Same constructor as CmdResult.
+    using CmdResult::CmdResult;
+
+    ///@brief The command descriptor.
+    ///
+    static constexpr CompositeDescriptor DESCRIPTOR = MipCmd::DESCRIPTOR;
+
+    ///@brief Returns the composite descriptor of the command.
+    ///
+    constexpr CompositeDescriptor descriptor() const { return DESCRIPTOR; }
+};
 
 } // namespace mip
 

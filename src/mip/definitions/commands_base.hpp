@@ -118,7 +118,7 @@ struct CommandedTestBitsGq7 : Bitfield<CommandedTestBitsGq7>
     CommandedTestBitsGq7(int val) : value((uint32_t)val) {}
     operator uint32_t() const { return value; }
     CommandedTestBitsGq7& operator=(uint32_t val) { value = val; return *this; }
-    CommandedTestBitsGq7& operator=(int val) { value = val; return *this; }
+    CommandedTestBitsGq7& operator=(int val) { value = uint32_t(val); return *this; }
     CommandedTestBitsGq7& operator|=(uint32_t val) { return *this = value | val; }
     CommandedTestBitsGq7& operator&=(uint32_t val) { return *this = value & val; }
     
@@ -202,6 +202,8 @@ struct Ping
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_PING;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Ping";
+    static constexpr const char* DOC_NAME = "Ping";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -220,7 +222,7 @@ struct Ping
 void insert(Serializer& serializer, const Ping& self);
 void extract(Serializer& serializer, Ping& self);
 
-CmdResult ping(C::mip_interface& device);
+TypedResult<Ping> ping(C::mip_interface& device);
 
 ///@}
 ///
@@ -240,6 +242,8 @@ struct SetIdle
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SET_TO_IDLE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SetIdle";
+    static constexpr const char* DOC_NAME = "Set to idle";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -258,7 +262,7 @@ struct SetIdle
 void insert(Serializer& serializer, const SetIdle& self);
 void extract(Serializer& serializer, SetIdle& self);
 
-CmdResult setIdle(C::mip_interface& device);
+TypedResult<SetIdle> setIdle(C::mip_interface& device);
 
 ///@}
 ///
@@ -274,6 +278,8 @@ struct GetDeviceInfo
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetDeviceInfo";
+    static constexpr const char* DOC_NAME = "Get device information";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -293,6 +299,8 @@ struct GetDeviceInfo
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_INFO;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetDeviceInfo::Response";
+        static constexpr const char* DOC_NAME = "Get device information Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -311,7 +319,7 @@ void extract(Serializer& serializer, GetDeviceInfo& self);
 void insert(Serializer& serializer, const GetDeviceInfo::Response& self);
 void extract(Serializer& serializer, GetDeviceInfo::Response& self);
 
-CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut);
+TypedResult<GetDeviceInfo> getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut);
 
 ///@}
 ///
@@ -330,6 +338,8 @@ struct GetDeviceDescriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_DESCRIPTORS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetDeviceDescriptors";
+    static constexpr const char* DOC_NAME = "Get device descriptors";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -349,6 +359,8 @@ struct GetDeviceDescriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetDeviceDescriptors::Response";
+        static constexpr const char* DOC_NAME = "Get device descriptors Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000001;
@@ -368,7 +380,7 @@ void extract(Serializer& serializer, GetDeviceDescriptors& self);
 void insert(Serializer& serializer, const GetDeviceDescriptors::Response& self);
 void extract(Serializer& serializer, GetDeviceDescriptors::Response& self);
 
-CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
+TypedResult<GetDeviceDescriptors> getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
 
 ///@}
 ///
@@ -389,6 +401,8 @@ struct BuiltInTest
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_BUILT_IN_TEST;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BuiltInTest";
+    static constexpr const char* DOC_NAME = "Built in test";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -408,6 +422,8 @@ struct BuiltInTest
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_BUILT_IN_TEST;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "BuiltInTest::Response";
+        static constexpr const char* DOC_NAME = "Built in test Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -426,7 +442,7 @@ void extract(Serializer& serializer, BuiltInTest& self);
 void insert(Serializer& serializer, const BuiltInTest::Response& self);
 void extract(Serializer& serializer, BuiltInTest::Response& self);
 
-CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut);
+TypedResult<BuiltInTest> builtInTest(C::mip_interface& device, uint32_t* resultOut);
 
 ///@}
 ///
@@ -444,6 +460,8 @@ struct Resume
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_RESUME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Resume";
+    static constexpr const char* DOC_NAME = "Resume";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -462,7 +480,7 @@ struct Resume
 void insert(Serializer& serializer, const Resume& self);
 void extract(Serializer& serializer, Resume& self);
 
-CmdResult resume(C::mip_interface& device);
+TypedResult<Resume> resume(C::mip_interface& device);
 
 ///@}
 ///
@@ -481,6 +499,8 @@ struct GetExtendedDescriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_EXTENDED_DESCRIPTORS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetExtendedDescriptors";
+    static constexpr const char* DOC_NAME = "Get device descriptors (extended)";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -500,6 +520,8 @@ struct GetExtendedDescriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetExtendedDescriptors::Response";
+        static constexpr const char* DOC_NAME = "Get device descriptors (extended) Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000001;
@@ -519,7 +541,7 @@ void extract(Serializer& serializer, GetExtendedDescriptors& self);
 void insert(Serializer& serializer, const GetExtendedDescriptors::Response& self);
 void extract(Serializer& serializer, GetExtendedDescriptors::Response& self);
 
-CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
+TypedResult<GetExtendedDescriptors> getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount);
 
 ///@}
 ///
@@ -537,6 +559,8 @@ struct ContinuousBit
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_CONTINUOUS_BIT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ContinuousBit";
+    static constexpr const char* DOC_NAME = "Continuous built-in test";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -556,6 +580,8 @@ struct ContinuousBit
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_CONTINUOUS_BIT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ContinuousBit::Response";
+        static constexpr const char* DOC_NAME = "Continuous built-in test Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -574,7 +600,7 @@ void extract(Serializer& serializer, ContinuousBit& self);
 void insert(Serializer& serializer, const ContinuousBit::Response& self);
 void extract(Serializer& serializer, ContinuousBit::Response& self);
 
-CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut);
+TypedResult<ContinuousBit> continuousBit(C::mip_interface& device, uint8_t* resultOut);
 
 ///@}
 ///
@@ -607,6 +633,8 @@ struct CommSpeed
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_COMM_SPEED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CommSpeed";
+    static constexpr const char* DOC_NAME = "Comm Port Speed";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
@@ -640,6 +668,8 @@ struct CommSpeed
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_COMM_SPEED;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "CommSpeed::Response";
+        static constexpr const char* DOC_NAME = "Comm Port Speed Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -659,11 +689,11 @@ void extract(Serializer& serializer, CommSpeed& self);
 void insert(Serializer& serializer, const CommSpeed::Response& self);
 void extract(Serializer& serializer, CommSpeed::Response& self);
 
-CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
-CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut);
-CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port);
-CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port);
-CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port);
+TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud);
+TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut);
+TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port);
+TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port);
+TypedResult<CommSpeed> defaultCommSpeed(C::mip_interface& device, uint8_t port);
 
 ///@}
 ///
@@ -691,6 +721,8 @@ struct GpsTimeUpdate
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsTimeUpdate";
+    static constexpr const char* DOC_NAME = "Time Broadcast Command";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
@@ -722,7 +754,7 @@ struct GpsTimeUpdate
 void insert(Serializer& serializer, const GpsTimeUpdate& self);
 void extract(Serializer& serializer, GpsTimeUpdate& self);
 
-CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value);
+TypedResult<GpsTimeUpdate> writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value);
 
 ///@}
 ///
@@ -740,6 +772,8 @@ struct SoftReset
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SOFT_RESET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SoftReset";
+    static constexpr const char* DOC_NAME = "Reset device";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -758,7 +792,7 @@ struct SoftReset
 void insert(Serializer& serializer, const SoftReset& self);
 void extract(Serializer& serializer, SoftReset& self);
 
-CmdResult softReset(C::mip_interface& device);
+TypedResult<SoftReset> softReset(C::mip_interface& device);
 
 ///@}
 ///
