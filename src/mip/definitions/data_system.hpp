@@ -79,6 +79,8 @@ struct BuiltInTest
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_BUILT_IN_TEST;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BuiltInTest";
+    static constexpr const char* DOC_NAME = "BuiltInTest";
     
     
     auto as_tuple() const
@@ -111,6 +113,8 @@ struct TimeSyncStatus
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_TIME_SYNC_STATUS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "TimeSyncStatus";
+    static constexpr const char* DOC_NAME = "TimeSyncStatus";
     
     
     auto as_tuple() const
@@ -160,6 +164,8 @@ struct GpioState
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_STATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpioState";
+    static constexpr const char* DOC_NAME = "GpioState";
     
     
     auto as_tuple() const
@@ -193,6 +199,8 @@ struct GpioAnalogValue
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_ANALOG_VALUE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpioAnalogValue";
+    static constexpr const char* DOC_NAME = "GpioAnalogValue";
     
     
     auto as_tuple() const
