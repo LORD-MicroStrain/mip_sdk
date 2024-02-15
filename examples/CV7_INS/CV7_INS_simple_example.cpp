@@ -67,7 +67,16 @@ bool should_exit();
 int main(int argc, const char* argv[])
 {
 
-    std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
+    std::unique_ptr<ExampleUtils> utils;
+    try {
+        utils = handleCommonArgs(argc, argv);
+    } catch(const std::underflow_error& ex) {
+        return printCommonUsage(argv);
+    } catch(const std::exception& ex) {
+        fprintf(stderr, "Error: %s\n", ex.what());
+        return 1;
+    }
+
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
 
     //

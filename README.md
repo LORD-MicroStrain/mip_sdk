@@ -62,7 +62,7 @@ Enable it in the CMake configuration with `-DMIP_USE_SERIAL=1`.
 ### TCP Client
 
 The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
-via the normal serial or USB cable to a commputer system running a TCP server which forwards data between
+via the normal serial or USB cable to a computer system running a TCP server which forwards data between
 the serial port and TCP clients.
 
 Enable it in the CMake configuration with `-DMIP_USE_TCP=1`.
