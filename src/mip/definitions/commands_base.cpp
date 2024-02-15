@@ -81,7 +81,7 @@ void extract(Serializer& serializer, Ping& self)
     (void)self;
 }
 
-TypedResult<Ping> ping(C::mip_interface& device)
+CmdResult ping(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PING, NULL, 0);
 }
@@ -96,7 +96,7 @@ void extract(Serializer& serializer, SetIdle& self)
     (void)self;
 }
 
-TypedResult<SetIdle> setIdle(C::mip_interface& device)
+CmdResult setIdle(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_TO_IDLE, NULL, 0);
 }
@@ -122,12 +122,12 @@ void extract(Serializer& serializer, GetDeviceInfo::Response& self)
     
 }
 
-TypedResult<GetDeviceInfo> getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
+CmdResult getDeviceInfo(C::mip_interface& device, BaseDeviceInfo* deviceInfoOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<GetDeviceInfo> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_DEVICE_INFO, NULL, 0, REPLY_DEVICE_INFO, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_DEVICE_INFO, NULL, 0, REPLY_DEVICE_INFO, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -165,12 +165,12 @@ void extract(Serializer& serializer, GetDeviceDescriptors::Response& self)
     
 }
 
-TypedResult<GetDeviceDescriptors> getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
+CmdResult getDeviceDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<GetDeviceDescriptors> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_DEVICE_DESCRIPTORS, NULL, 0, REPLY_DEVICE_DESCRIPTORS, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_DEVICE_DESCRIPTORS, NULL, 0, REPLY_DEVICE_DESCRIPTORS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -206,12 +206,12 @@ void extract(Serializer& serializer, BuiltInTest::Response& self)
     
 }
 
-TypedResult<BuiltInTest> builtInTest(C::mip_interface& device, uint32_t* resultOut)
+CmdResult builtInTest(C::mip_interface& device, uint32_t* resultOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<BuiltInTest> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_BUILT_IN_TEST, NULL, 0, REPLY_BUILT_IN_TEST, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_BUILT_IN_TEST, NULL, 0, REPLY_BUILT_IN_TEST, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -236,7 +236,7 @@ void extract(Serializer& serializer, Resume& self)
     (void)self;
 }
 
-TypedResult<Resume> resume(C::mip_interface& device)
+CmdResult resume(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RESUME, NULL, 0);
 }
@@ -264,12 +264,12 @@ void extract(Serializer& serializer, GetExtendedDescriptors::Response& self)
     
 }
 
-TypedResult<GetExtendedDescriptors> getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
+CmdResult getExtendedDescriptors(C::mip_interface& device, uint16_t* descriptorsOut, size_t descriptorsOutMax, uint8_t* descriptorsOutCount)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<GetExtendedDescriptors> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_EXTENDED_DESCRIPTORS, NULL, 0, REPLY_GET_EXTENDED_DESCRIPTORS, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GET_EXTENDED_DESCRIPTORS, NULL, 0, REPLY_GET_EXTENDED_DESCRIPTORS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -307,12 +307,12 @@ void extract(Serializer& serializer, ContinuousBit::Response& self)
     
 }
 
-TypedResult<ContinuousBit> continuousBit(C::mip_interface& device, uint8_t* resultOut)
+CmdResult continuousBit(C::mip_interface& device, uint8_t* resultOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<ContinuousBit> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONTINUOUS_BIT, NULL, 0, REPLY_CONTINUOUS_BIT, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_CONTINUOUS_BIT, NULL, 0, REPLY_CONTINUOUS_BIT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -367,7 +367,7 @@ void extract(Serializer& serializer, CommSpeed::Response& self)
     
 }
 
-TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
+CmdResult writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -381,7 +381,7 @@ TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, ui
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut)
+CmdResult readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -392,7 +392,7 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<CommSpeed> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COMM_SPEED, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COMM_SPEED, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -408,7 +408,7 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
     }
     return result;
 }
-TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
+CmdResult saveCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -420,7 +420,7 @@ TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
+CmdResult loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -432,7 +432,7 @@ TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<CommSpeed> defaultCommSpeed(C::mip_interface& device, uint8_t port)
+CmdResult defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -469,7 +469,7 @@ void extract(Serializer& serializer, GpsTimeUpdate& self)
     }
 }
 
-TypedResult<GpsTimeUpdate> writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value)
+CmdResult writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -494,7 +494,7 @@ void extract(Serializer& serializer, SoftReset& self)
     (void)self;
 }
 
-TypedResult<SoftReset> softReset(C::mip_interface& device)
+CmdResult softReset(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_RESET, NULL, 0);
 }

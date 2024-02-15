@@ -77,12 +77,12 @@ void extract(Serializer& serializer, ReceiverInfo::Info& self)
     
 }
 
-TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut)
+CmdResult receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     uint8_t responseLength = sizeof(buffer);
     
-    TypedResult<ReceiverInfo> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_LIST_RECEIVERS, NULL, 0, REPLY_LIST_RECEIVERS, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_LIST_RECEIVERS, NULL, 0, REPLY_LIST_RECEIVERS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -166,7 +166,7 @@ void extract(Serializer& serializer, SignalConfiguration::Response& self)
     
 }
 
-TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
+CmdResult writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -188,7 +188,7 @@ TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& devi
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
+CmdResult readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -197,7 +197,7 @@ TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& devic
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SignalConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_SIGNAL_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -224,7 +224,7 @@ TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& devic
     }
     return result;
 }
-TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& device)
+CmdResult saveSignalConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -234,7 +234,7 @@ TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& devic
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& device)
+CmdResult loadSignalConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -244,7 +244,7 @@ TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& devic
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& device)
+CmdResult defaultSignalConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -298,7 +298,7 @@ void extract(Serializer& serializer, RtkDongleConfiguration::Response& self)
     
 }
 
-TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
+CmdResult writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -314,7 +314,7 @@ TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut)
+CmdResult readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -323,7 +323,7 @@ TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface&
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<RtkDongleConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
+    CmdResult result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_RTK_DONGLE_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -341,7 +341,7 @@ TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface&
     }
     return result;
 }
-TypedResult<RtkDongleConfiguration> saveRtkDongleConfiguration(C::mip_interface& device)
+CmdResult saveRtkDongleConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -351,7 +351,7 @@ TypedResult<RtkDongleConfiguration> saveRtkDongleConfiguration(C::mip_interface&
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<RtkDongleConfiguration> loadRtkDongleConfiguration(C::mip_interface& device)
+CmdResult loadRtkDongleConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -361,7 +361,7 @@ TypedResult<RtkDongleConfiguration> loadRtkDongleConfiguration(C::mip_interface&
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RTK_DONGLE_CONFIGURATION, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<RtkDongleConfiguration> defaultRtkDongleConfiguration(C::mip_interface& device)
+CmdResult defaultRtkDongleConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
