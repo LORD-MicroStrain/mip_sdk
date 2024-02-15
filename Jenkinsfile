@@ -17,7 +17,7 @@ def checkoutRepo() {
     branches: [
         [name: 'refs/heads/' + BRANCH_NAME_REAL]
     ],
-    userRemoteConfigs: [[credentialsId: 'ffc94480-3383-4390-82e6-af2fb5e6c76d', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
+    userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
     extensions: [
     ]
   ])
@@ -39,6 +39,7 @@ pipeline {
               cd build_Win32
               cmake .. `
                 -A "Win32" `
+                -T "v142" `
                 -DBUILD_DOCUMENTATION=ON `
                 -DBUILD_PACKAGE=ON
               cmake --build . -j
@@ -58,6 +59,7 @@ pipeline {
               cd build_x64
               cmake .. `
                 -A "x64" `
+                -T "v142" `
                 -DBUILD_PACKAGE=ON
               cmake --build . -j
               cmake --build . --target package
@@ -66,23 +68,39 @@ pipeline {
           }
         }
         stage('Ubuntu amd64') {
-          agent { label 'linux-amd64' }
+          agent { label 'aws-amd64' }
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
-            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
             archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
           }
         }
         stage('Centos amd64') {
-          agent { label 'linux-amd64' }
+          agent { label 'aws-amd64' }
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
-            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
+          }
+        }
+        stage('Ubuntu arm64') {
+          agent { label 'aws-arm64' }
+          options { skipDefaultCheckout() }
+          steps {
+            checkoutRepo()
+            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
+            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
+          }
+        }
+        stage('Ubuntu arm32') {
+          agent { label 'aws-arm64' }
+          options { skipDefaultCheckout() }
+          steps {
+            checkoutRepo()
+            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
+            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
           }
         }
       }
@@ -92,11 +110,11 @@ pipeline {
     success {
       script {
         if (BRANCH_NAME && BRANCH_NAME == 'develop') {
-          node("linux-amd64") {
-            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+          node("master") {
+            withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to github
-              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
+              archive_dir="${WORKSPACE}/../../jobs/LORD-MicroStrain/jobs/mip_sdk/branches/${BRANCH_NAME}/builds/${BUILD_NUMBER}/archive/"
               ./scripts/release.sh \
                 --artifacts "$(find "${archive_dir}" -type f)" \
                 --target "${BRANCH_NAME}" \
@@ -107,11 +125,11 @@ pipeline {
             }
           }
         } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
-          node("linux-amd64") {
+          node("master") {
             withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
               sh '''
               # Release to the latest version if the master commit matches up with the commit of that version
-              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
+              archive_dir="${WORKSPACE}/../../jobs/LORD-MicroStrain/jobs/mip_sdk/branches/${BRANCH_NAME}/builds/${BUILD_NUMBER}/archive/"
               if git describe --exact-match --tags HEAD &> /dev/null; then
                 # Publish a release
                 ./scripts/release.sh \

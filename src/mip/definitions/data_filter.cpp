@@ -1084,6 +1084,52 @@ void extract(Serializer& serializer, GnssDualAntennaStatus& self)
     
 }
 
+void insert(Serializer& serializer, const AidingFrameConfigError& self)
+{
+    insert(serializer, self.frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.translation[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        insert(serializer, self.attitude[i]);
+    
+}
+void extract(Serializer& serializer, AidingFrameConfigError& self)
+{
+    extract(serializer, self.frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.translation[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        extract(serializer, self.attitude[i]);
+    
+}
+
+void insert(Serializer& serializer, const AidingFrameConfigErrorUncertainty& self)
+{
+    insert(serializer, self.frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.translation_unc[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert(serializer, self.attitude_unc[i]);
+    
+}
+void extract(Serializer& serializer, AidingFrameConfigErrorUncertainty& self)
+{
+    extract(serializer, self.frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.translation_unc[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract(serializer, self.attitude_unc[i]);
+    
+}
+
 
 } // namespace data_filter
 } // namespace mip
