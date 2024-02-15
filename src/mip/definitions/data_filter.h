@@ -93,6 +93,8 @@ enum
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR                 = 0x47,
     MIP_DATA_DESC_FILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERTAINTY     = 0x48,
     MIP_DATA_DESC_FILTER_GNSS_DUAL_ANTENNA_STATUS                    = 0x49,
+    MIP_DATA_DESC_FILTER_FRAME_CONFIG_ERROR                          = 0x50,
+    MIP_DATA_DESC_FILTER_FRAME_CONFIG_ERROR_UNCERTAINTY              = 0x51,
     
 };
 
@@ -158,12 +160,18 @@ void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self);
 
 typedef uint8_t mip_filter_aiding_measurement_type;
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS         = 1; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA = 2; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING      = 3; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE     = 4; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER = 5; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED        = 6; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS              = 1;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA      = 2;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING           = 3;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE          = 4;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER      = 5;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED             = 6;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_ECEF          = 33; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_LLH           = 34; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_ECEF          = 40; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_NED           = 41; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_VEHICLE_FRAME = 42; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING_TRUE      = 49; ///<  
 
 void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self);
 void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self);
@@ -1333,7 +1341,7 @@ struct mip_filter_aiding_measurement_summary_data
 {
     float time_of_week; ///< [seconds]
     uint8_t source;
-    mip_filter_aiding_measurement_type type; ///< (see product manual for supported types)
+    mip_filter_aiding_measurement_type type; ///< (see product manual for supported types) Note: values 0x20 and above correspond to commanded aiding measurements in the 0x13 Aiding command set.
     mip_filter_measurement_indicator indicator;
     
 };
@@ -1423,6 +1431,52 @@ void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serial
 
 void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self);
 void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_aiding_frame_config_error  (0x82,0x50) Aiding Frame Config Error [C]
+/// Filter reported aiding source frame configuration error
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct mip_filter_aiding_frame_config_error_data
+{
+    uint8_t frame_id; ///< Frame ID for the receiver to which the antenna is attached
+    mip_vector3f translation; ///< Translation config X, Y, and Z (m).
+    mip_quatf attitude; ///< Attitude quaternion
+    
+};
+typedef struct mip_filter_aiding_frame_config_error_data mip_filter_aiding_frame_config_error_data;
+void insert_mip_filter_aiding_frame_config_error_data(struct mip_serializer* serializer, const mip_filter_aiding_frame_config_error_data* self);
+void extract_mip_filter_aiding_frame_config_error_data(struct mip_serializer* serializer, mip_filter_aiding_frame_config_error_data* self);
+bool extract_mip_filter_aiding_frame_config_error_data_from_field(const struct mip_field* field, void* ptr);
+
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_aiding_frame_config_error_uncertainty  (0x82,0x51) Aiding Frame Config Error Uncertainty [C]
+/// Filter reported aiding source frame configuration error uncertainty
+/// 
+/// These estimates are used to compensate for small errors to the user-supplied aiding frame configurations (set with (0x13, 0x01) command ).
+///
+///@{
+
+struct mip_filter_aiding_frame_config_error_uncertainty_data
+{
+    uint8_t frame_id; ///< Frame ID for the receiver to which the antenna is attached
+    mip_vector3f translation_unc; ///< Translation uncertaint X, Y, and Z (m).
+    mip_vector3f attitude_unc; ///< Attitude uncertainty, X, Y, and Z (radians).
+    
+};
+typedef struct mip_filter_aiding_frame_config_error_uncertainty_data mip_filter_aiding_frame_config_error_uncertainty_data;
+void insert_mip_filter_aiding_frame_config_error_uncertainty_data(struct mip_serializer* serializer, const mip_filter_aiding_frame_config_error_uncertainty_data* self);
+void extract_mip_filter_aiding_frame_config_error_uncertainty_data(struct mip_serializer* serializer, mip_filter_aiding_frame_config_error_uncertainty_data* self);
+bool extract_mip_filter_aiding_frame_config_error_uncertainty_data_from_field(const struct mip_field* field, void* ptr);
 
 
 ///@}

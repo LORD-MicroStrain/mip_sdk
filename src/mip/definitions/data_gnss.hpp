@@ -68,11 +68,11 @@ enum
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-static const uint8_t MIP_GNSS1_DATA_DESC_SET = 0x91;
-static const uint8_t MIP_GNSS2_DATA_DESC_SET = 0x92;
-static const uint8_t MIP_GNSS3_DATA_DESC_SET = 0x93;
-static const uint8_t MIP_GNSS4_DATA_DESC_SET = 0x94;
-static const uint8_t MIP_GNSS5_DATA_DESC_SET = 0x95;
+static constexpr const uint8_t MIP_GNSS1_DATA_DESC_SET = 0x91;
+static constexpr const uint8_t MIP_GNSS2_DATA_DESC_SET = 0x92;
+static constexpr const uint8_t MIP_GNSS3_DATA_DESC_SET = 0x93;
+static constexpr const uint8_t MIP_GNSS4_DATA_DESC_SET = 0x94;
+static constexpr const uint8_t MIP_GNSS5_DATA_DESC_SET = 0x95;
 enum class GnssConstellationId : uint8_t
 {
     UNKNOWN = 0,  ///<  
@@ -161,8 +161,8 @@ enum class SbasSystem : uint8_t
     GAGAN   = 4,  ///<  
 };
 
-static const uint32_t GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32;
-static const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
+static constexpr const uint32_t GNSS_DGPS_INFO_MAX_CHANNEL_NUMBER = 32;
+static constexpr const uint32_t GNSS_SV_INFO_MAX_SV_NUMBER = 32;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mip Fields
@@ -195,7 +195,7 @@ struct PosLlh
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -224,8 +224,11 @@ struct PosLlh
     float vertical_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_LLH;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PosLlh";
+    static constexpr const char* DOC_NAME = "GNSS LLH Position";
     
     
     auto as_tuple() const
@@ -268,7 +271,7 @@ struct PosEcef
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -287,8 +290,11 @@ struct PosEcef
     float x_accuracy = 0; ///< [meters]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_POSITION_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PosEcef";
+    static constexpr const char* DOC_NAME = "GNSS ECEF Position";
     
     
     auto as_tuple() const
@@ -335,7 +341,7 @@ struct VelNed
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -366,8 +372,11 @@ struct VelNed
     float heading_accuracy = 0; ///< [degrees]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_NED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "VelNed";
+    static constexpr const char* DOC_NAME = "NED Velocity";
     
     
     auto as_tuple() const
@@ -410,7 +419,7 @@ struct VelEcef
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -429,8 +438,11 @@ struct VelEcef
     float v_accuracy = 0; ///< [meters/second]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_VELOCITY_ECEF;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "VelEcef";
+    static constexpr const char* DOC_NAME = "GNSS ECEF Velocity";
     
     
     auto as_tuple() const
@@ -478,7 +490,7 @@ struct Dop
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -512,8 +524,11 @@ struct Dop
     float edop = 0; ///< Easting DOP
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DOP;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Dop";
+    static constexpr const char* DOC_NAME = "Dop";
     
     
     auto as_tuple() const
@@ -556,7 +571,7 @@ struct UtcTime
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -572,16 +587,19 @@ struct UtcTime
     };
     
     uint16_t year = 0;
-    uint8_t month = 0;
-    uint8_t day = 0;
-    uint8_t hour = 0;
-    uint8_t min = 0;
-    uint8_t sec = 0;
-    uint32_t msec = 0; ///< [Milliseconds]
+    uint8_t month = 0; ///< Month (1-12)
+    uint8_t day = 0; ///< Day (1-31)
+    uint8_t hour = 0; ///< Hour (0-23)
+    uint8_t min = 0; ///< Minute (0-59)
+    uint8_t sec = 0; ///< Second (0-59)
+    uint32_t msec = 0; ///< Millisecond(0-999)
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_UTC_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "UtcTime";
+    static constexpr const char* DOC_NAME = "UtcTime";
     
     
     auto as_tuple() const
@@ -624,7 +642,7 @@ struct GpsTime
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -643,8 +661,11 @@ struct GpsTime
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_TIME;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsTime";
+    static constexpr const char* DOC_NAME = "GpsTime";
     
     
     auto as_tuple() const
@@ -688,7 +709,7 @@ struct ClockInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -710,8 +731,11 @@ struct ClockInfo
     double accuracy_estimate = 0; ///< [seconds]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ClockInfo";
+    static constexpr const char* DOC_NAME = "ClockInfo";
     
     
     auto as_tuple() const
@@ -764,7 +788,7 @@ struct FixInfo
         FixFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         FixFlags& operator=(uint16_t val) { value = val; return *this; }
-        FixFlags& operator=(int val) { value = val; return *this; }
+        FixFlags& operator=(int val) { value = uint16_t(val); return *this; }
         FixFlags& operator|=(uint16_t val) { return *this = value | val; }
         FixFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -794,7 +818,7 @@ struct FixInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -816,8 +840,11 @@ struct FixInfo
     FixFlags fix_flags;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_FIX_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "FixInfo";
+    static constexpr const char* DOC_NAME = "FixInfo";
     
     
     auto as_tuple() const
@@ -861,7 +888,7 @@ struct SvInfo
         SVFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         SVFlags& operator=(uint16_t val) { value = val; return *this; }
-        SVFlags& operator=(int val) { value = val; return *this; }
+        SVFlags& operator=(int val) { value = uint16_t(val); return *this; }
         SVFlags& operator|=(uint16_t val) { return *this = value | val; }
         SVFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -894,7 +921,7 @@ struct SvInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -925,8 +952,11 @@ struct SvInfo
     SVFlags sv_flags;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SV_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SvInfo";
+    static constexpr const char* DOC_NAME = "SvInfo";
     
     
     auto as_tuple() const
@@ -993,7 +1023,7 @@ struct HwStatus
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1015,8 +1045,11 @@ struct HwStatus
     AntennaPower antenna_power = static_cast<AntennaPower>(0);
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_HW_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "HwStatus";
+    static constexpr const char* DOC_NAME = "GNSS Hardware Status";
     
     
     auto as_tuple() const
@@ -1073,7 +1106,7 @@ struct DgpsInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1098,8 +1131,11 @@ struct DgpsInfo
     float range_rate_correction = 0;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DgpsInfo";
+    static constexpr const char* DOC_NAME = "DgpsInfo";
     
     
     auto as_tuple() const
@@ -1146,7 +1182,7 @@ struct DgpsChannel
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1171,8 +1207,11 @@ struct DgpsChannel
     float range_rate_correction = 0; ///< [m/s]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_DGPS_CHANNEL_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DgpsChannel";
+    static constexpr const char* DOC_NAME = "DgpsChannel";
     
     
     auto as_tuple() const
@@ -1219,7 +1258,7 @@ struct ClockInfo2
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1244,8 +1283,11 @@ struct ClockInfo2
     double drift_accuracy_estimate = 0;
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_CLOCK_INFO_2;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ClockInfo2";
+    static constexpr const char* DOC_NAME = "ClockInfo2";
     
     
     auto as_tuple() const
@@ -1286,7 +1328,7 @@ struct GpsLeapSeconds
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1300,8 +1342,11 @@ struct GpsLeapSeconds
     uint8_t leap_seconds = 0; ///< [s]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_LEAP_SECONDS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsLeapSeconds";
+    static constexpr const char* DOC_NAME = "GpsLeapSeconds";
     
     
     auto as_tuple() const
@@ -1345,7 +1390,7 @@ struct SbasInfo
         SbasStatus(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         SbasStatus& operator=(uint8_t val) { value = val; return *this; }
-        SbasStatus& operator=(int val) { value = val; return *this; }
+        SbasStatus& operator=(int val) { value = uint8_t(val); return *this; }
         SbasStatus& operator|=(uint8_t val) { return *this = value | val; }
         SbasStatus& operator&=(uint8_t val) { return *this = value & val; }
         
@@ -1382,7 +1427,7 @@ struct SbasInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1413,8 +1458,11 @@ struct SbasInfo
     SbasStatus sbas_status; ///< Status of the SBAS service
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SbasInfo";
+    static constexpr const char* DOC_NAME = "SbasInfo";
     
     
     auto as_tuple() const
@@ -1480,7 +1528,7 @@ struct SbasCorrection
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1508,8 +1556,11 @@ struct SbasCorrection
     float iono_correction = 0; ///< Ionospheric correction [meters].
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SBAS_CORRECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SbasCorrection";
+    static constexpr const char* DOC_NAME = "SbasCorrection";
     
     
     auto as_tuple() const
@@ -1577,7 +1628,7 @@ struct RfErrorDetection
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1600,8 +1651,11 @@ struct RfErrorDetection
     uint8_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RF_ERROR_DETECTION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RfErrorDetection";
+    static constexpr const char* DOC_NAME = "RfErrorDetection";
     
     
     auto as_tuple() const
@@ -1652,7 +1706,7 @@ struct BaseStationInfo
         IndicatorFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         IndicatorFlags& operator=(uint16_t val) { value = val; return *this; }
-        IndicatorFlags& operator=(int val) { value = val; return *this; }
+        IndicatorFlags& operator=(int val) { value = uint16_t(val); return *this; }
         IndicatorFlags& operator|=(uint16_t val) { return *this = value | val; }
         IndicatorFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1699,7 +1753,7 @@ struct BaseStationInfo
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1730,8 +1784,11 @@ struct BaseStationInfo
     IndicatorFlags indicators; ///< Bitfield
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_BASE_STATION_INFO;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BaseStationInfo";
+    static constexpr const char* DOC_NAME = "BaseStationInfo";
     
     
     auto as_tuple() const
@@ -1779,7 +1836,7 @@ struct RtkCorrectionsStatus
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1828,7 +1885,7 @@ struct RtkCorrectionsStatus
         EpochStatus(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         EpochStatus& operator=(uint16_t val) { value = val; return *this; }
-        EpochStatus& operator=(int val) { value = val; return *this; }
+        EpochStatus& operator=(int val) { value = uint16_t(val); return *this; }
         EpochStatus& operator|=(uint16_t val) { return *this = value | val; }
         EpochStatus& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1858,7 +1915,7 @@ struct RtkCorrectionsStatus
     double time_of_week = 0; ///< GPS Time of week [seconds]
     uint16_t week_number = 0; ///< GPS Week since 1980 [weeks]
     EpochStatus epoch_status; ///< Status of the corrections received during this epoch
-    uint32_t dongle_status = 0; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see MIP_CMD_DESC_RTK_GET_STATUS_FLAGS for details)
+    uint32_t dongle_status = 0; ///< RTK Dongle Status Flags (valid only when using RTK dongle, see Get RTK Device Status Flags (0x0F,0x01) for details)
     float gps_correction_latency = 0; ///< Latency of last GPS correction [seconds]
     float glonass_correction_latency = 0; ///< Latency of last GLONASS correction [seconds]
     float galileo_correction_latency = 0; ///< Latency of last Galileo correction [seconds]
@@ -1866,8 +1923,11 @@ struct RtkCorrectionsStatus
     uint32_t reserved[4] = {0}; ///< Reserved for future use
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RTK_CORRECTIONS_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RtkCorrectionsStatus";
+    static constexpr const char* DOC_NAME = "RtkCorrectionsStatus";
     
     
     auto as_tuple() const
@@ -1915,7 +1975,7 @@ struct SatelliteStatus
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -1951,8 +2011,11 @@ struct SatelliteStatus
     bool health = 0; ///< True if the satellite is healthy.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_SATELLITE_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SatelliteStatus";
+    static constexpr const char* DOC_NAME = "SatelliteStatus";
     
     
     auto as_tuple() const
@@ -2019,7 +2082,7 @@ struct Raw
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2082,8 +2145,11 @@ struct Raw
     float lock_time = 0; ///< DOC Minimum carrier phase lock time [s].  Note: the maximum value is dependent on the receiver.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Raw";
+    static constexpr const char* DOC_NAME = "Raw";
     
     
     auto as_tuple() const
@@ -2126,7 +2192,7 @@ struct GpsEphemeris
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2176,8 +2242,11 @@ struct GpsEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsEphemeris";
+    static constexpr const char* DOC_NAME = "GpsEphemeris";
     
     
     auto as_tuple() const
@@ -2220,7 +2289,7 @@ struct GalileoEphemeris
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2270,8 +2339,11 @@ struct GalileoEphemeris
     double c_rs = 0; ///< Harmonic Correction Term.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GalileoEphemeris";
+    static constexpr const char* DOC_NAME = "GalileoEphemeris";
     
     
     auto as_tuple() const
@@ -2313,7 +2385,7 @@ struct GloEphemeris
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2352,8 +2424,11 @@ struct GloEphemeris
     uint8_t P4 = 0; ///< Flag indicating ephemeris parameters are present
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GLONASS_EPHEMERIS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GloEphemeris";
+    static constexpr const char* DOC_NAME = "Glonass Ephemeris";
     
     
     auto as_tuple() const
@@ -2398,7 +2473,7 @@ struct GpsIonoCorr
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2423,8 +2498,11 @@ struct GpsIonoCorr
     double beta[4] = {0}; ///< Ionospheric Correction Terms.
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GPS_IONO_CORR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsIonoCorr";
+    static constexpr const char* DOC_NAME = "GPS Ionospheric Correction";
     
     
     auto as_tuple() const
@@ -2469,7 +2547,7 @@ struct GalileoIonoCorr
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -2494,8 +2572,11 @@ struct GalileoIonoCorr
     uint8_t disturbance_flags = 0; ///< Region disturbance flags (bits 1-5).
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_gnss::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_gnss::DATA_GALILEO_IONO_CORR;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GalileoIonoCorr";
+    static constexpr const char* DOC_NAME = "Galileo Ionospheric Correction";
     
     
     auto as_tuple() const

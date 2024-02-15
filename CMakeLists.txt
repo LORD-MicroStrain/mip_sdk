@@ -509,8 +509,8 @@ if(BUILD_PACKAGE)
 
     # Zip specific configuration
     # Build different zip packages for each target
-    if(WIN32)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Windows")
+    if(MSVC)
+        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
     elseif(APPLE)
         set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
     elseif(UNIX)

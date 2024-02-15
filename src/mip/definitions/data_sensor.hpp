@@ -81,8 +81,11 @@ struct RawAccel
 {
     Vector3f raw_accel; ///< Native sensor counts
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RawAccel";
+    static constexpr const char* DOC_NAME = "RawAccel";
     
     
     auto as_tuple() const
@@ -112,8 +115,11 @@ struct RawGyro
 {
     Vector3f raw_gyro; ///< Native sensor counts
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RawGyro";
+    static constexpr const char* DOC_NAME = "RawGyro";
     
     
     auto as_tuple() const
@@ -143,8 +149,11 @@ struct RawMag
 {
     Vector3f raw_mag; ///< Native sensor counts
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RawMag";
+    static constexpr const char* DOC_NAME = "RawMag";
     
     
     auto as_tuple() const
@@ -174,8 +183,11 @@ struct RawPressure
 {
     float raw_pressure = 0; ///< Native sensor counts
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RawPressure";
+    static constexpr const char* DOC_NAME = "RawPressure";
     
     
     auto as_tuple() const
@@ -205,8 +217,11 @@ struct ScaledAccel
 {
     Vector3f scaled_accel; ///< (x, y, z)[g]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_SCALED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ACCEL_SCALED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ScaledAccel";
+    static constexpr const char* DOC_NAME = "ScaledAccel";
     
     
     auto as_tuple() const
@@ -236,8 +251,11 @@ struct ScaledGyro
 {
     Vector3f scaled_gyro; ///< (x, y, z) [radians/second]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_SCALED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_GYRO_SCALED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ScaledGyro";
+    static constexpr const char* DOC_NAME = "ScaledGyro";
     
     
     auto as_tuple() const
@@ -267,8 +285,11 @@ struct ScaledMag
 {
     Vector3f scaled_mag; ///< (x, y, z) [Gauss]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_SCALED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_MAG_SCALED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ScaledMag";
+    static constexpr const char* DOC_NAME = "ScaledMag";
     
     
     auto as_tuple() const
@@ -297,8 +318,11 @@ struct ScaledPressure
 {
     float scaled_pressure = 0; ///< [mBar]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_SCALED;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_PRESSURE_SCALED;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ScaledPressure";
+    static constexpr const char* DOC_NAME = "ScaledPressure";
     
     
     auto as_tuple() const
@@ -328,8 +352,11 @@ struct DeltaTheta
 {
     Vector3f delta_theta; ///< (x, y, z) [radians]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_THETA;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_THETA;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DeltaTheta";
+    static constexpr const char* DOC_NAME = "DeltaTheta";
     
     
     auto as_tuple() const
@@ -359,8 +386,11 @@ struct DeltaVelocity
 {
     Vector3f delta_velocity; ///< (x, y, z) [g*sec]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_VELOCITY;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_DELTA_VELOCITY;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DeltaVelocity";
+    static constexpr const char* DOC_NAME = "DeltaVelocity";
     
     
     auto as_tuple() const
@@ -399,8 +429,11 @@ struct CompOrientationMatrix
 {
     Matrix3f m; ///< Matrix elements in row-major order.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_MATRIX;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_MATRIX;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompOrientationMatrix";
+    static constexpr const char* DOC_NAME = "Complementary Filter Orientation Matrix";
     
     
     auto as_tuple() const
@@ -437,8 +470,11 @@ struct CompQuaternion
 {
     Quatf q; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_QUATERNION;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_QUATERNION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompQuaternion";
+    static constexpr const char* DOC_NAME = "Complementary Filter Quaternion";
     
     
     auto as_tuple() const
@@ -470,8 +506,11 @@ struct CompEulerAngles
     float pitch = 0; ///< [radians]
     float yaw = 0; ///< [radians]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_EULER_ANGLES;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_EULER_ANGLES;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompEulerAngles";
+    static constexpr const char* DOC_NAME = "Complementary Filter Euler Angles";
     
     
     auto as_tuple() const
@@ -500,8 +539,11 @@ struct CompOrientationUpdateMatrix
 {
     Matrix3f m;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_UPDATE_MATRIX;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_COMP_ORIENTATION_UPDATE_MATRIX;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CompOrientationUpdateMatrix";
+    static constexpr const char* DOC_NAME = "Complementary Filter Orientation Update Matrix";
     
     
     auto as_tuple() const
@@ -530,8 +572,11 @@ struct OrientationRawTemp
 {
     uint16_t raw_temp[4] = {0};
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_RAW;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_RAW;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "OrientationRawTemp";
+    static constexpr const char* DOC_NAME = "OrientationRawTemp";
     
     
     auto as_tuple() const
@@ -560,8 +605,11 @@ struct InternalTimestamp
 {
     uint32_t counts = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_INTERNAL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_INTERNAL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "InternalTimestamp";
+    static constexpr const char* DOC_NAME = "InternalTimestamp";
     
     
     auto as_tuple() const
@@ -591,8 +639,11 @@ struct PpsTimestamp
     uint32_t seconds = 0;
     uint32_t useconds = 0;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_PPS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_PPS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "PpsTimestamp";
+    static constexpr const char* DOC_NAME = "PPS Timestamp";
     
     
     auto as_tuple() const
@@ -643,7 +694,7 @@ struct GpsTimestamp
         ValidFlags(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         ValidFlags& operator=(uint16_t val) { value = val; return *this; }
-        ValidFlags& operator=(int val) { value = val; return *this; }
+        ValidFlags& operator=(int val) { value = uint16_t(val); return *this; }
         ValidFlags& operator|=(uint16_t val) { return *this = value | val; }
         ValidFlags& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -666,8 +717,11 @@ struct GpsTimestamp
     uint16_t week_number = 0; ///< GPS Week Number since 1980 [weeks]
     ValidFlags valid_flags;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TIME_STAMP_GPS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsTimestamp";
+    static constexpr const char* DOC_NAME = "GpsTimestamp";
     
     
     auto as_tuple() const
@@ -702,8 +756,11 @@ struct TemperatureAbs
     float max_temp = 0; ///< [degC]
     float mean_temp = 0; ///< [degC]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_ABS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_TEMPERATURE_ABS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "TemperatureAbs";
+    static constexpr const char* DOC_NAME = "Temperature Statistics";
     
     
     auto as_tuple() const
@@ -738,8 +795,11 @@ struct UpVector
 {
     Vector3f up; ///< [Gs]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_ACCEL;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_ACCEL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "UpVector";
+    static constexpr const char* DOC_NAME = "UpVector";
     
     
     auto as_tuple() const
@@ -771,8 +831,11 @@ struct NorthVector
 {
     Vector3f north; ///< [Gauss]
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_MAG;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_STAB_MAG;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "NorthVector";
+    static constexpr const char* DOC_NAME = "NorthVector";
     
     
     auto as_tuple() const
@@ -821,7 +884,7 @@ struct OverrangeStatus
         Status(int val) : value((uint16_t)val) {}
         operator uint16_t() const { return value; }
         Status& operator=(uint16_t val) { value = val; return *this; }
-        Status& operator=(int val) { value = val; return *this; }
+        Status& operator=(int val) { value = uint16_t(val); return *this; }
         Status& operator|=(uint16_t val) { return *this = value | val; }
         Status& operator&=(uint16_t val) { return *this = value & val; }
         
@@ -852,8 +915,11 @@ struct OverrangeStatus
     
     Status status;
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_OVERRANGE_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "OverrangeStatus";
+    static constexpr const char* DOC_NAME = "OverrangeStatus";
     
     
     auto as_tuple() const
@@ -883,8 +949,11 @@ struct OdometerData
     float uncertainty = 0; ///< Uncertainty of velocity [m/s].
     uint16_t valid_flags = 0; ///< If odometer is configured, bit 0 will be set to 1.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ODOMETER;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_sensor::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_sensor::DATA_ODOMETER;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "OdometerData";
+    static constexpr const char* DOC_NAME = "OdometerData";
     
     
     auto as_tuple() const
