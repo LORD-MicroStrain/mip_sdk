@@ -18,9 +18,9 @@ extern "C" {
 #endif // __cplusplus
 
 enum {
-    MIP_INVALID_DESCRIPTOR_SET               = 0x00,
-    MIP_DATA_DESCRIPTOR_SET_START            = 0x80,
-    MIP_RESERVED_DESCRIPTOR_SET_START        = 0xF0,
+    MIP_INVALID_DESCRIPTOR_SET        = 0x00,
+    MIP_DATA_DESCRIPTOR_SET_START     = 0x80,
+    MIP_RESERVED_DESCRIPTOR_SET_START = 0xF0,
 
     MIP_INVALID_FIELD_DESCRIPTOR  = 0x00,
     MIP_REPLY_DESCRIPTOR          = 0xF1,
@@ -83,10 +83,6 @@ struct CompositeDescriptor
     constexpr bool operator<(const CompositeDescriptor& other) const { return as_u16() < other.as_u16(); }
 
 };
-
-// Generate a composite descriptor from a mip type
-template<class MipType>
-CompositeDescriptor compositeDescriptor() { return CompositeDescriptor(MipType::DESCRIPTOR_SET, MipType::FIELD_DESCRIPTOR); }
 
 
 ///@brief A dummy struct which is used to mark bitfield objects.
