@@ -22,10 +22,11 @@ include_directories(
 )
 
 if(WITH_INTERNAL)
-    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
-    if(MIP_INTERNAL_DIR)
-        add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+    if(NOT DEFINED MIP_INTERNAL_DIR)
+		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
+	
+	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -194,8 +195,17 @@ if(MIP_USE_EXTRAS)
     list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/composite_result.hpp"
+        "${MIP_EXTRAS_DIR}/descriptor_id.hpp"
+        "${MIP_EXTRAS_DIR}/device_models.h"
+        "${MIP_EXTRAS_DIR}/device_models.c"
+        "${MIP_EXTRAS_DIR}/index.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.hpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.cpp"
+        "${MIP_EXTRAS_DIR}/version.hpp"
+        "${MIP_EXTRAS_DIR}/version.cpp"
     )
 endif()
 
@@ -499,8 +509,8 @@ if(BUILD_PACKAGE)
 
     # Zip specific configuration
     # Build different zip packages for each target
-    if(WIN32)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Windows")
+    if(MSVC)
+        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
     elseif(APPLE)
         set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
     elseif(UNIX)

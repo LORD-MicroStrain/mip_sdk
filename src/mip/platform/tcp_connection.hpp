@@ -44,6 +44,10 @@ private:
     tcp_socket mSocket;
     std::string mHostname;
     uint16_t mPort = 0;
+
+public:
+    const char* interfaceName() const override { return mHostname.c_str(); }
+    uint32_t parameter() const override { return mPort; }
 };
 
 ///@}
