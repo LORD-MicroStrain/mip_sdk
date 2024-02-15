@@ -120,30 +120,33 @@ int main(int argc, const char* argv[])
     //
     //External heading sensor reference frame.
     //
-    float external_heading_sensor_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 0.0, 0.0};  // External heading sensor is aligned with vehicle frame
+    commands_aiding::ReferenceFrame::Rotation external_heading_sensor_to_vehicle_frame_rotation;
+    external_heading_sensor_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // External heading sensor is aligned with vehicle frame
     float external_heading_sensor_to_vehicle_frame_translation[3] = {0.0, 0.0, 0.0};  // Heading measurements are agnostic to translation, translation set to zero
     if(commands_aiding::writeReferenceFrame(*device, external_heading_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_heading_sensor_to_vehicle_frame_translation, external_heading_sensor_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
+                                            external_heading_sensor_to_vehicle_frame_translation, external_heading_sensor_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external heading sensor frame ID");
 
 
     //
     //External GNSS antenna reference frame
     //
-    float external_gnss_antenna_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 0.0, 0.0};  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
+    commands_aiding::ReferenceFrame::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
+    external_gnss_antenna_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
     float external_gnss_antenna_to_vehicle_frame_translation[3] = {0.0, 1.0, 0.0};  // Antenna is translated 1 meter in vehicle frame Y direction
     if(commands_aiding::writeReferenceFrame(*device, gnss_antenna_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_gnss_antenna_to_vehicle_frame_translation, external_gnss_antenna_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
+                                            external_gnss_antenna_to_vehicle_frame_translation, external_gnss_antenna_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external GNSS antenna frame ID");
 
 
     //
     //External bodyframe velocity reference frame
     //
-    float external_velocity_sensor_to_vehicle_frame_rotation_euler[4] = {0.0, 0.0, 1.57, 0.0};  // Rotated 90 deg around yaw axis
+    commands_aiding::ReferenceFrame::Rotation external_velocity_sensor_to_vehicle_frame_rotation;
+    external_gnss_antenna_to_vehicle_frame_rotation.euler= mip::Vector3f(0.0f, 0.0f, 1.57f);  // Rotated 90 deg around yaw axis
     float external_velocity_sensor_to_vehicle_frame_translation[3] = {1.0, 0.0, 0.0};  // Sensor is translated 1 meter in X direction
     if(commands_aiding::writeReferenceFrame(*device, vehicle_frame_velocity_sensor_id, mip::commands_aiding::ReferenceFrame::Format::EULER,
-                                            external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation_euler) != CmdResult::ACK_OK)
+                                            external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external vehicle frame velocity sensor ID");
 
 

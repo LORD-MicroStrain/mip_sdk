@@ -1132,13 +1132,10 @@ static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BE
 static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_RISING  = 1;  ///<  Rising edges will be timestamped.
 static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_FALLING = 2;  ///<  Falling edges will be timestamped.
 static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_TIMESTAMP_EITHER  = 3;  ///<  Both rising and falling edges will be timestamped.
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_DEFAULT   = 1;  ///<  UART transmit line (auto-select port).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_DEFAULT   = 2;  ///<  UART receive line (auto-select port).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_AUX1      = 33; ///<  UART transmit line, port 2 (aux port 1).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_AUX1      = 34; ///<  UART receive line, port 2 (aux port 1).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_TX_AUX2      = 49; ///<  UART transmit line, port 3 (aux port 2).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_RX_AUX2      = 50; ///<  UART receive line, port 3 (aux port 2).
-static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_POWER_SHUTDOWN    = 1;  ///<  A logic 1 applied to the pin will place the device in low-power mode. A full restart is executed after the signal is removed.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_TX     = 33; ///<  (0x21) UART port 2 transmit.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT2_RX     = 34; ///<  (0x22) UART port 2 receive.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_TX     = 49; ///<  (0x31) UART port 3 transmit.
+static const mip_3dm_gpio_config_command_behavior MIP_3DM_GPIO_CONFIG_COMMAND_BEHAVIOR_UART_PORT3_RX     = 50; ///<  (0x32) UART port 3 receive.
 
 typedef uint8_t mip_3dm_gpio_config_command_pin_mode;
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_NONE       = 0x00;

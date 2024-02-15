@@ -76,8 +76,11 @@ struct BuiltInTest
 {
     uint8_t result[16] = {0}; ///< Device-specific bitfield (128 bits). See device user manual. Bits are least-significant-byte first. For example, bit 0 is located at bit 0 of result[0], bit 1 is located at bit 1 of result[0], bit 8 is located at bit 0 of result[1], and bit 127 is located at bit 7 of result[15].
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_BUILT_IN_TEST;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_BUILT_IN_TEST;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BuiltInTest";
+    static constexpr const char* DOC_NAME = "BuiltInTest";
     
     
     auto as_tuple() const
@@ -107,8 +110,11 @@ struct TimeSyncStatus
     bool time_sync = 0; ///< True if sync with the PPS signal is currently valid. False if PPS feature is disabled or a PPS signal is not detected.
     uint8_t last_pps_rcvd = 0; ///< Elapsed time in seconds since last PPS was received, with a maximum value of 255.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_TIME_SYNC_STATUS;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_TIME_SYNC_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "TimeSyncStatus";
+    static constexpr const char* DOC_NAME = "TimeSyncStatus";
     
     
     auto as_tuple() const
@@ -155,8 +161,11 @@ struct GpioState
 {
     uint8_t states = 0; ///< Bitfield containing the states for each GPIO pin.<br/> Bit 0 (0x01): pin 1<br/> Bit 1 (0x02): pin 2<br/> Bit 2 (0x04): pin 3<br/> Bit 3 (0x08): pin 4<br/> Bits for pins that don't exist will read as 0.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_STATE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_STATE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpioState";
+    static constexpr const char* DOC_NAME = "GpioState";
     
     
     auto as_tuple() const
@@ -187,8 +196,11 @@ struct GpioAnalogValue
     uint8_t gpio_id = 0; ///< GPIO pin number starting with 1.
     float value = 0; ///< Value of the GPIO line in scaled volts.
     
-    static const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_ANALOG_VALUE;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_system::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_system::DATA_GPIO_ANALOG_VALUE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpioAnalogValue";
+    static constexpr const char* DOC_NAME = "GpioAnalogValue";
     
     
     auto as_tuple() const

@@ -161,6 +161,9 @@ public:
 
     const char* type() const { return mType; };
 
+    virtual const char* interfaceName() const = 0;
+    virtual uint32_t parameter() const = 0;
+
 protected:
 
     const char *mType;
