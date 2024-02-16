@@ -3322,7 +3322,8 @@ struct AidingMeasurementEnable
         MAGNETOMETER          = 4,  ///<  Magnetometer (built-in sensor)
         EXTERNAL_HEADING      = 5,  ///<  External heading input
         EXTERNAL_ALTIMETER    = 6,  ///<  External pressure altimeter input
-        EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input input
+        EXTERNAL_MAGNETOMETER = 7,  ///<  External magnetomer input
+        VEHICLE_FRAME_VEL     = 8,  ///<  External vehicle frame velocity input
         ALL                   = 65535,  ///<  Save/load/reset all options
     };
     
