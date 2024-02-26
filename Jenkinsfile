@@ -68,7 +68,7 @@ pipeline {
           }
         }
         stage('Ubuntu amd64') {
-          agent { label 'aws-amd64' }
+          agent { label 'linux-amd64' }
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
@@ -77,7 +77,7 @@ pipeline {
           }
         }
         stage('Centos amd64') {
-          agent { label 'aws-amd64' }
+          agent { label 'linux-amd64' }
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
@@ -85,24 +85,24 @@ pipeline {
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
           }
         }
-        stage('Ubuntu arm64') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            checkoutRepo()
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
-          }
-        }
-        stage('Ubuntu arm32') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            checkoutRepo()
-            sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
-          }
-        }
+        // stage('Ubuntu arm64') {
+        //   agent { label 'linux-arm64' }
+        //   options { skipDefaultCheckout() }
+        //   steps {
+        //     checkoutRepo()
+        //     sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
+        //     archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
+        //   }
+        // }
+        // stage('Ubuntu arm32') {
+        //   agent { label 'linux-arm64' }
+        //   options { skipDefaultCheckout() }
+        //   steps {
+        //     checkoutRepo()
+        //     sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
+        //     archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
+        //   }
+        // }
       }
     }
   }
