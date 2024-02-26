@@ -34,7 +34,6 @@ enum
     MIP_AIDING_CMD_DESC_SET                = 0x13,
     
     MIP_CMD_DESC_AIDING_FRAME_CONFIG       = 0x01,
-    MIP_CMD_DESC_AIDING_SENSOR_FRAME_MAP   = 0x02,
     MIP_CMD_DESC_AIDING_LOCAL_FRAME        = 0x03,
     MIP_CMD_DESC_AIDING_ECHO_CONTROL       = 0x1F,
     MIP_CMD_DESC_AIDING_POS_LOCAL          = 0x20,
@@ -53,7 +52,6 @@ enum
     MIP_CMD_DESC_AIDING_DELTA_ATTITUDE     = 0x39,
     MIP_CMD_DESC_AIDING_LOCAL_ANGULAR_RATE = 0x3A,
     
-    MIP_REPLY_DESC_AIDING_SENSOR_FRAME_MAP = 0x82,
     MIP_REPLY_DESC_AIDING_FRAME_CONFIG     = 0x81,
     MIP_REPLY_DESC_AIDING_ECHO_CONTROL     = 0x9F,
 };
@@ -86,40 +84,6 @@ void extract_mip_time_timebase(struct mip_serializer* serializer, mip_time_timeb
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_sensor_frame_mapping  (0x13,0x02) Sensor Frame Mapping [C]
-///
-///@{
-
-struct mip_aiding_sensor_frame_mapping_command
-{
-    mip_function_selector function;
-    uint8_t sensor_id; ///< Sensor ID to configure. Cannot be 0.
-    uint8_t frame_id; ///< Frame ID to assign to the sensor. Defaults to 1.
-    
-};
-typedef struct mip_aiding_sensor_frame_mapping_command mip_aiding_sensor_frame_mapping_command;
-void insert_mip_aiding_sensor_frame_mapping_command(struct mip_serializer* serializer, const mip_aiding_sensor_frame_mapping_command* self);
-void extract_mip_aiding_sensor_frame_mapping_command(struct mip_serializer* serializer, mip_aiding_sensor_frame_mapping_command* self);
-
-struct mip_aiding_sensor_frame_mapping_response
-{
-    uint8_t sensor_id; ///< Sensor ID to configure. Cannot be 0.
-    uint8_t frame_id; ///< Frame ID to assign to the sensor. Defaults to 1.
-    
-};
-typedef struct mip_aiding_sensor_frame_mapping_response mip_aiding_sensor_frame_mapping_response;
-void insert_mip_aiding_sensor_frame_mapping_response(struct mip_serializer* serializer, const mip_aiding_sensor_frame_mapping_response* self);
-void extract_mip_aiding_sensor_frame_mapping_response(struct mip_serializer* serializer, mip_aiding_sensor_frame_mapping_response* self);
-
-mip_cmd_result mip_aiding_write_sensor_frame_mapping(struct mip_interface* device, uint8_t sensor_id, uint8_t frame_id);
-mip_cmd_result mip_aiding_read_sensor_frame_mapping(struct mip_interface* device, uint8_t* sensor_id_out, uint8_t* frame_id_out);
-mip_cmd_result mip_aiding_save_sensor_frame_mapping(struct mip_interface* device);
-mip_cmd_result mip_aiding_load_sensor_frame_mapping(struct mip_interface* device);
-mip_cmd_result mip_aiding_default_sensor_frame_mapping(struct mip_interface* device);
-
-///@}
-///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_aiding_reference_frame  (0x13,0x01) Reference Frame [C]
 /// Defines a reference frame associated with a specific sensor frame ID.  The frame ID used in this command
@@ -251,7 +215,7 @@ static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND
 struct mip_aiding_ecef_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Sensor ID.
     mip_vector3d position; ///< ECEF position [m].
     mip_vector3f uncertainty; ///< ECEF position uncertainty [m].
     mip_aiding_ecef_pos_command_valid_flags valid_flags; ///< Valid flags.
@@ -264,7 +228,7 @@ void extract_mip_aiding_ecef_pos_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self);
 void extract_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -285,7 +249,7 @@ static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_V
 struct mip_aiding_llh_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Sensor ID.
     double latitude; ///< [deg]
     double longitude; ///< [deg]
     double height; ///< [m]
@@ -300,7 +264,7 @@ void extract_mip_aiding_llh_pos_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self);
 void extract_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -313,7 +277,7 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
 struct mip_aiding_height_command
 {
     mip_time time;
-    uint8_t sensor_id;
+    uint8_t frame_id;
     float height; ///< [m]
     float uncertainty; ///< [m]
     uint16_t valid_flags;
@@ -323,7 +287,7 @@ typedef struct mip_aiding_height_command mip_aiding_height_command;
 void insert_mip_aiding_height_command(struct mip_serializer* serializer, const mip_aiding_height_command* self);
 void extract_mip_aiding_height_command(struct mip_serializer* serializer, mip_aiding_height_command* self);
 
-mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float height, float uncertainty, uint16_t valid_flags);
+mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///
@@ -336,7 +300,7 @@ mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* t
 struct mip_aiding_pressure_command
 {
     mip_time time;
-    uint8_t sensor_id;
+    uint8_t frame_id;
     float pressure; ///< [mbar]
     float uncertainty; ///< [mbar]
     uint16_t valid_flags;
@@ -346,7 +310,7 @@ typedef struct mip_aiding_pressure_command mip_aiding_pressure_command;
 void insert_mip_aiding_pressure_command(struct mip_serializer* serializer, const mip_aiding_pressure_command* self);
 void extract_mip_aiding_pressure_command(struct mip_serializer* serializer, mip_aiding_pressure_command* self);
 
-mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float pressure, float uncertainty, uint16_t valid_flags);
+mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///
@@ -366,7 +330,7 @@ static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND
 struct mip_aiding_ecef_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Sensor ID.
     mip_vector3f velocity; ///< ECEF velocity [m/s].
     mip_vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
     mip_aiding_ecef_vel_command_valid_flags valid_flags; ///< Valid flags.
@@ -379,7 +343,7 @@ void extract_mip_aiding_ecef_vel_command(struct mip_serializer* serializer, mip_
 void insert_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self);
 void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -399,7 +363,7 @@ static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_V
 struct mip_aiding_ned_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Sensor ID.
     mip_vector3f velocity; ///< NED velocity [m/s].
     mip_vector3f uncertainty; ///< NED velocity uncertainty [m/s].
     mip_aiding_ned_vel_command_valid_flags valid_flags; ///< Valid flags.
@@ -412,7 +376,7 @@ void extract_mip_aiding_ned_vel_command(struct mip_serializer* serializer, mip_a
 void insert_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self);
 void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -433,7 +397,7 @@ static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AID
 struct mip_aiding_vehicle_fixed_frame_velocity_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
     mip_vector3f velocity; ///< [m/s]
     mip_vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
     mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags;
@@ -446,7 +410,7 @@ void extract_mip_aiding_vehicle_fixed_frame_velocity_command(struct mip_serializ
 void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self);
 void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
 
 ///@}
 ///
@@ -458,7 +422,7 @@ mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* dev
 struct mip_aiding_true_heading_command
 {
     mip_time time;
-    uint8_t sensor_id;
+    uint8_t frame_id;
     float heading; ///< Heading in [radians]
     float uncertainty;
     uint16_t valid_flags;
@@ -468,7 +432,7 @@ typedef struct mip_aiding_true_heading_command mip_aiding_true_heading_command;
 void insert_mip_aiding_true_heading_command(struct mip_serializer* serializer, const mip_aiding_true_heading_command* self);
 void extract_mip_aiding_true_heading_command(struct mip_serializer* serializer, mip_aiding_true_heading_command* self);
 
-mip_cmd_result mip_aiding_true_heading(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, float heading, float uncertainty, uint16_t valid_flags);
+mip_cmd_result mip_aiding_true_heading(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///
@@ -488,7 +452,7 @@ static const mip_aiding_magnetic_field_command_valid_flags MIP_AIDING_MAGNETIC_F
 struct mip_aiding_magnetic_field_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t sensor_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
     mip_vector3f magnetic_field; ///< [G]
     mip_vector3f uncertainty; ///< [G] 1-sigma uncertainty (if uncertainty[i] <= 0, then magnetic_field[i] should be treated as invalid and ingnored)
     mip_aiding_magnetic_field_command_valid_flags valid_flags;
@@ -501,7 +465,7 @@ void extract_mip_aiding_magnetic_field_command(struct mip_serializer* serializer
 void insert_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_magnetic_field_command_valid_flags self);
 void extract_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, mip_aiding_magnetic_field_command_valid_flags* self);
 
-mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip_time* time, uint8_t sensor_id, const float* magnetic_field, const float* uncertainty, mip_aiding_magnetic_field_command_valid_flags valid_flags);
+mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* magnetic_field, const float* uncertainty, mip_aiding_magnetic_field_command_valid_flags valid_flags);
 
 ///@}
 ///

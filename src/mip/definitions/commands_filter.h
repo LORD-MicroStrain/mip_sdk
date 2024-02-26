@@ -1764,7 +1764,8 @@ static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILT
 static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER          = 4;     ///<  Magnetometer (built-in sensor)
 static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING      = 5;     ///<  External heading input
 static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_ALTIMETER    = 6;     ///<  External pressure altimeter input
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_MAGNETOMETER = 7;     ///<  External magnetomer input input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_MAGNETOMETER = 7;     ///<  External magnetomer input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_VEHICLE_FRAME_VEL     = 8;     ///<  External vehicle frame velocity input
 static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL                   = 65535; ///<  Save/load/reset all options
 
 struct mip_filter_aiding_measurement_enable_command
