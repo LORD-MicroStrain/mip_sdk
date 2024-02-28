@@ -63,7 +63,7 @@ struct PendingCmd : public C::mip_pending_cmd
 {
     ///@brief Create a null pending command in the CmdResult::NONE state.
     ///
-    PendingCmd() { std::memset(static_cast<C::mip_pending_cmd*>(this), 0, sizeof(C::mip_pending_cmd)); }
+    PendingCmd() { std::memset(static_cast<C::mip_pending_cmd*>(this), 0, sizeof(C::mip_pending_cmd)); this->_status = mip::C::MIP_STATUS_NONE; }
 
     ///@brief Create a pending command for the given descriptor pair.
     ///
