@@ -39,6 +39,10 @@ public:
         baudrate = mBaudrate;
     };
 
+    uint32_t baudrate() const { return mBaudrate; }
+
+    bool setBaudrate(uint32_t baud);
+
 private:
     serial_port mPort;
     std::string mPortName;

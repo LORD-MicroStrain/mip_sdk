@@ -52,6 +52,17 @@ bool SerialConnection::disconnect()
    return serial_port_close(&mPort);
 }
 
+///@brief Change the baudrate
+bool SerialConnection::setBaudrate(uint32_t baud)
+{
+    bool ok = serial_port_set_baudrate(&mPort, baud);
+
+    if(ok)
+        mBaudrate = baud;
+
+    return ok;
+}
+
 
 
 ///@copydoc mip::Connection::recvFromDevice

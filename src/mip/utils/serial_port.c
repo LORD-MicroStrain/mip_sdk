@@ -255,6 +255,64 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     return true;
 }
 
+bool serial_port_set_baudrate(serial_port* port, int baudrate)
+{
+    if(!serial_port_is_open(port))
+        return false;
+
+#ifdef WIN32
+    DCB dcb;
+
+    if(GetCommState(port->handle, &dcb) == 0)
+    {
+        MIP_LOG_ERROR("GetCommState() failed with error code %d\n", GetLastError());
+        return false;
+    }
+
+    dcb.BaudRate = baudrate;
+
+    if(SetCommState(port->handle, &dcb) == 0)
+    {
+        MIP_LOG_ERROR("SetCommState() failed with error code %d\n", GetLastError());
+        return false;
+    }
+
+#elif defined __APPLE__
+
+    speed_t speed = baudrate;
+    if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0)
+    {
+        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+
+#else  // Linux
+
+    // Get existing settings
+    struct termios serial_port_settings;
+    if (tcgetattr(port->handle, &serial_port_settings) < 0)
+    {
+        MIP_LOG_ERROR("Unable to get serial port settings (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+
+    if (cfsetispeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0 || cfsetospeed(&serial_port_settings, baud_rate_to_speed(baudrate)) < 0)
+    {
+        MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+
+    // Persist the settings
+    if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
+    {
+        MIP_LOG_ERROR("Unable to save serial port settings (%d): %s\n", errno, strerror(errno));
+        return false;
+    }
+#endif
+
+    return true;
+}
+
 bool serial_port_close(serial_port *port)
 {
     if(!serial_port_is_open(port))
