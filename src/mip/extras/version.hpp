@@ -5,6 +5,9 @@
 
 #include <string>
 
+#if __cpp_impl_three_way_comparison
+#include <compare>
+#endif
 #if __cpp_lib_string_view >= 201606L
 #include <string_view>
 #endif
@@ -49,11 +52,21 @@ public:
     uint8_t patch() const { return m_version % 100; }
 
     bool operator==(FirmwareVersion other) const { return m_version == other.m_version; }
-    bool operator!=(FirmwareVersion other) const { return m_version != other.m_version; }
-    bool operator<=(FirmwareVersion other) const { return m_version <= other.m_version; }
-    bool operator>=(FirmwareVersion other) const { return m_version >= other.m_version; }
-    bool operator< (FirmwareVersion other) const { return m_version <  other.m_version; }
-    bool operator> (FirmwareVersion other) const { return m_version >  other.m_version; }
+    bool operator!=(FirmwareVersion other) const { return !(*this == other); }
+#ifndef __cpp_impl_three_way_comparison
+    bool operator<=(FirmwareVersion other) const { return !isNull() && major() == other.major() && m_version <= other.m_version; }
+    bool operator>=(FirmwareVersion other) const { return !isNull() && major() == other.major() && m_version >= other.m_version; }
+    bool operator< (FirmwareVersion other) const { return !isNull() && major() == other.major() && m_version <  other.m_version; }
+    bool operator> (FirmwareVersion other) const { return !isNull() && major() == other.major() && m_version >  other.m_version; }
+#else  // __cpp_impl_three_way_comparison
+    auto operator<=>(FirmwareVersion other) const
+    {
+        if(major() != other.major() || isNull())
+            return std::partial_ordering::unordered;
+        else
+            return std::partial_ordering(m_version <=> other.m_version);
+    }
+#endif // __cpp_impl_three_way_comparison
 
     void toString(char* buffer, size_t buffer_size) const;
     bool fromString(const char* str, size_t length=-1);
