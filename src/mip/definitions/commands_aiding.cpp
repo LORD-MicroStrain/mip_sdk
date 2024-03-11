@@ -48,7 +48,7 @@ void extract(Serializer& serializer, Time& self)
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const ReferenceFrame& self)
+void insert(Serializer& serializer, const FrameConfig& self)
 {
     insert(serializer, self.function);
     
@@ -64,19 +64,21 @@ void insert(Serializer& serializer, const ReferenceFrame& self)
         for(unsigned int i=0; i < 3; i++)
             insert(serializer, self.translation[i]);
         
-        if( self.format == ReferenceFrame::Format::EULER )
+        if( self.format == FrameConfig::Format::EULER )
         {
             insert(serializer, self.rotation.euler);
             
         }
-        if( self.format == ReferenceFrame::Format::QUATERNION )
+        if( self.format == FrameConfig::Format::QUATERNION )
         {
             insert(serializer, self.rotation.quaternion);
             
         }
+        insert(serializer, self.tracking_enabled);
+        
     }
 }
-void extract(Serializer& serializer, ReferenceFrame& self)
+void extract(Serializer& serializer, FrameConfig& self)
 {
     extract(serializer, self.function);
     
@@ -92,20 +94,22 @@ void extract(Serializer& serializer, ReferenceFrame& self)
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, self.translation[i]);
         
-        if( self.format == ReferenceFrame::Format::EULER )
+        if( self.format == FrameConfig::Format::EULER )
         {
             extract(serializer, self.rotation.euler);
             
         }
-        if( self.format == ReferenceFrame::Format::QUATERNION )
+        if( self.format == FrameConfig::Format::QUATERNION )
         {
             extract(serializer, self.rotation.quaternion);
             
         }
+        extract(serializer, self.tracking_enabled);
+        
     }
 }
 
-void insert(Serializer& serializer, const ReferenceFrame::Response& self)
+void insert(Serializer& serializer, const FrameConfig::Response& self)
 {
     insert(serializer, self.frame_id);
     
@@ -114,18 +118,20 @@ void insert(Serializer& serializer, const ReferenceFrame::Response& self)
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.translation[i]);
     
-    if( self.format == ReferenceFrame::Format::EULER )
+    if( self.format == FrameConfig::Format::EULER )
     {
         insert(serializer, self.rotation.euler);
         
     }
-    if( self.format == ReferenceFrame::Format::QUATERNION )
+    if( self.format == FrameConfig::Format::QUATERNION )
     {
         insert(serializer, self.rotation.quaternion);
         
     }
+    insert(serializer, self.tracking_enabled);
+    
 }
-void extract(Serializer& serializer, ReferenceFrame::Response& self)
+void extract(Serializer& serializer, FrameConfig::Response& self)
 {
     extract(serializer, self.frame_id);
     
@@ -134,19 +140,21 @@ void extract(Serializer& serializer, ReferenceFrame::Response& self)
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.translation[i]);
     
-    if( self.format == ReferenceFrame::Format::EULER )
+    if( self.format == FrameConfig::Format::EULER )
     {
         extract(serializer, self.rotation.euler);
         
     }
-    if( self.format == ReferenceFrame::Format::QUATERNION )
+    if( self.format == FrameConfig::Format::QUATERNION )
     {
         extract(serializer, self.rotation.quaternion);
         
     }
+    extract(serializer, self.tracking_enabled);
+    
 }
 
-TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation)
+TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, const float* translation, const FrameConfig::Rotation& rotation, bool trackingEnabled)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -160,21 +168,23 @@ TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, translation[i]);
     
-    if( format == ReferenceFrame::Format::EULER )
+    if( format == FrameConfig::Format::EULER )
     {
         insert(serializer, rotation.euler);
         
     }
-    if( format == ReferenceFrame::Format::QUATERNION )
+    if( format == FrameConfig::Format::QUATERNION )
     {
         insert(serializer, rotation.quaternion);
         
     }
+    insert(serializer, trackingEnabled);
+    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut)
+TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, float* translationOut, FrameConfig::Rotation* rotationOut, bool* trackingEnabledOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -187,7 +197,7 @@ TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<ReferenceFrame> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_FRAME_CONFIG, buffer, &responseLength);
+    TypedResult<FrameConfig> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_FRAME_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -201,22 +211,25 @@ TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, translationOut[i]);
         
-        if( format == ReferenceFrame::Format::EULER )
+        if( format == FrameConfig::Format::EULER )
         {
             extract(deserializer, rotationOut->euler);
             
         }
-        if( format == ReferenceFrame::Format::QUATERNION )
+        if( format == FrameConfig::Format::QUATERNION )
         {
             extract(deserializer, rotationOut->quaternion);
             
         }
+        assert(trackingEnabledOut);
+        extract(deserializer, *trackingEnabledOut);
+        
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
 }
-TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t frameId)
+TypedResult<FrameConfig> saveFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -228,7 +241,7 @@ TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t frameId)
+TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -240,7 +253,7 @@ TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<ReferenceFrame> defaultReferenceFrame(C::mip_interface& device, uint8_t frameId)
+TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));

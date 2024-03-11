@@ -82,8 +82,8 @@ void extract(Serializer& serializer, Time& self);
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_reference_frame  (0x13,0x01) Reference Frame [CPP]
-/// Defines a reference frame associated with a specific sensor frame ID.  The frame ID used in this command
+///@defgroup cpp_aiding_frame_config  (0x13,0x01) Frame Config [CPP]
+/// Defines an aiding frame associated with a specific sensor frame ID.  The frame ID used in this command
 /// should mirror the frame ID used in the aiding command (if that aiding measurement is measured in this reference frame)
 /// 
 /// This transform satisfies the following relationship:
@@ -108,7 +108,7 @@ void extract(Serializer& serializer, Time& self);
 ///
 ///@{
 
-struct ReferenceFrame
+struct FrameConfig
 {
     enum class Format : uint8_t
     {
@@ -128,15 +128,16 @@ struct ReferenceFrame
     Format format = static_cast<Format>(0); ///< Format of the transformation.
     Vector3f translation; ///< Translation X, Y, and Z.
     Rotation rotation; ///< Rotation as specified by format.
+    bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "ReferenceFrame";
-    static constexpr const char* DOC_NAME = "Reference Frame Configuration";
+    static constexpr const char* NAME = "FrameConfig";
+    static constexpr const char* DOC_NAME = "Frame Configuration";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
-    static constexpr const uint32_t WRITE_PARAMS   = 0x800F;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
     static constexpr const uint32_t READ_PARAMS    = 0x8003;
     static constexpr const uint32_t SAVE_PARAMS    = 0x8001;
     static constexpr const uint32_t LOAD_PARAMS    = 0x8001;
@@ -146,17 +147,17 @@ struct ReferenceFrame
     
     auto as_tuple() const
     {
-        return std::make_tuple(frame_id,format,translation,rotation);
+        return std::make_tuple(frame_id,format,translation,rotation,tracking_enabled);
     }
     
     auto as_tuple()
     {
-        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
+        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation),std::ref(tracking_enabled));
     }
     
-    static ReferenceFrame create_sld_all(::mip::FunctionSelector function)
+    static FrameConfig create_sld_all(::mip::FunctionSelector function)
     {
-        ReferenceFrame cmd;
+        FrameConfig cmd;
         cmd.function = function;
         cmd.frame_id = 0;
         return cmd;
@@ -167,8 +168,8 @@ struct ReferenceFrame
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_FRAME_CONFIG;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "ReferenceFrame::Response";
-        static constexpr const char* DOC_NAME = "Reference Frame Configuration Response";
+        static constexpr const char* NAME = "FrameConfig::Response";
+        static constexpr const char* DOC_NAME = "Frame Configuration Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -176,25 +177,26 @@ struct ReferenceFrame
         Format format = static_cast<Format>(0); ///< Format of the transformation.
         Vector3f translation; ///< Translation X, Y, and Z.
         Rotation rotation; ///< Rotation as specified by format.
+        bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
         
         
         auto as_tuple()
         {
-            return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation));
+            return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation),std::ref(tracking_enabled));
         }
     };
 };
-void insert(Serializer& serializer, const ReferenceFrame& self);
-void extract(Serializer& serializer, ReferenceFrame& self);
+void insert(Serializer& serializer, const FrameConfig& self);
+void extract(Serializer& serializer, FrameConfig& self);
 
-void insert(Serializer& serializer, const ReferenceFrame::Response& self);
-void extract(Serializer& serializer, ReferenceFrame::Response& self);
+void insert(Serializer& serializer, const FrameConfig::Response& self);
+void extract(Serializer& serializer, FrameConfig::Response& self);
 
-TypedResult<ReferenceFrame> writeReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, const float* translation, const ReferenceFrame::Rotation& rotation);
-TypedResult<ReferenceFrame> readReferenceFrame(C::mip_interface& device, uint8_t frameId, ReferenceFrame::Format format, float* translationOut, ReferenceFrame::Rotation* rotationOut);
-TypedResult<ReferenceFrame> saveReferenceFrame(C::mip_interface& device, uint8_t frameId);
-TypedResult<ReferenceFrame> loadReferenceFrame(C::mip_interface& device, uint8_t frameId);
-TypedResult<ReferenceFrame> defaultReferenceFrame(C::mip_interface& device, uint8_t frameId);
+TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, const float* translation, const FrameConfig::Rotation& rotation, bool trackingEnabled);
+TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, float* translationOut, FrameConfig::Rotation* rotationOut, bool* trackingEnabledOut);
+TypedResult<FrameConfig> saveFrameConfig(C::mip_interface& device, uint8_t frameId);
+TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frameId);
+TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t frameId);
 
 ///@}
 ///
