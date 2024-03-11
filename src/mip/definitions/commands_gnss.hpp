@@ -78,6 +78,8 @@ struct ReceiverInfo
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_LIST_RECEIVERS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ReceiverInfo";
+    static constexpr const char* DOC_NAME = "ReceiverInfo";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -97,6 +99,8 @@ struct ReceiverInfo
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_LIST_RECEIVERS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ReceiverInfo::Response";
+        static constexpr const char* DOC_NAME = "ReceiverInfo Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
@@ -142,6 +146,8 @@ struct SignalConfiguration
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_SIGNAL_CONFIGURATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SignalConfiguration";
+    static constexpr const char* DOC_NAME = "SignalConfiguration";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x801F;
@@ -174,6 +180,8 @@ struct SignalConfiguration
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_SIGNAL_CONFIGURATION;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "SignalConfiguration::Response";
+        static constexpr const char* DOC_NAME = "SignalConfiguration Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -220,6 +228,8 @@ struct RtkDongleConfiguration
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::CMD_RTK_DONGLE_CONFIGURATION;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "RtkDongleConfiguration";
+    static constexpr const char* DOC_NAME = "RtkDongleConfiguration";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
@@ -252,6 +262,8 @@ struct RtkDongleConfiguration
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_gnss::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_gnss::REPLY_RTK_DONGLE_CONFIGURATION;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "RtkDongleConfiguration::Response";
+        static constexpr const char* DOC_NAME = "RtkDongleConfiguration Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;

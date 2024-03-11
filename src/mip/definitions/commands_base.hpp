@@ -202,6 +202,8 @@ struct Ping
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_PING;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Ping";
+    static constexpr const char* DOC_NAME = "Ping";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -240,6 +242,8 @@ struct SetIdle
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SET_TO_IDLE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SetIdle";
+    static constexpr const char* DOC_NAME = "Set to idle";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -274,6 +278,8 @@ struct GetDeviceInfo
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_INFO;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetDeviceInfo";
+    static constexpr const char* DOC_NAME = "Get device information";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -293,6 +299,8 @@ struct GetDeviceInfo
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_INFO;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetDeviceInfo::Response";
+        static constexpr const char* DOC_NAME = "Get device information Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -330,6 +338,8 @@ struct GetDeviceDescriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_DEVICE_DESCRIPTORS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetDeviceDescriptors";
+    static constexpr const char* DOC_NAME = "Get device descriptors";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -349,6 +359,8 @@ struct GetDeviceDescriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_DEVICE_DESCRIPTORS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetDeviceDescriptors::Response";
+        static constexpr const char* DOC_NAME = "Get device descriptors Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000001;
@@ -389,6 +401,8 @@ struct BuiltInTest
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_BUILT_IN_TEST;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "BuiltInTest";
+    static constexpr const char* DOC_NAME = "Built in test";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -408,6 +422,8 @@ struct BuiltInTest
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_BUILT_IN_TEST;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "BuiltInTest::Response";
+        static constexpr const char* DOC_NAME = "Built in test Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -444,6 +460,8 @@ struct Resume
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_RESUME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Resume";
+    static constexpr const char* DOC_NAME = "Resume";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -481,6 +499,8 @@ struct GetExtendedDescriptors
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GET_EXTENDED_DESCRIPTORS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetExtendedDescriptors";
+    static constexpr const char* DOC_NAME = "Get device descriptors (extended)";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -500,6 +520,8 @@ struct GetExtendedDescriptors
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_GET_EXTENDED_DESCRIPTORS;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetExtendedDescriptors::Response";
+        static constexpr const char* DOC_NAME = "Get device descriptors (extended) Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000001;
@@ -537,6 +559,8 @@ struct ContinuousBit
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_CONTINUOUS_BIT;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ContinuousBit";
+    static constexpr const char* DOC_NAME = "Continuous built-in test";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -556,6 +580,8 @@ struct ContinuousBit
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_CONTINUOUS_BIT;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ContinuousBit::Response";
+        static constexpr const char* DOC_NAME = "Continuous built-in test Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -607,6 +633,8 @@ struct CommSpeed
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_COMM_SPEED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "CommSpeed";
+    static constexpr const char* DOC_NAME = "Comm Port Speed";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
@@ -640,6 +668,8 @@ struct CommSpeed
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::REPLY_COMM_SPEED;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "CommSpeed::Response";
+        static constexpr const char* DOC_NAME = "Comm Port Speed Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -691,6 +721,8 @@ struct GpsTimeUpdate
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsTimeUpdate";
+    static constexpr const char* DOC_NAME = "Time Broadcast Command";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
@@ -740,6 +772,8 @@ struct SoftReset
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_SOFT_RESET;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "SoftReset";
+    static constexpr const char* DOC_NAME = "Reset device";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;

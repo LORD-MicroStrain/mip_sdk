@@ -34,6 +34,7 @@ bool mip_is_valid_descriptor_set(uint8_t descriptor_set);
 bool mip_is_data_descriptor_set(uint8_t descriptor_set);
 bool mip_is_cmd_descriptor_set(uint8_t descriptor_set);
 bool mip_is_reserved_descriptor_set(uint8_t descriptor_set);
+bool mip_is_gnss_data_descriptor_set(uint8_t descriptor_set);
 
 bool mip_is_valid_field_descriptor(uint8_t field_descriptor);
 bool mip_is_cmd_field_descriptor(uint8_t field_descriptor);
@@ -72,7 +73,7 @@ struct CompositeDescriptor
     constexpr CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
     constexpr CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
 
-    constexpr CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
+    CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
     constexpr uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
@@ -108,6 +109,7 @@ inline bool isValidDescriptorSet   (uint8_t descriptorSet) { return C::mip_is_va
 inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
+inline bool isGnssDataDescriptorSet(uint8_t descriptorSet) { return C::mip_is_gnss_data_descriptor_set(descriptorSet); }
 
 inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
 inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }

@@ -71,6 +71,8 @@ struct EventSource
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EVENT_SOURCE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "EventSource";
+    static constexpr const char* DOC_NAME = "EventSource";
     
     
     auto as_tuple() const
@@ -105,6 +107,8 @@ struct Ticks
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_TICKS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Ticks";
+    static constexpr const char* DOC_NAME = "Ticks";
     
     
     auto as_tuple() const
@@ -140,6 +144,8 @@ struct DeltaTicks
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TICKS;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DeltaTicks";
+    static constexpr const char* DOC_NAME = "DeltaTicks";
     
     
     auto as_tuple() const
@@ -207,6 +213,8 @@ struct GpsTimestamp
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_GPS_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GpsTimestamp";
+    static constexpr const char* DOC_NAME = "GpsTimestamp";
     
     
     auto as_tuple() const
@@ -247,6 +255,8 @@ struct DeltaTime
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_DELTA_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "DeltaTime";
+    static constexpr const char* DOC_NAME = "DeltaTime";
     
     
     auto as_tuple() const
@@ -285,6 +295,8 @@ struct ReferenceTimestamp
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REFERENCE_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ReferenceTimestamp";
+    static constexpr const char* DOC_NAME = "ReferenceTimestamp";
     
     
     auto as_tuple() const
@@ -325,6 +337,8 @@ struct ReferenceTimeDelta
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_REF_TIME_DELTA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ReferenceTimeDelta";
+    static constexpr const char* DOC_NAME = "ReferenceTimeDelta";
     
     
     auto as_tuple() const
@@ -390,6 +404,8 @@ struct ExternalTimestamp
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_EXTERNAL_TIME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ExternalTimestamp";
+    static constexpr const char* DOC_NAME = "ExternalTimestamp";
     
     
     auto as_tuple() const
@@ -459,6 +475,8 @@ struct ExternalTimeDelta
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::data_shared::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::data_shared::DATA_SYS_TIME_DELTA;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ExternalTimeDelta";
+    static constexpr const char* DOC_NAME = "ExternalTimeDelta";
     
     
     auto as_tuple() const

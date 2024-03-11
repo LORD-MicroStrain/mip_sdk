@@ -26,14 +26,22 @@ Features
 Examples
 --------
 
-* Get device information [C++] - queries the device strings and prints them to stdout.
-* Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
-* Product-specific examples:
-  * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
-  * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
-  * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
+<!-- NOTE: I commented out the descriptions below as they seemed like they would
+           be better suited to being in the example code files themselves. Feel
+           free to uncomment these again if you want, or remove them completely.
+-->
+* **Get device information** [[C++](./examples/device_info.cpp)]. <!-- - Queries the device strings and prints them to stdout. -->
+* **Watch IMU** [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)]. <!-- - Configures the IMU for streaming and prints the data to stdout. -->
+* **Threading** [[C++](./examples/threading.cpp)].
+* **Ping** [[C++](./examples/ping.cpp)].
+* **Product-specific examples:**
+  * **GQ7 setup** [[C](./examples/GQ7/GQ7_example.c), [C++](./examples/GQ7/GQ7_example.cpp)]. <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
+  * **CV7 setup** [[C](./examples/CV7/CV7_example.c), [C++](./examples/CV7/CV7_example.cpp)]. <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
+  * **GX5-45 setup** [[C](./examples/GX5_45/GX5_45_example.c), [C++](./examples/GX5_45/GX5_45_example.cpp)]. <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
+  * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
+  * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
 
-You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
+You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
 The examples take two parameters for the device connection:
 * For a serial connection: Port and baudrate. Port must start with `/dev/` on Linux or `COM` on Windows.
@@ -43,7 +51,7 @@ The examples take two parameters for the device connection:
 Documentation
 -------------
 
-Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation)
+Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation).
 
 
 Communications Interfaces
@@ -57,15 +65,15 @@ A basic serial port interface is provided in C and C++ for Linux and Windows. Th
 The serial port connection will be used in most cases, when the MIP device is connected
 via a serial or USB cable (the USB connection acts like a virtual serial port).
 
-Enable it in the CMake configuration with `-DMIP_USE_SERIAL=1`.
+[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_SERIAL=1`.
 
 ### TCP Client
 
 The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
-via the normal serial or USB cable to a commputer system running a TCP server which forwards data between
+via the normal serial or USB cable to a computer system running a TCP server which forwards data between
 the serial port and TCP clients.
 
-Enable it in the CMake configuration with `-DMIP_USE_TCP=1`.
+[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_TCP=1`.
 
 
 How to Build
