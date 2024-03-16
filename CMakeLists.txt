@@ -25,7 +25,7 @@ if(WITH_INTERNAL)
     if(NOT DEFINED MIP_INTERNAL_DIR)
 		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
-	
+
 	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
@@ -270,6 +270,21 @@ target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 #
 if(WIN32 AND MIP_USE_TCP)
     target_link_libraries(mip PUBLIC "ws2_32")
+endif()
+
+# PX4 compile options
+if(DEFINED PX4_PLATFORM)
+    add_dependencies(mip prebuild_targets)
+    target_compile_options(mip PRIVATE
+        -Wno-shadow
+        -Wno-strict-prototypes
+        -Wno-incompatible-pointer-types
+    )
+
+    if("${PX4_PLATFORM}" MATCHES "nuttx")
+        add_dependencies(mip nuttx_context)
+        target_compile_definitions(mip PUBLIC __NUTTX__)
+    endif()
 endif()
 
 #

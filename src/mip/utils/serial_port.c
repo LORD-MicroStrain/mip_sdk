@@ -176,14 +176,14 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     }
 
 #else //Linux
-    
+
 #ifdef __APPLE__
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_NDELAY);
 #else
     port->handle = open(port_str, O_RDWR | O_NOCTTY | O_SYNC);
 #endif
-    
-    
+
+
     if (port->handle < 0)
     {
         MIP_LOG_ERROR("Unable to open port (%d): %s\n", errno, strerror(errno));
@@ -237,7 +237,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
 
 #ifdef __APPLE__
     speed_t speed = baudrate;
-    if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0) 
+    if (ioctl(port->handle, IOSSIOSPEED, &speed) < 0)
     {
         MIP_LOG_ERROR("Unable to set baud rate (%d): %s\n", errno, strerror(errno));
         close(port->handle);
@@ -314,9 +314,8 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
-    uint32_t bytes_available = serial_port_read_count(port);
-
 #ifdef WIN32 //Windows
+    uint32_t bytes_available = serial_port_read_count(port);
 
     if( wait_time <= 0 )
     {

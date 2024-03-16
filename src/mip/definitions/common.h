@@ -7,9 +7,11 @@
 
 #ifdef __cplusplus
 
+#ifndef __NUTTX__
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#endif
 
 namespace mip {
 namespace C {

@@ -17,7 +17,10 @@
 ///@}
 
 #ifdef __cplusplus
+
+#ifndef __NUTTX__
 #include <type_traits>
+#endif
 
 namespace mip {
 namespace C {
@@ -186,9 +189,11 @@ inline void insert(Serializer& serializer, double value)   { return C::insert_do
 ///@param serializer The serialization instance.
 ///@param value      The enum to insert.
 ///
+#ifndef __NUTTX__
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ insert(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Insert the given value into the buffer.
@@ -231,6 +236,7 @@ inline void extract(Serializer& serializer, double& value)   { return C::extract
 ///@param serializer The serialization instance.
 ///@param[out] value The enum to populate.
 ///
+#ifndef __NUTTX__
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
 /*void*/ extract(Serializer& serializer, Enum& value) {
@@ -238,6 +244,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
     extract(serializer, tmp);
     value = static_cast<Enum>(tmp);
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Extract the value given a buffer, size, and starting offset.
