@@ -6,30 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-project(
-    "MIP SDK"
-    VERSION "0.0.01"
-    DESCRIPTION "MicroStrain Communications Library for embedded systems"
-    LANGUAGES C CXX
-)
+option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 
-set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
-set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
-set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
-include_directories(
-    "${SRC_DIR}"
-)
-
-if(WITH_INTERNAL)
-    if(NOT DEFINED MIP_INTERNAL_DIR)
-		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
-    endif()
-
-	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+# Different languages depending on the flags
+set(MIP_LANGUAGES C)
+if(NOT MIP_DISABLE_CPP)
+    set(MIP_LANGUAGES "${MIP_LANGUAGES} CXX")
 endif()
-
-set(MIP_DIR "${SRC_DIR}/mip")
 
 # Use Git to find the version
 find_package(Git)
@@ -70,6 +53,31 @@ else()
     set(MIP_GIT_VERSION_MINOR 0)
     set(MIP_GIT_VERSION_PATCH 0)
 endif()
+
+project(
+    "MIP SDK"
+    VERSION "${MIP_GIT_VERSION_CLEAN}"
+    DESCRIPTION "MicroStrain Communications Library for embedded systems"
+    LANGUAGES ${MIP_LANGUAGES}
+)
+
+set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
+set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
+set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+include_directories(
+    "${SRC_DIR}"
+)
+
+if(WITH_INTERNAL)
+    if(NOT DEFINED MIP_INTERNAL_DIR)
+		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
+    endif()
+
+	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+endif()
+
+set(MIP_DIR "${SRC_DIR}/mip")
 
 # Generate the version header file
 set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
