@@ -77,3 +77,10 @@ if(MIP_USE_SERIAL)
     add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c")
     target_link_libraries(GX5_45_ExampleC mip)
 endif()
+
+if(MIP_USE_EXTRAS)
+
+    add_executable(ScanPorts "scan_ports.cpp")
+    target_link_libraries(ScanPorts "udev")
+
+endif()
