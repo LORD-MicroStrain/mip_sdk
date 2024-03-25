@@ -41,13 +41,13 @@ enum
     MIP_CMD_DESC_AIDING_POS_LLH            = 0x22,
     MIP_CMD_DESC_AIDING_HEIGHT_ABS         = 0x23,
     MIP_CMD_DESC_AIDING_HEIGHT_REL         = 0x24,
-    MIP_CMD_DESC_AIDING_PRESSURE           = 0x25,
     MIP_CMD_DESC_AIDING_VEL_ECEF           = 0x28,
     MIP_CMD_DESC_AIDING_VEL_NED            = 0x29,
     MIP_CMD_DESC_AIDING_VEL_ODOM           = 0x2A,
     MIP_CMD_DESC_AIDING_WHEELSPEED         = 0x2B,
     MIP_CMD_DESC_AIDING_HEADING_TRUE       = 0x31,
     MIP_CMD_DESC_AIDING_MAGNETIC_FIELD     = 0x32,
+    MIP_CMD_DESC_AIDING_PRESSURE           = 0x33,
     MIP_CMD_DESC_AIDING_DELTA_POSITION     = 0x38,
     MIP_CMD_DESC_AIDING_DELTA_ATTITUDE     = 0x39,
     MIP_CMD_DESC_AIDING_LOCAL_ANGULAR_RATE = 0x3A,
@@ -294,29 +294,6 @@ mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* t
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_aiding_pressure  (0x13,0x25) Pressure [C]
-/// Estimated value of air pressure.
-///
-///@{
-
-struct mip_aiding_pressure_command
-{
-    mip_time time;
-    uint8_t frame_id;
-    float pressure; ///< [mbar]
-    float uncertainty; ///< [mbar]
-    uint16_t valid_flags;
-    
-};
-typedef struct mip_aiding_pressure_command mip_aiding_pressure_command;
-void insert_mip_aiding_pressure_command(struct mip_serializer* serializer, const mip_aiding_pressure_command* self);
-void extract_mip_aiding_pressure_command(struct mip_serializer* serializer, mip_aiding_pressure_command* self);
-
-mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_aiding_ecef_vel  (0x13,0x28) Ecef Vel [C]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
@@ -468,6 +445,29 @@ void insert_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer*
 void extract_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, mip_aiding_magnetic_field_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* magnetic_field, const float* uncertainty, mip_aiding_magnetic_field_command_valid_flags valid_flags);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_aiding_pressure  (0x13,0x33) Pressure [C]
+/// Estimated value of air pressure.
+///
+///@{
+
+struct mip_aiding_pressure_command
+{
+    mip_time time;
+    uint8_t frame_id;
+    float pressure; ///< [mbar]
+    float uncertainty; ///< [mbar]
+    uint16_t valid_flags;
+    
+};
+typedef struct mip_aiding_pressure_command mip_aiding_pressure_command;
+void insert_mip_aiding_pressure_command(struct mip_serializer* serializer, const mip_aiding_pressure_command* self);
+void extract_mip_aiding_pressure_command(struct mip_serializer* serializer, mip_aiding_pressure_command* self);
+
+mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags);
 
 ///@}
 ///
