@@ -296,6 +296,18 @@ if(BUILD_EXAMPLES)
 endif()
 
 #
+# BINDINGS
+#
+
+option(BUILD_BINDINGS "Builds bindings for various languages (global option, enables -fPIC)." OFF)
+
+if(BUILD_BINDINGS)
+    set_target_properties(mip PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+    add_subdirectory("bindings")
+endif()
+
+#
 # DOCUMENTATION
 #
 
