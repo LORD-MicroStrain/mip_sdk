@@ -524,52 +524,6 @@ TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t f
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert(Serializer& serializer, const Pressure& self)
-{
-    insert(serializer, self.time);
-    
-    insert(serializer, self.frame_id);
-    
-    insert(serializer, self.pressure);
-    
-    insert(serializer, self.uncertainty);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(Serializer& serializer, Pressure& self)
-{
-    extract(serializer, self.time);
-    
-    extract(serializer, self.frame_id);
-    
-    extract(serializer, self.pressure);
-    
-    extract(serializer, self.uncertainty);
-    
-    extract(serializer, self.valid_flags);
-    
-}
-
-TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, time);
-    
-    insert(serializer, frameId);
-    
-    insert(serializer, pressure);
-    
-    insert(serializer, uncertainty);
-    
-    insert(serializer, validFlags);
-    
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
 void insert(Serializer& serializer, const EcefVel& self)
 {
     insert(serializer, self.time);
@@ -831,6 +785,52 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const Pressure& self)
+{
+    insert(serializer, self.time);
+    
+    insert(serializer, self.frame_id);
+    
+    insert(serializer, self.pressure);
+    
+    insert(serializer, self.uncertainty);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, Pressure& self)
+{
+    extract(serializer, self.time);
+    
+    extract(serializer, self.frame_id);
+    
+    extract(serializer, self.pressure);
+    
+    extract(serializer, self.uncertainty);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
+TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, time);
+    
+    insert(serializer, frameId);
+    
+    insert(serializer, pressure);
+    
+    insert(serializer, uncertainty);
+    
+    insert(serializer, validFlags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 } // namespace commands_aiding

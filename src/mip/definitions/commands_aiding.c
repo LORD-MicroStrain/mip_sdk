@@ -605,54 +605,6 @@ mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* t
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_HEIGHT_ABS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert_mip_aiding_pressure_command(mip_serializer* serializer, const mip_aiding_pressure_command* self)
-{
-    insert_mip_time(serializer, &self->time);
-    
-    insert_u8(serializer, self->frame_id);
-    
-    insert_float(serializer, self->pressure);
-    
-    insert_float(serializer, self->uncertainty);
-    
-    insert_u16(serializer, self->valid_flags);
-    
-}
-void extract_mip_aiding_pressure_command(mip_serializer* serializer, mip_aiding_pressure_command* self)
-{
-    extract_mip_time(serializer, &self->time);
-    
-    extract_u8(serializer, &self->frame_id);
-    
-    extract_float(serializer, &self->pressure);
-    
-    extract_float(serializer, &self->uncertainty);
-    
-    extract_u16(serializer, &self->valid_flags);
-    
-}
-
-mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags)
-{
-    mip_serializer serializer;
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
-    
-    assert(time);
-    insert_mip_time(&serializer, time);
-    
-    insert_u8(&serializer, frame_id);
-    
-    insert_float(&serializer, pressure);
-    
-    insert_float(&serializer, uncertainty);
-    
-    insert_u16(&serializer, valid_flags);
-    
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
 void insert_mip_aiding_ecef_vel_command(mip_serializer* serializer, const mip_aiding_ecef_vel_command* self)
 {
     insert_mip_time(serializer, &self->time);
@@ -968,6 +920,54 @@ mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_MAGNETIC_FIELD, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert_mip_aiding_pressure_command(mip_serializer* serializer, const mip_aiding_pressure_command* self)
+{
+    insert_mip_time(serializer, &self->time);
+    
+    insert_u8(serializer, self->frame_id);
+    
+    insert_float(serializer, self->pressure);
+    
+    insert_float(serializer, self->uncertainty);
+    
+    insert_u16(serializer, self->valid_flags);
+    
+}
+void extract_mip_aiding_pressure_command(mip_serializer* serializer, mip_aiding_pressure_command* self)
+{
+    extract_mip_time(serializer, &self->time);
+    
+    extract_u8(serializer, &self->frame_id);
+    
+    extract_float(serializer, &self->pressure);
+    
+    extract_float(serializer, &self->uncertainty);
+    
+    extract_u16(serializer, &self->valid_flags);
+    
+}
+
+mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags)
+{
+    mip_serializer serializer;
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    
+    assert(time);
+    insert_mip_time(&serializer, time);
+    
+    insert_u8(&serializer, frame_id);
+    
+    insert_float(&serializer, pressure);
+    
+    insert_float(&serializer, uncertainty);
+    
+    insert_u16(&serializer, valid_flags);
+    
+    assert(mip_serializer_is_ok(&serializer));
+    
+    return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 #ifdef __cplusplus

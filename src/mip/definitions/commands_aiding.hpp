@@ -40,13 +40,13 @@ enum
     CMD_POS_LLH            = 0x22,
     CMD_HEIGHT_ABS         = 0x23,
     CMD_HEIGHT_REL         = 0x24,
-    CMD_PRESSURE           = 0x25,
     CMD_VEL_ECEF           = 0x28,
     CMD_VEL_NED            = 0x29,
     CMD_VEL_ODOM           = 0x2A,
     CMD_WHEELSPEED         = 0x2B,
     CMD_HEADING_TRUE       = 0x31,
     CMD_MAGNETIC_FIELD     = 0x32,
+    CMD_PRESSURE           = 0x33,
     CMD_DELTA_POSITION     = 0x38,
     CMD_DELTA_ATTITUDE     = 0x39,
     CMD_LOCAL_ANGULAR_RATE = 0x3A,
@@ -472,47 +472,6 @@ TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t f
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_pressure  (0x13,0x25) Pressure [CPP]
-/// Estimated value of air pressure.
-///
-///@{
-
-struct Pressure
-{
-    Time time;
-    uint8_t frame_id = 0;
-    float pressure = 0; ///< [mbar]
-    float uncertainty = 0; ///< [mbar]
-    uint16_t valid_flags = 0;
-    
-    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_PRESSURE;
-    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "Pressure";
-    static constexpr const char* DOC_NAME = "Pressure";
-    
-    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
-    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-    
-    auto as_tuple() const
-    {
-        return std::make_tuple(time,frame_id,pressure,uncertainty,valid_flags);
-    }
-    
-    auto as_tuple()
-    {
-        return std::make_tuple(std::ref(time),std::ref(frame_id),std::ref(pressure),std::ref(uncertainty),std::ref(valid_flags));
-    }
-    typedef void Response;
-};
-void insert(Serializer& serializer, const Pressure& self);
-void extract(Serializer& serializer, Pressure& self);
-
-TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags);
-
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
 ///@defgroup cpp_aiding_ecef_vel  (0x13,0x28) Ecef Vel [CPP]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
@@ -838,6 +797,47 @@ void insert(Serializer& serializer, const MagneticField& self);
 void extract(Serializer& serializer, MagneticField& self);
 
 TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& time, uint8_t frameId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup cpp_aiding_pressure  (0x13,0x33) Pressure [CPP]
+/// Estimated value of air pressure.
+///
+///@{
+
+struct Pressure
+{
+    Time time;
+    uint8_t frame_id = 0;
+    float pressure = 0; ///< [mbar]
+    float uncertainty = 0; ///< [mbar]
+    uint16_t valid_flags = 0;
+    
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_PRESSURE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "Pressure";
+    static constexpr const char* DOC_NAME = "Pressure";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(time,frame_id,pressure,uncertainty,valid_flags);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(time),std::ref(frame_id),std::ref(pressure),std::ref(uncertainty),std::ref(valid_flags));
+    }
+    typedef void Response;
+};
+void insert(Serializer& serializer, const Pressure& self);
+void extract(Serializer& serializer, Pressure& self);
+
+TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
