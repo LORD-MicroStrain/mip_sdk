@@ -3,6 +3,9 @@ set(PYTHON_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 set(PYTHON_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/src/main.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/mip_python.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/mip_python.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/commands_3dm.cpp"
 )
 
 

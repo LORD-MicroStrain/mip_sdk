@@ -1,74 +1,19 @@
 
-#include <mip/mip_device.hpp>
-#include <mip/platform/serial_connection.hpp>
-#include <mip/platform/tcp_connection.hpp>
+#include "mip_python.hpp"
 
 #include <mip/definitions/commands_base.hpp>
 
 #include <pybind11/pybind11.h>
 
-#ifdef WIN32
-#define SERIAL_KEY "COM"
-#else
-#define SERIAL_KEY "/dev/tty"
-#endif
 
 
 namespace py = pybind11;
 
 
-class Device : public mip::DeviceInterface
-{
-public:
-    Device(mip::Timeout baseTimeout = 100) :
-        mip::DeviceInterface(m_buffer, sizeof(m_buffer), 100, baseTimeout)
-    {
-    }
+extern Device* connect(const std::string& interface, uint32_t parameter);
 
-    Device(std::shared_ptr<mip::Connection> connection, mip::Timeout baseTimeout=100) :
-        mip::DeviceInterface(connection.get(), m_buffer, sizeof(m_buffer), 100, baseTimeout)
-    {
-        m_connection = connection;
-    }
-
-    std::shared_ptr<mip::Connection> connection() const { return m_connection; }
-
-private:
-    uint8_t m_buffer[4096];
-    std::shared_ptr<mip::Connection> m_connection;
-};
-
-Device* connect(const std::string& interface, uint32_t parameter)
-{
-    std::shared_ptr<mip::Connection> connection;
-    mip::Timeout replyTimeout;
-
-    if(interface.find(SERIAL_KEY) == 0)
-    {
-        connection = std::make_shared<mip::platform::SerialConnection>(interface, parameter);
-        replyTimeout = 100;
-    }
-    else
-    {
-        connection = std::make_shared<mip::platform::TcpConnection>(interface, parameter);
-        replyTimeout = 2000;
-    }
-
-    connection->connect();
-
-    std::unique_ptr<Device> device(new Device(connection, replyTimeout));
-
-    return device.release();
-}
-
-// Result with descriptor
-struct FullResult : public mip::CmdResult
-{
-    mip::CompositeDescriptor descriptor;
-
-    template<class Cmd>
-    FullResult(mip::TypedResult<Cmd> result) : mip::CmdResult(result), descriptor(result.descriptor()) {}
-};
+extern void bind_commands_base(py::module_&);
+extern void bind_commands_3dm(py::module_&);
 
 
 PYBIND11_MODULE(mip, m)
@@ -93,6 +38,7 @@ PYBIND11_MODULE(mip, m)
         .def_property_readonly("connection", &Device::connection)
         .def_property_readonly("is_connected", [](Device& device){ return device.connection() && device.connection()->isConnected(); })
         //.def_property_readonly("device_info", &Device::deviceInfo)
+        .def("__str__", [](Device& device){ return device.connection()->interfaceName(); })  // Todo null check
     ;
 
     py::class_<FullResult>(m, "Result")
@@ -109,5 +55,8 @@ PYBIND11_MODULE(mip, m)
     base.def("ping",   [](Device& device)->FullResult{ return mip::commands_base::ping(device); });
     base.def("idle",   [](Device& device)->FullResult{ return mip::commands_base::setIdle(device); });
     base.def("resume", [](Device& device)->FullResult{ return mip::commands_base::resume(device); });
+
+    auto cmd_3dm = m.def_submodule("commands_3dm", "3DM Commands");
+    bind_commands_3dm(cmd_3dm);
 }
 
