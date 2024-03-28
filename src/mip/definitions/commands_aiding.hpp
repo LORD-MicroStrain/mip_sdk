@@ -126,9 +126,9 @@ struct FrameConfig
     FunctionSelector function = static_cast<FunctionSelector>(0);
     uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
     Format format = static_cast<Format>(0); ///< Format of the transformation.
+    bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
     Vector3f translation; ///< Translation X, Y, and Z.
     Rotation rotation; ///< Rotation as specified by format.
-    bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_FRAME_CONFIG;
@@ -147,12 +147,12 @@ struct FrameConfig
     
     auto as_tuple() const
     {
-        return std::make_tuple(frame_id,format,translation,rotation,tracking_enabled);
+        return std::make_tuple(frame_id,format,tracking_enabled,translation,rotation);
     }
     
     auto as_tuple()
     {
-        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation),std::ref(tracking_enabled));
+        return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(tracking_enabled),std::ref(translation),std::ref(rotation));
     }
     
     static FrameConfig create_sld_all(::mip::FunctionSelector function)
@@ -175,14 +175,14 @@ struct FrameConfig
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
+        bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
         Vector3f translation; ///< Translation X, Y, and Z.
         Rotation rotation; ///< Rotation as specified by format.
-        bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
         
         
         auto as_tuple()
         {
-            return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(translation),std::ref(rotation),std::ref(tracking_enabled));
+            return std::make_tuple(std::ref(frame_id),std::ref(format),std::ref(tracking_enabled),std::ref(translation),std::ref(rotation));
         }
     };
 };
@@ -192,8 +192,8 @@ void extract(Serializer& serializer, FrameConfig& self);
 void insert(Serializer& serializer, const FrameConfig::Response& self);
 void extract(Serializer& serializer, FrameConfig::Response& self);
 
-TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, const float* translation, const FrameConfig::Rotation& rotation, bool trackingEnabled);
-TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, float* translationOut, FrameConfig::Rotation* rotationOut, bool* trackingEnabledOut);
+TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool trackingEnabled, const float* translation, const FrameConfig::Rotation& rotation);
+TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool* trackingEnabledOut, float* translationOut, FrameConfig::Rotation* rotationOut);
 TypedResult<FrameConfig> saveFrameConfig(C::mip_interface& device, uint8_t frameId);
 TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frameId);
 TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t frameId);
