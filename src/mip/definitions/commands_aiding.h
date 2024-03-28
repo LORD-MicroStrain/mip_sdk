@@ -127,9 +127,9 @@ struct mip_aiding_frame_config_command
     mip_function_selector function;
     uint8_t frame_id; ///< Reference frame number. Cannot be 0.
     mip_aiding_frame_config_command_format format; ///< Format of the transformation.
+    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
     mip_vector3f translation; ///< Translation X, Y, and Z.
     mip_aiding_frame_config_command_rotation rotation; ///< Rotation as specified by format.
-    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
     
 };
 typedef struct mip_aiding_frame_config_command mip_aiding_frame_config_command;
@@ -143,17 +143,17 @@ struct mip_aiding_frame_config_response
 {
     uint8_t frame_id; ///< Reference frame number. Cannot be 0.
     mip_aiding_frame_config_command_format format; ///< Format of the transformation.
+    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
     mip_vector3f translation; ///< Translation X, Y, and Z.
     mip_aiding_frame_config_command_rotation rotation; ///< Rotation as specified by format.
-    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
     
 };
 typedef struct mip_aiding_frame_config_response mip_aiding_frame_config_response;
 void insert_mip_aiding_frame_config_response(struct mip_serializer* serializer, const mip_aiding_frame_config_response* self);
 void extract_mip_aiding_frame_config_response(struct mip_serializer* serializer, mip_aiding_frame_config_response* self);
 
-mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, const float* translation, const mip_aiding_frame_config_command_rotation* rotation, bool tracking_enabled);
-mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, float* translation_out, mip_aiding_frame_config_command_rotation* rotation_out, bool* tracking_enabled_out);
+mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool tracking_enabled, const float* translation, const mip_aiding_frame_config_command_rotation* rotation);
+mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool* tracking_enabled_out, float* translation_out, mip_aiding_frame_config_command_rotation* rotation_out);
 mip_cmd_result mip_aiding_save_frame_config(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_load_frame_config(struct mip_interface* device, uint8_t frame_id);
 mip_cmd_result mip_aiding_default_frame_config(struct mip_interface* device, uint8_t frame_id);
