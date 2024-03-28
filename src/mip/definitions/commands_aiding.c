@@ -70,6 +70,8 @@ void insert_mip_aiding_frame_config_command(mip_serializer* serializer, const mi
     }
     if( self->function == MIP_FUNCTION_WRITE )
     {
+        insert_bool(serializer, self->tracking_enabled);
+        
         for(unsigned int i=0; i < 3; i++)
             insert_float(serializer, self->translation[i]);
         
@@ -83,8 +85,6 @@ void insert_mip_aiding_frame_config_command(mip_serializer* serializer, const mi
             insert_mip_quatf(serializer, &self->rotation.quaternion);
             
         }
-        insert_bool(serializer, self->tracking_enabled);
-        
     }
 }
 void extract_mip_aiding_frame_config_command(mip_serializer* serializer, mip_aiding_frame_config_command* self)
@@ -100,6 +100,8 @@ void extract_mip_aiding_frame_config_command(mip_serializer* serializer, mip_aid
     }
     if( self->function == MIP_FUNCTION_WRITE )
     {
+        extract_bool(serializer, &self->tracking_enabled);
+        
         for(unsigned int i=0; i < 3; i++)
             extract_float(serializer, &self->translation[i]);
         
@@ -113,8 +115,6 @@ void extract_mip_aiding_frame_config_command(mip_serializer* serializer, mip_aid
             extract_mip_quatf(serializer, &self->rotation.quaternion);
             
         }
-        extract_bool(serializer, &self->tracking_enabled);
-        
     }
 }
 
@@ -123,6 +123,8 @@ void insert_mip_aiding_frame_config_response(mip_serializer* serializer, const m
     insert_u8(serializer, self->frame_id);
     
     insert_mip_aiding_frame_config_command_format(serializer, self->format);
+    
+    insert_bool(serializer, self->tracking_enabled);
     
     for(unsigned int i=0; i < 3; i++)
         insert_float(serializer, self->translation[i]);
@@ -137,14 +139,14 @@ void insert_mip_aiding_frame_config_response(mip_serializer* serializer, const m
         insert_mip_quatf(serializer, &self->rotation.quaternion);
         
     }
-    insert_bool(serializer, self->tracking_enabled);
-    
 }
 void extract_mip_aiding_frame_config_response(mip_serializer* serializer, mip_aiding_frame_config_response* self)
 {
     extract_u8(serializer, &self->frame_id);
     
     extract_mip_aiding_frame_config_command_format(serializer, &self->format);
+    
+    extract_bool(serializer, &self->tracking_enabled);
     
     for(unsigned int i=0; i < 3; i++)
         extract_float(serializer, &self->translation[i]);
@@ -159,8 +161,6 @@ void extract_mip_aiding_frame_config_response(mip_serializer* serializer, mip_ai
         extract_mip_quatf(serializer, &self->rotation.quaternion);
         
     }
-    extract_bool(serializer, &self->tracking_enabled);
-    
 }
 
 void insert_mip_aiding_frame_config_command_format(struct mip_serializer* serializer, const mip_aiding_frame_config_command_format self)
@@ -174,7 +174,7 @@ void extract_mip_aiding_frame_config_command_format(struct mip_serializer* seria
     *self = tmp;
 }
 
-mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, const float* translation, const mip_aiding_frame_config_command_rotation* rotation, bool tracking_enabled)
+mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool tracking_enabled, const float* translation, const mip_aiding_frame_config_command_rotation* rotation)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -185,6 +185,8 @@ mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8
     insert_u8(&serializer, frame_id);
     
     insert_mip_aiding_frame_config_command_format(&serializer, format);
+    
+    insert_bool(&serializer, tracking_enabled);
     
     assert(translation || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
@@ -200,13 +202,11 @@ mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8
         insert_mip_quatf(&serializer, &rotation->quaternion);
         
     }
-    insert_bool(&serializer, tracking_enabled);
-    
     assert(mip_serializer_is_ok(&serializer));
     
     return mip_interface_run_command(device, MIP_AIDING_CMD_DESC_SET, MIP_CMD_DESC_AIDING_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, float* translation_out, mip_aiding_frame_config_command_rotation* rotation_out, bool* tracking_enabled_out)
+mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool* tracking_enabled_out, float* translation_out, mip_aiding_frame_config_command_rotation* rotation_out)
 {
     mip_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
@@ -232,6 +232,9 @@ mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_
         
         extract_mip_aiding_frame_config_command_format(&deserializer, &format);
         
+        assert(tracking_enabled_out);
+        extract_bool(&deserializer, tracking_enabled_out);
+        
         assert(translation_out || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract_float(&deserializer, &translation_out[i]);
@@ -246,9 +249,6 @@ mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_
             extract_mip_quatf(&deserializer, &rotation_out->quaternion);
             
         }
-        assert(tracking_enabled_out);
-        extract_bool(&deserializer, tracking_enabled_out);
-        
         if( mip_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
