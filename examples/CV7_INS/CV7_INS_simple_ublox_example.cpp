@@ -141,8 +141,8 @@ int main(int argc, const char* argv[])
     //
     commands_aiding::FrameConfig::Rotation external_gnss_antenna_to_vehicle_frame_rotation;
     external_gnss_antenna_to_vehicle_frame_rotation.euler = mip::Vector3f(0.0f, 0.0f, 0.0f);  // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero // GNSS position/velocity measurements are agnostic to rotation, rotation set to zero
-    if(commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER,
-                                          input_arguments.gnss_antenna_lever_arm, external_gnss_antenna_to_vehicle_frame_rotation, true) != CmdResult::ACK_OK)
+    if(commands_aiding::writeFrameConfig(*device, gnss_antenna_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
+                                          input_arguments.gnss_antenna_lever_arm, external_gnss_antenna_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Unable to configure external GNSS antenna frame ID");
 
 

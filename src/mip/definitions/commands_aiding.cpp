@@ -61,6 +61,8 @@ void insert(Serializer& serializer, const FrameConfig& self)
     }
     if( self.function == FunctionSelector::WRITE )
     {
+        insert(serializer, self.tracking_enabled);
+        
         for(unsigned int i=0; i < 3; i++)
             insert(serializer, self.translation[i]);
         
@@ -74,8 +76,6 @@ void insert(Serializer& serializer, const FrameConfig& self)
             insert(serializer, self.rotation.quaternion);
             
         }
-        insert(serializer, self.tracking_enabled);
-        
     }
 }
 void extract(Serializer& serializer, FrameConfig& self)
@@ -91,6 +91,8 @@ void extract(Serializer& serializer, FrameConfig& self)
     }
     if( self.function == FunctionSelector::WRITE )
     {
+        extract(serializer, self.tracking_enabled);
+        
         for(unsigned int i=0; i < 3; i++)
             extract(serializer, self.translation[i]);
         
@@ -104,8 +106,6 @@ void extract(Serializer& serializer, FrameConfig& self)
             extract(serializer, self.rotation.quaternion);
             
         }
-        extract(serializer, self.tracking_enabled);
-        
     }
 }
 
@@ -114,6 +114,8 @@ void insert(Serializer& serializer, const FrameConfig::Response& self)
     insert(serializer, self.frame_id);
     
     insert(serializer, self.format);
+    
+    insert(serializer, self.tracking_enabled);
     
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.translation[i]);
@@ -128,14 +130,14 @@ void insert(Serializer& serializer, const FrameConfig::Response& self)
         insert(serializer, self.rotation.quaternion);
         
     }
-    insert(serializer, self.tracking_enabled);
-    
 }
 void extract(Serializer& serializer, FrameConfig::Response& self)
 {
     extract(serializer, self.frame_id);
     
     extract(serializer, self.format);
+    
+    extract(serializer, self.tracking_enabled);
     
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.translation[i]);
@@ -150,11 +152,9 @@ void extract(Serializer& serializer, FrameConfig::Response& self)
         extract(serializer, self.rotation.quaternion);
         
     }
-    extract(serializer, self.tracking_enabled);
-    
 }
 
-TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, const float* translation, const FrameConfig::Rotation& rotation, bool trackingEnabled)
+TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool trackingEnabled, const float* translation, const FrameConfig::Rotation& rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -163,6 +163,8 @@ TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t fram
     insert(serializer, frameId);
     
     insert(serializer, format);
+    
+    insert(serializer, trackingEnabled);
     
     assert(translation || (3 == 0));
     for(unsigned int i=0; i < 3; i++)
@@ -178,13 +180,11 @@ TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t fram
         insert(serializer, rotation.quaternion);
         
     }
-    insert(serializer, trackingEnabled);
-    
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, float* translationOut, FrameConfig::Rotation* rotationOut, bool* trackingEnabledOut)
+TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool* trackingEnabledOut, float* translationOut, FrameConfig::Rotation* rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
     Serializer serializer(buffer, sizeof(buffer));
@@ -207,6 +207,9 @@ TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frame
         
         extract(deserializer, format);
         
+        assert(trackingEnabledOut);
+        extract(deserializer, *trackingEnabledOut);
+        
         assert(translationOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
             extract(deserializer, translationOut[i]);
@@ -221,9 +224,6 @@ TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frame
             extract(deserializer, rotationOut->quaternion);
             
         }
-        assert(trackingEnabledOut);
-        extract(deserializer, *trackingEnabledOut);
-        
         if( deserializer.remaining() != 0 )
             result = MIP_STATUS_ERROR;
     }
@@ -524,52 +524,6 @@ TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t f
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
-void insert(Serializer& serializer, const Pressure& self)
-{
-    insert(serializer, self.time);
-    
-    insert(serializer, self.frame_id);
-    
-    insert(serializer, self.pressure);
-    
-    insert(serializer, self.uncertainty);
-    
-    insert(serializer, self.valid_flags);
-    
-}
-void extract(Serializer& serializer, Pressure& self)
-{
-    extract(serializer, self.time);
-    
-    extract(serializer, self.frame_id);
-    
-    extract(serializer, self.pressure);
-    
-    extract(serializer, self.uncertainty);
-    
-    extract(serializer, self.valid_flags);
-    
-}
-
-TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags)
-{
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
-    
-    insert(serializer, time);
-    
-    insert(serializer, frameId);
-    
-    insert(serializer, pressure);
-    
-    insert(serializer, uncertainty);
-    
-    insert(serializer, validFlags);
-    
-    assert(serializer.isOk());
-    
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
-}
 void insert(Serializer& serializer, const EcefVel& self)
 {
     insert(serializer, self.time);
@@ -831,6 +785,52 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)mip_serializer_length(&serializer));
+}
+void insert(Serializer& serializer, const Pressure& self)
+{
+    insert(serializer, self.time);
+    
+    insert(serializer, self.frame_id);
+    
+    insert(serializer, self.pressure);
+    
+    insert(serializer, self.uncertainty);
+    
+    insert(serializer, self.valid_flags);
+    
+}
+void extract(Serializer& serializer, Pressure& self)
+{
+    extract(serializer, self.time);
+    
+    extract(serializer, self.frame_id);
+    
+    extract(serializer, self.pressure);
+    
+    extract(serializer, self.uncertainty);
+    
+    extract(serializer, self.valid_flags);
+    
+}
+
+TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags)
+{
+    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    Serializer serializer(buffer, sizeof(buffer));
+    
+    insert(serializer, time);
+    
+    insert(serializer, frameId);
+    
+    insert(serializer, pressure);
+    
+    insert(serializer, uncertainty);
+    
+    insert(serializer, validFlags);
+    
+    assert(serializer.isOk());
+    
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 
 } // namespace commands_aiding
