@@ -42,8 +42,8 @@ typedef uint_least16_t packet_length;  ///< Type used for the length of a MIP pa
 ///
 typedef struct mip_packet
 {
-    uint8_t*       _buffer;        ///<@private Pointer to the packet data.
-    uint_least16_t _buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
+    uint8_t*      _buffer;        ///<@private Pointer to the packet data.
+    packet_length _buffer_length; ///<@private Length of the buffer (not necessarily the packet length!).
 } mip_packet;
 
 
