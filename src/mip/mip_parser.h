@@ -79,8 +79,14 @@ typedef struct mip_parser
 #define MIP_PARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
 
 
+int mip_parse_one_packet(
+    uint8_t* packet_buffer, packet_length* leftover_ptr,
+    const uint8_t* input_buffer, size_t input_length,
+    size_t* consumed_input_length_out_ptr, packet_length* packet_length_out
+);
+
+
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
-int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_ptr, const uint8_t* input_buffer, size_t input_length, size_t* consumed_input_length_out_ptr);
 size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp, unsigned int max_packets);
 
 void mip_parser_reset(mip_parser* parser);

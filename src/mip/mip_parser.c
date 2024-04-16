@@ -56,48 +56,93 @@ void mip_parser_reset(mip_parser* parser)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Called when the packet in the buffer is found to be invalid so that
-///       nested packets can be parsed properly. This is an internal helper
-///       function.
-///
-///@internal
-///
-///@param packet_buffer
-///       Buffer holding invalid packet. Some or all of this data will be
-///       deleted, depending on if a nested packet exist.
-///@param leftover_ptr
-///       Pointer to the "leftover" byte count and number of bytes in
-///       packet_buffer. Updated with the new length.
-///
-///@returns The new expected packet size.
-///
-static size_t mip_reparse_packet_buffer(uint8_t* packet_buffer, packet_length* leftover_ptr)
-{
-    packet_buffer[0] = 0x00;  // Skip invalid packet.
+//////////////////////////////////////////////////////////////////////////////////
+/////@brief Called when the packet in the buffer is found to be invalid so that
+/////       nested packets can be parsed properly. This is an internal helper
+/////       function.
+/////
+/////@internal
+/////
+/////@param packet_buffer
+/////       Buffer holding invalid packet. Some or all of this data will be
+/////       deleted, depending on if a nested packet exist.
+/////@param leftover_ptr
+/////       Pointer to the "leftover" byte count and number of bytes in
+/////       packet_buffer. Updated with the new length.
+/////
+/////@returns The new expected packet size.
+/////
+//static size_t mip_reparse_packet_buffer(uint8_t* packet_buffer, packet_length* leftover_ptr)
+//{
+//    packet_buffer[0] = 0x00;  // Skip invalid packet.
+//
+//    // Search for a nested SYNC1 and shift the data over.
+//    // This simplifies the parsing code by ensuring the packet buffer offset is always 0
+//    // and that there is enough space for a max size packet. Theoretically this could
+//    // be done only if the buffer runs out of space.
+//    size_t i;
+//    for(i=0; i<*leftover_ptr; i++)
+//    {
+//        // Find SYNC1 followed by end of buffer or SYNC2
+//        if(packet_buffer[i] == MIP_SYNC1 && ((i+1) >= *leftover_ptr || packet_buffer[i+1] == MIP_SYNC2))
+//        {
+//            memmove(packet_buffer, &packet_buffer[i], *leftover_ptr-i);
+//            break;
+//        }
+//    }
+//    *leftover_ptr -= i;
+//
+//    // Return new expected packet length
+//    if(*leftover_ptr < MIP_HEADER_LENGTH)
+//        return *leftover_ptr + 1;
+//    else
+//        return MIP_HEADER_LENGTH + packet_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH;
+//}
 
-    // Search for a nested SYNC1 and shift the data over.
-    // This simplifies the parsing code by ensuring the packet buffer offset is always 0
-    // and that there is enough space for a max size packet. Theoretically this could
-    // be done only if the buffer runs out of space.
-    size_t i;
-    for(i=0; i<*leftover_ptr; i++)
-    {
-        // Find SYNC1 followed by end of buffer or SYNC2
-        if(packet_buffer[i] == MIP_SYNC1 && ((i+1) >= *leftover_ptr || packet_buffer[i+1] == MIP_SYNC2))
-        {
-            memmove(packet_buffer, &packet_buffer[i], *leftover_ptr-i);
-            break;
-        }
-    }
-    *leftover_ptr -= i;
+//
+//typedef enum MIP_PARSE_RESULT
+//{
+//    MIP_PARSE_RESULT_SYNCHONIZED = 0,  ///<@private Indicates a new packet
+//    MIP_PARSE_RESULT_CONTINUED   = 1,
+//    MIP_PARSE_RESULT_INVALID_PKT = 2,
+//    MIP_PARSE_RESULT_VALID_PKT   = 3,
+//} MIP_PARSE_RESULT;
+//
+//MIP_PARSE_RESULT mip_parse_one_packet_internal(
+//    uint8_t* packet_buffer, packet_length* leftover_ptr,
+//    const uint8_t* input_buffer, size_t input_length,
+//    size_t* consumed_input_length_out, packet_length* packet_length_out)
+//{
+//
+//}
 
-    // Return new expected packet length
-    if(*leftover_ptr < MIP_HEADER_LENGTH)
-        return *leftover_ptr + 1;
-    else
-        return MIP_HEADER_LENGTH + packet_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH;
-}
+//mip_packet mip_parse_one_packet_inplace(const uint8_t* input_buffer, size_t input_length, size_t* consumed_input_length_out)
+//{
+//    mip_packet packet;
+//    size_t total_consumed = 0;
+//
+//    for(;;)
+//    {
+//        size_t consumed = 0;
+//
+//        MIP_PARSE_RESULT result = mip_parse_one_packet_internal(NULL, NULL, input_buffer, input_length, &consumed, &packet._buffer_length);
+//
+//        input_buffer += consumed;
+//        input_length -= consumed;
+//        total_consumed += consumed;
+//
+//        if(result == MIP_PARSE_RESULT_VALID_PKT)
+//            break;
+//
+//        if(result < MIP_PARSE_RESULT_INVALID_PKT)
+//            break;
+//    }
+//
+//    if(consumed_input_length_out)
+//        *consumed_input_length_out = total_consumed;
+//
+//    return packet;
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Parses at most one packet from the input buffer.
@@ -121,7 +166,7 @@ static size_t mip_reparse_packet_buffer(uint8_t* packet_buffer, packet_length* l
 ///       In this case the packet_buffer is reparsed in order to check for
 ///       valid packets contained within the buffer but masked by the invalid
 ///       packet.
-///@param[in,out] packet_length_ptr
+///@param[in,out] packet_length_out
 ///       As an input, this must point to the number of "leftover" bytes in
 ///       packet_buffer from a previous call to this function. If packet_buffer
 ///       is NULL (or if there's no leftover data), the initial value must be 0.
@@ -134,7 +179,7 @@ static size_t mip_reparse_packet_buffer(uint8_t* packet_buffer, packet_length* l
 ///       Buffer containing data to be parsed.
 ///@param input_length
 ///       Number of bytes to parse from input_buffer.
-///@param[in,out] consumed_input_length_out_ptr
+///@param[in,out] consumed_input_length_out
 ///       If not NULL, the pointed-to value will be set to the number of bytes
 ///       in input_buffer that were consumed. The user should discard this much
 ///       data from the input buffer. This will include all bytes up to the
@@ -148,44 +193,62 @@ static size_t mip_reparse_packet_buffer(uint8_t* packet_buffer, packet_length* l
 ///@returns Negative if an invalid packet was detected (bad checksum)
 ///@returns 0 if more data is required (incomplete or no packet detected).
 ///
-int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_ptr, const uint8_t* input_buffer, size_t input_length, size_t* consumed_input_length_out_ptr)
+int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_ptr, const uint8_t* input_buffer, size_t input_length, size_t* consumed_input_length_out, packet_length* packet_length_out)
 {
-    assert(packet_length_ptr != NULL);  // Must supply a size pointer.
-    assert(*packet_length_ptr == 0 || packet_buffer != NULL);  // Buffer can't be NULL if leftover data is specified.
+    assert(!leftover_length_ptr || *leftover_length_ptr == 0 || packet_buffer);  // Buffer can't be NULL if leftover data is specified.
+    assert(packet_length_out);  // Must specify packet length pointer.
+    assert(input_buffer || input_length > 0);  // Input buffer can be NULL IFF input_length == 0.
 
-    // Leftover data, but not a valid packet?
-    // This happens when a bad checksum or timeout occurs.
-    if(*packet_length_ptr > 0 && packet_buffer[0] != MIP_SYNC1)
-    {
-        mip_reparse_packet_buffer(packet_buffer, packet_length_ptr);
-    }
+    if(consumed_input_length_out)
+        *consumed_input_length_out = 0;
+
+    *packet_length_out = 0;
+
+    //// Leftover data, but not a valid packet?
+    //// This happens when a bad checksum or timeout occurs.
+    //if(*packet_length_out > 0 && packet_buffer[0] != MIP_SYNC1)
+    //{
+    //    size_t consumed_length = 0;
+    //    packet_length parsed_packet_length = 0;
+    //    int result = mip_parse_one_packet(NULL, &parsed_packet_length, packet_buffer, *packet_length_out, &consumed_length);
+    //
+    //    // Move packet to start of the buffer.
+    //    memmove(packet_buffer, &packet_buffer[consumed_length], *packet_length_out - consumed_length);
+    //    *packet_length_out -= consumed_length;
+    //
+    //    // Packet (valid or invalid) found, report back
+    //    if(result != 0)
+    //        return result;
+    //
+    //    mip_reparse_packet_buffer(packet_buffer, packet_length_out);
+    //}
+
+    // Offset into the input buffer (nonzero if bytes are dropped/skipped due to garbage/non-mip data)
+    size_t unparsed_input_offset = 0;
 
     // Bytes already in the parser buffer from previous call.
-    packet_length leftover_length = *packet_length_ptr;
+    packet_length leftover_length = *leftover_length_ptr;
 
     assert(leftover_length < MIP_PACKET_LENGTH_MAX);
-    //assert(expected_packet_length > leftover_length);
 
     // Expected length of the packet or current header byte being parsed. 1, 2, 4 or >= 6.
     size_t expected_packet_length = (leftover_length < MIP_HEADER_LENGTH) ? (leftover_length + 1) : (MIP_HEADER_LENGTH + packet_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH);
-    // Offset into the input buffer (nonzero if bytes are dropped/skipped due to garbage/non-mip data)
-    size_t unparsed_input_offset = 0;
 
     // Number of bytes not yet parsed from the input buffer.
     size_t remaining_input_length;  // Always set in for loop
 
     for(;;)
     {
-        assert(unparsed_input_offset <= input_length);  // Input offset must not exceed input length.
-
+        // Input offset must not exceed input length.
+        assert(unparsed_input_offset <= input_length);
         // Remaining processed bytes from the input buffer
         remaining_input_length = input_length - unparsed_input_offset;
 
-        // Number of bytes remaining before the packet will be complete in the buffer.
-        // If leftover_length is longer than the packet, this is 0.
-        size_t remaining_packet_length = 0;
-        if(expected_packet_length >= leftover_length)
-            remaining_packet_length = expected_packet_length - leftover_length;
+        // Only input_buffer is processed in this function, so complete packet(s)
+        // sitting in packet_buffer won't be noticed.
+        assert(expected_packet_length > leftover_length);
+        // Number of bytes remaining before the packet will be complete.
+        size_t remaining_packet_length = expected_packet_length - leftover_length;
 
         // Check if there is enough input data to finish parsing a packet.
         if(remaining_input_length < remaining_packet_length)
@@ -195,7 +258,7 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
             // If a separate packet buffer is used, copy remaining data to it
             // so that the entire input buffer is consumed. Note that this
             // cannot overflow since by definition it's not enough for a max size packet.
-            if(packet_buffer)
+            if(packet_buffer != NULL)
             {
                 // The total number of leftover bytes should be less than the packet size.
                 assert(remaining_input_length + leftover_length < expected_packet_length);
@@ -204,18 +267,26 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
 
                 leftover_length += remaining_input_length;
                 remaining_packet_length -= remaining_input_length;
+                assert(remaining_packet_length > 0);
 
                 unparsed_input_offset += remaining_input_length;
                 remaining_input_length = 0;
 
                 assert(leftover_length <= MIP_PACKET_LENGTH_MAX);
-                *packet_length_ptr = (packet_length)leftover_length;
+                assert(leftover_length_ptr != NULL);
+                *leftover_length_ptr = leftover_length;
+            }
+            else
+            {
+                assert(!leftover_length_ptr || *leftover_length_ptr == 0);
             }
 
-            if(consumed_input_length_out_ptr != NULL)
-                *consumed_input_length_out_ptr = unparsed_input_offset;
+            if (consumed_input_length_out != NULL)
+                *consumed_input_length_out = unparsed_input_offset;
 
-            return 0;
+            *packet_length_out = 0;
+
+            return 0;  // Not enough data
         }
 
         //
@@ -239,16 +310,13 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
                 expected_packet_length = MIP_HEADER_LENGTH;
             else  // Next byte is not 0x65 --> not a mip packet, reset parser
             {
-                // If leftover data, need to check if there are "nested" packets
+                // Don't advance the input offset if the SYNC1 was in the packet buffer.
                 if(leftover_length > 0)
-                {
-                    expected_packet_length = mip_reparse_packet_buffer(packet_buffer, &leftover_length);
-                }
+                    leftover_length = 0;
                 else
-                {
                     unparsed_input_offset++;
-                    expected_packet_length = 1;
-                }
+
+                expected_packet_length = 1;
             }
             break;
 
@@ -266,19 +334,19 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
 
         default:  // All packet data is available, check checksum
         {
-            assert(expected_packet_length >= leftover_length);  //
+            assert(expected_packet_length >= leftover_length);  // Overflow check
             const size_t packet_length_from_input = expected_packet_length - leftover_length;
-            assert(packet_length_from_input <= input_length-unparsed_input_offset);  //
+            assert(packet_length_from_input <= input_length-unparsed_input_offset);  // Check math
 
             if (packet_buffer)
                 memcpy(&packet_buffer[leftover_length], &input_buffer[unparsed_input_offset], packet_length_from_input);
 
             assert(expected_packet_length <= MIP_PACKET_LENGTH_MAX && expected_packet_length >= MIP_PACKET_LENGTH_MIN);
-            *packet_length_ptr = (packet_length)expected_packet_length;
+            *packet_length_out = (packet_length)expected_packet_length;
 
             mip_packet packet = {
                 ._buffer        = packet_buffer,
-                ._buffer_length = *packet_length_ptr
+                ._buffer_length = *packet_length_out
             };
 
             const bool checksum_valid = mip_packet_compute_checksum(&packet) == mip_packet_checksum_value(&packet);
@@ -288,16 +356,18 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
                 unparsed_input_offset += packet_length_from_input;
 
             // Note: if the checksum wasn't valid, need to reparse the parse_buffer since
-            // there may be valid packets nested within the bad one.
+            // there may be valid packets nested within the bad "packet".
 
-            if (consumed_input_length_out_ptr != NULL)
-                *consumed_input_length_out_ptr = unparsed_input_offset;
+            if (consumed_input_length_out != NULL)
+                *consumed_input_length_out = unparsed_input_offset;
+
+            if(leftover_length_ptr != NULL)
+                *leftover_length_ptr = leftover_length;
 
             return checksum_valid ? +1 : -1;
         }
         }
     }
-
 }
 
 
@@ -348,6 +418,8 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_pt
 ///
 size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp, unsigned int max_packets)
 {
+    bool reparse = false;
+
     // Check for timeout
     if((parser->_buffered_length > 0) && (timestamp >= parser->_start_time + parser->_timeout))
     {
@@ -355,61 +427,88 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
         // If a packet times out, it could be due to random garbage creating a fake mip header with
         // a large packet size. There may be real packets within the fake packet and these
-        // still need to be parsed out.
+        // should be parsed normally, since they technically may not have timed out.
+        // If any partial packet remains after reparsing, discard it.
+        //
+        // E.g. if leftover data in parser buffer looks like:
+        //   75 65 xx FF | xx ... 75 65 01 | 02 02 01 E0 | C6 zz zz | zz
+        //   where '|' separates data being processed in chunks, then:
+        // * The outer "packet" (maybe just garbage that looks like a packet) has timed out.
+        // * The inner ping command has NOT timed out because it was probably received
+        //   in a narrow span of time. Either way, it's been properly received so accept it.
+        // * The data at the end ('zz') shouldn't time out either, as it could be relatively
+        //   recent.
+        //
+        // The timeout is a safeguard against really long bogus packets clogging the parser
+        // indefinitely until more data arrives. It's ok to have false negative timeouts.
 
-        parser->_buffer[0] = 0x00;  // Signal parse_one_packet to reparse the packet buffer.
+        reparse = true;
     }
 
     size_t total_consumed = 0;
 
-    bool continuation = (parser->_buffered_length > 0);
+    // Set parser start time if not continuing a previous packet.
+    if(parser->_buffered_length == 0)
+        parser->_start_time = timestamp;
 
-    for(unsigned int packet_num = 0; (max_packets==MIP_PARSER_UNLIMITED_PACKETS) || (packet_num < max_packets); packet_num++)
+    mip_packet packet;
+    packet._buffer = parser->_buffer;
+    packet._buffer_length = 0;
+
+    for(unsigned int packet_num = 0; (max_packets==MIP_PARSER_UNLIMITED_PACKETS) || (packet_num < max_packets) || reparse; packet_num++)
     {
-        size_t consumed_input_length = 0;
+        size_t consumed_length;
+        int    result;
 
-        int result = mip_parse_one_packet(parser->_buffer, &parser->_buffered_length, input_buffer, input_length, &consumed_input_length);
+        if(reparse)
+        {
+            parser->_buffer[0] = 0x00;  // Stop parser from seeing the original bad packet.
+            result = mip_parse_one_packet(NULL, NULL, parser->_buffer, parser->_buffered_length, &consumed_length, &packet._buffer_length);
+        }
+        else
+        {
+            result = mip_parse_one_packet(parser->_buffer, &parser->_buffered_length, input_buffer, input_length, &consumed_length, &packet._buffer_length);
 
-        input_buffer += consumed_input_length;
-        input_length  -= consumed_input_length;
+            input_buffer   += consumed_length;
+            input_length   -= consumed_length;
+            total_consumed += consumed_length;
 
-        total_consumed += consumed_input_length;
-
-        MIP_DIAG_INC(parser->_diag_bytes_read, consumed_input_length);
+            MIP_DIAG_INC(parser->_diag_bytes_read, consumed_length);
+        }
 
         if (result > 0)  // Valid packet
         {
             MIP_DIAG_INC(parser->_diag_valid_packets, 1);
-            MIP_DIAG_INC(parser->_diag_packet_bytes, parser->_buffered_length);
-            MIP_DIAG_INC(parser->_diag_bytes_skipped, (consumed_input_length - parser->_buffered_length));
+            MIP_DIAG_INC(parser->_diag_packet_bytes, packet._buffer_length);
+            MIP_DIAG_INC(parser->_diag_bytes_skipped, (consumed_length - packet._buffer_length));
 
             if(parser->_callback)
-            {
-                mip_packet packet = {
-                    ._buffer = parser->_buffer,
-                    ._buffer_length = parser->_buffered_length,
-                };
                 parser->_callback(parser->_callback_object, &packet, parser->_start_time);
 
-            }
-            parser->_buffered_length = 0;
-            parser->_start_time = timestamp;
+            parser->_buffered_length -= packet._buffer_length;
+
+            // Start timestamp of next packet if not reparsing.
+            if(parser->_buffered_length == 0)
+                parser->_start_time = timestamp;
         }
         else if(result < 0)  // Invalid packet
         {
             MIP_DIAG_INC(parser->_diag_invalid_packets, 1);
-            MIP_DIAG_INC(parser->_diag_bytes_skipped, consumed_input_length);
+            MIP_DIAG_INC(parser->_diag_bytes_skipped, consumed_length);
 
-            parser->_buffer[0] = 0x00;  // Signal parse_one_packet to reparse the packet buffer.
+            // Go back and check for "nested" packets.
+            reparse = true;
         }
-        else // Need more data
+        else if(reparse)  // Done reparsing packet_buffer
         {
+            reparse = false;
+        }
+        else  // No more data in input_buffer.
+        {
+            assert(input_length == 0);
             break;
         }
     }
-
-    if(!continuation)
-        parser->_start_time = timestamp;
 
     return total_consumed;
 }
