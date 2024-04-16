@@ -6,7 +6,6 @@
 #include <stdlib.h>
 
 
-uint8_t parse_buffer[1024];
 struct mip_parser parser;
 
 unsigned int num_errors = 0;
@@ -29,25 +28,25 @@ void print_packet(FILE* out, const struct mip_packet* packet)
 }
 
 
-bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type timestamp)
+void handle_packet(void* p, const struct mip_packet* packet, timestamp_type timestamp)
 {
     (void)p;
 
     num_packets_parsed++;
     parsed_packet_length = mip_packet_total_length(packet);
     parsed_packet_timestamp = timestamp;
-
-    return true;
 }
 
 
 int main(int argc, const char* argv[])
 {
-    mip_parser_init(&parser, parse_buffer, sizeof(parse_buffer), &handle_packet, NULL, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, &handle_packet, NULL, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     srand(0);
 
-    const unsigned int NUM_ITERATIONS = 100;
+    timestamp_type start_time = rand();
+
+    const unsigned int NUM_ITERATIONS = 10000;
 
     unsigned int last_parsed = 0;
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
@@ -64,7 +63,7 @@ int main(int argc, const char* argv[])
             if( max_field_len < MIP_FIELD_HEADER_LENGTH )
                 break;
 
-            const uint8_t max_payload = max_field_len - MIP_FIELD_HEADER_LENGTH;
+            const uint8_t max_payload = (uint8_t)max_field_len - MIP_FIELD_HEADER_LENGTH;
 
             const uint8_t paylen = (rand() % (max_payload+1)) >> (rand() % 8);
 
@@ -76,8 +75,8 @@ int main(int argc, const char* argv[])
             if( available < 0 )
             {
                 num_errors++;
-                fprintf(stderr, "Failed to create field of length %d\n", paylen+MIP_FIELD_HEADER_LENGTH);
-                fprintf(stderr, "  max_len=%ld, available=%d\n", max_field_len, available);
+                fprintf(stderr, "Failed to create field of length %u\n", paylen+MIP_FIELD_HEADER_LENGTH);
+                fprintf(stderr, "  max_len=%zu, available=%u\n", max_field_len, available);
                 break;
             }
 
@@ -106,7 +105,6 @@ int main(int argc, const char* argv[])
         timestamp_type timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
         unsigned int c = 0;
 
-        const timestamp_type start_time = rand();
         timestamp_type timestamp = start_time;
         size_t sent = 0;
 
@@ -115,7 +113,7 @@ int main(int argc, const char* argv[])
         {
             const size_t count = rand() % (packet_size - sent);
 
-            mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIPPARSER_UNLIMITED_PACKETS);
+            mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
 
             sent += count;
             timestamps[c] = timestamp;
@@ -131,13 +129,13 @@ int main(int argc, const char* argv[])
 
         const size_t count = packet_size - sent;
 
-        mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIPPARSER_UNLIMITED_PACKETS);
+        mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
 
         sent += count;
         timestamps[c] = timestamp;
         offsets[c++] = sent;
 
-        bool timedout = (timestamps[c-1] - start_time) > mip_parser_timeout(&parser);
+        bool timedout = (timestamps[c-1] - start_time) >= mip_parser_timeout(&parser);
 
         bool error = false;
 
@@ -147,41 +145,42 @@ int main(int argc, const char* argv[])
             {
                 num_errors++;
                 error = true;
-                fprintf(stderr, "Parser produced %d packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
+                fprintf(stderr, "Parser produced %u packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
             }
         }
         else if( num_packets_parsed != (last_parsed + 1) )
         {
             num_errors++;
             error = true;
-            fprintf(stderr, "Parser produced %d packet(s) but expected exactly 1.\n", num_packets_parsed-last_parsed);
+            fprintf(stderr, "Parser produced %u packet(s) but expected exactly 1.\n", num_packets_parsed-last_parsed);
         }
         else if( parsed_packet_length != packet_size )
         {
             num_errors++;
             error = true;
-            fprintf(stderr, "Parsed packet size is wrong (%ld bytes)\n", parsed_packet_length);
+            fprintf(stderr, "Parsed packet size is wrong (%zu bytes)\n", parsed_packet_length);
         }
         else if( parsed_packet_timestamp != start_time )
         {
             num_errors++;
             error = true;
-            fprintf(stderr, "Parsed packet has wrong timestamp %ld\n", parsed_packet_timestamp);
+            fprintf(stderr, "Parsed packet has wrong timestamp %lld\n", parsed_packet_timestamp);
         }
         last_parsed = num_packets_parsed;
+        start_time = timestamp;
 
         if( error )
         {
-            fprintf(stderr, "  packet_size=%ld, last_count=%ld, extra=%ld, start_time=%ld\n", packet_size, count, extra, start_time);
+            fprintf(stderr, "  packet_size=%zu, last_count=%zu, extra=%zu, start_time=%lld\n", packet_size, count, extra, start_time);
 
             fprintf(stderr, "  Sent chunks:");
             for(unsigned int d=0; d<c; d++)
-                fprintf(stderr, " %ld", offsets[d]);
+                fprintf(stderr, " %zu", offsets[d]);
             fputc('\n', stderr);
 
             fprintf(stderr, "  Sent timestamps:");
             for(unsigned int d=0; d<c; d++)
-                fprintf(stderr, " %ld", timestamps[d]);
+                fprintf(stderr, " %llu", timestamps[d]);
             fputc('\n', stderr);
 
             fprintf(stderr, "  Expected packet:");

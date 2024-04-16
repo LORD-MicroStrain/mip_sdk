@@ -49,12 +49,12 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
 
 std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, const std::string& baud_or_port, const std::string& binary_file_path)
 {
-    auto example_utils = std::unique_ptr<ExampleUtils>(new ExampleUtils());
+    auto example_utils = std::make_unique<ExampleUtils>();
 
     if( !binary_file_path.empty() )
     {
 #ifdef MIP_USE_EXTRAS
-        example_utils->recordedFile = std::unique_ptr<std::ofstream>(new std::ofstream(binary_file_path));
+        example_utils->recordedFile = std::make_unique<std::ofstream>(binary_file_path);
         if( !example_utils->recordedFile->is_open() )
             throw std::runtime_error("Unable to open binary file");
 #else  // MIP_USE_EXTRAS
@@ -72,13 +72,13 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingTcpConnection = mip::extras::RecordingConnectionWrapper<mip::platform::TcpConnection>;
-        example_utils->connection = std::unique_ptr<RecordingTcpConnection>(new RecordingTcpConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port));
+        example_utils->connection = std::make_unique<RecordingTcpConnection>(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, port);
 #else  // MIP_USE_EXTRAS
         using TcpConnection = mip::platform::TcpConnection;
-        example_utils->connection = std::unique_ptr<TcpConnection>(new TcpConnection(port_or_hostname, port));
+        example_utils->connection = std::make_unique<TcpConnection>(port_or_hostname, port);
 #endif  // MIP_USE_EXTRAS
 
-        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000));
+        example_utils->device = std::make_unique<mip::DeviceInterface>(example_utils->connection.get(), 1000, 2000);
 #else  // MIP_USE_TCP
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
 #endif // MIP_USE_TCP
@@ -94,13 +94,13 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 #ifdef MIP_USE_EXTRAS
         using RecordingSerialConnection = mip::extras::RecordingConnectionWrapper<mip::platform::SerialConnection>;
-        example_utils->connection = std::unique_ptr<RecordingSerialConnection>(new RecordingSerialConnection(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud));
+        example_utils->connection = std::make_unique<RecordingSerialConnection>(example_utils->recordedFile.get(), example_utils->recordedFile.get(), port_or_hostname, baud);
 #else  // MIP_USE_EXTRAS
         using SerialConnection = mip::platform::SerialConnection;
-        example_utils->connection = std::unique_ptr<SerialConnection>(new SerialConnection(port_or_hostname, baud));
+        example_utils->connection = std::make_unique<SerialConnection>(port_or_hostname, baud);
 #endif  // MIP_USE_EXTRAS
 
-        example_utils->device = std::unique_ptr<mip::DeviceInterface>(new mip::DeviceInterface(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500));
+        example_utils->device = std::make_unique<mip::DeviceInterface>(example_utils->connection.get(), mip::C::mip_timeout_from_baudrate(baud), 500);
 #else  // MIP_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
 #endif //MIP_USE_SERIAL
@@ -123,7 +123,7 @@ std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int
     }
 
     // If we were passed a file name, record the data in that file
-    std::string binary_file_path = "";
+    const char* binary_file_path = "";
     if (argc >= 4)
         binary_file_path = argv[3];
 

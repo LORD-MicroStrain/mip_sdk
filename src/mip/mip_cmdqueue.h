@@ -44,8 +44,8 @@ typedef struct mip_pending_cmd
     uint8_t*                    _response_buffer;      ///<@private Buffer for response data if response_descriptor != 0x00.
     union {                                            ///<@private
         timeout_type            _extra_timeout;        ///<@private If MIP_STATUS_PENDING:   Duration to wait for reply, excluding base timeout time from the queue object.
-        timestamp_type          _timeout_time;         ///<@private If MIP_STATUS_WAITING:   timestamp_type after which the command will be timed out.
-        timestamp_type          _reply_time;           ///<@private If MIP_STATUS_COMPLETED: timestamp_type from the packet containing the ack/nack.
+        timestamp_type          _timeout_time;         ///<@private If MIP_STATUS_WAITING:   Timestamp after which the command will be timed out.
+        timestamp_type          _reply_time;           ///<@private If MIP_STATUS_COMPLETED: Timestamp from the packet containing the ack/nack.
     };
     uint8_t                     _descriptor_set;       ///<@private Command descriptor set.
     uint8_t                     _field_descriptor;     ///<@private Command field descriptor.

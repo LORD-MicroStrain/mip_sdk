@@ -42,7 +42,7 @@ void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
         length = MIP_PACKET_LENGTH_MAX;
 
     packet->_buffer        = buffer;
-    packet->_buffer_length = length;
+    packet->_buffer_length = (packet_length)length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

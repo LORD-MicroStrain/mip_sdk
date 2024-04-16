@@ -79,7 +79,7 @@ bool filter_state_running = false;
 //Required MIP interface user-defined functions
 timestamp_type get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out);
+bool mip_interface_user_recv_from_device(mip_interface* device, timeout_type wait_time, bool from_cmd, timestamp_type* timestamp_out);
 bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
@@ -130,7 +130,7 @@ int main(int argc, const char* argv[])
     //
 
     mip_interface_init(
-        &device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000,
+        &device, mip_timeout_from_baudrate(baudrate), 1000,
         &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
     );
 
@@ -308,7 +308,7 @@ int main(int argc, const char* argv[])
 
     while(running)
     {
-        mip_interface_update(&device, false);
+        mip_interface_update(&device, 0, false);
 
 
         //Check GNSS fixes and alert the user when they become valid
@@ -366,10 +366,14 @@ timestamp_type get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, timeout_type wait_time, bool from_cmd, timestamp_type* timestamp_out)
 {
     *timestamp_out = get_current_timestamp();
-    return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);
+
+    size_t length;
+
+    return serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), wait_time, &length) &&
+        mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
 }
 
 

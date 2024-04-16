@@ -16,7 +16,7 @@ unsigned int num_errors = 0;
 size_t bytesRead = 0;
 size_t bytes_parsed = 0;
 
-bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
+void handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
 {
     (void)t;
 
@@ -27,7 +27,7 @@ bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
     {
         num_errors++;
         fprintf(stderr, "Packet with length too long (%ld)\n", length);
-        return false;
+        return;
     }
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
     // return written == length;
@@ -40,15 +40,15 @@ bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
     {
         num_errors++;
         fprintf(stderr, "Failed to read from input file (2).\n");
-        return false;
+        return;
     }
 
     const uint8_t* packet_buffer = mip_packet_pointer(packet);
 
-    // printf("Packet: ");
-    // for(size_t i=0; i<length; i++)
-    //     printf(" %02X", packet_buffer[i]);
-    // fputc('\n', stdout);
+     printf("Packet: ");
+     for(size_t i=0; i<length; i++)
+         printf(" %02X", packet_buffer[i]);
+     fputc('\n', stdout);
 
     bool good = memcmp(check_buffer, packet_buffer, length) == 0;
 
@@ -66,8 +66,6 @@ bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
 
         fputc('\n', stderr);
     }
-
-    return good;
 }
 
 
@@ -98,7 +96,7 @@ int main(int argc, const char* argv[])
 
     srand(0);
 
-    mip_parser_init(&parser, parse_buffer, sizeof(parse_buffer), &handle_packet, infile2, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    mip_parser_init(&parser, &handle_packet, infile2, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
     do
     {
@@ -107,7 +105,7 @@ int main(int argc, const char* argv[])
         const size_t numRead = fread(input_buffer, 1, numToRead, infile);
         bytesRead += numRead;
 
-        mip_parser_parse(&parser, input_buffer, numRead, 0, MIPPARSER_UNLIMITED_PACKETS);
+        mip_parser_parse(&parser, input_buffer, numRead, 0, MIP_PARSER_UNLIMITED_PACKETS);
 
         // End of file (or error)
         if( numRead != numToRead )

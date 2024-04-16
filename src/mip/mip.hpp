@@ -404,11 +404,11 @@ class Parser : public C::mip_parser
 {
 public:
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
+    Parser(C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(bool (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
-    Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
+    Parser(Timeout timeout) { C::mip_parser_init(this, nullptr, nullptr, timeout); }
 
     template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
     void setCallback(T& object);
@@ -417,7 +417,7 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    RemainingCount parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
+    size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }

@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
         return true;
     };
 
-    Parser parser(parseBuffer, sizeof(parseBuffer), callback, nullptr, MIPPARSER_DEFAULT_TIMEOUT_MS);
+    Parser parser(callback, nullptr, MIP_PARSER_DEFAULT_TIMEOUT_MS);
 
 
     const unsigned int NUM_ITERATIONS = 100;
@@ -99,12 +99,12 @@ int main(int argc, const char* argv[])
 
         packet.finalize();
 
-        RemainingCount rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
+        size_t parsed = parser.parse(packet.pointer(), packet.totalLength(), 0);
 
-        if( rem != 0 )
+        if( parsed != packet.totalLength() )
         {
             numErrors++;
-            fprintf(stderr, "Parser reports %d unparsed bytes.\n", rem);
+            fprintf(stderr, "Parser reports %zu parsed bytes out of %u.\n", parsed, packet.totalLength());
         }
 
         if( numErrors > 10 )

@@ -31,18 +31,17 @@ extern "C" {
 ///
 /// Typical usage:
 ///@li Declare a mip_parser struct
-///@li Declare a uint8_t buffer of some size which is at least 512 and a power of 2.
 ///@li Determine the packet timeout, e.g. with mip_timeout_from_baudrate().
-///@li Call mip_parser_init(), passing the struct, buffer, buffer size, timeout, and callback function.
+///@li Call mip_parser_init(), passing the struct, timeout, and callback function.
 ///@li Periodically call mip_parser_parse().
 ///
 
 
 ///@brief Callback function which receives parsed MIP packets.
 ///@param user A user-specified pointer which will be given the callback_object parameter which was previously passed to mip_parser_init.
-///@param Packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
+///@param packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
 ///@param timestamp The approximate time the packet was parsed.
-typedef bool (*mip_packet_callback)(void* user, const mip_packet* packet, timestamp_type timestamp);
+typedef void (*mip_packet_callback)(void* user, const mip_packet* packet, timestamp_type timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,31 +55,33 @@ typedef struct mip_parser
 {
     timestamp_type      _start_time;                       ///<@private The timestamp when the first byte was observed by the parser.
     timeout_type        _timeout;                          ///<@private Duration to wait for the rest of the data in a packet.
-    uint8_t             _buffer[MIP_PACKET_LENGTH_MAX];    ///<@private Internal buffer used for parsing and to emit packets.
-    packet_length       _buffered_length;                    ///<@private Length of the packet currently being parsed. Can be 1, 2, 4, or >= 6.
+
     mip_packet_callback _callback;                         ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*               _callback_object;                  ///<@private User-specified pointer passed to the callback function.
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
-    uint32_t            _diag_bytes_read;                      ///<@private Counts bytes read from the user input buffer.
-    uint32_t            _diag_bytes_skipped;                   ///<@private Counts bytes read from the user input buffer.
-    uint32_t            _diag_packet_bytes;                    ///<@private Counts bytes parsed into valid packets.
-    uint32_t            _diag_valid_packets;                   ///<@private Counts packets successfully parsed.
-    uint32_t            _diag_invalid_packets;                 ///<@private Counts invalid packets encountered (bad checksums).
-    uint32_t            _diag_timeouts;                        ///<@private Counts packet timeouts.
+    uint32_t            _diag_bytes_read;                  ///<@private Counts bytes read from the user input buffer.
+    uint32_t            _diag_bytes_skipped;               ///<@private Counts bytes read from the user input buffer.
+    uint32_t            _diag_packet_bytes;                ///<@private Counts bytes parsed into valid packets.
+    uint32_t            _diag_valid_packets;               ///<@private Counts packets successfully parsed.
+    uint32_t            _diag_invalid_packets;             ///<@private Counts invalid packets encountered (bad checksums).
+    uint32_t            _diag_timeouts;                    ///<@private Counts packet timeouts.
 #endif // MIP_ENABLE_DIAGNOSTICS
+
+    packet_length       _buffered_length;                  ///<@private Length of the packet currently being parsed. Can be 1, 2, 4, or >= 6.
+    uint8_t             _buffer[MIP_PACKET_LENGTH_MAX];    ///<@private Internal buffer used for parsing and to emit packets.
 
 } mip_parser;
 
 
 
-#define MIPPARSER_UNLIMITED_PACKETS   0   ///< Specifies no limit when used as the max_packets argument to mip_parser_parse.
-#define MIPPARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
+#define MIP_PARSER_UNLIMITED_PACKETS   0   ///< Specifies no limit when used as the max_packets argument to mip_parser_parse.
+#define MIP_PARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
 
 
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
-//bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp);
-remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets);
+int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* packet_length_ptr, const uint8_t* input_buffer, size_t input_length, size_t* consumed_input_length_out_ptr);
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp, unsigned int max_packets);
 
 void mip_parser_reset(mip_parser* parser);
 
