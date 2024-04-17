@@ -99,6 +99,8 @@ int main(int argc, const char* argv[])
 
         const size_t packet_size = mip_packet_total_length(&packet);
 
+        // printf("Packet %u:", i+1);
+        // print_packet(stdout, &packet);
 
         // Keep track of offsets and timestamps for debug purposes.
         size_t offsets[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
@@ -113,6 +115,7 @@ int main(int argc, const char* argv[])
         {
             const size_t count = rand() % (packet_size - sent);
 
+            // printf("  send %zu @ time %lld\n", count, timestamp);
             mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
 
             sent += count;
@@ -129,6 +132,7 @@ int main(int argc, const char* argv[])
 
         const size_t count = packet_size - sent;
 
+        // printf("  send %zu @ time %lld\n", count, timestamp);
         mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
 
         sent += count;

@@ -227,7 +227,7 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_
     size_t unparsed_input_offset = 0;
 
     // Bytes already in the parser buffer from previous call.
-    packet_length leftover_length = *leftover_length_ptr;
+    packet_length leftover_length = leftover_length_ptr ? *leftover_length_ptr : 0;
 
     assert(leftover_length < MIP_PACKET_LENGTH_MAX);
 
@@ -362,7 +362,7 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_
                 *consumed_input_length_out = unparsed_input_offset;
 
             if(leftover_length_ptr != NULL)
-                *leftover_length_ptr = leftover_length;
+                *leftover_length_ptr = 0;
 
             return checksum_valid ? +1 : -1;
         }
@@ -443,13 +443,13 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
         // indefinitely until more data arrives. It's ok to have false negative timeouts.
 
         reparse = true;
+        parser->_start_time = timestamp;
     }
+    // Set parser start time if not continuing a previous packet.
+    else if(parser->_buffered_length == 0)
+        parser->_start_time = timestamp;
 
     size_t total_consumed = 0;
-
-    // Set parser start time if not continuing a previous packet.
-    if(parser->_buffered_length == 0)
-        parser->_start_time = timestamp;
 
     mip_packet packet;
     packet._buffer = parser->_buffer;
@@ -462,11 +462,28 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
         if(reparse)
         {
-            parser->_buffer[0] = 0x00;  // Stop parser from seeing the original bad packet.
-            result = mip_parse_one_packet(NULL, NULL, parser->_buffer, parser->_buffered_length, &consumed_length, &packet._buffer_length);
+            if(parser->_buffered_length == 0)
+                break;
+
+            // Reset start time
+            parser->_start_time = timestamp;
+
+            // |   |start             |buffered
+            // |75 XX XX XX XX XX ... |
+
+            // Reparse the packet buffer, skipping the first byte.
+            result = mip_parse_one_packet(NULL, NULL, parser->_buffer+1, parser->_buffered_length-1, &consumed_length, &packet._buffer_length);
+            consumed_length++;  // Include first skipped byte
+
+            // |         |consumed    |buffered
+            // |75 XX XX 75 XX XX ... |
+            // |         |packet  ... : ... :
         }
         else
         {
+            if(input_length == 0)
+                break;
+
             result = mip_parse_one_packet(parser->_buffer, &parser->_buffered_length, input_buffer, input_length, &consumed_length, &packet._buffer_length);
 
             input_buffer   += consumed_length;
@@ -485,11 +502,19 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             if(parser->_callback)
                 parser->_callback(parser->_callback_object, &packet, parser->_start_time);
 
-            parser->_buffered_length -= packet._buffer_length;
+            // Mark packet as consumed now that it's been processed.
+            if(reparse)
+            {
+                // |         |consumed                |buffered
+                // |75 XX XX 75 65 YY ... XX XX XX XX |
+                // |         |packet  ... |           |buffered
+                consumed_length += packet._buffer_length;
 
-            // Start timestamp of next packet if not reparsing.
-            if(parser->_buffered_length == 0)
-                parser->_start_time = timestamp;
+                // |                      |consumed   |buffered
+                // |75 XX XX 75 65 YY ... XX XX XX XX |
+            }
+
+            parser->_start_time = timestamp;
         }
         else if(result < 0)  // Invalid packet
         {
@@ -498,8 +523,9 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
             // Go back and check for "nested" packets.
             reparse = true;
+            parser->_start_time = timestamp;
         }
-        else if(reparse)  // Done reparsing packet_buffer
+        else if(reparse)  // Need more data (done reparsing packet_buffer)
         {
             reparse = false;
         }
@@ -507,6 +533,19 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
         {
             assert(input_length == 0);
             break;
+        }
+
+        // If just reparsed and data left over
+        if(parser->_buffered_length > 0)
+        {
+            // Get rid of any junk and make room for a whole packet.
+            // |0              |consumed      |buffered   |
+            // |XX XX XX XX XX YY YY YY YY YY             |
+            // |<------------- YY YY YY YY YY             |
+            // |YY YY YY YY YY                            |
+
+            memmove(parser->_buffer, &parser->_buffer[consumed_length], parser->_buffered_length-consumed_length);
+            parser->_buffered_length -= consumed_length;
         }
     }
 
