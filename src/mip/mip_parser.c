@@ -235,7 +235,6 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_
             {
                 memcpy(&packet_buffer[leftover_length], &input_buffer[unparsed_input_offset], packet_length_from_input);
                 unparsed_input_offset += packet_length_from_input;
-                leftover_length = 0;
             }
 
             assert(expected_packet_length <= MIP_PACKET_LENGTH_MAX && expected_packet_length >= MIP_PACKET_LENGTH_MIN);
@@ -246,6 +245,13 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_
                 ._buffer_length = *packet_length_out
             };
 
+            const bool checksum_valid = mip_packet_compute_checksum(&packet) == mip_packet_checksum_value(&packet);
+
+            if(checksum_valid)
+                leftover_length = 0;
+            else
+                leftover_length = expected_packet_length;
+
             // Note: if the checksum wasn't valid, need to reparse the parse_buffer since
             // there may be valid packets nested within the bad "packet".
 
@@ -254,8 +260,6 @@ int mip_parse_one_packet(uint8_t* packet_buffer, packet_length* leftover_length_
 
             if(leftover_length_ptr != NULL)
                 *leftover_length_ptr = leftover_length;
-
-            const bool checksum_valid = mip_packet_compute_checksum(&packet) == mip_packet_checksum_value(&packet);
 
             return checksum_valid ? +1 : -1;
         }

@@ -53,7 +53,7 @@ int main(int argc, const char* argv[])
 
     timestamp_type start_time = rand() % 500;
 
-    const unsigned int NUM_ITERATIONS = 100000;
+    const unsigned int NUM_ITERATIONS = 10000000;
 
     unsigned int last_parsed = 0;
     bool prev_timeout = false;
@@ -224,8 +224,8 @@ int main(int argc, const char* argv[])
                 //   send 4 @ time 1625 (1625-1532 < timeout so packet is received)
 
                 //num_errors++;
-                error = true;
-                fprintf(stderr, "Parser produced %u packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
+                //error = true;  // Uncomment to log details
+                fprintf(stderr, "Note: Parser produced %u packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
             }
         }
         else if( num_packets_parsed != (last_parsed + 1) )
@@ -281,7 +281,14 @@ int main(int argc, const char* argv[])
 
             fprintf(stderr, "  (packet %d / %d)\n\n", i+1, NUM_ITERATIONS);
         }
+
+        if(num_errors > 10)
+            break;
+        else if((i+1) % 10000 == 0)
+            printf("Progress: %u/%u iterations.\n", i+1, NUM_ITERATIONS);
     }
+
+    printf("Completed %u iterations with %u errors.\n", NUM_ITERATIONS, num_errors);
 
     return num_errors;
 }
