@@ -46,7 +46,7 @@ typedef struct mip_interface
     mip_parser          _parser;          ///<@private MIP Parser for incoming MIP packets.
     mip_cmd_queue       _queue;           ///<@private Queue for checking command replies.
     mip_dispatcher      _dispatcher;      ///<@private Dispatcher for data callbacks.
-    unsigned int        _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
+    //unsigned int        _max_update_pkts; ///<@private Max number of MIP packets to parse at once.
     mip_send_callback   _send_callback;   ///<@private Optional function which is called to send raw bytes to the device.
     mip_recv_callback   _recv_callback;   ///<@private Optional function which is called to receive raw bytes from the device.
     mip_update_callback _update_callback; ///<@private Optional function to call during updates.
@@ -104,8 +104,8 @@ void mip_interface_set_send_function(mip_interface* device, mip_send_callback fu
 void mip_interface_set_update_function(mip_interface* device, mip_update_callback function);
 void mip_interface_set_user_pointer(mip_interface* device, void* pointer);
 
-void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets);
-unsigned int mip_interface_max_packets_per_update(const mip_interface* device);
+//void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets);
+//unsigned int mip_interface_max_packets_per_update(const mip_interface* device);
 
 mip_recv_callback   mip_interface_recv_function(const mip_interface* device);
 mip_send_callback   mip_interface_send_function(const mip_interface* device);

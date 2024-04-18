@@ -75,24 +75,21 @@ typedef struct mip_parser
 
 
 
-#define MIP_PARSER_UNLIMITED_PACKETS   0   ///< Specifies no limit when used as the max_packets argument to mip_parser_parse.
+//#define MIP_PARSER_UNLIMITED_PACKETS   0   ///< Specifies no limit when used as the max_packets argument to mip_parser_parse.
 #define MIP_PARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
 
 
-int mip_parse_one_packet(
-    uint8_t* packet_buffer, packet_length* leftover_ptr,
-    const uint8_t* input_buffer, size_t input_length,
-    size_t* consumed_input_length_out_ptr, packet_length* packet_length_out
-);
+//int mip_parse_one_packet(
+//    uint8_t* packet_buffer, packet_length* leftover_ptr,
+//    const uint8_t* input_buffer, size_t input_length,
+//    size_t* consumed_input_length_out_ptr, packet_length* packet_length_out
+//);
 
 
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
-size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp, unsigned int max_packets);
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp);
 
 void mip_parser_reset(mip_parser* parser);
-
-size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out);
-void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type timestamp, unsigned int max_packets);
 
 //
 // Accessors
@@ -105,7 +102,7 @@ void mip_parser_set_callback(mip_parser* parser, mip_packet_callback callback, v
 mip_packet_callback mip_parser_callback(const mip_parser* parser);
 void* mip_parser_callback_object(const mip_parser* parser);
 
-timestamp_type mip_parser_last_packet_timestamp(const mip_parser* parser);
+timestamp_type mip_parser_current_timestamp(const mip_parser* parser);
 
 
 //

@@ -23,7 +23,7 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)
     {
         unsigned int parsedFields = 0;
         bool error = false;
@@ -67,8 +67,6 @@ int main(int argc, const char* argv[])
             numErrors++;
             fprintf(stderr, "Field count mismatch: %d != %d\n", parsedFields, numFields);
         }
-
-        return true;
     };
 
     Parser parser(callback, nullptr, MIP_PARSER_DEFAULT_TIMEOUT_MS);

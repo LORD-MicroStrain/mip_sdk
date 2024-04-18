@@ -406,7 +406,7 @@ public:
     ///@copydoc mip::C::mip_parser_init
     Parser(C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
-    Parser(bool (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(void (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
     Parser(Timeout timeout) { C::mip_parser_init(this, nullptr, nullptr, timeout); }
 
@@ -417,7 +417,7 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp, unsigned int maxPackets=0) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp, maxPackets); }
+    size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }
@@ -457,48 +457,48 @@ void Parser::setCallback(T& object)
     C::mip_parser_set_callback(this, callback, &object);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Read data from a source into the internal parsing buffer.
-///
-///@tparam Function
-/// A function-like object with the following signature:
-/// `bool read(size_t maxCount, size_t* count_out, Timestamp* timestamp_out);`
-/// The parameters are as follows:
-/// @li buffer - Buffer into which to write data.
-/// @li maxCount - The maximum number of bytes to read.
-/// @li count_out - Updated with the number of bytes actually read.
-/// @li timestamp_out - Updated with the timestamp of the data.
-///
-///@param parser
-///
-///@param reader
-///       A callback function, lambda, or similar which will read data into the
-///       buffer and capture the timestamp. It should return true if successful
-///       or false otherwise. If it returns false, parsing is skipped. The read
-///       function may also throw an exception instead of returning false.
-///
-///@param maxPackets
-///       Maximum number of packets to parse, just like for Parser::parse().
-///
-///@return Same as the return value of reader.
-///
-template<class Function>
-bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPackets)
-{
-    uint8_t* ptr;
-    size_t maxCount = C::mip_parser_get_write_ptr(&parser, &ptr);
-
-    size_t count;
-    Timestamp timestamp;
-    if( !reader(ptr, maxCount, &count, &timestamp) )
-        return false;
-
-    assert(count <= maxCount);
-
-    C::mip_parser_process_written(&parser, count, timestamp, maxPackets);
-
-    return true;
-}
+//////////////////////////////////////////////////////////////////////////////////
+/////@brief Read data from a source into the internal parsing buffer.
+/////
+/////@tparam Function
+///// A function-like object with the following signature:
+///// `bool read(size_t maxCount, size_t* count_out, Timestamp* timestamp_out);`
+///// The parameters are as follows:
+///// @li buffer - Buffer into which to write data.
+///// @li maxCount - The maximum number of bytes to read.
+///// @li count_out - Updated with the number of bytes actually read.
+///// @li timestamp_out - Updated with the timestamp of the data.
+/////
+/////@param parser
+/////
+/////@param reader
+/////       A callback function, lambda, or similar which will read data into the
+/////       buffer and capture the timestamp. It should return true if successful
+/////       or false otherwise. If it returns false, parsing is skipped. The read
+/////       function may also throw an exception instead of returning false.
+/////
+/////@param maxPackets
+/////       Maximum number of packets to parse, just like for Parser::parse().
+/////
+/////@return Same as the return value of reader.
+/////
+//template<class Function>
+//bool parseMipDataFromSource(C::mip_parser& parser, Function reader, size_t maxPackets)
+//{
+//    uint8_t* ptr;
+//    size_t maxCount = C::mip_parser_get_write_ptr(&parser, &ptr);
+//
+//    size_t count;
+//    Timestamp timestamp;
+//    if( !reader(ptr, maxCount, &count, &timestamp) )
+//        return false;
+//
+//    assert(count <= maxCount);
+//
+//    C::mip_parser_process_written(&parser, count, timestamp, maxPackets);
+//
+//    return true;
+//}
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

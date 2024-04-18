@@ -105,7 +105,7 @@ int main(int argc, const char* argv[])
         const size_t numRead = fread(input_buffer, 1, numToRead, infile);
         bytesRead += numRead;
 
-        mip_parser_parse(&parser, input_buffer, numRead, 0, MIP_PARSER_UNLIMITED_PACKETS);
+        mip_parser_parse(&parser, input_buffer, numRead, 0);
 
         // End of file (or error)
         if( numRead != numToRead )

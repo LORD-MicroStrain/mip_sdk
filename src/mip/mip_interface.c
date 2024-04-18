@@ -138,7 +138,7 @@ void mip_interface_init(
 {
     mip_parser_init(&device->_parser, &mip_interface_parse_callback, device, parse_timeout);
 
-    device->_max_update_pkts = MIP_PARSER_UNLIMITED_PACKETS;
+    //device->_max_update_pkts = MIP_PARSER_UNLIMITED_PACKETS;
     device->_send_callback   = send;
     device->_recv_callback   = recv;
     device->_update_callback = update;
@@ -268,33 +268,33 @@ void* mip_interface_user_pointer(const mip_interface* device)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the maximum number of packets to parser per update call.
-///
-unsigned int mip_interface_max_packets_per_update(const mip_interface* device)
-{
-    return device->_max_update_pkts;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Sets a limit on the number of packets which can be processed in one
-///       call to the mip_interface_receive_bytes() function.
-///
-/// Use this when receiving data in bursts to smooth out the processing
-/// load over time.
-///
-///@note Make sure the parsing buffer is large enough to hold the
-///      data in between receive calls.
-///
-///@param device
-///
-///@param max_packets
-///       Maximum number of packets to parse at once.
-///
-void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets)
-{
-    device->_max_update_pkts = max_packets;
-}
+//////////////////////////////////////////////////////////////////////////////////
+/////@brief Returns the maximum number of packets to parser per update call.
+/////
+//unsigned int mip_interface_max_packets_per_update(const mip_interface* device)
+//{
+//    return device->_max_update_pkts;
+//}
+//
+//////////////////////////////////////////////////////////////////////////////////
+/////@brief Sets a limit on the number of packets which can be processed in one
+/////       call to the mip_interface_receive_bytes() function.
+/////
+///// Use this when receiving data in bursts to smooth out the processing
+///// load over time.
+/////
+/////@note Make sure the parsing buffer is large enough to hold the
+/////      data in between receive calls.
+/////
+/////@param device
+/////
+/////@param max_packets
+/////       Maximum number of packets to parse at once.
+/////
+//void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets)
+//{
+//    device->_max_update_pkts = max_packets;
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -441,7 +441,7 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
 ///
 size_t mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
 {
-    return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
+    return mip_parser_parse(&device->_parser, data, length, timestamp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

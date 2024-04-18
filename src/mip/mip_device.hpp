@@ -252,8 +252,8 @@ public:
     // General accessors
     //
 
-    void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
-    unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
+    //void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
+    //unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
 
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }

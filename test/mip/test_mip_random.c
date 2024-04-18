@@ -44,6 +44,12 @@ void handle_packet(void* p, const struct mip_packet* packet, timestamp_type time
 
 const bool PRINT_DEBUG = false;
 
+uint8_t frand()
+{
+    static unsigned int seed = 0;
+    seed = 214013*seed+2531011;
+    return (seed >> 16) & 0xFF;
+}
 
 int main(int argc, const char* argv[])
 {
@@ -53,17 +59,23 @@ int main(int argc, const char* argv[])
 
     timestamp_type start_time = rand() % 500;
 
-    const unsigned int NUM_ITERATIONS = 10000000;
+    const unsigned int NUM_ITERATIONS = 100*1000*1000;
 
     unsigned int last_parsed = 0;
+
+    uint8_t buffer     [MIP_PACKET_LENGTH_MAX];
+    uint8_t prev_buffer[MIP_PACKET_LENGTH_MAX];
+    mip_packet packet      = { ._buffer=buffer,      ._buffer_length=sizeof(buffer) };
+    mip_packet prev_packet = { ._buffer=prev_buffer, ._buffer_length=sizeof(buffer) };
+
     bool prev_timeout = false;
-    for(unsigned int i=0; i<NUM_ITERATIONS; i++)
+
+    unsigned int i;
+    for(i=0; i<NUM_ITERATIONS; i++)
     {
         uint8_t desc_set = (rand() % 255) + 1;  // Random descriptor set.
 
-        uint8_t buffer[MIP_PACKET_LENGTH_MAX];
-        struct mip_packet packet;
-        mip_packet_create(&packet, buffer, sizeof(buffer), desc_set);
+        mip_packet_create(&packet, packet._buffer, packet._buffer_length, desc_set);
 
         for(unsigned int f=0; ; f++)
         {
@@ -136,7 +148,7 @@ int main(int argc, const char* argv[])
 
             if(PRINT_DEBUG)
                 printf("  send %zu @ time %zu\n", count, timestamp);
-            size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
+            size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
 
             if(consumed != count)
             {
@@ -161,7 +173,7 @@ int main(int argc, const char* argv[])
 
         if(PRINT_DEBUG)
              printf("  send %zu @ time %zu\n", count, timestamp);
-        size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
+        size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
 
         if(consumed != count)
         {
@@ -187,7 +199,7 @@ int main(int argc, const char* argv[])
             if(PRINT_DEBUG)
                 printf("  send 0 bytes @ time %zu (forced timeout).\n", timestamp);
 
-            consumed = mip_parser_parse(&parser, NULL, 0, timestamp, MIP_PARSER_UNLIMITED_PACKETS);
+            consumed = mip_parser_parse(&parser, NULL, 0, timestamp);
 
             if(consumed != 0)
             {
@@ -225,7 +237,7 @@ int main(int argc, const char* argv[])
 
                 //num_errors++;
                 //error = true;  // Uncomment to log details
-                fprintf(stderr, "Note: Parser produced %u packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
+                //fprintf(stderr, "Note: Parser produced %u packet(s) but should have timed out.\n", num_packets_parsed-last_parsed);
             }
         }
         else if( num_packets_parsed != (last_parsed + 1) )
@@ -273,22 +285,30 @@ int main(int argc, const char* argv[])
                 fprintf(stderr, " %zu", timestamps[d]);
             fputc('\n', stderr);
 
-            fprintf(stderr, "  Expected packet:");
+            fprintf(stderr, "  Expected packet :");
             print_packet(stderr, &packet);
 
-            fprintf(stderr, "  Parsed   packet:");
+            fprintf(stderr, "  Parsed packet   :");
             print_packet(stderr, &parsed_packet);
+
+            fprintf(stderr, prev_timeout ? "  Prev packet T.O.:" : "  Prev packet     :");
+            print_packet(stderr, &prev_packet);
 
             fprintf(stderr, "  (packet %d / %d)\n\n", i+1, NUM_ITERATIONS);
         }
 
         if(num_errors > 10)
             break;
-        else if((i+1) % 10000 == 0)
+        else if((i+1) % 100000 == 0)
             printf("Progress: %u/%u iterations.\n", i+1, NUM_ITERATIONS);
+
+        // Swap packets
+        uint8_t* tmp = prev_packet._buffer;
+        prev_packet._buffer = packet._buffer;
+        packet._buffer = tmp;
     }
 
-    printf("Completed %u iterations with %u errors.\n", NUM_ITERATIONS, num_errors);
+    printf("Completed %u/%u iterations with %u errors.\n", i, NUM_ITERATIONS, num_errors);
 
     return num_errors;
 }
