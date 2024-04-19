@@ -530,7 +530,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             // Not enough data for a/the packet.
 
             // Check for timeout
-            if(timestamp > (parser->_start_time + parser->_timeout))
+            if(timestamp >= (parser->_start_time + parser->_timeout))
             {
                 // Discard first packet in buffer and reparse remaining buffered data.
                 expected_packet_length = mip_parser_discard(parser, 1);

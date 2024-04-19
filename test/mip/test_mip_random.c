@@ -102,7 +102,14 @@ int main(int argc, const char* argv[])
 
             // Random payload.
             for(unsigned int p=0; p<paylen; p++)
-                payload[p] = rand() & 0xFF;
+            {
+                // Make it slightly more likely to produce nested packets.
+                unsigned int r = rand();
+                if((r & 0xFF00) < 0x200)
+                    payload[p] = 0x75;
+                else
+                    payload[p] = r & 0xFF;
+            }
 
             // Random chance of not adding another field.
             if( rand() % 5 == 0 )
@@ -194,18 +201,23 @@ int main(int argc, const char* argv[])
         // for packets even if no new data arrives.
         if(prev_timeout)
         {
-            timestamp += mip_parser_timeout(&parser);
-
-            if(PRINT_DEBUG)
-                printf("  send 0 bytes @ time %zu (forced timeout).\n", timestamp);
-
-            consumed = mip_parser_parse(&parser, NULL, 0, timestamp);
-
-            if(consumed != 0)
+            // Try to flush the parser repeatedly in case there were multiple nested packets
+            // which each need to time out separately.
+            for(unsigned int t=0; parser._buffered_length > packet_size && t < 5; t++)
             {
-                num_errors++;
-                error = true;
-                fprintf(stderr, "Parser consumed non-existent data! (%zu bytes)\n", consumed);
+                timestamp += mip_parser_timeout(&parser);
+
+                if(PRINT_DEBUG)
+                    printf("  send 0 bytes @ time %zu (forced timeout).\n", timestamp);
+
+                consumed = mip_parser_parse(&parser, NULL, 0, timestamp);
+
+                if(consumed != 0) {
+                    num_errors++;
+                    error = true;
+                    fprintf(stderr, "Parser consumed non-existent data! (%zu bytes)\n", consumed);
+                }
+
             }
         }
 
@@ -267,8 +279,7 @@ int main(int argc, const char* argv[])
                 fprintf(stderr, "Parsed packet data doesn't match.\n");
             }
         }
-        last_parsed = num_packets_parsed;
-        prev_timeout = timedout;
+
         start_time = timestamp;
 
         if( error )
@@ -301,6 +312,9 @@ int main(int argc, const char* argv[])
             break;
         else if((i+1) % 100000 == 0)
             printf("Progress: %u/%u iterations.\n", i+1, NUM_ITERATIONS);
+
+        last_parsed = num_packets_parsed;
+        prev_timeout = timedout;
 
         // Swap packets
         uint8_t* tmp = prev_packet._buffer;
