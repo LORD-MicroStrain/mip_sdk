@@ -44,7 +44,8 @@ void Connection::connect_interface(C::mip_interface* device)
         if( !static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, sizeof(buffer), wait_time, &length, timestamp_out) )
             return false;
 
-        return C::mip_interface_input_bytes(device, buffer, length, *timestamp_out);
+        C::mip_interface_input_bytes(device, buffer, length, *timestamp_out);
+        return true;
     };
 
     C::mip_interface_set_user_pointer(device, this);
