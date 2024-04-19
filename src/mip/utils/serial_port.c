@@ -387,6 +387,11 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
 uint32_t serial_port_read_count(serial_port *port)
 {
+#ifdef WIN32 //Windows
+    // Clear the last error, if any
+    SetLastError(0);
+#endif
+
     //Check for a valid port handle
     if(!serial_port_is_open(port))
         return 0;
