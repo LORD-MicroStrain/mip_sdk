@@ -26,7 +26,7 @@ void handle_packet(void* p, const struct mip_packet* packet, timestamp_type t)
     if( length > MIP_PACKET_LENGTH_MAX )
     {
         num_errors++;
-        fprintf(stderr, "Packet with length too long (%ld)\n", length);
+        fprintf(stderr, "Packet with length too long (%zu)\n", length);
         return;
     }
     // size_t written = fwrite(mip_packet_buffer(packet), 1, length, outfile);
@@ -118,7 +118,7 @@ int main(int argc, const char* argv[])
     if( bytes_parsed != bytesRead )
     {
         num_errors++;
-        fprintf(stderr, "Read %ld bytes but only parsed %ld bytes (delta %ld).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
+        fprintf(stderr, "Read %zu bytes but only parsed %zu bytes (delta %zu).\n", bytesRead, bytes_parsed, bytesRead-bytes_parsed);
     }
 
     fclose(infile2);
