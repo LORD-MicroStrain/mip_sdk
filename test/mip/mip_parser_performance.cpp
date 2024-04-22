@@ -89,6 +89,8 @@ Test generate_interleaved()
     return test;
 }
 
+uint8_t parse_buffer[1024];
+
 void run_parser(const Test& test)
 {
     struct Stats
@@ -103,8 +105,9 @@ void run_parser(const Test& test)
         Stats& s = *static_cast<Stats*>(v);
         s.num_bytes += p->totalLength();
         s.num_pkts++;
+        return true;
     };
-    mip::Parser parser(callback, &stats, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+    mip::Parser parser(parse_buffer, sizeof(parse_buffer), callback, &stats, MIPPARSER_DEFAULT_TIMEOUT_MS);
 
     std::vector<float> timing(test.num_iterations, 0);
 
