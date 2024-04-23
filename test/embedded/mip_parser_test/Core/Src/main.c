@@ -51,6 +51,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -79,12 +80,15 @@ const uint8_t DATA_PACKET[] = {
 mip_parser parser;
 size_t num_parsed = 0;
 
-void callback(void* p, const mip_packet* packet, timestamp_type ts)
+uint8_t parse_buffer[1024];
+
+bool callback(void* p, const mip_packet* packet, timestamp_type ts)
 {
     (void)p;
     (void)ts;
 
     num_parsed++;
+    return true;
 }
 
 /* USER CODE END 0 */
@@ -99,6 +103,14 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
+
+  /* Enable the CPU Cache */
+
+  /* Enable I-Cache---------------------------------------------------------*/
+  SCB_EnableICache();
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -129,7 +141,7 @@ int main(void)
       memcpy(data+i*sizeof(DATA_PACKET), DATA_PACKET, sizeof(DATA_PACKET));
   num_bytes = num_pkts_buffered * sizeof(DATA_PACKET);
 
-  mip_parser_init(&parser, &callback, NULL, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+  mip_parser_init(&parser, parse_buffer, sizeof(parse_buffer), &callback, NULL, MIPPARSER_DEFAULT_TIMEOUT_MS);
 
   /* USER CODE END 2 */
 
@@ -154,7 +166,7 @@ int main(void)
       // Use an oscilloscope with "+width" measurement on PB7 to measure time taken.
       // Divide num_bytes by the measured time to get throughput in B/s.
       LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
-      mip_parser_parse(&parser, data, num_bytes, 0);
+      mip_parser_parse(&parser, data, num_bytes, 0, MIPPARSER_UNLIMITED_PACKETS);
       LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
 
       // Green LED if all packets parsed, red LED otherwise
@@ -384,6 +396,22 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+ /* MPU Configuration */
+
+void MPU_Config(void)
+{
+
+  /* Disables the MPU */
+  LL_MPU_Disable();
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  LL_MPU_ConfigRegion(LL_MPU_REGION_NUMBER0, 0x87, 0x0, LL_MPU_REGION_SIZE_4GB|LL_MPU_TEX_LEVEL0|LL_MPU_REGION_NO_ACCESS|LL_MPU_INSTRUCTION_ACCESS_DISABLE|LL_MPU_ACCESS_SHAREABLE|LL_MPU_ACCESS_NOT_CACHEABLE|LL_MPU_ACCESS_NOT_BUFFERABLE);
+  /* Enables the MPU */
+  LL_MPU_Enable(LL_MPU_CTRL_PRIVILEGED_DEFAULT);
+
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

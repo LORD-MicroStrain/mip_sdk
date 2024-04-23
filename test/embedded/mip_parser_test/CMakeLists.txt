@@ -52,6 +52,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../../../src/mip/mip_parser.h
     ${CMAKE_CURRENT_LIST_DIR}/../../../src/mip/mip_packet.c
     ${CMAKE_CURRENT_LIST_DIR}/../../../src/mip/mip_packet.h
+    ${CMAKE_CURRENT_LIST_DIR}/../../../src/mip/utils/byte_ring.c
+    ${CMAKE_CURRENT_LIST_DIR}/../../../src/mip/utils/byte_ring.h
 )
 
 # Add include paths
