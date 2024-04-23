@@ -2,6 +2,14 @@
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
+CORTEX_M7.AccessPermission_Spec=MPU_REGION_FULL_ACCESS
+CORTEX_M7.CPU_DCache=Disabled
+CORTEX_M7.CPU_ICache=Enabled
+CORTEX_M7.FlashInterface=TCM_Enabled
+CORTEX_M7.IPParameters=FlashInterface,default_mode_Activation,CPU_ICache,CPU_DCache,IsCacheable_Spec,IsBufferable_Spec,AccessPermission_Spec
+CORTEX_M7.IsBufferable_Spec=MPU_ACCESS_BUFFERABLE
+CORTEX_M7.IsCacheable_Spec=MPU_ACCESS_CACHEABLE
+CORTEX_M7.default_mode_Activation=1
 File.Version=6
 GPIO.groupedBy=Group By Peripherals
 KeepUserPlacement=false
