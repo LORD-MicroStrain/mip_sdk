@@ -51,6 +51,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -58,7 +59,7 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t data[8192];
+uint8_t data[8192] = {0};
 size_t num_bytes = 0;
 const uint8_t DATA_PACKET[] = {
     0x75,0x65,0x82,0xc1,0x0e,0xd3,0x40,0x8c,0x84,0xef,0x9d,0xb2,0x2d,0x0f,0x00,0x00,
@@ -100,6 +101,14 @@ int main(void)
 
   /* USER CODE END 1 */
 
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
+
+  /* Enable the CPU Cache */
+
+  /* Enable I-Cache---------------------------------------------------------*/
+  SCB_EnableICache();
+
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
@@ -137,16 +146,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      //for(size_t i=0; i<num_bytes; i++)
-      //{
-      //    for(unsigned int b=0; b<8; b++)
-      //    {
-      //        if((data[i] >> b) & 1)
-      //            LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
-      //        else
-      //            LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
-      //    }
-      //}
       mip_parser_reset(&parser);
       num_parsed = 0;
 
@@ -154,7 +153,9 @@ int main(void)
       // Use an oscilloscope with "+width" measurement on PB7 to measure time taken.
       // Divide num_bytes by the measured time to get throughput in B/s.
       LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
-      mip_parser_parse(&parser, data, num_bytes, 0);
+      const unsigned int n = 4;  // sizeof(data) must divide by this evenly
+      for(unsigned int i=0; i<n; i++)
+          mip_parser_parse(&parser, data+sizeof(data)/n*i, sizeof(data)/n, 0);
       LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
 
       // Green LED if all packets parsed, red LED otherwise
@@ -384,6 +385,22 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+ /* MPU Configuration */
+
+void MPU_Config(void)
+{
+
+  /* Disables the MPU */
+  LL_MPU_Disable();
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  LL_MPU_ConfigRegion(LL_MPU_REGION_NUMBER0, 0x87, 0x0, LL_MPU_REGION_SIZE_4GB|LL_MPU_TEX_LEVEL0|LL_MPU_REGION_FULL_ACCESS|LL_MPU_INSTRUCTION_ACCESS_DISABLE|LL_MPU_ACCESS_SHAREABLE|LL_MPU_ACCESS_CACHEABLE|LL_MPU_ACCESS_BUFFERABLE);
+  /* Enables the MPU */
+  LL_MPU_Enable(LL_MPU_CTRL_PRIVILEGED_DEFAULT);
+
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
