@@ -21,6 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <mip/mip_parser.h>
+
 #include "stdint.h"
 #include "stddef.h"
 #include "string.h"
@@ -73,6 +75,18 @@ const uint8_t DATA_PACKET[] = {
     0x00,0x00,0x00,0x00,0x00,0x10,0x09,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
     0x00,0x00,0x00,0x00,0x00,0x87,0x56,  // 199 bytes
 };
+
+mip_parser parser;
+size_t num_parsed = 0;
+
+void callback(void* p, const mip_packet* packet, timestamp_type ts)
+{
+    (void)p;
+    (void)ts;
+
+    num_parsed++;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -114,26 +128,47 @@ int main(void)
   for(size_t i=0; i<num_pkts_buffered; i++)
       memcpy(data+i*sizeof(DATA_PACKET), DATA_PACKET, sizeof(DATA_PACKET));
   num_bytes = num_pkts_buffered * sizeof(DATA_PACKET);
+
+  mip_parser_init(&parser, &callback, NULL, MIP_PARSER_DEFAULT_TIMEOUT_MS);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      for(size_t i=0; i<num_bytes; i++)
-      {
-          for(unsigned int b=0; b<8; b++)
-          {
-              if((data[i] >> b) & 1)
-                  LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
-              else
-                  LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
-          }
-      }
+      //for(size_t i=0; i<num_bytes; i++)
+      //{
+      //    for(unsigned int b=0; b<8; b++)
+      //    {
+      //        if((data[i] >> b) & 1)
+      //            LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
+      //        else
+      //            LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
+      //    }
+      //}
+      mip_parser_reset(&parser);
+      num_parsed = 0;
+
+      // Timing on the blue LED pin.
+      // Use an oscilloscope with "+width" measurement on PB7 to measure time taken.
+      // Divide num_bytes by the measured time to get throughput in B/s.
+      LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
+      mip_parser_parse(&parser, data, num_bytes, 0);
+      LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
+
+      // Green LED if all packets parsed, red LED otherwise
+      if(num_parsed == num_pkts_buffered)
+          LL_GPIO_SetOutputPin(LD1_GPIO_Port, LD1_Pin);
+      else
+          LL_GPIO_SetOutputPin(LD3_GPIO_Port, LD3_Pin);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    while(!LL_GPIO_IsInputPinSet(USER_Btn_GPIO_Port, USER_Btn_Pin));
+        while(!LL_GPIO_IsInputPinSet(USER_Btn_GPIO_Port, USER_Btn_Pin));
+        LL_GPIO_ResetOutputPin(LD1_GPIO_Port, LD1_Pin);
+        LL_GPIO_ResetOutputPin(LD3_GPIO_Port, LD3_Pin);
+        while(LL_GPIO_IsInputPinSet(USER_Btn_GPIO_Port, USER_Btn_Pin));
   }
   /* USER CODE END 3 */
 }
