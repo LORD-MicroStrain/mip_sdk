@@ -156,9 +156,27 @@ int main(void)
       // Use an oscilloscope with "+width" measurement on PB7 to measure time taken.
       // Divide num_bytes by the measured time to get throughput in B/s.
       LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
+#if 0  // Send chunks to mip_parser_parse vs directly writing data via get_write_ptr
       const unsigned int n = 4;  // sizeof(data) must divide by this evenly
       for(unsigned int i=0; i<n; i++)
           mip_parser_parse(&parser, data+sizeof(data)/n*i, sizeof(data)/n, 0, MIPPARSER_UNLIMITED_PACKETS);
+#else
+      size_t sent = 0;
+      while(sent < num_bytes)
+      {
+          const size_t remaining = num_bytes-sent;
+
+          uint8_t* ptr;
+          size_t count = mip_parser_get_write_ptr(&parser, &ptr);
+          if(count > remaining)
+              count = remaining;
+
+          memcpy(ptr, data+sent, count);
+
+          mip_parser_process_written(&parser, count, 0, MIPPARSER_UNLIMITED_PACKETS);
+          sent += count;
+      }
+#endif
       LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
 
       // Green LED if all packets parsed, red LED otherwise
@@ -400,22 +418,6 @@ void MPU_Config(void)
   /** Initializes and configures the Region and the memory to be protected
   */
   LL_MPU_ConfigRegion(LL_MPU_REGION_NUMBER0, 0x87, 0x0, LL_MPU_REGION_SIZE_4GB|LL_MPU_TEX_LEVEL0|LL_MPU_REGION_FULL_ACCESS|LL_MPU_INSTRUCTION_ACCESS_DISABLE|LL_MPU_ACCESS_SHAREABLE|LL_MPU_ACCESS_CACHEABLE|LL_MPU_ACCESS_BUFFERABLE);
-  /* Enables the MPU */
-  LL_MPU_Enable(LL_MPU_CTRL_PRIVILEGED_DEFAULT);
-
-}
-
- /* MPU Configuration */
-
-void MPU_Config(void)
-{
-
-  /* Disables the MPU */
-  LL_MPU_Disable();
-
-  /** Initializes and configures the Region and the memory to be protected
-  */
-  LL_MPU_ConfigRegion(LL_MPU_REGION_NUMBER0, 0x87, 0x0, LL_MPU_REGION_SIZE_4GB|LL_MPU_TEX_LEVEL0|LL_MPU_REGION_NO_ACCESS|LL_MPU_INSTRUCTION_ACCESS_DISABLE|LL_MPU_ACCESS_SHAREABLE|LL_MPU_ACCESS_NOT_CACHEABLE|LL_MPU_ACCESS_NOT_BUFFERABLE);
   /* Enables the MPU */
   LL_MPU_Enable(LL_MPU_CTRL_PRIVILEGED_DEFAULT);
 
