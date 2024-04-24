@@ -29,7 +29,7 @@
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, timestamp_type timeout)
+void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, mip_timestamp timeout)
 {
     byte_ring_init(&parser->_ring, buffer, buffer_size);
 
@@ -112,7 +112,7 @@ void mip_parser_reset(mip_parser* parser)
 ///      conntains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
 ///      16-bit checksum has a 1 in 65,536 chance of appearing to be valid.
 ///
-remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets)
+mip_remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
     if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
@@ -152,7 +152,7 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
 
                 MIP_DIAG_INC(parser->_diag_bytes_read, count);
 
-                return -(remaining_count)input_count;
+                return -(mip_remaining_count)input_count;
             }
         }
 
@@ -162,7 +162,7 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
 
     } while( input_count );
 
-    return -(remaining_count)input_count;
+    return -(mip_remaining_count)input_count;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +179,7 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
 ///@returns true if a packet was found, false if more data is required. If false,
 ///         the packet is not initialized.
 ///
-bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp)
+bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, mip_timestamp timestamp)
 {
     // Parse packets while there is sufficient data in the ring buffer.
     while( byte_ring_count(&parser->_ring) >= parser->_expected_length )
@@ -254,7 +254,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
 ///@brief Returns the packet timeout of the parser.
 ///
 ///
-timestamp_type mip_parser_timeout(const mip_parser* parser)
+mip_timestamp mip_parser_timeout(const mip_parser* parser)
 {
     return parser->_timeout;
 }
@@ -266,7 +266,7 @@ timestamp_type mip_parser_timeout(const mip_parser* parser)
 ///@param parser
 ///@param timeout
 ///
-void mip_parser_set_timeout(mip_parser* parser, timestamp_type timeout)
+void mip_parser_set_timeout(mip_parser* parser, mip_timestamp timeout)
 {
     parser->_timeout = timeout;
 }
@@ -327,7 +327,7 @@ void* mip_parser_callback_object(const mip_parser* parser)
 ///    won't matter because an additional call to parse won't produce a new
 ///    packet to be timestamped.
 ///
-timestamp_type mip_parser_last_packet_timestamp(const mip_parser* parser)
+mip_timestamp mip_parser_last_packet_timestamp(const mip_parser* parser)
 {
     return parser->_start_time;
 }
@@ -378,7 +378,7 @@ size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** const ptr_out)
 ///@param timestamp
 ///@param max_packets
 ///
-void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type timestamp, unsigned int max_packets)
+void mip_parser_process_written(mip_parser* parser, size_t count, mip_timestamp timestamp, unsigned int max_packets)
 {
     MIP_DIAG_INC(parser->_diag_bytes_read, count);
 
@@ -472,7 +472,7 @@ uint32_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
 ///        a single mip packet of maximum size at the given baud rate, plus some
 ///        tolerance.
 ///
-timeout_type mip_timeout_from_baudrate(uint32_t baudrate)
+mip_timeout mip_timeout_from_baudrate(uint32_t baudrate)
 {
     // num_symbols [b] = (packet_length [B]) * (10 [b/B])
     unsigned int num_symbols = MIP_PACKET_LENGTH_MAX * 10;

@@ -39,7 +39,7 @@ void mip_pending_cmd_init(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t 
 ///@param additional_time
 ///       Additional time on top of the base reply timeout for this specific command.
 ///
-void mip_pending_cmd_init_with_timeout(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, timeout_type additional_time)
+void mip_pending_cmd_init_with_timeout(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, mip_timeout additional_time)
 {
     mip_pending_cmd_init_full(cmd, descriptor_set, field_descriptor, 0x00, NULL, 0, additional_time);
 }
@@ -83,7 +83,7 @@ void mip_pending_cmd_init_with_response(mip_pending_cmd* cmd, uint8_t descriptor
 ///@param additional_time
 ///       Additional time on top of the base reply timeout for this specific command.
 ///
-void mip_pending_cmd_init_full(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_buffer_size, timeout_type additional_time)
+void mip_pending_cmd_init_full(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_buffer_size, mip_timeout additional_time)
 {
     cmd->_next                 = NULL;
     cmd->_response_buffer      = NULL;
@@ -157,7 +157,7 @@ uint8_t mip_pending_cmd_response_length(const mip_pending_cmd* cmd)
 ///@returns The time remaining before the command times out. The value will be
 ///         negative if the timeout time has passed.
 ///
-int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type now)
+int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, mip_timestamp now)
 {
     assert(cmd->_status == MIP_STATUS_WAITING);
 
@@ -175,7 +175,7 @@ int mip_pending_cmd_remaining_time(const mip_pending_cmd* cmd, timestamp_type no
 ///@returns true if the command should time out. Only possible for MIP_STATUS_WAITING.
 ///@returns false if the command should not time out.
 ///
-bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type now)
+bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, mip_timestamp now)
 {
     if( cmd->_status == MIP_STATUS_WAITING )
     {
@@ -199,7 +199,7 @@ bool mip_pending_cmd_check_timeout(const mip_pending_cmd* cmd, timestamp_type no
 ///       used to accommodate long communication latencies, such as when using
 ///       a TCP connection.
 ///
-void mip_cmd_queue_init(mip_cmd_queue* queue, timeout_type base_reply_timeout)
+void mip_cmd_queue_init(mip_cmd_queue* queue, mip_timeout base_reply_timeout)
 {
     queue->_first_pending_cmd = NULL;
     queue->_base_timeout = base_reply_timeout;
@@ -267,7 +267,7 @@ void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 ///         not updated). The caller should set pending->_status to this value
 ///         after doing any additional processing requiring the pending struct.
 ///
-static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pending, const mip_packet* packet, timeout_type base_timeout, timestamp_type timestamp)
+static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pending, const mip_packet* packet, mip_timeout base_timeout, mip_timestamp timestamp)
 {
     assert( pending->_status != MIP_STATUS_NONE );         // pending->_status must be set to MIP_STATUS_PENDING in mip_cmd_queue_enqueue to get here.
     assert( !mip_cmd_result_is_finished(pending->_status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
@@ -374,7 +374,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
 ///@param packet The received MIP packet. Assumed to be valid.
 ///@param timestamp The time the packet was received
 ///
-void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, timestamp_type timestamp)
+void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, mip_timestamp timestamp)
 {
     // Check if the packet is a command descriptor set.
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
@@ -439,7 +439,7 @@ void mip_cmd_queue_clear(mip_cmd_queue* queue)
 ///@param queue
 ///@param now
 ///
-void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
+void mip_cmd_queue_update(mip_cmd_queue* queue, mip_timestamp now)
 {
     if( queue->_first_pending_cmd )
     {
@@ -476,7 +476,7 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, timestamp_type now)
 ///@param queue
 ///@param timeout
 ///
-void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, timeout_type timeout)
+void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, mip_timeout timeout)
 {
     queue->_base_timeout = timeout;
 }
@@ -486,7 +486,7 @@ void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, timeout_type tim
 ///
 ///@returns The minimum time to wait for a reply to any command.
 ///
-timeout_type mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue)
+mip_timeout mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue)
 {
     return queue->_base_timeout;
 }

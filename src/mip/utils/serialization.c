@@ -66,7 +66,7 @@ void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packe
     serializer->_buffer_size = 0;
     serializer->_offset      = 0;
 
-    const remaining_count length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
+    const mip_remaining_count length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
 
     if( length >= 0 )
         serializer->_buffer_size = length;
@@ -142,7 +142,7 @@ size_t mip_serializer_length(const mip_serializer* serializer)
 ///      or read more data than contained in the buffer. This is not a bug and
 ///      it can be detected with the mip_serializer_is_ok() function.
 ///
-remaining_count mip_serializer_remaining(const mip_serializer* serializer)
+mip_remaining_count mip_serializer_remaining(const mip_serializer* serializer)
 {
     return mip_serializer_capacity(serializer) - mip_serializer_length(serializer);
 }

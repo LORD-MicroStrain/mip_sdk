@@ -363,7 +363,7 @@ void DeviceInterface::setSendFunction()
 template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
 void DeviceInterface::setRecvFunction()
 {
-    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out){
+    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out){
         return (*Recv)(*static_cast<DeviceInterface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
     });
 }
@@ -376,7 +376,7 @@ void DeviceInterface::setRecvFunction()
 template<bool (*Update)(DeviceInterface&, Timeout)>
 void DeviceInterface::setUpdateFunction()
 {
-    setUpdateFunction([](C::mip_interface* device, C::timeout_type wait_time){
+    setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time){
         return (*Update)(*static_cast<DeviceInterface*>(device), wait_time);
     });
 }
@@ -451,7 +451,7 @@ void DeviceInterface::setUpdateFunction()
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
     setUpdateFunction(
-        [](C::mip_interface* device, C::timeout_type wait_time)->bool
+        [](C::mip_interface* device, C::mip_timeout wait_time)->bool
         {
             return (static_cast<Derived*>(device)->*Update)(wait_time);
         }
@@ -508,11 +508,11 @@ void DeviceInterface::setCallbacks(T* object)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Send)(data, size);
     };
-    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out)
+    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
     };
-    auto update = [](C::mip_interface* device, C::timeout_type wait_time)
+    auto update = [](C::mip_interface* device, C::mip_timeout wait_time)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Update)(wait_time);
     };

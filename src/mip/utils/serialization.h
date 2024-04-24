@@ -57,7 +57,7 @@ void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field*
 
 size_t          mip_serializer_capacity(const mip_serializer* serializer);
 size_t          mip_serializer_length(const mip_serializer* serializer);
-remaining_count mip_serializer_remaining(const mip_serializer* serializer);
+mip_remaining_count mip_serializer_remaining(const mip_serializer* serializer);
 
 bool mip_serializer_is_ok(const mip_serializer* serializer);
 bool mip_serializer_is_complete(const mip_serializer* serializer);

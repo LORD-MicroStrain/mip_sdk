@@ -50,7 +50,7 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
     }
 }
 
-void handlePacket(void* unused, const mip_packet* packet, timestamp_type timestamp)
+void handlePacket(void* unused, const mip_packet* packet, mip_timestamp timestamp)
 {
     (void)unused;
 
@@ -65,7 +65,7 @@ void handlePacket(void* unused, const mip_packet* packet, timestamp_type timesta
     printf("\n");
 }
 
-void handleAccel(void* user, const mip_field* field, timestamp_type timestamp)
+void handleAccel(void* user, const mip_field* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_accel_data data;
@@ -82,7 +82,7 @@ void handleAccel(void* user, const mip_field* field, timestamp_type timestamp)
     }
 }
 
-void handleGyro(void* user, const mip_field* field, timestamp_type timestamp)
+void handleGyro(void* user, const mip_field* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_gyro_data data;
@@ -91,7 +91,7 @@ void handleGyro(void* user, const mip_field* field, timestamp_type timestamp)
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void* user, const mip_field* field, timestamp_type timestamp)
+void handleMag(void* user, const mip_field* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_mag_data data;
@@ -103,18 +103,18 @@ void handleMag(void* user, const mip_field* field, timestamp_type timestamp)
 
 time_t startTime;
 
-timestamp_type get_current_timestamp()
+mip_timestamp get_current_timestamp()
 {
     time_t t;
     time(&t);
 
     double delta = difftime(t, startTime);
 
-    return (timestamp_type)(delta * 1000);
+    return (mip_timestamp)(delta * 1000);
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
     (void)device;
 

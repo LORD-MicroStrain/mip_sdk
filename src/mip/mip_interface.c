@@ -90,7 +90,7 @@
 ///
 void mip_interface_init(
     mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size,
-    timeout_type parse_timeout, timeout_type base_reply_timeout,
+    mip_timeout parse_timeout, mip_timeout base_reply_timeout,
     mip_send_callback send, mip_recv_callback recv,
     mip_update_callback update, void* user_pointer)
 {
@@ -311,7 +311,7 @@ bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, si
 ///@returns False if the receive callback is NULL.
 ///@returns False if the receive callback failed (i.e. if it returned false).
 ///
-bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* length_out, timestamp_type* timestamp_out)
+bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* length_out, mip_timestamp* timestamp_out)
 {
     return device->_recv_callback && device->_recv_callback(device, buffer, max_length, wait_time, length_out, timestamp_out);
 }
@@ -336,7 +336,7 @@ bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size
 ///         updated (e.g. if the serial port is not open).
 ///
 
-bool mip_interface_update(struct mip_interface* device, timeout_type wait_time)
+bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time)
 {
     if( !device->_update_callback )
         return false;
@@ -359,7 +359,7 @@ bool mip_interface_update(struct mip_interface* device, timeout_type wait_time)
 ///
 ///@returns The value returned by mip_interface_user_recv_from_device.
 ///
-bool mip_interface_default_update(struct mip_interface* device, timeout_type wait_time)
+bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait_time)
 {
     if( !device->_recv_callback )
         return false;
@@ -368,8 +368,8 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
     mip_parser* parser = mip_interface_parser(device);
     size_t max_count   = mip_parser_get_write_ptr(parser, &ptr);
 
-    size_t count = 0;
-    timestamp_type timestamp = 0;
+    size_t        count     = 0;
+    mip_timestamp timestamp = 0;
     if ( !mip_interface_recv_from_device(device, ptr, max_count, wait_time, &count, &timestamp) )
         return false;
 
@@ -398,7 +398,7 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
 ///@returns The amount of data which couldn't be processed due to the limit on
 ///         number of packets per parse call. Normally the result is 0.
 ///
-remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
+mip_remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
 {
     return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
 }
@@ -430,7 +430,7 @@ void mip_interface_process_unparsed_packets(mip_interface* device)
 ///@param timestamp
 ///       timestamp_type of the received MIP packet.
 ///
-void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp)
+void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
@@ -445,7 +445,7 @@ void mip_interface_receive_packet(mip_interface* device, const mip_packet* packe
 ///
 ///@returns True
 ///
-bool mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp)
+bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_interface_receive_packet(device, packet, timestamp);
 
