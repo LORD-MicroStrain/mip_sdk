@@ -92,7 +92,7 @@ namespace mip
                 uint16_t payload_length;
                 memcpy(&payload_length, payload_length_bytes, sizeof(uint16_t));
 
-                int total_message_length = HEADER_SIZE + payload_length + CHECKSUM_SIZE;
+                unsigned int total_message_length = HEADER_SIZE + payload_length + CHECKSUM_SIZE;
 
                 // Check if buffer contains full packet size
                 if (_buffer.size() < total_message_length)
@@ -100,7 +100,7 @@ namespace mip
 
                 // Extract packet
                 std::vector<uint8_t> packet(total_message_length);
-                for (int i = 0; i < total_message_length; i++)
+                for (unsigned int i = 0; i < total_message_length; i++)
                     packet[i] = _buffer[i];
 
                 // Validate checksum
@@ -109,7 +109,7 @@ namespace mip
                     _packet_callback(packet);
 
                     // Clear packet from buffer
-                    for (int i = 0; i < total_message_length; i++)
+                    for (unsigned int i = 0; i < total_message_length; i++)
                         _buffer.pop_front();
                 } else
                     _buffer.pop_front();

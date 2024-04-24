@@ -176,7 +176,6 @@ int main(int argc, const char* argv[])
     enum mip_cmd_result result;
 
     // Get the base rate.
-    volatile uint32_t now = clock();
     uint16_t base_rate;
     result = mip_3dm_get_base_rate(&device, MIP_SENSOR_DATA_DESC_SET, &base_rate);
 

@@ -96,8 +96,6 @@ int main(int argc, const char* argv[])
         // Send this packet to the parser in small chunks.
         //
 
-        const unsigned int MAX_CHUNKS = 5;
-
         const size_t packet_size = mip_packet_total_length(&packet);
 
 

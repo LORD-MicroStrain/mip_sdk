@@ -314,9 +314,9 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
-    uint32_t bytes_available = serial_port_read_count(port);
-
 #ifdef WIN32 //Windows
+
+    uint32_t bytes_available = serial_port_read_count(port);
 
     DWORD last_error = GetLastError();
     if (last_error != 0)
