@@ -189,7 +189,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
     // Bytes already in the parser buffer from previous call.
     //packet_length buffered_length = parser->_buffered_length;
-    assert(parser->_buffered_length < MIP_PACKET_LENGTH_MAX);
+    assert(parser->_buffered_length <= MIP_PACKET_LENGTH_MAX);
 
     // Expected length of the packet or current header byte being parsed. 1, 2, 4 or >= 6.
     size_t expected_packet_length =
