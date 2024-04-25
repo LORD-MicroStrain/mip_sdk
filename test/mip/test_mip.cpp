@@ -104,7 +104,7 @@ int main(int argc, const char* argv[])
         if( rem != 0 )
         {
             numErrors++;
-            fprintf(stderr, "Parser reports %d unparsed bytes.\n", rem);
+            fprintf(stderr, "Parser reports %zu unparsed bytes.\n", rem);
         }
 
         if( numErrors > 10 )
