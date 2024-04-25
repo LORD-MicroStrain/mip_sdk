@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
             const uint8_t field_desc = (rand() % 255) + 1;  // Random field descriptor.
 
             uint8_t* payload;
-            mip_remaining_count available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
+            int available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
 
             if( available < 0 )
             {

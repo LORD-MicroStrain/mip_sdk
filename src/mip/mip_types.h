@@ -13,7 +13,7 @@ extern "C" {
 
 
 // Used like a signed version of size_t
-typedef int_least16_t mip_remaining_count;
+typedef int mip_remaining_count;
 
 
 ///@brief Type used for packet timestamps and timeouts.

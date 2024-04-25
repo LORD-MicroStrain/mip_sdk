@@ -398,7 +398,7 @@ bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait
 ///@returns The amount of data which couldn't be processed due to the limit on
 ///         number of packets per parse call. Normally the result is 0.
 ///
-mip_remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
+size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
 {
     return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
 }

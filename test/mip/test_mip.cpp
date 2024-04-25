@@ -86,7 +86,7 @@ int main(int argc, const char* argv[])
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
             uint8_t* payload;
-            RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
+            int rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
 
             if( rem < 0 )
                 break;
@@ -99,7 +99,7 @@ int main(int argc, const char* argv[])
 
         packet.finalize();
 
-        RemainingCount rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
+        size_t rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
 
         if( rem != 0 )
         {

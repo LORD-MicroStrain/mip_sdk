@@ -275,7 +275,7 @@ public:
     bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
     bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
 
-    RemainingCount receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
+    size_t         receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 

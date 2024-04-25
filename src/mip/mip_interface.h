@@ -70,7 +70,7 @@ bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size
 bool mip_interface_update(mip_interface* device, mip_timeout wait_time);
 
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time);
-mip_remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
+size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
 void mip_interface_process_unparsed_packets(mip_interface* device);
 bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp);
 void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp);

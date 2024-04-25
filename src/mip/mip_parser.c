@@ -112,7 +112,7 @@ void mip_parser_reset(mip_parser* parser)
 ///      conntains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
 ///      16-bit checksum has a 1 in 65,536 chance of appearing to be valid.
 ///
-mip_remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets)
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
     if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
@@ -148,11 +148,11 @@ mip_remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_bu
             if( stop )
             {
                 // Pull more data from the input buffer if possible.
-                size_t count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
+                count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
 
                 MIP_DIAG_INC(parser->_diag_bytes_read, count);
 
-                return -(mip_remaining_count)input_count;
+                return input_count;
             }
         }
 
@@ -162,7 +162,7 @@ mip_remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_bu
 
     } while( input_count );
 
-    return -(mip_remaining_count)input_count;
+    return input_count;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

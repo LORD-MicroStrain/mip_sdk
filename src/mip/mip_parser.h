@@ -57,7 +57,7 @@ typedef struct mip_parser
     mip_timestamp       _start_time;                           ///<@private The timestamp when the first byte was observed by the parser.
     mip_timestamp       _timeout;                              ///<@private Duration to wait for the rest of the data in a packet.
     uint8_t             _result_buffer[MIP_PACKET_LENGTH_MAX]; ///<@private Buffer used to output MIP packets to the callback.
-    packet_length       _expected_length;                      ///<@private Expected length of the packet currently being parsed. Keeps track of parser state. Always 1, MIP_HEADER_LENGTH, or at least MIP_PACKET_LENGTH_MAX.
+    uint16_t            _expected_length;                      ///<@private Expected length of the packet currently being parsed. Keeps track of parser state. Always 1, MIP_HEADER_LENGTH, or at least MIP_PACKET_LENGTH_MAX.
     byte_ring_state     _ring;                                 ///<@private Ring buffer which holds data being parsed. User-specified backing buffer and size.
     mip_packet_callback _callback;                             ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*               _callback_object;                      ///<@private User-specified pointer passed to the callback function.
@@ -81,7 +81,7 @@ typedef struct mip_parser
 
 void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, mip_timestamp timeout);
 bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, mip_timestamp timestamp);
-mip_remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets);
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets);
 
 void mip_parser_reset(mip_parser* parser);
 

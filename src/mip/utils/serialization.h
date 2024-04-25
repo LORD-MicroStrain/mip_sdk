@@ -55,9 +55,9 @@ void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packe
 void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packet* packet);
 void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field* field);
 
-size_t          mip_serializer_capacity(const mip_serializer* serializer);
-size_t          mip_serializer_length(const mip_serializer* serializer);
-mip_remaining_count mip_serializer_remaining(const mip_serializer* serializer);
+size_t mip_serializer_capacity(const mip_serializer* serializer);
+size_t mip_serializer_length(const mip_serializer* serializer);
+int    mip_serializer_remaining(const mip_serializer* serializer);
 
 bool mip_serializer_is_ok(const mip_serializer* serializer);
 bool mip_serializer_is_complete(const mip_serializer* serializer);
@@ -154,7 +154,7 @@ public:
 
     size_t capacity() const { return C::mip_serializer_capacity(this); }
     size_t length() const { return C::mip_serializer_length(this); }
-    RemainingCount remaining() const { return C::mip_serializer_remaining(this); }
+    int remaining() const { return C::mip_serializer_remaining(this); }
 
     bool isOk() const { return C::mip_serializer_is_ok(this); }
     bool isComplete() const { return C::mip_serializer_is_complete(this); }
