@@ -459,13 +459,14 @@ void extract_mip_gnss_clock_info_data_valid_flags(struct mip_serializer* seriali
 ///@{
 
 typedef uint8_t mip_gnss_fix_info_data_fix_type;
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_3D        = 0; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_2D        = 1; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_TIME_ONLY = 2; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE      = 3; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_INVALID   = 4; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_RTK_FLOAT = 5; ///<  
-static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_RTK_FIXED = 6; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_3D           = 0; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_2D           = 1; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_TIME_ONLY    = 2; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_NONE         = 3; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_INVALID      = 4; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_RTK_FLOAT    = 5; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_RTK_FIXED    = 6; ///<  
+static const mip_gnss_fix_info_data_fix_type MIP_GNSS_FIX_INFO_DATA_FIX_TYPE_FIX_DIFFERENTIAL = 7; ///<  
 
 typedef uint16_t mip_gnss_fix_info_data_fix_flags;
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_NONE       = 0x0000;
