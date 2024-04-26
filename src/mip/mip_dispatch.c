@@ -267,7 +267,7 @@ static bool mip_dispatch_is_descriptor_set_match(uint8_t desc_set, uint8_t handl
 ///@param timestamp Packet parse time.
 ///@param post      If true, this is called after field iteration. Otherwise before.
 ///
-static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp, bool post)
+static void mip_dispatcher_call_packet_callbacks(mip_dispatcher* self, const mip_packet* packet, mip_timestamp timestamp, bool post)
 {
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);
 
@@ -312,7 +312,7 @@ static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_des
 ///@param field     Valid MIP field.
 ///@param timestamp Packet parse time.
 ///
-static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_field* field, timestamp_type timestamp)
+static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_field* field, mip_timestamp timestamp)
 {
     const uint8_t descriptor_set   = mip_field_descriptor_set(field);
     const uint8_t field_descriptor = mip_field_field_descriptor(field);
@@ -348,7 +348,7 @@ static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_
 ///@param timestamp
 ///        The approximate parse time of the packet.
 ///
-void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp)
+void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_dispatcher_call_packet_callbacks(self, packet, timestamp, false);
 

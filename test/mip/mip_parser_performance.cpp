@@ -166,7 +166,7 @@ ChunkStats chunked_test(const Test& test, size_t chunk_size)
     ChunkStats stats;
     stats.chunk_size = chunk_size;
     stats.num_calls  = num_full_chunks;
-    stats.total_time = std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations;  // Accumulate with double precision!
+    stats.total_time = (float)std::accumulate(chunk_times.begin(), chunk_times.end(), 0.0) / test.num_iterations;  // Accumulate with double precision!
     stats.avg_time   = stats.total_time / num_full_chunks;
     stats.max_time   = *std::max_element(chunk_times.begin(), chunk_times.end());
 

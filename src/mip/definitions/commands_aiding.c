@@ -77,12 +77,12 @@ void insert_mip_aiding_frame_config_command(mip_serializer* serializer, const mi
         
         if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
         {
-            insert_mip_vector3f(serializer, &self->rotation.euler);
+            insert_mip_vector3f(serializer, self->rotation.euler);
             
         }
         if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
         {
-            insert_mip_quatf(serializer, &self->rotation.quaternion);
+            insert_mip_quatf(serializer, self->rotation.quaternion);
             
         }
     }
@@ -107,12 +107,12 @@ void extract_mip_aiding_frame_config_command(mip_serializer* serializer, mip_aid
         
         if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
         {
-            extract_mip_vector3f(serializer, &self->rotation.euler);
+            extract_mip_vector3f(serializer, self->rotation.euler);
             
         }
         if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
         {
-            extract_mip_quatf(serializer, &self->rotation.quaternion);
+            extract_mip_quatf(serializer, self->rotation.quaternion);
             
         }
     }
@@ -131,12 +131,12 @@ void insert_mip_aiding_frame_config_response(mip_serializer* serializer, const m
     
     if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
     {
-        insert_mip_vector3f(serializer, &self->rotation.euler);
+        insert_mip_vector3f(serializer, self->rotation.euler);
         
     }
     if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
     {
-        insert_mip_quatf(serializer, &self->rotation.quaternion);
+        insert_mip_quatf(serializer, self->rotation.quaternion);
         
     }
 }
@@ -153,12 +153,12 @@ void extract_mip_aiding_frame_config_response(mip_serializer* serializer, mip_ai
     
     if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
     {
-        extract_mip_vector3f(serializer, &self->rotation.euler);
+        extract_mip_vector3f(serializer, self->rotation.euler);
         
     }
     if( self->format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
     {
-        extract_mip_quatf(serializer, &self->rotation.quaternion);
+        extract_mip_quatf(serializer, self->rotation.quaternion);
         
     }
 }
@@ -194,12 +194,12 @@ mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8
     
     if( format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
     {
-        insert_mip_vector3f(&serializer, &rotation->euler);
+        insert_mip_vector3f(&serializer, rotation->euler);
         
     }
     if( format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
     {
-        insert_mip_quatf(&serializer, &rotation->quaternion);
+        insert_mip_quatf(&serializer, rotation->quaternion);
         
     }
     assert(mip_serializer_is_ok(&serializer));
@@ -241,12 +241,12 @@ mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_
         
         if( format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_EULER )
         {
-            extract_mip_vector3f(&deserializer, &rotation_out->euler);
+            extract_mip_vector3f(&deserializer, rotation_out->euler);
             
         }
         if( format == MIP_AIDING_FRAME_CONFIG_COMMAND_FORMAT_QUATERNION )
         {
-            extract_mip_quatf(&deserializer, &rotation_out->quaternion);
+            extract_mip_quatf(&deserializer, rotation_out->quaternion);
             
         }
         if( mip_serializer_remaining(&deserializer) != 0 )
