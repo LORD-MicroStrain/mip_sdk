@@ -41,9 +41,7 @@ enum
     CMD_GET_EXTENDED_DESCRIPTORS   = 0x07,
     CMD_CONTINUOUS_BIT             = 0x08,
     CMD_COMM_SPEED                 = 0x09,
-    CMD_GPS_TIME_BROADCAST         = 0x71,
-    CMD_GPS_TIME_BROADCAST_NEW     = 0x72,
-    CMD_SYSTEM_TIME                = 0x73,
+    CMD_GPS_TIME_UPDATE            = 0x72,
     CMD_SOFT_RESET                 = 0x7E,
     
     REPLY_DEVICE_INFO              = 0x81,
@@ -719,10 +717,10 @@ struct GpsTimeUpdate
     uint32_t value = 0; ///< Week number or time of week, depending on the field_id.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_BROADCAST_NEW;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_base::CMD_GPS_TIME_UPDATE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
     static constexpr const char* NAME = "GpsTimeUpdate";
-    static constexpr const char* DOC_NAME = "Time Broadcast Command";
+    static constexpr const char* DOC_NAME = "GPS Time Update Command";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
     static constexpr const uint32_t WRITE_PARAMS   = 0x8003;
