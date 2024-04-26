@@ -98,6 +98,8 @@ void extract(Serializer& serializer, Time& self);
 /// Rotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth element
 /// in the rotation vector is ignored and should be set to 0.
 /// 
+/// When the tracking_enabled flag is 1, the Kalman filter will track errors in the provided frame definition; when 0, no errors are tracked.
+/// 
 /// Example: GNSS antenna lever arm
 /// 
 /// Frame ID: 1
@@ -124,9 +126,9 @@ struct FrameConfig
     };
     
     FunctionSelector function = static_cast<FunctionSelector>(0);
-    uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
+    uint8_t frame_id = 0; ///< Reference frame number. Limit 4.
     Format format = static_cast<Format>(0); ///< Format of the transformation.
-    bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
+    bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors.
     Vector3f translation; ///< Translation X, Y, and Z.
     Rotation rotation; ///< Rotation as specified by format.
     
@@ -173,9 +175,9 @@ struct FrameConfig
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0003;
         static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-        uint8_t frame_id = 0; ///< Reference frame number. Cannot be 0.
+        uint8_t frame_id = 0; ///< Reference frame number. Limit 4.
         Format format = static_cast<Format>(0); ///< Format of the transformation.
-        bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors
+        bool tracking_enabled = 0; ///< If enabled, the Kalman filter will track errors.
         Vector3f translation; ///< Translation X, Y, and Z.
         Rotation rotation; ///< Rotation as specified by format.
         
@@ -323,10 +325,10 @@ struct EcefPos
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Sensor ID.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     Vector3d position; ///< ECEF position [m].
-    Vector3f uncertainty; ///< ECEF position uncertainty [m].
-    ValidFlags valid_flags; ///< Valid flags.
+    Vector3f uncertainty; ///< ECEF position uncertainty [m]. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
@@ -396,12 +398,12 @@ struct LlhPos
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Sensor ID.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     double latitude = 0; ///< [deg]
     double longitude = 0; ///< [deg]
     double height = 0; ///< [m]
-    Vector3f uncertainty; ///< NED position uncertainty.
-    ValidFlags valid_flags; ///< Valid flags.
+    Vector3f uncertainty; ///< NED position uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
@@ -438,8 +440,8 @@ TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t f
 
 struct Height
 {
-    Time time;
-    uint8_t frame_id = 0;
+    Time time; ///< Timestamp of the measurement.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     float height = 0; ///< [m]
     float uncertainty = 0; ///< [m]
     uint16_t valid_flags = 0;
@@ -511,10 +513,10 @@ struct EcefVel
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Sensor ID.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     Vector3f velocity; ///< ECEF velocity [m/s].
-    Vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
-    ValidFlags valid_flags; ///< Valid flags.
+    Vector3f uncertainty; ///< ECEF velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
@@ -583,10 +585,10 @@ struct NedVel
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Sensor ID.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     Vector3f velocity; ///< NED velocity [m/s].
-    Vector3f uncertainty; ///< NED velocity uncertainty [m/s].
-    ValidFlags valid_flags; ///< Valid flags.
+    Vector3f uncertainty; ///< NED velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
@@ -656,10 +658,10 @@ struct VehicleFixedFrameVelocity
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     Vector3f velocity; ///< [m/s]
-    Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
-    ValidFlags valid_flags;
+    Vector3f uncertainty; ///< [m/s] 1-sigma uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
@@ -695,10 +697,10 @@ TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interfac
 
 struct TrueHeading
 {
-    Time time;
-    uint8_t frame_id = 0;
-    float heading = 0; ///< Heading in [radians]
-    float uncertainty = 0;
+    Time time; ///< Timestamp of the measurement.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
+    float heading = 0; ///< Heading [radians]. Range +/- Pi.
+    float uncertainty = 0; ///< Cannot be 0 unless the valid flags are 0.
     uint16_t valid_flags = 0;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
@@ -768,10 +770,10 @@ struct MagneticField
     };
     
     Time time; ///< Timestamp of the measurement.
-    uint8_t frame_id = 0; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     Vector3f magnetic_field; ///< [G]
-    Vector3f uncertainty; ///< [G] 1-sigma uncertainty (if uncertainty[i] <= 0, then magnetic_field[i] should be treated as invalid and ingnored)
-    ValidFlags valid_flags;
+    Vector3f uncertainty; ///< [G] 1-sigma uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_MAGNETIC_FIELD;
@@ -808,10 +810,10 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
 
 struct Pressure
 {
-    Time time;
-    uint8_t frame_id = 0;
+    Time time; ///< Timestamp of the measurement.
+    uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     float pressure = 0; ///< [mbar]
-    float uncertainty = 0; ///< [mbar]
+    float uncertainty = 0; ///< [mbar] 1-sigma uncertainty. Cannot be 0 unless the valid flags are 0.
     uint16_t valid_flags = 0;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;

@@ -101,6 +101,8 @@ void extract_mip_time_timebase(struct mip_serializer* serializer, mip_time_timeb
 /// Rotation can be defined using Euler angles OR quaternions.  If Format selector is set to Euler Angles, the fourth element
 /// in the rotation vector is ignored and should be set to 0.
 /// 
+/// When the tracking_enabled flag is 1, the Kalman filter will track errors in the provided frame definition; when 0, no errors are tracked.
+/// 
 /// Example: GNSS antenna lever arm
 /// 
 /// Frame ID: 1
@@ -125,9 +127,9 @@ typedef union mip_aiding_frame_config_command_rotation mip_aiding_frame_config_c
 struct mip_aiding_frame_config_command
 {
     mip_function_selector function;
-    uint8_t frame_id; ///< Reference frame number. Cannot be 0.
+    uint8_t frame_id; ///< Reference frame number. Limit 4.
     mip_aiding_frame_config_command_format format; ///< Format of the transformation.
-    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
+    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors.
     mip_vector3f translation; ///< Translation X, Y, and Z.
     mip_aiding_frame_config_command_rotation rotation; ///< Rotation as specified by format.
     
@@ -141,9 +143,9 @@ void extract_mip_aiding_frame_config_command_format(struct mip_serializer* seria
 
 struct mip_aiding_frame_config_response
 {
-    uint8_t frame_id; ///< Reference frame number. Cannot be 0.
+    uint8_t frame_id; ///< Reference frame number. Limit 4.
     mip_aiding_frame_config_command_format format; ///< Format of the transformation.
-    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors
+    bool tracking_enabled; ///< If enabled, the Kalman filter will track errors.
     mip_vector3f translation; ///< Translation X, Y, and Z.
     mip_aiding_frame_config_command_rotation rotation; ///< Rotation as specified by format.
     
@@ -217,10 +219,10 @@ static const mip_aiding_ecef_pos_command_valid_flags MIP_AIDING_ECEF_POS_COMMAND
 struct mip_aiding_ecef_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3d position; ///< ECEF position [m].
-    mip_vector3f uncertainty; ///< ECEF position uncertainty [m].
-    mip_aiding_ecef_pos_command_valid_flags valid_flags; ///< Valid flags.
+    mip_vector3f uncertainty; ///< ECEF position uncertainty [m]. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_ecef_pos_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_ecef_pos_command mip_aiding_ecef_pos_command;
@@ -251,12 +253,12 @@ static const mip_aiding_llh_pos_command_valid_flags MIP_AIDING_LLH_POS_COMMAND_V
 struct mip_aiding_llh_pos_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     double latitude; ///< [deg]
     double longitude; ///< [deg]
     double height; ///< [m]
-    mip_vector3f uncertainty; ///< NED position uncertainty.
-    mip_aiding_llh_pos_command_valid_flags valid_flags; ///< Valid flags.
+    mip_vector3f uncertainty; ///< NED position uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_llh_pos_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_llh_pos_command mip_aiding_llh_pos_command;
@@ -278,8 +280,8 @@ mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* 
 
 struct mip_aiding_height_command
 {
-    mip_time time;
-    uint8_t frame_id;
+    mip_time time; ///< Timestamp of the measurement.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     float height; ///< [m]
     float uncertainty; ///< [m]
     uint16_t valid_flags;
@@ -309,10 +311,10 @@ static const mip_aiding_ecef_vel_command_valid_flags MIP_AIDING_ECEF_VEL_COMMAND
 struct mip_aiding_ecef_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< ECEF velocity [m/s].
-    mip_vector3f uncertainty; ///< ECEF velocity uncertainty [m/s].
-    mip_aiding_ecef_vel_command_valid_flags valid_flags; ///< Valid flags.
+    mip_vector3f uncertainty; ///< ECEF velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_ecef_vel_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_ecef_vel_command mip_aiding_ecef_vel_command;
@@ -342,10 +344,10 @@ static const mip_aiding_ned_vel_command_valid_flags MIP_AIDING_NED_VEL_COMMAND_V
 struct mip_aiding_ned_vel_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Sensor ID.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< NED velocity [m/s].
-    mip_vector3f uncertainty; ///< NED velocity uncertainty [m/s].
-    mip_aiding_ned_vel_command_valid_flags valid_flags; ///< Valid flags.
+    mip_vector3f uncertainty; ///< NED velocity uncertainty [m/s]. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_ned_vel_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_ned_vel_command mip_aiding_ned_vel_command;
@@ -376,10 +378,10 @@ static const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags MIP_AID
 struct mip_aiding_vehicle_fixed_frame_velocity_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f velocity; ///< [m/s]
-    mip_vector3f uncertainty; ///< [m/s] 1-sigma uncertainty (if uncertainty[i] <= 0, then velocity[i] should be treated as invalid and ingnored)
-    mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags;
+    mip_vector3f uncertainty; ///< [m/s] 1-sigma uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_vehicle_fixed_frame_velocity_command mip_aiding_vehicle_fixed_frame_velocity_command;
@@ -400,10 +402,10 @@ mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* dev
 
 struct mip_aiding_true_heading_command
 {
-    mip_time time;
-    uint8_t frame_id;
-    float heading; ///< Heading in [radians]
-    float uncertainty;
+    mip_time time; ///< Timestamp of the measurement.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
+    float heading; ///< Heading [radians]. Range +/- Pi.
+    float uncertainty; ///< Cannot be 0 unless the valid flags are 0.
     uint16_t valid_flags;
     
 };
@@ -431,10 +433,10 @@ static const mip_aiding_magnetic_field_command_valid_flags MIP_AIDING_MAGNETIC_F
 struct mip_aiding_magnetic_field_command
 {
     mip_time time; ///< Timestamp of the measurement.
-    uint8_t frame_id; ///< Source ID for this estimate ( source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate )
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     mip_vector3f magnetic_field; ///< [G]
-    mip_vector3f uncertainty; ///< [G] 1-sigma uncertainty (if uncertainty[i] <= 0, then magnetic_field[i] should be treated as invalid and ingnored)
-    mip_aiding_magnetic_field_command_valid_flags valid_flags;
+    mip_vector3f uncertainty; ///< [G] 1-sigma uncertainty. Cannot be 0 unless the corresponding valid flags are 0.
+    mip_aiding_magnetic_field_command_valid_flags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
 };
 typedef struct mip_aiding_magnetic_field_command mip_aiding_magnetic_field_command;
@@ -456,10 +458,10 @@ mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip
 
 struct mip_aiding_pressure_command
 {
-    mip_time time;
-    uint8_t frame_id;
+    mip_time time; ///< Timestamp of the measurement.
+    uint8_t frame_id; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
     float pressure; ///< [mbar]
-    float uncertainty; ///< [mbar]
+    float uncertainty; ///< [mbar] 1-sigma uncertainty. Cannot be 0 unless the valid flags are 0.
     uint16_t valid_flags;
     
 };
