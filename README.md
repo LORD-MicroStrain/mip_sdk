@@ -156,7 +156,7 @@ Command results are divided into two categories:
 ### Timestamps and Timeouts
 
 #### Timestamp type
-Timestamps (`timestamp_type` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
+Timestamps (`mip_timestamp` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
 are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not intended to be
 a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the connected MIP device.
 In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
@@ -180,7 +180,7 @@ Timeouts for commands are broken down into two parts.
 Currently, only the C++ api offers a way to set the additional time parameter, and only when using the `runCommand` function taking
 the command structure and the `additionalTime` parameter.
 
-The `timeout_type` / `Timeout` typedef is an alias to the timestamp type.
+The `mip_timeout` / `Timeout` typedef is an alias to the timestamp type.
 
 ### C and C++ APIs
 

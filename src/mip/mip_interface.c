@@ -132,7 +132,7 @@
 ///
 void mip_interface_init(
     mip_interface* device,
-    timeout_type parse_timeout, timeout_type base_reply_timeout,
+    mip_timeout parse_timeout, mip_timeout base_reply_timeout,
     mip_send_callback send, mip_recv_callback recv,
     mip_update_callback update, void* user_pointer)
 {
@@ -353,7 +353,7 @@ bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, si
 ///@returns False if the receive callback is NULL.
 ///@returns False if the receive callback failed (i.e. if it returned false).
 ///
-bool mip_interface_recv_from_device(mip_interface* device, timeout_type wait_time, bool from_cmd, timestamp_type* timestamp_out)
+bool mip_interface_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
     return device->_recv_callback && device->_recv_callback(device, wait_time, from_cmd, timestamp_out);
 }
@@ -383,7 +383,7 @@ bool mip_interface_recv_from_device(mip_interface* device, timeout_type wait_tim
 ///         updated (e.g. if the serial port is not open).
 ///
 
-bool mip_interface_update(struct mip_interface* device, timeout_type wait_time, bool from_cmd)
+bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
     return device->_update_callback && device->_update_callback(device, wait_time, from_cmd);
 }
@@ -409,12 +409,12 @@ bool mip_interface_update(struct mip_interface* device, timeout_type wait_time, 
 ///
 ///@returns The value returned by mip_interface_user_recv_from_device.
 ///
-bool mip_interface_default_update(struct mip_interface* device, timeout_type wait_time, bool from_cmd)
+bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait_time, bool from_cmd)
 {
     if( !device->_recv_callback )
         return false;
 
-    timestamp_type timestamp;
+    mip_timestamp timestamp;
     if ( !mip_interface_recv_from_device(device, wait_time, from_cmd, &timestamp) )
         return false;
 
@@ -436,7 +436,7 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
 ///@param timestamp
 ///       Time of the received data.
 ///
-void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
+void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
 {
     mip_parser_parse(&device->_parser, data, length, timestamp);
 }
@@ -449,9 +449,9 @@ void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_
 ///@param packet
 ///       The received MIP packet.
 ///@param timestamp
-///       timestamp_type of the received MIP packet.
+///       Timestamp of the received MIP packet.
 ///
-void mip_interface_input_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp)
+void mip_interface_input_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
@@ -462,9 +462,9 @@ void mip_interface_input_packet(mip_interface* device, const mip_packet* packet,
 ///
 ///@param device    Void pointer to the device. Must be a mip_interface pointer.
 ///@param packet    MIP Packet from the parser.
-///@param timestamp timestamp_type of the packet.
+///@param timestamp Timestamp of the packet.
 ///
-void mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp)
+void mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_interface_input_packet(device, packet, timestamp);
 }

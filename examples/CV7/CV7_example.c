@@ -71,9 +71,9 @@ const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
 
 
 //Required MIP interface user-defined functions
-timestamp_type get_current_timestamp();
+mip_timestamp get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, timeout_type wait_time, bool from_cmd, timestamp_type* timestamp_out);
+bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out);
 bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
@@ -81,7 +81,7 @@ int usage(const char* argv0);
 void exit_gracefully(const char *message);
 bool should_exit();
 
-void handle_filter_event_source(void* user, const mip_field* field, timestamp_type timestamp);
+void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -313,8 +313,8 @@ int main(int argc, const char* argv[])
     //Main Loop: Update the interface and process data
     //
 
-    bool running = true;
-    timestamp_type prev_print_timestamp = 0;
+    bool          running              = true;
+    mip_timestamp prev_print_timestamp = 0;
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
@@ -332,7 +332,7 @@ int main(int argc, const char* argv[])
         //Once in full nav, print out data at 10 Hz
         if(filter_state_ahrs)
         {
-           timestamp_type curr_time = get_current_timestamp();
+           mip_timestamp curr_time = get_current_timestamp();
 
            if(curr_time - prev_print_timestamp >= 100)
            {
@@ -355,7 +355,7 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handle_filter_event_source(void* user, const mip_field* field, timestamp_type timestamp)
+void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp)
 {
     mip_shared_event_source_data data;
 
@@ -373,12 +373,12 @@ void handle_filter_event_source(void* user, const mip_field* field, timestamp_ty
 // MIP Interface Time Access Function
 ////////////////////////////////////////////////////////////////////////////////
 
-timestamp_type get_current_timestamp()
+mip_timestamp get_current_timestamp()
 {
     clock_t curr_time;
     curr_time = clock();
 
-    return (timestamp_type)((double)(curr_time - start_time)/(double)CLOCKS_PER_SEC*1000.0);
+    return (mip_timestamp)((double)(curr_time - start_time) / (double)CLOCKS_PER_SEC * 1000.0);
 }
 
 
@@ -386,7 +386,7 @@ timestamp_type get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, timeout_type wait_time, bool from_cmd, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
     *timestamp_out = get_current_timestamp();
 

@@ -41,7 +41,7 @@ extern "C" {
 ///@param user A user-specified pointer which will be given the callback_object parameter which was previously passed to mip_parser_init.
 ///@param packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
 ///@param timestamp The approximate time the packet was parsed.
-typedef void (*mip_packet_callback)(void* user, const mip_packet* packet, timestamp_type timestamp);
+typedef void (*mip_packet_callback)(void* user, const mip_packet* packet, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,8 +53,8 @@ typedef void (*mip_packet_callback)(void* user, const mip_packet* packet, timest
 ///
 typedef struct mip_parser
 {
-    timestamp_type      _start_time;                       ///<@private The timestamp when the first byte was observed by the parser.
-    timeout_type        _timeout;                          ///<@private Duration to wait for the rest of the data in a packet.
+    mip_timestamp       _start_time;                       ///<@private The timestamp when the first byte was observed by the parser.
+    mip_timeout         _timeout;                          ///<@private Duration to wait for the rest of the data in a packet.
 
     mip_packet_callback _callback;                         ///<@private Callback called when a valid packet is parsed. Can be NULL.
     void*               _callback_object;                  ///<@private User-specified pointer passed to the callback function.
@@ -68,7 +68,7 @@ typedef struct mip_parser
     uint32_t            _diag_timeouts;                    ///<@private Counts packet timeouts.
 #endif // MIP_ENABLE_DIAGNOSTICS
 
-    packet_length       _buffered_length;                  ///<@private Length of the packet currently being parsed. Can be 1, 2, 4, or >= 6.
+    uint16_t            _buffered_length;                  ///<@private Length of the packet currently being parsed. Can be 1, 2, 4, or >= 6.
     uint8_t             _buffer[MIP_PACKET_LENGTH_MAX];    ///<@private Internal buffer used for parsing and to emit packets.
 
 } mip_parser;
@@ -78,8 +78,8 @@ typedef struct mip_parser
 #define MIP_PARSER_DEFAULT_TIMEOUT_MS 100  ///< Specifies the default timeout for a MIP parser, assuming timestamps are in milliseconds.
 
 
-void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
-void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp);
+void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, mip_timeout timeout);
+void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp);
 
 void mip_parser_reset(mip_parser* parser);
 
@@ -89,14 +89,14 @@ uint_least16_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out);
 // Accessors
 //
 
-timeout_type mip_parser_timeout(const mip_parser* parser);
-void mip_parser_set_timeout(mip_parser* parser, timeout_type timeout);
+mip_timeout mip_parser_timeout(const mip_parser* parser);
+void mip_parser_set_timeout(mip_parser* parser, mip_timeout timeout);
 
 void mip_parser_set_callback(mip_parser* parser, mip_packet_callback callback, void* callback_object);
 mip_packet_callback mip_parser_callback(const mip_parser* parser);
 void* mip_parser_callback_object(const mip_parser* parser);
 
-timestamp_type mip_parser_current_timestamp(const mip_parser* parser);
+mip_timestamp mip_parser_current_timestamp(const mip_parser* parser);
 
 
 //
@@ -120,7 +120,7 @@ uint32_t mip_parser_diagnostic_timeouts(const mip_parser* parser);
 // Misc
 //
 
-timeout_type mip_timeout_from_baudrate(uint32_t baudrate);
+mip_timeout mip_timeout_from_baudrate(uint32_t baudrate);
 
 ///@}
 ///@}

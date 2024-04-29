@@ -44,7 +44,7 @@ public:
 
     void fromParts(uint8_t major, uint8_t minor, uint8_t patch) { m_version = major * 1000 + minor * 100 + patch; }
 
-    uint8_t major() const { return m_version / 1000; }
+    uint8_t major() const { return uint8_t(m_version / 1000); }
     uint8_t minor() const { return (m_version / 100) % 10; }
     uint8_t patch() const { return m_version % 100; }
 

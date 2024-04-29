@@ -65,7 +65,7 @@ int main(int argc, const char* argv[])
         mip::Packet packet(buffer, sizeof(buffer), mip::MIP_BASE_COMMAND_DESC_SET);
 
         uint8_t* payload;
-        mip::RemainingCount available = packet.allocField(mip::MIP_CMD_DESC_BASE_PING, 0, &payload);
+        int available = packet.allocField(mip::MIP_CMD_DESC_BASE_PING, 0, &payload);
 
     #if METHOD == 1
         mip::MipCmd_Base_GetDeviceInfo info;
@@ -247,7 +247,7 @@ int main(int argc, const char* argv[])
 //     MipPacket_create(&packet, buffer, sizeof(buffer), MIP_BASE_COMMAND_DESC_SET);
 //
 //     uint8_t* payload;
-//     RemainingCount available = MipPacket_allocField(&packet, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, 0, &payload);
+//     int available = MipPacket_allocField(&packet, MIP_CMD_DESC_BASE_GET_DEVICE_INFO, 0, &payload);
 //
 //     size_t used = insert_MipCmd_Base_GetDeviceInfo(payload, available, 0, cmd);
 //     assert( used <= available );

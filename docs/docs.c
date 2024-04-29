@@ -365,7 +365,7 @@
 /// about right. You can use the mip_timeout_from_baudrate() function to
 /// compute an appropriate timeout.
 ///
-///@see timestamp_type
+///@see mip_timestamp
 ///@see mip::Timestamp
 ///
 ////////////////////////////////////////////////////////////////////////////////

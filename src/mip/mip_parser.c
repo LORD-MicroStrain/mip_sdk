@@ -23,7 +23,7 @@
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout)
+void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, mip_timeout timeout)
 {
     parser->_timeout = timeout;
 
@@ -64,6 +64,8 @@ void mip_parser_reset(mip_parser* parser)
 /// This function uses memchr to search which should be maximally efficient on
 /// most platforms.
 ///
+///@internal
+///
 ///@param buffer
 ///       Buffer to search.
 ///@param buffer_len
@@ -78,7 +80,7 @@ void mip_parser_reset(mip_parser* parser)
 ///         end of the buffer, or 4 if consecutive SYNC1,SYNC2 (0x75,0x65) bytes
 ///         are found.
 ///
-static packet_length mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* offset_ptr)
+static size_t mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* offset_ptr)
 {
     assert(buffer != NULL);
     assert(offset_ptr != NULL);
@@ -169,7 +171,7 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///      be properly parsed. Note that the 16-bit checksum has a 1 in 65,536
 ///      chance of appearing to be valid at random.
 ///
-void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp)
+void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, mip_timestamp timestamp)
 {
     // Allow the user to specify bytes written into the parser buffer itself
     // via mip_parser_get_write_ptr().
@@ -191,9 +193,9 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
     // Expected length of the packet or current header byte being parsed. 1, 2, 4 or >= 6.
     size_t expected_packet_length =
-        (parser->_buffered_length < MIP_HEADER_LENGTH) ?
-        (parser->_buffered_length + 1) :
-        (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
+               (parser->_buffered_length < MIP_HEADER_LENGTH) ?
+               (parser->_buffered_length + 1) :
+               (MIP_HEADER_LENGTH + parser->_buffer[MIP_INDEX_LENGTH] + MIP_CHECKSUM_LENGTH)
     ;
 
     size_t total_packet_bytes = 0;
@@ -243,7 +245,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
         //
         switch(expected_packet_length)
         {
-        // Nothing parsed yet (expecting 1 sync byte)
+            // Nothing parsed yet (expecting 1 sync byte)
         case MIP_INDEX_SYNC1+1:
             assert(!reparsing);
             assert(parser->_buffered_length == 0);
@@ -257,7 +259,7 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
 
             break;
 
-        // Got single byte of 0x75 in the parse buffer.
+            // Got single byte of 0x75 in the parse buffer.
         case MIP_INDEX_SYNC2+1:
             // mip_find_sop() always tries to find both 0x75 and 0x65, so this
             // case only happens when 0x75 is left at the end of the parse buffer.
@@ -277,13 +279,13 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
             }
             break;
 
-        // Nothing special to do for the descriptor set.
-        // This case can only happen when leftover_length == 2.
+            // Nothing special to do for the descriptor set.
+            // This case can only happen when leftover_length == 2.
         case MIP_INDEX_DESCSET+1:
             expected_packet_length = 4;
             break;
 
-        // Got the expected 4 bytes for the header - read packet's length field.
+            // Got the expected 4 bytes for the header - read packet's length field.
         case MIP_HEADER_LENGTH:
             if(reparsing)
             {
@@ -382,7 +384,7 @@ uint_least16_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out)
 ///@brief Returns the packet timeout of the parser.
 ///
 ///
-timestamp_type mip_parser_timeout(const mip_parser* parser)
+mip_timeout mip_parser_timeout(const mip_parser* parser)
 {
     return parser->_timeout;
 }
@@ -394,7 +396,7 @@ timestamp_type mip_parser_timeout(const mip_parser* parser)
 ///@param parser
 ///@param timeout
 ///
-void mip_parser_set_timeout(mip_parser* parser, timestamp_type timeout)
+void mip_parser_set_timeout(mip_parser* parser, mip_timeout timeout)
 {
     parser->_timeout = timeout;
 }
@@ -455,7 +457,7 @@ void* mip_parser_callback_object(const mip_parser* parser)
 ///    won't matter because an additional call to parse won't produce a new
 ///    packet to be timestamped.
 ///
-timestamp_type mip_parser_current_timestamp(const mip_parser* parser)
+mip_timestamp mip_parser_current_timestamp(const mip_parser* parser)
 {
     return parser->_start_time;
 }
@@ -546,7 +548,7 @@ uint32_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
 ///        a single mip packet of maximum size at the given baud rate, plus some
 ///        tolerance.
 ///
-timeout_type mip_timeout_from_baudrate(uint32_t baudrate)
+mip_timeout mip_timeout_from_baudrate(uint32_t baudrate)
 {
     // num_symbols [b] = (packet_length [B]) * (10 [b/B])
     unsigned int num_symbols = MIP_PACKET_LENGTH_MAX * 10;
