@@ -97,13 +97,7 @@ int main(int argc, const char* argv[])
 
         packet.finalize();
 
-        size_t parsed = parser.parse(packet.pointer(), packet.totalLength(), 0);
-
-        if( parsed != packet.totalLength() )
-        {
-            numErrors++;
-            fprintf(stderr, "Parser reports %zu parsed bytes out of %u.\n", parsed, packet.totalLength());
-        }
+        parser.parse(packet.pointer(), packet.totalLength(), 0);
 
         if( numErrors > 10 )
             break;

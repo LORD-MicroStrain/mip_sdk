@@ -392,8 +392,11 @@ bool mip_interface_user_recv_from_device(mip_interface* device, timeout_type wai
 
     size_t length;
 
-    return serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), wait_time, &length) &&
-           mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
+    if( !serial_port_read(&device_port, parse_buffer, sizeof(parse_buffer), wait_time, &length) )
+        return false;
+
+    mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
+    return true;
 }
 
 

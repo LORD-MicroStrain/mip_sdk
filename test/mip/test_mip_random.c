@@ -155,14 +155,7 @@ int main(int argc, const char* argv[])
 
             if(PRINT_DEBUG)
                 printf("  send %zu @ time %zu\n", count, timestamp);
-            size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
-
-            if(consumed != count)
-            {
-                num_errors++;
-                error = true;
-                fprintf(stderr, "Parser consumed only %zu bytes out of %zu.\n", consumed, count);
-            }
+            mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
 
             sent += count;
             timestamps[c] = timestamp;
@@ -180,14 +173,7 @@ int main(int argc, const char* argv[])
 
         if(PRINT_DEBUG)
              printf("  send %zu @ time %zu\n", count, timestamp);
-        size_t consumed = mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
-
-        if(consumed != count)
-        {
-            num_errors++;
-            error = true;
-            fprintf(stderr, "Parser consumed only %zu bytes out of %zu.\n", consumed, count);
-        }
+        mip_parser_parse(&parser, mip_packet_pointer(&packet)+sent, count, timestamp);
 
         sent += count;
         timestamps[c] = timestamp;
@@ -210,14 +196,7 @@ int main(int argc, const char* argv[])
                 if(PRINT_DEBUG)
                     printf("  send 0 bytes @ time %zu (forced timeout).\n", timestamp);
 
-                consumed = mip_parser_parse(&parser, NULL, 0, timestamp);
-
-                if(consumed != 0) {
-                    num_errors++;
-                    error = true;
-                    fprintf(stderr, "Parser consumed non-existent data! (%zu bytes)\n", consumed);
-                }
-
+                mip_parser_parse(&parser, NULL, 0, timestamp);
             }
         }
 
