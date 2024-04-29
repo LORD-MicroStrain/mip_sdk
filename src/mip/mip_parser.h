@@ -79,11 +79,11 @@ typedef struct mip_parser
 
 
 void mip_parser_init(mip_parser* parser, mip_packet_callback callback, void* callback_object, timestamp_type timeout);
-size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp);
+void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp);
 
 void mip_parser_reset(mip_parser* parser);
 
-size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out);
+uint_least16_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out);
 
 //
 // Accessors

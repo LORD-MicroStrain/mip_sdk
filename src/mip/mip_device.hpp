@@ -275,8 +275,8 @@ public:
     bool update(Timeout wait_time=0, bool from_cmd=false) { return C::mip_interface_update(this, wait_time, from_cmd); }
 
     bool defaultUpdate(Timeout wait_time=0, bool from_cmd=false) { return C::mip_interface_default_update(this, wait_time, from_cmd); }
-    size_t inputBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_input_bytes(this, data, length, timestamp); }
-    void   inputPacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_input_packet(this, &packet, timestamp); }
+    void inputBytes(const uint8_t* data, size_t length, Timestamp timestamp) { C::mip_interface_input_bytes(this, data, length, timestamp); }
+    void inputPacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_input_packet(this, &packet, timestamp); }
 
     CmdResult waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 

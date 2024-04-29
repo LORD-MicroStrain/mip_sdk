@@ -71,7 +71,7 @@ bool mip_interface_update(mip_interface* device, timeout_type wait_time, bool fr
 
 bool mip_interface_default_update(mip_interface* device, timeout_type wait_time, bool from_cmd);
 
-size_t mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp);
+void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp);
 void mip_interface_input_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp);
 
 void mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp);

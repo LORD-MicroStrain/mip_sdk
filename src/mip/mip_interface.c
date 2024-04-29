@@ -436,12 +436,9 @@ bool mip_interface_default_update(struct mip_interface* device, timeout_type wai
 ///@param timestamp
 ///       Time of the received data.
 ///
-///@returns The amount of data which couldn't be processed due to the limit on
-///         number of packets per parse call. Normally the result is 0.
-///
-size_t mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
+void mip_interface_input_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
 {
-    return mip_parser_parse(&device->_parser, data, length, timestamp);
+    mip_parser_parse(&device->_parser, data, length, timestamp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -155,8 +155,6 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///       Time of arrival of the data to be parsed. This is used to set packets'
 ///       timestamp and to time out incomplete packets.
 ///
-///@returns Unspecified
-///
 ///@note The timestamp of a packet is based on the time the packet was parsed.
 ///      Packets received during an earlier parse call may be timestamped with
 ///      the time from a later parse call, but will never be timestamped before
@@ -171,7 +169,7 @@ static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 ///      be properly parsed. Note that the 16-bit checksum has a 1 in 65,536
 ///      chance of appearing to be valid at random.
 ///
-size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp)
+void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_length, timestamp_type timestamp)
 {
     // Allow the user to specify bytes written into the parser buffer itself
     // via mip_parser_get_write_ptr().
@@ -237,7 +235,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
             MIP_DIAG_INC(parser->_diag_bytes_read, input_length);
             //MIP_DIAG_INC(parser->_diag_bytes_skipped, (input_length - total_packet_bytes));
 
-            return input_length;
+            return;
         }
 
         //
@@ -371,7 +369,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 ///@returns The maximum number of bytes which may be written to the parser.
 ///         This will never be more than the maximum MIP packet size.
 ///
-size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out)
+uint_least16_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** ptr_out)
 {
     assert(ptr_out);  // Can't be NULL.
 

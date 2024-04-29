@@ -417,7 +417,7 @@ public:
     void reset() { C::mip_parser_reset(this); }
 
     ///@copydoc mip::C::mip_parser_parse
-    size_t parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { return C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
+    void parse(const uint8_t* inputBuffer, size_t inputCount, Timestamp timestamp) { C::mip_parser_parse(this, inputBuffer, inputCount, timestamp); }
 
     ///@copydoc mip::C::mip_parser_timeout
     Timeout timeout() const { return C::mip_parser_timeout(this); }
