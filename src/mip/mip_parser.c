@@ -84,6 +84,7 @@ static size_t mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* off
 {
     assert(buffer != NULL);
     assert(offset_ptr != NULL);
+    assert(*offset_ptr <= buffer_len);
 
     const uint8_t* ptr = buffer + *offset_ptr;
     size_t offset = *offset_ptr;
@@ -130,6 +131,8 @@ static size_t mip_find_sop(const uint8_t* buffer, size_t buffer_len, size_t* off
 ///
 static size_t mip_parser_discard(mip_parser* parser, size_t offset)
 {
+    assert(offset <= parser->_buffered_length);
+
     // Search for start of a new packet.
     size_t expected_packet_length = mip_find_sop(parser->_buffer, parser->_buffered_length, &offset);
 
@@ -218,7 +221,9 @@ void mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t in
             if(timestamp >= (parser->_start_time + parser->_timeout))
             {
                 // Discard first packet in buffer and reparse remaining buffered data.
-                expected_packet_length = mip_parser_discard(parser, 1);
+                if(parser->_buffered_length > 0)
+                    expected_packet_length = mip_parser_discard(parser, 1);
+
                 parser->_start_time = timestamp;
                 continue;
             }

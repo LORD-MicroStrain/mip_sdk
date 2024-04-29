@@ -62,16 +62,21 @@ void device_thread_loop(mip::DeviceInterface* device)
 
 bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time, bool from_cmd)
 {
-    if( from_cmd )
+    // Do normal updates only if called from a command handler.
+    // This separates the main thread from the data collection thread.
+    if( !from_cmd )
         return device.defaultUpdate(wait_time, true);
 
     // Optionally display progress while waiting for command replies.
-    // Displaying it here makes it update more frequently.
+    // Displaying it here instead makes it update more frequently.
     //display_progress();
 
-    // Avoid failing the update function as long as the other thread is running.
-    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
+    // Sleep for a bit to save power. Note that waiting too long
+    // in here can extend command timeout times.
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    // Avoid failing the update function as long as the other thread is still running.
+    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
     return true;
 }
 
@@ -115,8 +120,12 @@ int main(int argc, const char* argv[])
             count = display_progress();
 
             // Ping the device a bunch (stress test).
-            // If setUpdateFunction above is commented out, this can crash the program.
-            for(unsigned int i=0; i<10; i++)
+            // This attempts to trigger race conditions by having the main thread
+            // send pings while the other thread tries to collect data.
+            // Try commenting out the setUpdateFunction call
+            // above and notice the erratic or errant behavior.
+            // Note that only one thread at a time can safely send commands.
+            for(unsigned int i=0; i<100; i++)
                 mip::commands_base::ping(*device);
 
         } while(count < maxSamples);
