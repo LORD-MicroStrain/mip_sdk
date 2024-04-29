@@ -104,9 +104,6 @@ void mip_interface_set_send_function(mip_interface* device, mip_send_callback fu
 void mip_interface_set_update_function(mip_interface* device, mip_update_callback function);
 void mip_interface_set_user_pointer(mip_interface* device, void* pointer);
 
-//void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned int max_packets);
-//unsigned int mip_interface_max_packets_per_update(const mip_interface* device);
-
 mip_recv_callback   mip_interface_recv_function(const mip_interface* device);
 mip_send_callback   mip_interface_send_function(const mip_interface* device);
 mip_update_callback mip_interface_update_function(const mip_interface* device);

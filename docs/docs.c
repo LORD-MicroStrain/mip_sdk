@@ -318,13 +318,6 @@
 /// should be the time of the new data. Previously received but unparsed packets
 /// will be assigned the new timestamp.
 ///
-/// The application must parse enough packets to keep up with the incoming
-/// data stream. Failure to do so will result in the ring buffer becoming
-/// full. If this happens, the parse function will return a negative number,
-/// indicating the number of bytes that couldn't be copied. This will never
-/// happen if max_packets is `MIPPARSER_UNLIMITED_PACKETS` because all
-/// of the data will be processed as soon as it is received.
-///
 ////////////////////////////////////////////////////////////////////////////////
 ///@section ring_buffer The Ring Buffer
 ///
