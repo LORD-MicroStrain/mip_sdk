@@ -106,6 +106,10 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 } // namespace C
 
 ////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_cpp
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_serialization_cpp
 ///
 ///@brief (De)serialization in C++.
@@ -199,6 +203,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 ///@param value      Value to insert.
 ///@param buffer     Buffer to udpate with the value.
 ///@param bufferSize Size of the buffer.
+///@param offset     Starting offset into the buffer.
 ///
 ///@returns true if sufficient space was available, false otherwise.
 ///

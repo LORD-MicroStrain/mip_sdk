@@ -1,8 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///@mainpage MIP SDK
 ///
-/// Welcome to the official MIP Software Development Kit.
-///
+/// Welcome to the official MIP Software Development Kit. This software package
+/// provides everything you need to communicate with any MIP-compatible
+/// MicroStrain inertial sensor.
+/// See @ref mip_interface for details on how to get started.
 ///
 ///@par Main Features
 ///
@@ -15,17 +17,17 @@
 ///@li Dual C and C++ API for maximum usability, safety, flexibility, and convenience.
 ///@li Suitable for bare-metal microcontrollers (Minimal code size and memory footprint, No dynamic memory allocation, No dependence on any RTOS or threading)
 ///
-/// See @ref mip_interface for details on how to get started.
-///
 ///@section quickref_cpp Quick Reference [C++]
 ///
 /// All C++ functions and classes reside within the mip namespace.
 /// The C functions can be accessed via the mip::C namespace.
 ///
 ///@li @ref mip::DeviceInterface Top-level MIP interface class.
-///@li @ref mip::Packet          A class representing a MIP packet for either transmission or reception.
-///@li @ref mip::Field           A class representing a MIP field within a packet.
+///@li @ref mip::PacketRef       An interface to a MIP packet for either transmission or reception.
+///@li @ref mip::PacketBuf       Similar to PacketRef but includes the data buffer.
+///@li @ref mip::Field           An interface to a MIP field within a packet.
 ///@li @ref mip::Parser          MIP parser class for converting received bytes into packets.
+///@li @ref mip::CmdResult       Stores the status or result of a MIP command.
 ///
 ///@section quickref_c Quick Reference [C]
 ///
@@ -38,11 +40,15 @@
 ///@li @ref mip_packet_c
 ///@li @ref mip_field_c
 ///@li @ref mip_parser_c
+///@li @ref mip::C::mip_cmd_result
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@page mip_interface Mip Interface
 ////////////////////////////////////////////////////////////////////////////////
+///
+////////////////////////////////////////////////////////////////////////////////
+///@section mip_interface_interface Application Interface
 ///
 /// The MIP interface is a high-level abstraction of a physical device which
 /// communicates using the MIP protocol. It provides both data callbacks and
@@ -57,17 +63,20 @@
 /// will return a status code.
 ///
 /// Sending and receiving to or from the device occurs via two functions:
-///@li mip_interface_user_send_to_device() for transmission and
-///@li mip_interface_user_recv_from_device() for reception.
+///@li mip::DeviceInterface::sendToDevice() or
+///    mip_interface_send_to_device() for transmission and
+///@li mip::DeviceInterface::recvFromDevice() or
+///    mip_interface_recv_from_device() for reception.
 ///
-/// The application must define these two C functions, or subclass
-/// mip::DeviceInterface and implement the pure virtual functions.
-/// This should be straightforward; simply pass the bytes between the MIP
-/// interface and the connection.
+/// Each of these has a corresponding callback to the application. The
+/// application is expected to implement the required behavior for each as
+/// described below. Additionally, there is an @ref update "update function",
+/// which handles periodic tasks such as command timeouts and streaming data
+/// collection. An application may optionally override the update callback.
 ///
-/// Because the device transmits continuously when streaming data, the
-/// application must poll the connection for new data frequently. This is
-/// done via the @ref update "update function".
+///@li @ref mip::C::mip_send_callback "mip_send_callback"
+///@li @ref mip::C::mip_recv_callback "mip_recv_callback"
+///@li @ref mip::C::mip_update_callback "mip_update_callback"
 ///
 /// An application obtains sensor data via the
 /// @ref mip_dispatch "dispatch subsystem". There are 3 ways to do so:
@@ -83,14 +92,19 @@
 ///@section mip_commands Sending Commands
 ///
 /// Typically an application will configure the device, initialize some
-/// settings, and start streaming. To do so, it must send commands. In most
-/// cases, applications will call a single function for each needed command.
+/// settings, and start streaming. To do so, it must send commands. In many
+/// cases, applications will call a single function for each needed command
+/// (e.g. @ref MipCommands_c / @ref MipCommands_cpp).
 /// These functions take the command parameters as arguments, send the packet,
-/// wait for the reply, and return a result code. When reading from the device,
-/// these commands will also report the device response information, assuming
-/// the command was successful. The command functions are blocking, that is,
-/// they halt execution until the device responds or the command times out.
+/// wait for the reply, and return a result code. Additionally some commands can
+/// report back responses from the device.
 ///
+/// The command functions are blocking, that is, they halt execution until the
+/// device responds or the command times out.
+///
+/// Note that since MIP data is received serially and is not buffered, data may
+/// be received and processed while waiting for command responses. It is
+/// recommended (but not required) to set the device to idle during configuration.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@section mip_dispatch The Dispatch System
@@ -118,7 +132,7 @@
 ///@par Packet callbacks
 ///
 ///@code{.cpp}
-/// void packet_callback(void* userdata, const Packet& packet, Timestamp parseTime)
+/// void packet_callback(void* userdata, const mip::PacketRef& packet, Timestamp parseTime)
 ///@endcode
 ///
 /// Packet callbacks are invoked when a packet is received which matches the
@@ -135,7 +149,7 @@
 ///@par Field callbacks
 ///
 ///@code{.cpp}
-/// void field_callback(void* userdata, const Field& field, Timestamp parseTime)
+/// void field_callback(void* userdata, const mip::Field& field, Timestamp parseTime)
 ///@endcode
 ///
 /// Similar to packet callbacks, field callbacks are invoked when a MIP
@@ -153,13 +167,14 @@
 ///@par Data callbacks
 ///
 ///@code{.cpp}
-/// void data_callback(void* userdata, const data_sensor::ScaledAccel& packet, Timestamp parseTime)
+/// void data_callback(void* userdata, const mip::data_sensor::ScaledAccel& packet, Timestamp parseTime)
 ///@endcode
 ///
 /// Thanks to the power of templates, one additional dispatch mechanism is
 /// available for C++ applications. A data callback is similar to a field
 /// callback except that instead of getting the raw MIP field data, the function
 /// is passed the fully-deserialized data structure.
+///
 ///
 /// Typically an application will register a series of data or field callbacks
 /// and write the data to some kind of data structure. Because the order of
@@ -182,7 +197,7 @@
 /// a high enough rate to avoid overflowing the connection buffers. The
 /// precision of the reception timestamp is dependent on the update rate.
 ///
-/// The command functions in @ref MipCommands_c / @ref MipCommands_cpp (e.g. mip_write_message_format() / mip::writeMessageFormat())
+/// The command functions in @ref MipCommands_c / @ref MipCommands_cpp (e.g. mip::C::mip_write_message_format() / mip::writeMessageFormat())
 /// will block execution until the command completes. Either the device will
 /// respond with an ack/nack code, or the command will time out. During this
 /// time, the system must be able to receive data from the device in order for
@@ -254,10 +269,9 @@
 ///
 ///@par Other thread-safety concerns
 ///
-///@li Data transmission to the device (for sending commands) is thread-safe
+///@li Data transmission to the device (but not sending commands) is thread-safe
 ///    within the MIP SDK. If multiple threads will send to the device, the
-///    application should ensure that mip_interface_user_send_to_device() is
-///    thread-safe (e.g. by using a mutex).
+///    application should ensure that the device interface is properly protected.
 ///
 ///@li It is up to the application to ensure that sending and receiving from
 ///    separate threads is safe. This is true for the built-in serial and TCP

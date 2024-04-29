@@ -57,8 +57,6 @@ void mip_pending_cmd_init_with_timeout(mip_pending_cmd* cmd, uint8_t descriptor_
 ///@param response_buffer
 ///       Optional buffer to hold response data, if any. If NULL, response_buffer_size must be 0.
 ///@param response_buffer_size
-///       Optional buffer to hold response data, if any. If NULL, response_buffer_size must be 0.
-///@param response_buffer_size
 ///       Size of the response buffer. The response will be limited to this size.
 ///
 void mip_pending_cmd_init_with_response(mip_pending_cmd* cmd, uint8_t descriptor_set, uint8_t field_descriptor, uint8_t response_descriptor, uint8_t* response_buffer, uint8_t response_buffer_size)

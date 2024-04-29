@@ -115,7 +115,7 @@ struct Vector
     /// Construct from individual elements or a braced init list.
     ///@param u The first value (typically X).
     ///@param v The value value (typically Y).
-    ///@param reset Additional optional values (typically none, Z, or Z and W).
+    ///@param rest Additional optional values (typically none, Z, or Z and W).
     template<typename U, typename V, typename... Rest>
     Vector(U u, V v, Rest... rest) : m_data{u, v, rest...} {}
 

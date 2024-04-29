@@ -40,7 +40,7 @@ extern "C" {
 
 ///@brief Callback function which receives parsed MIP packets.
 ///@param user A user-specified pointer which will be given the callback_object parameter which was previously passed to mip_parser_init.
-///@param Packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
+///@param packet A pointer to the MIP packet. Do not store this pointer as it will be invalidated after the callback returns.
 ///@param timestamp The approximate time the packet was parsed.
 typedef bool (*mip_packet_callback)(void* user, const mip_packet* packet, mip_timestamp timestamp);
 

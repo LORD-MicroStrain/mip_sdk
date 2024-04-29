@@ -19,6 +19,8 @@ extern "C" {
 ///
 /// Values that start with MIP_STATUS are status codes from this library.
 /// Values that start with MIP_(N)ACK represent replies from the device.
+/// Values at or below MIP_STATUS_USER_START (negative values) are reserved for
+/// status codes from user code.
 ///
 typedef enum mip_cmd_result
 {
@@ -59,13 +61,19 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 } // namespace C
 
 ////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_cpp
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents the status of a MIP command.
 ///
-/// This is the same as the mip_cmd_result C enum, but with member functions
-/// and some operator overloads.
+/// This is the same as the mip_cmd_result enum, but with some convenient
+// member functions and some operator overloads.
 ///
 /// CmdResult is convertible to bool, allowing code like the following:
 ///@code{.cpp}
+/// if( !mip::commands_base::ping(device) )
+///   fprintf(stderr, "Couldn't ping the device!\n");
 ///@endcode
 ///
 struct CmdResult

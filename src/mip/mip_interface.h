@@ -34,7 +34,7 @@ struct mip_interface;
 
 // Documentation is in source file.
 typedef bool (*mip_send_callback)(struct mip_interface* device, const uint8_t* data, size_t length);
-typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out);
+typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* length_out, mip_timestamp* timestamp_out);
 typedef bool (*mip_update_callback)(struct mip_interface* device, mip_timeout timeout);
 
 
