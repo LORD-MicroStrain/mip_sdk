@@ -62,7 +62,8 @@ void device_thread_loop(mip::DeviceInterface* device)
 
 bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
 {
-    if( wait_time > 0 )
+    // Thread calls this with wait_time 0, commands have wait_time > 0.
+    if( wait_time == 0 )
         return device.defaultUpdate(wait_time);
 
     // Optionally display progress while waiting for command replies.
