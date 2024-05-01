@@ -62,6 +62,8 @@ public:
     uint8_t descriptorSet() const { return C::mip_field_descriptor_set(this); }
     ///@copydoc mip_field_field_descriptor
     uint8_t fieldDescriptor() const { return C::mip_field_field_descriptor(this); }
+    ///@brief Returns the descriptor set and field descriptor.
+    CompositeDescriptor descriptor() const { return {descriptorSet(), fieldDescriptor()}; }
     ///@copydoc mip_field_payload_length
     uint8_t payloadLength() const { return C::mip_field_payload_length(this); }
     ///@copydoc mip_field_payload
