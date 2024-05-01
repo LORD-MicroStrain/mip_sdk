@@ -379,7 +379,7 @@
 /// about right. You can use the mip_timeout_from_baudrate() function to
 /// compute an appropriate timeout.
 ///
-///@see timestamp_type
+///@see mip_timestamp
 ///@see mip::Timestamp
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -424,4 +424,74 @@
 /// a single byte is dropped from the ring buffer and the loop is continued.
 /// Only a single byte can be dropped, because rogue SYNC1 bytes or truncated
 /// packets may hide real mip packets in what would have been their payload.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page command_results Command Result
+////////////////////////////////////////////////////////////////////////////////
+///
+///@li @ref mip::C::mip_cmd_result "mip_command_result [C]"
+///@li @ref mip::CmdResult "CmdResult [C++]"
+///
+/// Command results are divided into two categories, reply codes and status
+/// codes. Reply codes are returned by the device, e.g.:
+///@li ACK_OK
+///@li Unknown command (NACK_COMMAND_UNKNOWN)
+///@li Invalid parameter (NACK_INVALID_PARAM)
+///@li Command failed (NACK_COMMAND_FAILED)
+/// The values of these enums match the corresponding values returned by the
+/// device. They are non-negative integers.
+///
+/// Status codes are set by this library, e.g.:
+///@li General error (STATUS_ERROR)
+///@li Timeout (STATUS_TIMEDOUT)
+///@li Other statuses are used to track commands in progress
+///@li User status codes can also be set (STATUS_USER)
+/// All of these are negative integers.
+///
+/// You can use mip_cmd_result_is_reply_code() / CmdResult::isReplyCode() and
+/// mip_cmd_result_is_status_code() / CmdResult::isStatusCode() to distinguish
+/// between them.
+///
+/// In C++, CmdResult is implicitly convertible to bool. ACK_OK converts to true
+/// while everything else converts to false. This allows compact code like
+///@code{.cpp}
+/// if( !resume(device) )  // resume returns a CmdResult
+///   fprintf(stderr, "Failed to resume the sensor\n");
+///@endcode
+///
+/// For debugging, the name of command results is available via
+/// mip_cmd_result_to_string() / CmdResult::name()
+///
+/// In C++, CmdResult defaults to the initial state CmdResult::STATUS_NONE.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page timestamps Timestamps and Timeouts
+////////////////////////////////////////////////////////////////////////////////
+///
+///@section Timestamp type
+/// Timestamps (`mip_timestamp` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
+/// are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not intended to be
+/// a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the connected MIP device.
+/// In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
+///
+/// Because different applications may keep track of time differently (especially on embedded platforms), it is up to the user to provide
+/// the current time whenever data is received from the device. On a PC, this might come from the poxis `time()` function or from the
+/// `std::chrono` library. On ARM systems, it is often derived from the Systick timer. It should be a monotonically increasing value;
+/// jumps backwards in time will cause problems.
+///
+/// By default, timestamps are `typedef`'d to `uint64_t`. Typically timestamps are in milliseconds. Embedded systems may wish to use
+/// `uint32_t` or even `uint16_t` instead. The value is allowed to wrap around as long as the time between wraparounds is longer than
+///     twice the longest timeout needed. If higher precision is needed or wraparound can't be tolerated by your application, define it to
+/// `uint64_t`. It must be a standard unsigned integer type.
+///
+///@section Command Timeouts
+///
+/// Timeouts for commands are broken down into two parts.
+/// * A "base reply timeout" applies to all commands. This is useful to compensate for communication latency, such as over a TCP socket.
+/// * "Additional time" which applies per command, because some commands may take longer to complete.
+///
+/// Currently, only the C++ api offers a way to set the additional time parameter, and only when using the `runCommand` function taking
+/// the command structure and the `additionalTime` parameter.
+///
+/// The `mip_timeout` / `Timeout` typedef is an alias to the timestamp type.
 ///
