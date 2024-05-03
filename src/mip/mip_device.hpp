@@ -134,44 +134,6 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Represents a type of connection to a MIP device.
-///
-/// The following methods are pure virtual and must be implemented by a derived
-/// class. These functions map to the corresponding C functions.
-///@li `bool sendToDevice(const uint8_t* data, size_t length)` - corresponds to mip_interface_user_send_to_device.
-///@li `bool recvFromDevice(uint8_t* buffer, size_t maxLength, size_t* lengthOut, Timestamp* timestampOut)` - corresponds to mip_interface_user_recv_from_device.
-///
-class Connection
-{
-public:
-
-    static constexpr auto TYPE = "None";
-
-    Connection() { mType = TYPE; };
-    virtual ~Connection() {}
-
-    virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
-    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
-
-    virtual bool isConnected() const = 0;
-    virtual bool connect() = 0;
-    virtual bool disconnect() = 0;
-
-    void connect_interface(C::mip_interface* device);
-
-    const char* type() const { return mType; };
-
-    virtual const char* interfaceName() const = 0;
-    virtual uint32_t parameter() const = 0;
-
-protected:
-
-    const char *mType;
-
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a connected MIP device.
 ///
 class DeviceInterface : public C::mip_interface
@@ -188,14 +150,14 @@ public:
         C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
     }
 
-    ///@copydoc mip::C::mip_interface_init
-    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
-    DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
-        DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
-    {
-        if(connection)
-            connection->connect_interface(this);
-    }
+    /////@copydoc mip::C::mip_interface_init
+    /////@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
+    //DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
+    //    DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
+    //{
+    //    if(connection)
+    //        connection->connect_interface(this);
+    //}
 
     DeviceInterface(const DeviceInterface&) = delete;
     DeviceInterface& operator=(const DeviceInterface&) = delete;

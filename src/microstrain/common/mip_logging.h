@@ -74,6 +74,16 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 #define MIP_LOG_LOG(level, ...) (void)0
 #endif
 
+#define XSTR(x) STR(x)
+#define STR(x) #x
+
+#ifndef MIP_LOGGING_MAX_LEVEL
+#define MIP_LOGGING_MAX_LEVEL MIP_LOG_LEVEL_WARN
+#pragma message "NOT DEFINED"
+#else
+#pragma message "The value of ABC: " XSTR(MIP_LOGGING_MAX_LEVEL)
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at fatal level
 ///
@@ -81,7 +91,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ///@param fmt     printf style format string
 ///@param ...     Variadic args used to populate the fmt string
 ///
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_FATAL
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_FATAL
 #define MIP_LOG_FATAL(...) MIP_LOG_LOG(MIP_LOG_LEVEL_FATAL, __VA_ARGS__)
 #else
 #define MIP_LOG_FATAL(...) (void)0
@@ -90,7 +100,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at error level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_ERROR
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_ERROR
 #define MIP_LOG_ERROR(...) MIP_LOG_LOG(MIP_LOG_LEVEL_ERROR, __VA_ARGS__)
 #else
 #define MIP_LOG_ERROR(...) (void)0
@@ -99,7 +109,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at warn level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_WARN
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_WARN
 #define MIP_LOG_WARN(...) MIP_LOG_LOG(MIP_LOG_LEVEL_WARN, __VA_ARGS__)
 #else
 #define MIP_LOG_WARN(...) (void)0
@@ -108,7 +118,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at info level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_INFO
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_INFO
 #define MIP_LOG_INFO(...) MIP_LOG_LOG(MIP_LOG_LEVEL_INFO, __VA_ARGS__)
 #else
 #define MIP_LOG_INFO(...) (void)0
@@ -117,7 +127,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at debug level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_DEBUG
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_DEBUG
 #define MIP_LOG_DEBUG(...) MIP_LOG_LOG(MIP_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #else
 #define MIP_LOG_DEBUG(...) (void)0
@@ -126,7 +136,7 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Helper macro used to log data inside the MIP SDK at trace level
 ///@copydetails mip::C::MIP_LOG_FATAL
-#if !defined(MIP_LOGGING_MAX_LEVEL) || MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_TRACE
+#if MIP_LOGGING_MAX_LEVEL >= MIP_LOG_LEVEL_TRACE
 #define MIP_LOG_TRACE(...) MIP_LOG_LOG(MIP_LOG_LEVEL_TRACE, __VA_ARGS__)
 #else
 #define MIP_LOG_TRACE(...) (void)0

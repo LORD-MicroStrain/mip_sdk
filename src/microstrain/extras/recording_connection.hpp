@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mip/mip_device.hpp>
+#include "mip/mip_device.hpp"
 
 #include <memory>
 #include <ostream>

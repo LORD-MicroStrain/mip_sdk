@@ -1,25 +1,20 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     "MIP SDK"
-    VERSION "0.0.01"
+    VERSION "2.0.00"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
 
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
-set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
 set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
-include_directories(
-    "${SRC_DIR}"
-)
 
 if(WITH_INTERNAL)
     if(NOT DEFINED MIP_INTERNAL_DIR)
@@ -80,118 +75,16 @@ configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 # Build options
 #
 
-option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
-option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
 option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
-option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
-
-option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
-set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
-
-set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
-#
-# Utils
-#
 
-set(UTILS_DIR "${MIP_DIR}/utils")
 
-set(UTILS_SOURCES
-    "${UTILS_DIR}/byte_ring.c"
-    "${UTILS_DIR}/byte_ring.h"
-    "${UTILS_DIR}/serialization.c"
-    "${UTILS_DIR}/serialization.h"
-)
+add_subdirectory(src/microstrain)
+add_subdirectory(src/mip)
 
-#
-# MIP Control
-#
 
-set(MIP_SOURCES
-    "${VERSION_OUT_FILE}"
-    "${MIP_DIR}/mip_cmdqueue.c"
-    "${MIP_DIR}/mip_cmdqueue.h"
-    "${MIP_DIR}/mip_dispatch.c"
-    "${MIP_DIR}/mip_dispatch.h"
-    "${MIP_DIR}/mip_field.c"
-    "${MIP_DIR}/mip_field.h"
-    "${MIP_DIR}/mip_offsets.h"
-    "${MIP_DIR}/mip_packet.c"
-    "${MIP_DIR}/mip_packet.h"
-    "${MIP_DIR}/mip_parser.c"
-    "${MIP_DIR}/mip_parser.h"
-    "${MIP_DIR}/mip_result.c"
-    "${MIP_DIR}/mip_result.h"
-    "${MIP_DIR}/mip_types.h"
-    "${MIP_DIR}/definitions/common.c"
-    "${MIP_DIR}/definitions/common.h"
-    "${MIP_DIR}/definitions/descriptors.c"
-    "${MIP_DIR}/definitions/descriptors.h"
-    "${MIP_DIR}/mip.hpp"
-    "${MIP_DIR}/mip_all.h"
-    "${MIP_DIR}/mip_all.hpp"
-)
-
-set(MIPDEV_SOURCES
-    "${MIP_DIR}/mip_interface.c"
-    "${MIP_DIR}/mip_interface.h"
-    "${MIP_DIR}/mip_device.cpp"
-    "${MIP_DIR}/mip_device.hpp"
-)
-
-set(MIPDEF_SOURCES
-    "${MIP_DIR}/definitions/commands_3dm.c"
-    "${MIP_DIR}/definitions/commands_3dm.h"
-    "${MIP_DIR}/definitions/commands_base.c"
-    "${MIP_DIR}/definitions/commands_base.h"
-    "${MIP_DIR}/definitions/commands_filter.c"
-    "${MIP_DIR}/definitions/commands_filter.h"
-    "${MIP_DIR}/definitions/commands_gnss.c"
-    "${MIP_DIR}/definitions/commands_gnss.h"
-    "${MIP_DIR}/definitions/commands_rtk.c"
-    "${MIP_DIR}/definitions/commands_rtk.h"
-    "${MIP_DIR}/definitions/commands_aiding.c"
-    "${MIP_DIR}/definitions/commands_aiding.h"
-    "${MIP_DIR}/definitions/commands_system.c"
-    "${MIP_DIR}/definitions/commands_system.h"
-    "${MIP_DIR}/definitions/data_filter.c"
-    "${MIP_DIR}/definitions/data_filter.h"
-    "${MIP_DIR}/definitions/data_gnss.c"
-    "${MIP_DIR}/definitions/data_gnss.h"
-    "${MIP_DIR}/definitions/data_sensor.c"
-    "${MIP_DIR}/definitions/data_sensor.h"
-    "${MIP_DIR}/definitions/data_shared.c"
-    "${MIP_DIR}/definitions/data_shared.h"
-    "${MIP_DIR}/definitions/data_system.c"
-    "${MIP_DIR}/definitions/data_system.h"
-    ${INTDEF_SOURCES}
-)
-
-string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
-string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
-
-if(MIP_USE_SERIAL)
-    list(APPEND UTILS_SOURCES
-        "${UTILS_DIR}/serial_port.c"
-        "${UTILS_DIR}/serial_port.h"
-    )
-    list(APPEND MIP_INTERFACE_SOURCES
-        "${MIP_DIR}/platform/serial_connection.hpp"
-        "${MIP_DIR}/platform/serial_connection.cpp"
-    )
-endif()
-if(MIP_USE_TCP)
-    list(APPEND UTILS_SOURCES
-        "${UTILS_DIR}/tcp_socket.c"
-        "${UTILS_DIR}/tcp_socket.h"
-    )
-    list(APPEND MIP_INTERFACE_SOURCES
-        "${MIP_DIR}/platform/tcp_connection.hpp"
-        "${MIP_DIR}/platform/tcp_connection.cpp"
-    )
-endif()
 if(MIP_USE_EXTRAS)
     list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
@@ -210,51 +103,14 @@ if(MIP_USE_EXTRAS)
     )
 endif()
 
-# Logging is a little weird since we need to install the header no matter what
-list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.h")
-if(MIP_ENABLE_LOGGING)
-    list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.c")
-    list(APPEND MIP_DEFINES "MIP_ENABLE_LOGGING")
-endif()
-
-set(ALL_MIP_SOURCES
-    ${MIPDEF_SOURCES}
-    ${MIPDEF_CPP_SOURCES}
-    ${MIPDEV_SOURCES}
-    ${MIP_SOURCES}
-    ${UTILS_SOURCES}
-    ${MIP_CPP_HEADERS}
-    ${MIP_INTERFACE_SOURCES}
-    ${MIP_EXTRA_SOURCES}
-)
-
-option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
-if(MIP_DISABLE_CPP)
-    list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
-endif()
-
-add_library(mip ${ALL_MIP_SOURCES})
-
 #
 # Preprocessor definitions
 #
 
-if(${MIP_LOGGING_MAX_LEVEL})
-    list(APPEND MIP_DEFINES "MIP_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
-endif()
-
-if(${MIP_TIMESTAMP_TYPE})
-    list(APPEND MIP_DEFINES "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
-endif()
-
-if(${MIP_ENABLE_DIAGNOSTICS})
-    list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
-endif()
-
 # Disable windows defined min/max
 # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-  list(APPEND MIP_DEFINES "NOMINMAX=1" "_WIN32_WINNT=0x0501")
+    compile_definitions("NOMINMAX=1" "_WIN32_WINNT=0x0501")
 endif()
 
 if(MSVC)
@@ -263,14 +119,10 @@ else()
   target_compile_options(mip PRIVATE -Wall -Wextra)
 endif()
 
-target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 
 #
 # Libraries
 #
-if(WIN32 AND MIP_USE_TCP)
-    target_link_libraries(mip PUBLIC "ws2_32")
-endif()
 
 #
 # TESTING
@@ -374,43 +226,43 @@ write_basic_package_version_file(
 # Installation
 #
 
-# Only install headers that we build the source files for
-set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
-list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
-foreach(MIP_HEADER ${ALL_MIP_HEADERS})
-    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
-    if(INT_DIR)
-        string(REPLACE "${INT_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER_RELATIVE}")
-    endif()
-    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
-    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
-    install(
-        FILES "${MIP_HEADER}"
-        DESTINATION "${MIP_HEADER_DESTINATION}"
-        COMPONENT mip
-    )
-endforeach()
-
-install(TARGETS
-    mip
-    EXPORT mip-targets
-    ARCHIVE
-    COMPONENT mip
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/"
-)
-
-install(EXPORT
-    mip-targets
-    COMPONENT mip
-    DESTINATION "${CONFIG_EXPORT_DIR}"
-)
-
-install(FILES
-    "${CMAKE_BINARY_DIR}/mip-config.cmake"
-    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
-    COMPONENT mip
-    DESTINATION "${CONFIG_EXPORT_DIR}"
-)
+## Only install headers that we build the source files for
+#set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
+#list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
+#foreach(MIP_HEADER ${ALL_MIP_HEADERS})
+#    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
+#    if(INT_DIR)
+#        string(REPLACE "${INT_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER_RELATIVE}")
+#    endif()
+#    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
+#    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
+#    install(
+#        FILES "${MIP_HEADER}"
+#        DESTINATION "${MIP_HEADER_DESTINATION}"
+#        COMPONENT mip
+#    )
+#endforeach()
+#
+#install(TARGETS
+#    mip
+#    EXPORT mip-targets
+#    ARCHIVE
+#    COMPONENT mip
+#    DESTINATION "${CMAKE_INSTALL_LIBDIR}/"
+#)
+#
+#install(EXPORT
+#    mip-targets
+#    COMPONENT mip
+#    DESTINATION "${CONFIG_EXPORT_DIR}"
+#)
+#
+#install(FILES
+#    "${CMAKE_BINARY_DIR}/mip-config.cmake"
+#    "${CMAKE_BINARY_DIR}/mip-config-version.cmake"
+#    COMPONENT mip
+#    DESTINATION "${CONFIG_EXPORT_DIR}"
+#)
 
 # Try to determine what architecture we are building for based on the compiler output
 if(MSVC)

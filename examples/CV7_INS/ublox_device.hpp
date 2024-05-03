@@ -24,7 +24,7 @@
 
 #include "simple_ublox_parser.hpp"
 
-#include "mip/platform/serial_connection.hpp"
+#include "microstrain/connections/serial/serial_connection.hpp"
 
 #define PVT_PAYLOAD_SIZE 92
 

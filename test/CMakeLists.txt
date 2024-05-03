@@ -9,6 +9,7 @@ macro(add_mip_test name sources command)
 
     add_executable(${name} ${sources})
 
+    target_include_directories(${name} PRIVATE ${SRC_DIR})
     target_link_libraries(${name} mip)
 
     add_test(${name} ${command} ${ARGN})
@@ -22,9 +23,9 @@ add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFi
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
 add_mip_test(TestMipPerf           "${TEST_DIR}/mip/mip_parser_performance.cpp" TestMipPerf)
 
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     add_executable(TestSerial "${TEST_DIR}/test_serial.cpp")
-    target_include_directories(TestSerial PUBLIC "${SERIAL_INCLUDE_DIRS}")
+    target_include_directories(TestSerial PUBLIC "${SRC_DIR}")
     target_link_libraries(TestSerial PUBLIC "serial")
     add_test(TestSerial TestSerial)
 endif()

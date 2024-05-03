@@ -1,8 +1,8 @@
 #pragma once
 
-#include <mip/mip_device.hpp>
+#include "mip/mip_device.hpp"
 
-#include <mip/utils/tcp_socket.h>
+#include "tcp_socket.h"
 
 #include <string>
 

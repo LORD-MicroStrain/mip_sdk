@@ -1,6 +1,7 @@
 
-#include <serial/serial.h>
+#include <microstrain/connections/serial/serial_port.h>
 
+#include <vector>
 #include <stdio.h>
 
 

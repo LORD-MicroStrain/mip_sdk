@@ -3,7 +3,7 @@
 
 #include <stdarg.h>
 
-#include <mip/mip_logging.h>
+#include "microstrain/common/mip_logging.h"
 
 #include "example_utils.hpp"
 

@@ -1,7 +1,7 @@
 
 #include "tcp_socket.h"
 
-#include "mip/mip_logging.h"
+#include "microstrain/common/mip_logging.h"
 
 #ifdef _WIN32
 

@@ -2,10 +2,10 @@
 #pragma once
 
 #ifdef MIP_USE_SERIAL
-    #include "mip/platform/serial_connection.hpp"
+    #include "microstrain/connections/serial/serial_connection.hpp"
 #endif
 #ifdef MIP_USE_TCP
-    #include "mip/platform/tcp_connection.hpp"
+    #include "microstrain/connections/tcp/tcp_connection.hpp"
 #endif
 #ifdef MIP_USE_EXTRAS
     #include "mip/extras/recording_connection.hpp"
