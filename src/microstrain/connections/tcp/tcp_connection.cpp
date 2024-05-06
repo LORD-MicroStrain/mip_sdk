@@ -5,9 +5,9 @@
 #include <chrono>
 #include <cstdio>
 
-namespace mip
+namespace microstrain
 {
-namespace platform
+namespace connections
 {
 
 ///@brief Creates a TcpConnection that will communicate with a device over TCP
@@ -56,11 +56,11 @@ bool TcpConnection::disconnect()
 }
 
 ///@copydoc mip::Connection::sendToDevice
-bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp)
+bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, Timestamp* timestamp_out)
 {
-    (void)wait_time;  // Not used, timeout is always fixed
+    (void)wait_time_ms;  // Not used, timeout is always fixed
 
-    *timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    *timestamp_out = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
     return tcp_socket_recv(&mSocket, buffer, max_length, length_out);
 }
@@ -72,5 +72,5 @@ bool TcpConnection::sendToDevice(const uint8_t* data, size_t length)
     return tcp_socket_send(&mSocket, data, length, &length_out);
 }
 
-}  // namespace platform
-}  // namespace mip
+}  // namespace connections
+}  // namespace microstrain

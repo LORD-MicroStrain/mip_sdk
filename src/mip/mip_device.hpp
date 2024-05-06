@@ -7,8 +7,20 @@
 
 #include <string>
 
+namespace microstrain
+{
+    class Connection;
+}
+
 namespace mip
 {
+
+class DeviceInterface;
+
+void connect_interface(mip::DeviceInterface& dev, microstrain::Connection& conn);
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_cpp
@@ -150,14 +162,14 @@ public:
         C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
     }
 
-    /////@copydoc mip::C::mip_interface_init
-    /////@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
-    //DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
-    //    DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
-    //{
-    //    if(connection)
-    //        connection->connect_interface(this);
-    //}
+    ///@copydoc mip::C::mip_interface_init
+    ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
+    DeviceInterface(microstrain::Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
+        DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
+    {
+        if(connection)
+            connect_interface(*this, *connection);
+    }
 
     DeviceInterface(const DeviceInterface&) = delete;
     DeviceInterface& operator=(const DeviceInterface&) = delete;

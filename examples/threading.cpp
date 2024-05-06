@@ -43,7 +43,7 @@ unsigned int display_progress()
 
 void packet_callback(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
 {
-    numSamples++;
+    numSamples = numSamples + 1;
 }
 
 void device_thread_loop(mip::DeviceInterface* device)

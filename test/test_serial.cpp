@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stdio.h>
+#include <stdint.h>
 
 
 int main(int argc, const char* argv[])
@@ -12,7 +13,7 @@ int main(int argc, const char* argv[])
     if( argc == 1 )
     {
         printf("Available serial ports:\n");
-        std::vector<serial::PortInfo> ports = serial::list_ports();
+        std::vector<microstrain::connections::serial::PortInfo> ports = serial::list_ports();
 
         for(const serial::PortInfo& port : ports)
         {

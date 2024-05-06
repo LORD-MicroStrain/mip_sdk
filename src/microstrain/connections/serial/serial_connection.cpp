@@ -4,12 +4,12 @@
 #include <chrono>
 #include <cstdio>
 
-namespace mip
+namespace microstrain
 {
-namespace platform
+namespace connections
 {
 
-///@brief Creates a SerialConnection that will communicate with a device over serial
+///@brief Creates a Serial Connection that will communicate with a device over serial
 ///
 ///@param portName Path to the port to connect to. On Windows, this usually looks like "COM<N>", on linux, "/dev/tty<N>"
 ///@param baudrate Baud rate to open the device at. Note that the device needs to be configured to
@@ -55,7 +55,7 @@ bool SerialConnection::disconnect()
 
 
 ///@copydoc mip::Connection::recvFromDevice
-bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp)
+bool SerialConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, mip::Timestamp* timestamp)
 {
     *timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
@@ -69,5 +69,5 @@ bool SerialConnection::sendToDevice(const uint8_t* data, size_t length)
     return serial_port_write(&mPort, data, length, &length_out);
 }
 
-}  // namespace platform
-}  // namespace mip
+}  // namespace connections
+}  // namespace microstrain

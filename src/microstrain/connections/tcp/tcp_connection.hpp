@@ -1,14 +1,14 @@
 #pragma once
 
-#include "mip/mip_device.hpp"
+#include <microstrain/connections/connection.hpp>
 
 #include "tcp_socket.h"
 
 #include <string>
 
-namespace mip
+namespace microstrain
 {
-namespace platform
+namespace connections
 {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,21 +18,23 @@ namespace platform
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Can be used on Windows, OSX, or linux to communicate with a MIP device over TCP
 ///
-class TcpConnection : public mip::Connection
+class TcpConnection : public microstrain::Connection
 {
 public:
     static constexpr auto TYPE = "TCP";
 
-    TcpConnection() = default;
     TcpConnection(const std::string& hostname, uint16_t port);
     ~TcpConnection();
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;
+    TcpConnection(const TcpConnection&) = delete;
+    TcpConnection& operator=(const TcpConnection&) = delete;
+
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, Timestamp* timestamp_out) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
-    bool isConnected() const;
-    bool connect();
-    bool disconnect();
+    bool isConnected() const final;
+    bool connect() final;
+    bool disconnect() final;
 
     void connectionInfo(std::string &host_name, uint32_t &port) const
     {
@@ -53,5 +55,5 @@ public:
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
-};  // namespace platform
-};  // namespace mip
+};  // namespace microstrain
+};  // namespace connections

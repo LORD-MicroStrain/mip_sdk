@@ -1,14 +1,14 @@
 #pragma once
 
-#include "mip/mip_device.hpp"
+#include <microstrain/connections/connection.hpp>
 
 #include <memory>
 #include <ostream>
 #include <iostream>
 
-namespace mip
+namespace microstrain
 {
-namespace extras
+namespace connections
 {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,11 +24,12 @@ public:
     static constexpr auto TYPE = "Recording";
 
     RecordingConnection(Connection *connection, std::ostream *recvStream = nullptr, std::ostream *sendStream = nullptr);
+    ~RecordingConnection() = default;
 
-    bool sendToDevice(const uint8_t* data, size_t length) final;
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) final;
+    bool sendToDevice(const uint8_t* data, size_t length) override;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, Timestamp* timestamp_out) override;
 
-    bool isConnected() const
+    bool isConnected() const override
     {
         if(mConnection)
             return mConnection->isConnected();
@@ -36,13 +37,13 @@ public:
         return false;
     };
 
-    bool connect()
+    bool connect() override
     {
         if (mConnection) return mConnection->connect();
 
         return false;
     };
-    bool disconnect()
+    bool disconnect() override
     {
         if (mConnection) return mConnection->disconnect();
 
@@ -52,12 +53,12 @@ public:
     const char* interfaceName() const override { return mConnection->interfaceName(); }
     uint32_t parameter() const override { return mConnection->parameter(); }
 
-    uint64_t recvFileBytesWritten()
+    uint64_t recvFileBytesWritten() const
     {
         return mRecvFileWritten;
     }
 
-    uint64_t sendFileBytesWritten()
+    uint64_t sendFileBytesWritten() const
     {
         return mSendFileWritten;
     }
@@ -97,5 +98,5 @@ public:
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace extras
-}  // namespace mip
+}  // namespace connections
+}  // namespace microstrain

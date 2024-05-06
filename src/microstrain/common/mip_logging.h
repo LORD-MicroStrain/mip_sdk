@@ -74,14 +74,8 @@ void mip_logging_log(mip_log_level level, const char* fmt, ...);
 #define MIP_LOG_LOG(level, ...) (void)0
 #endif
 
-#define XSTR(x) STR(x)
-#define STR(x) #x
-
 #ifndef MIP_LOGGING_MAX_LEVEL
 #define MIP_LOGGING_MAX_LEVEL MIP_LOG_LEVEL_WARN
-#pragma message "NOT DEFINED"
-#else
-#pragma message "The value of ABC: " XSTR(MIP_LOGGING_MAX_LEVEL)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////

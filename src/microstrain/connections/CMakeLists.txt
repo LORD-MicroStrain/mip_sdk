@@ -11,4 +11,7 @@ if(MIP_USE_TCP)
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tcp)
 endif()
 
-
+# Don't include recording connection if no connections are enabled.
+if(MIP_USE_SERIAL OR MIP_USE_TCP)
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/recording)
+endif()

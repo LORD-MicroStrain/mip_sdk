@@ -8,7 +8,7 @@
     #include "microstrain/connections/tcp/tcp_connection.hpp"
 #endif
 #ifdef MIP_USE_EXTRAS
-    #include "mip/extras/recording_connection.hpp"
+    #include "microstrain/connections/recording/recording_connection.hpp"
 #endif
 
 
@@ -22,7 +22,7 @@
 
 struct ExampleUtils
 {
-    std::unique_ptr<mip::Connection> connection;
+    std::unique_ptr<microstrain::Connection> connection;
     std::unique_ptr<mip::DeviceInterface> device;
     std::unique_ptr<std::ofstream> recordedFile;
     uint8_t buffer[1024];

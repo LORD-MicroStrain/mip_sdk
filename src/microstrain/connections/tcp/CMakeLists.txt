@@ -16,4 +16,4 @@ if(WIN32)
     target_link_libraries(microstrain_socket PUBLIC "ws2_32")
 endif()
 
-target_include_directories(microstrain_socket PRIVATE ${SRC_DIR})
+#target_include_directories(microstrain_socket PRIVATE ${SRC_DIR})

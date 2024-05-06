@@ -115,3 +115,5 @@ endif()
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
 
 target_link_libraries(mip PUBLIC microstrain_common)
+
+#target_include_directories(mip INTERFACE ${CMAKE_CURRENT_LIST_DIR})

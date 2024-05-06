@@ -135,12 +135,16 @@ namespace mip
         {
         public:
 
-            UbloxDevice(std::unique_ptr<mip::Connection> connection) : _connection(std::move(connection)),
-                                                                       _message_parser(
-                                                                               [this](const std::vector<uint8_t>& packet) {
-                                                                                   handle_packet(packet);
-                                                                               })
-            {}
+            UbloxDevice(std::unique_ptr<microstrain::Connection> connection) :
+                _connection(std::move(connection)),
+                _message_parser(
+                    [this](const std::vector<uint8_t> &packet)
+                    {
+                        handle_packet(packet);
+                    }
+                )
+            {
+            }
 
             void handle_packet(const std::vector<uint8_t>& packet)
             {
@@ -184,7 +188,7 @@ namespace mip
 
         protected:
 
-            std::unique_ptr<mip::Connection> _connection;
+            std::unique_ptr<microstrain::Connection> _connection;
             UbloxMessageParser _message_parser;
 
             bool _new_pvt_message_received = false;
