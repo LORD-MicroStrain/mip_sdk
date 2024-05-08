@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
@@ -131,6 +131,7 @@ set(MIP_SOURCES
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
+    "${MIP_DIR}/mip_all.hpp"
 )
 
 set(MIPDEV_SOURCES

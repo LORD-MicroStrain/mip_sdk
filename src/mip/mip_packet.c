@@ -42,7 +42,7 @@ void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
         length = MIP_PACKET_LENGTH_MAX;
 
     packet->_buffer        = buffer;
-    packet->_buffer_length = length;
+    packet->_buffer_length = (uint_least16_t)length;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ uint8_t mip_packet_payload_length(const mip_packet* packet)
 ///
 ///@returns The length of the packet. Always at least MIP_PACKET_LENGTH_MIN.
 ///
-packet_length mip_packet_total_length(const mip_packet* packet)
+uint_least16_t mip_packet_total_length(const mip_packet* packet)
 {
     return mip_packet_payload_length(packet) + MIP_PACKET_LENGTH_MIN;
 }
@@ -139,7 +139,7 @@ const uint8_t* mip_packet_payload(const mip_packet* packet)
 ///
 uint16_t mip_packet_checksum_value(const mip_packet* packet)
 {
-    const packet_length index = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
+    const uint_least16_t index = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
     return ((uint16_t)(packet->_buffer[index+0]) << 8) | (uint16_t)(packet->_buffer[index+1]);
 }
@@ -156,9 +156,9 @@ uint16_t mip_packet_compute_checksum(const mip_packet* packet)
 
     // mip_packet_total_length always returns at least MIP_PACKET_LENGTH_MIN so this
     // subtraction is guaranteed to be safe.
-    const packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
+    const uint_least16_t length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
-    for(packet_length i=0; i<length; i++)
+    for(uint_least16_t i=0; i<length; i++)
     {
         a += packet->_buffer[i];
         b += a;
@@ -221,7 +221,7 @@ bool mip_packet_is_empty(const mip_packet* packet)
 ///
 ///@note This is the BUFFER SIZE and not the packet length.
 ///
-packet_length mip_packet_buffer_size(const mip_packet* packet)
+uint_least16_t mip_packet_buffer_size(const mip_packet* packet)
 {
     return packet->_buffer_length;
 }
@@ -231,7 +231,11 @@ packet_length mip_packet_buffer_size(const mip_packet* packet)
 ///
 /// This is equal to the buffer size less the total packet length.
 ///
-remaining_count mip_packet_remaining_space(const mip_packet* packet)
+///@warning The result may be negative if the packet length exceeds the actual
+///         buffer capacity. Such packets are not 'sane' (mip_packet_is_sane)
+///         and can only be produced by manipulating the buffered data directly.
+///
+int mip_packet_remaining_space(const mip_packet* packet)
 {
     return mip_packet_buffer_size(packet) - mip_packet_total_length(packet);
 }
@@ -285,7 +289,7 @@ bool mip_packet_is_data(const mip_packet* packet)
 bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
     uint8_t* payload_buffer;
-    remaining_count remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
+    int remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
     if( remaining < 0 )
         return false;
 
@@ -324,20 +328,20 @@ bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const ui
 ///         is negative, the field could not be allocated and the payload must
 ///         not be written.
 ///
-remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
+int mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
 {
     assert(payload_ptr_out != NULL);
-    // assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
+    assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
 
-    const remaining_count remaining = mip_packet_remaining_space(packet);
+    const int remaining = mip_packet_remaining_space(packet);
 
-    const packet_length field_length = MIP_FIELD_HEADER_LENGTH + (packet_length)payload_length;
+    const uint8_t field_length = MIP_FIELD_HEADER_LENGTH + payload_length;
 
     *payload_ptr_out = NULL;
 
     if( field_length <= remaining )
     {
-        packet_length field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
+        const uint_least16_t field_index = MIP_HEADER_LENGTH + mip_packet_payload_length(packet);
 
         packet->_buffer[MIP_INDEX_LENGTH] += field_length;
 
@@ -371,7 +375,7 @@ remaining_count mip_packet_alloc_field(mip_packet* packet, uint8_t field_descrip
 ///@returns The space remaining in the packet after changing the field size.
 ///         This will be negative if the new length did not fit.
 ///
-remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
+int mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
 {
     assert(payload_ptr != NULL);
     assert( new_payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -380,14 +384,14 @@ remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* paylo
     const uint8_t old_field_length = field_ptr[MIP_INDEX_FIELD_LEN];
     const uint8_t new_field_length = new_payload_length + MIP_FIELD_HEADER_LENGTH;
 
-    const remaining_count delta_length = new_field_length - old_field_length;
+    const int delta_length = new_field_length - old_field_length;
 
-    const remaining_count remaining = mip_packet_remaining_space(packet) - delta_length;
+    const int remaining = mip_packet_remaining_space(packet) - delta_length;
 
     if( remaining >= 0 )
     {
         field_ptr[MIP_INDEX_FIELD_LEN] = new_field_length;
-        packet->_buffer[MIP_INDEX_LENGTH] += delta_length;
+        packet->_buffer[MIP_INDEX_LENGTH] += (int8_t)delta_length;
     }
 
     return remaining;
@@ -407,7 +411,7 @@ remaining_count mip_packet_realloc_last_field(mip_packet* packet, uint8_t* paylo
 ///
 ///@returns The remaining space in the packet after removing the field.
 ///
-remaining_count mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr)
+int mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr)
 {
     assert(payload_ptr != NULL);
 
@@ -439,7 +443,7 @@ remaining_count mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payloa
 void mip_packet_finalize(mip_packet* packet)
 {
     uint16_t checksum = mip_packet_compute_checksum(packet);
-    packet_length length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
+    uint_least16_t length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
     packet->_buffer[length+0] = checksum >> 8;
     packet->_buffer[length+1] = checksum & 0xFF;

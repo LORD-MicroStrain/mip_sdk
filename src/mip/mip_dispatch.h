@@ -35,7 +35,7 @@ namespace C {
 ///@param packet    The MIP packet triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* packet, timestamp_type timestamp);
+typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* packet, mip_timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for field-level callbacks.
@@ -44,7 +44,7 @@ typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* pa
 ///@param field     The MIP field triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_field_callback )(void* context, const mip_field* field, timestamp_type timestamp);
+typedef void (*mip_dispatch_field_callback )(void* context, const mip_field* field, mip_timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for extraction callbacks.
@@ -129,7 +129,7 @@ void mip_dispatcher_add_handler(mip_dispatcher* self, mip_dispatch_handler* hand
 void mip_dispatcher_remove_handler(mip_dispatcher* self, mip_dispatch_handler* handler);
 void mip_dispatcher_remove_all_handlers(mip_dispatcher* self);
 
-void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, timestamp_type timestamp);
+void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, mip_timestamp timestamp);
 
 ///@}
 ///@}

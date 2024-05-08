@@ -764,13 +764,14 @@ struct FixInfo
 {
     enum class FixType : uint8_t
     {
-        FIX_3D        = 0,  ///<  
-        FIX_2D        = 1,  ///<  
-        FIX_TIME_ONLY = 2,  ///<  
-        FIX_NONE      = 3,  ///<  
-        FIX_INVALID   = 4,  ///<  
-        FIX_RTK_FLOAT = 5,  ///<  
-        FIX_RTK_FIXED = 6,  ///<  
+        FIX_3D           = 0,  ///<  
+        FIX_2D           = 1,  ///<  
+        FIX_TIME_ONLY    = 2,  ///<  
+        FIX_NONE         = 3,  ///<  
+        FIX_INVALID      = 4,  ///<  
+        FIX_RTK_FLOAT    = 5,  ///<  
+        FIX_RTK_FIXED    = 6,  ///<  
+        FIX_DIFFERENTIAL = 7,  ///<  
     };
     
     struct FixFlags : Bitfield<FixFlags>

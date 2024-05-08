@@ -66,7 +66,7 @@ void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packe
     serializer->_buffer_size = 0;
     serializer->_offset      = 0;
 
-    const remaining_count length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
+    const int length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
 
     if( length >= 0 )
         serializer->_buffer_size = length;
@@ -76,7 +76,7 @@ void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packe
 ///@brief Call this after a new field allocated by mip_serializer_init_new_field
 ///       has been written.
 ///
-/// This will either finish the field, or abort it if the serializer overflowed.
+/// This will either finish the field, or abort it if the serializer failed.
 ///
 ///@param serializer Must be created from mip_serializer_init_new_field.
 ///@param packet     Must be the original packet.
@@ -86,7 +86,10 @@ void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packe
     assert(packet);
 
     if( mip_serializer_is_ok(serializer) )
-        mip_packet_realloc_last_field(packet, serializer->_buffer, serializer->_offset);
+    {
+        assert(serializer->_offset <= MIP_FIELD_LENGTH_MAX);  // Payload too long!
+        mip_packet_realloc_last_field(packet, serializer->_buffer, (uint8_t) serializer->_offset);
+    }
     else if( serializer->_buffer )
         mip_packet_cancel_last_field(packet, serializer->_buffer);
 }
@@ -142,9 +145,9 @@ size_t mip_serializer_length(const mip_serializer* serializer)
 ///      or read more data than contained in the buffer. This is not a bug and
 ///      it can be detected with the mip_serializer_is_ok() function.
 ///
-remaining_count mip_serializer_remaining(const mip_serializer* serializer)
+int mip_serializer_remaining(const mip_serializer* serializer)
 {
-    return mip_serializer_capacity(serializer) - mip_serializer_length(serializer);
+    return (int)(mip_serializer_capacity(serializer) - mip_serializer_length(serializer));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

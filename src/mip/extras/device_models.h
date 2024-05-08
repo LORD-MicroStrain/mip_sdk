@@ -35,6 +35,7 @@ enum mip_model_number
     MODEL_3DM_CX5_25    = 6273,// 3DM-CX5-25
     MODEL_3DM_CX5_15    = 6274,// 3DM-CX5-15
     MODEL_3DM_CX5_10    = 6275,// 3DM-CX5-10
+    MODEL_3DM_CL5_10    = 6279,// 3DM-CL5-10
     MODEL_3DM_CL5_15    = 6280,// 3DM-CL5-15
     MODEL_3DM_CL5_25    = 6281,// 3DM-CL5-25
     MODEL_3DM_GQ7       = 6284,// 3DM-GQ7
