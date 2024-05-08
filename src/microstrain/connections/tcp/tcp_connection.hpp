@@ -29,7 +29,7 @@ public:
     TcpConnection(const TcpConnection&) = delete;
     TcpConnection& operator=(const TcpConnection&) = delete;
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, Timestamp* timestamp_out) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, EmbeddedTimestamp* timestamp_out) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
     bool isConnected() const final;

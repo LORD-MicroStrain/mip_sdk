@@ -1,6 +1,6 @@
 #pragma once
 
-#include "microstrain/common/microstrain_time.h"
+#include "microstrain/common/embedded_time.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -31,7 +31,7 @@ public:
     virtual ~Connection() {}
 
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
-    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, Timestamp* timestamp_out) = 0;
+    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out) = 0;
 
 #if __cpp_lib_span >= 202002L
     bool sendToDevice(std::span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }

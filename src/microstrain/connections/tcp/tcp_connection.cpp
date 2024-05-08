@@ -56,7 +56,7 @@ bool TcpConnection::disconnect()
 }
 
 ///@copydoc mip::Connection::sendToDevice
-bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, Timestamp* timestamp_out)
+bool TcpConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* length_out, EmbeddedTimestamp* timestamp_out)
 {
     (void)wait_time_ms;  // Not used, timeout is always fixed
 
