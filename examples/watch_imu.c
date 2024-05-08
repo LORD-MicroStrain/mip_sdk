@@ -4,7 +4,7 @@
 #include <mip/mip_interface.h>
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
-#include "microstrain/common/mip_logging.h"
+#include "microstrain/common/logging.h"
 #include <mip/utils/serialization.h>
 
 #include <mip/definitions/descriptors.h>
@@ -14,7 +14,7 @@
 
 #include "microstrain/connections/serial/serial_port.h"
 
-#include "microstrain/common/mip_logging.h"
+#include "microstrain/common/logging.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,12 +36,12 @@ uint8_t parse_buffer[1024];
 mip_interface device;
 mip_sensor_scaled_accel_data scaled_accel;
 
-void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
+void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
 {
     switch (level)
     {
-        case MIP_LOG_LEVEL_FATAL:
-        case MIP_LOG_LEVEL_ERROR:
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
             vfprintf(stderr, fmt, args);
             break;
         default:
@@ -159,7 +159,7 @@ int main(int argc, const char* argv[])
         return usage(argv[0]);
 
     // Initialize the MIP logger before opening the port so we can print errors if they occur
-    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_INFO, NULL);
+    MIP_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_INFO, NULL);
 
     if( !open_port(argv[1], baudrate) )
         return 1;

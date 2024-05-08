@@ -3,7 +3,7 @@
 
 #include <stdarg.h>
 
-#include "microstrain/common/mip_logging.h"
+#include "microstrain/common/logging.h"
 
 #include "example_utils.hpp"
 
@@ -20,7 +20,7 @@ mip::Timestamp getCurrentTimestamp()
     return duration_cast<milliseconds>( steady_clock::now().time_since_epoch() ).count();
 }
 
-void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
+void customLog(void* user, microstrain_log_level level, const char* fmt, va_list args)
 {
     // Convert the varargs into a string
     std::string log;
@@ -37,8 +37,8 @@ void customLog(void* user, mip_log_level level, const char* fmt, va_list args)
     // Print to the proper stream
     switch (level)
     {
-        case MIP_LOG_LEVEL_FATAL:
-        case MIP_LOG_LEVEL_ERROR:
+        case MICROSTRAIN_LOG_LEVEL_FATAL:
+        case MICROSTRAIN_LOG_LEVEL_ERROR:
             std::cerr << log;
             break;
         default:
@@ -115,7 +115,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs)
 {
     // Setup the logger for the MIP SDK
-    MIP_LOG_INIT(&customLog, MIP_LOG_LEVEL_DEBUG, nullptr);
+    MIP_LOG_INIT(&customLog, MICROSTRAIN_LOG_LEVEL_DEBUG, nullptr);
 
     if( argc < 3 || argc > maxArgs )
     {

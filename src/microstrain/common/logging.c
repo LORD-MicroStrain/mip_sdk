@@ -1,19 +1,19 @@
 
-#include "mip_logging.h"
+#include "logging.h"
 
 #include <stddef.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Global logging callback. Do not access directly
-mip_log_callback mip_log_callback_ = NULL;
+microstrain_log_callback microstrain_log_callback_ = NULL;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Global logging level. Do not access directly
-mip_log_level mip_log_level_ = MIP_LOG_LEVEL_OFF;
+microstrain_log_level microstrain_log_level_ = MICROSTRAIN_LOG_LEVEL_OFF;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Global logging user data. Do not access directly
-void* mip_log_user_data_ = NULL;
+void* microstrain_log_user_data_ = NULL;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initializes the logger with a callback and user data.
@@ -24,11 +24,11 @@ void* mip_log_user_data_ = NULL;
 ///@param level    The level that the MIP SDK should log at
 ///@param user     User data that will be passed to the callback every time it is excuted
 ///
-void mip_logging_init(mip_log_callback callback, mip_log_level level, void* user)
+void microstrain_logging_init(microstrain_log_callback callback, microstrain_log_level level, void* user)
 {
-  mip_log_callback_ = callback;
-  mip_log_level_ = level;
-  mip_log_user_data_ = user;
+  microstrain_log_callback_  = callback;
+  microstrain_log_level_     = level;
+  microstrain_log_user_data_ = user;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,9 +36,9 @@ void mip_logging_init(mip_log_callback callback, mip_log_level level, void* user
 ///
 ///@return The currently active logging callback
 ///
-mip_log_callback mip_logging_callback()
+microstrain_log_callback microstrain_logging_callback()
 {
-  return mip_log_callback_;
+  return microstrain_log_callback_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,9 +46,9 @@ mip_log_callback mip_logging_callback()
 ///
 ///@return The currently active logging level
 ///
-mip_log_level mip_logging_level()
+microstrain_log_level microstrain_logging_level()
 {
-  return mip_log_level_;
+  return microstrain_log_level_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,25 +56,25 @@ mip_log_level mip_logging_level()
 ///
 ///@return The currently active logging user data
 ///
-void* mip_logging_user_data()
+void* microstrain_logging_user_data()
 {
-  return mip_log_user_data_;
+  return microstrain_log_user_data_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Internal log function called by logging macros.
 ///       Call MIP_LOG_* macros instead of using this function directly
-///@copydetails mip::C::mip_log_callback
+///@copydetails mip::C::microstrain_log_callback
 ///
-void mip_logging_log(mip_log_level level, const char* fmt, ...)
+void microstrain_logging_log(microstrain_log_level level, const char* fmt, ...)
 {
-  const mip_log_callback logging_callback = mip_logging_callback();
-  const mip_log_level logging_level = mip_logging_level();
+  const microstrain_log_callback logging_callback = microstrain_logging_callback();
+  const microstrain_log_level            logging_level    = microstrain_logging_level();
   if (logging_callback != NULL && logging_level >= level)
   {
     va_list args;
     va_start(args, fmt);
-    logging_callback(mip_logging_user_data(), level, fmt, args);
+    logging_callback(microstrain_logging_user_data(), level, fmt, args);
     va_end(args);
   }
 }

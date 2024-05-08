@@ -1,5 +1,5 @@
 
-#include "microstrain/common/mip_logging.h"
+#include "microstrain/common/logging.h"
 
 #include "serial_port.h"
 
