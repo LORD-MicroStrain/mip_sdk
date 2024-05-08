@@ -110,7 +110,7 @@ endif()
 # Disable windows defined min/max
 # Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-    compile_definitions("NOMINMAX=1" "_WIN32_WINNT=0x0501")
+    add_compile_definitions("NOMINMAX=1" "_WIN32_WINNT=0x0501")
 endif()
 
 if(MSVC)
