@@ -40,7 +40,7 @@
 ///@li @ref mip_packet_c
 ///@li @ref mip_field_c
 ///@li @ref mip_parser_c
-///@li @ref mip::C::mip_cmd_result
+///@li @ref mip::C::mip_cmd_result "mip_cmd_result [C]"
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +191,7 @@
 ///
 /// The application should call mip_interface_update() periodically to process
 /// data sent by the device. This update function will call
-/// mip_interface_user_recv_from_device() to parse packets. When a data packet is
+/// mip_interface_recv_from_device() to parse packets. When a data packet is
 /// received, the list of packet and data callbacks is checked, and any
 /// matching callbacks are invoked. The update function should be called at
 /// a high enough rate to avoid overflowing the connection buffers. The
@@ -210,7 +210,7 @@
 /// from within the command function. While the command is waiting (status code
 /// MIP_STATUS_WAITING / CmdResult::STATUS_WAITING), repeated calls to the
 /// update function will be made. By default, the update function calls
-/// mip_interface_user_recv_from_device(). Because the function is called from
+/// mip_interface_recv_from_device(). Because the function is called from
 /// within a loop, it should sleep for a short time to wait for data if none
 /// has been received yet. Doing so prevents excessive CPU usage and lowers
 /// power consumption.
@@ -283,10 +283,10 @@
 /// applications, too:
 ///@li To update a progress bar while waiting for commands to complete
 ///@li To process data from other devices
-///@li To avoid blocking inside mip_interface_user_recv_from_device() when
+///@li To avoid blocking inside mip_interface_recv_from_device() when
 ///    called from a data processing loop.
 ///@li To push data through the system in a different way (e.g. without using
-///    mip_interface_user_recv_from_device())
+///    mip_interface_recv_from_device())
 ///
 /// Data may be pushed into the system by calling any of these functions:
 ///@li mip_interface_default_update() - this is the default behavior.
@@ -373,7 +373,7 @@
 /// to time out and make the device appear temporarily unresponsive. Setting a
 /// reasonable timeout ensures that the bad packet is rejected more quickly.
 /// The timeout should be set so that a MIP packet of the largest possible
-/// size (261 bytes) can be transfered well within the transmission time plus
+/// size (261 bytes) can be transferred well within the transmission time plus
 /// any additional processing delays in the application or operating system.
 /// As an example, for a 115200 baud serial link a timeout of 30 ms would be
 /// about right. You can use the mip_timeout_from_baudrate() function to
@@ -494,4 +494,49 @@
 /// the command structure and the `additionalTime` parameter.
 ///
 /// The `mip_timeout` / `Timeout` typedef is an alias to the timestamp type.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page other Other Considerations
+////////////////////////////////////////////////////////////////////////////////
+///
+///@section known_issues Known Issues and Workarounds
+///
+///@par suppress_ack parameters are not supported
+///
+/// Some commands accept a parameter named `suppress_ack` which acts to prevent
+/// the standard ack/nack reply from being returned by the device, e.g. the
+/// 3DM Poll Data command. Use of this parameter is not supported in the MIP SDK
+/// and will cause the command to appear to time out after a short delay.
+///
+/// If you do not wish to wait for a reply (i.e. just send the command and continue)
+/// you can build and send the command yourself:
+///@code{.cpp}
+///  // Create the command with required parameters.
+///  mip::commands_3dm::PollData cmd;
+///  cmd.desc_set = mip::data_sensor::DESCRIPTOR_SET;
+///  cmd.suppress_ack = true;
+///  cmd.num_descriptors = 2;
+///  cmd.descriptors[0] = mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR;
+///  cmd.descriptors[1] = mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR;
+///  // Build a packet.
+///  mip::PacketBuf packet(cmd);
+///  // Send it to the device.
+///  device.sendCommand(packet);
+///@endcode
+///
+///@par Some commands take longer and may time out
+///
+/// This applies to the following commands:
+///@li Save All Settings (`mip::commands_3dm::DeviceSettings` with `mip::FunctionSelector::SAVE`)
+///@li Commanded Built-In Test (`mip::commands_base::BuiltInTest`)
+///@li Capture Gyro Bias (`mip::commands_3dm::CaptureGyroBias`)
+///
+/// The device timeout must be sufficiently long when sending these commands.
+/// There are 3 potential ways to avoid erroneous timeouts:
+///@li Set a high overall device timeout. This is the easiest solution but may cause excess
+///    delays in your application if the device is unplugged, not powered, etc.
+///@li Temporarily set the timeout higher, and restore it after running the long command.
+///@li If using C++, use the `mip::DeviceInterface::runCommand` function and pass a large enough
+///    value for the `additionalTime` parameter. This raises the timeout specifically for that
+///    one command instance and is the recommended option.
 ///

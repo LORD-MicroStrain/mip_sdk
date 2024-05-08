@@ -15,8 +15,8 @@ Features
 * Simple to interface with existing projects
   * FindMip.cmake is included for CMake-based projects
 * Can be used to parse offline binary files
-* C API for those who can't use C++
 * C++ API for safety, flexibility, and convenience.
+* C API for those who can't use C++
 
 * Advanced Features
   * MIP packet creation
@@ -38,7 +38,7 @@ Examples
   * **GQ7 setup** [[C](./examples/GQ7/GQ7_example.c), [C++](./examples/GQ7/GQ7_example.cpp)]. <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
   * **CV7 setup** [[C](./examples/CV7/CV7_example.c), [C++](./examples/CV7/CV7_example.cpp)]. <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
   * **GX5-45 setup** [[C](./examples/GX5_45/GX5_45_example.c), [C++](./examples/GX5_45/GX5_45_example.cpp)]. <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
-  * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
+  * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- - Configures a CV7_INS device for typical usage. -->
   * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
 
 You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
@@ -73,7 +73,7 @@ Two connection types are provided with the MIP SDK to make it easy to run the ex
 
 ### Serial Port
 
-A basic serial port interface is provided in C and C++ for Linux and Windows. These can be modified for other platforms by the user.
+A basic serial port interface is provided in C and C++ for Linux, Mac, and Windows. These can be modified for other platforms by the user.
 The serial port connection will be used in most cases, when the MIP device is connected
 via a serial or USB cable (the USB connection acts like a virtual serial port).
 
@@ -93,23 +93,23 @@ How to Build
 
 ### Prerequisites
 
-* CMake version 3.10 or later
 * A working C compiler
   * C11 or later required
 * A working C++ compiler
   * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
   * C++11 or later required for the mip library
   * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
+* CMake version 3.10 or later (technically this is optional, see below)
 * Doxygen, if building documentation
 
-### Build configuration
+### CMake Build Configuration
 
 The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
 * MIP_USE_SERIAL - Builds the included serial port library (default enabled).
 * MIP_USE_TCP - Builds the included socket library (default enabled).
 * MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
 * MIP_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
-* MIP_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead of the higher level functions compiled into the code
+* MIP_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
 * MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
 * BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
 * BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
@@ -118,9 +118,9 @@ The following options may be specified when configuring the build with CMake (e.
 * BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
 * MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
 * BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
-* MIP_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section below.
+* MIP_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section in the documentation.
 
-### Compilation with CMake
+### Compilation 
 
 1. Create the build directory (e.g. `mkdir build`).
 2. In the build directory, run `cmake .. <options>`
@@ -130,3 +130,26 @@ The following options may be specified when configuring the build with CMake (e.
 3. Invoke `cmake --build .` in the build directory
 4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
 
+### Building without CMake
+
+If your target platform doesn't support CMake, you can build the project without it. To do so,
+include all the necessary files and define a few options.
+
+#### Minimum Required Files for building without CMake
+* Everything in `src/mip/definitions` (or at least all the descriptor sets you require)
+* All the .c, .h, .cpp, and .hpp files in `src/mip` (exclude the c++ files if you're using plain C)
+* The `byte_ring` and `serialization` .c/.h files in `src/mip/utils`
+* You may optionally include the platform-related connection files (`serial_port.h/.c`) as desired.
+
+#### Required #defines for building without CMake
+
+Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMIP_TIMESTAMP_TYPE=uint32_t -DMIP_ENABLE_LOGGING=0`
+
+* MIP_ENABLE_LOGGING (and MIP_LOGGING_MAX_LEVEL) - default is enabled
+* MIP_TIMESTAMP_TYPE - defaults to uint64_t if not specified
+* MIP_ENABLE_DIAGNOSTICS - Supported on embedded platforms to aid debugging
+
+These options affect the compiled code interface and sizes of various structs. They
+MUST be consistent between compiling the MIP SDK and any other code which includes
+headers from the MIP SDK. (If you change them after building, make sure everything gets
+rebuilt properly. Normally CMake takes care of this for you).
