@@ -1,7 +1,7 @@
 
 #include "commands_system.h"
 
-#include "../utils/serialization.h"
+#include "microstrain/common/serialization.h"
 #include "../mip_interface.h"
 
 #include <assert.h>
@@ -33,7 +33,7 @@ void insert_mip_system_comm_mode_command(mip_serializer* serializer, const mip_s
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        insert_u8(serializer, self->mode);
+        microstrain_insert_u8(serializer, self->mode);
         
     }
 }
@@ -43,19 +43,19 @@ void extract_mip_system_comm_mode_command(mip_serializer* serializer, mip_system
     
     if( self->function == MIP_FUNCTION_WRITE )
     {
-        extract_u8(serializer, &self->mode);
+        microstrain_extract_u8(serializer, &self->mode);
         
     }
 }
 
 void insert_mip_system_comm_mode_response(mip_serializer* serializer, const mip_system_comm_mode_response* self)
 {
-    insert_u8(serializer, self->mode);
+    microstrain_insert_u8(serializer, self->mode);
     
 }
 void extract_mip_system_comm_mode_response(mip_serializer* serializer, mip_system_comm_mode_response* self)
 {
-    extract_u8(serializer, &self->mode);
+    microstrain_extract_u8(serializer, &self->mode);
     
 }
 
@@ -66,12 +66,13 @@ mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t 
     mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
+
+    microstrain_insert_u8(&serializer, mode);
     
-    insert_u8(&serializer, mode);
+    assert(microstrain_serializer_is_ok(&serializer));
     
-    assert(mip_serializer_is_ok(&serializer));
-    
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
+        &serializer));
 }
 mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
 {
@@ -81,10 +82,11 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
-    assert(mip_serializer_is_ok(&serializer));
+    assert(microstrain_serializer_is_ok(&serializer));
     
     uint8_t responseLength = sizeof(buffer);
-    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
+    mip_cmd_result result = mip_interface_run_command_with_response(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
+        &serializer), MIP_REPLY_DESC_SYSTEM_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -92,9 +94,9 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(mode_out);
-        extract_u8(&deserializer, mode_out);
+        microstrain_extract_u8(&deserializer, mode_out);
         
-        if( mip_serializer_remaining(&deserializer) != 0 )
+        if(microstrain_serializer_remaining(&deserializer) != 0 )
             result = MIP_STATUS_ERROR;
     }
     return result;
@@ -107,9 +109,10 @@ mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
-    assert(mip_serializer_is_ok(&serializer));
+    assert(microstrain_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_SYSTEM_CMD_DESC_SET, MIP_CMD_DESC_SYSTEM_COM_MODE, buffer, (uint8_t) microstrain_serializer_length(
+        &serializer));
 }
 
 #ifdef __cplusplus

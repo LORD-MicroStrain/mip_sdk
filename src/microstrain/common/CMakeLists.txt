@@ -4,10 +4,12 @@ set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max
 
 
 set(SOURCES
-    platform.h
     descriptor_id.hpp
     index.hpp
     logging.h
+    platform.h
+    serialization.c
+    serialization.h
 )
 
 

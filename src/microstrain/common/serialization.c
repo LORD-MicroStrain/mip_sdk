@@ -1,8 +1,8 @@
 
 #include "serialization.h"
-#include "../mip_field.h"
-#include "../mip_packet.h"
-#include "../mip_offsets.h"
+#include "mip/mip_field.h"
+#include "mip/mip_packet.h"
+#include "mip/mip_offsets.h"
 
 #include <string.h>
 #include <assert.h>
@@ -85,7 +85,7 @@ void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packe
 {
     assert(packet);
 
-    if( mip_serializer_is_ok(serializer) )
+    if(microstrain_serializer_is_ok(serializer) )
     {
         assert(serializer->_offset <= MIP_FIELD_LENGTH_MAX);  // Payload too long!
         mip_packet_realloc_last_field(packet, serializer->_buffer, (uint8_t) serializer->_offset);
@@ -125,7 +125,7 @@ size_t mip_serializer_capacity(const mip_serializer* serializer)
 /// For insertion, returns how many bytes have been written.
 /// For extraction, returns how many bytes have been read.
 ///
-///@note This may exceed the buffer size. Check mip_serializer_is_ok() before using
+///@note This may exceed the buffer size. Check microstrain_serializer_is_ok() before using
 ///      the data.
 ///
 size_t mip_serializer_length(const mip_serializer* serializer)
@@ -143,11 +143,11 @@ size_t mip_serializer_length(const mip_serializer* serializer)
 ///
 ///@note This can be a negative number if the application attempted to write
 ///      or read more data than contained in the buffer. This is not a bug and
-///      it can be detected with the mip_serializer_is_ok() function.
+///      it can be detected with the microstrain_serializer_is_ok() function.
 ///
 int mip_serializer_remaining(const mip_serializer* serializer)
 {
-    return (int)(mip_serializer_capacity(serializer) - mip_serializer_length(serializer));
+    return (int)(microstrain_serializer_capacity(serializer) - microstrain_serializer_length(serializer));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,11 +160,11 @@ int mip_serializer_remaining(const mip_serializer* serializer)
 ///
 ///@param serializer
 ///
-///@returns true if mip_serializer_remaining() >= 0.
+///@returns true if microstrain_serializer_remaining() >= 0.
 ///
 bool mip_serializer_is_ok(const mip_serializer* serializer)
 {
-    return mip_serializer_length(serializer) <= mip_serializer_capacity(serializer);
+    return microstrain_serializer_length(serializer) <= microstrain_serializer_capacity(serializer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -175,7 +175,7 @@ bool mip_serializer_is_ok(const mip_serializer* serializer)
 ///
 ///@param serializer
 ///
-///@returns true if mip_serializer_remaining() == 0.
+///@returns true if microstrain_serializer_remaining() == 0.
 ///
 bool mip_serializer_is_complete(const mip_serializer* serializer)
 {
@@ -244,7 +244,7 @@ EXTRACT_MACRO(double, double  )
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Similar to extract_u8 but allows a maximum value to be specified.
+///@brief Similar to microstrain_extract_u8 but allows a maximum value to be specified.
 ///
 /// If the maximum count would be exceeded, an error is generated which causes
 /// further extraction to fail.
@@ -259,7 +259,7 @@ EXTRACT_MACRO(double, double  )
 void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
 {
     *count_out = 0;  // Default to zero if extraction fails.
-    extract_u8(serializer, count_out);
+    microstrain_extract_u8(serializer, count_out);
     if( *count_out > max_count )
     {
         // This is an error condition which can occur if the device sends

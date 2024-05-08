@@ -1,7 +1,7 @@
 
 #include "commands_3dm.hpp"
 
-#include "../utils/serialization.h"
+#include "microstrain/common/serialization.h"
 #include "../mip_interface.h"
 
 #include <assert.h>

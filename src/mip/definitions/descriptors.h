@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "../utils/serialization.h"
+#include "microstrain/common/serialization.h"
 #include "../mip_result.h"
 
 #ifdef __cplusplus

@@ -14,8 +14,6 @@ set(UTILS_DIR "${MIP_DIR}/utils")
 set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.c"
     "${UTILS_DIR}/byte_ring.h"
-    "${UTILS_DIR}/serialization.c"
-    "${UTILS_DIR}/serialization.h"
 )
 
 #

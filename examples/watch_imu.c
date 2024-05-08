@@ -5,7 +5,7 @@
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
 #include "microstrain/common/logging.h"
-#include <mip/utils/serialization.h>
+#include "microstrain/common/serialization.h"
 
 #include <mip/definitions/descriptors.h>
 #include <mip/definitions/commands_base.h>

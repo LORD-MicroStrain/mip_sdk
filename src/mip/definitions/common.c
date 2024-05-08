@@ -1,19 +1,19 @@
 
 #include "common.h"
 
-#include "../utils/serialization.h"
+#include "microstrain/common/serialization.h"
 
 
 void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self)
 {
-    insert_u8(serializer, self->descriptor);
-    insert_u16(serializer, self->decimation);
+    microstrain_insert_u8(serializer, self->descriptor);
+    microstrain_insert_u16(serializer, self->decimation);
 }
 
 void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self)
 {
-    extract_u8(serializer, &self->descriptor);
-    extract_u16(serializer, &self->decimation);
+    microstrain_extract_u8(serializer, &self->descriptor);
+    microstrain_extract_u16(serializer, &self->decimation);
 }
 
 #define IMPLEMENT_MIP_VECTOR_FUNCTIONS(n,type,name) \
