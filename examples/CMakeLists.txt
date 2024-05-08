@@ -35,7 +35,7 @@ macro(add_mip_example name sources)
 
     target_link_libraries(${name} mip ${EXAMPLE_LIBS})
     target_compile_definitions(${name} PUBLIC ${MIP_EXAMPLE_DEFS})
-    target_include_directories(${name} PRIVATE ${SRC_DIR})
+    #target_include_directories(${name} PRIVATE ${SRC_DIR})
 
 endmacro()
 
