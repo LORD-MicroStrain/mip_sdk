@@ -14,7 +14,7 @@ Features
   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
   * FindMip.cmake is included for CMake-based projects
-* Can be used to parse offline binary files
+* It can be used to parse offline binary files
 * C++ API for safety, flexibility, and convenience.
 * C API for those who can't use C++
 
@@ -39,7 +39,7 @@ Examples
   * **CV7 setup** [[C](./examples/CV7/CV7_example.c), [C++](./examples/CV7/CV7_example.cpp)]. <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
   * **GX5-45 setup** [[C](./examples/GX5_45/GX5_45_example.c), [C++](./examples/GX5_45/GX5_45_example.cpp)]. <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
   * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- - Configures a CV7_INS device for typical usage. -->
-  * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- > - Configures a CV7_INS device for typical usage. -->
+  * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- - Configures a CV7_INS device for typical usage. -->
 
 You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
