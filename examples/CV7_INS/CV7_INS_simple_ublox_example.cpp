@@ -24,8 +24,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "mip/mip_all.hpp"
-#include "../example_utils.hpp"
+#include "example_utils.hpp"
 #include "ublox_device.hpp"
+
 #include <cmath>
 #include <cstring>
 #include <string>

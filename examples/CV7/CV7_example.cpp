@@ -27,9 +27,11 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "example_utils.hpp"
+
 #include <mip/mip_all.hpp>
+
 #include <array>
-#include "../example_utils.hpp"
 
 using namespace mip;
 

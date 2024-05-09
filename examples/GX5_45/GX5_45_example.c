@@ -29,12 +29,13 @@
 
 #include <mip/mip_all.h>
 #include <mip/utils/serial_port.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
 
-#include "../example_utils.h"
+#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables

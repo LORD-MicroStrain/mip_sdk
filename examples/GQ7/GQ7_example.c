@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "../example_utils.h"
+#include "example_utils.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////

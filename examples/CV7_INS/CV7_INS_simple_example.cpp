@@ -28,7 +28,7 @@
 
 #include "mip/mip_all.hpp"
 #include <array>
-#include "../example_utils.hpp"
+#include "example_utils.hpp"
 
 using namespace mip;
 

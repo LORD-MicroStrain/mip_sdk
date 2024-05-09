@@ -1,11 +1,8 @@
 #include "example_utils.h"
 
 
-void displayFilterState(
-    const mip_filter_mode filter_state,
-    char **current_state,
-    bool isFiveSeries
-) {
+void displayFilterState(const mip_filter_mode filter_state, char **current_state, bool isFiveSeries) 
+{
     char *read_state = "";
     if (filter_state == MIP_FILTER_MODE_INIT) {
         read_state = false ? "GX5_INIT (1)" : "INIT (1)";
