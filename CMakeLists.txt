@@ -13,20 +13,37 @@ project(
     LANGUAGES C CXX
 )
 
+#
+# Build options
+#
+
+option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
+option(MIP_USE_TCP "Build TCP connection support into the library and exampels" ON)
+option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
+option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
+option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+option(BUILD_EXAMPLES "Builds the example programs." ON)
+# CTest defines this option to ON by default, so override it to OFF here.
+option(BUILD_TESTING "Build the testing tree." OFF)
+option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
+option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
+option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
+
+set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
+set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
 set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-include_directories(
-    "${SRC_DIR}"
-)
-
 if(WITH_INTERNAL)
     if(NOT DEFINED MIP_INTERNAL_DIR)
-		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
+        set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
-	
-	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+
+    add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -75,22 +92,6 @@ endif()
 set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
 set(VERSION_OUT_FILE "${MIP_DIR}/mip_version.h")
 configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
-
-#
-# Build options
-#
-
-option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
-option(MIP_USE_TCP    "Build TCP connection support into the library and exampels" ON)
-option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
-option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
-
-option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
-set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
-
-set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
-
-option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 #
 # Utils
@@ -228,12 +229,22 @@ set(ALL_MIP_SOURCES
     ${MIP_EXTRA_SOURCES}
 )
 
-option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
 add_library(mip ${ALL_MIP_SOURCES})
+
+target_include_directories(mip PUBLIC
+  "$<BUILD_INTERFACE:${SRC_DIR}>" # Include directory for build only
+  "$<INSTALL_INTERFACE:src>"      # Include directory for installation
+)
+
+if(WITH_INTERNAL)
+    target_include_directories(mip PUBLIC
+      "$<BUILD_INTERFACE:${MIP_INTERNAL_DIR}>"
+    )
+endif()
 
 #
 # Preprocessor definitions
@@ -276,9 +287,6 @@ endif()
 # TESTING
 #
 
-# CTest defines this option to ON by default, so override it to OFF here.
-option(BUILD_TESTING "Build the testing tree." OFF)
-
 include(CTest)
 
 if(BUILD_TESTING)
@@ -289,8 +297,6 @@ endif()
 # EXAMPLES
 #
 
-option(BUILD_EXAMPLES "Builds the example programs." ON)
-
 if(BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif()
@@ -300,9 +306,6 @@ endif()
 #
 
 find_package(Doxygen)
-option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
-option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
-option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
 
 if(BUILD_DOCUMENTATION)
     if(NOT DOXYGEN_FOUND)
