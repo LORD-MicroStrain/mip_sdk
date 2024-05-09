@@ -309,6 +309,7 @@ int main(int argc, const char* argv[])
             printf("NED_VELOCITY_GNSS_MEAS = [%f %f %f]\n", pvt_message.ned_velocity[0], pvt_message.ned_velocity[1], pvt_message.ned_velocity[2]);
 
             commands_aiding::Time external_measurement_time;
+            external_measurement_time.reserved = 1;
 
             if (input_arguments.enable_pps_sync)
             {

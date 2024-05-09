@@ -234,6 +234,8 @@ int main(int argc, const char* argv[])
             // Use measurement time of arrival for timestamping method
             commands_aiding::Time external_measurement_time;
             external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+            external_measurement_time.reserved = 1;
+            external_measurement_time.nanoseconds = current_timestamp * uint64_t(1'000'000);
 
             // External heading command
             float external_heading = 0.0;
