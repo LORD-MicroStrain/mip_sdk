@@ -110,37 +110,41 @@ pipeline {
     success {
       script {
         if (BRANCH_NAME && BRANCH_NAME == 'develop') {
-          node("master") {
-            withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
-              sh '''
-              # Release to github
-              archive_dir="${WORKSPACE}/../../jobs/LORD-MicroStrain/jobs/mip_sdk/branches/${BRANCH_NAME}/builds/${BUILD_NUMBER}/archive/"
-              ./scripts/release.sh \
-                --artifacts "$(find "${archive_dir}" -type f)" \
-                --target "${BRANCH_NAME}" \
-                --release "latest" \
-                --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
-                --generate-notes
-              '''
+          node("linux-amd64") {
+            dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+                sh '''
+                  # Release to github
+                  "${WORKSPACE}/scripts/release.sh" \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "latest" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
+                    --generate-notes
+                '''
+              }
             }
           }
         } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
-          node("master") {
-            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
-              sh '''
-              # Release to the latest version if the master commit matches up with the commit of that version
-              archive_dir="${WORKSPACE}/../../jobs/LORD-MicroStrain/jobs/mip_sdk/branches/${BRANCH_NAME}/builds/${BUILD_NUMBER}/archive/"
-              if git describe --exact-match --tags HEAD &> /dev/null; then
-                # Publish a release
-                ./scripts/release.sh \
-                  --artifacts "$(find "${archive_dir}" -type f)" \
-                  --target "${BRANCH_NAME}" \
-                  --release "$(git describe --exact-match --tags HEAD)" \
-                  --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
-              else
-                echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
-              fi
-              '''
+          node("linux-amd64") {
+            dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+                sh '''
+                # Release to the latest version if the master commit matches up with the commit of that version
+                if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
+                  # Publish a release
+                  ./scripts/release.sh \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
+                else
+                  echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
+                fi
+                '''
+              }
             }
           }
         }
