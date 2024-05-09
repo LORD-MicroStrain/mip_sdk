@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -84,11 +85,6 @@ enum class LedAction : uint8_t
 
 struct GetStatusFlags
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct StatusFlagsLegacy : Bitfield<StatusFlagsLegacy>
     {
         enum _enumType : uint32_t
@@ -105,6 +101,7 @@ struct GetStatusFlags
             RSRP                 = 0x0C000000,  ///<  
             RSRQ                 = 0x30000000,  ///<  
             SINR                 = 0xC0000000,  ///<  
+            ALL                  = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -112,7 +109,7 @@ struct GetStatusFlags
         StatusFlagsLegacy(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
         StatusFlagsLegacy& operator=(uint32_t val) { value = val; return *this; }
-        StatusFlagsLegacy& operator=(int val) { value = val; return *this; }
+        StatusFlagsLegacy& operator=(int val) { value = uint32_t(val); return *this; }
         StatusFlagsLegacy& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlagsLegacy& operator&=(uint32_t val) { return *this = value & val; }
         
@@ -138,6 +135,9 @@ struct GetStatusFlags
         void rsrq(uint32_t val) { value = (value & ~RSRQ) | (val << 28); }
         uint32_t sinr() const { return (value & SINR) >> 30; }
         void sinr(uint32_t val) { value = (value & ~SINR) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     struct StatusFlags : Bitfield<StatusFlags>
@@ -152,11 +152,12 @@ struct GetStatusFlags
             TOWER_CHANGE_INDICATOR  = 0x00F00000,  ///<  
             NMEA_TIMEOUT            = 0x01000000,  ///<  
             SERVER_TIMEOUT          = 0x02000000,  ///<  
-            RTCM_TIMEOUT            = 0x04000000,  ///<  
+            CORRECTIONS_TIMEOUT     = 0x04000000,  ///<  
             DEVICE_OUT_OF_RANGE     = 0x08000000,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x10000000,  ///<  
             RESERVED                = 0x20000000,  ///<  
             VERSION                 = 0xC0000000,  ///<  
+            ALL                     = 0xFFFFFFFF,
         };
         uint32_t value = NONE;
         
@@ -164,7 +165,7 @@ struct GetStatusFlags
         StatusFlags(int val) : value((uint32_t)val) {}
         operator uint32_t() const { return value; }
         StatusFlags& operator=(uint32_t val) { value = val; return *this; }
-        StatusFlags& operator=(int val) { value = val; return *this; }
+        StatusFlags& operator=(int val) { value = uint32_t(val); return *this; }
         StatusFlags& operator|=(uint32_t val) { return *this = value | val; }
         StatusFlags& operator&=(uint32_t val) { return *this = value & val; }
         
@@ -182,8 +183,8 @@ struct GetStatusFlags
         void nmeaTimeout(bool val) { if(val) value |= NMEA_TIMEOUT; else value &= ~NMEA_TIMEOUT; }
         bool serverTimeout() const { return (value & SERVER_TIMEOUT) > 0; }
         void serverTimeout(bool val) { if(val) value |= SERVER_TIMEOUT; else value &= ~SERVER_TIMEOUT; }
-        bool rtcmTimeout() const { return (value & RTCM_TIMEOUT) > 0; }
-        void rtcmTimeout(bool val) { if(val) value |= RTCM_TIMEOUT; else value &= ~RTCM_TIMEOUT; }
+        bool correctionsTimeout() const { return (value & CORRECTIONS_TIMEOUT) > 0; }
+        void correctionsTimeout(bool val) { if(val) value |= CORRECTIONS_TIMEOUT; else value &= ~CORRECTIONS_TIMEOUT; }
         bool deviceOutOfRange() const { return (value & DEVICE_OUT_OF_RANGE) > 0; }
         void deviceOutOfRange(bool val) { if(val) value |= DEVICE_OUT_OF_RANGE; else value &= ~DEVICE_OUT_OF_RANGE; }
         bool correctionsUnavailable() const { return (value & CORRECTIONS_UNAVAILABLE) > 0; }
@@ -192,16 +193,48 @@ struct GetStatusFlags
         void reserved(bool val) { if(val) value |= RESERVED; else value &= ~RESERVED; }
         uint32_t version() const { return (value & VERSION) >> 30; }
         void version(uint32_t val) { value = (value & ~VERSION) | (val << 30); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_STATUS_FLAGS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetStatusFlags";
+    static constexpr const char* DOC_NAME = "Get RTK Device Status Flags";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_STATUS_FLAGS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetStatusFlags::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device Status Flags Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         StatusFlags flags; ///< Model number dependent. See above structures.
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(flags));
+        }
     };
 };
 void insert(Serializer& serializer, const GetStatusFlags& self);
@@ -210,7 +243,8 @@ void extract(Serializer& serializer, GetStatusFlags& self);
 void insert(Serializer& serializer, const GetStatusFlags::Response& self);
 void extract(Serializer& serializer, GetStatusFlags::Response& self);
 
-CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut);
+TypedResult<GetStatusFlags> getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -220,19 +254,43 @@ CmdResult getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* 
 
 struct GetImei
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMEI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetImei";
+    static constexpr const char* DOC_NAME = "Get RTK Device IMEI (International Mobile Equipment Identifier)";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMEI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetImei::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device IMEI (International Mobile Equipment Identifier) Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char IMEI[32] = {0};
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(IMEI));
+        }
     };
 };
 void insert(Serializer& serializer, const GetImei& self);
@@ -241,7 +299,8 @@ void extract(Serializer& serializer, GetImei& self);
 void insert(Serializer& serializer, const GetImei::Response& self);
 void extract(Serializer& serializer, GetImei::Response& self);
 
-CmdResult getImei(C::mip_interface& device, char* imeiOut);
+TypedResult<GetImei> getImei(C::mip_interface& device, char* imeiOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -251,19 +310,43 @@ CmdResult getImei(C::mip_interface& device, char* imeiOut);
 
 struct GetImsi
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_IMSI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetImsi";
+    static constexpr const char* DOC_NAME = "Get RTK Device IMSI (International Mobile Subscriber Identifier)";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_IMSI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetImsi::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device IMSI (International Mobile Subscriber Identifier) Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char IMSI[32] = {0};
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(IMSI));
+        }
     };
 };
 void insert(Serializer& serializer, const GetImsi& self);
@@ -272,7 +355,8 @@ void extract(Serializer& serializer, GetImsi& self);
 void insert(Serializer& serializer, const GetImsi::Response& self);
 void extract(Serializer& serializer, GetImsi::Response& self);
 
-CmdResult getImsi(C::mip_interface& device, char* imsiOut);
+TypedResult<GetImsi> getImsi(C::mip_interface& device, char* imsiOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -282,19 +366,43 @@ CmdResult getImsi(C::mip_interface& device, char* imsiOut);
 
 struct GetIccid
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ICCID;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetIccid";
+    static constexpr const char* DOC_NAME = "Get RTK Device ICCID (Integrated Circuit Card Identification [SIM Number])";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ICCID;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetIccid::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device ICCID (Integrated Circuit Card Identification [SIM Number]) Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ICCID[32] = {0};
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(ICCID));
+        }
     };
 };
 void insert(Serializer& serializer, const GetIccid& self);
@@ -303,7 +411,8 @@ void extract(Serializer& serializer, GetIccid& self);
 void insert(Serializer& serializer, const GetIccid::Response& self);
 void extract(Serializer& serializer, GetIccid::Response& self);
 
-CmdResult getIccid(C::mip_interface& device, char* iccidOut);
+TypedResult<GetIccid> getIccid(C::mip_interface& device, char* iccidOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -313,15 +422,6 @@ CmdResult getIccid(C::mip_interface& device, char* iccidOut);
 
 struct ConnectedDeviceType
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
-    
-    static const bool HAS_WRITE_FUNCTION = true;
-    static const bool HAS_READ_FUNCTION = true;
-    static const bool HAS_SAVE_FUNCTION = true;
-    static const bool HAS_LOAD_FUNCTION = true;
-    static const bool HAS_RESET_FUNCTION = true;
-    
     enum class Type : uint8_t
     {
         GENERIC = 0,  ///<  
@@ -331,13 +431,55 @@ struct ConnectedDeviceType
     FunctionSelector function = static_cast<FunctionSelector>(0);
     Type devType = static_cast<Type>(0);
     
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONNECTED_DEVICE_TYPE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ConnectedDeviceType";
+    static constexpr const char* DOC_NAME = "Configure or read the type of the connected device";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = true;
+    static constexpr const uint32_t WRITE_PARAMS   = 0x8001;
+    static constexpr const uint32_t READ_PARAMS    = 0x8000;
+    static constexpr const uint32_t SAVE_PARAMS    = 0x8000;
+    static constexpr const uint32_t LOAD_PARAMS    = 0x8000;
+    static constexpr const uint32_t DEFAULT_PARAMS = 0x8000;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(devType);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(devType));
+    }
+    
+    static ConnectedDeviceType create_sld_all(::mip::FunctionSelector function)
+    {
+        ConnectedDeviceType cmd;
+        cmd.function = function;
+        return cmd;
+    }
+    
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_CONNECTED_DEVICE_TYPE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ConnectedDeviceType::Response";
+        static constexpr const char* DOC_NAME = "Configure or read the type of the connected device Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         Type devType = static_cast<Type>(0);
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(devType));
+        }
     };
 };
 void insert(Serializer& serializer, const ConnectedDeviceType& self);
@@ -346,11 +488,12 @@ void extract(Serializer& serializer, ConnectedDeviceType& self);
 void insert(Serializer& serializer, const ConnectedDeviceType::Response& self);
 void extract(Serializer& serializer, ConnectedDeviceType::Response& self);
 
-CmdResult writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype);
-CmdResult readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut);
-CmdResult saveConnectedDeviceType(C::mip_interface& device);
-CmdResult loadConnectedDeviceType(C::mip_interface& device);
-CmdResult defaultConnectedDeviceType(C::mip_interface& device);
+TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype);
+TypedResult<ConnectedDeviceType> readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut);
+TypedResult<ConnectedDeviceType> saveConnectedDeviceType(C::mip_interface& device);
+TypedResult<ConnectedDeviceType> loadConnectedDeviceType(C::mip_interface& device);
+TypedResult<ConnectedDeviceType> defaultConnectedDeviceType(C::mip_interface& device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -360,19 +503,43 @@ CmdResult defaultConnectedDeviceType(C::mip_interface& device);
 
 struct GetActCode
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_ACT_CODE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetActCode";
+    static constexpr const char* DOC_NAME = "Get RTK Device Activation Code";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_ACT_CODE;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetActCode::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device Activation Code Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ActivationCode[32] = {0};
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(ActivationCode));
+        }
     };
 };
 void insert(Serializer& serializer, const GetActCode& self);
@@ -381,7 +548,8 @@ void extract(Serializer& serializer, GetActCode& self);
 void insert(Serializer& serializer, const GetActCode::Response& self);
 void extract(Serializer& serializer, GetActCode::Response& self);
 
-CmdResult getActCode(C::mip_interface& device, char* activationcodeOut);
+TypedResult<GetActCode> getActCode(C::mip_interface& device, char* activationcodeOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -391,19 +559,43 @@ CmdResult getActCode(C::mip_interface& device, char* activationcodeOut);
 
 struct GetModemFirmwareVersion
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_MODEM_FIRMWARE_VERSION;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetModemFirmwareVersion";
+    static constexpr const char* DOC_NAME = "Get RTK Device's Cell Modem Firmware version number";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_MODEM_FIRMWARE_VERSION;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetModemFirmwareVersion::Response";
+        static constexpr const char* DOC_NAME = "Get RTK Device's Cell Modem Firmware version number Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         char ModemFirmwareVersion[32] = {0};
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(ModemFirmwareVersion));
+        }
     };
 };
 void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
@@ -412,7 +604,8 @@ void extract(Serializer& serializer, GetModemFirmwareVersion& self);
 void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self);
 void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self);
 
-CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut);
+TypedResult<GetModemFirmwareVersion> getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -423,21 +616,45 @@ CmdResult getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwarev
 
 struct GetRssi
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_GET_RSSI;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "GetRssi";
+    static constexpr const char* DOC_NAME = "GetRssi";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_GET_RSSI;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "GetRssi::Response";
+        static constexpr const char* DOC_NAME = "GetRssi Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         bool valid = 0;
         int32_t rssi = 0;
         int32_t signalQuality = 0;
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(valid),std::ref(rssi),std::ref(signalQuality));
+        }
     };
 };
 void insert(Serializer& serializer, const GetRssi& self);
@@ -446,7 +663,8 @@ void extract(Serializer& serializer, GetRssi& self);
 void insert(Serializer& serializer, const GetRssi::Response& self);
 void extract(Serializer& serializer, GetRssi::Response& self);
 
-CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut);
+TypedResult<GetRssi> getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -457,11 +675,6 @@ CmdResult getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, in
 
 struct ServiceStatus
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     struct ServiceFlags : Bitfield<ServiceFlags>
     {
         enum _enumType : uint8_t
@@ -470,6 +683,7 @@ struct ServiceStatus
             THROTTLE                = 0x01,  ///<  
             CORRECTIONS_UNAVAILABLE = 0x02,  ///<  
             RESERVED                = 0xFC,  ///<  
+            ALL                     = 0xFF,
         };
         uint8_t value = NONE;
         
@@ -477,7 +691,7 @@ struct ServiceStatus
         ServiceFlags(int val) : value((uint8_t)val) {}
         operator uint8_t() const { return value; }
         ServiceFlags& operator=(uint8_t val) { value = val; return *this; }
-        ServiceFlags& operator=(int val) { value = val; return *this; }
+        ServiceFlags& operator=(int val) { value = uint8_t(val); return *this; }
         ServiceFlags& operator|=(uint8_t val) { return *this = value | val; }
         ServiceFlags& operator&=(uint8_t val) { return *this = value & val; }
         
@@ -487,21 +701,53 @@ struct ServiceStatus
         void correctionsUnavailable(bool val) { if(val) value |= CORRECTIONS_UNAVAILABLE; else value &= ~CORRECTIONS_UNAVAILABLE; }
         uint8_t reserved() const { return (value & RESERVED) >> 2; }
         void reserved(uint8_t val) { value = (value & ~RESERVED) | (val << 2); }
+        
+        bool allSet() const { return value == ALL; }
+        void setAll() { value |= ALL; }
     };
     
     uint32_t reserved1 = 0;
     uint32_t reserved2 = 0;
     
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_SERVICE_STATUS;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ServiceStatus";
+    static constexpr const char* DOC_NAME = "ServiceStatus";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(reserved1,reserved2);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(reserved1),std::ref(reserved2));
+    }
     struct Response
     {
-        static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-        static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
+        static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+        static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::REPLY_SERVICE_STATUS;
+        static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+        static constexpr const char* NAME = "ServiceStatus::Response";
+        static constexpr const char* DOC_NAME = "ServiceStatus Response";
         
+        static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
+        static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
         ServiceFlags flags;
         uint32_t receivedBytes = 0;
         uint32_t lastBytes = 0;
         uint64_t lastBytesTime = 0;
         
+        
+        auto as_tuple()
+        {
+            return std::make_tuple(std::ref(flags),std::ref(receivedBytes),std::ref(lastBytes),std::ref(lastBytesTime));
+        }
     };
 };
 void insert(Serializer& serializer, const ServiceStatus& self);
@@ -510,7 +756,8 @@ void extract(Serializer& serializer, ServiceStatus& self);
 void insert(Serializer& serializer, const ServiceStatus::Response& self);
 void extract(Serializer& serializer, ServiceStatus::Response& self);
 
-CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
+TypedResult<ServiceStatus> serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -522,18 +769,33 @@ CmdResult serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t r
 
 struct ProdEraseStorage
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     MediaSelector media = static_cast<MediaSelector>(0);
     
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_PROD_ERASE_STORAGE;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ProdEraseStorage";
+    static constexpr const char* DOC_NAME = "ProdEraseStorage";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(media);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(media));
+    }
+    typedef void Response;
 };
 void insert(Serializer& serializer, const ProdEraseStorage& self);
 void extract(Serializer& serializer, ProdEraseStorage& self);
 
-CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
+TypedResult<ProdEraseStorage> prodEraseStorage(C::mip_interface& device, MediaSelector media);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -544,21 +806,36 @@ CmdResult prodEraseStorage(C::mip_interface& device, MediaSelector media);
 
 struct LedControl
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
-    
-    static const bool HAS_FUNCTION_SELECTOR = false;
-    
     uint8_t primaryColor[3] = {0};
     uint8_t altColor[3] = {0};
     LedAction act = static_cast<LedAction>(0);
     uint32_t period = 0;
     
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_CONTROL;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "LedControl";
+    static constexpr const char* DOC_NAME = "LedControl";
+    
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
+    
+    auto as_tuple() const
+    {
+        return std::make_tuple(primaryColor,altColor,act,period);
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple(std::ref(primaryColor),std::ref(altColor),std::ref(act),std::ref(period));
+    }
+    typedef void Response;
 };
 void insert(Serializer& serializer, const LedControl& self);
 void extract(Serializer& serializer, LedControl& self);
 
-CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period);
+TypedResult<LedControl> ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -570,17 +847,32 @@ CmdResult ledControl(C::mip_interface& device, const uint8_t* primarycolor, cons
 
 struct ModemHardReset
 {
-    static const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
-    static const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
     
-    static const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_rtk::DESCRIPTOR_SET;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_rtk::CMD_MODEM_HARD_RESET;
+    static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+    static constexpr const char* NAME = "ModemHardReset";
+    static constexpr const char* DOC_NAME = "ModemHardReset";
     
+    static constexpr const bool HAS_FUNCTION_SELECTOR = false;
+    static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
     
+    auto as_tuple() const
+    {
+        return std::make_tuple();
+    }
+    
+    auto as_tuple()
+    {
+        return std::make_tuple();
+    }
+    typedef void Response;
 };
 void insert(Serializer& serializer, const ModemHardReset& self);
 void extract(Serializer& serializer, ModemHardReset& self);
 
-CmdResult modemHardReset(C::mip_interface& device);
+TypedResult<ModemHardReset> modemHardReset(C::mip_interface& device);
+
 ///@}
 ///
 

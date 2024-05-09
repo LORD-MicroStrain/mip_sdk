@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
@@ -22,10 +22,11 @@ include_directories(
 )
 
 if(WITH_INTERNAL)
-    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
-    if(MIP_INTERNAL_DIR)
-        add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+    if(NOT DEFINED MIP_INTERNAL_DIR)
+		set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
+	
+	add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -124,10 +125,13 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_result.c"
     "${MIP_DIR}/mip_result.h"
     "${MIP_DIR}/mip_types.h"
+    "${MIP_DIR}/definitions/common.c"
+    "${MIP_DIR}/definitions/common.h"
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
+    "${MIP_DIR}/mip_all.hpp"
 )
 
 set(MIPDEV_SOURCES
@@ -148,6 +152,8 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/commands_gnss.h"
     "${MIP_DIR}/definitions/commands_rtk.c"
     "${MIP_DIR}/definitions/commands_rtk.h"
+    "${MIP_DIR}/definitions/commands_aiding.c"
+    "${MIP_DIR}/definitions/commands_aiding.h"
     "${MIP_DIR}/definitions/commands_system.c"
     "${MIP_DIR}/definitions/commands_system.h"
     "${MIP_DIR}/definitions/data_filter.c"
@@ -187,10 +193,20 @@ if(MIP_USE_TCP)
     )
 endif()
 if(MIP_USE_EXTRAS)
+    list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
     set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
     set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/composite_result.hpp"
+        "${MIP_EXTRAS_DIR}/descriptor_id.hpp"
+        "${MIP_EXTRAS_DIR}/device_models.h"
+        "${MIP_EXTRAS_DIR}/device_models.c"
+        "${MIP_EXTRAS_DIR}/index.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.hpp"
         "${MIP_EXTRAS_DIR}/recording_connection.cpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.hpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.cpp"
+        "${MIP_EXTRAS_DIR}/version.hpp"
+        "${MIP_EXTRAS_DIR}/version.cpp"
     )
 endif()
 
@@ -236,8 +252,9 @@ if(${MIP_ENABLE_DIAGNOSTICS})
 endif()
 
 # Disable windows defined min/max
+# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-  list(APPEND MIP_DEFINES "NOMINMAX=1")
+  list(APPEND MIP_DEFINES "NOMINMAX=1" "_WIN32_WINNT=0x0501")
 endif()
 
 if(MSVC)
@@ -247,6 +264,13 @@ else()
 endif()
 
 target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
+
+#
+# Libraries
+#
+if(WIN32 AND MIP_USE_TCP)
+    target_link_libraries(mip PUBLIC "ws2_32")
+endif()
 
 #
 # TESTING
@@ -355,6 +379,9 @@ set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
 list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
 foreach(MIP_HEADER ${ALL_MIP_HEADERS})
     string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
+    if(INT_DIR)
+        string(REPLACE "${INT_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER_RELATIVE}")
+    endif()
     set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
     get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
     install(
@@ -483,8 +510,8 @@ if(BUILD_PACKAGE)
 
     # Zip specific configuration
     # Build different zip packages for each target
-    if(WIN32)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Windows")
+    if(MSVC)
+        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
     elseif(APPLE)
         set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
     elseif(UNIX)

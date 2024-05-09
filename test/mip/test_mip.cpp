@@ -9,7 +9,7 @@
 
 
 using namespace mip;
-
+using namespace mip::C;
 
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
@@ -23,7 +23,7 @@ int main(int argc, const char* argv[])
 {
     srand(0);
 
-    auto callback = [](void*, const Packet* parsedPacket, Timestamp timestamp)->bool
+    auto callback = [](void*, const PacketRef* parsedPacket, Timestamp timestamp)->bool
     {
         unsigned int parsedFields = 0;
         bool error = false;
@@ -78,7 +78,7 @@ int main(int argc, const char* argv[])
 
     for(unsigned int i=0; i<NUM_ITERATIONS; i++)
     {
-        Packet packet(packetBuffer, sizeof(packetBuffer), 0x80);
+        PacketRef packet(packetBuffer, sizeof(packetBuffer), 0x80);
 
         for(numFields = 0; ; numFields++)
         {
@@ -86,7 +86,7 @@ int main(int argc, const char* argv[])
             const uint8_t payloadLength = (rand() % MIP_FIELD_PAYLOAD_LENGTH_MAX) + 1;
 
             uint8_t* payload;
-            RemainingCount rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
+            int rem = packet.allocField(fieldDescriptor, payloadLength, &payload);
 
             if( rem < 0 )
                 break;
@@ -99,12 +99,12 @@ int main(int argc, const char* argv[])
 
         packet.finalize();
 
-        RemainingCount rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
+        size_t rem = parser.parse(packet.pointer(), packet.totalLength(), 0, MIPPARSER_UNLIMITED_PACKETS);
 
         if( rem != 0 )
         {
             numErrors++;
-            fprintf(stderr, "Parser reports %d unparsed bytes.\n", rem);
+            fprintf(stderr, "Parser reports %zu unparsed bytes.\n", rem);
         }
 
         if( numErrors > 10 )

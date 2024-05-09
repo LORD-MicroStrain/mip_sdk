@@ -47,6 +47,14 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         target_link_libraries(CV7_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(CV7_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
 
+        add_executable(CV7_INS_Simple_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(CV7_INS_Simple_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(CV7_INS_Simple_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
+
+        add_executable(CV7_INS_Simple_Ublox_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CV7_INS/CV7_INS_simple_ublox_example.cpp" ${DEVICE_SOURCES} CV7_INS/ublox_device.hpp CV7_INS/simple_ublox_parser.hpp)
+        target_link_libraries(CV7_INS_Simple_Ublox_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(CV7_INS_Simple_Ublox_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")        
+
         add_executable(GX5_45_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GX5_45/GX5_45_example.cpp" ${DEVICE_SOURCES})
         target_link_libraries(GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
         target_compile_definitions(GX5_45_Example PUBLIC "${MIP_EXAMPLE_DEFS}")

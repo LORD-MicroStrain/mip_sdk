@@ -42,7 +42,7 @@ bool mip_is_data_descriptor_set(uint8_t descriptor_set)
 ///
 bool mip_is_cmd_descriptor_set(uint8_t descriptor_set)
 {
-    return (descriptor_set < MIP_DATA_DESCRIPTOR_SET_START);
+    return !mip_is_data_descriptor_set(descriptor_set);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +55,18 @@ bool mip_is_cmd_descriptor_set(uint8_t descriptor_set)
 bool mip_is_reserved_descriptor_set(uint8_t descriptor_set)
 {
     return (descriptor_set >= MIP_RESERVED_DESCRIPTOR_SET_START);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Determines if the descriptor set represents some kind of GNSS data.
+///
+///@param descriptor_set
+///
+///@returns true if the descriptor set represents GNSS data.
+///
+bool mip_is_gnss_data_descriptor_set(uint8_t descriptor_set)
+{
+    return ((descriptor_set == 0x81) || ((descriptor_set >= 0x91) && (descriptor_set <= 0x95)));
 }
 
 
@@ -149,19 +161,6 @@ void extract_mip_function_selector(mip_serializer* serializer, enum mip_function
     uint8_t tmp;
     extract_u8(serializer, &tmp);
     *self = (enum mip_function_selector)tmp;
-}
-
-
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self)
-{
-    insert_u8(serializer, self->descriptor);
-    insert_u16(serializer, self->decimation);
-}
-
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self)
-{
-    extract_u8(serializer, &self->descriptor);
-    extract_u16(serializer, &self->decimation);
 }
 
 

@@ -5,6 +5,7 @@
 
 #include "definitions/descriptors.h"
 
+#include <string>
 
 namespace mip
 {
@@ -21,6 +22,11 @@ struct Dispatcher : public C::mip_dispatcher
         ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
         ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
     };
+
+    void addHandler(DispatchHandler& handler) { C::mip_dispatcher_add_handler(this, &handler); }
+    void removeHandler(DispatchHandler& handler) { C::mip_dispatcher_remove_handler(this, &handler); }
+
+    void removeAllHandlers() { C::mip_dispatcher_remove_all_handlers(this); }
 };
 
 
@@ -109,6 +115,9 @@ struct PendingCmd : public C::mip_pending_cmd
     ///
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
+    ///@copydoc mip::C::mip_pending_cmd_response_descriptor
+    uint8_t responseDescriptor() const { return C::mip_pending_cmd_response_descriptor(this); }
+
     ///@copydoc mip::C::mip_pending_cmd_response
     const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
 
@@ -135,10 +144,30 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
+
+    static constexpr auto TYPE = "None";
+
+    Connection() { mType = TYPE; };
+    virtual ~Connection() {}
+
     virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
     virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
 
+    virtual bool isConnected() const = 0;
+    virtual bool connect() = 0;
+    virtual bool disconnect() = 0;
+
     void connect_interface(C::mip_interface* device);
+
+    const char* type() const { return mType; };
+
+    virtual const char* interfaceName() const = 0;
+    virtual uint32_t parameter() const = 0;
+
+protected:
+
+    const char *mType;
+
 };
 
 
@@ -243,10 +272,10 @@ public:
     bool           sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
     bool           recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) { return C::mip_interface_recv_from_device(this, buffer, max_length, wait_time, length_out, timestamp); }
-    bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
-    bool           defaultUpdate(bool blocking=false) { return C::mip_interface_default_update(this, blocking); }
+    bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
+    bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
 
-    RemainingCount receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
+    size_t         receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
     void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
@@ -260,10 +289,10 @@ public:
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, C::mip_dispatch_field_callback callback, void* userData) { C::mip_interface_register_field_callback(this, &handler, descriptorSet, fieldDescriptor, callback, userData); }
 
 
-    template<void (*Callback)(void*, const Packet&, Timestamp)>
+    template<void (*Callback)(void*, const PacketRef&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData=nullptr);
 
-    template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
+    template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object);
 
 
@@ -334,7 +363,7 @@ void DeviceInterface::setSendFunction()
 template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
 void DeviceInterface::setRecvFunction()
 {
-    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out){
+    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out){
         return (*Recv)(*static_cast<DeviceInterface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
     });
 }
@@ -347,7 +376,7 @@ void DeviceInterface::setRecvFunction()
 template<bool (*Update)(DeviceInterface&, Timeout)>
 void DeviceInterface::setUpdateFunction()
 {
-    setUpdateFunction([](C::mip_interface* device, C::timeout_type wait_time){
+    setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time){
         return (*Update)(*static_cast<DeviceInterface*>(device), wait_time);
     });
 }
@@ -422,7 +451,7 @@ void DeviceInterface::setUpdateFunction()
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
     setUpdateFunction(
-        [](C::mip_interface* device, C::timeout_type wait_time)->bool
+        [](C::mip_interface* device, C::mip_timeout wait_time)->bool
         {
             return (static_cast<Derived*>(device)->*Update)(wait_time);
         }
@@ -479,11 +508,11 @@ void DeviceInterface::setCallbacks(T* object)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Send)(data, size);
     };
-    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out)
+    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
     };
-    auto update = [](C::mip_interface* device, C::timeout_type wait_time)
+    auto update = [](C::mip_interface* device, C::mip_timeout wait_time)
     {
         return (static_cast<T*>(mip_interface_user_pointer(device))->*Update)(wait_time);
     };
@@ -514,7 +543,7 @@ void DeviceInterface::setCallbacks(T* object)
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, const PacketRef& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -531,12 +560,12 @@ void DeviceInterface::setCallbacks(T* object)
 ///
 ///@endcode
 ///
-template<void (*Callback)(void*, const Packet&, Timestamp)>
+template<void (*Callback)(void*, const PacketRef&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
     auto callback = [](void* context, const C::mip_packet* packet, Timestamp timestamp)
     {
-        Callback(context, Packet(*packet), timestamp);
+        Callback(context, PacketRef(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, userData);
@@ -558,7 +587,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///@code{.cpp}
 /// class MySystem
 /// {
-///   void handlePacket(const Packet& packet, Timestamp timestamp)
+///   void handlePacket(const PacketRef& packet, Timestamp timestamp)
 ///   {
 ///   }
 ///
@@ -573,13 +602,13 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 /// };
 ///@endcode
 ///
-template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
+template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
     auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(Packet(*packet), timestamp);
+        (obj->*Callback)(PacketRef(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
@@ -688,7 +717,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, const PacketRef& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -747,7 +776,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, uint8_t descriptorSet, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, uint8_t descriptorSet, const PacketRef& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -926,8 +955,7 @@ void DeviceInterface::registerExtractor(C::mip_dispatch_handler& handler, DataFi
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd pending;
     C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
@@ -945,11 +973,10 @@ CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout add
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, buffer, FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
@@ -957,15 +984,14 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
 
-    return extract(response, buffer, responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
+    return extract(response, packet.buffer(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
 }
 
 
 template<class Cmd>
 bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
 
@@ -975,8 +1001,7 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
 //template<class Cmd>
 //bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
 //{
-//    uint8_t buffer[PACKET_LENGTH_MAX];
-//    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+//    PacketBuf packet(cmd);
 //
 //    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);
 //

@@ -3,8 +3,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../mip_types.h"
 #include "../mip_field.h"
+#include "../mip_packet.h"
+#include "../mip_types.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup mip_serialization  MIP Serialization
@@ -22,6 +23,7 @@ namespace mip {
 namespace C {
 extern "C" {
 #endif // __cplusplus
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,11 +51,13 @@ typedef struct mip_serializer
 
 void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
+void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
+void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packet* packet);
 void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field* field);
 
-size_t          mip_serializer_capacity(const mip_serializer* serializer);
-size_t          mip_serializer_length(const mip_serializer* serializer);
-remaining_count mip_serializer_remaining(const mip_serializer* serializer);
+size_t mip_serializer_capacity(const mip_serializer* serializer);
+size_t mip_serializer_length(const mip_serializer* serializer);
+int    mip_serializer_remaining(const mip_serializer* serializer);
 
 bool mip_serializer_is_ok(const mip_serializer* serializer);
 bool mip_serializer_is_complete(const mip_serializer* serializer);
@@ -102,6 +106,10 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 } // namespace C
 
 ////////////////////////////////////////////////////////////////////////////////
+///@addtogroup mip_cpp
+///@{
+
+////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_serialization_cpp
 ///
 ///@brief (De)serialization in C++.
@@ -144,12 +152,13 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 class Serializer : public C::mip_serializer
 {
 public:
+    Serializer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::mip_serializer_init_new_field(this, &packet, newFieldDescriptor); }
     Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
     Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::mip_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
 
     size_t capacity() const { return C::mip_serializer_capacity(this); }
     size_t length() const { return C::mip_serializer_length(this); }
-    RemainingCount remaining() const { return C::mip_serializer_remaining(this); }
+    int remaining() const { return C::mip_serializer_remaining(this); }
 
     bool isOk() const { return C::mip_serializer_is_ok(this); }
     bool isComplete() const { return C::mip_serializer_is_complete(this); }
@@ -194,13 +203,14 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 ///@param value      Value to insert.
 ///@param buffer     Buffer to udpate with the value.
 ///@param bufferSize Size of the buffer.
+///@param offset     Starting offset into the buffer.
 ///
 ///@returns true if sufficient space was available, false otherwise.
 ///
 template<typename T>
-bool insert(const T& value, uint8_t* buffer, size_t bufferSize)
+bool insert(const T& value, uint8_t* buffer, size_t bufferSize, size_t offset=0)
 {
-    Serializer serializer(buffer, bufferSize);
+    Serializer serializer(buffer, bufferSize, offset);
     insert(serializer, value);
     return !!serializer;
 }

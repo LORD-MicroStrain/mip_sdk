@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -79,7 +80,7 @@ void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializ
 struct mip_gnss_receiver_info_response
 {
     uint8_t num_receivers; ///< Number of physical receivers in the device
-    mip_gnss_receiver_info_command_info* receiver_info;
+    mip_gnss_receiver_info_command_info receiver_info[5];
     
 };
 typedef struct mip_gnss_receiver_info_response mip_gnss_receiver_info_response;
@@ -87,6 +88,7 @@ void insert_mip_gnss_receiver_info_response(struct mip_serializer* serializer, c
 void extract_mip_gnss_receiver_info_response(struct mip_serializer* serializer, mip_gnss_receiver_info_response* self);
 
 mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, mip_gnss_receiver_info_command_info* receiver_info_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -128,6 +130,7 @@ mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, 
 mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +166,7 @@ mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* devi
 mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device);
+
 ///@}
 ///
 

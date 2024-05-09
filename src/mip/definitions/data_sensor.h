@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -79,13 +80,14 @@ enum
 
 struct mip_sensor_raw_accel_data
 {
-    float raw_accel[3]; ///< Native sensor counts
+    mip_vector3f raw_accel; ///< Native sensor counts
     
 };
 typedef struct mip_sensor_raw_accel_data mip_sensor_raw_accel_data;
 void insert_mip_sensor_raw_accel_data(struct mip_serializer* serializer, const mip_sensor_raw_accel_data* self);
 void extract_mip_sensor_raw_accel_data(struct mip_serializer* serializer, mip_sensor_raw_accel_data* self);
 bool extract_mip_sensor_raw_accel_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -98,13 +100,14 @@ bool extract_mip_sensor_raw_accel_data_from_field(const struct mip_field* field,
 
 struct mip_sensor_raw_gyro_data
 {
-    float raw_gyro[3]; ///< Native sensor counts
+    mip_vector3f raw_gyro; ///< Native sensor counts
     
 };
 typedef struct mip_sensor_raw_gyro_data mip_sensor_raw_gyro_data;
 void insert_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, const mip_sensor_raw_gyro_data* self);
 void extract_mip_sensor_raw_gyro_data(struct mip_serializer* serializer, mip_sensor_raw_gyro_data* self);
 bool extract_mip_sensor_raw_gyro_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -117,13 +120,14 @@ bool extract_mip_sensor_raw_gyro_data_from_field(const struct mip_field* field, 
 
 struct mip_sensor_raw_mag_data
 {
-    float raw_mag[3]; ///< Native sensor counts
+    mip_vector3f raw_mag; ///< Native sensor counts
     
 };
 typedef struct mip_sensor_raw_mag_data mip_sensor_raw_mag_data;
 void insert_mip_sensor_raw_mag_data(struct mip_serializer* serializer, const mip_sensor_raw_mag_data* self);
 void extract_mip_sensor_raw_mag_data(struct mip_serializer* serializer, mip_sensor_raw_mag_data* self);
 bool extract_mip_sensor_raw_mag_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -144,6 +148,7 @@ void insert_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, cons
 void extract_mip_sensor_raw_pressure_data(struct mip_serializer* serializer, mip_sensor_raw_pressure_data* self);
 bool extract_mip_sensor_raw_pressure_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -155,13 +160,14 @@ bool extract_mip_sensor_raw_pressure_data_from_field(const struct mip_field* fie
 
 struct mip_sensor_scaled_accel_data
 {
-    float scaled_accel[3]; ///< (x, y, z)[g]
+    mip_vector3f scaled_accel; ///< (x, y, z)[g]
     
 };
 typedef struct mip_sensor_scaled_accel_data mip_sensor_scaled_accel_data;
 void insert_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, const mip_sensor_scaled_accel_data* self);
 void extract_mip_sensor_scaled_accel_data(struct mip_serializer* serializer, mip_sensor_scaled_accel_data* self);
 bool extract_mip_sensor_scaled_accel_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -174,13 +180,14 @@ bool extract_mip_sensor_scaled_accel_data_from_field(const struct mip_field* fie
 
 struct mip_sensor_scaled_gyro_data
 {
-    float scaled_gyro[3]; ///< (x, y, z) [radians/second]
+    mip_vector3f scaled_gyro; ///< (x, y, z) [radians/second]
     
 };
 typedef struct mip_sensor_scaled_gyro_data mip_sensor_scaled_gyro_data;
 void insert_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, const mip_sensor_scaled_gyro_data* self);
 void extract_mip_sensor_scaled_gyro_data(struct mip_serializer* serializer, mip_sensor_scaled_gyro_data* self);
 bool extract_mip_sensor_scaled_gyro_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -193,13 +200,14 @@ bool extract_mip_sensor_scaled_gyro_data_from_field(const struct mip_field* fiel
 
 struct mip_sensor_scaled_mag_data
 {
-    float scaled_mag[3]; ///< (x, y, z) [Gauss]
+    mip_vector3f scaled_mag; ///< (x, y, z) [Gauss]
     
 };
 typedef struct mip_sensor_scaled_mag_data mip_sensor_scaled_mag_data;
 void insert_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, const mip_sensor_scaled_mag_data* self);
 void extract_mip_sensor_scaled_mag_data(struct mip_serializer* serializer, mip_sensor_scaled_mag_data* self);
 bool extract_mip_sensor_scaled_mag_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -219,6 +227,7 @@ void insert_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, c
 void extract_mip_sensor_scaled_pressure_data(struct mip_serializer* serializer, mip_sensor_scaled_pressure_data* self);
 bool extract_mip_sensor_scaled_pressure_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -230,13 +239,14 @@ bool extract_mip_sensor_scaled_pressure_data_from_field(const struct mip_field* 
 
 struct mip_sensor_delta_theta_data
 {
-    float delta_theta[3]; ///< (x, y, z) [radians]
+    mip_vector3f delta_theta; ///< (x, y, z) [radians]
     
 };
 typedef struct mip_sensor_delta_theta_data mip_sensor_delta_theta_data;
 void insert_mip_sensor_delta_theta_data(struct mip_serializer* serializer, const mip_sensor_delta_theta_data* self);
 void extract_mip_sensor_delta_theta_data(struct mip_serializer* serializer, mip_sensor_delta_theta_data* self);
 bool extract_mip_sensor_delta_theta_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -249,13 +259,14 @@ bool extract_mip_sensor_delta_theta_data_from_field(const struct mip_field* fiel
 
 struct mip_sensor_delta_velocity_data
 {
-    float delta_velocity[3]; ///< (x, y, z) [g*sec]
+    mip_vector3f delta_velocity; ///< (x, y, z) [g*sec]
     
 };
 typedef struct mip_sensor_delta_velocity_data mip_sensor_delta_velocity_data;
 void insert_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, const mip_sensor_delta_velocity_data* self);
 void extract_mip_sensor_delta_velocity_data(struct mip_serializer* serializer, mip_sensor_delta_velocity_data* self);
 bool extract_mip_sensor_delta_velocity_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -277,13 +288,14 @@ bool extract_mip_sensor_delta_velocity_data_from_field(const struct mip_field* f
 
 struct mip_sensor_comp_orientation_matrix_data
 {
-    float m[9]; ///< Matrix elements in row-major order.
+    mip_matrix3f m; ///< Matrix elements in row-major order.
     
 };
 typedef struct mip_sensor_comp_orientation_matrix_data mip_sensor_comp_orientation_matrix_data;
 void insert_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* serializer, const mip_sensor_comp_orientation_matrix_data* self);
 void extract_mip_sensor_comp_orientation_matrix_data(struct mip_serializer* serializer, mip_sensor_comp_orientation_matrix_data* self);
 bool extract_mip_sensor_comp_orientation_matrix_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -303,13 +315,14 @@ bool extract_mip_sensor_comp_orientation_matrix_data_from_field(const struct mip
 
 struct mip_sensor_comp_quaternion_data
 {
-    float q[4]; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
+    mip_quatf q; ///< Quaternion elements EQSTART q = (q_w, q_x, q_y, q_z) EQEND
     
 };
 typedef struct mip_sensor_comp_quaternion_data mip_sensor_comp_quaternion_data;
 void insert_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, const mip_sensor_comp_quaternion_data* self);
 void extract_mip_sensor_comp_quaternion_data(struct mip_serializer* serializer, mip_sensor_comp_quaternion_data* self);
 bool extract_mip_sensor_comp_quaternion_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -332,6 +345,7 @@ void insert_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer,
 void extract_mip_sensor_comp_euler_angles_data(struct mip_serializer* serializer, mip_sensor_comp_euler_angles_data* self);
 bool extract_mip_sensor_comp_euler_angles_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -342,13 +356,14 @@ bool extract_mip_sensor_comp_euler_angles_data_from_field(const struct mip_field
 
 struct mip_sensor_comp_orientation_update_matrix_data
 {
-    float m[9];
+    mip_matrix3f m;
     
 };
 typedef struct mip_sensor_comp_orientation_update_matrix_data mip_sensor_comp_orientation_update_matrix_data;
 void insert_mip_sensor_comp_orientation_update_matrix_data(struct mip_serializer* serializer, const mip_sensor_comp_orientation_update_matrix_data* self);
 void extract_mip_sensor_comp_orientation_update_matrix_data(struct mip_serializer* serializer, mip_sensor_comp_orientation_update_matrix_data* self);
 bool extract_mip_sensor_comp_orientation_update_matrix_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -368,6 +383,7 @@ void insert_mip_sensor_orientation_raw_temp_data(struct mip_serializer* serializ
 void extract_mip_sensor_orientation_raw_temp_data(struct mip_serializer* serializer, mip_sensor_orientation_raw_temp_data* self);
 bool extract_mip_sensor_orientation_raw_temp_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -385,6 +401,7 @@ typedef struct mip_sensor_internal_timestamp_data mip_sensor_internal_timestamp_
 void insert_mip_sensor_internal_timestamp_data(struct mip_serializer* serializer, const mip_sensor_internal_timestamp_data* self);
 void extract_mip_sensor_internal_timestamp_data(struct mip_serializer* serializer, mip_sensor_internal_timestamp_data* self);
 bool extract_mip_sensor_internal_timestamp_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -404,6 +421,7 @@ typedef struct mip_sensor_pps_timestamp_data mip_sensor_pps_timestamp_data;
 void insert_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, const mip_sensor_pps_timestamp_data* self);
 void extract_mip_sensor_pps_timestamp_data(struct mip_serializer* serializer, mip_sensor_pps_timestamp_data* self);
 bool extract_mip_sensor_pps_timestamp_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -426,6 +444,7 @@ static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_INITIALIZED  = 0x0004; ///<  True if the time has ever been set.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x0008; ///<  True if the time of week is valid.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x0010; ///<  True if the week number is valid.
+static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_ALL               = 0x001F;
 
 struct mip_sensor_gps_timestamp_data
 {
@@ -441,6 +460,7 @@ bool extract_mip_sensor_gps_timestamp_data_from_field(const struct mip_field* fi
 
 void insert_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self);
 void extract_mip_sensor_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self);
+
 
 ///@}
 ///
@@ -466,6 +486,7 @@ void insert_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, c
 void extract_mip_sensor_temperature_abs_data(struct mip_serializer* serializer, mip_sensor_temperature_abs_data* self);
 bool extract_mip_sensor_temperature_abs_data_from_field(const struct mip_field* field, void* ptr);
 
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -482,13 +503,14 @@ bool extract_mip_sensor_temperature_abs_data_from_field(const struct mip_field* 
 
 struct mip_sensor_up_vector_data
 {
-    float up[3]; ///< [Gs]
+    mip_vector3f up; ///< [Gs]
     
 };
 typedef struct mip_sensor_up_vector_data mip_sensor_up_vector_data;
 void insert_mip_sensor_up_vector_data(struct mip_serializer* serializer, const mip_sensor_up_vector_data* self);
 void extract_mip_sensor_up_vector_data(struct mip_serializer* serializer, mip_sensor_up_vector_data* self);
 bool extract_mip_sensor_up_vector_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -503,13 +525,14 @@ bool extract_mip_sensor_up_vector_data_from_field(const struct mip_field* field,
 
 struct mip_sensor_north_vector_data
 {
-    float north[3]; ///< [Gauss]
+    mip_vector3f north; ///< [Gauss]
     
 };
 typedef struct mip_sensor_north_vector_data mip_sensor_north_vector_data;
 void insert_mip_sensor_north_vector_data(struct mip_serializer* serializer, const mip_sensor_north_vector_data* self);
 void extract_mip_sensor_north_vector_data(struct mip_serializer* serializer, mip_sensor_north_vector_data* self);
 bool extract_mip_sensor_north_vector_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///
@@ -530,6 +553,7 @@ static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Y   = 0x0200; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x0400; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000; ///<  
+static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ALL     = 0x1777;
 
 struct mip_sensor_overrange_status_data
 {
@@ -543,6 +567,7 @@ bool extract_mip_sensor_overrange_status_data_from_field(const struct mip_field*
 
 void insert_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, const mip_sensor_overrange_status_data_status self);
 void extract_mip_sensor_overrange_status_data_status(struct mip_serializer* serializer, mip_sensor_overrange_status_data_status* self);
+
 
 ///@}
 ///
@@ -562,6 +587,7 @@ typedef struct mip_sensor_odometer_data_data mip_sensor_odometer_data_data;
 void insert_mip_sensor_odometer_data_data(struct mip_serializer* serializer, const mip_sensor_odometer_data_data* self);
 void extract_mip_sensor_odometer_data_data(struct mip_serializer* serializer, mip_sensor_odometer_data_data* self);
 bool extract_mip_sensor_odometer_data_data_from_field(const struct mip_field* field, void* ptr);
+
 
 ///@}
 ///

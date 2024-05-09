@@ -17,7 +17,7 @@ def checkoutRepo() {
     branches: [
         [name: 'refs/heads/' + BRANCH_NAME_REAL]
     ],
-    userRemoteConfigs: [[credentialsId: 'ffc94480-3383-4390-82e6-af2fb5e6c76d', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
+    userRemoteConfigs: [[credentialsId: 'Github_User_And_Token', url: 'https://github.com/LORD-MicroStrain/libmip.git']],
     extensions: [
     ]
   ])
@@ -39,6 +39,7 @@ pipeline {
               cd build_Win32
               cmake .. `
                 -A "Win32" `
+                -T "v142" `
                 -DBUILD_DOCUMENTATION=ON `
                 -DBUILD_PACKAGE=ON
               cmake --build . -j
@@ -58,6 +59,7 @@ pipeline {
               cd build_x64
               cmake .. `
                 -A "x64" `
+                -T "v142" `
                 -DBUILD_PACKAGE=ON
               cmake --build . -j
               cmake --build . --target package
@@ -70,7 +72,6 @@ pipeline {
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
-            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os ubuntu --arch amd64"
             archiveArtifacts artifacts: 'build_ubuntu_amd64/mipsdk_*'
           }
@@ -80,11 +81,28 @@ pipeline {
           options { skipDefaultCheckout() }
           steps {
             checkoutRepo()
-            sh "cp /etc/pki/ca-trust/source/anchors/ZScaler.crt ./.devcontainer/extra_cas/"
             sh "./.devcontainer/docker_build.sh --os centos --arch amd64"
             archiveArtifacts artifacts: 'build_centos_amd64/mipsdk_*'
           }
         }
+        // stage('Ubuntu arm64') {
+        //   agent { label 'linux-arm64' }
+        //   options { skipDefaultCheckout() }
+        //   steps {
+        //     checkoutRepo()
+        //     sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm64v8"
+        //     archiveArtifacts artifacts: 'build_ubuntu_arm64v8/mipsdk_*'
+        //   }
+        // }
+        // stage('Ubuntu arm32') {
+        //   agent { label 'linux-arm64' }
+        //   options { skipDefaultCheckout() }
+        //   steps {
+        //     checkoutRepo()
+        //     sh "./.devcontainer/docker_build.sh --os ubuntu --arch arm32v7"
+        //     archiveArtifacts artifacts: 'build_ubuntu_arm32v7/mipsdk_*'
+        //   }
+        // }
       }
     }
   }
@@ -93,36 +111,40 @@ pipeline {
       script {
         if (BRANCH_NAME && BRANCH_NAME == 'develop') {
           node("linux-amd64") {
-            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
-              sh '''
-              # Release to github
-              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
-              ./scripts/release.sh \
-                --artifacts "$(find "${archive_dir}" -type f)" \
-                --target "${BRANCH_NAME}" \
-                --release "latest" \
-                --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
-                --generate-notes
-              '''
+            dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
+                sh '''
+                  # Release to github
+                  "${WORKSPACE}/scripts/release.sh" \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "latest" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)" \
+                    --generate-notes
+                '''
+              }
             }
           }
         } else if (BRANCH_NAME && BRANCH_NAME == 'master') {
           node("linux-amd64") {
-            withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
-              sh '''
-              # Release to the latest version if the master commit matches up with the commit of that version
-              archive_dir="${WORKSPACE}/../builds/${BUILD_NUMBER}/archive/"
-              if git describe --exact-match --tags HEAD &> /dev/null; then
-                # Publish a release
-                ./scripts/release.sh \
-                  --artifacts "$(find "${archive_dir}" -type f)" \
-                  --target "${BRANCH_NAME}" \
-                  --release "$(git describe --exact-match --tags HEAD)" \
-                  --docs-zip "$(find "${archive_dir}" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
-              else
-                echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
-              fi
-              '''
+            dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
+              copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
+              withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+                sh '''
+                # Release to the latest version if the master commit matches up with the commit of that version
+                if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
+                  # Publish a release
+                  ./scripts/release.sh \
+                    --artifacts "$(find "$(pwd)" -type f)" \
+                    --target "${BRANCH_NAME}" \
+                    --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
+                    --docs-zip "$(find "$(pwd)" -type f -name "mipsdk_*_Documentation.zip" | sort | uniq)"
+                else
+                  echo "Not releasing from ${BRANCH_NAME} since the current commit does not match the latest released version commit"
+                fi
+                '''
+              }
             }
           }
         }

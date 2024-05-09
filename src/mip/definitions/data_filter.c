@@ -1687,6 +1687,70 @@ void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(
     *self = tmp;
 }
 
+void insert_mip_filter_aiding_frame_config_error_data(mip_serializer* serializer, const mip_filter_aiding_frame_config_error_data* self)
+{
+    insert_u8(serializer, self->frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->translation[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        insert_float(serializer, self->attitude[i]);
+    
+}
+void extract_mip_filter_aiding_frame_config_error_data(mip_serializer* serializer, mip_filter_aiding_frame_config_error_data* self)
+{
+    extract_u8(serializer, &self->frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->translation[i]);
+    
+    for(unsigned int i=0; i < 4; i++)
+        extract_float(serializer, &self->attitude[i]);
+    
+}
+bool extract_mip_filter_aiding_frame_config_error_data_from_field(const mip_field* field, void* ptr)
+{
+    assert(ptr);
+    mip_filter_aiding_frame_config_error_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_filter_aiding_frame_config_error_data(&serializer, self);
+    return mip_serializer_is_complete(&serializer);
+}
+
+void insert_mip_filter_aiding_frame_config_error_uncertainty_data(mip_serializer* serializer, const mip_filter_aiding_frame_config_error_uncertainty_data* self)
+{
+    insert_u8(serializer, self->frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->translation_unc[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        insert_float(serializer, self->attitude_unc[i]);
+    
+}
+void extract_mip_filter_aiding_frame_config_error_uncertainty_data(mip_serializer* serializer, mip_filter_aiding_frame_config_error_uncertainty_data* self)
+{
+    extract_u8(serializer, &self->frame_id);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->translation_unc[i]);
+    
+    for(unsigned int i=0; i < 3; i++)
+        extract_float(serializer, &self->attitude_unc[i]);
+    
+}
+bool extract_mip_filter_aiding_frame_config_error_uncertainty_data_from_field(const mip_field* field, void* ptr)
+{
+    assert(ptr);
+    mip_filter_aiding_frame_config_error_uncertainty_data* self = ptr;
+    struct mip_serializer serializer;
+    mip_serializer_init_from_field(&serializer, field);
+    extract_mip_filter_aiding_frame_config_error_uncertainty_data(&serializer, self);
+    return mip_serializer_is_complete(&serializer);
+}
+
 
 #ifdef __cplusplus
 } // namespace C

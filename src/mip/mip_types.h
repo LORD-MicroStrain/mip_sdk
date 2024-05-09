@@ -13,7 +13,7 @@ extern "C" {
 
 
 // Used like a signed version of size_t
-typedef int_least16_t remaining_count;
+typedef int mip_remaining_count;
 
 
 ///@brief Type used for packet timestamps and timeouts.
@@ -26,13 +26,13 @@ typedef int_least16_t remaining_count;
 /// this requirement may result in false timeouts or delays in getting parsed packets.
 ///
 #ifdef MIP_TIMESTAMP_TYPE
-    typedef MIP_TIMESTAMP_TYPE timestamp_type;
-    static_assert( sizeof(timestamp_type) >= 8 || timestamp_type(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
+    typedef MIP_TIMESTAMP_TYPE mip_timestamp;
+    static_assert( sizeof(mip_timestamp) >= 8 || mip_timestamp(-1) > 0, "MIP_TIMESTAMP_TYPE must be unsigned unless 64 bits.");
 #else
-    typedef uint64_t timestamp_type;
+    typedef uint64_t mip_timestamp;
 #endif
 
-typedef timestamp_type timeout_type;
+typedef mip_timestamp mip_timeout;
 
 
 #ifdef MIP_ENABLE_DIAGNOSTICS
@@ -57,9 +57,9 @@ typedef timestamp_type timeout_type;
 } // extern "C"
 } // namespace C
 
-using RemainingCount = C::remaining_count;
-using Timestamp      = C::timestamp_type;
-using Timeout        = C::timeout_type;
+using RemainingCount = C::mip_remaining_count;
+using Timestamp      = C::mip_timestamp;
+using Timeout        = C::mip_timeout;
 
 } // namespace mip
 
