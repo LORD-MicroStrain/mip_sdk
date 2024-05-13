@@ -298,7 +298,7 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode (FULL_NAV).\n");
 
-    auto current_state = std::string{""};
+    std::string current_state = std::string{""};
     while(running) {
         device->update();
         displayFilterState(filter_status.filter_state, current_state);
@@ -367,7 +367,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
-    std::cout << "Press ENTER to exit..." << std::endl;
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 
