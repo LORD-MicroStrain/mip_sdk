@@ -1,9 +1,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// GX5_45_Example.cpp
+// CX5_GX5_45_Example.cpp
 //
-// C++ Example set-up program for the GX5-45
+// C++ Example set-up program for the CX5-45 and GX5-45
 //
 // This example shows a typical setup for the GX5-45 sensor in a wheeled-vehicle application using using C++.
 // It is not an exhaustive example of all GX5-45 settings.
@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
