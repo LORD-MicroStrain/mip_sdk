@@ -28,8 +28,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.hpp>
+
 #include <array>
-#include "../example_utils.hpp"
+
+#include "example_utils.hpp"
 
 using namespace mip;
 
@@ -294,12 +296,12 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
+    printf("Sensor is configured... waiting for filter to enter Full Navigation mode (FULL_NAV).\n");
 
-    while(running)
-    {
+    std::string current_state = std::string{""};
+    while(running) {
         device->update();
-
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
@@ -365,6 +367,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 

@@ -34,6 +34,8 @@
 #include <errno.h>
 #include <time.h>
 
+#include "example_utils.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -332,10 +334,12 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter Full Navigation mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);
-
+        displayFilterState(filter_status.filter_state, current_state, false);
 
         //Check GNSS fixes and alert the user when they become valid
         for(int i=0; i<2; i++)
@@ -457,4 +461,3 @@ bool should_exit()
   return false;
 
 }
-

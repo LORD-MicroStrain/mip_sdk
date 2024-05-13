@@ -29,11 +29,13 @@
 
 #include <mip/mip_all.h>
 #include <mip/utils/serial_port.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
 
+#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -306,6 +308,8 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter running mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);

@@ -28,8 +28,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.hpp>
+
 #include <array>
-#include "../example_utils.hpp"
+
+#include "example_utils.hpp"
 
 using namespace mip;
 
@@ -264,11 +266,13 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter running mode.\n");
+    printf("Sensor is configured... waiting for filter to enter running mode (GX5_RUN_SOLUTION_VALID).\n");
 
+    std::string current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state, true);
 
         //Check GNSS fixes and alert the user when they become valid
         if((gnss_fix_info_valid == false) && (gnss_fix_info.fix_type == data_gnss::FixInfo::FixType::FIX_3D) &&
@@ -329,6 +333,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 

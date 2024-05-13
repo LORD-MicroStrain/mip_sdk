@@ -28,7 +28,7 @@
 
 #include "mip/mip_all.hpp"
 #include <array>
-#include "../example_utils.hpp"
+#include "example_utils.hpp"
 
 using namespace mip;
 
@@ -211,11 +211,13 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to initialize...\n");
+    printf("Sensor is configured... waiting for filter to initialize (FULL_NAV)...\n");
 
+    std::string current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check for full nav filter state transition
         if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
@@ -335,6 +337,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 

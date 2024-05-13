@@ -34,6 +34,7 @@
 #include <errno.h>
 #include <time.h>
 
+#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -318,9 +319,12 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);
+        displayFilterState(filter_status.filter_state, current_state, false);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == MIP_FILTER_MODE_AHRS))
