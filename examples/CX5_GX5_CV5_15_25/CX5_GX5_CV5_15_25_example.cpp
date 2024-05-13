@@ -125,7 +125,7 @@ int main(int argc, const char* argv[])
     // Reset the timeout
     device->setBaseReplyTimeout(old_mip_sdk_timeout);
 
-    printf("Gyro bias captured with sampling time: %d, and gyro bias captured as: %f %f %f.\n", sampling_time, gyro_bias[0], gyro_bias[1], gyro_bias[3]);
+    printf("Gyro bias captured with sampling time: %d, and gyro bias captured as: %f %f %f.\n", sampling_time, gyro_bias[0], gyro_bias[1], gyro_bias[2]);
 
 
     //
