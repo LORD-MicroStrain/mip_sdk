@@ -14,11 +14,6 @@ void displayFilterState(const mip_filter_mode filter_state, char **current_state
         read_state = "FULL_NAV (4)";
     else
         read_state = "STARTUP (0)";
-   
-    // switch (filter_state)
-    // {
-    //     case MIP_FILTER_MODE_INIT:
-    // }
 
     if (strcmp(read_state, *current_state) != 0) 
     {
