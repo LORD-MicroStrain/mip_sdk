@@ -64,10 +64,15 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         target_compile_definitions(CV7_INS_Simple_Ublox_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")        
         target_include_directories(CV7_INS_Simple_Ublox_Example PUBLIC "${EXAMPLE_DIR}")
 
-        add_executable(GX5_45_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/GX5_45/GX5_45_example.cpp" ${DEVICE_SOURCES})
-        target_link_libraries(GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
-        target_compile_definitions(GX5_45_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
-        target_include_directories(GX5_45_Example PUBLIC "${EXAMPLE_DIR}")
+        add_executable(CX5_GX5_45_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(CX5_GX5_45_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(CX5_GX5_45_Example PUBLIC "${MIP_EXAMPLE_DEFS}")
+        target_include_directories(CX5_GX5_45_Example PUBLIC "${EXAMPLE_DIR}")
+
+        add_executable(CX5_GX5_CV5_15_25_Example "${EXAMPLE_SOURCES}" "${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.cpp" ${DEVICE_SOURCES})
+        target_link_libraries(CX5_GX5_CV5_15_25_Example mip "${SERIAL_LIB}" "${SOCKET_LIB}")
+        target_compile_definitions(CX5_GX5_CV5_15_25_Example PUBLIC "${SERIAL_DEFS}" "${TCP_DEFS}")
+        target_include_directories(CX5_GX5_CV5_15_25_Example PUBLIC "${EXAMPLE_DIR}")
 
     endif()
 
@@ -87,7 +92,12 @@ if(MIP_USE_SERIAL)
     target_link_libraries(CV7_ExampleC mip)
     target_include_directories(CV7_ExampleC PUBLIC "${EXAMPLE_DIR}")
 
-    add_executable(GX5_45_ExampleC "${EXAMPLE_DIR}/GX5_45/GX5_45_example.c" ${DEVICE_SOURCES})
-    target_link_libraries(GX5_45_ExampleC mip)
-    target_include_directories(GX5_45_ExampleC PUBLIC "${EXAMPLE_DIR}")
+    add_executable(CX5_GX5_45_ExampleC "${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.c" ${DEVICE_SOURCES})
+    target_link_libraries(CX5_GX5_45_ExampleC mip)
+    target_include_directories(CX5_GX5_45_ExampleC PUBLIC "${EXAMPLE_DIR}")
+
+    add_executable(CX5_GX5_CV5_15_25_ExampleC "${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.c" ${DEVICE_SOURCES})
+    target_link_libraries(CX5_GX5_CV5_15_25_ExampleC mip)
+    target_include_directories(CX5_GX5_CV5_15_25_ExampleC PUBLIC "${EXAMPLE_DIR}")
+
 endif()
