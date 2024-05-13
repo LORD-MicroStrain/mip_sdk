@@ -1,5 +1,7 @@
 #include "example_utils.h"
 
+#include <stdio.h>
+#include <string.h>
 
 void displayFilterState(const mip_filter_mode filter_state, char **current_state, bool isFiveSeries) 
 {
