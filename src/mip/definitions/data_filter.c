@@ -14,7 +14,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 
@@ -22,66 +22,66 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_filter_mode(struct mip_serializer* serializer, const mip_filter_mode self)
+void insert_mip_filter_mode(struct microstrain_serializer* serializer, const mip_filter_mode self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_mode(struct mip_serializer* serializer, mip_filter_mode* self)
+void extract_mip_filter_mode(struct microstrain_serializer* serializer, mip_filter_mode* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_dynamics_mode(struct mip_serializer* serializer, const mip_filter_dynamics_mode self)
+void insert_mip_filter_dynamics_mode(struct microstrain_serializer* serializer, const mip_filter_dynamics_mode self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_dynamics_mode(struct mip_serializer* serializer, mip_filter_dynamics_mode* self)
+void extract_mip_filter_dynamics_mode(struct microstrain_serializer* serializer, mip_filter_dynamics_mode* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip_filter_status_flags self)
+void insert_mip_filter_status_flags(struct microstrain_serializer* serializer, const mip_filter_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self)
+void extract_mip_filter_status_flags(struct microstrain_serializer* serializer, mip_filter_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self)
+void insert_mip_filter_aiding_measurement_type(struct microstrain_serializer* serializer, const mip_filter_aiding_measurement_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self)
+void extract_mip_filter_aiding_measurement_type(struct microstrain_serializer* serializer, mip_filter_aiding_measurement_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_measurement_indicator(struct mip_serializer* serializer, const mip_filter_measurement_indicator self)
+void insert_mip_filter_measurement_indicator(struct microstrain_serializer* serializer, const mip_filter_measurement_indicator self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_measurement_indicator(struct mip_serializer* serializer, mip_filter_measurement_indicator* self)
+void extract_mip_filter_measurement_indicator(struct microstrain_serializer* serializer, mip_filter_measurement_indicator* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_aid_status_flags(struct mip_serializer* serializer, const mip_gnss_aid_status_flags self)
+void insert_mip_gnss_aid_status_flags(struct microstrain_serializer* serializer, const mip_gnss_aid_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, mip_gnss_aid_status_flags* self)
+void extract_mip_gnss_aid_status_flags(struct microstrain_serializer* serializer, mip_gnss_aid_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -93,7 +93,7 @@ void extract_mip_gnss_aid_status_flags(struct mip_serializer* serializer, mip_gn
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_filter_position_llh_data(mip_serializer* serializer, const mip_filter_position_llh_data* self)
+void insert_mip_filter_position_llh_data(microstrain_serializer* serializer, const mip_filter_position_llh_data* self)
 {
     microstrain_insert_double(serializer, self->latitude);
 
@@ -104,7 +104,7 @@ void insert_mip_filter_position_llh_data(mip_serializer* serializer, const mip_f
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_position_llh_data(mip_serializer* serializer, mip_filter_position_llh_data* self)
+void extract_mip_filter_position_llh_data(microstrain_serializer* serializer, mip_filter_position_llh_data* self)
 {
     microstrain_extract_double(serializer, &self->latitude);
 
@@ -119,13 +119,13 @@ bool extract_mip_filter_position_llh_data_from_field(const mip_field* field, voi
 {
     assert(ptr);
     mip_filter_position_llh_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_position_llh_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_velocity_ned_data(mip_serializer* serializer, const mip_filter_velocity_ned_data* self)
+void insert_mip_filter_velocity_ned_data(microstrain_serializer* serializer, const mip_filter_velocity_ned_data* self)
 {
     microstrain_insert_float(serializer, self->north);
 
@@ -136,7 +136,7 @@ void insert_mip_filter_velocity_ned_data(mip_serializer* serializer, const mip_f
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_velocity_ned_data(mip_serializer* serializer, mip_filter_velocity_ned_data* self)
+void extract_mip_filter_velocity_ned_data(microstrain_serializer* serializer, mip_filter_velocity_ned_data* self)
 {
     microstrain_extract_float(serializer, &self->north);
 
@@ -151,13 +151,13 @@ bool extract_mip_filter_velocity_ned_data_from_field(const mip_field* field, voi
 {
     assert(ptr);
     mip_filter_velocity_ned_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_velocity_ned_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_attitude_quaternion_data(mip_serializer* serializer, const mip_filter_attitude_quaternion_data* self)
+void insert_mip_filter_attitude_quaternion_data(microstrain_serializer* serializer, const mip_filter_attitude_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         microstrain_insert_float(serializer, self->q[i]);
@@ -165,7 +165,7 @@ void insert_mip_filter_attitude_quaternion_data(mip_serializer* serializer, cons
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_attitude_quaternion_data(mip_serializer* serializer, mip_filter_attitude_quaternion_data* self)
+void extract_mip_filter_attitude_quaternion_data(microstrain_serializer* serializer, mip_filter_attitude_quaternion_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         microstrain_extract_float(serializer, &self->q[i]);
@@ -177,13 +177,13 @@ bool extract_mip_filter_attitude_quaternion_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_attitude_quaternion_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_attitude_quaternion_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_attitude_dcm_data(mip_serializer* serializer, const mip_filter_attitude_dcm_data* self)
+void insert_mip_filter_attitude_dcm_data(microstrain_serializer* serializer, const mip_filter_attitude_dcm_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_insert_float(serializer, self->dcm[i]);
@@ -191,7 +191,7 @@ void insert_mip_filter_attitude_dcm_data(mip_serializer* serializer, const mip_f
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_attitude_dcm_data(mip_serializer* serializer, mip_filter_attitude_dcm_data* self)
+void extract_mip_filter_attitude_dcm_data(microstrain_serializer* serializer, mip_filter_attitude_dcm_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_extract_float(serializer, &self->dcm[i]);
@@ -203,13 +203,13 @@ bool extract_mip_filter_attitude_dcm_data_from_field(const mip_field* field, voi
 {
     assert(ptr);
     mip_filter_attitude_dcm_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_attitude_dcm_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_euler_angles_data(mip_serializer* serializer, const mip_filter_euler_angles_data* self)
+void insert_mip_filter_euler_angles_data(microstrain_serializer* serializer, const mip_filter_euler_angles_data* self)
 {
     microstrain_insert_float(serializer, self->roll);
 
@@ -220,7 +220,7 @@ void insert_mip_filter_euler_angles_data(mip_serializer* serializer, const mip_f
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_euler_angles_data(mip_serializer* serializer, mip_filter_euler_angles_data* self)
+void extract_mip_filter_euler_angles_data(microstrain_serializer* serializer, mip_filter_euler_angles_data* self)
 {
     microstrain_extract_float(serializer, &self->roll);
 
@@ -235,13 +235,13 @@ bool extract_mip_filter_euler_angles_data_from_field(const mip_field* field, voi
 {
     assert(ptr);
     mip_filter_euler_angles_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_euler_angles_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gyro_bias_data(mip_serializer* serializer, const mip_filter_gyro_bias_data* self)
+void insert_mip_filter_gyro_bias_data(microstrain_serializer* serializer, const mip_filter_gyro_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias[i]);
@@ -249,7 +249,7 @@ void insert_mip_filter_gyro_bias_data(mip_serializer* serializer, const mip_filt
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gyro_bias_data(mip_serializer* serializer, mip_filter_gyro_bias_data* self)
+void extract_mip_filter_gyro_bias_data(microstrain_serializer* serializer, mip_filter_gyro_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias[i]);
@@ -261,13 +261,13 @@ bool extract_mip_filter_gyro_bias_data_from_field(const mip_field* field, void* 
 {
     assert(ptr);
     mip_filter_gyro_bias_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gyro_bias_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_accel_bias_data(mip_serializer* serializer, const mip_filter_accel_bias_data* self)
+void insert_mip_filter_accel_bias_data(microstrain_serializer* serializer, const mip_filter_accel_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias[i]);
@@ -275,7 +275,7 @@ void insert_mip_filter_accel_bias_data(mip_serializer* serializer, const mip_fil
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_accel_bias_data(mip_serializer* serializer, mip_filter_accel_bias_data* self)
+void extract_mip_filter_accel_bias_data(microstrain_serializer* serializer, mip_filter_accel_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias[i]);
@@ -287,13 +287,13 @@ bool extract_mip_filter_accel_bias_data_from_field(const mip_field* field, void*
 {
     assert(ptr);
     mip_filter_accel_bias_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_accel_bias_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_position_llh_uncertainty_data(mip_serializer* serializer, const mip_filter_position_llh_uncertainty_data* self)
+void insert_mip_filter_position_llh_uncertainty_data(microstrain_serializer* serializer, const mip_filter_position_llh_uncertainty_data* self)
 {
     microstrain_insert_float(serializer, self->north);
 
@@ -304,7 +304,7 @@ void insert_mip_filter_position_llh_uncertainty_data(mip_serializer* serializer,
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_position_llh_uncertainty_data(mip_serializer* serializer, mip_filter_position_llh_uncertainty_data* self)
+void extract_mip_filter_position_llh_uncertainty_data(microstrain_serializer* serializer, mip_filter_position_llh_uncertainty_data* self)
 {
     microstrain_extract_float(serializer, &self->north);
 
@@ -319,13 +319,13 @@ bool extract_mip_filter_position_llh_uncertainty_data_from_field(const mip_field
 {
     assert(ptr);
     mip_filter_position_llh_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_position_llh_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_velocity_ned_uncertainty_data(mip_serializer* serializer, const mip_filter_velocity_ned_uncertainty_data* self)
+void insert_mip_filter_velocity_ned_uncertainty_data(microstrain_serializer* serializer, const mip_filter_velocity_ned_uncertainty_data* self)
 {
     microstrain_insert_float(serializer, self->north);
 
@@ -336,7 +336,7 @@ void insert_mip_filter_velocity_ned_uncertainty_data(mip_serializer* serializer,
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_velocity_ned_uncertainty_data(mip_serializer* serializer, mip_filter_velocity_ned_uncertainty_data* self)
+void extract_mip_filter_velocity_ned_uncertainty_data(microstrain_serializer* serializer, mip_filter_velocity_ned_uncertainty_data* self)
 {
     microstrain_extract_float(serializer, &self->north);
 
@@ -351,13 +351,13 @@ bool extract_mip_filter_velocity_ned_uncertainty_data_from_field(const mip_field
 {
     assert(ptr);
     mip_filter_velocity_ned_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_velocity_ned_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_euler_angles_uncertainty_data(mip_serializer* serializer, const mip_filter_euler_angles_uncertainty_data* self)
+void insert_mip_filter_euler_angles_uncertainty_data(microstrain_serializer* serializer, const mip_filter_euler_angles_uncertainty_data* self)
 {
     microstrain_insert_float(serializer, self->roll);
 
@@ -368,7 +368,7 @@ void insert_mip_filter_euler_angles_uncertainty_data(mip_serializer* serializer,
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_euler_angles_uncertainty_data(mip_serializer* serializer, mip_filter_euler_angles_uncertainty_data* self)
+void extract_mip_filter_euler_angles_uncertainty_data(microstrain_serializer* serializer, mip_filter_euler_angles_uncertainty_data* self)
 {
     microstrain_extract_float(serializer, &self->roll);
 
@@ -383,13 +383,13 @@ bool extract_mip_filter_euler_angles_uncertainty_data_from_field(const mip_field
 {
     assert(ptr);
     mip_filter_euler_angles_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_euler_angles_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gyro_bias_uncertainty_data(mip_serializer* serializer, const mip_filter_gyro_bias_uncertainty_data* self)
+void insert_mip_filter_gyro_bias_uncertainty_data(microstrain_serializer* serializer, const mip_filter_gyro_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias_uncert[i]);
@@ -397,7 +397,7 @@ void insert_mip_filter_gyro_bias_uncertainty_data(mip_serializer* serializer, co
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gyro_bias_uncertainty_data(mip_serializer* serializer, mip_filter_gyro_bias_uncertainty_data* self)
+void extract_mip_filter_gyro_bias_uncertainty_data(microstrain_serializer* serializer, mip_filter_gyro_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias_uncert[i]);
@@ -409,13 +409,13 @@ bool extract_mip_filter_gyro_bias_uncertainty_data_from_field(const mip_field* f
 {
     assert(ptr);
     mip_filter_gyro_bias_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gyro_bias_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_accel_bias_uncertainty_data(mip_serializer* serializer, const mip_filter_accel_bias_uncertainty_data* self)
+void insert_mip_filter_accel_bias_uncertainty_data(microstrain_serializer* serializer, const mip_filter_accel_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias_uncert[i]);
@@ -423,7 +423,7 @@ void insert_mip_filter_accel_bias_uncertainty_data(mip_serializer* serializer, c
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_accel_bias_uncertainty_data(mip_serializer* serializer, mip_filter_accel_bias_uncertainty_data* self)
+void extract_mip_filter_accel_bias_uncertainty_data(microstrain_serializer* serializer, mip_filter_accel_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias_uncert[i]);
@@ -435,13 +435,13 @@ bool extract_mip_filter_accel_bias_uncertainty_data_from_field(const mip_field* 
 {
     assert(ptr);
     mip_filter_accel_bias_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_accel_bias_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_timestamp_data(mip_serializer* serializer, const mip_filter_timestamp_data* self)
+void insert_mip_filter_timestamp_data(microstrain_serializer* serializer, const mip_filter_timestamp_data* self)
 {
     microstrain_insert_double(serializer, self->tow);
 
@@ -450,7 +450,7 @@ void insert_mip_filter_timestamp_data(mip_serializer* serializer, const mip_filt
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_timestamp_data(mip_serializer* serializer, mip_filter_timestamp_data* self)
+void extract_mip_filter_timestamp_data(microstrain_serializer* serializer, mip_filter_timestamp_data* self)
 {
     microstrain_extract_double(serializer, &self->tow);
 
@@ -463,13 +463,13 @@ bool extract_mip_filter_timestamp_data_from_field(const mip_field* field, void* 
 {
     assert(ptr);
     mip_filter_timestamp_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_timestamp_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_status_data(mip_serializer* serializer, const mip_filter_status_data* self)
+void insert_mip_filter_status_data(microstrain_serializer* serializer, const mip_filter_status_data* self)
 {
     insert_mip_filter_mode(serializer, self->filter_state);
     
@@ -478,7 +478,7 @@ void insert_mip_filter_status_data(mip_serializer* serializer, const mip_filter_
     insert_mip_filter_status_flags(serializer, self->status_flags);
     
 }
-void extract_mip_filter_status_data(mip_serializer* serializer, mip_filter_status_data* self)
+void extract_mip_filter_status_data(microstrain_serializer* serializer, mip_filter_status_data* self)
 {
     extract_mip_filter_mode(serializer, &self->filter_state);
     
@@ -491,13 +491,13 @@ bool extract_mip_filter_status_data_from_field(const mip_field* field, void* ptr
 {
     assert(ptr);
     mip_filter_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_linear_accel_data(mip_serializer* serializer, const mip_filter_linear_accel_data* self)
+void insert_mip_filter_linear_accel_data(microstrain_serializer* serializer, const mip_filter_linear_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->accel[i]);
@@ -505,7 +505,7 @@ void insert_mip_filter_linear_accel_data(mip_serializer* serializer, const mip_f
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_linear_accel_data(mip_serializer* serializer, mip_filter_linear_accel_data* self)
+void extract_mip_filter_linear_accel_data(microstrain_serializer* serializer, mip_filter_linear_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->accel[i]);
@@ -517,13 +517,13 @@ bool extract_mip_filter_linear_accel_data_from_field(const mip_field* field, voi
 {
     assert(ptr);
     mip_filter_linear_accel_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_linear_accel_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gravity_vector_data(mip_serializer* serializer, const mip_filter_gravity_vector_data* self)
+void insert_mip_filter_gravity_vector_data(microstrain_serializer* serializer, const mip_filter_gravity_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->gravity[i]);
@@ -531,7 +531,7 @@ void insert_mip_filter_gravity_vector_data(mip_serializer* serializer, const mip
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gravity_vector_data(mip_serializer* serializer, mip_filter_gravity_vector_data* self)
+void extract_mip_filter_gravity_vector_data(microstrain_serializer* serializer, mip_filter_gravity_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->gravity[i]);
@@ -543,13 +543,13 @@ bool extract_mip_filter_gravity_vector_data_from_field(const mip_field* field, v
 {
     assert(ptr);
     mip_filter_gravity_vector_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gravity_vector_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_comp_accel_data(mip_serializer* serializer, const mip_filter_comp_accel_data* self)
+void insert_mip_filter_comp_accel_data(microstrain_serializer* serializer, const mip_filter_comp_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->accel[i]);
@@ -557,7 +557,7 @@ void insert_mip_filter_comp_accel_data(mip_serializer* serializer, const mip_fil
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_comp_accel_data(mip_serializer* serializer, mip_filter_comp_accel_data* self)
+void extract_mip_filter_comp_accel_data(microstrain_serializer* serializer, mip_filter_comp_accel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->accel[i]);
@@ -569,13 +569,13 @@ bool extract_mip_filter_comp_accel_data_from_field(const mip_field* field, void*
 {
     assert(ptr);
     mip_filter_comp_accel_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_comp_accel_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_comp_angular_rate_data(mip_serializer* serializer, const mip_filter_comp_angular_rate_data* self)
+void insert_mip_filter_comp_angular_rate_data(microstrain_serializer* serializer, const mip_filter_comp_angular_rate_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->gyro[i]);
@@ -583,7 +583,7 @@ void insert_mip_filter_comp_angular_rate_data(mip_serializer* serializer, const 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_comp_angular_rate_data(mip_serializer* serializer, mip_filter_comp_angular_rate_data* self)
+void extract_mip_filter_comp_angular_rate_data(microstrain_serializer* serializer, mip_filter_comp_angular_rate_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->gyro[i]);
@@ -595,13 +595,13 @@ bool extract_mip_filter_comp_angular_rate_data_from_field(const mip_field* field
 {
     assert(ptr);
     mip_filter_comp_angular_rate_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_comp_angular_rate_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_quaternion_attitude_uncertainty_data(mip_serializer* serializer, const mip_filter_quaternion_attitude_uncertainty_data* self)
+void insert_mip_filter_quaternion_attitude_uncertainty_data(microstrain_serializer* serializer, const mip_filter_quaternion_attitude_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         microstrain_insert_float(serializer, self->q[i]);
@@ -609,7 +609,7 @@ void insert_mip_filter_quaternion_attitude_uncertainty_data(mip_serializer* seri
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_quaternion_attitude_uncertainty_data(mip_serializer* serializer, mip_filter_quaternion_attitude_uncertainty_data* self)
+void extract_mip_filter_quaternion_attitude_uncertainty_data(microstrain_serializer* serializer, mip_filter_quaternion_attitude_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 4; i++)
         microstrain_extract_float(serializer, &self->q[i]);
@@ -621,20 +621,20 @@ bool extract_mip_filter_quaternion_attitude_uncertainty_data_from_field(const mi
 {
     assert(ptr);
     mip_filter_quaternion_attitude_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_quaternion_attitude_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_wgs84_gravity_mag_data(mip_serializer* serializer, const mip_filter_wgs84_gravity_mag_data* self)
+void insert_mip_filter_wgs84_gravity_mag_data(microstrain_serializer* serializer, const mip_filter_wgs84_gravity_mag_data* self)
 {
     microstrain_insert_float(serializer, self->magnitude);
 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_wgs84_gravity_mag_data(mip_serializer* serializer, mip_filter_wgs84_gravity_mag_data* self)
+void extract_mip_filter_wgs84_gravity_mag_data(microstrain_serializer* serializer, mip_filter_wgs84_gravity_mag_data* self)
 {
     microstrain_extract_float(serializer, &self->magnitude);
 
@@ -645,13 +645,13 @@ bool extract_mip_filter_wgs84_gravity_mag_data_from_field(const mip_field* field
 {
     assert(ptr);
     mip_filter_wgs84_gravity_mag_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_wgs84_gravity_mag_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_heading_update_state_data(mip_serializer* serializer, const mip_filter_heading_update_state_data* self)
+void insert_mip_filter_heading_update_state_data(microstrain_serializer* serializer, const mip_filter_heading_update_state_data* self)
 {
     microstrain_insert_float(serializer, self->heading);
 
@@ -662,7 +662,7 @@ void insert_mip_filter_heading_update_state_data(mip_serializer* serializer, con
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_heading_update_state_data(mip_serializer* serializer, mip_filter_heading_update_state_data* self)
+void extract_mip_filter_heading_update_state_data(microstrain_serializer* serializer, mip_filter_heading_update_state_data* self)
 {
     microstrain_extract_float(serializer, &self->heading);
 
@@ -677,24 +677,24 @@ bool extract_mip_filter_heading_update_state_data_from_field(const mip_field* fi
 {
     assert(ptr);
     mip_filter_heading_update_state_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_heading_update_state_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self)
+void insert_mip_filter_heading_update_state_data_heading_source(struct microstrain_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_heading_update_state_data_heading_source(struct mip_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self)
+void extract_mip_filter_heading_update_state_data_heading_source(struct microstrain_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_magnetic_model_data(mip_serializer* serializer, const mip_filter_magnetic_model_data* self)
+void insert_mip_filter_magnetic_model_data(microstrain_serializer* serializer, const mip_filter_magnetic_model_data* self)
 {
     microstrain_insert_float(serializer, self->intensity_north);
 
@@ -709,7 +709,7 @@ void insert_mip_filter_magnetic_model_data(mip_serializer* serializer, const mip
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetic_model_data(mip_serializer* serializer, mip_filter_magnetic_model_data* self)
+void extract_mip_filter_magnetic_model_data(microstrain_serializer* serializer, mip_filter_magnetic_model_data* self)
 {
     microstrain_extract_float(serializer, &self->intensity_north);
 
@@ -728,13 +728,13 @@ bool extract_mip_filter_magnetic_model_data_from_field(const mip_field* field, v
 {
     assert(ptr);
     mip_filter_magnetic_model_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetic_model_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_accel_scale_factor_data(mip_serializer* serializer, const mip_filter_accel_scale_factor_data* self)
+void insert_mip_filter_accel_scale_factor_data(microstrain_serializer* serializer, const mip_filter_accel_scale_factor_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->scale_factor[i]);
@@ -742,7 +742,7 @@ void insert_mip_filter_accel_scale_factor_data(mip_serializer* serializer, const
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_accel_scale_factor_data(mip_serializer* serializer, mip_filter_accel_scale_factor_data* self)
+void extract_mip_filter_accel_scale_factor_data(microstrain_serializer* serializer, mip_filter_accel_scale_factor_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->scale_factor[i]);
@@ -754,13 +754,13 @@ bool extract_mip_filter_accel_scale_factor_data_from_field(const mip_field* fiel
 {
     assert(ptr);
     mip_filter_accel_scale_factor_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_accel_scale_factor_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_accel_scale_factor_uncertainty_data(mip_serializer* serializer, const mip_filter_accel_scale_factor_uncertainty_data* self)
+void insert_mip_filter_accel_scale_factor_uncertainty_data(microstrain_serializer* serializer, const mip_filter_accel_scale_factor_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->scale_factor_uncert[i]);
@@ -768,7 +768,7 @@ void insert_mip_filter_accel_scale_factor_uncertainty_data(mip_serializer* seria
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_accel_scale_factor_uncertainty_data(mip_serializer* serializer, mip_filter_accel_scale_factor_uncertainty_data* self)
+void extract_mip_filter_accel_scale_factor_uncertainty_data(microstrain_serializer* serializer, mip_filter_accel_scale_factor_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->scale_factor_uncert[i]);
@@ -780,13 +780,13 @@ bool extract_mip_filter_accel_scale_factor_uncertainty_data_from_field(const mip
 {
     assert(ptr);
     mip_filter_accel_scale_factor_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_accel_scale_factor_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gyro_scale_factor_data(mip_serializer* serializer, const mip_filter_gyro_scale_factor_data* self)
+void insert_mip_filter_gyro_scale_factor_data(microstrain_serializer* serializer, const mip_filter_gyro_scale_factor_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->scale_factor[i]);
@@ -794,7 +794,7 @@ void insert_mip_filter_gyro_scale_factor_data(mip_serializer* serializer, const 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gyro_scale_factor_data(mip_serializer* serializer, mip_filter_gyro_scale_factor_data* self)
+void extract_mip_filter_gyro_scale_factor_data(microstrain_serializer* serializer, mip_filter_gyro_scale_factor_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->scale_factor[i]);
@@ -806,13 +806,13 @@ bool extract_mip_filter_gyro_scale_factor_data_from_field(const mip_field* field
 {
     assert(ptr);
     mip_filter_gyro_scale_factor_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gyro_scale_factor_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gyro_scale_factor_uncertainty_data(mip_serializer* serializer, const mip_filter_gyro_scale_factor_uncertainty_data* self)
+void insert_mip_filter_gyro_scale_factor_uncertainty_data(microstrain_serializer* serializer, const mip_filter_gyro_scale_factor_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->scale_factor_uncert[i]);
@@ -820,7 +820,7 @@ void insert_mip_filter_gyro_scale_factor_uncertainty_data(mip_serializer* serial
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gyro_scale_factor_uncertainty_data(mip_serializer* serializer, mip_filter_gyro_scale_factor_uncertainty_data* self)
+void extract_mip_filter_gyro_scale_factor_uncertainty_data(microstrain_serializer* serializer, mip_filter_gyro_scale_factor_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->scale_factor_uncert[i]);
@@ -832,13 +832,13 @@ bool extract_mip_filter_gyro_scale_factor_uncertainty_data_from_field(const mip_
 {
     assert(ptr);
     mip_filter_gyro_scale_factor_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gyro_scale_factor_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_mag_bias_data(mip_serializer* serializer, const mip_filter_mag_bias_data* self)
+void insert_mip_filter_mag_bias_data(microstrain_serializer* serializer, const mip_filter_mag_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias[i]);
@@ -846,7 +846,7 @@ void insert_mip_filter_mag_bias_data(mip_serializer* serializer, const mip_filte
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_mag_bias_data(mip_serializer* serializer, mip_filter_mag_bias_data* self)
+void extract_mip_filter_mag_bias_data(microstrain_serializer* serializer, mip_filter_mag_bias_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias[i]);
@@ -858,13 +858,13 @@ bool extract_mip_filter_mag_bias_data_from_field(const mip_field* field, void* p
 {
     assert(ptr);
     mip_filter_mag_bias_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_mag_bias_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_mag_bias_uncertainty_data(mip_serializer* serializer, const mip_filter_mag_bias_uncertainty_data* self)
+void insert_mip_filter_mag_bias_uncertainty_data(microstrain_serializer* serializer, const mip_filter_mag_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->bias_uncert[i]);
@@ -872,7 +872,7 @@ void insert_mip_filter_mag_bias_uncertainty_data(mip_serializer* serializer, con
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_mag_bias_uncertainty_data(mip_serializer* serializer, mip_filter_mag_bias_uncertainty_data* self)
+void extract_mip_filter_mag_bias_uncertainty_data(microstrain_serializer* serializer, mip_filter_mag_bias_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->bias_uncert[i]);
@@ -884,13 +884,13 @@ bool extract_mip_filter_mag_bias_uncertainty_data_from_field(const mip_field* fi
 {
     assert(ptr);
     mip_filter_mag_bias_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_mag_bias_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_standard_atmosphere_data(mip_serializer* serializer, const mip_filter_standard_atmosphere_data* self)
+void insert_mip_filter_standard_atmosphere_data(microstrain_serializer* serializer, const mip_filter_standard_atmosphere_data* self)
 {
     microstrain_insert_float(serializer, self->geometric_altitude);
 
@@ -905,7 +905,7 @@ void insert_mip_filter_standard_atmosphere_data(mip_serializer* serializer, cons
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_standard_atmosphere_data(mip_serializer* serializer, mip_filter_standard_atmosphere_data* self)
+void extract_mip_filter_standard_atmosphere_data(microstrain_serializer* serializer, mip_filter_standard_atmosphere_data* self)
 {
     microstrain_extract_float(serializer, &self->geometric_altitude);
 
@@ -924,20 +924,20 @@ bool extract_mip_filter_standard_atmosphere_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_standard_atmosphere_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_standard_atmosphere_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_pressure_altitude_data(mip_serializer* serializer, const mip_filter_pressure_altitude_data* self)
+void insert_mip_filter_pressure_altitude_data(microstrain_serializer* serializer, const mip_filter_pressure_altitude_data* self)
 {
     microstrain_insert_float(serializer, self->pressure_altitude);
 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_pressure_altitude_data(mip_serializer* serializer, mip_filter_pressure_altitude_data* self)
+void extract_mip_filter_pressure_altitude_data(microstrain_serializer* serializer, mip_filter_pressure_altitude_data* self)
 {
     microstrain_extract_float(serializer, &self->pressure_altitude);
 
@@ -948,20 +948,20 @@ bool extract_mip_filter_pressure_altitude_data_from_field(const mip_field* field
 {
     assert(ptr);
     mip_filter_pressure_altitude_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_pressure_altitude_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_density_altitude_data(mip_serializer* serializer, const mip_filter_density_altitude_data* self)
+void insert_mip_filter_density_altitude_data(microstrain_serializer* serializer, const mip_filter_density_altitude_data* self)
 {
     microstrain_insert_float(serializer, self->density_altitude);
 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_density_altitude_data(mip_serializer* serializer, mip_filter_density_altitude_data* self)
+void extract_mip_filter_density_altitude_data(microstrain_serializer* serializer, mip_filter_density_altitude_data* self)
 {
     microstrain_extract_float(serializer, &self->density_altitude);
 
@@ -972,13 +972,13 @@ bool extract_mip_filter_density_altitude_data_from_field(const mip_field* field,
 {
     assert(ptr);
     mip_filter_density_altitude_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_density_altitude_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_antenna_offset_correction_data(mip_serializer* serializer, const mip_filter_antenna_offset_correction_data* self)
+void insert_mip_filter_antenna_offset_correction_data(microstrain_serializer* serializer, const mip_filter_antenna_offset_correction_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->offset[i]);
@@ -986,7 +986,7 @@ void insert_mip_filter_antenna_offset_correction_data(mip_serializer* serializer
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_antenna_offset_correction_data(mip_serializer* serializer, mip_filter_antenna_offset_correction_data* self)
+void extract_mip_filter_antenna_offset_correction_data(microstrain_serializer* serializer, mip_filter_antenna_offset_correction_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->offset[i]);
@@ -998,13 +998,13 @@ bool extract_mip_filter_antenna_offset_correction_data_from_field(const mip_fiel
 {
     assert(ptr);
     mip_filter_antenna_offset_correction_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_antenna_offset_correction_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_antenna_offset_correction_uncertainty_data(mip_serializer* serializer, const mip_filter_antenna_offset_correction_uncertainty_data* self)
+void insert_mip_filter_antenna_offset_correction_uncertainty_data(microstrain_serializer* serializer, const mip_filter_antenna_offset_correction_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->offset_uncert[i]);
@@ -1012,7 +1012,7 @@ void insert_mip_filter_antenna_offset_correction_uncertainty_data(mip_serializer
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_antenna_offset_correction_uncertainty_data(mip_serializer* serializer, mip_filter_antenna_offset_correction_uncertainty_data* self)
+void extract_mip_filter_antenna_offset_correction_uncertainty_data(microstrain_serializer* serializer, mip_filter_antenna_offset_correction_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->offset_uncert[i]);
@@ -1024,13 +1024,13 @@ bool extract_mip_filter_antenna_offset_correction_uncertainty_data_from_field(co
 {
     assert(ptr);
     mip_filter_antenna_offset_correction_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_antenna_offset_correction_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_multi_antenna_offset_correction_data(mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_data* self)
+void insert_mip_filter_multi_antenna_offset_correction_data(microstrain_serializer* serializer, const mip_filter_multi_antenna_offset_correction_data* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
     
@@ -1040,7 +1040,7 @@ void insert_mip_filter_multi_antenna_offset_correction_data(mip_serializer* seri
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_multi_antenna_offset_correction_data(mip_serializer* serializer, mip_filter_multi_antenna_offset_correction_data* self)
+void extract_mip_filter_multi_antenna_offset_correction_data(microstrain_serializer* serializer, mip_filter_multi_antenna_offset_correction_data* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
     
@@ -1054,13 +1054,13 @@ bool extract_mip_filter_multi_antenna_offset_correction_data_from_field(const mi
 {
     assert(ptr);
     mip_filter_multi_antenna_offset_correction_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_multi_antenna_offset_correction_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(mip_serializer* serializer, const mip_filter_multi_antenna_offset_correction_uncertainty_data* self)
+void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(microstrain_serializer* serializer, const mip_filter_multi_antenna_offset_correction_uncertainty_data* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
     
@@ -1070,7 +1070,7 @@ void insert_mip_filter_multi_antenna_offset_correction_uncertainty_data(mip_seri
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(mip_serializer* serializer, mip_filter_multi_antenna_offset_correction_uncertainty_data* self)
+void extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(microstrain_serializer* serializer, mip_filter_multi_antenna_offset_correction_uncertainty_data* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
     
@@ -1084,13 +1084,13 @@ bool extract_mip_filter_multi_antenna_offset_correction_uncertainty_data_from_fi
 {
     assert(ptr);
     mip_filter_multi_antenna_offset_correction_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_multi_antenna_offset_correction_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_offset_data(mip_serializer* serializer, const mip_filter_magnetometer_offset_data* self)
+void insert_mip_filter_magnetometer_offset_data(microstrain_serializer* serializer, const mip_filter_magnetometer_offset_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->hard_iron[i]);
@@ -1098,7 +1098,7 @@ void insert_mip_filter_magnetometer_offset_data(mip_serializer* serializer, cons
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_offset_data(mip_serializer* serializer, mip_filter_magnetometer_offset_data* self)
+void extract_mip_filter_magnetometer_offset_data(microstrain_serializer* serializer, mip_filter_magnetometer_offset_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->hard_iron[i]);
@@ -1110,13 +1110,13 @@ bool extract_mip_filter_magnetometer_offset_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_magnetometer_offset_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_offset_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_matrix_data(mip_serializer* serializer, const mip_filter_magnetometer_matrix_data* self)
+void insert_mip_filter_magnetometer_matrix_data(microstrain_serializer* serializer, const mip_filter_magnetometer_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_insert_float(serializer, self->soft_iron[i]);
@@ -1124,7 +1124,7 @@ void insert_mip_filter_magnetometer_matrix_data(mip_serializer* serializer, cons
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_matrix_data(mip_serializer* serializer, mip_filter_magnetometer_matrix_data* self)
+void extract_mip_filter_magnetometer_matrix_data(microstrain_serializer* serializer, mip_filter_magnetometer_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_extract_float(serializer, &self->soft_iron[i]);
@@ -1136,13 +1136,13 @@ bool extract_mip_filter_magnetometer_matrix_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_magnetometer_matrix_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_matrix_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_offset_uncertainty_data(mip_serializer* serializer, const mip_filter_magnetometer_offset_uncertainty_data* self)
+void insert_mip_filter_magnetometer_offset_uncertainty_data(microstrain_serializer* serializer, const mip_filter_magnetometer_offset_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->hard_iron_uncertainty[i]);
@@ -1150,7 +1150,7 @@ void insert_mip_filter_magnetometer_offset_uncertainty_data(mip_serializer* seri
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_offset_uncertainty_data(mip_serializer* serializer, mip_filter_magnetometer_offset_uncertainty_data* self)
+void extract_mip_filter_magnetometer_offset_uncertainty_data(microstrain_serializer* serializer, mip_filter_magnetometer_offset_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->hard_iron_uncertainty[i]);
@@ -1162,13 +1162,13 @@ bool extract_mip_filter_magnetometer_offset_uncertainty_data_from_field(const mi
 {
     assert(ptr);
     mip_filter_magnetometer_offset_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_offset_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_matrix_uncertainty_data(mip_serializer* serializer, const mip_filter_magnetometer_matrix_uncertainty_data* self)
+void insert_mip_filter_magnetometer_matrix_uncertainty_data(microstrain_serializer* serializer, const mip_filter_magnetometer_matrix_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_insert_float(serializer, self->soft_iron_uncertainty[i]);
@@ -1176,7 +1176,7 @@ void insert_mip_filter_magnetometer_matrix_uncertainty_data(mip_serializer* seri
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_matrix_uncertainty_data(mip_serializer* serializer, mip_filter_magnetometer_matrix_uncertainty_data* self)
+void extract_mip_filter_magnetometer_matrix_uncertainty_data(microstrain_serializer* serializer, mip_filter_magnetometer_matrix_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_extract_float(serializer, &self->soft_iron_uncertainty[i]);
@@ -1188,13 +1188,13 @@ bool extract_mip_filter_magnetometer_matrix_uncertainty_data_from_field(const mi
 {
     assert(ptr);
     mip_filter_magnetometer_matrix_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_matrix_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_covariance_matrix_data(mip_serializer* serializer, const mip_filter_magnetometer_covariance_matrix_data* self)
+void insert_mip_filter_magnetometer_covariance_matrix_data(microstrain_serializer* serializer, const mip_filter_magnetometer_covariance_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_insert_float(serializer, self->covariance[i]);
@@ -1202,7 +1202,7 @@ void insert_mip_filter_magnetometer_covariance_matrix_data(mip_serializer* seria
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_covariance_matrix_data(mip_serializer* serializer, mip_filter_magnetometer_covariance_matrix_data* self)
+void extract_mip_filter_magnetometer_covariance_matrix_data(microstrain_serializer* serializer, mip_filter_magnetometer_covariance_matrix_data* self)
 {
     for(unsigned int i=0; i < 9; i++)
         microstrain_extract_float(serializer, &self->covariance[i]);
@@ -1214,13 +1214,13 @@ bool extract_mip_filter_magnetometer_covariance_matrix_data_from_field(const mip
 {
     assert(ptr);
     mip_filter_magnetometer_covariance_matrix_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_covariance_matrix_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_magnetometer_residual_vector_data(mip_serializer* serializer, const mip_filter_magnetometer_residual_vector_data* self)
+void insert_mip_filter_magnetometer_residual_vector_data(microstrain_serializer* serializer, const mip_filter_magnetometer_residual_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->residual[i]);
@@ -1228,7 +1228,7 @@ void insert_mip_filter_magnetometer_residual_vector_data(mip_serializer* seriali
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_magnetometer_residual_vector_data(mip_serializer* serializer, mip_filter_magnetometer_residual_vector_data* self)
+void extract_mip_filter_magnetometer_residual_vector_data(microstrain_serializer* serializer, mip_filter_magnetometer_residual_vector_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->residual[i]);
@@ -1240,13 +1240,13 @@ bool extract_mip_filter_magnetometer_residual_vector_data_from_field(const mip_f
 {
     assert(ptr);
     mip_filter_magnetometer_residual_vector_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_magnetometer_residual_vector_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_clock_correction_data(mip_serializer* serializer, const mip_filter_clock_correction_data* self)
+void insert_mip_filter_clock_correction_data(microstrain_serializer* serializer, const mip_filter_clock_correction_data* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
 
@@ -1257,7 +1257,7 @@ void insert_mip_filter_clock_correction_data(mip_serializer* serializer, const m
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_clock_correction_data(mip_serializer* serializer, mip_filter_clock_correction_data* self)
+void extract_mip_filter_clock_correction_data(microstrain_serializer* serializer, mip_filter_clock_correction_data* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
 
@@ -1272,13 +1272,13 @@ bool extract_mip_filter_clock_correction_data_from_field(const mip_field* field,
 {
     assert(ptr);
     mip_filter_clock_correction_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_clock_correction_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_clock_correction_uncertainty_data(mip_serializer* serializer, const mip_filter_clock_correction_uncertainty_data* self)
+void insert_mip_filter_clock_correction_uncertainty_data(microstrain_serializer* serializer, const mip_filter_clock_correction_uncertainty_data* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
 
@@ -1289,7 +1289,7 @@ void insert_mip_filter_clock_correction_uncertainty_data(mip_serializer* seriali
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_clock_correction_uncertainty_data(mip_serializer* serializer, mip_filter_clock_correction_uncertainty_data* self)
+void extract_mip_filter_clock_correction_uncertainty_data(microstrain_serializer* serializer, mip_filter_clock_correction_uncertainty_data* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
 
@@ -1304,13 +1304,13 @@ bool extract_mip_filter_clock_correction_uncertainty_data_from_field(const mip_f
 {
     assert(ptr);
     mip_filter_clock_correction_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_clock_correction_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gnss_pos_aid_status_data(mip_serializer* serializer, const mip_filter_gnss_pos_aid_status_data* self)
+void insert_mip_filter_gnss_pos_aid_status_data(microstrain_serializer* serializer, const mip_filter_gnss_pos_aid_status_data* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
 
@@ -1322,7 +1322,7 @@ void insert_mip_filter_gnss_pos_aid_status_data(mip_serializer* serializer, cons
         microstrain_insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_filter_gnss_pos_aid_status_data(mip_serializer* serializer, mip_filter_gnss_pos_aid_status_data* self)
+void extract_mip_filter_gnss_pos_aid_status_data(microstrain_serializer* serializer, mip_filter_gnss_pos_aid_status_data* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
 
@@ -1338,13 +1338,13 @@ bool extract_mip_filter_gnss_pos_aid_status_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_gnss_pos_aid_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gnss_pos_aid_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gnss_att_aid_status_data(mip_serializer* serializer, const mip_filter_gnss_att_aid_status_data* self)
+void insert_mip_filter_gnss_att_aid_status_data(microstrain_serializer* serializer, const mip_filter_gnss_att_aid_status_data* self)
 {
     microstrain_insert_float(serializer, self->time_of_week);
     
@@ -1354,7 +1354,7 @@ void insert_mip_filter_gnss_att_aid_status_data(mip_serializer* serializer, cons
         microstrain_insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_filter_gnss_att_aid_status_data(mip_serializer* serializer, mip_filter_gnss_att_aid_status_data* self)
+void extract_mip_filter_gnss_att_aid_status_data(microstrain_serializer* serializer, mip_filter_gnss_att_aid_status_data* self)
 {
     microstrain_extract_float(serializer, &self->time_of_week);
     
@@ -1368,13 +1368,13 @@ bool extract_mip_filter_gnss_att_aid_status_data_from_field(const mip_field* fie
 {
     assert(ptr);
     mip_filter_gnss_att_aid_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gnss_att_aid_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_head_aid_status_data(mip_serializer* serializer, const mip_filter_head_aid_status_data* self)
+void insert_mip_filter_head_aid_status_data(microstrain_serializer* serializer, const mip_filter_head_aid_status_data* self)
 {
     microstrain_insert_float(serializer, self->time_of_week);
     
@@ -1384,7 +1384,7 @@ void insert_mip_filter_head_aid_status_data(mip_serializer* serializer, const mi
         microstrain_insert_float(serializer, self->reserved[i]);
     
 }
-void extract_mip_filter_head_aid_status_data(mip_serializer* serializer, mip_filter_head_aid_status_data* self)
+void extract_mip_filter_head_aid_status_data(microstrain_serializer* serializer, mip_filter_head_aid_status_data* self)
 {
     microstrain_extract_float(serializer, &self->time_of_week);
     
@@ -1398,24 +1398,24 @@ bool extract_mip_filter_head_aid_status_data_from_field(const mip_field* field, 
 {
     assert(ptr);
     mip_filter_head_aid_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_head_aid_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self)
+void insert_mip_filter_head_aid_status_data_heading_aid_type(struct microstrain_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_head_aid_status_data_heading_aid_type(struct mip_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self)
+void extract_mip_filter_head_aid_status_data_heading_aid_type(struct microstrain_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_rel_pos_ned_data(mip_serializer* serializer, const mip_filter_rel_pos_ned_data* self)
+void insert_mip_filter_rel_pos_ned_data(microstrain_serializer* serializer, const mip_filter_rel_pos_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_double(serializer, self->relative_position[i]);
@@ -1423,7 +1423,7 @@ void insert_mip_filter_rel_pos_ned_data(mip_serializer* serializer, const mip_fi
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_rel_pos_ned_data(mip_serializer* serializer, mip_filter_rel_pos_ned_data* self)
+void extract_mip_filter_rel_pos_ned_data(microstrain_serializer* serializer, mip_filter_rel_pos_ned_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_double(serializer, &self->relative_position[i]);
@@ -1435,13 +1435,13 @@ bool extract_mip_filter_rel_pos_ned_data_from_field(const mip_field* field, void
 {
     assert(ptr);
     mip_filter_rel_pos_ned_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_rel_pos_ned_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_ecef_pos_data(mip_serializer* serializer, const mip_filter_ecef_pos_data* self)
+void insert_mip_filter_ecef_pos_data(microstrain_serializer* serializer, const mip_filter_ecef_pos_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_double(serializer, self->position_ecef[i]);
@@ -1449,7 +1449,7 @@ void insert_mip_filter_ecef_pos_data(mip_serializer* serializer, const mip_filte
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_ecef_pos_data(mip_serializer* serializer, mip_filter_ecef_pos_data* self)
+void extract_mip_filter_ecef_pos_data(microstrain_serializer* serializer, mip_filter_ecef_pos_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_double(serializer, &self->position_ecef[i]);
@@ -1461,13 +1461,13 @@ bool extract_mip_filter_ecef_pos_data_from_field(const mip_field* field, void* p
 {
     assert(ptr);
     mip_filter_ecef_pos_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_ecef_pos_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_ecef_vel_data(mip_serializer* serializer, const mip_filter_ecef_vel_data* self)
+void insert_mip_filter_ecef_vel_data(microstrain_serializer* serializer, const mip_filter_ecef_vel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->velocity_ecef[i]);
@@ -1475,7 +1475,7 @@ void insert_mip_filter_ecef_vel_data(mip_serializer* serializer, const mip_filte
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_ecef_vel_data(mip_serializer* serializer, mip_filter_ecef_vel_data* self)
+void extract_mip_filter_ecef_vel_data(microstrain_serializer* serializer, mip_filter_ecef_vel_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->velocity_ecef[i]);
@@ -1487,13 +1487,13 @@ bool extract_mip_filter_ecef_vel_data_from_field(const mip_field* field, void* p
 {
     assert(ptr);
     mip_filter_ecef_vel_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_ecef_vel_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_ecef_pos_uncertainty_data(mip_serializer* serializer, const mip_filter_ecef_pos_uncertainty_data* self)
+void insert_mip_filter_ecef_pos_uncertainty_data(microstrain_serializer* serializer, const mip_filter_ecef_pos_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->pos_uncertainty[i]);
@@ -1501,7 +1501,7 @@ void insert_mip_filter_ecef_pos_uncertainty_data(mip_serializer* serializer, con
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_ecef_pos_uncertainty_data(mip_serializer* serializer, mip_filter_ecef_pos_uncertainty_data* self)
+void extract_mip_filter_ecef_pos_uncertainty_data(microstrain_serializer* serializer, mip_filter_ecef_pos_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->pos_uncertainty[i]);
@@ -1513,13 +1513,13 @@ bool extract_mip_filter_ecef_pos_uncertainty_data_from_field(const mip_field* fi
 {
     assert(ptr);
     mip_filter_ecef_pos_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_ecef_pos_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_ecef_vel_uncertainty_data(mip_serializer* serializer, const mip_filter_ecef_vel_uncertainty_data* self)
+void insert_mip_filter_ecef_vel_uncertainty_data(microstrain_serializer* serializer, const mip_filter_ecef_vel_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_insert_float(serializer, self->vel_uncertainty[i]);
@@ -1527,7 +1527,7 @@ void insert_mip_filter_ecef_vel_uncertainty_data(mip_serializer* serializer, con
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_ecef_vel_uncertainty_data(mip_serializer* serializer, mip_filter_ecef_vel_uncertainty_data* self)
+void extract_mip_filter_ecef_vel_uncertainty_data(microstrain_serializer* serializer, mip_filter_ecef_vel_uncertainty_data* self)
 {
     for(unsigned int i=0; i < 3; i++)
         microstrain_extract_float(serializer, &self->vel_uncertainty[i]);
@@ -1539,13 +1539,13 @@ bool extract_mip_filter_ecef_vel_uncertainty_data_from_field(const mip_field* fi
 {
     assert(ptr);
     mip_filter_ecef_vel_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_ecef_vel_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_aiding_measurement_summary_data(mip_serializer* serializer, const mip_filter_aiding_measurement_summary_data* self)
+void insert_mip_filter_aiding_measurement_summary_data(microstrain_serializer* serializer, const mip_filter_aiding_measurement_summary_data* self)
 {
     microstrain_insert_float(serializer, self->time_of_week);
 
@@ -1556,7 +1556,7 @@ void insert_mip_filter_aiding_measurement_summary_data(mip_serializer* serialize
     insert_mip_filter_measurement_indicator(serializer, self->indicator);
     
 }
-void extract_mip_filter_aiding_measurement_summary_data(mip_serializer* serializer, mip_filter_aiding_measurement_summary_data* self)
+void extract_mip_filter_aiding_measurement_summary_data(microstrain_serializer* serializer, mip_filter_aiding_measurement_summary_data* self)
 {
     microstrain_extract_float(serializer, &self->time_of_week);
 
@@ -1571,20 +1571,20 @@ bool extract_mip_filter_aiding_measurement_summary_data_from_field(const mip_fie
 {
     assert(ptr);
     mip_filter_aiding_measurement_summary_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_aiding_measurement_summary_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_odometer_scale_factor_error_data(mip_serializer* serializer, const mip_filter_odometer_scale_factor_error_data* self)
+void insert_mip_filter_odometer_scale_factor_error_data(microstrain_serializer* serializer, const mip_filter_odometer_scale_factor_error_data* self)
 {
     microstrain_insert_float(serializer, self->scale_factor_error);
 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_odometer_scale_factor_error_data(mip_serializer* serializer, mip_filter_odometer_scale_factor_error_data* self)
+void extract_mip_filter_odometer_scale_factor_error_data(microstrain_serializer* serializer, mip_filter_odometer_scale_factor_error_data* self)
 {
     microstrain_extract_float(serializer, &self->scale_factor_error);
 
@@ -1595,20 +1595,20 @@ bool extract_mip_filter_odometer_scale_factor_error_data_from_field(const mip_fi
 {
     assert(ptr);
     mip_filter_odometer_scale_factor_error_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_odometer_scale_factor_error_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_odometer_scale_factor_error_uncertainty_data(mip_serializer* serializer, const mip_filter_odometer_scale_factor_error_uncertainty_data* self)
+void insert_mip_filter_odometer_scale_factor_error_uncertainty_data(microstrain_serializer* serializer, const mip_filter_odometer_scale_factor_error_uncertainty_data* self)
 {
     microstrain_insert_float(serializer, self->scale_factor_error_uncertainty);
 
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_odometer_scale_factor_error_uncertainty_data(mip_serializer* serializer, mip_filter_odometer_scale_factor_error_uncertainty_data* self)
+void extract_mip_filter_odometer_scale_factor_error_uncertainty_data(microstrain_serializer* serializer, mip_filter_odometer_scale_factor_error_uncertainty_data* self)
 {
     microstrain_extract_float(serializer, &self->scale_factor_error_uncertainty);
 
@@ -1619,13 +1619,13 @@ bool extract_mip_filter_odometer_scale_factor_error_uncertainty_data_from_field(
 {
     assert(ptr);
     mip_filter_odometer_scale_factor_error_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_odometer_scale_factor_error_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gnss_dual_antenna_status_data(mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data* self)
+void insert_mip_filter_gnss_dual_antenna_status_data(microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data* self)
 {
     microstrain_insert_float(serializer, self->time_of_week);
 
@@ -1640,7 +1640,7 @@ void insert_mip_filter_gnss_dual_antenna_status_data(mip_serializer* serializer,
     microstrain_insert_u16(serializer, self->valid_flags);
     
 }
-void extract_mip_filter_gnss_dual_antenna_status_data(mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data* self)
+void extract_mip_filter_gnss_dual_antenna_status_data(microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data* self)
 {
     microstrain_extract_float(serializer, &self->time_of_week);
 
@@ -1659,35 +1659,35 @@ bool extract_mip_filter_gnss_dual_antenna_status_data_from_field(const mip_field
 {
     assert(ptr);
     mip_filter_gnss_dual_antenna_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_gnss_dual_antenna_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_fix_type self)
+void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(struct microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_fix_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_fix_type* self)
+void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_fix_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
+void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct mip_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
+void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_aiding_frame_config_error_data(mip_serializer* serializer, const mip_filter_aiding_frame_config_error_data* self)
+void insert_mip_filter_aiding_frame_config_error_data(microstrain_serializer* serializer, const mip_filter_aiding_frame_config_error_data* self)
 {
     microstrain_insert_u8(serializer, self->frame_id);
     
@@ -1698,7 +1698,7 @@ void insert_mip_filter_aiding_frame_config_error_data(mip_serializer* serializer
         microstrain_insert_float(serializer, self->attitude[i]);
     
 }
-void extract_mip_filter_aiding_frame_config_error_data(mip_serializer* serializer, mip_filter_aiding_frame_config_error_data* self)
+void extract_mip_filter_aiding_frame_config_error_data(microstrain_serializer* serializer, mip_filter_aiding_frame_config_error_data* self)
 {
     microstrain_extract_u8(serializer, &self->frame_id);
     
@@ -1713,13 +1713,13 @@ bool extract_mip_filter_aiding_frame_config_error_data_from_field(const mip_fiel
 {
     assert(ptr);
     mip_filter_aiding_frame_config_error_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_aiding_frame_config_error_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_aiding_frame_config_error_uncertainty_data(mip_serializer* serializer, const mip_filter_aiding_frame_config_error_uncertainty_data* self)
+void insert_mip_filter_aiding_frame_config_error_uncertainty_data(microstrain_serializer* serializer, const mip_filter_aiding_frame_config_error_uncertainty_data* self)
 {
     microstrain_insert_u8(serializer, self->frame_id);
     
@@ -1730,7 +1730,7 @@ void insert_mip_filter_aiding_frame_config_error_uncertainty_data(mip_serializer
         microstrain_insert_float(serializer, self->attitude_unc[i]);
     
 }
-void extract_mip_filter_aiding_frame_config_error_uncertainty_data(mip_serializer* serializer, mip_filter_aiding_frame_config_error_uncertainty_data* self)
+void extract_mip_filter_aiding_frame_config_error_uncertainty_data(microstrain_serializer* serializer, mip_filter_aiding_frame_config_error_uncertainty_data* self)
 {
     microstrain_extract_u8(serializer, &self->frame_id);
     
@@ -1745,8 +1745,8 @@ bool extract_mip_filter_aiding_frame_config_error_uncertainty_data_from_field(co
 {
     assert(ptr);
     mip_filter_aiding_frame_config_error_uncertainty_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_filter_aiding_frame_config_error_uncertainty_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }

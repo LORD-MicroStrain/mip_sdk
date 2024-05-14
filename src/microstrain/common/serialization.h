@@ -1,11 +1,11 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "mip/mip_field.h"
 #include "mip/mip_packet.h"
 #include "mip/mip_types.h"
+
+#include <stdint.h>
+#include <stdbool.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup mip_serialization  MIP Serialization
@@ -17,7 +17,7 @@
 ///@}
 
 #ifdef __cplusplus
-#include <c++/11/type_traits>
+#include <type_traits>
 
 namespace microstrain {
 namespace C {
@@ -51,9 +51,6 @@ typedef struct microstrain_serializer
 
 void microstrain_serializer_init_insertion(microstrain_serializer* serializer, uint8_t* buffer, size_t buffer_size);
 void microstrain_serializer_init_extraction(microstrain_serializer* serializer, const uint8_t* buffer, size_t buffer_size);
-void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
-void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet);
-void microstrain_serializer_init_from_field(microstrain_serializer* serializer, const mip_field* field);
 
 size_t microstrain_serializer_capacity(const microstrain_serializer* serializer);
 size_t microstrain_serializer_length(const microstrain_serializer* serializer);
@@ -152,7 +149,7 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 class Serializer : public C::microstrain_serializer
 {
 public:
-    Serializer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
+    // Serializer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
     Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
     Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
 

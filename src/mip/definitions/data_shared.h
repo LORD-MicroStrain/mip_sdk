@@ -15,7 +15,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,8 +71,8 @@ struct mip_shared_event_source_data
     
 };
 typedef struct mip_shared_event_source_data mip_shared_event_source_data;
-void insert_mip_shared_event_source_data(struct mip_serializer* serializer, const mip_shared_event_source_data* self);
-void extract_mip_shared_event_source_data(struct mip_serializer* serializer, mip_shared_event_source_data* self);
+void insert_mip_shared_event_source_data(struct microstrain_serializer* serializer, const mip_shared_event_source_data* self);
+void extract_mip_shared_event_source_data(struct microstrain_serializer* serializer, mip_shared_event_source_data* self);
 bool extract_mip_shared_event_source_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -93,8 +93,8 @@ struct mip_shared_ticks_data
     
 };
 typedef struct mip_shared_ticks_data mip_shared_ticks_data;
-void insert_mip_shared_ticks_data(struct mip_serializer* serializer, const mip_shared_ticks_data* self);
-void extract_mip_shared_ticks_data(struct mip_serializer* serializer, mip_shared_ticks_data* self);
+void insert_mip_shared_ticks_data(struct microstrain_serializer* serializer, const mip_shared_ticks_data* self);
+void extract_mip_shared_ticks_data(struct microstrain_serializer* serializer, mip_shared_ticks_data* self);
 bool extract_mip_shared_ticks_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -116,8 +116,8 @@ struct mip_shared_delta_ticks_data
     
 };
 typedef struct mip_shared_delta_ticks_data mip_shared_delta_ticks_data;
-void insert_mip_shared_delta_ticks_data(struct mip_serializer* serializer, const mip_shared_delta_ticks_data* self);
-void extract_mip_shared_delta_ticks_data(struct mip_serializer* serializer, mip_shared_delta_ticks_data* self);
+void insert_mip_shared_delta_ticks_data(struct microstrain_serializer* serializer, const mip_shared_delta_ticks_data* self);
+void extract_mip_shared_delta_ticks_data(struct microstrain_serializer* serializer, mip_shared_delta_ticks_data* self);
 bool extract_mip_shared_delta_ticks_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -147,12 +147,12 @@ struct mip_shared_gps_timestamp_data
     
 };
 typedef struct mip_shared_gps_timestamp_data mip_shared_gps_timestamp_data;
-void insert_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, const mip_shared_gps_timestamp_data* self);
-void extract_mip_shared_gps_timestamp_data(struct mip_serializer* serializer, mip_shared_gps_timestamp_data* self);
+void insert_mip_shared_gps_timestamp_data(struct microstrain_serializer* serializer, const mip_shared_gps_timestamp_data* self);
+void extract_mip_shared_gps_timestamp_data(struct microstrain_serializer* serializer, mip_shared_gps_timestamp_data* self);
 bool extract_mip_shared_gps_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
-void insert_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self);
-void extract_mip_shared_gps_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self);
+void insert_mip_shared_gps_timestamp_data_valid_flags(struct microstrain_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self);
+void extract_mip_shared_gps_timestamp_data_valid_flags(struct microstrain_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self);
 
 
 ///@}
@@ -178,8 +178,8 @@ struct mip_shared_delta_time_data
     
 };
 typedef struct mip_shared_delta_time_data mip_shared_delta_time_data;
-void insert_mip_shared_delta_time_data(struct mip_serializer* serializer, const mip_shared_delta_time_data* self);
-void extract_mip_shared_delta_time_data(struct mip_serializer* serializer, mip_shared_delta_time_data* self);
+void insert_mip_shared_delta_time_data(struct microstrain_serializer* serializer, const mip_shared_delta_time_data* self);
+void extract_mip_shared_delta_time_data(struct microstrain_serializer* serializer, mip_shared_delta_time_data* self);
 bool extract_mip_shared_delta_time_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -204,8 +204,8 @@ struct mip_shared_reference_timestamp_data
     
 };
 typedef struct mip_shared_reference_timestamp_data mip_shared_reference_timestamp_data;
-void insert_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, const mip_shared_reference_timestamp_data* self);
-void extract_mip_shared_reference_timestamp_data(struct mip_serializer* serializer, mip_shared_reference_timestamp_data* self);
+void insert_mip_shared_reference_timestamp_data(struct microstrain_serializer* serializer, const mip_shared_reference_timestamp_data* self);
+void extract_mip_shared_reference_timestamp_data(struct microstrain_serializer* serializer, mip_shared_reference_timestamp_data* self);
 bool extract_mip_shared_reference_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -232,8 +232,8 @@ struct mip_shared_reference_time_delta_data
     
 };
 typedef struct mip_shared_reference_time_delta_data mip_shared_reference_time_delta_data;
-void insert_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, const mip_shared_reference_time_delta_data* self);
-void extract_mip_shared_reference_time_delta_data(struct mip_serializer* serializer, mip_shared_reference_time_delta_data* self);
+void insert_mip_shared_reference_time_delta_data(struct microstrain_serializer* serializer, const mip_shared_reference_time_delta_data* self);
+void extract_mip_shared_reference_time_delta_data(struct microstrain_serializer* serializer, mip_shared_reference_time_delta_data* self);
 bool extract_mip_shared_reference_time_delta_data_from_field(const struct mip_field* field, void* ptr);
 
 
@@ -265,12 +265,12 @@ struct mip_shared_external_timestamp_data
     
 };
 typedef struct mip_shared_external_timestamp_data mip_shared_external_timestamp_data;
-void insert_mip_shared_external_timestamp_data(struct mip_serializer* serializer, const mip_shared_external_timestamp_data* self);
-void extract_mip_shared_external_timestamp_data(struct mip_serializer* serializer, mip_shared_external_timestamp_data* self);
+void insert_mip_shared_external_timestamp_data(struct microstrain_serializer* serializer, const mip_shared_external_timestamp_data* self);
+void extract_mip_shared_external_timestamp_data(struct microstrain_serializer* serializer, mip_shared_external_timestamp_data* self);
 bool extract_mip_shared_external_timestamp_data_from_field(const struct mip_field* field, void* ptr);
 
-void insert_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self);
-void extract_mip_shared_external_timestamp_data_valid_flags(struct mip_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self);
+void insert_mip_shared_external_timestamp_data_valid_flags(struct microstrain_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self);
+void extract_mip_shared_external_timestamp_data_valid_flags(struct microstrain_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self);
 
 
 ///@}
@@ -305,12 +305,12 @@ struct mip_shared_external_time_delta_data
     
 };
 typedef struct mip_shared_external_time_delta_data mip_shared_external_time_delta_data;
-void insert_mip_shared_external_time_delta_data(struct mip_serializer* serializer, const mip_shared_external_time_delta_data* self);
-void extract_mip_shared_external_time_delta_data(struct mip_serializer* serializer, mip_shared_external_time_delta_data* self);
+void insert_mip_shared_external_time_delta_data(struct microstrain_serializer* serializer, const mip_shared_external_time_delta_data* self);
+void extract_mip_shared_external_time_delta_data(struct microstrain_serializer* serializer, mip_shared_external_time_delta_data* self);
 bool extract_mip_shared_external_time_delta_data_from_field(const struct mip_field* field, void* ptr);
 
-void insert_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self);
-void extract_mip_shared_external_time_delta_data_valid_flags(struct mip_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self);
+void insert_mip_shared_external_time_delta_data_valid_flags(struct microstrain_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self);
+void extract_mip_shared_external_time_delta_data_valid_flags(struct microstrain_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self);
 
 
 ///@}

@@ -15,7 +15,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,24 +160,24 @@ typedef uint8_t mip_filter_reference_frame;
 static const mip_filter_reference_frame MIP_FILTER_REFERENCE_FRAME_ECEF = 1; ///<  WGS84 Earth-fixed, earth centered coordinates
 static const mip_filter_reference_frame MIP_FILTER_REFERENCE_FRAME_LLH  = 2; ///<  WGS84 Latitude, longitude, and height above ellipsoid
 
-void insert_mip_filter_reference_frame(struct mip_serializer* serializer, const mip_filter_reference_frame self);
-void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_filter_reference_frame* self);
+void insert_mip_filter_reference_frame(struct microstrain_serializer* serializer, const mip_filter_reference_frame self);
+void extract_mip_filter_reference_frame(struct microstrain_serializer* serializer, mip_filter_reference_frame* self);
 
 typedef uint8_t mip_filter_mag_param_source;
 static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_NONE   = 1; ///<  No source. See command documentation for default behavior
 static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_WMM    = 2; ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
 static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_MANUAL = 3; ///<  Magnetic field is assumed to have the parameter specified by the user.
 
-void insert_mip_filter_mag_param_source(struct mip_serializer* serializer, const mip_filter_mag_param_source self);
-void extract_mip_filter_mag_param_source(struct mip_serializer* serializer, mip_filter_mag_param_source* self);
+void insert_mip_filter_mag_param_source(struct microstrain_serializer* serializer, const mip_filter_mag_param_source self);
+void extract_mip_filter_mag_param_source(struct microstrain_serializer* serializer, mip_filter_mag_param_source* self);
 
 typedef uint8_t mip_filter_adaptive_measurement;
 static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_DISABLED = 0; ///<  No adaptive measurement
 static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_FIXED    = 1; ///<  Enable fixed adaptive measurement (use specified limits)
 static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_AUTO     = 2; ///<  Enable auto adaptive measurement
 
-void insert_mip_filter_adaptive_measurement(struct mip_serializer* serializer, const mip_filter_adaptive_measurement self);
-void extract_mip_filter_adaptive_measurement(struct mip_serializer* serializer, mip_filter_adaptive_measurement* self);
+void insert_mip_filter_adaptive_measurement(struct microstrain_serializer* serializer, const mip_filter_adaptive_measurement self);
+void extract_mip_filter_adaptive_measurement(struct microstrain_serializer* serializer, mip_filter_adaptive_measurement* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -222,8 +222,8 @@ struct mip_filter_set_initial_attitude_command
     
 };
 typedef struct mip_filter_set_initial_attitude_command mip_filter_set_initial_attitude_command;
-void insert_mip_filter_set_initial_attitude_command(struct mip_serializer* serializer, const mip_filter_set_initial_attitude_command* self);
-void extract_mip_filter_set_initial_attitude_command(struct mip_serializer* serializer, mip_filter_set_initial_attitude_command* self);
+void insert_mip_filter_set_initial_attitude_command(struct microstrain_serializer* serializer, const mip_filter_set_initial_attitude_command* self);
+void extract_mip_filter_set_initial_attitude_command(struct microstrain_serializer* serializer, mip_filter_set_initial_attitude_command* self);
 
 mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device, float roll, float pitch, float heading);
 
@@ -263,11 +263,11 @@ struct mip_filter_estimation_control_command
     
 };
 typedef struct mip_filter_estimation_control_command mip_filter_estimation_control_command;
-void insert_mip_filter_estimation_control_command(struct mip_serializer* serializer, const mip_filter_estimation_control_command* self);
-void extract_mip_filter_estimation_control_command(struct mip_serializer* serializer, mip_filter_estimation_control_command* self);
+void insert_mip_filter_estimation_control_command(struct microstrain_serializer* serializer, const mip_filter_estimation_control_command* self);
+void extract_mip_filter_estimation_control_command(struct microstrain_serializer* serializer, mip_filter_estimation_control_command* self);
 
-void insert_mip_filter_estimation_control_command_enable_flags(struct mip_serializer* serializer, const mip_filter_estimation_control_command_enable_flags self);
-void extract_mip_filter_estimation_control_command_enable_flags(struct mip_serializer* serializer, mip_filter_estimation_control_command_enable_flags* self);
+void insert_mip_filter_estimation_control_command_enable_flags(struct microstrain_serializer* serializer, const mip_filter_estimation_control_command_enable_flags self);
+void extract_mip_filter_estimation_control_command_enable_flags(struct microstrain_serializer* serializer, mip_filter_estimation_control_command_enable_flags* self);
 
 struct mip_filter_estimation_control_response
 {
@@ -275,8 +275,8 @@ struct mip_filter_estimation_control_response
     
 };
 typedef struct mip_filter_estimation_control_response mip_filter_estimation_control_response;
-void insert_mip_filter_estimation_control_response(struct mip_serializer* serializer, const mip_filter_estimation_control_response* self);
-void extract_mip_filter_estimation_control_response(struct mip_serializer* serializer, mip_filter_estimation_control_response* self);
+void insert_mip_filter_estimation_control_response(struct microstrain_serializer* serializer, const mip_filter_estimation_control_response* self);
+void extract_mip_filter_estimation_control_response(struct microstrain_serializer* serializer, mip_filter_estimation_control_response* self);
 
 mip_cmd_result mip_filter_write_estimation_control(struct mip_interface* device, mip_filter_estimation_control_command_enable_flags enable);
 mip_cmd_result mip_filter_read_estimation_control(struct mip_interface* device, mip_filter_estimation_control_command_enable_flags* enable_out);
@@ -309,8 +309,8 @@ struct mip_filter_external_gnss_update_command
     
 };
 typedef struct mip_filter_external_gnss_update_command mip_filter_external_gnss_update_command;
-void insert_mip_filter_external_gnss_update_command(struct mip_serializer* serializer, const mip_filter_external_gnss_update_command* self);
-void extract_mip_filter_external_gnss_update_command(struct mip_serializer* serializer, mip_filter_external_gnss_update_command* self);
+void insert_mip_filter_external_gnss_update_command(struct microstrain_serializer* serializer, const mip_filter_external_gnss_update_command* self);
+void extract_mip_filter_external_gnss_update_command(struct microstrain_serializer* serializer, mip_filter_external_gnss_update_command* self);
 
 mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty);
 
@@ -342,8 +342,8 @@ struct mip_filter_external_heading_update_command
     
 };
 typedef struct mip_filter_external_heading_update_command mip_filter_external_heading_update_command;
-void insert_mip_filter_external_heading_update_command(struct mip_serializer* serializer, const mip_filter_external_heading_update_command* self);
-void extract_mip_filter_external_heading_update_command(struct mip_serializer* serializer, mip_filter_external_heading_update_command* self);
+void insert_mip_filter_external_heading_update_command(struct microstrain_serializer* serializer, const mip_filter_external_heading_update_command* self);
+void extract_mip_filter_external_heading_update_command(struct microstrain_serializer* serializer, mip_filter_external_heading_update_command* self);
 
 mip_cmd_result mip_filter_external_heading_update(struct mip_interface* device, float heading, float heading_uncertainty, uint8_t type);
 
@@ -381,8 +381,8 @@ struct mip_filter_external_heading_update_with_time_command
     
 };
 typedef struct mip_filter_external_heading_update_with_time_command mip_filter_external_heading_update_with_time_command;
-void insert_mip_filter_external_heading_update_with_time_command(struct mip_serializer* serializer, const mip_filter_external_heading_update_with_time_command* self);
-void extract_mip_filter_external_heading_update_with_time_command(struct mip_serializer* serializer, mip_filter_external_heading_update_with_time_command* self);
+void insert_mip_filter_external_heading_update_with_time_command(struct microstrain_serializer* serializer, const mip_filter_external_heading_update_with_time_command* self);
+void extract_mip_filter_external_heading_update_with_time_command(struct microstrain_serializer* serializer, mip_filter_external_heading_update_with_time_command* self);
 
 mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_interface* device, double gps_time, uint16_t gps_week, float heading, float heading_uncertainty, uint8_t type);
 
@@ -412,11 +412,11 @@ struct mip_filter_tare_orientation_command
     
 };
 typedef struct mip_filter_tare_orientation_command mip_filter_tare_orientation_command;
-void insert_mip_filter_tare_orientation_command(struct mip_serializer* serializer, const mip_filter_tare_orientation_command* self);
-void extract_mip_filter_tare_orientation_command(struct mip_serializer* serializer, mip_filter_tare_orientation_command* self);
+void insert_mip_filter_tare_orientation_command(struct microstrain_serializer* serializer, const mip_filter_tare_orientation_command* self);
+void extract_mip_filter_tare_orientation_command(struct microstrain_serializer* serializer, mip_filter_tare_orientation_command* self);
 
-void insert_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serializer* serializer, const mip_filter_tare_orientation_command_mip_tare_axes self);
-void extract_mip_filter_tare_orientation_command_mip_tare_axes(struct mip_serializer* serializer, mip_filter_tare_orientation_command_mip_tare_axes* self);
+void insert_mip_filter_tare_orientation_command_mip_tare_axes(struct microstrain_serializer* serializer, const mip_filter_tare_orientation_command_mip_tare_axes self);
+void extract_mip_filter_tare_orientation_command_mip_tare_axes(struct microstrain_serializer* serializer, mip_filter_tare_orientation_command_mip_tare_axes* self);
 
 struct mip_filter_tare_orientation_response
 {
@@ -424,8 +424,8 @@ struct mip_filter_tare_orientation_response
     
 };
 typedef struct mip_filter_tare_orientation_response mip_filter_tare_orientation_response;
-void insert_mip_filter_tare_orientation_response(struct mip_serializer* serializer, const mip_filter_tare_orientation_response* self);
-void extract_mip_filter_tare_orientation_response(struct mip_serializer* serializer, mip_filter_tare_orientation_response* self);
+void insert_mip_filter_tare_orientation_response(struct microstrain_serializer* serializer, const mip_filter_tare_orientation_response* self);
+void extract_mip_filter_tare_orientation_response(struct microstrain_serializer* serializer, mip_filter_tare_orientation_response* self);
 
 mip_cmd_result mip_filter_write_tare_orientation(struct mip_interface* device, mip_filter_tare_orientation_command_mip_tare_axes axes);
 mip_cmd_result mip_filter_read_tare_orientation(struct mip_interface* device, mip_filter_tare_orientation_command_mip_tare_axes* axes_out);
@@ -454,11 +454,11 @@ struct mip_filter_vehicle_dynamics_mode_command
     
 };
 typedef struct mip_filter_vehicle_dynamics_mode_command mip_filter_vehicle_dynamics_mode_command;
-void insert_mip_filter_vehicle_dynamics_mode_command(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command* self);
-void extract_mip_filter_vehicle_dynamics_mode_command(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_command* self);
+void insert_mip_filter_vehicle_dynamics_mode_command(struct microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command* self);
+void extract_mip_filter_vehicle_dynamics_mode_command(struct microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_command* self);
 
-void insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command_dynamics_mode self);
-void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* self);
+void insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command_dynamics_mode self);
+void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* self);
 
 struct mip_filter_vehicle_dynamics_mode_response
 {
@@ -466,8 +466,8 @@ struct mip_filter_vehicle_dynamics_mode_response
     
 };
 typedef struct mip_filter_vehicle_dynamics_mode_response mip_filter_vehicle_dynamics_mode_response;
-void insert_mip_filter_vehicle_dynamics_mode_response(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_response* self);
-void extract_mip_filter_vehicle_dynamics_mode_response(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_response* self);
+void insert_mip_filter_vehicle_dynamics_mode_response(struct microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_response* self);
+void extract_mip_filter_vehicle_dynamics_mode_response(struct microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_response* self);
 
 mip_cmd_result mip_filter_write_vehicle_dynamics_mode(struct mip_interface* device, mip_filter_vehicle_dynamics_mode_command_dynamics_mode mode);
 mip_cmd_result mip_filter_read_vehicle_dynamics_mode(struct mip_interface* device, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* mode_out);
@@ -514,8 +514,8 @@ struct mip_filter_sensor_to_vehicle_rotation_euler_command
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_euler_command mip_filter_sensor_to_vehicle_rotation_euler_command;
-void insert_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_euler_command* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_euler_command(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_euler_command* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_euler_command(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_euler_command* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_euler_command(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_euler_command* self);
 
 struct mip_filter_sensor_to_vehicle_rotation_euler_response
 {
@@ -525,8 +525,8 @@ struct mip_filter_sensor_to_vehicle_rotation_euler_response
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_euler_response mip_filter_sensor_to_vehicle_rotation_euler_response;
-void insert_mip_filter_sensor_to_vehicle_rotation_euler_response(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_euler_response* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_euler_response(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_euler_response* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_euler_response(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_euler_response* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_euler_response(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_euler_response* self);
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float roll, float pitch, float yaw);
 mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_euler(struct mip_interface* device, float* roll_out, float* pitch_out, float* yaw_out);
@@ -577,8 +577,8 @@ struct mip_filter_sensor_to_vehicle_rotation_dcm_command
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_dcm_command mip_filter_sensor_to_vehicle_rotation_dcm_command;
-void insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_dcm_command* self);
 
 struct mip_filter_sensor_to_vehicle_rotation_dcm_response
 {
@@ -586,8 +586,8 @@ struct mip_filter_sensor_to_vehicle_rotation_dcm_response
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_dcm_response mip_filter_sensor_to_vehicle_rotation_dcm_response;
-void insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_dcm_response(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_dcm_response(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_dcm_response* self);
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, const float* dcm);
 mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interface* device, float* dcm_out);
@@ -637,8 +637,8 @@ struct mip_filter_sensor_to_vehicle_rotation_quaternion_command
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_quaternion_command mip_filter_sensor_to_vehicle_rotation_quaternion_command;
-void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_quaternion_command* self);
 
 struct mip_filter_sensor_to_vehicle_rotation_quaternion_response
 {
@@ -646,8 +646,8 @@ struct mip_filter_sensor_to_vehicle_rotation_quaternion_response
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_quaternion_response mip_filter_sensor_to_vehicle_rotation_quaternion_response;
-void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
-void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
+void insert_mip_filter_sensor_to_vehicle_rotation_quaternion_response(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
+void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_response(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_rotation_quaternion_response* self);
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, const float* quat);
 mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device, float* quat_out);
@@ -678,8 +678,8 @@ struct mip_filter_sensor_to_vehicle_offset_command
     
 };
 typedef struct mip_filter_sensor_to_vehicle_offset_command mip_filter_sensor_to_vehicle_offset_command;
-void insert_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_offset_command* self);
-void extract_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_offset_command* self);
+void insert_mip_filter_sensor_to_vehicle_offset_command(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_offset_command* self);
+void extract_mip_filter_sensor_to_vehicle_offset_command(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_offset_command* self);
 
 struct mip_filter_sensor_to_vehicle_offset_response
 {
@@ -687,8 +687,8 @@ struct mip_filter_sensor_to_vehicle_offset_response
     
 };
 typedef struct mip_filter_sensor_to_vehicle_offset_response mip_filter_sensor_to_vehicle_offset_response;
-void insert_mip_filter_sensor_to_vehicle_offset_response(struct mip_serializer* serializer, const mip_filter_sensor_to_vehicle_offset_response* self);
-void extract_mip_filter_sensor_to_vehicle_offset_response(struct mip_serializer* serializer, mip_filter_sensor_to_vehicle_offset_response* self);
+void insert_mip_filter_sensor_to_vehicle_offset_response(struct microstrain_serializer* serializer, const mip_filter_sensor_to_vehicle_offset_response* self);
+void extract_mip_filter_sensor_to_vehicle_offset_response(struct microstrain_serializer* serializer, mip_filter_sensor_to_vehicle_offset_response* self);
 
 mip_cmd_result mip_filter_write_sensor_to_vehicle_offset(struct mip_interface* device, const float* offset);
 mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* device, float* offset_out);
@@ -716,8 +716,8 @@ struct mip_filter_antenna_offset_command
     
 };
 typedef struct mip_filter_antenna_offset_command mip_filter_antenna_offset_command;
-void insert_mip_filter_antenna_offset_command(struct mip_serializer* serializer, const mip_filter_antenna_offset_command* self);
-void extract_mip_filter_antenna_offset_command(struct mip_serializer* serializer, mip_filter_antenna_offset_command* self);
+void insert_mip_filter_antenna_offset_command(struct microstrain_serializer* serializer, const mip_filter_antenna_offset_command* self);
+void extract_mip_filter_antenna_offset_command(struct microstrain_serializer* serializer, mip_filter_antenna_offset_command* self);
 
 struct mip_filter_antenna_offset_response
 {
@@ -725,8 +725,8 @@ struct mip_filter_antenna_offset_response
     
 };
 typedef struct mip_filter_antenna_offset_response mip_filter_antenna_offset_response;
-void insert_mip_filter_antenna_offset_response(struct mip_serializer* serializer, const mip_filter_antenna_offset_response* self);
-void extract_mip_filter_antenna_offset_response(struct mip_serializer* serializer, mip_filter_antenna_offset_response* self);
+void insert_mip_filter_antenna_offset_response(struct microstrain_serializer* serializer, const mip_filter_antenna_offset_response* self);
+void extract_mip_filter_antenna_offset_response(struct microstrain_serializer* serializer, mip_filter_antenna_offset_response* self);
 
 mip_cmd_result mip_filter_write_antenna_offset(struct mip_interface* device, const float* offset);
 mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, float* offset_out);
@@ -759,11 +759,11 @@ struct mip_filter_gnss_source_command
     
 };
 typedef struct mip_filter_gnss_source_command mip_filter_gnss_source_command;
-void insert_mip_filter_gnss_source_command(struct mip_serializer* serializer, const mip_filter_gnss_source_command* self);
-void extract_mip_filter_gnss_source_command(struct mip_serializer* serializer, mip_filter_gnss_source_command* self);
+void insert_mip_filter_gnss_source_command(struct microstrain_serializer* serializer, const mip_filter_gnss_source_command* self);
+void extract_mip_filter_gnss_source_command(struct microstrain_serializer* serializer, mip_filter_gnss_source_command* self);
 
-void insert_mip_filter_gnss_source_command_source(struct mip_serializer* serializer, const mip_filter_gnss_source_command_source self);
-void extract_mip_filter_gnss_source_command_source(struct mip_serializer* serializer, mip_filter_gnss_source_command_source* self);
+void insert_mip_filter_gnss_source_command_source(struct microstrain_serializer* serializer, const mip_filter_gnss_source_command_source self);
+void extract_mip_filter_gnss_source_command_source(struct microstrain_serializer* serializer, mip_filter_gnss_source_command_source* self);
 
 struct mip_filter_gnss_source_response
 {
@@ -771,8 +771,8 @@ struct mip_filter_gnss_source_response
     
 };
 typedef struct mip_filter_gnss_source_response mip_filter_gnss_source_response;
-void insert_mip_filter_gnss_source_response(struct mip_serializer* serializer, const mip_filter_gnss_source_response* self);
-void extract_mip_filter_gnss_source_response(struct mip_serializer* serializer, mip_filter_gnss_source_response* self);
+void insert_mip_filter_gnss_source_response(struct microstrain_serializer* serializer, const mip_filter_gnss_source_response* self);
+void extract_mip_filter_gnss_source_response(struct microstrain_serializer* serializer, mip_filter_gnss_source_response* self);
 
 mip_cmd_result mip_filter_write_gnss_source(struct mip_interface* device, mip_filter_gnss_source_command_source source);
 mip_cmd_result mip_filter_read_gnss_source(struct mip_interface* device, mip_filter_gnss_source_command_source* source_out);
@@ -816,11 +816,11 @@ struct mip_filter_heading_source_command
     
 };
 typedef struct mip_filter_heading_source_command mip_filter_heading_source_command;
-void insert_mip_filter_heading_source_command(struct mip_serializer* serializer, const mip_filter_heading_source_command* self);
-void extract_mip_filter_heading_source_command(struct mip_serializer* serializer, mip_filter_heading_source_command* self);
+void insert_mip_filter_heading_source_command(struct microstrain_serializer* serializer, const mip_filter_heading_source_command* self);
+void extract_mip_filter_heading_source_command(struct microstrain_serializer* serializer, mip_filter_heading_source_command* self);
 
-void insert_mip_filter_heading_source_command_source(struct mip_serializer* serializer, const mip_filter_heading_source_command_source self);
-void extract_mip_filter_heading_source_command_source(struct mip_serializer* serializer, mip_filter_heading_source_command_source* self);
+void insert_mip_filter_heading_source_command_source(struct microstrain_serializer* serializer, const mip_filter_heading_source_command_source self);
+void extract_mip_filter_heading_source_command_source(struct microstrain_serializer* serializer, mip_filter_heading_source_command_source* self);
 
 struct mip_filter_heading_source_response
 {
@@ -828,8 +828,8 @@ struct mip_filter_heading_source_response
     
 };
 typedef struct mip_filter_heading_source_response mip_filter_heading_source_response;
-void insert_mip_filter_heading_source_response(struct mip_serializer* serializer, const mip_filter_heading_source_response* self);
-void extract_mip_filter_heading_source_response(struct mip_serializer* serializer, mip_filter_heading_source_response* self);
+void insert_mip_filter_heading_source_response(struct microstrain_serializer* serializer, const mip_filter_heading_source_response* self);
+void extract_mip_filter_heading_source_response(struct microstrain_serializer* serializer, mip_filter_heading_source_response* self);
 
 mip_cmd_result mip_filter_write_heading_source(struct mip_interface* device, mip_filter_heading_source_command_source source);
 mip_cmd_result mip_filter_read_heading_source(struct mip_interface* device, mip_filter_heading_source_command_source* source_out);
@@ -860,8 +860,8 @@ struct mip_filter_auto_init_control_command
     
 };
 typedef struct mip_filter_auto_init_control_command mip_filter_auto_init_control_command;
-void insert_mip_filter_auto_init_control_command(struct mip_serializer* serializer, const mip_filter_auto_init_control_command* self);
-void extract_mip_filter_auto_init_control_command(struct mip_serializer* serializer, mip_filter_auto_init_control_command* self);
+void insert_mip_filter_auto_init_control_command(struct microstrain_serializer* serializer, const mip_filter_auto_init_control_command* self);
+void extract_mip_filter_auto_init_control_command(struct microstrain_serializer* serializer, mip_filter_auto_init_control_command* self);
 
 struct mip_filter_auto_init_control_response
 {
@@ -869,8 +869,8 @@ struct mip_filter_auto_init_control_response
     
 };
 typedef struct mip_filter_auto_init_control_response mip_filter_auto_init_control_response;
-void insert_mip_filter_auto_init_control_response(struct mip_serializer* serializer, const mip_filter_auto_init_control_response* self);
-void extract_mip_filter_auto_init_control_response(struct mip_serializer* serializer, mip_filter_auto_init_control_response* self);
+void insert_mip_filter_auto_init_control_response(struct microstrain_serializer* serializer, const mip_filter_auto_init_control_response* self);
+void extract_mip_filter_auto_init_control_response(struct microstrain_serializer* serializer, mip_filter_auto_init_control_response* self);
 
 mip_cmd_result mip_filter_write_auto_init_control(struct mip_interface* device, uint8_t enable);
 mip_cmd_result mip_filter_read_auto_init_control(struct mip_interface* device, uint8_t* enable_out);
@@ -899,8 +899,8 @@ struct mip_filter_accel_noise_command
     
 };
 typedef struct mip_filter_accel_noise_command mip_filter_accel_noise_command;
-void insert_mip_filter_accel_noise_command(struct mip_serializer* serializer, const mip_filter_accel_noise_command* self);
-void extract_mip_filter_accel_noise_command(struct mip_serializer* serializer, mip_filter_accel_noise_command* self);
+void insert_mip_filter_accel_noise_command(struct microstrain_serializer* serializer, const mip_filter_accel_noise_command* self);
+void extract_mip_filter_accel_noise_command(struct microstrain_serializer* serializer, mip_filter_accel_noise_command* self);
 
 struct mip_filter_accel_noise_response
 {
@@ -908,8 +908,8 @@ struct mip_filter_accel_noise_response
     
 };
 typedef struct mip_filter_accel_noise_response mip_filter_accel_noise_response;
-void insert_mip_filter_accel_noise_response(struct mip_serializer* serializer, const mip_filter_accel_noise_response* self);
-void extract_mip_filter_accel_noise_response(struct mip_serializer* serializer, mip_filter_accel_noise_response* self);
+void insert_mip_filter_accel_noise_response(struct microstrain_serializer* serializer, const mip_filter_accel_noise_response* self);
+void extract_mip_filter_accel_noise_response(struct microstrain_serializer* serializer, mip_filter_accel_noise_response* self);
 
 mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* noise_out);
@@ -938,8 +938,8 @@ struct mip_filter_gyro_noise_command
     
 };
 typedef struct mip_filter_gyro_noise_command mip_filter_gyro_noise_command;
-void insert_mip_filter_gyro_noise_command(struct mip_serializer* serializer, const mip_filter_gyro_noise_command* self);
-void extract_mip_filter_gyro_noise_command(struct mip_serializer* serializer, mip_filter_gyro_noise_command* self);
+void insert_mip_filter_gyro_noise_command(struct microstrain_serializer* serializer, const mip_filter_gyro_noise_command* self);
+void extract_mip_filter_gyro_noise_command(struct microstrain_serializer* serializer, mip_filter_gyro_noise_command* self);
 
 struct mip_filter_gyro_noise_response
 {
@@ -947,8 +947,8 @@ struct mip_filter_gyro_noise_response
     
 };
 typedef struct mip_filter_gyro_noise_response mip_filter_gyro_noise_response;
-void insert_mip_filter_gyro_noise_response(struct mip_serializer* serializer, const mip_filter_gyro_noise_response* self);
-void extract_mip_filter_gyro_noise_response(struct mip_serializer* serializer, mip_filter_gyro_noise_response* self);
+void insert_mip_filter_gyro_noise_response(struct microstrain_serializer* serializer, const mip_filter_gyro_noise_response* self);
+void extract_mip_filter_gyro_noise_response(struct microstrain_serializer* serializer, mip_filter_gyro_noise_response* self);
 
 mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* noise_out);
@@ -975,8 +975,8 @@ struct mip_filter_accel_bias_model_command
     
 };
 typedef struct mip_filter_accel_bias_model_command mip_filter_accel_bias_model_command;
-void insert_mip_filter_accel_bias_model_command(struct mip_serializer* serializer, const mip_filter_accel_bias_model_command* self);
-void extract_mip_filter_accel_bias_model_command(struct mip_serializer* serializer, mip_filter_accel_bias_model_command* self);
+void insert_mip_filter_accel_bias_model_command(struct microstrain_serializer* serializer, const mip_filter_accel_bias_model_command* self);
+void extract_mip_filter_accel_bias_model_command(struct microstrain_serializer* serializer, mip_filter_accel_bias_model_command* self);
 
 struct mip_filter_accel_bias_model_response
 {
@@ -985,8 +985,8 @@ struct mip_filter_accel_bias_model_response
     
 };
 typedef struct mip_filter_accel_bias_model_response mip_filter_accel_bias_model_response;
-void insert_mip_filter_accel_bias_model_response(struct mip_serializer* serializer, const mip_filter_accel_bias_model_response* self);
-void extract_mip_filter_accel_bias_model_response(struct mip_serializer* serializer, mip_filter_accel_bias_model_response* self);
+void insert_mip_filter_accel_bias_model_response(struct microstrain_serializer* serializer, const mip_filter_accel_bias_model_response* self);
+void extract_mip_filter_accel_bias_model_response(struct microstrain_serializer* serializer, mip_filter_accel_bias_model_response* self);
 
 mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, const float* beta, const float* noise);
 mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, float* beta_out, float* noise_out);
@@ -1013,8 +1013,8 @@ struct mip_filter_gyro_bias_model_command
     
 };
 typedef struct mip_filter_gyro_bias_model_command mip_filter_gyro_bias_model_command;
-void insert_mip_filter_gyro_bias_model_command(struct mip_serializer* serializer, const mip_filter_gyro_bias_model_command* self);
-void extract_mip_filter_gyro_bias_model_command(struct mip_serializer* serializer, mip_filter_gyro_bias_model_command* self);
+void insert_mip_filter_gyro_bias_model_command(struct microstrain_serializer* serializer, const mip_filter_gyro_bias_model_command* self);
+void extract_mip_filter_gyro_bias_model_command(struct microstrain_serializer* serializer, mip_filter_gyro_bias_model_command* self);
 
 struct mip_filter_gyro_bias_model_response
 {
@@ -1023,8 +1023,8 @@ struct mip_filter_gyro_bias_model_response
     
 };
 typedef struct mip_filter_gyro_bias_model_response mip_filter_gyro_bias_model_response;
-void insert_mip_filter_gyro_bias_model_response(struct mip_serializer* serializer, const mip_filter_gyro_bias_model_response* self);
-void extract_mip_filter_gyro_bias_model_response(struct mip_serializer* serializer, mip_filter_gyro_bias_model_response* self);
+void insert_mip_filter_gyro_bias_model_response(struct microstrain_serializer* serializer, const mip_filter_gyro_bias_model_response* self);
+void extract_mip_filter_gyro_bias_model_response(struct microstrain_serializer* serializer, mip_filter_gyro_bias_model_response* self);
 
 mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, const float* beta, const float* noise);
 mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, float* beta_out, float* noise_out);
@@ -1055,11 +1055,11 @@ struct mip_filter_altitude_aiding_command
     
 };
 typedef struct mip_filter_altitude_aiding_command mip_filter_altitude_aiding_command;
-void insert_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, const mip_filter_altitude_aiding_command* self);
-void extract_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, mip_filter_altitude_aiding_command* self);
+void insert_mip_filter_altitude_aiding_command(struct microstrain_serializer* serializer, const mip_filter_altitude_aiding_command* self);
+void extract_mip_filter_altitude_aiding_command(struct microstrain_serializer* serializer, mip_filter_altitude_aiding_command* self);
 
-void insert_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self);
-void extract_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self);
+void insert_mip_filter_altitude_aiding_command_aiding_selector(struct microstrain_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self);
+void extract_mip_filter_altitude_aiding_command_aiding_selector(struct microstrain_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self);
 
 struct mip_filter_altitude_aiding_response
 {
@@ -1067,8 +1067,8 @@ struct mip_filter_altitude_aiding_response
     
 };
 typedef struct mip_filter_altitude_aiding_response mip_filter_altitude_aiding_response;
-void insert_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, const mip_filter_altitude_aiding_response* self);
-void extract_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, mip_filter_altitude_aiding_response* self);
+void insert_mip_filter_altitude_aiding_response(struct microstrain_serializer* serializer, const mip_filter_altitude_aiding_response* self);
+void extract_mip_filter_altitude_aiding_response(struct microstrain_serializer* serializer, mip_filter_altitude_aiding_response* self);
 
 mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector selector);
 mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector* selector_out);
@@ -1096,11 +1096,11 @@ struct mip_filter_pitch_roll_aiding_command
     
 };
 typedef struct mip_filter_pitch_roll_aiding_command mip_filter_pitch_roll_aiding_command;
-void insert_mip_filter_pitch_roll_aiding_command(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command* self);
-void extract_mip_filter_pitch_roll_aiding_command(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_command* self);
+void insert_mip_filter_pitch_roll_aiding_command(struct microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_command* self);
+void extract_mip_filter_pitch_roll_aiding_command(struct microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_command* self);
 
-void insert_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self);
-void extract_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self);
+void insert_mip_filter_pitch_roll_aiding_command_aiding_source(struct microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self);
+void extract_mip_filter_pitch_roll_aiding_command_aiding_source(struct microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self);
 
 struct mip_filter_pitch_roll_aiding_response
 {
@@ -1108,8 +1108,8 @@ struct mip_filter_pitch_roll_aiding_response
     
 };
 typedef struct mip_filter_pitch_roll_aiding_response mip_filter_pitch_roll_aiding_response;
-void insert_mip_filter_pitch_roll_aiding_response(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_response* self);
-void extract_mip_filter_pitch_roll_aiding_response(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_response* self);
+void insert_mip_filter_pitch_roll_aiding_response(struct microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_response* self);
+void extract_mip_filter_pitch_roll_aiding_response(struct microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_response* self);
 
 mip_cmd_result mip_filter_write_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source source);
 mip_cmd_result mip_filter_read_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source* source_out);
@@ -1134,8 +1134,8 @@ struct mip_filter_auto_zupt_command
     
 };
 typedef struct mip_filter_auto_zupt_command mip_filter_auto_zupt_command;
-void insert_mip_filter_auto_zupt_command(struct mip_serializer* serializer, const mip_filter_auto_zupt_command* self);
-void extract_mip_filter_auto_zupt_command(struct mip_serializer* serializer, mip_filter_auto_zupt_command* self);
+void insert_mip_filter_auto_zupt_command(struct microstrain_serializer* serializer, const mip_filter_auto_zupt_command* self);
+void extract_mip_filter_auto_zupt_command(struct microstrain_serializer* serializer, mip_filter_auto_zupt_command* self);
 
 struct mip_filter_auto_zupt_response
 {
@@ -1144,8 +1144,8 @@ struct mip_filter_auto_zupt_response
     
 };
 typedef struct mip_filter_auto_zupt_response mip_filter_auto_zupt_response;
-void insert_mip_filter_auto_zupt_response(struct mip_serializer* serializer, const mip_filter_auto_zupt_response* self);
-void extract_mip_filter_auto_zupt_response(struct mip_serializer* serializer, mip_filter_auto_zupt_response* self);
+void insert_mip_filter_auto_zupt_response(struct microstrain_serializer* serializer, const mip_filter_auto_zupt_response* self);
+void extract_mip_filter_auto_zupt_response(struct microstrain_serializer* serializer, mip_filter_auto_zupt_response* self);
 
 mip_cmd_result mip_filter_write_auto_zupt(struct mip_interface* device, uint8_t enable, float threshold);
 mip_cmd_result mip_filter_read_auto_zupt(struct mip_interface* device, uint8_t* enable_out, float* threshold_out);
@@ -1171,8 +1171,8 @@ struct mip_filter_auto_angular_zupt_command
     
 };
 typedef struct mip_filter_auto_angular_zupt_command mip_filter_auto_angular_zupt_command;
-void insert_mip_filter_auto_angular_zupt_command(struct mip_serializer* serializer, const mip_filter_auto_angular_zupt_command* self);
-void extract_mip_filter_auto_angular_zupt_command(struct mip_serializer* serializer, mip_filter_auto_angular_zupt_command* self);
+void insert_mip_filter_auto_angular_zupt_command(struct microstrain_serializer* serializer, const mip_filter_auto_angular_zupt_command* self);
+void extract_mip_filter_auto_angular_zupt_command(struct microstrain_serializer* serializer, mip_filter_auto_angular_zupt_command* self);
 
 struct mip_filter_auto_angular_zupt_response
 {
@@ -1181,8 +1181,8 @@ struct mip_filter_auto_angular_zupt_response
     
 };
 typedef struct mip_filter_auto_angular_zupt_response mip_filter_auto_angular_zupt_response;
-void insert_mip_filter_auto_angular_zupt_response(struct mip_serializer* serializer, const mip_filter_auto_angular_zupt_response* self);
-void extract_mip_filter_auto_angular_zupt_response(struct mip_serializer* serializer, mip_filter_auto_angular_zupt_response* self);
+void insert_mip_filter_auto_angular_zupt_response(struct microstrain_serializer* serializer, const mip_filter_auto_angular_zupt_response* self);
+void extract_mip_filter_auto_angular_zupt_response(struct microstrain_serializer* serializer, mip_filter_auto_angular_zupt_response* self);
 
 mip_cmd_result mip_filter_write_auto_angular_zupt(struct mip_interface* device, uint8_t enable, float threshold);
 mip_cmd_result mip_filter_read_auto_angular_zupt(struct mip_interface* device, uint8_t* enable_out, float* threshold_out);
@@ -1226,8 +1226,8 @@ struct mip_filter_mag_capture_auto_cal_command
     
 };
 typedef struct mip_filter_mag_capture_auto_cal_command mip_filter_mag_capture_auto_cal_command;
-void insert_mip_filter_mag_capture_auto_cal_command(struct mip_serializer* serializer, const mip_filter_mag_capture_auto_cal_command* self);
-void extract_mip_filter_mag_capture_auto_cal_command(struct mip_serializer* serializer, mip_filter_mag_capture_auto_cal_command* self);
+void insert_mip_filter_mag_capture_auto_cal_command(struct microstrain_serializer* serializer, const mip_filter_mag_capture_auto_cal_command* self);
+void extract_mip_filter_mag_capture_auto_cal_command(struct microstrain_serializer* serializer, mip_filter_mag_capture_auto_cal_command* self);
 
 mip_cmd_result mip_filter_write_mag_capture_auto_cal(struct mip_interface* device);
 mip_cmd_result mip_filter_save_mag_capture_auto_cal(struct mip_interface* device);
@@ -1252,8 +1252,8 @@ struct mip_filter_gravity_noise_command
     
 };
 typedef struct mip_filter_gravity_noise_command mip_filter_gravity_noise_command;
-void insert_mip_filter_gravity_noise_command(struct mip_serializer* serializer, const mip_filter_gravity_noise_command* self);
-void extract_mip_filter_gravity_noise_command(struct mip_serializer* serializer, mip_filter_gravity_noise_command* self);
+void insert_mip_filter_gravity_noise_command(struct microstrain_serializer* serializer, const mip_filter_gravity_noise_command* self);
+void extract_mip_filter_gravity_noise_command(struct microstrain_serializer* serializer, mip_filter_gravity_noise_command* self);
 
 struct mip_filter_gravity_noise_response
 {
@@ -1261,8 +1261,8 @@ struct mip_filter_gravity_noise_response
     
 };
 typedef struct mip_filter_gravity_noise_response mip_filter_gravity_noise_response;
-void insert_mip_filter_gravity_noise_response(struct mip_serializer* serializer, const mip_filter_gravity_noise_response* self);
-void extract_mip_filter_gravity_noise_response(struct mip_serializer* serializer, mip_filter_gravity_noise_response* self);
+void insert_mip_filter_gravity_noise_response(struct microstrain_serializer* serializer, const mip_filter_gravity_noise_response* self);
+void extract_mip_filter_gravity_noise_response(struct microstrain_serializer* serializer, mip_filter_gravity_noise_response* self);
 
 mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, float* noise_out);
@@ -1290,8 +1290,8 @@ struct mip_filter_pressure_altitude_noise_command
     
 };
 typedef struct mip_filter_pressure_altitude_noise_command mip_filter_pressure_altitude_noise_command;
-void insert_mip_filter_pressure_altitude_noise_command(struct mip_serializer* serializer, const mip_filter_pressure_altitude_noise_command* self);
-void extract_mip_filter_pressure_altitude_noise_command(struct mip_serializer* serializer, mip_filter_pressure_altitude_noise_command* self);
+void insert_mip_filter_pressure_altitude_noise_command(struct microstrain_serializer* serializer, const mip_filter_pressure_altitude_noise_command* self);
+void extract_mip_filter_pressure_altitude_noise_command(struct microstrain_serializer* serializer, mip_filter_pressure_altitude_noise_command* self);
 
 struct mip_filter_pressure_altitude_noise_response
 {
@@ -1299,8 +1299,8 @@ struct mip_filter_pressure_altitude_noise_response
     
 };
 typedef struct mip_filter_pressure_altitude_noise_response mip_filter_pressure_altitude_noise_response;
-void insert_mip_filter_pressure_altitude_noise_response(struct mip_serializer* serializer, const mip_filter_pressure_altitude_noise_response* self);
-void extract_mip_filter_pressure_altitude_noise_response(struct mip_serializer* serializer, mip_filter_pressure_altitude_noise_response* self);
+void insert_mip_filter_pressure_altitude_noise_response(struct microstrain_serializer* serializer, const mip_filter_pressure_altitude_noise_response* self);
+void extract_mip_filter_pressure_altitude_noise_response(struct microstrain_serializer* serializer, mip_filter_pressure_altitude_noise_response* self);
 
 mip_cmd_result mip_filter_write_pressure_altitude_noise(struct mip_interface* device, float noise);
 mip_cmd_result mip_filter_read_pressure_altitude_noise(struct mip_interface* device, float* noise_out);
@@ -1330,8 +1330,8 @@ struct mip_filter_hard_iron_offset_noise_command
     
 };
 typedef struct mip_filter_hard_iron_offset_noise_command mip_filter_hard_iron_offset_noise_command;
-void insert_mip_filter_hard_iron_offset_noise_command(struct mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_command* self);
-void extract_mip_filter_hard_iron_offset_noise_command(struct mip_serializer* serializer, mip_filter_hard_iron_offset_noise_command* self);
+void insert_mip_filter_hard_iron_offset_noise_command(struct microstrain_serializer* serializer, const mip_filter_hard_iron_offset_noise_command* self);
+void extract_mip_filter_hard_iron_offset_noise_command(struct microstrain_serializer* serializer, mip_filter_hard_iron_offset_noise_command* self);
 
 struct mip_filter_hard_iron_offset_noise_response
 {
@@ -1339,8 +1339,8 @@ struct mip_filter_hard_iron_offset_noise_response
     
 };
 typedef struct mip_filter_hard_iron_offset_noise_response mip_filter_hard_iron_offset_noise_response;
-void insert_mip_filter_hard_iron_offset_noise_response(struct mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self);
-void extract_mip_filter_hard_iron_offset_noise_response(struct mip_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self);
+void insert_mip_filter_hard_iron_offset_noise_response(struct microstrain_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self);
+void extract_mip_filter_hard_iron_offset_noise_response(struct microstrain_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self);
 
 mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, float* noise_out);
@@ -1369,8 +1369,8 @@ struct mip_filter_soft_iron_matrix_noise_command
     
 };
 typedef struct mip_filter_soft_iron_matrix_noise_command mip_filter_soft_iron_matrix_noise_command;
-void insert_mip_filter_soft_iron_matrix_noise_command(struct mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_command* self);
-void extract_mip_filter_soft_iron_matrix_noise_command(struct mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_command* self);
+void insert_mip_filter_soft_iron_matrix_noise_command(struct microstrain_serializer* serializer, const mip_filter_soft_iron_matrix_noise_command* self);
+void extract_mip_filter_soft_iron_matrix_noise_command(struct microstrain_serializer* serializer, mip_filter_soft_iron_matrix_noise_command* self);
 
 struct mip_filter_soft_iron_matrix_noise_response
 {
@@ -1378,8 +1378,8 @@ struct mip_filter_soft_iron_matrix_noise_response
     
 };
 typedef struct mip_filter_soft_iron_matrix_noise_response mip_filter_soft_iron_matrix_noise_response;
-void insert_mip_filter_soft_iron_matrix_noise_response(struct mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_response* self);
-void extract_mip_filter_soft_iron_matrix_noise_response(struct mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_response* self);
+void insert_mip_filter_soft_iron_matrix_noise_response(struct microstrain_serializer* serializer, const mip_filter_soft_iron_matrix_noise_response* self);
+void extract_mip_filter_soft_iron_matrix_noise_response(struct microstrain_serializer* serializer, mip_filter_soft_iron_matrix_noise_response* self);
 
 mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* device, float* noise_out);
@@ -1408,8 +1408,8 @@ struct mip_filter_mag_noise_command
     
 };
 typedef struct mip_filter_mag_noise_command mip_filter_mag_noise_command;
-void insert_mip_filter_mag_noise_command(struct mip_serializer* serializer, const mip_filter_mag_noise_command* self);
-void extract_mip_filter_mag_noise_command(struct mip_serializer* serializer, mip_filter_mag_noise_command* self);
+void insert_mip_filter_mag_noise_command(struct microstrain_serializer* serializer, const mip_filter_mag_noise_command* self);
+void extract_mip_filter_mag_noise_command(struct microstrain_serializer* serializer, mip_filter_mag_noise_command* self);
 
 struct mip_filter_mag_noise_response
 {
@@ -1417,8 +1417,8 @@ struct mip_filter_mag_noise_response
     
 };
 typedef struct mip_filter_mag_noise_response mip_filter_mag_noise_response;
-void insert_mip_filter_mag_noise_response(struct mip_serializer* serializer, const mip_filter_mag_noise_response* self);
-void extract_mip_filter_mag_noise_response(struct mip_serializer* serializer, mip_filter_mag_noise_response* self);
+void insert_mip_filter_mag_noise_response(struct microstrain_serializer* serializer, const mip_filter_mag_noise_response* self);
+void extract_mip_filter_mag_noise_response(struct microstrain_serializer* serializer, mip_filter_mag_noise_response* self);
 
 mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, const float* noise);
 mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, float* noise_out);
@@ -1446,8 +1446,8 @@ struct mip_filter_inclination_source_command
     
 };
 typedef struct mip_filter_inclination_source_command mip_filter_inclination_source_command;
-void insert_mip_filter_inclination_source_command(struct mip_serializer* serializer, const mip_filter_inclination_source_command* self);
-void extract_mip_filter_inclination_source_command(struct mip_serializer* serializer, mip_filter_inclination_source_command* self);
+void insert_mip_filter_inclination_source_command(struct microstrain_serializer* serializer, const mip_filter_inclination_source_command* self);
+void extract_mip_filter_inclination_source_command(struct microstrain_serializer* serializer, mip_filter_inclination_source_command* self);
 
 struct mip_filter_inclination_source_response
 {
@@ -1456,8 +1456,8 @@ struct mip_filter_inclination_source_response
     
 };
 typedef struct mip_filter_inclination_source_response mip_filter_inclination_source_response;
-void insert_mip_filter_inclination_source_response(struct mip_serializer* serializer, const mip_filter_inclination_source_response* self);
-void extract_mip_filter_inclination_source_response(struct mip_serializer* serializer, mip_filter_inclination_source_response* self);
+void insert_mip_filter_inclination_source_response(struct microstrain_serializer* serializer, const mip_filter_inclination_source_response* self);
+void extract_mip_filter_inclination_source_response(struct microstrain_serializer* serializer, mip_filter_inclination_source_response* self);
 
 mip_cmd_result mip_filter_write_inclination_source(struct mip_interface* device, mip_filter_mag_param_source source, float inclination);
 mip_cmd_result mip_filter_read_inclination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* inclination_out);
@@ -1485,8 +1485,8 @@ struct mip_filter_magnetic_declination_source_command
     
 };
 typedef struct mip_filter_magnetic_declination_source_command mip_filter_magnetic_declination_source_command;
-void insert_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_command* self);
-void extract_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_command* self);
+void insert_mip_filter_magnetic_declination_source_command(struct microstrain_serializer* serializer, const mip_filter_magnetic_declination_source_command* self);
+void extract_mip_filter_magnetic_declination_source_command(struct microstrain_serializer* serializer, mip_filter_magnetic_declination_source_command* self);
 
 struct mip_filter_magnetic_declination_source_response
 {
@@ -1495,8 +1495,8 @@ struct mip_filter_magnetic_declination_source_response
     
 };
 typedef struct mip_filter_magnetic_declination_source_response mip_filter_magnetic_declination_source_response;
-void insert_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_response* self);
-void extract_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_response* self);
+void insert_mip_filter_magnetic_declination_source_response(struct microstrain_serializer* serializer, const mip_filter_magnetic_declination_source_response* self);
+void extract_mip_filter_magnetic_declination_source_response(struct microstrain_serializer* serializer, mip_filter_magnetic_declination_source_response* self);
 
 mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source source, float declination);
 mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* declination_out);
@@ -1523,8 +1523,8 @@ struct mip_filter_mag_field_magnitude_source_command
     
 };
 typedef struct mip_filter_mag_field_magnitude_source_command mip_filter_mag_field_magnitude_source_command;
-void insert_mip_filter_mag_field_magnitude_source_command(struct mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_command* self);
-void extract_mip_filter_mag_field_magnitude_source_command(struct mip_serializer* serializer, mip_filter_mag_field_magnitude_source_command* self);
+void insert_mip_filter_mag_field_magnitude_source_command(struct microstrain_serializer* serializer, const mip_filter_mag_field_magnitude_source_command* self);
+void extract_mip_filter_mag_field_magnitude_source_command(struct microstrain_serializer* serializer, mip_filter_mag_field_magnitude_source_command* self);
 
 struct mip_filter_mag_field_magnitude_source_response
 {
@@ -1533,8 +1533,8 @@ struct mip_filter_mag_field_magnitude_source_response
     
 };
 typedef struct mip_filter_mag_field_magnitude_source_response mip_filter_mag_field_magnitude_source_response;
-void insert_mip_filter_mag_field_magnitude_source_response(struct mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_response* self);
-void extract_mip_filter_mag_field_magnitude_source_response(struct mip_serializer* serializer, mip_filter_mag_field_magnitude_source_response* self);
+void insert_mip_filter_mag_field_magnitude_source_response(struct microstrain_serializer* serializer, const mip_filter_mag_field_magnitude_source_response* self);
+void extract_mip_filter_mag_field_magnitude_source_response(struct microstrain_serializer* serializer, mip_filter_mag_field_magnitude_source_response* self);
 
 mip_cmd_result mip_filter_write_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source source, float magnitude);
 mip_cmd_result mip_filter_read_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* magnitude_out);
@@ -1563,8 +1563,8 @@ struct mip_filter_reference_position_command
     
 };
 typedef struct mip_filter_reference_position_command mip_filter_reference_position_command;
-void insert_mip_filter_reference_position_command(struct mip_serializer* serializer, const mip_filter_reference_position_command* self);
-void extract_mip_filter_reference_position_command(struct mip_serializer* serializer, mip_filter_reference_position_command* self);
+void insert_mip_filter_reference_position_command(struct microstrain_serializer* serializer, const mip_filter_reference_position_command* self);
+void extract_mip_filter_reference_position_command(struct microstrain_serializer* serializer, mip_filter_reference_position_command* self);
 
 struct mip_filter_reference_position_response
 {
@@ -1575,8 +1575,8 @@ struct mip_filter_reference_position_response
     
 };
 typedef struct mip_filter_reference_position_response mip_filter_reference_position_response;
-void insert_mip_filter_reference_position_response(struct mip_serializer* serializer, const mip_filter_reference_position_response* self);
-void extract_mip_filter_reference_position_response(struct mip_serializer* serializer, mip_filter_reference_position_response* self);
+void insert_mip_filter_reference_position_response(struct microstrain_serializer* serializer, const mip_filter_reference_position_response* self);
+void extract_mip_filter_reference_position_response(struct microstrain_serializer* serializer, mip_filter_reference_position_response* self);
 
 mip_cmd_result mip_filter_write_reference_position(struct mip_interface* device, bool enable, double latitude, double longitude, double altitude);
 mip_cmd_result mip_filter_read_reference_position(struct mip_interface* device, bool* enable_out, double* latitude_out, double* longitude_out, double* altitude_out);
@@ -1618,8 +1618,8 @@ struct mip_filter_accel_magnitude_error_adaptive_measurement_command
     
 };
 typedef struct mip_filter_accel_magnitude_error_adaptive_measurement_command mip_filter_accel_magnitude_error_adaptive_measurement_command;
-void insert_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
-void extract_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
+void insert_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct microstrain_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
+void extract_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct microstrain_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
 
 struct mip_filter_accel_magnitude_error_adaptive_measurement_response
 {
@@ -1633,8 +1633,8 @@ struct mip_filter_accel_magnitude_error_adaptive_measurement_response
     
 };
 typedef struct mip_filter_accel_magnitude_error_adaptive_measurement_response mip_filter_accel_magnitude_error_adaptive_measurement_response;
-void insert_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
-void extract_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
+void insert_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct microstrain_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
+void extract_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct microstrain_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
 
 mip_cmd_result mip_filter_write_accel_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty);
 mip_cmd_result mip_filter_read_accel_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement* adaptive_measurement_out, float* frequency_out, float* low_limit_out, float* high_limit_out, float* low_limit_uncertainty_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
@@ -1671,8 +1671,8 @@ struct mip_filter_mag_magnitude_error_adaptive_measurement_command
     
 };
 typedef struct mip_filter_mag_magnitude_error_adaptive_measurement_command mip_filter_mag_magnitude_error_adaptive_measurement_command;
-void insert_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
-void extract_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
+void insert_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct microstrain_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
+void extract_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct microstrain_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
 
 struct mip_filter_mag_magnitude_error_adaptive_measurement_response
 {
@@ -1686,8 +1686,8 @@ struct mip_filter_mag_magnitude_error_adaptive_measurement_response
     
 };
 typedef struct mip_filter_mag_magnitude_error_adaptive_measurement_response mip_filter_mag_magnitude_error_adaptive_measurement_response;
-void insert_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
-void extract_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
+void insert_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct microstrain_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
+void extract_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct microstrain_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
 
 mip_cmd_result mip_filter_write_mag_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty);
 mip_cmd_result mip_filter_read_mag_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement* adaptive_measurement_out, float* frequency_out, float* low_limit_out, float* high_limit_out, float* low_limit_uncertainty_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
@@ -1724,8 +1724,8 @@ struct mip_filter_mag_dip_angle_error_adaptive_measurement_command
     
 };
 typedef struct mip_filter_mag_dip_angle_error_adaptive_measurement_command mip_filter_mag_dip_angle_error_adaptive_measurement_command;
-void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
-void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
+void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct microstrain_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
+void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct microstrain_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
 
 struct mip_filter_mag_dip_angle_error_adaptive_measurement_response
 {
@@ -1737,8 +1737,8 @@ struct mip_filter_mag_dip_angle_error_adaptive_measurement_response
     
 };
 typedef struct mip_filter_mag_dip_angle_error_adaptive_measurement_response mip_filter_mag_dip_angle_error_adaptive_measurement_response;
-void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
-void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
+void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct microstrain_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
+void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct microstrain_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
 
 mip_cmd_result mip_filter_write_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device, bool enable, float frequency, float high_limit, float high_limit_uncertainty, float minimum_uncertainty);
 mip_cmd_result mip_filter_read_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device, bool* enable_out, float* frequency_out, float* high_limit_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
@@ -1776,11 +1776,11 @@ struct mip_filter_aiding_measurement_enable_command
     
 };
 typedef struct mip_filter_aiding_measurement_enable_command mip_filter_aiding_measurement_enable_command;
-void insert_mip_filter_aiding_measurement_enable_command(struct mip_serializer* serializer, const mip_filter_aiding_measurement_enable_command* self);
-void extract_mip_filter_aiding_measurement_enable_command(struct mip_serializer* serializer, mip_filter_aiding_measurement_enable_command* self);
+void insert_mip_filter_aiding_measurement_enable_command(struct microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_command* self);
+void extract_mip_filter_aiding_measurement_enable_command(struct microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_command* self);
 
-void insert_mip_filter_aiding_measurement_enable_command_aiding_source(struct mip_serializer* serializer, const mip_filter_aiding_measurement_enable_command_aiding_source self);
-void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct mip_serializer* serializer, mip_filter_aiding_measurement_enable_command_aiding_source* self);
+void insert_mip_filter_aiding_measurement_enable_command_aiding_source(struct microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_command_aiding_source self);
+void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_command_aiding_source* self);
 
 struct mip_filter_aiding_measurement_enable_response
 {
@@ -1789,8 +1789,8 @@ struct mip_filter_aiding_measurement_enable_response
     
 };
 typedef struct mip_filter_aiding_measurement_enable_response mip_filter_aiding_measurement_enable_response;
-void insert_mip_filter_aiding_measurement_enable_response(struct mip_serializer* serializer, const mip_filter_aiding_measurement_enable_response* self);
-void extract_mip_filter_aiding_measurement_enable_response(struct mip_serializer* serializer, mip_filter_aiding_measurement_enable_response* self);
+void insert_mip_filter_aiding_measurement_enable_response(struct microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_response* self);
+void extract_mip_filter_aiding_measurement_enable_response(struct microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_response* self);
 
 mip_cmd_result mip_filter_write_aiding_measurement_enable(struct mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool enable);
 mip_cmd_result mip_filter_read_aiding_measurement_enable(struct mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source, bool* enable_out);
@@ -1829,8 +1829,8 @@ struct mip_filter_kinematic_constraint_command
     
 };
 typedef struct mip_filter_kinematic_constraint_command mip_filter_kinematic_constraint_command;
-void insert_mip_filter_kinematic_constraint_command(struct mip_serializer* serializer, const mip_filter_kinematic_constraint_command* self);
-void extract_mip_filter_kinematic_constraint_command(struct mip_serializer* serializer, mip_filter_kinematic_constraint_command* self);
+void insert_mip_filter_kinematic_constraint_command(struct microstrain_serializer* serializer, const mip_filter_kinematic_constraint_command* self);
+void extract_mip_filter_kinematic_constraint_command(struct microstrain_serializer* serializer, mip_filter_kinematic_constraint_command* self);
 
 struct mip_filter_kinematic_constraint_response
 {
@@ -1840,8 +1840,8 @@ struct mip_filter_kinematic_constraint_response
     
 };
 typedef struct mip_filter_kinematic_constraint_response mip_filter_kinematic_constraint_response;
-void insert_mip_filter_kinematic_constraint_response(struct mip_serializer* serializer, const mip_filter_kinematic_constraint_response* self);
-void extract_mip_filter_kinematic_constraint_response(struct mip_serializer* serializer, mip_filter_kinematic_constraint_response* self);
+void insert_mip_filter_kinematic_constraint_response(struct microstrain_serializer* serializer, const mip_filter_kinematic_constraint_response* self);
+void extract_mip_filter_kinematic_constraint_response(struct microstrain_serializer* serializer, mip_filter_kinematic_constraint_response* self);
 
 mip_cmd_result mip_filter_write_kinematic_constraint(struct mip_interface* device, uint8_t acceleration_constraint_selection, uint8_t velocity_constraint_selection, uint8_t angular_constraint_selection);
 mip_cmd_result mip_filter_read_kinematic_constraint(struct mip_interface* device, uint8_t* acceleration_constraint_selection_out, uint8_t* velocity_constraint_selection_out, uint8_t* angular_constraint_selection_out);
@@ -1890,14 +1890,14 @@ struct mip_filter_initialization_configuration_command
     
 };
 typedef struct mip_filter_initialization_configuration_command mip_filter_initialization_configuration_command;
-void insert_mip_filter_initialization_configuration_command(struct mip_serializer* serializer, const mip_filter_initialization_configuration_command* self);
-void extract_mip_filter_initialization_configuration_command(struct mip_serializer* serializer, mip_filter_initialization_configuration_command* self);
+void insert_mip_filter_initialization_configuration_command(struct microstrain_serializer* serializer, const mip_filter_initialization_configuration_command* self);
+void extract_mip_filter_initialization_configuration_command(struct microstrain_serializer* serializer, mip_filter_initialization_configuration_command* self);
 
-void insert_mip_filter_initialization_configuration_command_alignment_selector(struct mip_serializer* serializer, const mip_filter_initialization_configuration_command_alignment_selector self);
-void extract_mip_filter_initialization_configuration_command_alignment_selector(struct mip_serializer* serializer, mip_filter_initialization_configuration_command_alignment_selector* self);
+void insert_mip_filter_initialization_configuration_command_alignment_selector(struct microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_alignment_selector self);
+void extract_mip_filter_initialization_configuration_command_alignment_selector(struct microstrain_serializer* serializer, mip_filter_initialization_configuration_command_alignment_selector* self);
 
-void insert_mip_filter_initialization_configuration_command_initial_condition_source(struct mip_serializer* serializer, const mip_filter_initialization_configuration_command_initial_condition_source self);
-void extract_mip_filter_initialization_configuration_command_initial_condition_source(struct mip_serializer* serializer, mip_filter_initialization_configuration_command_initial_condition_source* self);
+void insert_mip_filter_initialization_configuration_command_initial_condition_source(struct microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_initial_condition_source self);
+void extract_mip_filter_initialization_configuration_command_initial_condition_source(struct microstrain_serializer* serializer, mip_filter_initialization_configuration_command_initial_condition_source* self);
 
 struct mip_filter_initialization_configuration_response
 {
@@ -1913,8 +1913,8 @@ struct mip_filter_initialization_configuration_response
     
 };
 typedef struct mip_filter_initialization_configuration_response mip_filter_initialization_configuration_response;
-void insert_mip_filter_initialization_configuration_response(struct mip_serializer* serializer, const mip_filter_initialization_configuration_response* self);
-void extract_mip_filter_initialization_configuration_response(struct mip_serializer* serializer, mip_filter_initialization_configuration_response* self);
+void insert_mip_filter_initialization_configuration_response(struct microstrain_serializer* serializer, const mip_filter_initialization_configuration_response* self);
+void extract_mip_filter_initialization_configuration_response(struct microstrain_serializer* serializer, mip_filter_initialization_configuration_response* self);
 
 mip_cmd_result mip_filter_write_initialization_configuration(struct mip_interface* device, uint8_t wait_for_run_command, mip_filter_initialization_configuration_command_initial_condition_source initial_cond_src, mip_filter_initialization_configuration_command_alignment_selector auto_heading_alignment_selector, float initial_heading, float initial_pitch, float initial_roll, const float* initial_position, const float* initial_velocity, mip_filter_reference_frame reference_frame_selector);
 mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface* device, uint8_t* wait_for_run_command_out, mip_filter_initialization_configuration_command_initial_condition_source* initial_cond_src_out, mip_filter_initialization_configuration_command_alignment_selector* auto_heading_alignment_selector_out, float* initial_heading_out, float* initial_pitch_out, float* initial_roll_out, float* initial_position_out, float* initial_velocity_out, mip_filter_reference_frame* reference_frame_selector_out);
@@ -1938,8 +1938,8 @@ struct mip_filter_adaptive_filter_options_command
     
 };
 typedef struct mip_filter_adaptive_filter_options_command mip_filter_adaptive_filter_options_command;
-void insert_mip_filter_adaptive_filter_options_command(struct mip_serializer* serializer, const mip_filter_adaptive_filter_options_command* self);
-void extract_mip_filter_adaptive_filter_options_command(struct mip_serializer* serializer, mip_filter_adaptive_filter_options_command* self);
+void insert_mip_filter_adaptive_filter_options_command(struct microstrain_serializer* serializer, const mip_filter_adaptive_filter_options_command* self);
+void extract_mip_filter_adaptive_filter_options_command(struct microstrain_serializer* serializer, mip_filter_adaptive_filter_options_command* self);
 
 struct mip_filter_adaptive_filter_options_response
 {
@@ -1948,8 +1948,8 @@ struct mip_filter_adaptive_filter_options_response
     
 };
 typedef struct mip_filter_adaptive_filter_options_response mip_filter_adaptive_filter_options_response;
-void insert_mip_filter_adaptive_filter_options_response(struct mip_serializer* serializer, const mip_filter_adaptive_filter_options_response* self);
-void extract_mip_filter_adaptive_filter_options_response(struct mip_serializer* serializer, mip_filter_adaptive_filter_options_response* self);
+void insert_mip_filter_adaptive_filter_options_response(struct microstrain_serializer* serializer, const mip_filter_adaptive_filter_options_response* self);
+void extract_mip_filter_adaptive_filter_options_response(struct microstrain_serializer* serializer, mip_filter_adaptive_filter_options_response* self);
 
 mip_cmd_result mip_filter_write_adaptive_filter_options(struct mip_interface* device, uint8_t level, uint16_t time_limit);
 mip_cmd_result mip_filter_read_adaptive_filter_options(struct mip_interface* device, uint8_t* level_out, uint16_t* time_limit_out);
@@ -1976,8 +1976,8 @@ struct mip_filter_multi_antenna_offset_command
     
 };
 typedef struct mip_filter_multi_antenna_offset_command mip_filter_multi_antenna_offset_command;
-void insert_mip_filter_multi_antenna_offset_command(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_command* self);
-void extract_mip_filter_multi_antenna_offset_command(struct mip_serializer* serializer, mip_filter_multi_antenna_offset_command* self);
+void insert_mip_filter_multi_antenna_offset_command(struct microstrain_serializer* serializer, const mip_filter_multi_antenna_offset_command* self);
+void extract_mip_filter_multi_antenna_offset_command(struct microstrain_serializer* serializer, mip_filter_multi_antenna_offset_command* self);
 
 struct mip_filter_multi_antenna_offset_response
 {
@@ -1986,8 +1986,8 @@ struct mip_filter_multi_antenna_offset_response
     
 };
 typedef struct mip_filter_multi_antenna_offset_response mip_filter_multi_antenna_offset_response;
-void insert_mip_filter_multi_antenna_offset_response(struct mip_serializer* serializer, const mip_filter_multi_antenna_offset_response* self);
-void extract_mip_filter_multi_antenna_offset_response(struct mip_serializer* serializer, mip_filter_multi_antenna_offset_response* self);
+void insert_mip_filter_multi_antenna_offset_response(struct microstrain_serializer* serializer, const mip_filter_multi_antenna_offset_response* self);
+void extract_mip_filter_multi_antenna_offset_response(struct microstrain_serializer* serializer, mip_filter_multi_antenna_offset_response* self);
 
 mip_cmd_result mip_filter_write_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, const float* antenna_offset);
 mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id, float* antenna_offset_out);
@@ -2012,8 +2012,8 @@ struct mip_filter_rel_pos_configuration_command
     
 };
 typedef struct mip_filter_rel_pos_configuration_command mip_filter_rel_pos_configuration_command;
-void insert_mip_filter_rel_pos_configuration_command(struct mip_serializer* serializer, const mip_filter_rel_pos_configuration_command* self);
-void extract_mip_filter_rel_pos_configuration_command(struct mip_serializer* serializer, mip_filter_rel_pos_configuration_command* self);
+void insert_mip_filter_rel_pos_configuration_command(struct microstrain_serializer* serializer, const mip_filter_rel_pos_configuration_command* self);
+void extract_mip_filter_rel_pos_configuration_command(struct microstrain_serializer* serializer, mip_filter_rel_pos_configuration_command* self);
 
 struct mip_filter_rel_pos_configuration_response
 {
@@ -2023,8 +2023,8 @@ struct mip_filter_rel_pos_configuration_response
     
 };
 typedef struct mip_filter_rel_pos_configuration_response mip_filter_rel_pos_configuration_response;
-void insert_mip_filter_rel_pos_configuration_response(struct mip_serializer* serializer, const mip_filter_rel_pos_configuration_response* self);
-void extract_mip_filter_rel_pos_configuration_response(struct mip_serializer* serializer, mip_filter_rel_pos_configuration_response* self);
+void insert_mip_filter_rel_pos_configuration_response(struct microstrain_serializer* serializer, const mip_filter_rel_pos_configuration_response* self);
+void extract_mip_filter_rel_pos_configuration_response(struct microstrain_serializer* serializer, mip_filter_rel_pos_configuration_response* self);
 
 mip_cmd_result mip_filter_write_rel_pos_configuration(struct mip_interface* device, uint8_t source, mip_filter_reference_frame reference_frame_selector, const double* reference_coordinates);
 mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* device, uint8_t* source_out, mip_filter_reference_frame* reference_frame_selector_out, double* reference_coordinates_out);
@@ -2058,11 +2058,11 @@ struct mip_filter_ref_point_lever_arm_command
     
 };
 typedef struct mip_filter_ref_point_lever_arm_command mip_filter_ref_point_lever_arm_command;
-void insert_mip_filter_ref_point_lever_arm_command(struct mip_serializer* serializer, const mip_filter_ref_point_lever_arm_command* self);
-void extract_mip_filter_ref_point_lever_arm_command(struct mip_serializer* serializer, mip_filter_ref_point_lever_arm_command* self);
+void insert_mip_filter_ref_point_lever_arm_command(struct microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_command* self);
+void extract_mip_filter_ref_point_lever_arm_command(struct microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_command* self);
 
-void insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct mip_serializer* serializer, const mip_filter_ref_point_lever_arm_command_reference_point_selector self);
-void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct mip_serializer* serializer, mip_filter_ref_point_lever_arm_command_reference_point_selector* self);
+void insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_command_reference_point_selector self);
+void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(struct microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_command_reference_point_selector* self);
 
 struct mip_filter_ref_point_lever_arm_response
 {
@@ -2071,8 +2071,8 @@ struct mip_filter_ref_point_lever_arm_response
     
 };
 typedef struct mip_filter_ref_point_lever_arm_response mip_filter_ref_point_lever_arm_response;
-void insert_mip_filter_ref_point_lever_arm_response(struct mip_serializer* serializer, const mip_filter_ref_point_lever_arm_response* self);
-void extract_mip_filter_ref_point_lever_arm_response(struct mip_serializer* serializer, mip_filter_ref_point_lever_arm_response* self);
+void insert_mip_filter_ref_point_lever_arm_response(struct microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_response* self);
+void extract_mip_filter_ref_point_lever_arm_response(struct microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_response* self);
 
 mip_cmd_result mip_filter_write_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel, const float* lever_arm_offset);
 mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device, mip_filter_ref_point_lever_arm_command_reference_point_selector* ref_point_sel_out, float* lever_arm_offset_out);
@@ -2099,8 +2099,8 @@ struct mip_filter_speed_measurement_command
     
 };
 typedef struct mip_filter_speed_measurement_command mip_filter_speed_measurement_command;
-void insert_mip_filter_speed_measurement_command(struct mip_serializer* serializer, const mip_filter_speed_measurement_command* self);
-void extract_mip_filter_speed_measurement_command(struct mip_serializer* serializer, mip_filter_speed_measurement_command* self);
+void insert_mip_filter_speed_measurement_command(struct microstrain_serializer* serializer, const mip_filter_speed_measurement_command* self);
+void extract_mip_filter_speed_measurement_command(struct microstrain_serializer* serializer, mip_filter_speed_measurement_command* self);
 
 mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, uint8_t source, float time_of_week, float speed, float speed_uncertainty);
 
@@ -2126,8 +2126,8 @@ struct mip_filter_speed_lever_arm_command
     
 };
 typedef struct mip_filter_speed_lever_arm_command mip_filter_speed_lever_arm_command;
-void insert_mip_filter_speed_lever_arm_command(struct mip_serializer* serializer, const mip_filter_speed_lever_arm_command* self);
-void extract_mip_filter_speed_lever_arm_command(struct mip_serializer* serializer, mip_filter_speed_lever_arm_command* self);
+void insert_mip_filter_speed_lever_arm_command(struct microstrain_serializer* serializer, const mip_filter_speed_lever_arm_command* self);
+void extract_mip_filter_speed_lever_arm_command(struct microstrain_serializer* serializer, mip_filter_speed_lever_arm_command* self);
 
 struct mip_filter_speed_lever_arm_response
 {
@@ -2136,8 +2136,8 @@ struct mip_filter_speed_lever_arm_response
     
 };
 typedef struct mip_filter_speed_lever_arm_response mip_filter_speed_lever_arm_response;
-void insert_mip_filter_speed_lever_arm_response(struct mip_serializer* serializer, const mip_filter_speed_lever_arm_response* self);
-void extract_mip_filter_speed_lever_arm_response(struct mip_serializer* serializer, mip_filter_speed_lever_arm_response* self);
+void insert_mip_filter_speed_lever_arm_response(struct microstrain_serializer* serializer, const mip_filter_speed_lever_arm_response* self);
+void extract_mip_filter_speed_lever_arm_response(struct microstrain_serializer* serializer, mip_filter_speed_lever_arm_response* self);
 
 mip_cmd_result mip_filter_write_speed_lever_arm(struct mip_interface* device, uint8_t source, const float* lever_arm_offset);
 mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uint8_t source, float* lever_arm_offset_out);
@@ -2166,8 +2166,8 @@ struct mip_filter_wheeled_vehicle_constraint_control_command
     
 };
 typedef struct mip_filter_wheeled_vehicle_constraint_control_command mip_filter_wheeled_vehicle_constraint_control_command;
-void insert_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_serializer* serializer, const mip_filter_wheeled_vehicle_constraint_control_command* self);
-void extract_mip_filter_wheeled_vehicle_constraint_control_command(struct mip_serializer* serializer, mip_filter_wheeled_vehicle_constraint_control_command* self);
+void insert_mip_filter_wheeled_vehicle_constraint_control_command(struct microstrain_serializer* serializer, const mip_filter_wheeled_vehicle_constraint_control_command* self);
+void extract_mip_filter_wheeled_vehicle_constraint_control_command(struct microstrain_serializer* serializer, mip_filter_wheeled_vehicle_constraint_control_command* self);
 
 struct mip_filter_wheeled_vehicle_constraint_control_response
 {
@@ -2175,8 +2175,8 @@ struct mip_filter_wheeled_vehicle_constraint_control_response
     
 };
 typedef struct mip_filter_wheeled_vehicle_constraint_control_response mip_filter_wheeled_vehicle_constraint_control_response;
-void insert_mip_filter_wheeled_vehicle_constraint_control_response(struct mip_serializer* serializer, const mip_filter_wheeled_vehicle_constraint_control_response* self);
-void extract_mip_filter_wheeled_vehicle_constraint_control_response(struct mip_serializer* serializer, mip_filter_wheeled_vehicle_constraint_control_response* self);
+void insert_mip_filter_wheeled_vehicle_constraint_control_response(struct microstrain_serializer* serializer, const mip_filter_wheeled_vehicle_constraint_control_response* self);
+void extract_mip_filter_wheeled_vehicle_constraint_control_response(struct microstrain_serializer* serializer, mip_filter_wheeled_vehicle_constraint_control_response* self);
 
 mip_cmd_result mip_filter_write_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t enable);
 mip_cmd_result mip_filter_read_wheeled_vehicle_constraint_control(struct mip_interface* device, uint8_t* enable_out);
@@ -2203,8 +2203,8 @@ struct mip_filter_vertical_gyro_constraint_control_command
     
 };
 typedef struct mip_filter_vertical_gyro_constraint_control_command mip_filter_vertical_gyro_constraint_control_command;
-void insert_mip_filter_vertical_gyro_constraint_control_command(struct mip_serializer* serializer, const mip_filter_vertical_gyro_constraint_control_command* self);
-void extract_mip_filter_vertical_gyro_constraint_control_command(struct mip_serializer* serializer, mip_filter_vertical_gyro_constraint_control_command* self);
+void insert_mip_filter_vertical_gyro_constraint_control_command(struct microstrain_serializer* serializer, const mip_filter_vertical_gyro_constraint_control_command* self);
+void extract_mip_filter_vertical_gyro_constraint_control_command(struct microstrain_serializer* serializer, mip_filter_vertical_gyro_constraint_control_command* self);
 
 struct mip_filter_vertical_gyro_constraint_control_response
 {
@@ -2212,8 +2212,8 @@ struct mip_filter_vertical_gyro_constraint_control_response
     
 };
 typedef struct mip_filter_vertical_gyro_constraint_control_response mip_filter_vertical_gyro_constraint_control_response;
-void insert_mip_filter_vertical_gyro_constraint_control_response(struct mip_serializer* serializer, const mip_filter_vertical_gyro_constraint_control_response* self);
-void extract_mip_filter_vertical_gyro_constraint_control_response(struct mip_serializer* serializer, mip_filter_vertical_gyro_constraint_control_response* self);
+void insert_mip_filter_vertical_gyro_constraint_control_response(struct microstrain_serializer* serializer, const mip_filter_vertical_gyro_constraint_control_response* self);
+void extract_mip_filter_vertical_gyro_constraint_control_response(struct microstrain_serializer* serializer, mip_filter_vertical_gyro_constraint_control_response* self);
 
 mip_cmd_result mip_filter_write_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t enable);
 mip_cmd_result mip_filter_read_vertical_gyro_constraint_control(struct mip_interface* device, uint8_t* enable_out);
@@ -2239,8 +2239,8 @@ struct mip_filter_gnss_antenna_cal_control_command
     
 };
 typedef struct mip_filter_gnss_antenna_cal_control_command mip_filter_gnss_antenna_cal_control_command;
-void insert_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* serializer, const mip_filter_gnss_antenna_cal_control_command* self);
-void extract_mip_filter_gnss_antenna_cal_control_command(struct mip_serializer* serializer, mip_filter_gnss_antenna_cal_control_command* self);
+void insert_mip_filter_gnss_antenna_cal_control_command(struct microstrain_serializer* serializer, const mip_filter_gnss_antenna_cal_control_command* self);
+void extract_mip_filter_gnss_antenna_cal_control_command(struct microstrain_serializer* serializer, mip_filter_gnss_antenna_cal_control_command* self);
 
 struct mip_filter_gnss_antenna_cal_control_response
 {
@@ -2249,8 +2249,8 @@ struct mip_filter_gnss_antenna_cal_control_response
     
 };
 typedef struct mip_filter_gnss_antenna_cal_control_response mip_filter_gnss_antenna_cal_control_response;
-void insert_mip_filter_gnss_antenna_cal_control_response(struct mip_serializer* serializer, const mip_filter_gnss_antenna_cal_control_response* self);
-void extract_mip_filter_gnss_antenna_cal_control_response(struct mip_serializer* serializer, mip_filter_gnss_antenna_cal_control_response* self);
+void insert_mip_filter_gnss_antenna_cal_control_response(struct microstrain_serializer* serializer, const mip_filter_gnss_antenna_cal_control_response* self);
+void extract_mip_filter_gnss_antenna_cal_control_response(struct microstrain_serializer* serializer, mip_filter_gnss_antenna_cal_control_response* self);
 
 mip_cmd_result mip_filter_write_gnss_antenna_cal_control(struct mip_interface* device, uint8_t enable, float max_offset);
 mip_cmd_result mip_filter_read_gnss_antenna_cal_control(struct mip_interface* device, uint8_t* enable_out, float* max_offset_out);
@@ -2275,8 +2275,8 @@ struct mip_filter_set_initial_heading_command
     
 };
 typedef struct mip_filter_set_initial_heading_command mip_filter_set_initial_heading_command;
-void insert_mip_filter_set_initial_heading_command(struct mip_serializer* serializer, const mip_filter_set_initial_heading_command* self);
-void extract_mip_filter_set_initial_heading_command(struct mip_serializer* serializer, mip_filter_set_initial_heading_command* self);
+void insert_mip_filter_set_initial_heading_command(struct microstrain_serializer* serializer, const mip_filter_set_initial_heading_command* self);
+void extract_mip_filter_set_initial_heading_command(struct microstrain_serializer* serializer, mip_filter_set_initial_heading_command* self);
 
 mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, float heading);
 

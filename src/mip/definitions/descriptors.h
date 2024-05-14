@@ -52,8 +52,8 @@ enum mip_function_selector
     MIP_FUNCTION_RESET = 0x05,
 };
 typedef enum mip_function_selector mip_function_selector;
-void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self);
-void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self);
+void insert_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector self);
+void extract_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector* self);
 
 
 #ifdef __cplusplus
@@ -89,8 +89,8 @@ struct CompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
-template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert (microstrain::Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> void extract(microstrain::Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
 
 
 enum class FunctionSelector : uint8_t

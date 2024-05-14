@@ -1,14 +1,8 @@
 
 #include "serialization.h"
-#include "mip/mip_field.h"
-#include "mip/mip_packet.h"
-#include "mip/mip_offsets.h"
-
-#include <string.h>
-#include <assert.h>
 
 #ifdef __cplusplus
-namespace mip {
+namespace microstrain {
 #endif
 
 
@@ -21,7 +15,7 @@ namespace mip {
 ///@param buffer_size
 ///       Size of the buffer. Data will not be written beyond this size.
 ///
-void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, size_t buffer_size)
+void microstrain_serializer_init_insertion(microstrain_serializer* serializer, uint8_t* buffer, size_t buffer_size)
 {
     serializer->_buffer      = buffer;
     serializer->_buffer_size = buffer_size;
@@ -37,72 +31,11 @@ void mip_serializer_init_insertion(mip_serializer* serializer, uint8_t* buffer, 
 ///@param buffer_size
 ///       Maximum number of bytes to be read from the buffer.
 ///
-void mip_serializer_init_extraction(mip_serializer* serializer, const uint8_t* buffer, size_t buffer_size)
+void microstrain_serializer_init_extraction(microstrain_serializer* serializer, const uint8_t* buffer, size_t buffer_size)
 {
     serializer->_buffer      = (uint8_t*)buffer;
     serializer->_buffer_size = buffer_size;
     serializer->_offset      = 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Initializer a serialization struct for creation of a new field at the
-///       end of the packet.
-///
-///@note Call mip_serializer_finiish_new_field after the data has been serialized.
-///
-///@note Only one new field per packet can be in progress at a time.
-///
-///@param serializer
-///@param packet
-///       Allocate the new field on the end of this packet.
-///@param field_descriptor
-///       Field descriptor of the new field.
-///
-void mip_serializer_init_new_field(mip_serializer* serializer, mip_packet* packet, uint8_t field_descriptor)
-{
-    assert(packet);
-
-    serializer->_buffer      = NULL;
-    serializer->_buffer_size = 0;
-    serializer->_offset      = 0;
-
-    const int length = mip_packet_alloc_field(packet, field_descriptor, 0, &serializer->_buffer);
-
-    if( length >= 0 )
-        serializer->_buffer_size = length;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Call this after a new field allocated by mip_serializer_init_new_field
-///       has been written.
-///
-/// This will either finish the field, or abort it if the serializer failed.
-///
-///@param serializer Must be created from mip_serializer_init_new_field.
-///@param packet     Must be the original packet.
-///
-void mip_serializer_finish_new_field(const mip_serializer* serializer, mip_packet* packet)
-{
-    assert(packet);
-
-    if(microstrain_serializer_is_ok(serializer) )
-    {
-        assert(serializer->_offset <= MIP_FIELD_LENGTH_MAX);  // Payload too long!
-        mip_packet_realloc_last_field(packet, serializer->_buffer, (uint8_t) serializer->_offset);
-    }
-    else if( serializer->_buffer )
-        mip_packet_cancel_last_field(packet, serializer->_buffer);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///@brief Initialize a serialization struct from a MIP field payload.
-///
-///@param serializer
-///@param field
-///
-void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field* field)
-{
-    mip_serializer_init_extraction(serializer, mip_field_payload(field), mip_field_payload_length(field));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +45,7 @@ void mip_serializer_init_from_field(mip_serializer* serializer, const mip_field*
 ///
 ///@returns The buffer size.
 ///
-size_t mip_serializer_capacity(const mip_serializer* serializer)
+size_t microstrain_serializer_capacity(const microstrain_serializer* serializer)
 {
     return serializer->_buffer_size;
 }
@@ -128,7 +61,7 @@ size_t mip_serializer_capacity(const mip_serializer* serializer)
 ///@note This may exceed the buffer size. Check microstrain_serializer_is_ok() before using
 ///      the data.
 ///
-size_t mip_serializer_length(const mip_serializer* serializer)
+size_t microstrain_serializer_length(const microstrain_serializer* serializer)
 {
     return serializer->_offset;
 }
@@ -145,7 +78,7 @@ size_t mip_serializer_length(const mip_serializer* serializer)
 ///      or read more data than contained in the buffer. This is not a bug and
 ///      it can be detected with the microstrain_serializer_is_ok() function.
 ///
-int mip_serializer_remaining(const mip_serializer* serializer)
+int microstrain_serializer_remaining(const microstrain_serializer* serializer)
 {
     return (int)(microstrain_serializer_capacity(serializer) - microstrain_serializer_length(serializer));
 }
@@ -162,7 +95,7 @@ int mip_serializer_remaining(const mip_serializer* serializer)
 ///
 ///@returns true if microstrain_serializer_remaining() >= 0.
 ///
-bool mip_serializer_is_ok(const mip_serializer* serializer)
+bool microstrain_serializer_is_ok(const microstrain_serializer* serializer)
 {
     return microstrain_serializer_length(serializer) <= microstrain_serializer_capacity(serializer);
 }
@@ -177,7 +110,7 @@ bool mip_serializer_is_ok(const mip_serializer* serializer)
 ///
 ///@returns true if microstrain_serializer_remaining() == 0.
 ///
-bool mip_serializer_is_complete(const mip_serializer* serializer)
+bool microstrain_serializer_is_complete(const microstrain_serializer* serializer)
 {
     return serializer->_offset == serializer->_buffer_size;
 }
@@ -190,7 +123,7 @@ static void pack(uint8_t* buffer, const void* value, size_t size)
 }
 
 #define INSERT_MACRO(name, type) \
-void insert_##name(mip_serializer* serializer, type value) \
+void insert_##name(microstrain_serializer* serializer, type value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -221,7 +154,7 @@ static void unpack(const uint8_t* buffer, void* value, size_t size)
 
 
 #define EXTRACT_MACRO(name, type) \
-void extract_##name(mip_serializer* serializer, type* value) \
+void extract_##name(microstrain_serializer* serializer, type* value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -256,7 +189,7 @@ EXTRACT_MACRO(double, double  )
 ///       The maximum value of the counter. If the count exceeds this, it is
 ///       set to 0 and the serializer is put into an error state.
 ///
-void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_count)
+void extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8_t max_count)
 {
     *count_out = 0;  // Default to zero if extraction fails.
     microstrain_extract_u8(serializer, count_out);
@@ -274,5 +207,5 @@ void extract_count(mip_serializer* serializer, uint8_t* count_out, uint8_t max_c
 }
 
 #ifdef __cplusplus
-} // namespace mip
+} // namespace microstrain
 #endif

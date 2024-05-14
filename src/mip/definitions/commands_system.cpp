@@ -71,7 +71,7 @@ TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
@@ -82,7 +82,7 @@ TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<CommMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer), REPLY_COM_MODE, buffer, &responseLength);
+    TypedResult<CommMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_COM_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
@@ -104,7 +104,7 @@ TypedResult<CommMode> defaultCommMode(C::mip_interface& device)
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
 }
 
 } // namespace commands_system

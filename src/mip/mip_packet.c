@@ -4,6 +4,8 @@
 
 #include "definitions/descriptors.h"
 
+#include <microstrain/common/serialization.h>
+
 #include <string.h>
 #include <assert.h>
 

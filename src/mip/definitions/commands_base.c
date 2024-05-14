@@ -14,7 +14,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 
@@ -22,7 +22,7 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_base_device_info(mip_serializer* serializer, const mip_base_device_info* self)
+void insert_mip_base_device_info(microstrain_serializer* serializer, const mip_base_device_info* self)
 {
     microstrain_insert_u16(serializer, self->firmware_version);
     
@@ -42,7 +42,7 @@ void insert_mip_base_device_info(mip_serializer* serializer, const mip_base_devi
         microstrain_insert_char(serializer, self->device_options[i]);
     
 }
-void extract_mip_base_device_info(mip_serializer* serializer, mip_base_device_info* self)
+void extract_mip_base_device_info(microstrain_serializer* serializer, mip_base_device_info* self)
 {
     microstrain_extract_u16(serializer, &self->firmware_version);
     
@@ -63,22 +63,22 @@ void extract_mip_base_device_info(mip_serializer* serializer, mip_base_device_in
     
 }
 
-void insert_mip_time_format(struct mip_serializer* serializer, const mip_time_format self)
+void insert_mip_time_format(struct microstrain_serializer* serializer, const mip_time_format self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_time_format(struct mip_serializer* serializer, mip_time_format* self)
+void extract_mip_time_format(struct microstrain_serializer* serializer, mip_time_format* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, const mip_commanded_test_bits_gq7 self)
+void insert_mip_commanded_test_bits_gq7(struct microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
 {
     microstrain_insert_u32(serializer, (uint32_t) (self));
 }
-void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_commanded_test_bits_gq7* self)
+void extract_mip_commanded_test_bits_gq7(struct microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
@@ -107,8 +107,8 @@ mip_cmd_result mip_base_get_device_info(struct mip_interface* device, mip_base_d
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(device_info_out);
         extract_mip_base_device_info(&deserializer, device_info_out);
@@ -127,8 +127,8 @@ mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uin
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && (
             microstrain_serializer_remaining(&deserializer) > 0); (*descriptors_out_count)++)
@@ -148,8 +148,8 @@ mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* re
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(result_out);
         microstrain_extract_u32(&deserializer, result_out);
@@ -172,8 +172,8 @@ mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, u
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && (
             microstrain_serializer_remaining(&deserializer) > 0); (*descriptors_out_count)++)
@@ -193,8 +193,8 @@ mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* re
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(result_out || (16 == 0));
         for(unsigned int i=0; i < 16; i++)
@@ -205,7 +205,7 @@ mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* re
     }
     return result;
 }
-void insert_mip_base_comm_speed_command(mip_serializer* serializer, const mip_base_comm_speed_command* self)
+void insert_mip_base_comm_speed_command(microstrain_serializer* serializer, const mip_base_comm_speed_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
 
@@ -217,7 +217,7 @@ void insert_mip_base_comm_speed_command(mip_serializer* serializer, const mip_ba
         
     }
 }
-void extract_mip_base_comm_speed_command(mip_serializer* serializer, mip_base_comm_speed_command* self)
+void extract_mip_base_comm_speed_command(microstrain_serializer* serializer, mip_base_comm_speed_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
 
@@ -230,14 +230,14 @@ void extract_mip_base_comm_speed_command(mip_serializer* serializer, mip_base_co
     }
 }
 
-void insert_mip_base_comm_speed_response(mip_serializer* serializer, const mip_base_comm_speed_response* self)
+void insert_mip_base_comm_speed_response(microstrain_serializer* serializer, const mip_base_comm_speed_response* self)
 {
     microstrain_insert_u8(serializer, self->port);
 
     microstrain_insert_u32(serializer, self->baud);
     
 }
-void extract_mip_base_comm_speed_response(mip_serializer* serializer, mip_base_comm_speed_response* self)
+void extract_mip_base_comm_speed_response(microstrain_serializer* serializer, mip_base_comm_speed_response* self)
 {
     microstrain_extract_u8(serializer, &self->port);
 
@@ -247,9 +247,9 @@ void extract_mip_base_comm_speed_response(mip_serializer* serializer, mip_base_c
 
 mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t port, uint32_t baud)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
 
@@ -264,9 +264,9 @@ mip_cmd_result mip_base_write_comm_speed(struct mip_interface* device, uint8_t p
 }
 mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t port, uint32_t* baud_out)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
 
@@ -280,8 +280,8 @@ mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t po
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
 
         microstrain_extract_u8(&deserializer, &port);
         
@@ -295,9 +295,9 @@ mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t po
 }
 mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
 
@@ -310,9 +310,9 @@ mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t po
 }
 mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
 
@@ -325,9 +325,9 @@ mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t po
 }
 mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
 
@@ -338,7 +338,7 @@ mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t
     return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_COMM_SPEED, buffer, (uint8_t) microstrain_serializer_length(
         &serializer));
 }
-void insert_mip_base_gps_time_update_command(mip_serializer* serializer, const mip_base_gps_time_update_command* self)
+void insert_mip_base_gps_time_update_command(microstrain_serializer* serializer, const mip_base_gps_time_update_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -350,7 +350,7 @@ void insert_mip_base_gps_time_update_command(mip_serializer* serializer, const m
         
     }
 }
-void extract_mip_base_gps_time_update_command(mip_serializer* serializer, mip_base_gps_time_update_command* self)
+void extract_mip_base_gps_time_update_command(microstrain_serializer* serializer, mip_base_gps_time_update_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -363,11 +363,11 @@ void extract_mip_base_gps_time_update_command(mip_serializer* serializer, mip_ba
     }
 }
 
-void insert_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
+void insert_mip_base_gps_time_update_command_field_id(struct microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
+void extract_mip_base_gps_time_update_command_field_id(struct microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -376,9 +376,9 @@ void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* se
 
 mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_base_gps_time_update_command_field_id field_id, uint32_t value)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
     

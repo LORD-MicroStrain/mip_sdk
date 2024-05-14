@@ -14,7 +14,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 
@@ -27,13 +27,13 @@ struct mip_field;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_system_built_in_test_data(mip_serializer* serializer, const mip_system_built_in_test_data* self)
+void insert_mip_system_built_in_test_data(microstrain_serializer* serializer, const mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         microstrain_insert_u8(serializer, self->result[i]);
     
 }
-void extract_mip_system_built_in_test_data(mip_serializer* serializer, mip_system_built_in_test_data* self)
+void extract_mip_system_built_in_test_data(microstrain_serializer* serializer, mip_system_built_in_test_data* self)
 {
     for(unsigned int i=0; i < 16; i++)
         microstrain_extract_u8(serializer, &self->result[i]);
@@ -43,20 +43,20 @@ bool extract_mip_system_built_in_test_data_from_field(const mip_field* field, vo
 {
     assert(ptr);
     mip_system_built_in_test_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_system_built_in_test_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_time_sync_status_data(mip_serializer* serializer, const mip_system_time_sync_status_data* self)
+void insert_mip_system_time_sync_status_data(microstrain_serializer* serializer, const mip_system_time_sync_status_data* self)
 {
     microstrain_insert_bool(serializer, self->time_sync);
 
     microstrain_insert_u8(serializer, self->last_pps_rcvd);
     
 }
-void extract_mip_system_time_sync_status_data(mip_serializer* serializer, mip_system_time_sync_status_data* self)
+void extract_mip_system_time_sync_status_data(microstrain_serializer* serializer, mip_system_time_sync_status_data* self)
 {
     microstrain_extract_bool(serializer, &self->time_sync);
 
@@ -67,18 +67,18 @@ bool extract_mip_system_time_sync_status_data_from_field(const mip_field* field,
 {
     assert(ptr);
     mip_system_time_sync_status_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_system_time_sync_status_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_gpio_state_data(mip_serializer* serializer, const mip_system_gpio_state_data* self)
+void insert_mip_system_gpio_state_data(microstrain_serializer* serializer, const mip_system_gpio_state_data* self)
 {
     microstrain_insert_u8(serializer, self->states);
     
 }
-void extract_mip_system_gpio_state_data(mip_serializer* serializer, mip_system_gpio_state_data* self)
+void extract_mip_system_gpio_state_data(microstrain_serializer* serializer, mip_system_gpio_state_data* self)
 {
     microstrain_extract_u8(serializer, &self->states);
     
@@ -87,20 +87,20 @@ bool extract_mip_system_gpio_state_data_from_field(const mip_field* field, void*
 {
     assert(ptr);
     mip_system_gpio_state_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_system_gpio_state_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_system_gpio_analog_value_data(mip_serializer* serializer, const mip_system_gpio_analog_value_data* self)
+void insert_mip_system_gpio_analog_value_data(microstrain_serializer* serializer, const mip_system_gpio_analog_value_data* self)
 {
     microstrain_insert_u8(serializer, self->gpio_id);
 
     microstrain_insert_float(serializer, self->value);
     
 }
-void extract_mip_system_gpio_analog_value_data(mip_serializer* serializer, mip_system_gpio_analog_value_data* self)
+void extract_mip_system_gpio_analog_value_data(microstrain_serializer* serializer, mip_system_gpio_analog_value_data* self)
 {
     microstrain_extract_u8(serializer, &self->gpio_id);
 
@@ -111,8 +111,8 @@ bool extract_mip_system_gpio_analog_value_data_from_field(const mip_field* field
 {
     assert(ptr);
     mip_system_gpio_analog_value_data* self = ptr;
-    struct mip_serializer serializer;
-    mip_serializer_init_from_field(&serializer, field);
+    struct microstrain_serializer serializer;
+    microstrain_serializer_init_from_field(&serializer, field);
     extract_mip_system_gpio_analog_value_data(&serializer, self);
     return microstrain_serializer_is_complete(&serializer);
 }

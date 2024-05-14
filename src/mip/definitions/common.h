@@ -16,21 +16,20 @@ namespace C {
 extern "C" {
 #endif // __cplusplus
 
-
 typedef struct mip_descriptor_rate
 {
     uint8_t  descriptor;
     uint16_t decimation;
 } mip_descriptor_rate;
 
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self);
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
+void insert_mip_descriptor_rate(microstrain_serializer* serializer, const mip_descriptor_rate* self);
+void extract_mip_descriptor_rate(microstrain_serializer* serializer, mip_descriptor_rate* self);
 
 #define DECLARE_MIP_VECTOR_TYPE(n,type,name) \
 typedef type name[n]; \
 \
-void insert_##name(mip_serializer* serializer, const name self); \
-void extract_##name(mip_serializer* serializer, name self);
+void insert_##name(microstrain_serializer* serializer, const name self); \
+void extract_##name(microstrain_serializer* serializer, name self);
 
 DECLARE_MIP_VECTOR_TYPE(3, float,  mip_vector3f)
 DECLARE_MIP_VECTOR_TYPE(4, float,  mip_vector4f)
@@ -47,24 +46,24 @@ DECLARE_MIP_VECTOR_TYPE(4, float,  mip_quatf)
 //    float m_data[3];
 //} mip_vector3f;
 //
-//void insert_mip_vector3(mip_serializer* serializer, const mip_vector3* self);
-//void extract_mip_vector3(mip_serializer* serializer, mip_vector3* self);
+//void insert_mip_vector3(microstrain_serializer* serializer, const mip_vector3* self);
+//void extract_mip_vector3(microstrain_serializer* serializer, mip_vector3* self);
 //
 //typedef struct mip_vector4f
 //{
 //    float m_data[4];
 //} mip_vector4f;
 //
-//void insert_mip_vector3(mip_serializer* serializer, const mip_vector3* self);
-//void extract_mip_vector3(mip_serializer* serializer, mip_vector3* self);
+//void insert_mip_vector3(microstrain_serializer* serializer, const mip_vector3* self);
+//void extract_mip_vector3(microstrain_serializer* serializer, mip_vector3* self);
 //
 //typedef struct mip_matrix3
 //{
 //    float m[9];
 //} mip_matrix3;
 //
-//void insert_mip_matrix3(mip_serializer* serializer, const mip_matrix3* self);
-//void extract_mip_matrix3(mip_serializer* serializer, mip_matrix3* self);
+//void insert_mip_matrix3(microstrain_serializer* serializer, const mip_matrix3* self);
+//void extract_mip_matrix3(microstrain_serializer* serializer, mip_matrix3* self);
 
 
 #ifdef __cplusplus
@@ -75,8 +74,8 @@ DECLARE_MIP_VECTOR_TYPE(4, float,  mip_quatf)
 
 using DescriptorRate = C::mip_descriptor_rate;
 
-inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+inline void insert(microstrain::Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
+inline void extract(microstrain::Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -174,10 +173,10 @@ using Matrix3d = Vector<double,9>;
 using Quatf = Vector4f;
 
 template<typename T, size_t N>
-void insert(Serializer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
+void insert(microstrain::Serializer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
 
 template<typename T, size_t N>
-void extract(Serializer& serializer, Vector<T,N>& v) { for(size_t i=0; i<N; i++) extract(serializer, v[i]); }
+void extract(microstrain::Serializer& serializer, Vector<T,N>& v) { for(size_t i=0; i<N; i++) extract(serializer, v[i]); }
 
 //////////////////////////////////////////////////////////////////////////////////
 /////@brief A mathematical vector object used by mip commands and data.

@@ -151,12 +151,12 @@ bool mip_is_shared_data_field_descriptor(uint8_t field_descriptor)
 }
 
 
-void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self)
+void insert_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector self)
 {
     microstrain_insert_u8(serializer, self);
 }
 
-void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self)
+void extract_mip_function_selector(microstrain_serializer* serializer, enum mip_function_selector* self)
 {
     uint8_t tmp;
     microstrain_extract_u8(serializer, &tmp);

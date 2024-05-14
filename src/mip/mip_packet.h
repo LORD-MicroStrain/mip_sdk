@@ -3,7 +3,7 @@
 #include "mip_types.h"
 
 #ifdef __cplusplus
-namespace mip{
+namespace mip {
 namespace C {
 extern "C" {
 #endif
@@ -100,6 +100,16 @@ uint_least16_t  mip_packet_buffer_size(const mip_packet* packet);
 int             mip_packet_remaining_space(const mip_packet* packet);
 
 bool            mip_packet_is_data(const mip_packet* packet);
+
+///@}
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup Serialization  Accessors - Functions for serializing a MIP packet.
+///
+///@{
+struct microstrain_serializer;
+
+void microstrain_serializer_init_new_field(struct microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
+void microstrain_serializer_finish_new_field(const struct microstrain_serializer* serializer, mip_packet* packet);
 
 ///@}
 ///@}

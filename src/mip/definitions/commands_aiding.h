@@ -15,7 +15,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -73,11 +73,11 @@ struct mip_time
     
 };
 typedef struct mip_time mip_time;
-void insert_mip_time(struct mip_serializer* serializer, const mip_time* self);
-void extract_mip_time(struct mip_serializer* serializer, mip_time* self);
+void insert_mip_time(struct microstrain_serializer* serializer, const mip_time* self);
+void extract_mip_time(struct microstrain_serializer* serializer, mip_time* self);
 
-void insert_mip_time_timebase(struct mip_serializer* serializer, const mip_time_timebase self);
-void extract_mip_time_timebase(struct mip_serializer* serializer, mip_time_timebase* self);
+void insert_mip_time_timebase(struct microstrain_serializer* serializer, const mip_time_timebase self);
+void extract_mip_time_timebase(struct microstrain_serializer* serializer, mip_time_timebase* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -135,11 +135,11 @@ struct mip_aiding_frame_config_command
     
 };
 typedef struct mip_aiding_frame_config_command mip_aiding_frame_config_command;
-void insert_mip_aiding_frame_config_command(struct mip_serializer* serializer, const mip_aiding_frame_config_command* self);
-void extract_mip_aiding_frame_config_command(struct mip_serializer* serializer, mip_aiding_frame_config_command* self);
+void insert_mip_aiding_frame_config_command(struct microstrain_serializer* serializer, const mip_aiding_frame_config_command* self);
+void extract_mip_aiding_frame_config_command(struct microstrain_serializer* serializer, mip_aiding_frame_config_command* self);
 
-void insert_mip_aiding_frame_config_command_format(struct mip_serializer* serializer, const mip_aiding_frame_config_command_format self);
-void extract_mip_aiding_frame_config_command_format(struct mip_serializer* serializer, mip_aiding_frame_config_command_format* self);
+void insert_mip_aiding_frame_config_command_format(struct microstrain_serializer* serializer, const mip_aiding_frame_config_command_format self);
+void extract_mip_aiding_frame_config_command_format(struct microstrain_serializer* serializer, mip_aiding_frame_config_command_format* self);
 
 struct mip_aiding_frame_config_response
 {
@@ -151,8 +151,8 @@ struct mip_aiding_frame_config_response
     
 };
 typedef struct mip_aiding_frame_config_response mip_aiding_frame_config_response;
-void insert_mip_aiding_frame_config_response(struct mip_serializer* serializer, const mip_aiding_frame_config_response* self);
-void extract_mip_aiding_frame_config_response(struct mip_serializer* serializer, mip_aiding_frame_config_response* self);
+void insert_mip_aiding_frame_config_response(struct microstrain_serializer* serializer, const mip_aiding_frame_config_response* self);
+void extract_mip_aiding_frame_config_response(struct microstrain_serializer* serializer, mip_aiding_frame_config_response* self);
 
 mip_cmd_result mip_aiding_write_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool tracking_enabled, const float* translation, const mip_aiding_frame_config_command_rotation* rotation);
 mip_cmd_result mip_aiding_read_frame_config(struct mip_interface* device, uint8_t frame_id, mip_aiding_frame_config_command_format format, bool* tracking_enabled_out, float* translation_out, mip_aiding_frame_config_command_rotation* rotation_out);
@@ -180,11 +180,11 @@ struct mip_aiding_aiding_echo_control_command
     
 };
 typedef struct mip_aiding_aiding_echo_control_command mip_aiding_aiding_echo_control_command;
-void insert_mip_aiding_aiding_echo_control_command(struct mip_serializer* serializer, const mip_aiding_aiding_echo_control_command* self);
-void extract_mip_aiding_aiding_echo_control_command(struct mip_serializer* serializer, mip_aiding_aiding_echo_control_command* self);
+void insert_mip_aiding_aiding_echo_control_command(struct microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_command* self);
+void extract_mip_aiding_aiding_echo_control_command(struct microstrain_serializer* serializer, mip_aiding_aiding_echo_control_command* self);
 
-void insert_mip_aiding_aiding_echo_control_command_mode(struct mip_serializer* serializer, const mip_aiding_aiding_echo_control_command_mode self);
-void extract_mip_aiding_aiding_echo_control_command_mode(struct mip_serializer* serializer, mip_aiding_aiding_echo_control_command_mode* self);
+void insert_mip_aiding_aiding_echo_control_command_mode(struct microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_command_mode self);
+void extract_mip_aiding_aiding_echo_control_command_mode(struct microstrain_serializer* serializer, mip_aiding_aiding_echo_control_command_mode* self);
 
 struct mip_aiding_aiding_echo_control_response
 {
@@ -192,8 +192,8 @@ struct mip_aiding_aiding_echo_control_response
     
 };
 typedef struct mip_aiding_aiding_echo_control_response mip_aiding_aiding_echo_control_response;
-void insert_mip_aiding_aiding_echo_control_response(struct mip_serializer* serializer, const mip_aiding_aiding_echo_control_response* self);
-void extract_mip_aiding_aiding_echo_control_response(struct mip_serializer* serializer, mip_aiding_aiding_echo_control_response* self);
+void insert_mip_aiding_aiding_echo_control_response(struct microstrain_serializer* serializer, const mip_aiding_aiding_echo_control_response* self);
+void extract_mip_aiding_aiding_echo_control_response(struct microstrain_serializer* serializer, mip_aiding_aiding_echo_control_response* self);
 
 mip_cmd_result mip_aiding_write_aiding_echo_control(struct mip_interface* device, mip_aiding_aiding_echo_control_command_mode mode);
 mip_cmd_result mip_aiding_read_aiding_echo_control(struct mip_interface* device, mip_aiding_aiding_echo_control_command_mode* mode_out);
@@ -226,11 +226,11 @@ struct mip_aiding_ecef_pos_command
     
 };
 typedef struct mip_aiding_ecef_pos_command mip_aiding_ecef_pos_command;
-void insert_mip_aiding_ecef_pos_command(struct mip_serializer* serializer, const mip_aiding_ecef_pos_command* self);
-void extract_mip_aiding_ecef_pos_command(struct mip_serializer* serializer, mip_aiding_ecef_pos_command* self);
+void insert_mip_aiding_ecef_pos_command(struct microstrain_serializer* serializer, const mip_aiding_ecef_pos_command* self);
+void extract_mip_aiding_ecef_pos_command(struct microstrain_serializer* serializer, mip_aiding_ecef_pos_command* self);
 
-void insert_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self);
-void extract_mip_aiding_ecef_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self);
+void insert_mip_aiding_ecef_pos_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_ecef_pos_command_valid_flags self);
+void extract_mip_aiding_ecef_pos_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_ecef_pos_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_ecef_pos(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const double* position, const float* uncertainty, mip_aiding_ecef_pos_command_valid_flags valid_flags);
 
@@ -262,11 +262,11 @@ struct mip_aiding_llh_pos_command
     
 };
 typedef struct mip_aiding_llh_pos_command mip_aiding_llh_pos_command;
-void insert_mip_aiding_llh_pos_command(struct mip_serializer* serializer, const mip_aiding_llh_pos_command* self);
-void extract_mip_aiding_llh_pos_command(struct mip_serializer* serializer, mip_aiding_llh_pos_command* self);
+void insert_mip_aiding_llh_pos_command(struct microstrain_serializer* serializer, const mip_aiding_llh_pos_command* self);
+void extract_mip_aiding_llh_pos_command(struct microstrain_serializer* serializer, mip_aiding_llh_pos_command* self);
 
-void insert_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self);
-void extract_mip_aiding_llh_pos_command_valid_flags(struct mip_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self);
+void insert_mip_aiding_llh_pos_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_llh_pos_command_valid_flags self);
+void extract_mip_aiding_llh_pos_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_llh_pos_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_llh_pos(struct mip_interface* device, const mip_time* time, uint8_t frame_id, double latitude, double longitude, double height, const float* uncertainty, mip_aiding_llh_pos_command_valid_flags valid_flags);
 
@@ -288,8 +288,8 @@ struct mip_aiding_height_command
     
 };
 typedef struct mip_aiding_height_command mip_aiding_height_command;
-void insert_mip_aiding_height_command(struct mip_serializer* serializer, const mip_aiding_height_command* self);
-void extract_mip_aiding_height_command(struct mip_serializer* serializer, mip_aiding_height_command* self);
+void insert_mip_aiding_height_command(struct microstrain_serializer* serializer, const mip_aiding_height_command* self);
+void extract_mip_aiding_height_command(struct microstrain_serializer* serializer, mip_aiding_height_command* self);
 
 mip_cmd_result mip_aiding_height(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float height, float uncertainty, uint16_t valid_flags);
 
@@ -318,11 +318,11 @@ struct mip_aiding_ecef_vel_command
     
 };
 typedef struct mip_aiding_ecef_vel_command mip_aiding_ecef_vel_command;
-void insert_mip_aiding_ecef_vel_command(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command* self);
-void extract_mip_aiding_ecef_vel_command(struct mip_serializer* serializer, mip_aiding_ecef_vel_command* self);
+void insert_mip_aiding_ecef_vel_command(struct microstrain_serializer* serializer, const mip_aiding_ecef_vel_command* self);
+void extract_mip_aiding_ecef_vel_command(struct microstrain_serializer* serializer, mip_aiding_ecef_vel_command* self);
 
-void insert_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self);
-void extract_mip_aiding_ecef_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self);
+void insert_mip_aiding_ecef_vel_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_ecef_vel_command_valid_flags self);
+void extract_mip_aiding_ecef_vel_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_ecef_vel_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_ecef_vel(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ecef_vel_command_valid_flags valid_flags);
 
@@ -351,11 +351,11 @@ struct mip_aiding_ned_vel_command
     
 };
 typedef struct mip_aiding_ned_vel_command mip_aiding_ned_vel_command;
-void insert_mip_aiding_ned_vel_command(struct mip_serializer* serializer, const mip_aiding_ned_vel_command* self);
-void extract_mip_aiding_ned_vel_command(struct mip_serializer* serializer, mip_aiding_ned_vel_command* self);
+void insert_mip_aiding_ned_vel_command(struct microstrain_serializer* serializer, const mip_aiding_ned_vel_command* self);
+void extract_mip_aiding_ned_vel_command(struct microstrain_serializer* serializer, mip_aiding_ned_vel_command* self);
 
-void insert_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self);
-void extract_mip_aiding_ned_vel_command_valid_flags(struct mip_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self);
+void insert_mip_aiding_ned_vel_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_ned_vel_command_valid_flags self);
+void extract_mip_aiding_ned_vel_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_ned_vel_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_ned_vel(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_ned_vel_command_valid_flags valid_flags);
 
@@ -385,11 +385,11 @@ struct mip_aiding_vehicle_fixed_frame_velocity_command
     
 };
 typedef struct mip_aiding_vehicle_fixed_frame_velocity_command mip_aiding_vehicle_fixed_frame_velocity_command;
-void insert_mip_aiding_vehicle_fixed_frame_velocity_command(struct mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command* self);
-void extract_mip_aiding_vehicle_fixed_frame_velocity_command(struct mip_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command* self);
+void insert_mip_aiding_vehicle_fixed_frame_velocity_command(struct microstrain_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command* self);
+void extract_mip_aiding_vehicle_fixed_frame_velocity_command(struct microstrain_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command* self);
 
-void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self);
-void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct mip_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self);
+void insert_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags self);
+void extract_mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_vehicle_fixed_frame_velocity(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* velocity, const float* uncertainty, mip_aiding_vehicle_fixed_frame_velocity_command_valid_flags valid_flags);
 
@@ -410,8 +410,8 @@ struct mip_aiding_true_heading_command
     
 };
 typedef struct mip_aiding_true_heading_command mip_aiding_true_heading_command;
-void insert_mip_aiding_true_heading_command(struct mip_serializer* serializer, const mip_aiding_true_heading_command* self);
-void extract_mip_aiding_true_heading_command(struct mip_serializer* serializer, mip_aiding_true_heading_command* self);
+void insert_mip_aiding_true_heading_command(struct microstrain_serializer* serializer, const mip_aiding_true_heading_command* self);
+void extract_mip_aiding_true_heading_command(struct microstrain_serializer* serializer, mip_aiding_true_heading_command* self);
 
 mip_cmd_result mip_aiding_true_heading(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float heading, float uncertainty, uint16_t valid_flags);
 
@@ -440,11 +440,11 @@ struct mip_aiding_magnetic_field_command
     
 };
 typedef struct mip_aiding_magnetic_field_command mip_aiding_magnetic_field_command;
-void insert_mip_aiding_magnetic_field_command(struct mip_serializer* serializer, const mip_aiding_magnetic_field_command* self);
-void extract_mip_aiding_magnetic_field_command(struct mip_serializer* serializer, mip_aiding_magnetic_field_command* self);
+void insert_mip_aiding_magnetic_field_command(struct microstrain_serializer* serializer, const mip_aiding_magnetic_field_command* self);
+void extract_mip_aiding_magnetic_field_command(struct microstrain_serializer* serializer, mip_aiding_magnetic_field_command* self);
 
-void insert_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, const mip_aiding_magnetic_field_command_valid_flags self);
-void extract_mip_aiding_magnetic_field_command_valid_flags(struct mip_serializer* serializer, mip_aiding_magnetic_field_command_valid_flags* self);
+void insert_mip_aiding_magnetic_field_command_valid_flags(struct microstrain_serializer* serializer, const mip_aiding_magnetic_field_command_valid_flags self);
+void extract_mip_aiding_magnetic_field_command_valid_flags(struct microstrain_serializer* serializer, mip_aiding_magnetic_field_command_valid_flags* self);
 
 mip_cmd_result mip_aiding_magnetic_field(struct mip_interface* device, const mip_time* time, uint8_t frame_id, const float* magnetic_field, const float* uncertainty, mip_aiding_magnetic_field_command_valid_flags valid_flags);
 
@@ -466,8 +466,8 @@ struct mip_aiding_pressure_command
     
 };
 typedef struct mip_aiding_pressure_command mip_aiding_pressure_command;
-void insert_mip_aiding_pressure_command(struct mip_serializer* serializer, const mip_aiding_pressure_command* self);
-void extract_mip_aiding_pressure_command(struct mip_serializer* serializer, mip_aiding_pressure_command* self);
+void insert_mip_aiding_pressure_command(struct microstrain_serializer* serializer, const mip_aiding_pressure_command* self);
+void extract_mip_aiding_pressure_command(struct microstrain_serializer* serializer, mip_aiding_pressure_command* self);
 
 mip_cmd_result mip_aiding_pressure(struct mip_interface* device, const mip_time* time, uint8_t frame_id, float pressure, float uncertainty, uint16_t valid_flags);
 

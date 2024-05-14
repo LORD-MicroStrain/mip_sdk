@@ -118,6 +118,8 @@ bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet);
 ////////////////////////////////////////////////////////////////////////////////
 ///
 
+void microstrain_serializer_init_from_field(struct microstrain_serializer* serializer, const mip_field* field);
+
 #ifdef __cplusplus
 } // namespace mip
 } // namespace C

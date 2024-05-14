@@ -4,25 +4,25 @@
 #include "microstrain/common/serialization.h"
 
 
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self)
+void insert_mip_descriptor_rate(microstrain_serializer* serializer, const mip_descriptor_rate* self)
 {
     microstrain_insert_u8(serializer, self->descriptor);
     microstrain_insert_u16(serializer, self->decimation);
 }
 
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self)
+void extract_mip_descriptor_rate(microstrain_serializer* serializer, mip_descriptor_rate* self)
 {
     microstrain_extract_u8(serializer, &self->descriptor);
     microstrain_extract_u16(serializer, &self->decimation);
 }
 
 #define IMPLEMENT_MIP_VECTOR_FUNCTIONS(n,type,name) \
-void insert_##name(mip_serializer* serializer, const name self) \
+void insert_##name(microstrain_serializer* serializer, const name self) \
 { \
     for(unsigned int i=0; i<n; i++) \
         insert_##type(serializer, self[i]); \
 } \
-void extract_##name(mip_serializer* serializer, name self) \
+void extract_##name(microstrain_serializer* serializer, name self) \
 { \
     for(unsigned int i=0; i<n; i++) \
         extract_##type(serializer, &self[i]); \

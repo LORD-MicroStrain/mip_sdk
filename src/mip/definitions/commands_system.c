@@ -14,7 +14,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 
@@ -27,7 +27,7 @@ struct mip_field;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_system_comm_mode_command(mip_serializer* serializer, const mip_system_comm_mode_command* self)
+void insert_mip_system_comm_mode_command(microstrain_serializer* serializer, const mip_system_comm_mode_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -37,7 +37,7 @@ void insert_mip_system_comm_mode_command(mip_serializer* serializer, const mip_s
         
     }
 }
-void extract_mip_system_comm_mode_command(mip_serializer* serializer, mip_system_comm_mode_command* self)
+void extract_mip_system_comm_mode_command(microstrain_serializer* serializer, mip_system_comm_mode_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -48,12 +48,12 @@ void extract_mip_system_comm_mode_command(mip_serializer* serializer, mip_system
     }
 }
 
-void insert_mip_system_comm_mode_response(mip_serializer* serializer, const mip_system_comm_mode_response* self)
+void insert_mip_system_comm_mode_response(microstrain_serializer* serializer, const mip_system_comm_mode_response* self)
 {
     microstrain_insert_u8(serializer, self->mode);
     
 }
-void extract_mip_system_comm_mode_response(mip_serializer* serializer, mip_system_comm_mode_response* self)
+void extract_mip_system_comm_mode_response(microstrain_serializer* serializer, mip_system_comm_mode_response* self)
 {
     microstrain_extract_u8(serializer, &self->mode);
     
@@ -61,9 +61,9 @@ void extract_mip_system_comm_mode_response(mip_serializer* serializer, mip_syste
 
 mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
 
@@ -76,9 +76,9 @@ mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t 
 }
 mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
@@ -90,8 +90,8 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(mode_out);
         microstrain_extract_u8(&deserializer, mode_out);
@@ -103,9 +103,9 @@ mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* 
 }
 mip_cmd_result mip_system_default_comm_mode(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     

@@ -229,9 +229,9 @@ public:
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
-        Serializer serializer(*this, fieldDescriptor);
+        microstrain::Serializer serializer(*this, fieldDescriptor);
         insert(serializer, field);
-        C::mip_serializer_finish_new_field(&serializer, this);
+        C::microstrain_serializer_finish_new_field(&serializer, this);
         return serializer.isOk();
     }
 

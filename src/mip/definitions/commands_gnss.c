@@ -14,7 +14,7 @@ extern "C" {
 
 #endif // __cplusplus
 struct mip_interface;
-struct mip_serializer;
+struct microstrain_serializer;
 struct mip_field;
 
 
@@ -27,7 +27,7 @@ struct mip_field;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_gnss_receiver_info_command_info(mip_serializer* serializer, const mip_gnss_receiver_info_command_info* self)
+void insert_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, const mip_gnss_receiver_info_command_info* self)
 {
     microstrain_insert_u8(serializer, self->receiver_id);
 
@@ -37,7 +37,7 @@ void insert_mip_gnss_receiver_info_command_info(mip_serializer* serializer, cons
         microstrain_insert_char(serializer, self->description[i]);
     
 }
-void extract_mip_gnss_receiver_info_command_info(mip_serializer* serializer, mip_gnss_receiver_info_command_info* self)
+void extract_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, mip_gnss_receiver_info_command_info* self)
 {
     microstrain_extract_u8(serializer, &self->receiver_id);
 
@@ -57,8 +57,8 @@ mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(num_receivers_out);
         microstrain_extract_count(&deserializer, num_receivers_out, num_receivers_out_max);
@@ -72,7 +72,7 @@ mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num
     }
     return result;
 }
-void insert_mip_gnss_signal_configuration_command(mip_serializer* serializer, const mip_gnss_signal_configuration_command* self)
+void insert_mip_gnss_signal_configuration_command(microstrain_serializer* serializer, const mip_gnss_signal_configuration_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -91,7 +91,7 @@ void insert_mip_gnss_signal_configuration_command(mip_serializer* serializer, co
         
     }
 }
-void extract_mip_gnss_signal_configuration_command(mip_serializer* serializer, mip_gnss_signal_configuration_command* self)
+void extract_mip_gnss_signal_configuration_command(microstrain_serializer* serializer, mip_gnss_signal_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -111,7 +111,7 @@ void extract_mip_gnss_signal_configuration_command(mip_serializer* serializer, m
     }
 }
 
-void insert_mip_gnss_signal_configuration_response(mip_serializer* serializer, const mip_gnss_signal_configuration_response* self)
+void insert_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, const mip_gnss_signal_configuration_response* self)
 {
     microstrain_insert_u8(serializer, self->gps_enable);
 
@@ -125,7 +125,7 @@ void insert_mip_gnss_signal_configuration_response(mip_serializer* serializer, c
         microstrain_insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_gnss_signal_configuration_response(mip_serializer* serializer, mip_gnss_signal_configuration_response* self)
+void extract_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, mip_gnss_signal_configuration_response* self)
 {
     microstrain_extract_u8(serializer, &self->gps_enable);
 
@@ -142,9 +142,9 @@ void extract_mip_gnss_signal_configuration_response(mip_serializer* serializer, 
 
 mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
 
@@ -167,9 +167,9 @@ mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device,
 }
 mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable_out, uint8_t* glonass_enable_out, uint8_t* galileo_enable_out, uint8_t* beidou_enable_out, uint8_t* reserved_out)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
@@ -181,8 +181,8 @@ mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, 
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(gps_enable_out);
         microstrain_extract_u8(&deserializer, gps_enable_out);
@@ -207,9 +207,9 @@ mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, 
 }
 mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
@@ -220,9 +220,9 @@ mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device)
 }
 mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
@@ -233,9 +233,9 @@ mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device)
 }
 mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
@@ -244,7 +244,7 @@ mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* devic
     return mip_interface_run_command(device, MIP_GNSS_CMD_DESC_SET, MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION, buffer, (uint8_t) microstrain_serializer_length(
         &serializer));
 }
-void insert_mip_gnss_rtk_dongle_configuration_command(mip_serializer* serializer, const mip_gnss_rtk_dongle_configuration_command* self)
+void insert_mip_gnss_rtk_dongle_configuration_command(microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_command* self)
 {
     insert_mip_function_selector(serializer, self->function);
     
@@ -257,7 +257,7 @@ void insert_mip_gnss_rtk_dongle_configuration_command(mip_serializer* serializer
         
     }
 }
-void extract_mip_gnss_rtk_dongle_configuration_command(mip_serializer* serializer, mip_gnss_rtk_dongle_configuration_command* self)
+void extract_mip_gnss_rtk_dongle_configuration_command(microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_command* self)
 {
     extract_mip_function_selector(serializer, &self->function);
     
@@ -271,7 +271,7 @@ void extract_mip_gnss_rtk_dongle_configuration_command(mip_serializer* serialize
     }
 }
 
-void insert_mip_gnss_rtk_dongle_configuration_response(mip_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self)
+void insert_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self)
 {
     microstrain_insert_u8(serializer, self->enable);
     
@@ -279,7 +279,7 @@ void insert_mip_gnss_rtk_dongle_configuration_response(mip_serializer* serialize
         microstrain_insert_u8(serializer, self->reserved[i]);
     
 }
-void extract_mip_gnss_rtk_dongle_configuration_response(mip_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self)
+void extract_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self)
 {
     microstrain_extract_u8(serializer, &self->enable);
     
@@ -290,9 +290,9 @@ void extract_mip_gnss_rtk_dongle_configuration_response(mip_serializer* serializ
 
 mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_WRITE);
 
@@ -309,9 +309,9 @@ mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* dev
 }
 mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable_out, uint8_t* reserved_out)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_READ);
     
@@ -323,8 +323,8 @@ mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* devi
     
     if( result == MIP_ACK_OK )
     {
-        mip_serializer deserializer;
-        mip_serializer_init_insertion(&deserializer, buffer, responseLength);
+        microstrain_serializer deserializer;
+        microstrain_serializer_init_insertion(&deserializer, buffer, responseLength);
         
         assert(enable_out);
         microstrain_extract_u8(&deserializer, enable_out);
@@ -340,9 +340,9 @@ mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* devi
 }
 mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_SAVE);
     
@@ -353,9 +353,9 @@ mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* devi
 }
 mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_LOAD);
     
@@ -366,9 +366,9 @@ mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* devi
 }
 mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device)
 {
-    mip_serializer serializer;
+    microstrain_serializer serializer;
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    mip_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
+    microstrain_serializer_init_insertion(&serializer, buffer, sizeof(buffer));
     
     insert_mip_function_selector(&serializer, MIP_FUNCTION_RESET);
     
