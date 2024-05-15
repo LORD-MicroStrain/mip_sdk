@@ -30,32 +30,35 @@ v2.0.0
 
 ### New features
 * CV7-INS support
-* Logging capability
-* Diagnostic counters for debugging
+* GV7-INS support
+* Logging capability (`mip_logging.h`)
+* Diagnostic counters in mip parser and mip interface for debugging (define `MIP_ENABLE_DIAGNOSTICS`)
 * User-defined values in CmdResult
 * Additional metadata in C++ command structs
 * `mip::PacketBuf` - implements `mip::PacketRef` and includes a data buffer
 * Extra helper utilities
-  * CompositeResult - stores a std::vector of CmdResults and associated command descriptors
-  * Index - Helps prevent off-by-one errors when using 1-based MIP and 0-based arrays
-  * RecordingConnection - Intermediate connection which logs sent/received data to files
+  * `CompositeResult` - stores a std::vector of CmdResults and associated command descriptors
+  * `Index` - Helps prevent off-by-one errors when using 1-based MIP and 0-based arrays
+  * `RecordingConnection` - Intermediate connection which logs sent/received data to files
 
 ### Interface Changes
 
 #### Renamed
-* `timestamp_type` &rarr; `mip_timestamp` \[C]
-* `timeout_type` &rarr; `mip_timeout` \[C]
-* `renaming_count` &rarr; `int` (typedef removed) \[C]
-* `packet_length` &rarr; `uint_least16_t` (typedef removed) \[C]
-* `MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW` &rarr; `MIP_CMD_DESC_BASE_GPS_TIME_UPDATE` \[C]
-* `CMD_GPS_TIME_BROADCAST_NEW` &rarr; `CMD_GPS_TIME_UPDATE` \[C++]
-* `mip::Packet` &rarr; `mip::PacketRef` \[C++]
-* The following definitions have been renamed in CMake:
+* CMake:
   * `WITH_SERIAL` &rarr; `MIP_USE_SERIAL`
   * `WITH_TCP` &rarr; `MIP_USE_TCP`
+* C++
+  * `mip::Packet` &rarr; `mip::PacketRef`
+  * `CMD_GPS_TIME_BROADCAST_NEW` &rarr; `CMD_GPS_TIME_UPDATE`
+* C
+  * `timestamp_type` &rarr; `mip_timestamp`
+  * `timeout_type` &rarr; `mip_timeout`
+  * `renaming_count` &rarr; `int` (typedef removed)
+  * `packet_length` &rarr; `uint_least16_t` (typedef removed)
+  * `MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW` &rarr; `MIP_CMD_DESC_BASE_GPS_TIME_UPDATE`
 
 #### Changed
-* The following 2 extern functions have been changed to callbacks to better support shared libraries:
+* The following 2 extern functions have been changed to callbacks to better support shared libraries.
   Supply your callbacks to `mip_interface_init`.
   * `mip_interface_user_send_to_device`
   * `mip_interface_user_recv_from_device`

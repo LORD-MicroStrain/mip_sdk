@@ -30,16 +30,16 @@ Examples
            be better suited to being in the example code files themselves. Feel
            free to uncomment these again if you want, or remove them completely.
 -->
-* **Get device information** [[C++](./examples/device_info.cpp)]. <!-- - Queries the device strings and prints them to stdout. -->
-* **Watch IMU** [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)]. <!-- - Configures the IMU for streaming and prints the data to stdout. -->
-* **Threading** [[C++](./examples/threading.cpp)].
-* **Ping** [[C++](./examples/ping.cpp)].
-* **Product-specific examples:**
-  * **GQ7 setup** [[C](./examples/GQ7/GQ7_example.c), [C++](./examples/GQ7/GQ7_example.cpp)]. <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
-  * **CV7 setup** [[C](./examples/CV7/CV7_example.c), [C++](./examples/CV7/CV7_example.cpp)]. <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
-  * **GX5-45 setup** [[C](./examples/GX5_45/GX5_45_example.c), [C++](./examples/GX5_45/GX5_45_example.cpp)]. <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
-  * **CV7_INS setup** [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)]. <!-- - Configures a CV7_INS device for typical usage. -->
-  * **CV7_INS with UBlox setup** [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)]. <!-- - Configures a CV7_INS device for typical usage. -->
+* Get device information [[C++](./examples/device_info.cpp)] <!-- - Queries the device strings and prints them to stdout. -->
+* Watch IMU [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)] <!-- - Configures the IMU for streaming and prints the data to stdout. -->
+* Threading [[C++](./examples/threading.cpp)]
+* Ping [[C++](./examples/ping.cpp)]
+* Product-specific examples:
+  * GQ7 setup [[C](./examples/GQ7/GQ7_example.c) | [C++](./examples/GQ7/GQ7_example.cpp)] <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
+  * CV7 setup [[C](./examples/CV7/CV7_example.c) | [C++](./examples/CV7/CV7_example.cpp)] <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
+  * GX5-45 setup [[C](./examples/GX5_45/GX5_45_example.c) | [C++](./examples/GX5_45/GX5_45_example.cpp)] <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
+  * CV7_INS setup [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
+  * CV7_INS with UBlox setup [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
 
 You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
@@ -64,6 +64,25 @@ The C++ API uses `TitleCase` for types and `camelCase` for functions and variabl
 everything. This makes it easy to tell which is being used when looking at the examples.
 
 The C API can be accessed directly from C++ via the `mip::C` namespace.
+
+### Command Results
+
+MIP devices return an ack/nack field in response to commands to allow the user to determine if the command was
+successfully executed. These fields contain a "reply code" which is defined by the MIP protocol. This library
+additionally defines several "status codes" for situations where an ack/nack field is not applicable (i.e. if
+the device doesn't respond to the command, if the command couldn't be transmitted, etc).
+
+See the documentation page for [Command Results](https://lord-microstrain.github.io/mip_sdk_documentation/latest/command_results.html) for details.
+
+### Timestamps
+
+In order to implement command timeouts and provide time of arrival information, this library requires applications to
+provide the time of received data. The time must be provided as an unsigned integral value with a reasonable precision,
+typically milliseconds since program startup. By default the timestamp type is set to `uint64_t`, but some embedded
+applications may which to change this to `uint32_t` via the `MIP_TIMESTAMP_TYPE` define. Note that wraparound is
+permissible if the wraparound period is longer than twice the longest timeout used by the application.
+
+See the documentation page for [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html).
 
 
 Communications Interfaces
@@ -153,3 +172,11 @@ These options affect the compiled code interface and sizes of various structs. T
 MUST be consistent between compiling the MIP SDK and any other code which includes
 headers from the MIP SDK. (If you change them after building, make sure everything gets
 rebuilt properly. Normally CMake takes care of this for you).
+
+Known Issues
+------------
+
+* `suppress_ack=true` is not supported
+* The commanded BIT, device settings, and capture gyro bias commands can time out unless the timeout is increased
+
+See the documentation page for [Known Issues](https://lord-microstrain.github.io/mip_sdk_documentation/latest/other.html#known_issues).
