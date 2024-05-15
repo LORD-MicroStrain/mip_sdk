@@ -3,9 +3,18 @@
 #include "mip_types.h"
 
 #ifdef __cplusplus
+
+namespace microstrain {
+namespace C {
+struct microstrain_serializer;
+}
+}
+
 namespace mip {
 namespace C {
 extern "C" {
+#else
+struct microstrain_serializer;
 #endif
 
 
@@ -106,10 +115,9 @@ bool            mip_packet_is_data(const mip_packet* packet);
 ///@defgroup Serialization  Accessors - Functions for serializing a MIP packet.
 ///
 ///@{
-struct microstrain_serializer;
 
-void microstrain_serializer_init_new_field(struct microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
-void microstrain_serializer_finish_new_field(const struct microstrain_serializer* serializer, mip_packet* packet);
+void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
+void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet);
 
 ///@}
 ///@}

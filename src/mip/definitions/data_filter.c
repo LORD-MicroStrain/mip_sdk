@@ -22,66 +22,66 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_filter_mode(struct microstrain_serializer* serializer, const mip_filter_mode self)
+void insert_mip_filter_mode(microstrain_serializer* serializer, const mip_filter_mode self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_mode(struct microstrain_serializer* serializer, mip_filter_mode* self)
+void extract_mip_filter_mode(microstrain_serializer* serializer, mip_filter_mode* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_dynamics_mode(struct microstrain_serializer* serializer, const mip_filter_dynamics_mode self)
+void insert_mip_filter_dynamics_mode(microstrain_serializer* serializer, const mip_filter_dynamics_mode self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_dynamics_mode(struct microstrain_serializer* serializer, mip_filter_dynamics_mode* self)
+void extract_mip_filter_dynamics_mode(microstrain_serializer* serializer, mip_filter_dynamics_mode* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_status_flags(struct microstrain_serializer* serializer, const mip_filter_status_flags self)
+void insert_mip_filter_status_flags(microstrain_serializer* serializer, const mip_filter_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_status_flags(struct microstrain_serializer* serializer, mip_filter_status_flags* self)
+void extract_mip_filter_status_flags(microstrain_serializer* serializer, mip_filter_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_aiding_measurement_type(struct microstrain_serializer* serializer, const mip_filter_aiding_measurement_type self)
+void insert_mip_filter_aiding_measurement_type(microstrain_serializer* serializer, const mip_filter_aiding_measurement_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_aiding_measurement_type(struct microstrain_serializer* serializer, mip_filter_aiding_measurement_type* self)
+void extract_mip_filter_aiding_measurement_type(microstrain_serializer* serializer, mip_filter_aiding_measurement_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_measurement_indicator(struct microstrain_serializer* serializer, const mip_filter_measurement_indicator self)
+void insert_mip_filter_measurement_indicator(microstrain_serializer* serializer, const mip_filter_measurement_indicator self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_measurement_indicator(struct microstrain_serializer* serializer, mip_filter_measurement_indicator* self)
+void extract_mip_filter_measurement_indicator(microstrain_serializer* serializer, mip_filter_measurement_indicator* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_gnss_aid_status_flags(struct microstrain_serializer* serializer, const mip_gnss_aid_status_flags self)
+void insert_mip_gnss_aid_status_flags(microstrain_serializer* serializer, const mip_gnss_aid_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_gnss_aid_status_flags(struct microstrain_serializer* serializer, mip_gnss_aid_status_flags* self)
+void extract_mip_gnss_aid_status_flags(microstrain_serializer* serializer, mip_gnss_aid_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -683,11 +683,11 @@ bool extract_mip_filter_heading_update_state_data_from_field(const mip_field* fi
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_heading_update_state_data_heading_source(struct microstrain_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self)
+void insert_mip_filter_heading_update_state_data_heading_source(microstrain_serializer* serializer, const mip_filter_heading_update_state_data_heading_source self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_heading_update_state_data_heading_source(struct microstrain_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self)
+void extract_mip_filter_heading_update_state_data_heading_source(microstrain_serializer* serializer, mip_filter_heading_update_state_data_heading_source* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1404,11 +1404,11 @@ bool extract_mip_filter_head_aid_status_data_from_field(const mip_field* field, 
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_head_aid_status_data_heading_aid_type(struct microstrain_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self)
+void insert_mip_filter_head_aid_status_data_heading_aid_type(microstrain_serializer* serializer, const mip_filter_head_aid_status_data_heading_aid_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_head_aid_status_data_heading_aid_type(struct microstrain_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self)
+void extract_mip_filter_head_aid_status_data_heading_aid_type(microstrain_serializer* serializer, mip_filter_head_aid_status_data_heading_aid_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1665,22 +1665,22 @@ bool extract_mip_filter_gnss_dual_antenna_status_data_from_field(const mip_field
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(struct microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_fix_type self)
+void insert_mip_filter_gnss_dual_antenna_status_data_fix_type(microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_fix_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(struct microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_fix_type* self)
+void extract_mip_filter_gnss_dual_antenna_status_data_fix_type(microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_fix_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
+void insert_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(microstrain_serializer* serializer, const mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(struct microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
+void extract_mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags(microstrain_serializer* serializer, mip_filter_gnss_dual_antenna_status_data_dual_antenna_status_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);

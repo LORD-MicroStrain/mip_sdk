@@ -11,11 +11,7 @@
 namespace mip {
 namespace C {
 extern "C" {
-
-#endif // __cplusplus
-struct mip_interface;
-struct microstrain_serializer;
-struct mip_field;
+#endif // __cplusplus;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,22 +59,22 @@ void extract_mip_base_device_info(microstrain_serializer* serializer, mip_base_d
     
 }
 
-void insert_mip_time_format(struct microstrain_serializer* serializer, const mip_time_format self)
+void insert_mip_time_format(microstrain_serializer* serializer, const mip_time_format self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_time_format(struct microstrain_serializer* serializer, mip_time_format* self)
+void extract_mip_time_format(microstrain_serializer* serializer, mip_time_format* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_commanded_test_bits_gq7(struct microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
+void insert_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
 {
     microstrain_insert_u32(serializer, (uint32_t) (self));
 }
-void extract_mip_commanded_test_bits_gq7(struct microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
+void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
@@ -363,11 +359,11 @@ void extract_mip_base_gps_time_update_command(microstrain_serializer* serializer
     }
 }
 
-void insert_mip_base_gps_time_update_command_field_id(struct microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
+void insert_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_base_gps_time_update_command_field_id(struct microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
+void extract_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);

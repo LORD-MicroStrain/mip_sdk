@@ -77,8 +77,8 @@ struct mip_system_comm_mode_command
     
 };
 typedef struct mip_system_comm_mode_command mip_system_comm_mode_command;
-void insert_mip_system_comm_mode_command(struct microstrain_serializer* serializer, const mip_system_comm_mode_command* self);
-void extract_mip_system_comm_mode_command(struct microstrain_serializer* serializer, mip_system_comm_mode_command* self);
+void insert_mip_system_comm_mode_command(microstrain_serializer* serializer, const mip_system_comm_mode_command* self);
+void extract_mip_system_comm_mode_command(microstrain_serializer* serializer, mip_system_comm_mode_command* self);
 
 struct mip_system_comm_mode_response
 {
@@ -86,8 +86,8 @@ struct mip_system_comm_mode_response
     
 };
 typedef struct mip_system_comm_mode_response mip_system_comm_mode_response;
-void insert_mip_system_comm_mode_response(struct microstrain_serializer* serializer, const mip_system_comm_mode_response* self);
-void extract_mip_system_comm_mode_response(struct microstrain_serializer* serializer, mip_system_comm_mode_response* self);
+void insert_mip_system_comm_mode_response(microstrain_serializer* serializer, const mip_system_comm_mode_response* self);
+void extract_mip_system_comm_mode_response(microstrain_serializer* serializer, mip_system_comm_mode_response* self);
 
 mip_cmd_result mip_system_write_comm_mode(struct mip_interface* device, uint8_t mode);
 mip_cmd_result mip_system_read_comm_mode(struct mip_interface* device, uint8_t* mode_out);

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "microstrain/common/serialization.h"
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "microstrain/common/serialization.h"
 
 #ifdef __cplusplus
 

@@ -8,9 +8,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-namespace mip {
+namespace microstrain
+{
 class Serializer;
+}
 
+namespace mip {
 namespace C {
 struct mip_interface;
 } // namespace C

@@ -9,13 +9,16 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
+namespace microstrain {
+struct microstrain_serializer;
+}
 namespace mip {
 namespace C {
 extern "C" {
-
+#else
+struct microstrain_serializer;
 #endif // __cplusplus
 struct mip_interface;
-struct microstrain_serializer;
 struct mip_field;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -74,8 +77,8 @@ struct mip_gnss_receiver_info_command_info
     
 };
 typedef struct mip_gnss_receiver_info_command_info mip_gnss_receiver_info_command_info;
-void insert_mip_gnss_receiver_info_command_info(struct microstrain_serializer* serializer, const mip_gnss_receiver_info_command_info* self);
-void extract_mip_gnss_receiver_info_command_info(struct microstrain_serializer* serializer, mip_gnss_receiver_info_command_info* self);
+void insert_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, const mip_gnss_receiver_info_command_info* self);
+void extract_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, mip_gnss_receiver_info_command_info* self);
 
 struct mip_gnss_receiver_info_response
 {
@@ -84,8 +87,8 @@ struct mip_gnss_receiver_info_response
     
 };
 typedef struct mip_gnss_receiver_info_response mip_gnss_receiver_info_response;
-void insert_mip_gnss_receiver_info_response(struct microstrain_serializer* serializer, const mip_gnss_receiver_info_response* self);
-void extract_mip_gnss_receiver_info_response(struct microstrain_serializer* serializer, mip_gnss_receiver_info_response* self);
+void insert_mip_gnss_receiver_info_response(microstrain_serializer* serializer, const mip_gnss_receiver_info_response* self);
+void extract_mip_gnss_receiver_info_response(microstrain_serializer* serializer, mip_gnss_receiver_info_response* self);
 
 mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, mip_gnss_receiver_info_command_info* receiver_info_out);
 
@@ -109,8 +112,8 @@ struct mip_gnss_signal_configuration_command
     
 };
 typedef struct mip_gnss_signal_configuration_command mip_gnss_signal_configuration_command;
-void insert_mip_gnss_signal_configuration_command(struct microstrain_serializer* serializer, const mip_gnss_signal_configuration_command* self);
-void extract_mip_gnss_signal_configuration_command(struct microstrain_serializer* serializer, mip_gnss_signal_configuration_command* self);
+void insert_mip_gnss_signal_configuration_command(microstrain_serializer* serializer, const mip_gnss_signal_configuration_command* self);
+void extract_mip_gnss_signal_configuration_command(microstrain_serializer* serializer, mip_gnss_signal_configuration_command* self);
 
 struct mip_gnss_signal_configuration_response
 {
@@ -122,8 +125,8 @@ struct mip_gnss_signal_configuration_response
     
 };
 typedef struct mip_gnss_signal_configuration_response mip_gnss_signal_configuration_response;
-void insert_mip_gnss_signal_configuration_response(struct microstrain_serializer* serializer, const mip_gnss_signal_configuration_response* self);
-void extract_mip_gnss_signal_configuration_response(struct microstrain_serializer* serializer, mip_gnss_signal_configuration_response* self);
+void insert_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, const mip_gnss_signal_configuration_response* self);
+void extract_mip_gnss_signal_configuration_response(microstrain_serializer* serializer, mip_gnss_signal_configuration_response* self);
 
 mip_cmd_result mip_gnss_write_signal_configuration(struct mip_interface* device, uint8_t gps_enable, uint8_t glonass_enable, uint8_t galileo_enable, uint8_t beidou_enable, const uint8_t* reserved);
 mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, uint8_t* gps_enable_out, uint8_t* glonass_enable_out, uint8_t* galileo_enable_out, uint8_t* beidou_enable_out, uint8_t* reserved_out);
@@ -148,8 +151,8 @@ struct mip_gnss_rtk_dongle_configuration_command
     
 };
 typedef struct mip_gnss_rtk_dongle_configuration_command mip_gnss_rtk_dongle_configuration_command;
-void insert_mip_gnss_rtk_dongle_configuration_command(struct microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_command* self);
-void extract_mip_gnss_rtk_dongle_configuration_command(struct microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_command* self);
+void insert_mip_gnss_rtk_dongle_configuration_command(microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_command* self);
+void extract_mip_gnss_rtk_dongle_configuration_command(microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_command* self);
 
 struct mip_gnss_rtk_dongle_configuration_response
 {
@@ -158,8 +161,8 @@ struct mip_gnss_rtk_dongle_configuration_response
     
 };
 typedef struct mip_gnss_rtk_dongle_configuration_response mip_gnss_rtk_dongle_configuration_response;
-void insert_mip_gnss_rtk_dongle_configuration_response(struct microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self);
-void extract_mip_gnss_rtk_dongle_configuration_response(struct microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self);
+void insert_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, const mip_gnss_rtk_dongle_configuration_response* self);
+void extract_mip_gnss_rtk_dongle_configuration_response(microstrain_serializer* serializer, mip_gnss_rtk_dongle_configuration_response* self);
 
 mip_cmd_result mip_gnss_write_rtk_dongle_configuration(struct mip_interface* device, uint8_t enable, const uint8_t* reserved);
 mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* device, uint8_t* enable_out, uint8_t* reserved_out);

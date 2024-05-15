@@ -431,11 +431,11 @@ bool extract_mip_sensor_gps_timestamp_data_from_field(const mip_field* field, vo
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_sensor_gps_timestamp_data_valid_flags(struct microstrain_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self)
+void insert_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_sensor_gps_timestamp_data_valid_flags(struct microstrain_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self)
+void extract_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -534,11 +534,11 @@ bool extract_mip_sensor_overrange_status_data_from_field(const mip_field* field,
     return microstrain_serializer_is_complete(&serializer);
 }
 
-void insert_mip_sensor_overrange_status_data_status(struct microstrain_serializer* serializer, const mip_sensor_overrange_status_data_status self)
+void insert_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, const mip_sensor_overrange_status_data_status self)
 {
     microstrain_insert_u16(serializer, (uint16_t) (self));
 }
-void extract_mip_sensor_overrange_status_data_status(struct microstrain_serializer* serializer, mip_sensor_overrange_status_data_status* self)
+void extract_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, mip_sensor_overrange_status_data_status* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);

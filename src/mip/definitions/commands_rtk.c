@@ -22,22 +22,22 @@ struct mip_field;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_media_selector(struct microstrain_serializer* serializer, const mip_media_selector self)
+void insert_mip_media_selector(microstrain_serializer* serializer, const mip_media_selector self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_media_selector(struct microstrain_serializer* serializer, mip_media_selector* self)
+void extract_mip_media_selector(microstrain_serializer* serializer, mip_media_selector* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_led_action(struct microstrain_serializer* serializer, const mip_led_action self)
+void insert_mip_led_action(microstrain_serializer* serializer, const mip_led_action self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_led_action(struct microstrain_serializer* serializer, mip_led_action* self)
+void extract_mip_led_action(microstrain_serializer* serializer, mip_led_action* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -49,22 +49,22 @@ void extract_mip_led_action(struct microstrain_serializer* serializer, mip_led_a
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert_mip_rtk_get_status_flags_command_status_flags_legacy(struct microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
+void insert_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
 {
     microstrain_insert_u32(serializer, (uint32_t) (self));
 }
-void extract_mip_rtk_get_status_flags_command_status_flags_legacy(struct microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
+void extract_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
     *self = tmp;
 }
 
-void insert_mip_rtk_get_status_flags_command_status_flags(struct microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
+void insert_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
 {
     microstrain_insert_u32(serializer, (uint32_t) (self));
 }
-void extract_mip_rtk_get_status_flags_command_status_flags(struct microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
+void extract_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
@@ -186,11 +186,11 @@ void extract_mip_rtk_connected_device_type_response(microstrain_serializer* seri
     
 }
 
-void insert_mip_rtk_connected_device_type_command_type(struct microstrain_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
+void insert_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_rtk_connected_device_type_command_type(struct microstrain_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
+void extract_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -384,11 +384,11 @@ void extract_mip_rtk_service_status_response(microstrain_serializer* serializer,
     
 }
 
-void insert_mip_rtk_service_status_command_service_flags(struct microstrain_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
+void insert_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
 {
     microstrain_insert_u8(serializer, (uint8_t) (self));
 }
-void extract_mip_rtk_service_status_command_service_flags(struct microstrain_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
+void extract_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);

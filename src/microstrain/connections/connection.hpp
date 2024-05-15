@@ -35,7 +35,7 @@ public:
 
 #if __cpp_lib_span >= 202002L
     bool sendToDevice(std::span<const uint8_t> data) { return sendToDevice(data.data(), data.size()); }
-    bool recvFromDevice(std::span<uint8_t>& buffer, unsigned int wait_time_ms, Timestamp* timestamp_out) {
+    bool recvFromDevice(std::span<uint8_t>& buffer, unsigned int wait_time_ms, EmbeddedTimestamp* timestamp_out) {
         size_t length = 0;
         if(!recvFromDevice(buffer.data(), buffer.size(), wait_time_ms, &length, timestamp_out))
             return false;
