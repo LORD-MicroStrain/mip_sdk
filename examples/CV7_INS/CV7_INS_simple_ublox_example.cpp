@@ -333,11 +333,11 @@ int main(int argc, const char* argv[])
             }
 
             // External position command
-            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::velNed(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;

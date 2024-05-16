@@ -238,7 +238,7 @@ int main(int argc, const char* argv[])
             // External heading command
             float external_heading = 0.0;
             float external_heading_uncertainty = .001;
-            if(commands_aiding::trueHeading(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::headingTrue(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external heading to CV7-INS\n");
 
             // External position command
@@ -246,19 +246,19 @@ int main(int argc, const char* argv[])
             double longitude = -73.10628129871753;
             double height = 0.0;
             float llh_uncertainty[3] = {1.0, 1.0, 1.0};
-            if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
             float ned_velocity[3] = {0.0, 0.0, 0.0};
             float ned_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
-            if(commands_aiding::nedVel(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::velNed(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             // External vehicle frame velocity command
             float vehicle_frame_velocity[3] = {0.0, 0.0, 0.0};
             float vehicle_frame_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
-            if(commands_aiding::vehicleFixedFrameVelocity(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::velBodyFrame(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 1) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external vehicle frame velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;
