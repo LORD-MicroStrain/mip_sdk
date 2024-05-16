@@ -27,8 +27,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "mip/mip_all.hpp"
+#include "example_utils.hpp"
 #include <array>
-#include "../example_utils.hpp"
 
 using namespace mip;
 
@@ -211,11 +211,13 @@ int main(int argc, const char* argv[])
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
     mip::Timestamp prev_measurement_update_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to initialize...\n");
+    printf("Sensor is configured... waiting for filter to initialize (FULL_NAV)...\n");
 
+    std::string current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check for full nav filter state transition
         if((!filter_state_full_nav) && (filter_status.filter_state == data_filter::FilterMode::FULL_NAV))
@@ -234,6 +236,8 @@ int main(int argc, const char* argv[])
             // Use measurement time of arrival for timestamping method
             commands_aiding::Time external_measurement_time;
             external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+            external_measurement_time.reserved = 1;
+            external_measurement_time.nanoseconds = current_timestamp * uint64_t(1000000);
 
             // External heading command
             float external_heading = 0.0;
@@ -333,6 +337,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 

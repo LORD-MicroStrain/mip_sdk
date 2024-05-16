@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -31,9 +31,9 @@
 #include <mip/utils/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <time.h>
 
+#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -71,9 +71,9 @@ const uint8_t FILTER_PITCH_EVENT_ACTION_ID = 2;
 
 
 //Required MIP interface user-defined functions
-timestamp_type get_current_timestamp();
+mip_timestamp get_current_timestamp();
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out);
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out);
 bool mip_interface_user_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
 
 int usage(const char* argv0);
@@ -81,7 +81,7 @@ int usage(const char* argv0);
 void exit_gracefully(const char *message);
 bool should_exit();
 
-void handle_filter_event_source(void* user, const mip_field* field, timestamp_type timestamp);
+void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -313,14 +313,17 @@ int main(int argc, const char* argv[])
     //Main Loop: Update the interface and process data
     //
 
-    bool running = true;
-    timestamp_type prev_print_timestamp = 0;
+    bool          running              = true;
+    mip_timestamp prev_print_timestamp = 0;
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, false);
+        displayFilterState(filter_status.filter_state, current_state, false);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == MIP_FILTER_MODE_AHRS))
@@ -332,7 +335,7 @@ int main(int argc, const char* argv[])
         //Once in full nav, print out data at 10 Hz
         if(filter_state_ahrs)
         {
-           timestamp_type curr_time = get_current_timestamp();
+           mip_timestamp curr_time = get_current_timestamp();
 
            if(curr_time - prev_print_timestamp >= 100)
            {
@@ -355,7 +358,7 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handle_filter_event_source(void* user, const mip_field* field, timestamp_type timestamp)
+void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp)
 {
     mip_shared_event_source_data data;
 
@@ -373,12 +376,12 @@ void handle_filter_event_source(void* user, const mip_field* field, timestamp_ty
 // MIP Interface Time Access Function
 ////////////////////////////////////////////////////////////////////////////////
 
-timestamp_type get_current_timestamp()
+mip_timestamp get_current_timestamp()
 {
     clock_t curr_time;
     curr_time = clock();
 
-    return (timestamp_type)((double)(curr_time - start_time)/(double)CLOCKS_PER_SEC*1000.0);
+    return (mip_timestamp)((double)(curr_time - start_time) / (double)CLOCKS_PER_SEC * 1000.0);
 }
 
 
@@ -386,7 +389,7 @@ timestamp_type get_current_timestamp()
 // MIP Interface User Recv Data Function
 ////////////////////////////////////////////////////////////////////////////////
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
 {
     *timestamp_out = get_current_timestamp();
     return serial_port_read(&device_port, buffer, max_length, wait_time, out_length);

@@ -34,8 +34,8 @@ struct mip_interface;
 
 // Documentation is in source file.
 typedef bool (*mip_send_callback)(struct mip_interface* device, const uint8_t* data, size_t length);
-typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type wait_time, size_t* out_length, timestamp_type* timestamp_out);
-typedef bool (*mip_update_callback)(struct mip_interface* device, timeout_type timeout);
+typedef bool (*mip_recv_callback)(struct mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* length_out, mip_timestamp* timestamp_out);
+typedef bool (*mip_update_callback)(struct mip_interface* device, mip_timeout timeout);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ typedef struct mip_interface
 
 void mip_interface_init(
     mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size,
-    timeout_type parse_timeout, timeout_type base_reply_timeout,
+    mip_timeout parse_timeout, mip_timeout base_reply_timeout,
     mip_send_callback send, mip_recv_callback recv,
     mip_update_callback update, void* user_pointer
 );
@@ -66,14 +66,14 @@ void mip_interface_init(
 //
 
 bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, size_t length);
-bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, timeout_type timeout, size_t* length_out, timestamp_type* now);
-bool mip_interface_update(mip_interface* device, timeout_type wait_time);
+bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout timeout, size_t* length_out, mip_timestamp* now);
+bool mip_interface_update(mip_interface* device, mip_timeout wait_time);
 
-bool mip_interface_default_update(mip_interface* device, timeout_type wait_time);
-remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp);
+bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time);
+size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
 void mip_interface_process_unparsed_packets(mip_interface* device);
-bool mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp);
-void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp);
+bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp);
+void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp);
 
 //
 // Commands

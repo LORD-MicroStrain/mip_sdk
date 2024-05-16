@@ -37,7 +37,7 @@ void Connection::connect_interface(C::mip_interface* device)
     {
         return static_cast<Connection*>(C::mip_interface_user_pointer(device))->sendToDevice(data, length);
     };
-    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::timeout_type wait_time, size_t* length_out, C::timestamp_type* timestamp_out)->bool
+    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)->bool
     {
         return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, wait_time, length_out, timestamp_out);
     };

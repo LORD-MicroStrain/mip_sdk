@@ -12,8 +12,8 @@ struct mip_parser parser;
 unsigned int num_errors = 0;
 
 unsigned int num_packets_parsed = 0;
-size_t parsed_packet_length = 0;
-timestamp_type parsed_packet_timestamp = 0;
+size_t        parsed_packet_length    = 0;
+mip_timestamp parsed_packet_timestamp = 0;
 
 
 void print_packet(FILE* out, const struct mip_packet* packet)
@@ -29,7 +29,7 @@ void print_packet(FILE* out, const struct mip_packet* packet)
 }
 
 
-bool handle_packet(void* p, const struct mip_packet* packet, timestamp_type timestamp)
+bool handle_packet(void* p, const struct mip_packet* packet, mip_timestamp timestamp)
 {
     (void)p;
 
@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
             const uint8_t field_desc = (rand() % 255) + 1;  // Random field descriptor.
 
             uint8_t* payload;
-            remaining_count available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
+            int available = mip_packet_alloc_field(&packet, field_desc, paylen, &payload);
 
             if( available < 0 )
             {
@@ -96,19 +96,17 @@ int main(int argc, const char* argv[])
         // Send this packet to the parser in small chunks.
         //
 
-        const unsigned int MAX_CHUNKS = 5;
-
         const size_t packet_size = mip_packet_total_length(&packet);
 
 
         // Keep track of offsets and timestamps for debug purposes.
-        size_t offsets[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
-        timestamp_type timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
-        unsigned int c = 0;
+        size_t        offsets[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH]    = {0};
+        mip_timestamp timestamps[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_HEADER_LENGTH] = {0};
+        unsigned int  c                                                                   = 0;
 
-        const timestamp_type start_time = rand();
-        timestamp_type timestamp = start_time;
-        size_t sent = 0;
+        const mip_timestamp start_time = rand();
+        mip_timestamp       timestamp  = start_time;
+        size_t              sent       = 0;
 
         // Send all but the last chunk.
         while( sent < (packet_size-MIP_PACKET_LENGTH_MIN) )
