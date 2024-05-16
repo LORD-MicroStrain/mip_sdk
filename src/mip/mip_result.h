@@ -68,7 +68,7 @@ bool mip_cmd_result_is_ack(enum mip_cmd_result result);
 ///@brief Represents the status of a MIP command.
 ///
 /// This is the same as the mip_cmd_result enum, but with some convenient
-// member functions and some operator overloads.
+/// member functions and some operator overloads.
 ///
 /// CmdResult is convertible to bool, allowing code like the following:
 ///@code{.cpp}
