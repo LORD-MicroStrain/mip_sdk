@@ -153,8 +153,8 @@ static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_RMC  = 4;  
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_VTG  = 5;   ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_HDT  = 6;   ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
 static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_ZDA  = 7;   ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRA = 129; ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
-static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_PKRR = 130; ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_MSRA = 129; ///<  MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+static const mip_nmea_message_message_id MIP_NMEA_MESSAGE_MESSAGE_ID_MSRR = 130; ///<  MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
 
 typedef uint8_t mip_nmea_message_talker_id;
 static const mip_nmea_message_talker_id MIP_NMEA_MESSAGE_TALKER_ID_IGNORED = 0; ///<  Talker ID cannot be changed.
