@@ -143,7 +143,7 @@ int main(int argc, const char* argv[])
     //External bodyframe velocity reference frame
     //
     commands_aiding::FrameConfig::Rotation external_velocity_sensor_to_vehicle_frame_rotation;
-    external_gnss_antenna_to_vehicle_frame_rotation.euler= mip::Vector3f(0.0f, 0.0f, 1.57f);  // Rotated 90 deg around yaw axis
+    external_velocity_sensor_to_vehicle_frame_rotation.euler= mip::Vector3f(0.0f, 0.0f, 1.57f);  // Rotated 90 deg around yaw axis
     float external_velocity_sensor_to_vehicle_frame_translation[3] = {1.0, 0.0, 0.0};  // Sensor is translated 1 meter in X direction
     if(commands_aiding::writeFrameConfig(*device, vehicle_frame_velocity_sensor_id, mip::commands_aiding::FrameConfig::Format::EULER, true,
                                             external_velocity_sensor_to_vehicle_frame_translation, external_velocity_sensor_to_vehicle_frame_rotation) != CmdResult::ACK_OK)
@@ -163,16 +163,26 @@ int main(int argc, const char* argv[])
     const uint16_t filter_decimation = filter_base_rate / filter_sample_rate;
 
     std::array<DescriptorRate, 5> filter_descriptors = {{
-                                                                { data_shared::DATA_GPS_TIME,         filter_decimation },
-                                                                { data_filter::DATA_FILTER_STATUS,    filter_decimation },
-                                                                { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
-                                                                { data_filter::DATA_POS_LLH,          filter_decimation },
-                                                                { data_filter::DATA_VEL_NED,          filter_decimation },
-                                                        }};
+        { data_shared::DATA_GPS_TIME,         filter_decimation },
+        { data_filter::DATA_FILTER_STATUS,    filter_decimation },
+        { data_filter::DATA_ATT_EULER_ANGLES, filter_decimation },
+        { data_filter::DATA_POS_LLH,          filter_decimation },
+        { data_filter::DATA_VEL_NED,          filter_decimation },
+    }};
 
     if(commands_3dm::writeMessageFormat(*device, data_filter::DESCRIPTOR_SET, filter_descriptors.size(), filter_descriptors.data()) != CmdResult::ACK_OK)
         exit_gracefully("ERROR: Could not set filter message format!");
 
+    //
+    //Configure the filter to accept external heading
+    //
+
+    const auto initConfig = commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
+    commands_filter::InitializationConfiguration::AlignmentSelector alignment;
+    alignment.external(true);
+    const Vector3f zero3({0, 0, 0});
+    if(commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set heading source!");
 
     //
     //Reset the filter (note: this is good to do after filter setup is complete)
@@ -241,28 +251,28 @@ int main(int argc, const char* argv[])
 
             // External heading command
             float external_heading = 0.0;
-            float external_heading_uncertainty = .001;
-            if(commands_aiding::trueHeading(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 1) != CmdResult::ACK_OK)
+            float external_heading_uncertainty = 0.001;
+            if(commands_aiding::headingTrue(*device, external_measurement_time, external_heading_sensor_id, external_heading, external_heading_uncertainty, 0x0001) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external heading to CV7-INS\n");
 
             // External position command
             double latitude = 44.43729093897896; // Lat/Lon for MicroStrain headquarters
             double longitude = -73.10628129871753;
-            double height = 0.0;
+            double height = 122.0;
             float llh_uncertainty[3] = {1.0, 1.0, 1.0};
-            if(commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, latitude, longitude, height, llh_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
             float ned_velocity[3] = {0.0, 0.0, 0.0};
             float ned_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
-            if(commands_aiding::nedVel(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::velNed(*device, external_measurement_time,  gnss_antenna_sensor_id, ned_velocity, ned_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             // External vehicle frame velocity command
             float vehicle_frame_velocity[3] = {0.0, 0.0, 0.0};
             float vehicle_frame_velocity_uncertainty[3] = {0.1, 0.1, 0.1};
-            if(commands_aiding::vehicleFixedFrameVelocity(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if(commands_aiding::velBodyFrame(*device, external_measurement_time, vehicle_frame_velocity_sensor_id, vehicle_frame_velocity, vehicle_frame_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external vehicle frame velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;
@@ -270,9 +280,9 @@ int main(int argc, const char* argv[])
 
         //Once in full nav, print out data at 1 Hz
         if((filter_status.filter_state == data_filter::FilterMode::FULL_NAV) && (elapsed_time_from_last_message_print >= 1000))
-        {
-            printf("\n\n****Filter navigation state****\n");
-            printf("TIMESTAMP: %f\n", filter_gps_time.tow);
+            {
+                printf("\n\n****Filter navigation state****\n");
+                printf("TIMESTAMP: %f\n", filter_gps_time.tow);
             printf("ATTITUDE_EULER = [%f %f %f]\n", filter_euler_angles.roll, filter_euler_angles.pitch, filter_euler_angles.yaw);
             printf("LLH_POSITION = [%f %f %f]\n", filter_llh_position.latitude, filter_llh_position.longitude, filter_llh_position.ellipsoid_height);
             printf("NED_VELOCITY = [%f %f %f]\n", filter_ned_velocity.north, filter_ned_velocity.east, filter_ned_velocity.down);

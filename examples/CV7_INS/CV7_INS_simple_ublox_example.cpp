@@ -205,6 +205,18 @@ int main(int argc, const char* argv[])
         exit_gracefully("ERROR: Could not enable factory streaming support!");
 
     //
+    //Configure the filter to use magnetometer or GNSS kinematic heading
+    //
+
+    const auto initConfig = commands_filter::InitializationConfiguration::InitialConditionSource::AUTO_POS_VEL_PITCH_ROLL;
+    commands_filter::InitializationConfiguration::AlignmentSelector alignment;
+    alignment.magnetometer(true);
+    alignment.kinematic(true);
+    const Vector3f zero3({0, 0, 0});
+    if(commands_filter::writeInitializationConfiguration(*device, 0, initConfig, alignment, 0, 0, 0, zero3, zero3, commands_filter::FilterReferenceFrame::LLH) != CmdResult::ACK_OK)
+        exit_gracefully("ERROR: Could not set heading source!");
+
+    //
     //Reset the filter (note: this is good to do after filter setup is complete)
     //
 
@@ -332,14 +344,15 @@ int main(int argc, const char* argv[])
             {
                 // If no PPS sync is supplied, use device time of arrival for data timestamping method
                 external_measurement_time.timebase = commands_aiding::Time::Timebase::TIME_OF_ARRIVAL;
+                external_measurement_time.nanoseconds = 0;  // Not used, but should be set to 0
             }
 
             // External position command
-            if (commands_aiding::llhPos(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::posLlh(*device, external_measurement_time, gnss_antenna_sensor_id, pvt_message.latitude, pvt_message.longitude, pvt_message.height_above_ellipsoid, pvt_message.llh_position_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external position to CV7-INS\n");
 
             // External global velocity command
-            if (commands_aiding::nedVel(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 1) != CmdResult::ACK_OK)
+            if (commands_aiding::velNed(*device, external_measurement_time, gnss_antenna_sensor_id,pvt_message.ned_velocity, pvt_message.ned_velocity_uncertainty, 0x0007) != CmdResult::ACK_OK)
                 printf("WARNING: Failed to send external NED velocity to CV7-INS\n");
 
             prev_measurement_update_timestamp = current_timestamp;

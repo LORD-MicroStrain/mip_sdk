@@ -160,18 +160,21 @@ void insert_mip_filter_status_flags(struct mip_serializer* serializer, const mip
 void extract_mip_filter_status_flags(struct mip_serializer* serializer, mip_filter_status_flags* self);
 
 typedef uint8_t mip_filter_aiding_measurement_type;
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS              = 1;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA      = 2;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING           = 3;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE          = 4;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER      = 5;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED             = 6;  ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_ECEF          = 33; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_POS_LLH           = 34; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_ECEF          = 40; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_NED           = 41; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_VEL_VEHICLE_FRAME = 42; ///<  
-static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING_TRUE      = 49; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_GNSS                          = 1;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_DUAL_ANTENNA                  = 2;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_HEADING                       = 3;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_PRESSURE                      = 4;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_MAGNETOMETER                  = 5;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_SPEED                         = 6;  ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_POS_ECEF               = 33; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_POS_LLH                = 34; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_HEIGHT_ABOVE_ELLIPSOID = 35; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_ECEF               = 40; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_NED                = 41; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_VEL_BODY_FRAME         = 42; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_HEADING_TRUE           = 49; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_MAGNETIC_FIELD         = 50; ///<  
+static const mip_filter_aiding_measurement_type MIP_FILTER_AIDING_MEASUREMENT_TYPE_AIDING_PRESSURE               = 51; ///<  
 
 void insert_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, const mip_filter_aiding_measurement_type self);
 void extract_mip_filter_aiding_measurement_type(struct mip_serializer* serializer, mip_filter_aiding_measurement_type* self);
