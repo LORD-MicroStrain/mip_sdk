@@ -135,7 +135,7 @@ pipeline {
                 # Release to the latest version if the master commit matches up with the commit of that version
                 if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
                   # Publish a release
-                  ./scripts/release.sh \
+                  ${WORKSPACE}/scripts/release.sh" \
                     --artifacts "$(find "$(pwd)" -type f)" \
                     --target "${BRANCH_NAME}" \
                     --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \
