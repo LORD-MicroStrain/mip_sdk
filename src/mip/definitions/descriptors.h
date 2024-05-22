@@ -4,11 +4,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "../utils/serialization.h"
+#include "../mip_result.h"
 
 #ifdef __cplusplus
 
 #include <tuple>
 #include <type_traits>
+#include <functional>
 
 namespace mip {
 namespace C {
@@ -32,6 +34,7 @@ bool mip_is_valid_descriptor_set(uint8_t descriptor_set);
 bool mip_is_data_descriptor_set(uint8_t descriptor_set);
 bool mip_is_cmd_descriptor_set(uint8_t descriptor_set);
 bool mip_is_reserved_descriptor_set(uint8_t descriptor_set);
+bool mip_is_gnss_data_descriptor_set(uint8_t descriptor_set);
 
 bool mip_is_valid_field_descriptor(uint8_t field_descriptor);
 bool mip_is_cmd_field_descriptor(uint8_t field_descriptor);
@@ -52,14 +55,6 @@ typedef enum mip_function_selector mip_function_selector;
 void insert_mip_function_selector(mip_serializer* serializer, enum mip_function_selector self);
 void extract_mip_function_selector(mip_serializer* serializer, enum mip_function_selector* self);
 
-typedef struct mip_descriptor_rate
-{
-    uint8_t  descriptor;
-    uint16_t decimation;
-} mip_descriptor_rate;
-
-void insert_mip_descriptor_rate(mip_serializer* serializer, const mip_descriptor_rate* self);
-void extract_mip_descriptor_rate(mip_serializer* serializer, mip_descriptor_rate* self);
 
 #ifdef __cplusplus
 
@@ -75,17 +70,17 @@ struct CompositeDescriptor
     uint8_t descriptorSet;    ///< MIP descriptor set.
     uint8_t fieldDescriptor;  ///< MIP field descriptor.
 
-    CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
-    CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
+    constexpr CompositeDescriptor(uint8_t descSet, uint8_t fieldDesc) : descriptorSet(descSet), fieldDescriptor(fieldDesc) {}
+    constexpr CompositeDescriptor(uint16_t combo) : descriptorSet(combo >> 8), fieldDescriptor(combo & 0xFF) {}
 
     CompositeDescriptor& operator=(uint16_t combo) { return *this = CompositeDescriptor(combo); }
 
-    uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
+    constexpr uint16_t as_u16() const { return (uint16_t(descriptorSet) << 8) | fieldDescriptor; }
 
 //    operator uint16_t() const { return as_u16(); }
 
-    bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
-    bool operator<(const CompositeDescriptor& other) const { return descriptorSet < other.descriptorSet || (!(descriptorSet > other.descriptorSet) && (fieldDescriptor < other.fieldDescriptor)); }
+    constexpr bool operator==(const CompositeDescriptor& other) const { return other.descriptorSet == descriptorSet && other.fieldDescriptor == fieldDescriptor; }
+    constexpr bool operator<(const CompositeDescriptor& other) const { return as_u16() < other.as_u16(); }
 
 };
 
@@ -107,12 +102,14 @@ enum class FunctionSelector : uint8_t
     RESET = C::MIP_FUNCTION_RESET,
 };
 
-using DescriptorRate = C::mip_descriptor_rate;
+static constexpr uint8_t INVALID_FIELD_DESCRIPTOR = C::MIP_INVALID_FIELD_DESCRIPTOR;
+static constexpr uint8_t INVALID_DESCRIPTOR_SET   = C::MIP_INVALID_DESCRIPTOR_SET;
 
 inline bool isValidDescriptorSet   (uint8_t descriptorSet) { return C::mip_is_valid_descriptor_set(descriptorSet); }
 inline bool isDataDescriptorSet    (uint8_t descriptorSet) { return C::mip_is_data_descriptor_set(descriptorSet); }
 inline bool isCommandDescriptorSet (uint8_t descriptorSet) { return C::mip_is_cmd_descriptor_set(descriptorSet); }
 inline bool isReservedDescriptorSet(uint8_t descriptorSet) { return C::mip_is_reserved_descriptor_set(descriptorSet); }
+inline bool isGnssDataDescriptorSet(uint8_t descriptorSet) { return C::mip_is_gnss_data_descriptor_set(descriptorSet); }
 
 inline bool isValidFieldDescriptor   (uint8_t fieldDescriptor)   { return C::mip_is_valid_field_descriptor(fieldDescriptor); }
 inline bool isCommandFieldDescriptor (uint8_t fieldDescriptor)   { return C::mip_is_cmd_field_descriptor(fieldDescriptor); }
@@ -122,8 +119,27 @@ inline bool isReservedFieldDescriptor(uint8_t fieldDescriptor)   { return C::mip
 inline bool isSharedDataFieldDescriptor(uint8_t fieldDescriptor) { return C::mip_is_shared_data_field_descriptor(fieldDescriptor); }
 
 
-inline void insert(Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+////////////////////////////////////////////////////////////////////////////////
+///@brief A CmdResult that knows the corresponding command type.
+///
+///@tparam MipCmd Type of the command struct.
+///
+template<class MipCmd>
+struct TypedResult : public CmdResult
+{
+    using Cmd = MipCmd;
+
+    // Same constructor as CmdResult.
+    using CmdResult::CmdResult;
+
+    ///@brief The command descriptor.
+    ///
+    static constexpr CompositeDescriptor DESCRIPTOR = MipCmd::DESCRIPTOR;
+
+    ///@brief Returns the composite descriptor of the command.
+    ///
+    constexpr CompositeDescriptor descriptor() const { return DESCRIPTOR; }
+};
 
 } // namespace mip
 

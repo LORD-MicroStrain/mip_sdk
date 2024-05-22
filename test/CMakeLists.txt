@@ -20,6 +20,7 @@ add_mip_test(TestMipParsing        "${TEST_DIR}/mip/test_mip_parser.c" TestMipPa
 add_mip_test(TestMipRandom         "${TEST_DIR}/mip/test_mip_random.c" TestMipRandom)
 add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFields)
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
+add_mip_test(TestMipPerf           "${TEST_DIR}/mip/mip_parser_performance.cpp" TestMipPerf)
 
 if(WITH_SERIAL)
     add_executable(TestSerial "${TEST_DIR}/test_serial.cpp")

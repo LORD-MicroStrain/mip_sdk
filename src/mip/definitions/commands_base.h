@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -41,9 +42,7 @@ enum
     MIP_CMD_DESC_BASE_GET_EXTENDED_DESCRIPTORS   = 0x07,
     MIP_CMD_DESC_BASE_CONTINUOUS_BIT             = 0x08,
     MIP_CMD_DESC_BASE_COMM_SPEED                 = 0x09,
-    MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST         = 0x71,
-    MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW     = 0x72,
-    MIP_CMD_DESC_BASE_SYSTEM_TIME                = 0x73,
+    MIP_CMD_DESC_BASE_GPS_TIME_UPDATE            = 0x72,
     MIP_CMD_DESC_BASE_SOFT_RESET                 = 0x7E,
     
     MIP_REPLY_DESC_BASE_DEVICE_INFO              = 0x81,
@@ -109,6 +108,7 @@ static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTCM_F
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FAULT         = 0x20000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000; ///<  
+static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_ALL                    = 0xFFFFFFFF;
 
 void insert_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, const mip_commanded_test_bits_gq7 self);
 void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_commanded_test_bits_gq7* self);
@@ -129,6 +129,7 @@ void extract_mip_commanded_test_bits_gq7(struct mip_serializer* serializer, mip_
 ///@{
 
 mip_cmd_result mip_base_ping(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -142,6 +143,7 @@ mip_cmd_result mip_base_ping(struct mip_interface* device);
 ///@{
 
 mip_cmd_result mip_base_set_idle(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +162,7 @@ void insert_mip_base_get_device_info_response(struct mip_serializer* serializer,
 void extract_mip_base_get_device_info_response(struct mip_serializer* serializer, mip_base_get_device_info_response* self);
 
 mip_cmd_result mip_base_get_device_info(struct mip_interface* device, mip_base_device_info* device_info_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,8 +176,8 @@ mip_cmd_result mip_base_get_device_info(struct mip_interface* device, mip_base_d
 
 struct mip_base_get_device_descriptors_response
 {
+    uint16_t descriptors[253];
     uint8_t descriptors_count;
-    uint16_t* descriptors;
     
 };
 typedef struct mip_base_get_device_descriptors_response mip_base_get_device_descriptors_response;
@@ -182,6 +185,7 @@ void insert_mip_base_get_device_descriptors_response(struct mip_serializer* seri
 void extract_mip_base_get_device_descriptors_response(struct mip_serializer* serializer, mip_base_get_device_descriptors_response* self);
 
 mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +209,7 @@ void insert_mip_base_built_in_test_response(struct mip_serializer* serializer, c
 void extract_mip_base_built_in_test_response(struct mip_serializer* serializer, mip_base_built_in_test_response* self);
 
 mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* result_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,6 +221,7 @@ mip_cmd_result mip_base_built_in_test(struct mip_interface* device, uint32_t* re
 ///@{
 
 mip_cmd_result mip_base_resume(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -229,8 +235,8 @@ mip_cmd_result mip_base_resume(struct mip_interface* device);
 
 struct mip_base_get_extended_descriptors_response
 {
+    uint16_t descriptors[253];
     uint8_t descriptors_count;
-    uint16_t* descriptors;
     
 };
 typedef struct mip_base_get_extended_descriptors_response mip_base_get_extended_descriptors_response;
@@ -238,11 +244,12 @@ void insert_mip_base_get_extended_descriptors_response(struct mip_serializer* se
 void extract_mip_base_get_extended_descriptors_response(struct mip_serializer* serializer, mip_base_get_extended_descriptors_response* self);
 
 mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, uint16_t* descriptors_out, size_t descriptors_out_max, uint8_t* descriptors_out_count);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_base_continuous_bit  (0x01,0x08) Continuous Bit [C]
-/// Report result of continous built-in test.
+/// Report result of continuous built-in test.
 /// 
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
 ///
@@ -258,6 +265,7 @@ void insert_mip_base_continuous_bit_response(struct mip_serializer* serializer, 
 void extract_mip_base_continuous_bit_response(struct mip_serializer* serializer, mip_base_continuous_bit_response* self);
 
 mip_cmd_result mip_base_continuous_bit(struct mip_interface* device, uint8_t* result_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -306,10 +314,12 @@ mip_cmd_result mip_base_read_comm_speed(struct mip_interface* device, uint8_t po
 mip_cmd_result mip_base_save_comm_speed(struct mip_interface* device, uint8_t port);
 mip_cmd_result mip_base_load_comm_speed(struct mip_interface* device, uint8_t port);
 mip_cmd_result mip_base_default_comm_speed(struct mip_interface* device, uint8_t port);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_base_gps_time_update  (0x01,0x72) Gps Time Update [C]
+/// Set device internal GPS time
 /// When combined with a PPS input signal applied to the I/O connector, this command enables complete synchronization of data outputs
 /// with an external time base, such as GPS system time. Since the hardware PPS synchronization can only detect the fractional number of seconds when pulses arrive,
 /// complete synchronization requires that the user provide the whole number of seconds via this command. After achieving PPS synchronization, this command should be sent twice: once to set the time-of-week and once to set the week number. PPS synchronization can be verified by monitoring the time sync status message (0xA0, 0x02) or the valid flags of any shared external timestamp (0x--, D7) data field.
@@ -335,6 +345,7 @@ void insert_mip_base_gps_time_update_command_field_id(struct mip_serializer* ser
 void extract_mip_base_gps_time_update_command_field_id(struct mip_serializer* serializer, mip_base_gps_time_update_command_field_id* self);
 
 mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_base_gps_time_update_command_field_id field_id, uint32_t value);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -346,6 +357,7 @@ mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_
 ///@{
 
 mip_cmd_result mip_base_soft_reset(struct mip_interface* device);
+
 ///@}
 ///
 

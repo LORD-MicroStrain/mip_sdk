@@ -1,4 +1,21 @@
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// threading.cpp
+//
+// C++ example program to print device information from any mip-enabled MicroStrain device.
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
+
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
@@ -41,7 +58,7 @@ unsigned int display_progress()
     return count;
 }
 
-void packet_callback(void*, const mip::Packet& packet, mip::Timestamp timestamp)
+void packet_callback(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
 {
     numSamples++;
 }
@@ -50,7 +67,7 @@ void device_thread_loop(mip::DeviceInterface* device)
 {
     while(!stop)
     {
-        if( !device->update(false) )
+        if( !device->update(0) )
         {
             device->cmdQueue().clear();  // Avoid deadlocks if the socket is closed.
             break;
@@ -60,15 +77,18 @@ void device_thread_loop(mip::DeviceInterface* device)
     }
 }
 
-bool update_device(mip::DeviceInterface& device, bool blocking)
+bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
 {
-    if( !blocking )
-        return device.defaultUpdate(blocking);
+    // Thread calls this with wait_time 0, commands have wait_time > 0.
+    if( wait_time == 0 )
+        return device.defaultUpdate(wait_time);
 
     // Optionally display progress while waiting for command replies.
     // Displaying it here makes it update more frequently.
     //display_progress();
 
+    // Avoid failing the update function as long as the other thread is running.
+    // Doing so may cause a race condition (see comments in mip_interface_wait_for_reply).
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     return true;
 }

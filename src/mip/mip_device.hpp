@@ -5,6 +5,7 @@
 
 #include "definitions/descriptors.h"
 
+#include <string>
 
 namespace mip
 {
@@ -21,6 +22,11 @@ struct Dispatcher : public C::mip_dispatcher
         ANY_DATA_SET = C::MIP_DISPATCH_ANY_DATA_SET,
         ANY_DESCRIPTOR = C::MIP_DISPATCH_ANY_DESCRIPTOR,
     };
+
+    void addHandler(DispatchHandler& handler) { C::mip_dispatcher_add_handler(this, &handler); }
+    void removeHandler(DispatchHandler& handler) { C::mip_dispatcher_remove_handler(this, &handler); }
+
+    void removeAllHandlers() { C::mip_dispatcher_remove_all_handlers(this); }
 };
 
 
@@ -109,6 +115,9 @@ struct PendingCmd : public C::mip_pending_cmd
     ///
     CmdResult status() const { return C::mip_pending_cmd_status(this); }
 
+    ///@copydoc mip::C::mip_pending_cmd_response_descriptor
+    uint8_t responseDescriptor() const { return C::mip_pending_cmd_response_descriptor(this); }
+
     ///@copydoc mip::C::mip_pending_cmd_response
     const uint8_t* response() const { return C::mip_pending_cmd_response(this); }
 
@@ -135,8 +144,30 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 class Connection
 {
 public:
-    virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;  // Must be implemented by a derived class.
-    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) = 0;  // Must be implemented by a derived class.
+
+    static constexpr auto TYPE = "None";
+
+    Connection() { mType = TYPE; };
+    virtual ~Connection() {}
+
+    virtual bool sendToDevice(const uint8_t* data, size_t length) = 0;
+    virtual bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out) = 0;
+
+    virtual bool isConnected() const = 0;
+    virtual bool connect() = 0;
+    virtual bool disconnect() = 0;
+
+    void connect_interface(C::mip_interface* device);
+
+    const char* type() const { return mType; };
+
+    virtual const char* interfaceName() const = 0;
+    virtual uint32_t parameter() const = 0;
+
+protected:
+
+    const char *mType;
+
 };
 
 
@@ -151,8 +182,20 @@ public:
     //
 
     ///@copydoc mip::C::mip_interface_init
+    /// The interface callbacks must be assigned separately (e.g. with Connection::connect_interface())
+    DeviceInterface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout)
+    {
+        C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
+    }
+
+    ///@copydoc mip::C::mip_interface_init
     ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
-    DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) : mConnection(connection) { C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout); }
+    DeviceInterface(Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
+        DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
+    {
+        if(connection)
+            connection->connect_interface(this);
+    }
 
     DeviceInterface(const DeviceInterface&) = delete;
     DeviceInterface& operator=(const DeviceInterface&) = delete;
@@ -160,14 +203,54 @@ public:
     ~DeviceInterface() = default;
 
     //
-    // Accessors
+    // Callback functions
     //
 
-    ///@copydoc C::mip_interface_set_update_function
+    // C function callbacks
+
+    C::mip_send_callback   sendFunction()   const { return C::mip_interface_send_function(this);   }
+    C::mip_recv_callback   recvFunction()   const { return C::mip_interface_recv_function(this);   }
+    C::mip_update_callback updateFunction() const { return C::mip_interface_update_function(this); }
+
+    void setSendFunction  (C::mip_send_callback   callback) { C::mip_interface_set_send_function  (this, callback); }
+    void setRecvFunction  (C::mip_recv_callback   callback) { C::mip_interface_set_recv_function  (this, callback); }
     void setUpdateFunction(C::mip_update_callback function) { C::mip_interface_set_update_function(this, function); }
 
-    template<bool (*Function)(DeviceInterface&,bool)>
+    // free/nonmember function callbacks
+
+    template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
+    void setSendFunction();
+
+    template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    void setRecvFunction();
+
+    template<bool (*Update)(DeviceInterface&, Timeout)>
     void setUpdateFunction();
+
+    // derived member function callbacks
+
+    template<class Derived, bool (Derived::*Send)(const uint8_t*, size_t)>
+    void setSendFunction();
+
+    template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    void setRecvFunction();
+
+    template<class Derived, bool (Derived::*Update)(Timeout)>
+    void setUpdateFunction();
+
+    // Separate class object callbacks
+
+    template<
+        class T,
+        bool (T::*Send)(const uint8_t*, size_t),
+        bool (T::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*),
+        bool (T::*Update)(Timeout) = nullptr
+    >
+    void setCallbacks(T* object);
+
+    //
+    // General accessors
+    //
 
     void setMaxPacketsPerPoll(unsigned int maxPackets) { C::mip_interface_set_max_packets_per_update(this, maxPackets); }
     unsigned int maxPacketsPerPoll() const             { return C::mip_interface_max_packets_per_update(this); }
@@ -175,34 +258,28 @@ public:
     Timeout baseReplyTimeout() const          { return C::mip_cmd_queue_base_reply_timeout(&cmdQueue()); }
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(&cmdQueue(), timeout); }
 
+
     Parser&   parser()   { return *static_cast<Parser*>(C::mip_interface_parser(this)); }
     CmdQueue& cmdQueue() { return *static_cast<CmdQueue*>(C::mip_interface_cmd_queue(this)); }
 
     const Parser&   parser()   const   { return const_cast<DeviceInterface*>(this)->parser(); }
     const CmdQueue& cmdQueue() const { return const_cast<DeviceInterface*>(this)->cmdQueue(); }
 
-    const Connection* connection() const { return mConnection; }
-    void setConnection(Connection* connection) { mConnection = connection; }
-
     //
     // Communications
     //
 
-    RemainingCount receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
-
-    void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
-
-    bool           sendToDevice(const uint8_t* data, size_t length) { return mConnection->sendToDevice(data, length); }
+    bool           sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
     bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
+    bool           recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) { return C::mip_interface_recv_from_device(this, buffer, max_length, wait_time, length_out, timestamp); }
+    bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
+    bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
 
-    bool           update(bool blocking=false) { return C::mip_interface_update(this, blocking); }
-    bool           recvFromDevice(uint8_t* buffer, size_t max_length, size_t* length_out, Timestamp* timestamp) { return mConnection->recvFromDevice(buffer, max_length, length_out, timestamp); }
-
+    size_t         receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
+    void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
-    CmdResult      waitForReply(const C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
-
-    bool           defaultUpdate(bool blocking=false) { return C::mip_interface_default_update(this, blocking); }
+    CmdResult      waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
 
     //
     // Data Callbacks
@@ -212,10 +289,10 @@ public:
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, C::mip_dispatch_field_callback callback, void* userData) { C::mip_interface_register_field_callback(this, &handler, descriptorSet, fieldDescriptor, callback, userData); }
 
 
-    template<void (*Callback)(void*, const Packet&, Timestamp)>
+    template<void (*Callback)(void*, const PacketRef&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData=nullptr);
 
-    template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
+    template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object);
 
 
@@ -229,7 +306,13 @@ public:
     template<class DataField, void (*Callback)(void*, const DataField&, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, void* userData=nullptr, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
+    template<class DataField, void (*Callback)(void*, const DataField&, uint8_t, Timestamp)>
+    void registerDataCallback(C::mip_dispatch_handler& handler, void* userData=nullptr, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
+
     template<class DataField, class Object, void (Object::*Callback)(const DataField&, Timestamp)>
+    void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
+
+    template<class DataField, class Object, void (Object::*Callback)(const DataField&, uint8_t, Timestamp)>
     void registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet=DataField::DESCRIPTOR_SET);
 
 
@@ -255,33 +338,195 @@ public:
 
 //    template<class Cmd>
 //    bool startCommand(PendingCmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime=0) { return mip::startCommand(pending, cmd, responseBuffer, responseBufferSize, additionalTime); }
-
-private:
-    Connection* mConnection;
 };
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Sets the update function to a function taking a MipDevice reference.
+///@brief Sets the send callback function (free function version).
 ///
-///@code{.cpp}
-/// bool updateDevice(DeviceInterface& device, bool blocking)
-/// {
-///     return device.defaultUpdate(blocking);
-/// }
+///@tparam Send A compile-time pointer to the callback function.
 ///
-/// device.setUpdateFunction<&updateDevice>();
-///@endcode
+template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
+void DeviceInterface::setSendFunction()
+{
+    setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length){
+        return (*Send)(*static_cast<DeviceInterface*>(device), data, length);
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the receive callback function (free function version).
 ///
-template<bool (*Function)(DeviceInterface&,bool)>
+///@tparam Send A compile-time pointer to the callback function.
+///
+template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+void DeviceInterface::setRecvFunction()
+{
+    setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out){
+        return (*Recv)(*static_cast<DeviceInterface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the update callback function (free function version).
+///
+///@tparam Send A compile-time pointer to the callback function.
+///
+template<bool (*Update)(DeviceInterface&, Timeout)>
 void DeviceInterface::setUpdateFunction()
 {
-    setUpdateFunction(
-        [](C::mip_interface* device, bool blocking)->bool
+    setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time){
+        return (*Update)(*static_cast<DeviceInterface*>(device), wait_time);
+    });
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the send callback function (derived member function version).
+///
+///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Send    Compile-time pointer to member function of Derived.
+///
+///@code{.cpp}
+/// class MyClass : public mip::DeviceInterface
+/// {
+///     bool sendToDevice(const uint8_t* data, size_t size);
+///     bool recvFromDevice(uint8_t* data, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
+/// };
+///
+/// MyClass instance;
+/// instance.setSendFunction<MyClass, &MyClass::sendToDevice>();
+/// instance.setRecvFunction<MyClass, &MyClass::recvFromDevice>();
+///
+/// instance.setCallbacks<Connection, &Connection::sendToDevice, &Connection::recvFromDevice>(connection);
+///@endcode
+///
+
+template<class Derived, bool (Derived::*Send)(const uint8_t*, size_t)>
+void DeviceInterface::setSendFunction()
+{
+    static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
+
+    setSendFunction(
+        [](C::mip_interface* device, const uint8_t* data, size_t length)
         {
-            return Function(*static_cast<DeviceInterface*>(device), blocking);
+            return (static_cast<Derived*>(device)->*Send)(data, length);
         }
     );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the receive callback function (derived member function version).
+///
+///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Recv    Compile-time pointer to member function of Derived.
+///
+///@see DeviceInterface::setSendFunction()
+///
+template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+void DeviceInterface::setRecvFunction()
+{
+    static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
+
+    setRecvFunction(
+        [](C::mip_interface* device, uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out)
+        {
+            return (static_cast<Derived*>(device)->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
+        }
+    );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the update callback function (derived member function version).
+///
+///@tparam Derived Derived class type. Must inherit from DeviceInterface.
+///@tparam Update  Compile-time pointer to member function of Derived.
+///
+///@see DeviceInterface::setSendFunction()
+///
+template<class Derived, bool (Derived::*Update)(Timeout)>
+void DeviceInterface::setUpdateFunction()
+{
+    static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
+
+    setUpdateFunction(
+        [](C::mip_interface* device, C::mip_timeout wait_time)->bool
+        {
+            return (static_cast<Derived*>(device)->*Update)(wait_time);
+        }
+    );
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the callback functions to a common class object.
+///
+///@tparam T
+///        A class type.
+///
+///@tparam Send
+///        A member function pointer for sending bytes to the device.
+///        May be NULL.
+///
+///@tparam Recv
+///        A member function pointer for receiving bytes from the device.
+///        May be NULL.
+///
+///@tparam Update
+///        A member function pointer for updating the device.
+///        If both this and Recv are NULL, no update function is set.
+///        If Update is NULL but Recv is not, the default update function
+///        is used instead.
+///
+///@param object
+///       An instance of T. The interface's user pointer will be set to this
+///       value. All of the callbacks will be invoked on this instance.
+///
+///@code{.cpp}
+/// class DeviceConnection
+/// {
+///     bool send(const uint8_t* data, size_t length);
+///     bool recv(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp_out);
+/// };
+///
+/// DeviceConnection connection;
+/// mip::DeviceInterface interface;
+///
+/// interface.setCallbacks<DeviceConnection, &DeviceConnection::send, &DeviceConnection::recv, nullptr>(&connection);
+///@endcode
+///
+template<
+    class T,
+    bool (T::*Send)(const uint8_t*, size_t),
+    bool (T::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*),
+    bool (T::*Update)(Timeout)
+>
+void DeviceInterface::setCallbacks(T* object)
+{
+    auto send = [](C::mip_interface* device, const uint8_t* data, size_t size)
+    {
+        return (static_cast<T*>(mip_interface_user_pointer(device))->*Send)(data, size);
+    };
+    auto recv = [](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out)
+    {
+        return (static_cast<T*>(mip_interface_user_pointer(device))->*Recv)(buffer, max_length, wait_time, length_out, timestamp_out);
+    };
+    auto update = [](C::mip_interface* device, C::mip_timeout wait_time)
+    {
+        return (static_cast<T*>(mip_interface_user_pointer(device))->*Update)(wait_time);
+    };
+
+    C::mip_interface_set_user_pointer(this, object);
+    C::mip_interface_set_send_function(this, Send != nullptr ? send : nullptr);
+    C::mip_interface_set_recv_function(this, Recv != nullptr ? recv : nullptr);
+
+    if( Update != nullptr )
+        C::mip_interface_set_update_function(this, update);
+    else if( Recv != nullptr )
+        C::mip_interface_set_update_function(this, &C::mip_interface_default_update);
+    else
+        C::mip_interface_set_update_function(this, nullptr);
 }
 
 
@@ -298,7 +543,7 @@ void DeviceInterface::setUpdateFunction()
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, const PacketRef& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -315,12 +560,12 @@ void DeviceInterface::setUpdateFunction()
 ///
 ///@endcode
 ///
-template<void (*Callback)(void*, const Packet&, Timestamp)>
+template<void (*Callback)(void*, const PacketRef&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
     auto callback = [](void* context, const C::mip_packet* packet, Timestamp timestamp)
     {
-        Callback(context, Packet(*packet), timestamp);
+        Callback(context, PacketRef(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, userData);
@@ -342,7 +587,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///@code{.cpp}
 /// class MySystem
 /// {
-///   void handlePacket(const Packet& packet, Timestamp timestamp)
+///   void handlePacket(const PacketRef& packet, Timestamp timestamp)
 ///   {
 ///   }
 ///
@@ -357,13 +602,13 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 /// };
 ///@endcode
 ///
-template<class Object, void (Object::*Callback)(const Packet&, Timestamp)>
+template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
 void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
-    auto callback = [](void* pointer, const Packet& packet, Timestamp timestamp)
+    auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(Packet(packet), timestamp);
+        (obj->*Callback)(PacketRef(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
@@ -454,7 +699,6 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Registers a data callback (free function version).
 ///
@@ -473,7 +717,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///
 /// Example usage:
 ///@code{.cpp}
-/// void handle_packet(void* context, const Packet& packet, Timestamp timestamp)
+/// void handle_packet(void* context, const PacketRef& packet, Timestamp timestamp)
 /// {
 ///   // Use the packet data
 /// }
@@ -509,6 +753,65 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
         assert(ok); (void)ok;
 
         Callback(context, data, timestamp);
+    };
+
+    registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, userData);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a data callback (free function version).
+///
+///@tparam Callback A pointer to the function to call. This must be a constant
+///        function pointer.
+///
+///@param handler
+///       This must exist as long as the hander remains registered.
+///
+///@param userData
+///       Optional data to pass to the callback function.
+///
+///@param descriptorSet
+///       If specified, overrides the descriptor set. Intended to be used with
+///       with shared data quantities.
+///
+/// Example usage:
+///@code{.cpp}
+/// void handle_packet(void* context, uint8_t descriptorSet, const PacketRef& packet, Timestamp timestamp)
+/// {
+///   // Use the packet data
+/// }
+///
+/// DeviceInterface device;
+/// DispatchHandler handler;
+///
+/// void setup()
+/// {
+///   // Set up device...
+///
+///   device.registerDataCallback<&handle_packet>(handler, descriptorSet, nullptr);
+/// }
+///
+///@endcode
+///
+template<class DataField, void (*Callback)(void*, const DataField&, uint8_t, Timestamp)>
+void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
+{
+    assert(descriptorSet != 0x00);
+    if(descriptorSet == 0x00)
+        return;
+
+    assert(descriptorSet != 0xFF);  // Descriptor set must be specified for shared data.
+    if(descriptorSet == 0xFF)
+        return;
+
+    auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
+    {
+        DataField data;
+
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
+
+        Callback(context, data, mip_field_descriptor_set(field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, userData);
@@ -575,6 +878,67 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, object);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Registers a data callback (member function version).
+///
+///@tparam Callback A pointer to the function to call. This must be a constant
+///        member function pointer.
+///
+///@param handler
+///       This must exist as long as the hander remains registered.
+///
+///@param object
+///       A pointer to the object. The object must exist while the handler
+///       remains registered.
+///
+///@param descriptorSet
+///       If specified, overrides the descriptor set. Intended to be used with
+///       with shared data quantities.
+///
+/// Example usage:
+///@code{.cpp}
+/// class MySystem
+/// {
+///   void handleAccel(const ScaledAccel& accel, uint8_t descriptorSet, Timestamp timestamp)
+///   {
+///   }
+///
+///   void setup()
+///   {
+///     // setup device...
+///     device.registerDataHandler<ScaledAccel, MySystem, &MySystem::handleAccel>(accelHandler, this);
+///   }
+///
+///   DeviceInterface device;
+///   DispatchHandler accelHandler;
+/// };
+///@endcode
+///
+template<class DataField, class Object, void (Object::*Callback)(const DataField&, uint8_t, Timestamp)>
+void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
+{
+    assert(descriptorSet != 0x00);
+    if(descriptorSet == 0x00)
+        return;
+
+    assert(descriptorSet != 0xFF);  // Descriptor set must be specified for shared data.
+    if(descriptorSet == 0xFF)
+        return;
+
+    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    {
+        DataField data;
+
+        bool ok = Field(*field).extract(data);
+        assert(ok); (void)ok;
+
+        Object* obj = static_cast<Object*>(pointer);
+        (obj->*Callback)(data, mip_field_descriptor_set(field), timestamp);
+    };
+
+    registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, object);
+}
+
 
 template<class DataField>
 void DeviceInterface::registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet)
@@ -591,8 +955,7 @@ void DeviceInterface::registerExtractor(C::mip_dispatch_handler& handler, DataFi
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd pending;
     C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
@@ -610,11 +973,10 @@ CmdResult runCommand(C::mip_interface& device, const Args&&... args, Timeout add
 template<class Cmd>
 CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Response& response, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd pending;
-    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, buffer, FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
+    C::mip_pending_cmd_init_full(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, Cmd::Response::FIELD_DESCRIPTOR, packet.buffer(), FIELD_PAYLOAD_LENGTH_MAX, additionalTime);
 
     CmdResult result = C::mip_interface_run_command_packet(&device, &packet, &pending);
     if( result != C::MIP_ACK_OK )
@@ -622,15 +984,14 @@ CmdResult runCommand(C::mip_interface& device, const Cmd& cmd, typename Cmd::Res
 
     size_t responseLength = C::mip_pending_cmd_response_length(&pending);
 
-    return extract(response, buffer, responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
+    return extract(response, packet.buffer(), responseLength, 0) ? CmdResult::ACK_OK : CmdResult::STATUS_ERROR;
 }
 
 
 template<class Cmd>
 bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, Timeout additionalTime)
 {
-    uint8_t buffer[PACKET_LENGTH_MAX];
-    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+    PacketBuf packet(cmd);
 
     C::mip_pending_cmd_init_with_timeout(&pending, Cmd::DESCRIPTOR_SET, Cmd::FIELD_DESCRIPTOR, additionalTime);
 
@@ -640,8 +1001,7 @@ bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const C
 //template<class Cmd>
 //bool startCommand(C::mip_interface& device, C::mip_pending_cmd& pending, const Cmd& cmd, uint8_t* responseBuffer, uint8_t responseBufferSize, Timeout additionalTime)
 //{
-//    uint8_t buffer[PACKET_LENGTH_MAX];
-//    Packet packet = Packet::createFromField(buffer, sizeof(buffer), cmd);
+//    PacketBuf packet(cmd);
 //
 //    C::mip_pending_cmd_init_full(&pending, Cmd::descriptorSet, Cmd::fieldDescriptor, Cmd::Response::fieldDescriptor, responseBuffer, responseBufferSize, additionalTime);
 //

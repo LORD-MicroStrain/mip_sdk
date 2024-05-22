@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
@@ -13,18 +13,38 @@ project(
     LANGUAGES C CXX
 )
 
+#
+# Build options
+#
+
+option(MIP_USE_SERIAL "Build serial connection support into the library and examples" ON)
+option(MIP_USE_TCP "Build TCP connection support into the library and exampels" ON)
+option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
+option(MIP_ENABLE_DIAGNOSTICS "Enable various diagnostic counters in the mip library for debugging." OFF)
+option(MIP_ENABLE_LOGGING "Build with logging functions enabled" ON)
+option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+option(BUILD_EXAMPLES "Builds the example programs." ON)
+# CTest defines this option to ON by default, so override it to OFF here.
+option(BUILD_TESTING "Build the testing tree." OFF)
+option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
+option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
+option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
+option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
+
+set(MIP_LOGGING_MAX_LEVEL "" CACHE STRING "Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration.")
+set(MIP_TIMESTAMP_TYPE "uint64_t" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
+
 set(SRC_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 set(EXT_DIR "${CMAKE_CURRENT_LIST_DIR}/ext")
-
-include_directories(
-    "${SRC_DIR}"
-)
+set(MIP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 if(WITH_INTERNAL)
-    set(MIP_INTERNAL_DIR "int" CACHE PATH "")
-    if(MIP_INTERNAL_DIR)
-        add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
+    if(NOT DEFINED MIP_INTERNAL_DIR)
+        set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
+    file(REAL_PATH "${MIP_INTERNAL_DIR}" MIP_INTERNAL_DIR)
+
+    add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()
 
 set(MIP_DIR "${SRC_DIR}/mip")
@@ -53,16 +73,26 @@ else()
   endif()
 endif()
 
-#
-# Build options
-#
+# Massage the version number a little so we can use it in a couple places
+string(REGEX REPLACE "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CLEAN ${MIP_GIT_VERSION})
+string(REPLACE "." ";" MIP_GIT_VERSION_LIST ${MIP_GIT_VERSION_CLEAN})
+list(LENGTH MIP_GIT_VERSION_LIST MIP_GIT_VERSION_LIST_LENGTH)
+if (MIP_GIT_VERSION_LIST_LENGTH GREATER_EQUAL 3)
+    list(GET MIP_GIT_VERSION_LIST 0 MIP_GIT_VERSION_MAJOR)
+    list(GET MIP_GIT_VERSION_LIST 1 MIP_GIT_VERSION_MINOR)
+    list(GET MIP_GIT_VERSION_LIST 2 MIP_GIT_VERSION_PATCH)
+else()
+    message(WARNING "MIP version cannot be parsed into a semantic version string.\nPlease run 'git fetch --tags' to get a properly tagged build")
+    set(MIP_GIT_VERSION_CLEAN "0.0.0")
+    set(MIP_GIT_VERSION_MAJOR 0)
+    set(MIP_GIT_VERSION_MINOR 0)
+    set(MIP_GIT_VERSION_PATCH 0)
+endif()
 
-option(WITH_SERIAL "Build serial connection support into the library and examples" ON)
-option(WITH_TCP    "Build TCP connection support into the library and exampels" ON)
-
-set(MIP_TIMESTAMP_TYPE "" CACHE STRING "Override the type used for received data timestamps and timeouts (must be unsigned or at least 64 bits).")
-
-option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
+# Generate the version header file
+set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
+set(VERSION_OUT_FILE "${MIP_DIR}/mip_version.h")
+configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 
 #
 # Utils
@@ -82,6 +112,7 @@ set(UTILS_SOURCES
 #
 
 set(MIP_SOURCES
+    "${VERSION_OUT_FILE}"
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
     "${MIP_DIR}/mip_dispatch.c"
@@ -96,10 +127,13 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_result.c"
     "${MIP_DIR}/mip_result.h"
     "${MIP_DIR}/mip_types.h"
+    "${MIP_DIR}/definitions/common.c"
+    "${MIP_DIR}/definitions/common.h"
     "${MIP_DIR}/definitions/descriptors.c"
     "${MIP_DIR}/definitions/descriptors.h"
     "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
+    "${MIP_DIR}/mip_all.hpp"
 )
 
 set(MIPDEV_SOURCES
@@ -120,6 +154,8 @@ set(MIPDEF_SOURCES
     "${MIP_DIR}/definitions/commands_gnss.h"
     "${MIP_DIR}/definitions/commands_rtk.c"
     "${MIP_DIR}/definitions/commands_rtk.h"
+    "${MIP_DIR}/definitions/commands_aiding.c"
+    "${MIP_DIR}/definitions/commands_aiding.h"
     "${MIP_DIR}/definitions/commands_system.c"
     "${MIP_DIR}/definitions/commands_system.h"
     "${MIP_DIR}/definitions/data_filter.c"
@@ -135,10 +171,10 @@ set(MIPDEF_SOURCES
     ${INTDEF_SOURCES}
 )
 
-string(REPLACE ".h" ".hpp" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
-string(REPLACE ".c" ".cpp" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
+string(REGEX REPLACE "\.h(;|$)" ".hpp\\1" MIPDEF_HPP_SOURCES "${MIPDEF_SOURCES}")
+string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURCES}")
 
-if(WITH_SERIAL)
+if(MIP_USE_SERIAL)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/serial_port.c"
         "${UTILS_DIR}/serial_port.h"
@@ -148,7 +184,7 @@ if(WITH_SERIAL)
         "${MIP_DIR}/platform/serial_connection.cpp"
     )
 endif()
-if(WITH_TCP)
+if(MIP_USE_TCP)
     list(APPEND UTILS_SOURCES
         "${UTILS_DIR}/tcp_socket.c"
         "${UTILS_DIR}/tcp_socket.h"
@@ -157,6 +193,30 @@ if(WITH_TCP)
         "${MIP_DIR}/platform/tcp_connection.hpp"
         "${MIP_DIR}/platform/tcp_connection.cpp"
     )
+endif()
+if(MIP_USE_EXTRAS)
+    list(APPEND MIP_DEFINES "MIP_USE_EXTRAS")
+    set(MIP_EXTRAS_DIR "${MIP_DIR}/extras")
+    set(MIP_EXTRA_SOURCES
+        "${MIP_EXTRAS_DIR}/composite_result.hpp"
+        "${MIP_EXTRAS_DIR}/descriptor_id.hpp"
+        "${MIP_EXTRAS_DIR}/device_models.h"
+        "${MIP_EXTRAS_DIR}/device_models.c"
+        "${MIP_EXTRAS_DIR}/index.hpp"
+        "${MIP_EXTRAS_DIR}/recording_connection.hpp"
+        "${MIP_EXTRAS_DIR}/recording_connection.cpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.hpp"
+        "${MIP_EXTRAS_DIR}/scope_helper.cpp"
+        "${MIP_EXTRAS_DIR}/version.hpp"
+        "${MIP_EXTRAS_DIR}/version.cpp"
+    )
+endif()
+
+# Logging is a little weird since we need to install the header no matter what
+list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.h")
+if(MIP_ENABLE_LOGGING)
+    list(APPEND MIP_SOURCES "${MIP_DIR}/mip_logging.c")
+    list(APPEND MIP_DEFINES "MIP_ENABLE_LOGGING")
 endif()
 
 set(ALL_MIP_SOURCES
@@ -167,25 +227,46 @@ set(ALL_MIP_SOURCES
     ${UTILS_SOURCES}
     ${MIP_CPP_HEADERS}
     ${MIP_INTERFACE_SOURCES}
+    ${MIP_EXTRA_SOURCES}
 )
 
-
-option(MIP_DISABLE_CPP "Excludes all C++ files from the project." OFF)
 if(MIP_DISABLE_CPP)
     list(FILTER ALL_MIP_SOURCES EXCLUDE REGEX "[c|h]pp$")
 endif()
 
-
 add_library(mip ${ALL_MIP_SOURCES})
 
+target_include_directories(mip PUBLIC
+  "$<BUILD_INTERFACE:${SRC_DIR}>" # Include directory for build only
+  "$<INSTALL_INTERFACE:src>"      # Include directory for installation
+)
+
+if(WITH_INTERNAL)
+    target_include_directories(mip PUBLIC
+      "$<BUILD_INTERFACE:${MIP_INTERNAL_DIR}>"
+    )
+endif()
+
+#
+# Preprocessor definitions
+#
+
+if(${MIP_LOGGING_MAX_LEVEL})
+    list(APPEND MIP_DEFINES "MIP_LOGGING_MAX_LEVEL=${MIP_LOGGING_MAX_LEVEL}")
+endif()
 
 if(${MIP_TIMESTAMP_TYPE})
-    add_compile_definitions("MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+    list(APPEND MIP_DEFINES "MIP_TIMESTAMP_TYPE=${MIP_TIMESTAMP_TYPE}")
+endif()
+
+if(${MIP_ENABLE_DIAGNOSTICS})
+    list(APPEND MIP_DEFINES "MIP_ENABLE_DIAGNOSTICS")
 endif()
 
 # Disable windows defined min/max
+# Set Windows header version (0x0501 is _WIN32_WINNT_WINXP, required for TCP)
 if(WIN32)
-  target_compile_definitions(mip PUBLIC "NOMINMAX=1")
+  list(APPEND MIP_DEFINES "NOMINMAX=1" "_WIN32_WINNT=0x0501")
 endif()
 
 if(MSVC)
@@ -194,12 +275,18 @@ else()
   target_compile_options(mip PRIVATE -Wall -Wextra)
 endif()
 
+target_compile_definitions(mip PUBLIC "${MIP_DEFINES}")
+
+#
+# Libraries
+#
+if(WIN32 AND MIP_USE_TCP)
+    target_link_libraries(mip PUBLIC "ws2_32")
+endif()
+
 #
 # TESTING
 #
-
-# CTest defines this option to ON by default, so override it to OFF here.
-option(BUILD_TESTING "Build the testing tree." OFF)
 
 include(CTest)
 
@@ -211,8 +298,6 @@ endif()
 # EXAMPLES
 #
 
-option(BUILD_EXAMPLES "Builds the example programs." ON)
-
 if(BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif()
@@ -222,14 +307,13 @@ endif()
 #
 
 find_package(Doxygen)
-option(BUILD_DOCUMENTATION       "Build the documentation." OFF)
-option(BUILD_DOCUMENTATION_FULL  "Build the full (internal) documentation." OFF)
-option(BUILD_DOCUMENTATION_QUIET "Suppress doxygen standard output." ON)
 
 if(BUILD_DOCUMENTATION)
     if(NOT DOXYGEN_FOUND)
         message(FATAL_ERROR "Doxygen is required to build documentation.")
     endif()
+
+    set(DOXYGEN_PROJECT_NUMBER "${MIP_GIT_VERSION}")
 
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/documentation")
     set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/docs")
@@ -294,12 +378,23 @@ write_basic_package_version_file(
 # Installation
 #
 
-install(DIRECTORY
-    "${SRC_DIR}/mip"
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    COMPONENT mip
-    FILES_MATCHING PATTERN "*.h*"
-)
+# Only install headers that we build the source files for
+set(ALL_MIP_HEADERS "${ALL_MIP_SOURCES}")
+list(FILTER ALL_MIP_HEADERS INCLUDE REGEX "^.*\.(h|hpp)$")
+foreach(MIP_HEADER ${ALL_MIP_HEADERS})
+    string(REPLACE "${SRC_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER}")
+    if(INT_DIR)
+        string(REPLACE "${INT_DIR}/" "" MIP_HEADER_RELATIVE "${MIP_HEADER_RELATIVE}")
+    endif()
+    set(MIP_HEADER_DESTINATION_FULL "${CMAKE_INSTALL_INCLUDEDIR}/${MIP_HEADER_RELATIVE}")
+    get_filename_component(MIP_HEADER_DESTINATION "${MIP_HEADER_DESTINATION_FULL}" DIRECTORY)
+    install(
+        FILES "${MIP_HEADER}"
+        DESTINATION "${MIP_HEADER_DESTINATION}"
+        COMPONENT mip
+    )
+endforeach()
+
 install(TARGETS
     mip
     EXPORT mip-targets
@@ -400,9 +495,7 @@ if(BUILD_PACKAGE)
     set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@parker.com>")
     set(CPACK_COMPONENTS_ALL "mip")
 
-    # Massage the version number a little so we can set the proper version
-    string(REGEX REPLACE "^v([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MIP_GIT_VERSION_CPACK ${MIP_GIT_VERSION})
-    set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CPACK})
+    set(CPACK_PACKAGE_VERSION ${MIP_GIT_VERSION_CLEAN})
 
     # Shared configuration
     set(MIP_FILE_NAME_PREFIX "mipsdk_${MIP_GIT_VERSION}_${MIP_ARCH}")
@@ -421,8 +514,8 @@ if(BUILD_PACKAGE)
 
     # Zip specific configuration
     # Build different zip packages for each target
-    if(WIN32)
-        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_Windows")
+    if(MSVC)
+        set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
     elseif(APPLE)
         set(CPACK_ARCHIVE_MIP_FILE_NAME "${MIP_FILE_NAME_PREFIX}_OSX")
     elseif(UNIX)

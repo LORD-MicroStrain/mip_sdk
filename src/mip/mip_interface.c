@@ -10,20 +10,113 @@
 #include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Wrapper around mip_interface_receive_packet for use with mip_parser.
+///@typedef mip::C::mip_send_callback
 ///
-///@param device    Void pointer to the device. Must be a mip_interface pointer.
-///@param packet    MIP Packet from the parser.
-///@param timestamp timestamp_type of the packet.
+///@brief Called from mip_interface_send_to_device() to send data to the device port.
+///       The application should forward the data to the device port (e.g. a
+///       serial port, TCP connection, etc).
 ///
-///@returns True
+/// Applications should avoid introducing significant transmission delays as it
+/// may cause excessive command response times or timeouts.
 ///
-bool mip_interface_parse_callback(void* device, const mip_packet* packet, timestamp_type timestamp)
-{
-    mip_interface_receive_packet(device, packet, timestamp);
+///@param device
+///       A pointer to the device interface. Applications can use the user data
+///       pointer to access additional information such as the port handle.
+///@param data
+///       Buffer containing the data to be transmitted to the device.
+///@param length
+///       Length of data to transmit.
+///
+///@return True if all of the data was successfully transmitted.
+///@return False if an error occurred and some or all data was definitely unable
+///        to be transmitted.
+///@return Applications should prefer returning true if success is uncertain
+///        since command timeouts will help detect failed transmissions. If this
+///        function returns false, the associated command will fail with
+///        CmdResult::STATUS_ERROR.
+///
+///@note
+///
+///@note The data buffer is almost always a MIP packet. However, there are some
+///      cases where this is not true and an application should not rely on it.
+///
+///@see mip_interface_send_to_device
+///
 
-    return true;
-}
+////////////////////////////////////////////////////////////////////////////////
+///@typedef mip::C::mip_recv_callback
+///
+///@brief Called from mip_interface_recv_from_device() to receive data from the
+///       device port.
+///
+/// This is called indirectly through mip_interface_update() to poll for new
+/// data and command responses. For single-threaded applications, it will be
+/// called while waiting for command replies.
+///
+///
+///@param device
+///       A pointer to the device interface. Applications can use the user data
+///       pointer to access additional information such as the port handle.
+///
+///@param buffer
+///       Buffer to fill with data. Should be allocated before this function is called.
+///
+///@param max_length
+///       Max number of bytes that can be read into the buffer.
+///
+///@param wait_time
+///       Time to wait for data from the device. The actual time waited may
+///       be less than wait_time, but it should not significantly exceed this value.
+///
+///@param[out] length_out
+///       Number of bytes actually read into the buffer.
+///
+///@param[out] timestamp_out
+///       Timestamp the data was received.
+///
+///@returns True if successful, even if no data is received.
+///@returns False if the port cannot be read or some other error occurs (e.g.
+///         if the port is closed).
+///
+///@note Except in case of error (i.e. returning false), the timestamp must be
+///      set even if no data is received. This is required to allow commands
+///      to time out.
+///
+///@note Applications may sleep the thread or enter a low-power state while
+///      waiting for data. On posix-like (e.g. desktop) systems, applications
+///      should call read() with a maximum timeout of wait_time.
+///      If the actual wait time is less than the requested duration, this
+///      function may be called again by the MIP SDK to wait the remaining time.
+///      If the actual wait time exceeds wait_time, command timeouts may take
+///      longer than intended.
+///
+///@see mip_interface_recv_from_device
+///
+
+////////////////////////////////////////////////////////////////////////////////
+///@typedef mip::C::mip_update_callback
+///
+///@brief Callback function typedef for custom update behavior.
+///
+/// This function is called whenever data should be parsed from the port:
+///@li While waiting for command responses
+///@li To check for new data packets
+///
+/// Generally an application should call mip_interface_recv_from_device() from
+/// within this callback and pass the data to mip_interface_receive_bytes().
+/// Most applications can set this callback to mip_interface_default_update().
+///
+///@param device
+///       The mip_interface object being updated.
+///@param timeout
+///       Amount of time to wait for data from the device. This will be zero
+///       when checking for data and nonzero when waiting for commands.
+///
+///@returns True if successful (even if no data is received).
+///@returns False if an error occurs and the port cannot be read (e.g. if the
+///         port is closed). Returning false will cause any pending commands to
+///         fail with a status error code.
+///
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initialize the mip_interface components.
@@ -38,19 +131,95 @@ bool mip_interface_parse_callback(void* device, const mip_packet* packet, timest
 ///       Maximum length of time to wait for the end of a MIP packet. See mip_parser_init().
 ///@param base_reply_timeout
 ///       Minimum time for all commands. See mip_cmd_queue_init().
+///@param send
+///       A callback which is called to send data to the device.
+///@param recv
+///       A callback which is called when data needs to be read from the device.
+///@param update
+///       Optional callback which is called to perform routine tasks such as
+///       checking for command timeouts. Defaults to mip_interface_default_update.
+///@param user_pointer
+///       Optional pointer which is passed to the send, recv, and update callbacks.
 ///
-void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size, timeout_type parse_timeout, timeout_type base_reply_timeout)
+void mip_interface_init(
+    mip_interface* device, uint8_t* parse_buffer, size_t parse_buffer_size,
+    mip_timeout parse_timeout, mip_timeout base_reply_timeout,
+    mip_send_callback send, mip_recv_callback recv,
+    mip_update_callback update, void* user_pointer)
 {
     mip_parser_init(&device->_parser, parse_buffer, parse_buffer_size, &mip_interface_parse_callback, device, parse_timeout);
 
     device->_max_update_pkts = MIPPARSER_UNLIMITED_PACKETS;
-    device->_update_function = &mip_interface_default_update;
+    device->_send_callback   = send;
+    device->_recv_callback   = recv;
+    device->_update_callback = update;
+    device->_user_pointer    = user_pointer;
 
     mip_cmd_queue_init(&device->_queue, base_reply_timeout);
 
     mip_dispatcher_init(&device->_dispatcher);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Accessors
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the send callback function.
+///
+///@param device
+///
+///@param callback
+///       Function which sends raw bytes to the device. This can be NULL if no
+///       commands will be issued (they would fail).
+///
+void mip_interface_set_send_function(mip_interface* device, mip_send_callback callback)
+{
+    device->_send_callback = callback;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the send function pointer.
+///
+///@param device
+///
+///@returns The send callback function. May be NULL.
+///
+mip_send_callback mip_interface_send_function(const mip_interface* device)
+{
+    return device->_send_callback;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Sets the receive callback function.
+///
+///@param device
+///
+///@param callback
+///       Function which gets data from the device connection.
+///       If this is NULL then commands will fail and no data will be received.
+///
+void mip_interface_set_recv_function(mip_interface* device, mip_recv_callback callback)
+{
+    device->_recv_callback = callback;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the receive function pointer.
+///
+///@param device
+///
+///@returns The receive callback function. May be NULL.
+///
+mip_recv_callback mip_interface_recv_function(const mip_interface* device)
+{
+    return device->_recv_callback;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,15 +232,16 @@ void mip_interface_init(mip_interface* device, uint8_t* parse_buffer, size_t par
 ///
 ///@param device
 ///
-///@param function
+///@param callback
 ///       Update function to call when polling the device for data.
 ///       If this is NULL, then update calls will fail and no data or
 ///       or command replies will be received.
 ///
-void mip_interface_set_update_function(struct mip_interface* device, mip_update_callback function)
+void mip_interface_set_update_function(mip_interface* device, mip_update_callback callback)
 {
-    device->_update_function = function;
+    device->_update_callback = callback;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Gets the update function pointer.
@@ -79,9 +249,9 @@ void mip_interface_set_update_function(struct mip_interface* device, mip_update_
 ///@returns The update function. Defaults to mip_interface_default_update. May
 ///         be NULL.
 ///
-mip_update_callback mip_interface_update_function(struct mip_interface* device)
+mip_update_callback mip_interface_update_function(const mip_interface* device)
 {
-    return device->_update_function;
+    return device->_update_callback;
 }
 
 
@@ -138,65 +308,28 @@ void mip_interface_set_max_packets_per_update(mip_interface* device, unsigned in
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Call to process data from the device.
+///@brief Returns the MIP parser for the device.
 ///
-/// This function is also called while waiting for command replies.
-///
-/// Call this periodically to process packets received from the device. It
-/// should be called at a suitably-high rate to prevent the connection buffers
-/// from overflowing. The update rate affects the reception timestamp resolution.
-///
-///@param device
-///
-///@param blocking
-///       This is true when called from within a blocking command function.
-///       Applications should generally set this to false, e.g. when calling
-///       this to process incoming data packets.
-///
-///@returns true if operation should continue, or false if the device cannot be
-///         updated (e.g. if the serial port is not open).
-///
-
-bool mip_interface_update(struct mip_interface* device, bool blocking)
+mip_parser* mip_interface_parser(mip_interface* device)
 {
-    if( !device->_update_function )
-        return false;
-
-    return device->_update_function(device, blocking);
+    return &device->_parser;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Polls the port for new data or command replies.
+///@brief Returns the commmand queue for the device.
 ///
-/// This is the default choice for the user update function. It ignores the
-/// blocking flag and always reads data from the device.
-///
-///@param device The mip_interface object.
-///@param blocking Ignored.
-///
-///@returns The value returned by mip_interface_user_recv_from_device.
-///
-bool mip_interface_default_update(struct mip_interface* device, bool blocking)
+mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
 {
-    (void)blocking;
-
-    uint8_t* ptr;
-    mip_parser* parser = mip_interface_parser(device);
-    size_t max_count   = mip_parser_get_write_ptr(parser, &ptr);
-
-    size_t count = 0;
-    timestamp_type timestamp = 0;
-    if ( !mip_interface_user_recv_from_device(device, ptr, max_count, &count, &timestamp) )
-        return false;
-
-    assert(count <= max_count);
-
-    mip_parser_process_written(parser, count, timestamp, 0);
-    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
-    return true;
+    return &device->_queue;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Communications
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,19 +339,105 @@ bool mip_interface_default_update(struct mip_interface* device, bool blocking)
 ///@param data   Data to be sent.
 ///@param length Length of data.
 ///
-///@returns True if the data was sent successfully, false if some or all data
-///         could not be sent.
+///@returns True if the data was sent successfully.
+///@returns False if the send callback is NULL.
+///@returns False if some or all data could not be sent.
 ///
 /// This is called whenever bytes must be sent to the physical device.
 ///
 bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, size_t length)
 {
-    return mip_interface_user_send_to_device(device, data, length);
+    return device->_send_callback && device->_send_callback(device, data, length);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Checks for data at the port and reads it into buffer.
+///
+///@param device
+///@param buffer        A place to store the data.
+///@param max_length    Maximum number of bytes to read into buffer.
+///@param wait_time     Maximum time to wait for data. May be 0.
+///@param length_out    The number of bytes successfully read into buffer.
+///@param timestamp_out The timestamp of the received data.
+///
+///@returns True if successful (even if 0 bytes were read).
+///@returns False if the receive callback is NULL.
+///@returns False if the receive callback failed (i.e. if it returned false).
+///
+bool mip_interface_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* length_out, mip_timestamp* timestamp_out)
+{
+    return device->_recv_callback && device->_recv_callback(device, buffer, max_length, wait_time, length_out, timestamp_out);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Call to process data from the device.
+///
+/// This function is also called while waiting for command replies.
+///
+/// Call this periodically to process packets received from the device. It
+/// should be called at a suitably high rate to prevent the connection buffers
+/// from overflowing. The update rate affects the reception timestamp resolution.
+///
+///@param device
+///
+///@param wait_time
+///       Time to wait for data from the device. This will be nonzero when
+///       waiting for command replies. Applications calling this function
+///       can pass 0 to avoid blocking when checking for new data.
+///
+///@returns true if operation should continue, or false if the device cannot be
+///         updated (e.g. if the serial port is not open).
+///
+
+bool mip_interface_update(struct mip_interface* device, mip_timeout wait_time)
+{
+    if( !device->_update_callback )
+        return false;
+
+    return device->_update_callback(device, wait_time);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Receive data from the port (i.e. the physical device) into the parser.
+///@brief Polls the port for new data or command replies.
+///
+/// This is the default choice for the user update function. It ignores the
+/// blocking flag and always reads data from the device.
+///
+///@param device
+///
+///@param wait_time
+///       Time to wait for data to be received. Passed directly to
+///       mip_interface_recv_from_device().
+///
+///@returns The value returned by mip_interface_user_recv_from_device.
+///
+bool mip_interface_default_update(struct mip_interface* device, mip_timeout wait_time)
+{
+    if( !device->_recv_callback )
+        return false;
+
+    uint8_t* ptr;
+    mip_parser* parser = mip_interface_parser(device);
+    size_t max_count   = mip_parser_get_write_ptr(parser, &ptr);
+
+    size_t        count     = 0;
+    mip_timestamp timestamp = 0;
+    if ( !mip_interface_recv_from_device(device, ptr, max_count, wait_time, &count, &timestamp) )
+        return false;
+
+    assert(count <= max_count);
+
+    mip_parser_process_written(parser, count, timestamp, 0);
+ 
+    mip_cmd_queue_update(mip_interface_cmd_queue(device), timestamp);
+
+    return true;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Passes data from the device into the parser.
 ///
 ///@param device
 ///
@@ -232,11 +451,10 @@ bool mip_interface_send_to_device(mip_interface* device, const uint8_t* data, si
 ///@returns The amount of data which couldn't be processed due to the limit on
 ///         number of packets per parse call. Normally the result is 0.
 ///
-remaining_count mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, timestamp_type timestamp)
+size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp)
 {
     return mip_parser_parse(&device->_parser, data, length, timestamp, device->_max_update_pkts);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Process more packets from the internal buffer.
@@ -265,28 +483,34 @@ void mip_interface_process_unparsed_packets(mip_interface* device)
 ///@param timestamp
 ///       timestamp_type of the received MIP packet.
 ///
-void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, timestamp_type timestamp)
+void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the MIP parser for the device.
+///@brief Wrapper around mip_interface_receive_packet for use with mip_parser.
 ///
-mip_parser* mip_interface_parser(mip_interface* device)
+///@param device    Void pointer to the device. Must be a mip_interface pointer.
+///@param packet    MIP Packet from the parser.
+///@param timestamp timestamp_type of the packet.
+///
+///@returns True
+///
+bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp)
 {
-    return &device->_parser;
+    mip_interface_receive_packet(device, packet, timestamp);
+
+    return true;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-///@brief Returns the commmand queue for the device.
-///
-mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
-{
-    return &device->_queue;
-}
+//
+// Command and data processing
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -297,13 +521,28 @@ mip_cmd_queue* mip_interface_cmd_queue(mip_interface* device)
 ///
 ///@returns The final status of the command.
 ///
-enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pending_cmd* cmd)
 {
     enum mip_cmd_result status;
     while( !mip_cmd_result_is_finished(status = mip_pending_cmd_status(cmd)) )
     {
         if( !mip_interface_update(device, true) )
+        {
+            // When this function returns the pending command may be deallocated and the
+            // queue will have a dangling pointer. Therefore, the command must be manually
+            // errored out and de-queued.
+            //
+            // Note: This fix can still cause a race condition in multithreaded apps if the
+            // update thread happens to run right before the cmd is dequeued. The user is
+            // advised to not fail the update callback when another thread is handling
+            // reception, unless that thread is not running. Generally such updates shouldn't
+            // fail as long as the other thread is working normally anyway.
+
+            mip_cmd_queue_dequeue(mip_interface_cmd_queue(device), cmd);
+            cmd->_status = MIP_STATUS_ERROR;
+
             return MIP_STATUS_ERROR;
+        }
     }
     return status;
 }
@@ -332,11 +571,28 @@ enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t des
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copydoc mip_interface_run_command
+///@brief Runs a command using a pre-serialized payload.
 ///
+///@param device
+///@param descriptor_set
+///       Command descriptor set.
+///@param cmd_descriptor
+///       Command field descriptor.
+///@param cmd_data
+///       Optional payload data. May be NULL if cmd_length == 0.
+///@param cmd_length
+///       Length of the command payload (parameters).
 ///@param response_descriptor
 ///       Descriptor of the response data. May be MIP_INVALID_FIELD_DESCRIPTOR
 ///       if no response is expected.
+///@param response_buffer
+///       Buffer to hold response data. Can be the same as the command data buffer.
+///       Can be NULL if response_descriptor is MIP_INVALID_FIELD_DESCRIPTOR.
+///@param[in,out] response_length_inout
+///       As input, the size of response buffer and max response length.
+///       As output, returns the actual length of the response data.
+///
+///@returns mip_cmd_result
 ///
 enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device,
     uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length,

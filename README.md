@@ -14,9 +14,9 @@ Features
   * No dependence on any RTOS or threading
 * Simple to interface with existing projects
   * FindMip.cmake is included for CMake-based projects
-* Can be used to parse offline binary files
-* C API for those who can't use C++
+* It can be used to parse offline binary files
 * C++ API for safety, flexibility, and convenience.
+* C API for those who can't use C++
 
 * Advanced Features
   * MIP packet creation
@@ -26,14 +26,22 @@ Features
 Examples
 --------
 
-* Get device information [C++] - queries the device strings and prints them to stdout.
-* Watch IMU [C, C++] - Configures the IMU for streaming and prints the data to stdout.
+<!-- NOTE: I commented out the descriptions below as they seemed like they would
+           be better suited to being in the example code files themselves. Feel
+           free to uncomment these again if you want, or remove them completely.
+-->
+* Get device information [[C++](./examples/device_info.cpp)] <!-- - Queries the device strings and prints them to stdout. -->
+* Watch IMU [[C](./examples/watch_imu.c) | [C++](./examples/watch_imu.cpp)] <!-- - Configures the IMU for streaming and prints the data to stdout. -->
+* Threading [[C++](./examples/threading.cpp)]
+* Ping [[C++](./examples/ping.cpp)]
 * Product-specific examples:
-  * GQ7 setup [C, C++]    - Configures the device for typical usage in a wheeled-vehicle application.
-  * CV7 setup [C, C++]    - Configures the device for typical usage and includes an example of using the event system.
-  * GX5-45 setup [C, C++] - Configures the device for typical usage in a wheeled-vehicle application.
+  * GQ7 setup [[C](./examples/GQ7/GQ7_example.c) | [C++](./examples/GQ7/GQ7_example.cpp)] <!-- - Configures a GQ7 device for typical usage in a wheeled-vehicle application. -->
+  * CV7 setup [[C](./examples/CV7/CV7_example.c) | [C++](./examples/CV7/CV7_example.cpp)] <!-- - Configures a CV7 device for typical usage and includes an example of using the event system. -->
+  * GX5-45 setup [[C](./examples/GX5_45/GX5_45_example.c) | [C++](./examples/GX5_45/GX5_45_example.cpp)] <!-- - Configures a GX5-45 device for typical usage in a wheeled-vehicle application. -->
+  * CV7_INS setup [[C++](./examples/CV7_INS/CV7_INS_simple_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
+  * CV7_INS with UBlox setup [[C++](./examples/CV7_INS/CV7_INS_simple_ublox_example.cpp)] <!-- - Configures a CV7_INS device for typical usage. -->
 
-You'll need to enable at least one of the communications interfaces in the CMake configuration (see below) to use the examples.
+You'll need to enable at least one of the [communications interfaces](#communications-interfaces) in the CMake configuration to use the examples.
 
 The examples take two parameters for the device connection:
 * For a serial connection: Port and baudrate. Port must start with `/dev/` on Linux or `COM` on Windows.
@@ -43,123 +51,7 @@ The examples take two parameters for the device connection:
 Documentation
 -------------
 
-https://lord-microstrain.github.io/mip_sdk_documentation/latest/index.html
-
-
-Communications Interfaces
--------------------------
-
-Two connection types are provided with the MIP SDK to make it easy to run the examples on both Windows and Linux systems.
-
-### Serial Port
-
-A basic serial port interface is provided in C and C++ for Linux and Windows. These can be modified for other platforms by the user.
-The serial port connection will be used in most cases, when the MIP device is connected
-via a serial or USB cable (the USB connection acts like a virtual serial port).
-
-Enable it in the CMake configuration with `-DWITH_SERIAL=1`.
-
-### TCP Client
-
-The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
-via the normal serial or USB cable to a commputer system running a TCP server which forwards data between
-the serial port and TCP clients.
-
-Enable it in the CMake configuration with `-DWITH_TCP=1`.
-
-
-How to Build
-------------
-
-### Prerequisites
-
-* CMake version 3.10 or later
-* A working C compiler
-  * C99 or later required
-* A working C++ compiler
-  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
-  * C++11 or later required for the mip library
-  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
-* Doxygen, if building documentation
-
-### Build configuration
-
-The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
-* WITH_SERIAL - Builds the included serial port library (default enabled).
-* WITH_TCP - Builds the included socket library (default enabled).
-* BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
-* BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
-* BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
-* BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
-* BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
-* MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
-* BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
-
-### Compilation with CMake
-
-1. Create the build directory (e.g. `mkdir build`).
-2. In the build directory, run `cmake .. <options>`
-   * Replace `<options>` with your configuration options, such as `-DWITH_SERIAL=1`.
-   * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
-   * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generatopr>`
-3. Invoke `cmake --build .` in the build directory
-4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
-
-
-Implementation Notes
---------------------
-
-### User-Implemented Functions
-
-There are two C functions which must be implemented to use this library.
-
-The first, `mip_interface_user_recv_from_device()`, must fetch raw data bytes from the connected MIP device. Typically this means reading from
-a serial port or TCP socket.
-
-The second, `mip_interface_send_to_device()`, must pass the provided data bytes directly to the connected MIP device.
-
-See https://lord-microstrain.github.io/mip_sdk_documentation/latest/mip_interface.html for details on how to implement these functions.
-
-#### C++
-For C++ applications, these functions are implemented by the `MipDeviceInterface` class, which takes a `Connection` object responsible
-for reading and writing to the device. Create a class derived from `Connection` and implement the pure virtual `recvFromDevice` and
-`sendToDevice` methods.
-
-If you do not wish to use the `MipDeviceInterface` class, do not compile the corresponding source file and create the
-C functions yourself. Declare them functions as `extern "C"` to avoid linking problems between the C and C++ code.
-
-### Command Results (mip_cmd_result / MipCmdResult)
-
-Command results are divided into two categories:
-* Reply codes are returned by the device, e.g.:
-  * ACK / OK
-  * Invalid parameter
-  * Unknown command
-* Status codes are set by this library, e.g.:
-  * General ERROR
-  * TIMEDOUT
-  * Other statuses are used while the command is still in process
-
-### Timestamps and Timeouts
-
-Timestamps (`timestamp_type` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
-are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not intended to be
-a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the connected MIP device.
-In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
-
-Because different applications may keep track of time differently (especially on embedded platforms), it is up to the user to provide
-the current time whenever data is received from the device. On a PC, this might come from the poxis `time()` function or from the
-`std::chrono` library. On ARM systems, it is often derived from the Systick timer.
-
-By default, timestamps are `typedef`'d to `uint32_t` and are typically in milliseconds. The value is allowed to wrap around as long
-as the time between wraparounds is longer than twice the longest timeout needed. If higher precision is needed or wraparound can't
-be tolerated by your application, define it to `uint64_t` instead.
-
-Timeouts for commands are broken down into two parts.
-* A "base reply timeout" applies to all commands. This is useful to compensate for communication latency, such as over a TCP socket.
-* "Additional time" which applies per command, because some commands may take longer to complete.
-
-Currently, only the C++ api offers a way to set the additional time parameter.
+Documentation for all released versions can be found [here](https://lord-microstrain.github.io/mip_sdk_documentation).
 
 ### C and C++ APIs
 
@@ -171,4 +63,120 @@ The C++ API is implemented on top of the C API to provide additional features:
 The C++ API uses `TitleCase` for types and `camelCase` for functions and variables, while the C api uses `snake_case` naming for
 everything. This makes it easy to tell which is being used when looking at the examples.
 
-The C API can be accessed directly from C++ via the `mip::C` namesace.
+The C API can be accessed directly from C++ via the `mip::C` namespace.
+
+### Command Results
+
+MIP devices return an ack/nack field in response to commands to allow the user to determine if the command was
+successfully executed. These fields contain a "reply code" which is defined by the MIP protocol. This library
+additionally defines several "status codes" for situations where an ack/nack field is not applicable (i.e. if
+the device doesn't respond to the command, if the command couldn't be transmitted, etc).
+
+See the documentation page for [Command Results](https://lord-microstrain.github.io/mip_sdk_documentation/latest/command_results.html) for details.
+
+### Timestamps
+
+In order to implement command timeouts and provide time of arrival information, this library requires applications to
+provide the time of received data. The time must be provided as an unsigned integral value with a reasonable precision,
+typically milliseconds since program startup. By default the timestamp type is set to `uint64_t`, but some embedded
+applications may which to change this to `uint32_t` via the `MIP_TIMESTAMP_TYPE` define. Note that wraparound is
+permissible if the wraparound period is longer than twice the longest timeout used by the application.
+
+See the documentation page for [Timestamps](https://lord-microstrain.github.io/mip_sdk_documentation/latest/timestamps.html).
+
+
+Communications Interfaces
+-------------------------
+
+Two connection types are provided with the MIP SDK to make it easy to run the examples on both Windows and Linux systems.
+
+### Serial Port
+
+A basic serial port interface is provided in C and C++ for Linux, Mac, and Windows. These can be modified for other platforms by the user.
+The serial port connection will be used in most cases, when the MIP device is connected
+via a serial or USB cable (the USB connection acts like a virtual serial port).
+
+[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_SERIAL=1`.
+
+### TCP Client
+
+The TCP client connection allows you to connect to a MIP device remotely. The MIP device must be connected
+via the normal serial or USB cable to a computer system running a TCP server which forwards data between
+the serial port and TCP clients.
+
+[Enable it](#build-configuration) in the CMake configuration with `-DMIP_USE_TCP=1`.
+
+
+How to Build
+------------
+
+### Prerequisites
+
+* A working C compiler
+  * C11 or later required
+* A working C++ compiler
+  * For C++ API only. Define `MIP_DISABLE_CPP=ON` if you don't want to use any C++.
+  * C++11 or later required for the mip library
+  * C++14 or later for the examples (currently CMakeLists.txt assumes C++14 is required regardless)
+* CMake version 3.10 or later (technically this is optional, see below)
+* Doxygen, if building documentation
+
+### CMake Build Configuration
+
+The following options may be specified when configuring the build with CMake (e.g. `cmake .. -DOPTION=VALUE`):
+* MIP_USE_SERIAL - Builds the included serial port library (default enabled).
+* MIP_USE_TCP - Builds the included socket library (default enabled).
+* MIP_USE_EXTRAS - Builds some higher level utility classes and functions that may use dynamic memory.
+* MIP_ENABLE_LOGGING - Builds logging functionality into the library. The user is responsible for configuring a logging callback (default enabled)
+* MIP_LOGGING_MAX_LEVEL - Max log level the SDK is allowed to log. If this is defined, any log level logged at a higher level than this will result in a noop regardless of runtime configuration. Useful if you want some logs, but do not want the overhead compiled into the code.
+* MIP_ENABLE_DIAGNOSTICS - Adds some counters to various entities which can serve as a debugging aid.
+* BUILD_EXAMPLES - If enabled (`-DBUILD_EXAMPLES=ON`), the example projects will be built (default disabled).
+* BUILD_TESTING - If enabled (`-DBUILD_TESTING=ON`), the test programs in the /test directory will be compiled and linked. Run the tests with `ctest`.
+* BUILD_DOCUMENTATION - If enabled, the documentation will be built with doxygen. You must have doxygen installed.
+* BUILD_DOCUMENTATION_FULL - Builds internal documentation (default disabled).
+* BUILD_DOCUMENTATION_QUIET - Suppress standard doxygen output (default enabled).
+* MIP_DISABLE_CPP - Ignores .hpp/.cpp files during the build and does not add them to the project.
+* BUILD_PACKAGE - Adds a `package` target to the project that will build a `.deb`, `.rpm`, or `.7z` file containing the library
+* MIP_TIMESTAMP_TYPE - Overrides the default timestamp type. See the timestamps section in the documentation.
+
+### Compilation 
+
+1. Create the build directory (e.g. `mkdir build`).
+2. In the build directory, run `cmake .. <options>`
+   * Replace `<options>` with your configuration options, such as `-DMIP_USE_SERIAL=1`.
+   * You can use `cmake-gui ..` instead if you'd prefer to use the GUI tool (and have it installed).
+   * An alternative generator may be used, such as ninja, code blocks, etc. by specifying `-G <generator>`
+3. Invoke `cmake --build .` in the build directory
+4. (Optional, if BUILD_PACKAGE was enabled) Run `cmake --build . --target package` to build the packages.
+
+### Building without CMake
+
+If your target platform doesn't support CMake, you can build the project without it. To do so,
+include all the necessary files and define a few options.
+
+#### Minimum Required Files for building without CMake
+* Everything in `src/mip/definitions` (or at least all the descriptor sets you require)
+* All the .c, .h, .cpp, and .hpp files in `src/mip` (exclude the c++ files if you're using plain C)
+* The `byte_ring` and `serialization` .c/.h files in `src/mip/utils`
+* You may optionally include the platform-related connection files (`serial_port.h/.c`) as desired.
+
+#### Required #defines for building without CMake
+
+Pass these to your compiler as appropriate, e.g. `arm-none-eabi-gcc -DMIP_TIMESTAMP_TYPE=uint32_t -DMIP_ENABLE_LOGGING=0`
+
+* MIP_ENABLE_LOGGING (and MIP_LOGGING_MAX_LEVEL) - default is enabled
+* MIP_TIMESTAMP_TYPE - defaults to uint64_t if not specified
+* MIP_ENABLE_DIAGNOSTICS - Supported on embedded platforms to aid debugging
+
+These options affect the compiled code interface and sizes of various structs. They
+MUST be consistent between compiling the MIP SDK and any other code which includes
+headers from the MIP SDK. (If you change them after building, make sure everything gets
+rebuilt properly. Normally CMake takes care of this for you).
+
+Known Issues
+------------
+
+* `suppress_ack=true` is not supported
+* The commanded BIT, device settings, and capture gyro bias commands can time out unless the timeout is increased
+
+See the documentation page for [Known Issues](https://lord-microstrain.github.io/mip_sdk_documentation/latest/other.html#known_issues).

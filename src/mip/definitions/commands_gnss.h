@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -35,7 +36,6 @@ enum
     MIP_CMD_DESC_GNSS_LIST_RECEIVERS             = 0x01,
     MIP_CMD_DESC_GNSS_SIGNAL_CONFIGURATION       = 0x02,
     MIP_CMD_DESC_GNSS_RTK_DONGLE_CONFIGURATION   = 0x10,
-    MIP_CMD_DESC_GNSS_RECEIVER_SAFE_MODE         = 0x60,
     
     MIP_REPLY_DESC_GNSS_LIST_RECEIVERS           = 0x81,
     MIP_REPLY_DESC_GNSS_SIGNAL_CONFIGURATION     = 0x82,
@@ -70,7 +70,7 @@ struct mip_gnss_receiver_info_command_info
 {
     uint8_t receiver_id; ///< Receiver id: e.g. 1, 2, etc.
     uint8_t mip_data_descriptor_set; ///< MIP descriptor set associated with this receiver
-    char description[32]; ///< Ascii description of receiver
+    char description[32]; ///< Ascii description of receiver. Contains the following info (comma-delimited):<br/> Module name/model<br/> Firmware version info
     
 };
 typedef struct mip_gnss_receiver_info_command_info mip_gnss_receiver_info_command_info;
@@ -80,7 +80,7 @@ void extract_mip_gnss_receiver_info_command_info(struct mip_serializer* serializ
 struct mip_gnss_receiver_info_response
 {
     uint8_t num_receivers; ///< Number of physical receivers in the device
-    mip_gnss_receiver_info_command_info* receiver_info;
+    mip_gnss_receiver_info_command_info receiver_info[5];
     
 };
 typedef struct mip_gnss_receiver_info_response mip_gnss_receiver_info_response;
@@ -88,6 +88,7 @@ void insert_mip_gnss_receiver_info_response(struct mip_serializer* serializer, c
 void extract_mip_gnss_receiver_info_response(struct mip_serializer* serializer, mip_gnss_receiver_info_response* self);
 
 mip_cmd_result mip_gnss_receiver_info(struct mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, mip_gnss_receiver_info_command_info* receiver_info_out);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +130,7 @@ mip_cmd_result mip_gnss_read_signal_configuration(struct mip_interface* device, 
 mip_cmd_result mip_gnss_save_signal_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_load_signal_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_default_signal_configuration(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -164,27 +166,7 @@ mip_cmd_result mip_gnss_read_rtk_dongle_configuration(struct mip_interface* devi
 mip_cmd_result mip_gnss_save_rtk_dongle_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_load_rtk_dongle_configuration(struct mip_interface* device);
 mip_cmd_result mip_gnss_default_rtk_dongle_configuration(struct mip_interface* device);
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_gnss_receiver_safe_mode  (0x0E,0x60) Receiver Safe Mode [C]
-/// Enable/disable safe mode for the provided receiver ID.
-/// Note: Receivers in safe mode will not output valid GNSS data.
-/// 
-///
-///@{
 
-struct mip_gnss_receiver_safe_mode_command
-{
-    uint8_t receiver_id; ///< Receiver id: e.g. 1, 2, etc.
-    uint8_t enable; ///< 0 - Disabled, 1- Enabled
-    
-};
-typedef struct mip_gnss_receiver_safe_mode_command mip_gnss_receiver_safe_mode_command;
-void insert_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, const mip_gnss_receiver_safe_mode_command* self);
-void extract_mip_gnss_receiver_safe_mode_command(struct mip_serializer* serializer, mip_gnss_receiver_safe_mode_command* self);
-
-mip_cmd_result mip_gnss_receiver_safe_mode(struct mip_interface* device, uint8_t receiver_id, uint8_t enable);
 ///@}
 ///
 

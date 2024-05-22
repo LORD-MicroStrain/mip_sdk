@@ -20,7 +20,71 @@ REMOVED - A function/class has been removed.
 
 Forthcoming
 -----------
-* TBD
+### New Features
+### Interface Changes
+### Bug Fixes
+
+
+v2.0.0
+------
+
+### New features
+* CV7-INS support
+* GV7-INS support
+* Logging capability (`mip_logging.h`)
+* Diagnostic counters in mip parser and mip interface for debugging (define `MIP_ENABLE_DIAGNOSTICS`)
+* User-defined values in CmdResult
+* Additional metadata in C++ command structs
+* `mip::PacketBuf` - implements `mip::PacketRef` and includes a data buffer
+* Extra helper utilities
+  * `CompositeResult` - stores a std::vector of CmdResults and associated command descriptors
+  * `Index` - Helps prevent off-by-one errors when using 1-based MIP and 0-based arrays
+  * `RecordingConnection` - Intermediate connection which logs sent/received data to files
+
+### Interface Changes
+
+#### Renamed
+* CMake:
+  * `WITH_SERIAL` &rarr; `MIP_USE_SERIAL`
+  * `WITH_TCP` &rarr; `MIP_USE_TCP`
+* C++
+  * `mip::Packet` &rarr; `mip::PacketRef`
+  * `CMD_GPS_TIME_BROADCAST_NEW` &rarr; `CMD_GPS_TIME_UPDATE`
+* C
+  * `timestamp_type` &rarr; `mip_timestamp`
+  * `timeout_type` &rarr; `mip_timeout`
+  * `renaming_count` &rarr; `int` (typedef removed)
+  * `packet_length` &rarr; `uint_least16_t` (typedef removed)
+  * `MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW` &rarr; `MIP_CMD_DESC_BASE_GPS_TIME_UPDATE`
+
+#### Changed
+* The following 2 extern functions have been changed to callbacks to better support shared libraries.
+  Supply your callbacks to `mip_interface_init`.
+  * `mip_interface_user_send_to_device`
+  * `mip_interface_user_recv_from_device`
+* The interface for certain commands from files in `mip/definitions` have been modified:
+  * Vectors and Quaternions are now explicitly-defined types.
+    * In C, these are typedef'd to arrays.
+    * In C++, these are simple structs offering conversion to/from plain arrays and some
+      other helpful features such as `fill`.
+  * Command/response structs (e.g. `mip::commands_base::DeviceDescriptors::Response`) now have
+    arrays embedded rather than pointers. This change simplifies user code and reduces bugs due
+    to dangling pointers.
+* The C standard in CMake has been switched to `C11` from `C99` to reflect actual usage and fix
+  some warnings.
+* `serial_port_init` must now be called before any of the other serial port functions.
+
+### Bug Fixes
+* Use `NULL` payload for `mip_field_from_header_ptr` if input field isn't long enough
+* Properly de-queue pending commands in `mip_interface_wait_for_reply` if `mip_interface_update` fails.
+* `mip_packet_cancel_last_field` now computes the new header length correctly
+* Serial Ports
+  * Serial ports now close themselves properly if an error occurs while reading from the port. This happens when the device is connected via USB and is unplugged.
+  * The port is now opened exclusively in Posix (Linux, Mac) systems
+  * The port is now closed properly if setup fails during `serial_port_open`.
+  * Removed `handle->is_open` member to avoid it becoming out of date.
+* TCP connections are now supported on Windows.
+
 
 v1.0.0
 ------

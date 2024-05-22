@@ -130,7 +130,6 @@ mip_cmd_result mip_base_get_device_descriptors(struct mip_interface* device, uin
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(descriptors_out && descriptors_out_count);
         for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && (mip_serializer_remaining(&deserializer) > 0); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
@@ -175,7 +174,6 @@ mip_cmd_result mip_base_get_extended_descriptors(struct mip_interface* device, u
         mip_serializer deserializer;
         mip_serializer_init_insertion(&deserializer, buffer, responseLength);
         
-        assert(descriptors_out && descriptors_out_count);
         for(*descriptors_out_count = 0; (*descriptors_out_count < descriptors_out_max) && (mip_serializer_remaining(&deserializer) > 0); (*descriptors_out_count)++)
             extract_u16(&deserializer, &descriptors_out[*descriptors_out_count]);
         
@@ -383,7 +381,7 @@ mip_cmd_result mip_base_write_gps_time_update(struct mip_interface* device, mip_
     
     assert(mip_serializer_is_ok(&serializer));
     
-    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_BROADCAST_NEW, buffer, (uint8_t)mip_serializer_length(&serializer));
+    return mip_interface_run_command(device, MIP_BASE_CMD_DESC_SET, MIP_CMD_DESC_BASE_GPS_TIME_UPDATE, buffer, (uint8_t)mip_serializer_length(&serializer));
 }
 mip_cmd_result mip_base_soft_reset(struct mip_interface* device)
 {

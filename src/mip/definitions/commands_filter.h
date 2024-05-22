@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "descriptors.h"
 #include "../mip_result.h"
 
@@ -162,13 +163,21 @@ static const mip_filter_reference_frame MIP_FILTER_REFERENCE_FRAME_LLH  = 2; ///
 void insert_mip_filter_reference_frame(struct mip_serializer* serializer, const mip_filter_reference_frame self);
 void extract_mip_filter_reference_frame(struct mip_serializer* serializer, mip_filter_reference_frame* self);
 
-typedef uint8_t mip_filter_mag_declination_source;
-static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_NONE   = 1; ///<  Magnetic field is assumed to have an declination angle equal to zero.
-static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_WMM    = 2; ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
-static const mip_filter_mag_declination_source MIP_FILTER_MAG_DECLINATION_SOURCE_MANUAL = 3; ///<  Magnetic field is assumed to have the declination angle specified by the user.
+typedef uint8_t mip_filter_mag_param_source;
+static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_NONE   = 1; ///<  No source. See command documentation for default behavior
+static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_WMM    = 2; ///<  Magnetic field is assumed to conform to the World Magnetic Model, calculated using current location estimate as an input to the model.
+static const mip_filter_mag_param_source MIP_FILTER_MAG_PARAM_SOURCE_MANUAL = 3; ///<  Magnetic field is assumed to have the parameter specified by the user.
 
-void insert_mip_filter_mag_declination_source(struct mip_serializer* serializer, const mip_filter_mag_declination_source self);
-void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer, mip_filter_mag_declination_source* self);
+void insert_mip_filter_mag_param_source(struct mip_serializer* serializer, const mip_filter_mag_param_source self);
+void extract_mip_filter_mag_param_source(struct mip_serializer* serializer, mip_filter_mag_param_source* self);
+
+typedef uint8_t mip_filter_adaptive_measurement;
+static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_DISABLED = 0; ///<  No adaptive measurement
+static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_FIXED    = 1; ///<  Enable fixed adaptive measurement (use specified limits)
+static const mip_filter_adaptive_measurement MIP_FILTER_ADAPTIVE_MEASUREMENT_AUTO     = 2; ///<  Enable auto adaptive measurement
+
+void insert_mip_filter_adaptive_measurement(struct mip_serializer* serializer, const mip_filter_adaptive_measurement self);
+void extract_mip_filter_adaptive_measurement(struct mip_serializer* serializer, mip_filter_adaptive_measurement* self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -185,6 +194,7 @@ void extract_mip_filter_mag_declination_source(struct mip_serializer* serializer
 ///@{
 
 mip_cmd_result mip_filter_reset(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,6 +226,7 @@ void insert_mip_filter_set_initial_attitude_command(struct mip_serializer* seria
 void extract_mip_filter_set_initial_attitude_command(struct mip_serializer* serializer, mip_filter_set_initial_attitude_command* self);
 
 mip_cmd_result mip_filter_set_initial_attitude(struct mip_interface* device, float roll, float pitch, float heading);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -243,6 +254,7 @@ static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIM
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ANTENNA_OFFSET     = 0x0010; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x0020; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x0040; ///<  
+static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ALL                = 0x007F;
 
 struct mip_filter_estimation_control_command
 {
@@ -271,6 +283,7 @@ mip_cmd_result mip_filter_read_estimation_control(struct mip_interface* device, 
 mip_cmd_result mip_filter_save_estimation_control(struct mip_interface* device);
 mip_cmd_result mip_filter_load_estimation_control(struct mip_interface* device);
 mip_cmd_result mip_filter_default_estimation_control(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,9 +303,9 @@ struct mip_filter_external_gnss_update_command
     double latitude; ///< [degrees]
     double longitude; ///< [degrees]
     double height; ///< Above WGS84 ellipsoid [meters]
-    float velocity[3]; ///< NED Frame [meters/second]
-    float pos_uncertainty[3]; ///< NED Frame, 1-sigma [meters]
-    float vel_uncertainty[3]; ///< NED Frame, 1-sigma [meters/second]
+    mip_vector3f velocity; ///< NED Frame [meters/second]
+    mip_vector3f pos_uncertainty; ///< NED Frame, 1-sigma [meters]
+    mip_vector3f vel_uncertainty; ///< NED Frame, 1-sigma [meters/second]
     
 };
 typedef struct mip_filter_external_gnss_update_command mip_filter_external_gnss_update_command;
@@ -300,6 +313,7 @@ void insert_mip_filter_external_gnss_update_command(struct mip_serializer* seria
 void extract_mip_filter_external_gnss_update_command(struct mip_serializer* serializer, mip_filter_external_gnss_update_command* self);
 
 mip_cmd_result mip_filter_external_gnss_update(struct mip_interface* device, double gps_time, uint16_t gps_week, double latitude, double longitude, double height, const float* velocity, const float* pos_uncertainty, const float* vel_uncertainty);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -332,6 +346,7 @@ void insert_mip_filter_external_heading_update_command(struct mip_serializer* se
 void extract_mip_filter_external_heading_update_command(struct mip_serializer* serializer, mip_filter_external_heading_update_command* self);
 
 mip_cmd_result mip_filter_external_heading_update(struct mip_interface* device, float heading, float heading_uncertainty, uint8_t type);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -370,6 +385,7 @@ void insert_mip_filter_external_heading_update_with_time_command(struct mip_seri
 void extract_mip_filter_external_heading_update_with_time_command(struct mip_serializer* serializer, mip_filter_external_heading_update_with_time_command* self);
 
 mip_cmd_result mip_filter_external_heading_update_with_time(struct mip_interface* device, double gps_time, uint16_t gps_week, float heading, float heading_uncertainty, uint8_t type);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -387,6 +403,7 @@ static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_O
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ROLL  = 0x1; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4; ///<  
+static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ALL   = 0x7;
 
 struct mip_filter_tare_orientation_command
 {
@@ -415,6 +432,49 @@ mip_cmd_result mip_filter_read_tare_orientation(struct mip_interface* device, mi
 mip_cmd_result mip_filter_save_tare_orientation(struct mip_interface* device);
 mip_cmd_result mip_filter_load_tare_orientation(struct mip_interface* device);
 mip_cmd_result mip_filter_default_tare_orientation(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_vehicle_dynamics_mode  (0x0D,0x10) Vehicle Dynamics Mode [C]
+/// Controls the vehicle dynamics mode.
+///
+///@{
+
+typedef uint8_t mip_filter_vehicle_dynamics_mode_command_dynamics_mode;
+static const mip_filter_vehicle_dynamics_mode_command_dynamics_mode MIP_FILTER_VEHICLE_DYNAMICS_MODE_COMMAND_DYNAMICS_MODE_PORTABLE        = 1; ///<  
+static const mip_filter_vehicle_dynamics_mode_command_dynamics_mode MIP_FILTER_VEHICLE_DYNAMICS_MODE_COMMAND_DYNAMICS_MODE_AUTOMOTIVE      = 2; ///<  
+static const mip_filter_vehicle_dynamics_mode_command_dynamics_mode MIP_FILTER_VEHICLE_DYNAMICS_MODE_COMMAND_DYNAMICS_MODE_AIRBORNE        = 3; ///<  
+static const mip_filter_vehicle_dynamics_mode_command_dynamics_mode MIP_FILTER_VEHICLE_DYNAMICS_MODE_COMMAND_DYNAMICS_MODE_AIRBORNE_HIGH_G = 4; ///<  
+
+struct mip_filter_vehicle_dynamics_mode_command
+{
+    mip_function_selector function;
+    mip_filter_vehicle_dynamics_mode_command_dynamics_mode mode;
+    
+};
+typedef struct mip_filter_vehicle_dynamics_mode_command mip_filter_vehicle_dynamics_mode_command;
+void insert_mip_filter_vehicle_dynamics_mode_command(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command* self);
+void extract_mip_filter_vehicle_dynamics_mode_command(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_command* self);
+
+void insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command_dynamics_mode self);
+void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* self);
+
+struct mip_filter_vehicle_dynamics_mode_response
+{
+    mip_filter_vehicle_dynamics_mode_command_dynamics_mode mode;
+    
+};
+typedef struct mip_filter_vehicle_dynamics_mode_response mip_filter_vehicle_dynamics_mode_response;
+void insert_mip_filter_vehicle_dynamics_mode_response(struct mip_serializer* serializer, const mip_filter_vehicle_dynamics_mode_response* self);
+void extract_mip_filter_vehicle_dynamics_mode_response(struct mip_serializer* serializer, mip_filter_vehicle_dynamics_mode_response* self);
+
+mip_cmd_result mip_filter_write_vehicle_dynamics_mode(struct mip_interface* device, mip_filter_vehicle_dynamics_mode_command_dynamics_mode mode);
+mip_cmd_result mip_filter_read_vehicle_dynamics_mode(struct mip_interface* device, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* mode_out);
+mip_cmd_result mip_filter_save_vehicle_dynamics_mode(struct mip_interface* device);
+mip_cmd_result mip_filter_load_vehicle_dynamics_mode(struct mip_interface* device);
+mip_cmd_result mip_filter_default_vehicle_dynamics_mode(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -473,6 +533,7 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_euler(struct mip_inter
 mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_euler(struct mip_interface* device);
 mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_euler(struct mip_interface* device);
 mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -512,7 +573,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_euler(struct mip_in
 struct mip_filter_sensor_to_vehicle_rotation_dcm_command
 {
     mip_function_selector function;
-    float dcm[9];
+    mip_matrix3f dcm;
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_dcm_command mip_filter_sensor_to_vehicle_rotation_dcm_command;
@@ -521,7 +582,7 @@ void extract_mip_filter_sensor_to_vehicle_rotation_dcm_command(struct mip_serial
 
 struct mip_filter_sensor_to_vehicle_rotation_dcm_response
 {
-    float dcm[9];
+    mip_matrix3f dcm;
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_dcm_response mip_filter_sensor_to_vehicle_rotation_dcm_response;
@@ -533,6 +594,7 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_dcm(struct mip_interfa
 mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_dcm(struct mip_interface* device);
 mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_dcm(struct mip_interface* device);
 mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -571,7 +633,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_dcm(struct mip_inte
 struct mip_filter_sensor_to_vehicle_rotation_quaternion_command
 {
     mip_function_selector function;
-    float quat[4];
+    mip_quatf quat;
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_quaternion_command mip_filter_sensor_to_vehicle_rotation_quaternion_command;
@@ -580,7 +642,7 @@ void extract_mip_filter_sensor_to_vehicle_rotation_quaternion_command(struct mip
 
 struct mip_filter_sensor_to_vehicle_rotation_quaternion_response
 {
-    float quat[4];
+    mip_quatf quat;
     
 };
 typedef struct mip_filter_sensor_to_vehicle_rotation_quaternion_response mip_filter_sensor_to_vehicle_rotation_quaternion_response;
@@ -592,6 +654,7 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_rotation_quaternion(struct mip_
 mip_cmd_result mip_filter_save_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device);
 mip_cmd_result mip_filter_load_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device);
 mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -611,7 +674,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_rotation_quaternion(struct m
 struct mip_filter_sensor_to_vehicle_offset_command
 {
     mip_function_selector function;
-    float offset[3]; ///< [meters]
+    mip_vector3f offset; ///< [meters]
     
 };
 typedef struct mip_filter_sensor_to_vehicle_offset_command mip_filter_sensor_to_vehicle_offset_command;
@@ -620,7 +683,7 @@ void extract_mip_filter_sensor_to_vehicle_offset_command(struct mip_serializer* 
 
 struct mip_filter_sensor_to_vehicle_offset_response
 {
-    float offset[3]; ///< [meters]
+    mip_vector3f offset; ///< [meters]
     
 };
 typedef struct mip_filter_sensor_to_vehicle_offset_response mip_filter_sensor_to_vehicle_offset_response;
@@ -632,6 +695,7 @@ mip_cmd_result mip_filter_read_sensor_to_vehicle_offset(struct mip_interface* de
 mip_cmd_result mip_filter_save_sensor_to_vehicle_offset(struct mip_interface* device);
 mip_cmd_result mip_filter_load_sensor_to_vehicle_offset(struct mip_interface* device);
 mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -648,7 +712,7 @@ mip_cmd_result mip_filter_default_sensor_to_vehicle_offset(struct mip_interface*
 struct mip_filter_antenna_offset_command
 {
     mip_function_selector function;
-    float offset[3]; ///< [meters]
+    mip_vector3f offset; ///< [meters]
     
 };
 typedef struct mip_filter_antenna_offset_command mip_filter_antenna_offset_command;
@@ -657,7 +721,7 @@ void extract_mip_filter_antenna_offset_command(struct mip_serializer* serializer
 
 struct mip_filter_antenna_offset_response
 {
-    float offset[3]; ///< [meters]
+    mip_vector3f offset; ///< [meters]
     
 };
 typedef struct mip_filter_antenna_offset_response mip_filter_antenna_offset_response;
@@ -669,6 +733,7 @@ mip_cmd_result mip_filter_read_antenna_offset(struct mip_interface* device, floa
 mip_cmd_result mip_filter_save_antenna_offset(struct mip_interface* device);
 mip_cmd_result mip_filter_load_antenna_offset(struct mip_interface* device);
 mip_cmd_result mip_filter_default_antenna_offset(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -714,6 +779,7 @@ mip_cmd_result mip_filter_read_gnss_source(struct mip_interface* device, mip_fil
 mip_cmd_result mip_filter_save_gnss_source(struct mip_interface* device);
 mip_cmd_result mip_filter_load_gnss_source(struct mip_interface* device);
 mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -736,7 +802,7 @@ mip_cmd_result mip_filter_default_gnss_source(struct mip_interface* device);
 typedef uint8_t mip_filter_heading_source_command_source;
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_NONE                          = 0; ///<  See note 3
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_MAG                           = 1; ///<  
-static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2; ///<  Seen notes 1,2
+static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL                      = 2; ///<  See notes 1,2
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_EXTERNAL                      = 3; ///<  
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_MAG              = 4; ///<  
 static const mip_filter_heading_source_command_source MIP_FILTER_HEADING_SOURCE_COMMAND_SOURCE_GNSS_VEL_AND_EXTERNAL         = 5; ///<  
@@ -770,6 +836,7 @@ mip_cmd_result mip_filter_read_heading_source(struct mip_interface* device, mip_
 mip_cmd_result mip_filter_save_heading_source(struct mip_interface* device);
 mip_cmd_result mip_filter_load_heading_source(struct mip_interface* device);
 mip_cmd_result mip_filter_default_heading_source(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -810,54 +877,250 @@ mip_cmd_result mip_filter_read_auto_init_control(struct mip_interface* device, u
 mip_cmd_result mip_filter_save_auto_init_control(struct mip_interface* device);
 mip_cmd_result mip_filter_load_auto_init_control(struct mip_interface* device);
 mip_cmd_result mip_filter_default_auto_init_control(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_altitude_aiding  (0x0D,0x47) Altitude Aiding [C]
-/// Altitude Aiding Control
+///@defgroup c_filter_accel_noise  (0x0D,0x1A) Accel Noise [C]
+/// Accelerometer Noise Standard Deviation
 /// 
-/// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
-/// Aiding inputs are used to improve GNSS altitude readings when GNSS is available and to backup GNSS during GNSS outages.
+/// Each of the noise values must be greater than 0.0.
 /// 
-/// Possible altitude aiding selector values:
+/// The noise value represents process noise in the Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter.
+/// Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_accel_noise_command
+{
+    mip_function_selector function;
+    mip_vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_noise_command mip_filter_accel_noise_command;
+void insert_mip_filter_accel_noise_command(struct mip_serializer* serializer, const mip_filter_accel_noise_command* self);
+void extract_mip_filter_accel_noise_command(struct mip_serializer* serializer, mip_filter_accel_noise_command* self);
+
+struct mip_filter_accel_noise_response
+{
+    mip_vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_noise_response mip_filter_accel_noise_response;
+void insert_mip_filter_accel_noise_response(struct mip_serializer* serializer, const mip_filter_accel_noise_response* self);
+void extract_mip_filter_accel_noise_response(struct mip_serializer* serializer, mip_filter_accel_noise_response* self);
+
+mip_cmd_result mip_filter_write_accel_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_accel_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_accel_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_accel_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_accel_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_gyro_noise  (0x0D,0x1B) Gyro Noise [C]
+/// Gyroscope Noise Standard Deviation
 /// 
-/// 0x00 - No altitude aiding (disable)
-/// 0x01 - Enable pressure sensor aiding(1)
+/// Each of the noise values must be greater than 0.0
 /// 
-/// 1. Pressure altitude is based on "instant sea level pressure" which is dependent on location and weather conditions and can vary by more than 40 meters.
+/// The noise value represents process noise in the Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter.
+/// Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_gyro_noise_command
+{
+    mip_function_selector function;
+    mip_vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+    
+};
+typedef struct mip_filter_gyro_noise_command mip_filter_gyro_noise_command;
+void insert_mip_filter_gyro_noise_command(struct mip_serializer* serializer, const mip_filter_gyro_noise_command* self);
+void extract_mip_filter_gyro_noise_command(struct mip_serializer* serializer, mip_filter_gyro_noise_command* self);
+
+struct mip_filter_gyro_noise_response
+{
+    mip_vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+    
+};
+typedef struct mip_filter_gyro_noise_response mip_filter_gyro_noise_response;
+void insert_mip_filter_gyro_noise_response(struct mip_serializer* serializer, const mip_filter_gyro_noise_response* self);
+void extract_mip_filter_gyro_noise_response(struct mip_serializer* serializer, mip_filter_gyro_noise_response* self);
+
+mip_cmd_result mip_filter_write_gyro_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_gyro_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_gyro_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_gyro_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_gyro_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_accel_bias_model  (0x0D,0x1C) Accel Bias Model [C]
+/// Accelerometer Bias Model Parameters
+/// 
+/// Noise values must be greater than 0.0
 /// 
 ///
 ///@{
 
+struct mip_filter_accel_bias_model_command
+{
+    mip_function_selector function;
+    mip_vector3f beta; ///< Accel Bias Beta [1/second]
+    mip_vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_bias_model_command mip_filter_accel_bias_model_command;
+void insert_mip_filter_accel_bias_model_command(struct mip_serializer* serializer, const mip_filter_accel_bias_model_command* self);
+void extract_mip_filter_accel_bias_model_command(struct mip_serializer* serializer, mip_filter_accel_bias_model_command* self);
+
+struct mip_filter_accel_bias_model_response
+{
+    mip_vector3f beta; ///< Accel Bias Beta [1/second]
+    mip_vector3f noise; ///< Accel Noise 1-sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_bias_model_response mip_filter_accel_bias_model_response;
+void insert_mip_filter_accel_bias_model_response(struct mip_serializer* serializer, const mip_filter_accel_bias_model_response* self);
+void extract_mip_filter_accel_bias_model_response(struct mip_serializer* serializer, mip_filter_accel_bias_model_response* self);
+
+mip_cmd_result mip_filter_write_accel_bias_model(struct mip_interface* device, const float* beta, const float* noise);
+mip_cmd_result mip_filter_read_accel_bias_model(struct mip_interface* device, float* beta_out, float* noise_out);
+mip_cmd_result mip_filter_save_accel_bias_model(struct mip_interface* device);
+mip_cmd_result mip_filter_load_accel_bias_model(struct mip_interface* device);
+mip_cmd_result mip_filter_default_accel_bias_model(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_gyro_bias_model  (0x0D,0x1D) Gyro Bias Model [C]
+/// Gyroscope Bias Model Parameters
+/// 
+/// Noise values must be greater than 0.0
+/// 
+///
+///@{
+
+struct mip_filter_gyro_bias_model_command
+{
+    mip_function_selector function;
+    mip_vector3f beta; ///< Gyro Bias Beta [1/second]
+    mip_vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+    
+};
+typedef struct mip_filter_gyro_bias_model_command mip_filter_gyro_bias_model_command;
+void insert_mip_filter_gyro_bias_model_command(struct mip_serializer* serializer, const mip_filter_gyro_bias_model_command* self);
+void extract_mip_filter_gyro_bias_model_command(struct mip_serializer* serializer, mip_filter_gyro_bias_model_command* self);
+
+struct mip_filter_gyro_bias_model_response
+{
+    mip_vector3f beta; ///< Gyro Bias Beta [1/second]
+    mip_vector3f noise; ///< Gyro Noise 1-sigma [rad/second]
+    
+};
+typedef struct mip_filter_gyro_bias_model_response mip_filter_gyro_bias_model_response;
+void insert_mip_filter_gyro_bias_model_response(struct mip_serializer* serializer, const mip_filter_gyro_bias_model_response* self);
+void extract_mip_filter_gyro_bias_model_response(struct mip_serializer* serializer, mip_filter_gyro_bias_model_response* self);
+
+mip_cmd_result mip_filter_write_gyro_bias_model(struct mip_interface* device, const float* beta, const float* noise);
+mip_cmd_result mip_filter_read_gyro_bias_model(struct mip_interface* device, float* beta_out, float* noise_out);
+mip_cmd_result mip_filter_save_gyro_bias_model(struct mip_interface* device);
+mip_cmd_result mip_filter_load_gyro_bias_model(struct mip_interface* device);
+mip_cmd_result mip_filter_default_gyro_bias_model(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_altitude_aiding  (0x0D,0x47) Altitude Aiding [C]
+/// Select altitude input for absolute altitude and/or vertical velocity. The primary altitude reading is always GNSS.
+/// Aiding inputs are used to improve GNSS altitude readings when GNSS is available and to backup GNSS during outages.
+/// 
+/// Pressure altitude is based on "instant sea level pressure" which is dependent on location and weather conditions and can vary by more than 40 meters.
+/// 
+///
+///@{
+
+typedef uint8_t mip_filter_altitude_aiding_command_aiding_selector;
+static const mip_filter_altitude_aiding_command_aiding_selector MIP_FILTER_ALTITUDE_AIDING_COMMAND_AIDING_SELECTOR_NONE    = 0; ///<  No altitude aiding
+static const mip_filter_altitude_aiding_command_aiding_selector MIP_FILTER_ALTITUDE_AIDING_COMMAND_AIDING_SELECTOR_PRESURE = 1; ///<  Enable pressure sensor aiding
+
 struct mip_filter_altitude_aiding_command
 {
     mip_function_selector function;
-    uint8_t aiding_selector; ///< See above
+    mip_filter_altitude_aiding_command_aiding_selector selector; ///< See above
     
 };
 typedef struct mip_filter_altitude_aiding_command mip_filter_altitude_aiding_command;
 void insert_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, const mip_filter_altitude_aiding_command* self);
 void extract_mip_filter_altitude_aiding_command(struct mip_serializer* serializer, mip_filter_altitude_aiding_command* self);
 
+void insert_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self);
+void extract_mip_filter_altitude_aiding_command_aiding_selector(struct mip_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self);
+
 struct mip_filter_altitude_aiding_response
 {
-    uint8_t aiding_selector; ///< See above
+    mip_filter_altitude_aiding_command_aiding_selector selector; ///< See above
     
 };
 typedef struct mip_filter_altitude_aiding_response mip_filter_altitude_aiding_response;
 void insert_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, const mip_filter_altitude_aiding_response* self);
 void extract_mip_filter_altitude_aiding_response(struct mip_serializer* serializer, mip_filter_altitude_aiding_response* self);
 
-mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, uint8_t aiding_selector);
-mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, uint8_t* aiding_selector_out);
+mip_cmd_result mip_filter_write_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector selector);
+mip_cmd_result mip_filter_read_altitude_aiding(struct mip_interface* device, mip_filter_altitude_aiding_command_aiding_selector* selector_out);
 mip_cmd_result mip_filter_save_altitude_aiding(struct mip_interface* device);
 mip_cmd_result mip_filter_load_altitude_aiding(struct mip_interface* device);
 mip_cmd_result mip_filter_default_altitude_aiding(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_pitch_roll_aiding  (0x0D,0x4B) Pitch Roll Aiding [C]
+/// Select pitch/roll aiding input. Pitch/roll reading is always derived from GNSS corrected inertial solution.
+/// Aiding inputs are used to improve that solution during periods of low dynamics and GNSS outages.
+///
+///@{
+
+typedef uint8_t mip_filter_pitch_roll_aiding_command_aiding_source;
+static const mip_filter_pitch_roll_aiding_command_aiding_source MIP_FILTER_PITCH_ROLL_AIDING_COMMAND_AIDING_SOURCE_NONE        = 0; ///<  No pitch/roll aiding
+static const mip_filter_pitch_roll_aiding_command_aiding_source MIP_FILTER_PITCH_ROLL_AIDING_COMMAND_AIDING_SOURCE_GRAVITY_VEC = 1; ///<  Enable gravity vector aiding
+
+struct mip_filter_pitch_roll_aiding_command
+{
+    mip_function_selector function;
+    mip_filter_pitch_roll_aiding_command_aiding_source source; ///< Controls the aiding source
+    
+};
+typedef struct mip_filter_pitch_roll_aiding_command mip_filter_pitch_roll_aiding_command;
+void insert_mip_filter_pitch_roll_aiding_command(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command* self);
+void extract_mip_filter_pitch_roll_aiding_command(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_command* self);
+
+void insert_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self);
+void extract_mip_filter_pitch_roll_aiding_command_aiding_source(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self);
+
+struct mip_filter_pitch_roll_aiding_response
+{
+    mip_filter_pitch_roll_aiding_command_aiding_source source; ///< Controls the aiding source
+    
+};
+typedef struct mip_filter_pitch_roll_aiding_response mip_filter_pitch_roll_aiding_response;
+void insert_mip_filter_pitch_roll_aiding_response(struct mip_serializer* serializer, const mip_filter_pitch_roll_aiding_response* self);
+void extract_mip_filter_pitch_roll_aiding_response(struct mip_serializer* serializer, mip_filter_pitch_roll_aiding_response* self);
+
+mip_cmd_result mip_filter_write_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source source);
+mip_cmd_result mip_filter_read_pitch_roll_aiding(struct mip_interface* device, mip_filter_pitch_roll_aiding_command_aiding_source* source_out);
+mip_cmd_result mip_filter_save_pitch_roll_aiding(struct mip_interface* device);
+mip_cmd_result mip_filter_load_pitch_roll_aiding(struct mip_interface* device);
+mip_cmd_result mip_filter_default_pitch_roll_aiding(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_auto_zupt  (0x0D,0x1E) Auto Zupt [C]
-/// Zero Velocity Update
 /// The ZUPT is triggered when the scalar magnitude of the GNSS reported velocity vector is equal-to or less than the threshold value.
 /// The device will NACK threshold values that are less than zero (i.e.negative.)
 ///
@@ -889,6 +1152,7 @@ mip_cmd_result mip_filter_read_auto_zupt(struct mip_interface* device, uint8_t* 
 mip_cmd_result mip_filter_save_auto_zupt(struct mip_interface* device);
 mip_cmd_result mip_filter_load_auto_zupt(struct mip_interface* device);
 mip_cmd_result mip_filter_default_auto_zupt(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -925,26 +1189,563 @@ mip_cmd_result mip_filter_read_auto_angular_zupt(struct mip_interface* device, u
 mip_cmd_result mip_filter_save_auto_angular_zupt(struct mip_interface* device);
 mip_cmd_result mip_filter_load_auto_angular_zupt(struct mip_interface* device);
 mip_cmd_result mip_filter_default_auto_angular_zupt(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_commanded_zupt  (0x0D,0x22) Commanded Zupt [C]
-/// Commanded Zero Velocity Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
 ///@{
 
 mip_cmd_result mip_filter_commanded_zupt(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup c_filter_commanded_angular_zupt  (0x0D,0x23) Commanded Angular Zupt [C]
-/// Commanded Zero Angular Rate Update
 /// Please see the device user manual for the maximum rate of this message.
 ///
 ///@{
 
 mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_mag_capture_auto_cal  (0x0D,0x27) Mag Capture Auto Cal [C]
+/// This command captures the current value of the auto-calibration, applies it to the current fixed hard and soft iron calibration coefficients, and replaces the current fixed hard and soft iron calibration coefficients with the new values.
+/// This may be used in place of (or in addition to) a manual hard and soft iron calibration utility. This command also resets the auto-calibration coefficients.
+/// Function selector SAVE is the same as issuing the 0x0C, 0x3A and 0x0C, 0x3B commands with the SAVE function selector.
+///
+///@{
+
+struct mip_filter_mag_capture_auto_cal_command
+{
+    mip_function_selector function;
+    
+};
+typedef struct mip_filter_mag_capture_auto_cal_command mip_filter_mag_capture_auto_cal_command;
+void insert_mip_filter_mag_capture_auto_cal_command(struct mip_serializer* serializer, const mip_filter_mag_capture_auto_cal_command* self);
+void extract_mip_filter_mag_capture_auto_cal_command(struct mip_serializer* serializer, mip_filter_mag_capture_auto_cal_command* self);
+
+mip_cmd_result mip_filter_write_mag_capture_auto_cal(struct mip_interface* device);
+mip_cmd_result mip_filter_save_mag_capture_auto_cal(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_gravity_noise  (0x0D,0x28) Gravity Noise [C]
+/// Set the expected gravity noise 1-sigma values. This function can be used to tune the filter performance in the target application.
+/// 
+/// Note: Noise values must be greater than 0.0
+/// 
+/// The noise value represents process noise in the Estimation Filter. Changing this value modifies how the filter responds to dynamic input and can be used to tune filter performance.
+/// Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_gravity_noise_command
+{
+    mip_function_selector function;
+    mip_vector3f noise; ///< Gravity Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_gravity_noise_command mip_filter_gravity_noise_command;
+void insert_mip_filter_gravity_noise_command(struct mip_serializer* serializer, const mip_filter_gravity_noise_command* self);
+void extract_mip_filter_gravity_noise_command(struct mip_serializer* serializer, mip_filter_gravity_noise_command* self);
+
+struct mip_filter_gravity_noise_response
+{
+    mip_vector3f noise; ///< Gravity Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_gravity_noise_response mip_filter_gravity_noise_response;
+void insert_mip_filter_gravity_noise_response(struct mip_serializer* serializer, const mip_filter_gravity_noise_response* self);
+void extract_mip_filter_gravity_noise_response(struct mip_serializer* serializer, mip_filter_gravity_noise_response* self);
+
+mip_cmd_result mip_filter_write_gravity_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_gravity_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_gravity_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_gravity_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_gravity_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_pressure_altitude_noise  (0x0D,0x29) Pressure Altitude Noise [C]
+/// Set the expected pressure altitude noise 1-sigma values. This function can be used to tune the filter performance in the target application.
+/// 
+/// The noise value must be greater than 0.0
+/// 
+/// This noise value represents pressure altitude model noise in the Estimation Filter.
+/// A lower value will increase responsiveness of the sensor to pressure changes, however height estimates will be more susceptible to error from air pressure fluctuations not due to changes in altitude. Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_pressure_altitude_noise_command
+{
+    mip_function_selector function;
+    float noise; ///< Pressure Altitude Noise 1-sigma [m]
+    
+};
+typedef struct mip_filter_pressure_altitude_noise_command mip_filter_pressure_altitude_noise_command;
+void insert_mip_filter_pressure_altitude_noise_command(struct mip_serializer* serializer, const mip_filter_pressure_altitude_noise_command* self);
+void extract_mip_filter_pressure_altitude_noise_command(struct mip_serializer* serializer, mip_filter_pressure_altitude_noise_command* self);
+
+struct mip_filter_pressure_altitude_noise_response
+{
+    float noise; ///< Pressure Altitude Noise 1-sigma [m]
+    
+};
+typedef struct mip_filter_pressure_altitude_noise_response mip_filter_pressure_altitude_noise_response;
+void insert_mip_filter_pressure_altitude_noise_response(struct mip_serializer* serializer, const mip_filter_pressure_altitude_noise_response* self);
+void extract_mip_filter_pressure_altitude_noise_response(struct mip_serializer* serializer, mip_filter_pressure_altitude_noise_response* self);
+
+mip_cmd_result mip_filter_write_pressure_altitude_noise(struct mip_interface* device, float noise);
+mip_cmd_result mip_filter_read_pressure_altitude_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_pressure_altitude_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_pressure_altitude_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_pressure_altitude_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_hard_iron_offset_noise  (0x0D,0x2B) Hard Iron Offset Noise [C]
+/// Set the expected hard iron offset noise 1-sigma values. This function can be used to tune the filter performance in the target application.
+/// 
+/// This function can be used to tune the filter performance in the target application.
+/// 
+/// Noise values must be greater than 0.0
+/// 
+/// The noise values represent process noise in the Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter. Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_hard_iron_offset_noise_command
+{
+    mip_function_selector function;
+    mip_vector3f noise; ///< Hard Iron Offset Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_hard_iron_offset_noise_command mip_filter_hard_iron_offset_noise_command;
+void insert_mip_filter_hard_iron_offset_noise_command(struct mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_command* self);
+void extract_mip_filter_hard_iron_offset_noise_command(struct mip_serializer* serializer, mip_filter_hard_iron_offset_noise_command* self);
+
+struct mip_filter_hard_iron_offset_noise_response
+{
+    mip_vector3f noise; ///< Hard Iron Offset Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_hard_iron_offset_noise_response mip_filter_hard_iron_offset_noise_response;
+void insert_mip_filter_hard_iron_offset_noise_response(struct mip_serializer* serializer, const mip_filter_hard_iron_offset_noise_response* self);
+void extract_mip_filter_hard_iron_offset_noise_response(struct mip_serializer* serializer, mip_filter_hard_iron_offset_noise_response* self);
+
+mip_cmd_result mip_filter_write_hard_iron_offset_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_hard_iron_offset_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_hard_iron_offset_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_hard_iron_offset_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_hard_iron_offset_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_soft_iron_matrix_noise  (0x0D,0x2C) Soft Iron Matrix Noise [C]
+/// Set the expected soft iron matrix noise 1-sigma values.
+/// This function can be used to tune the filter performance in the target application.
+/// 
+/// Noise values must be greater than 0.0
+/// 
+/// The noise value represents process noise in the Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter. Default values provide good performance for most laboratory conditions.
+///
+///@{
+
+struct mip_filter_soft_iron_matrix_noise_command
+{
+    mip_function_selector function;
+    mip_matrix3f noise; ///< Soft Iron Matrix Noise 1-sigma [dimensionless]
+    
+};
+typedef struct mip_filter_soft_iron_matrix_noise_command mip_filter_soft_iron_matrix_noise_command;
+void insert_mip_filter_soft_iron_matrix_noise_command(struct mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_command* self);
+void extract_mip_filter_soft_iron_matrix_noise_command(struct mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_command* self);
+
+struct mip_filter_soft_iron_matrix_noise_response
+{
+    mip_matrix3f noise; ///< Soft Iron Matrix Noise 1-sigma [dimensionless]
+    
+};
+typedef struct mip_filter_soft_iron_matrix_noise_response mip_filter_soft_iron_matrix_noise_response;
+void insert_mip_filter_soft_iron_matrix_noise_response(struct mip_serializer* serializer, const mip_filter_soft_iron_matrix_noise_response* self);
+void extract_mip_filter_soft_iron_matrix_noise_response(struct mip_serializer* serializer, mip_filter_soft_iron_matrix_noise_response* self);
+
+mip_cmd_result mip_filter_write_soft_iron_matrix_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_soft_iron_matrix_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_soft_iron_matrix_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_soft_iron_matrix_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_soft_iron_matrix_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_mag_noise  (0x0D,0x42) Mag Noise [C]
+/// Set the expected magnetometer noise 1-sigma values.
+/// This function can be used to tune the filter performance in the target application.
+/// 
+/// Noise values must be greater than 0.0 (gauss)
+/// 
+/// The noise value represents process noise in the Estimation Filter.
+/// Changing this value modifies how the filter responds to dynamic input and can be used to tune the performance of the filter. Default values provide good performance for most laboratory conditions
+///
+///@{
+
+struct mip_filter_mag_noise_command
+{
+    mip_function_selector function;
+    mip_vector3f noise; ///< Mag Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_mag_noise_command mip_filter_mag_noise_command;
+void insert_mip_filter_mag_noise_command(struct mip_serializer* serializer, const mip_filter_mag_noise_command* self);
+void extract_mip_filter_mag_noise_command(struct mip_serializer* serializer, mip_filter_mag_noise_command* self);
+
+struct mip_filter_mag_noise_response
+{
+    mip_vector3f noise; ///< Mag Noise 1-sigma [gauss]
+    
+};
+typedef struct mip_filter_mag_noise_response mip_filter_mag_noise_response;
+void insert_mip_filter_mag_noise_response(struct mip_serializer* serializer, const mip_filter_mag_noise_response* self);
+void extract_mip_filter_mag_noise_response(struct mip_serializer* serializer, mip_filter_mag_noise_response* self);
+
+mip_cmd_result mip_filter_write_mag_noise(struct mip_interface* device, const float* noise);
+mip_cmd_result mip_filter_read_mag_noise(struct mip_interface* device, float* noise_out);
+mip_cmd_result mip_filter_save_mag_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_load_mag_noise(struct mip_interface* device);
+mip_cmd_result mip_filter_default_mag_noise(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_inclination_source  (0x0D,0x4C) Inclination Source [C]
+/// Set/Get the local magnetic field inclination angle source.
+/// 
+/// This can be used to correct for the local value of inclination (dip angle) of the earthmagnetic field.
+/// Having a correct value is important for best performance of the auto-mag calibration feature. If you do not have an accurate inclination angle source, it is recommended that you leave the auto-mag calibration feature off.
+/// 
+///
+///@{
+
+struct mip_filter_inclination_source_command
+{
+    mip_function_selector function;
+    mip_filter_mag_param_source source; ///< Inclination Source
+    float inclination; ///< Inclination angle [radians] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_inclination_source_command mip_filter_inclination_source_command;
+void insert_mip_filter_inclination_source_command(struct mip_serializer* serializer, const mip_filter_inclination_source_command* self);
+void extract_mip_filter_inclination_source_command(struct mip_serializer* serializer, mip_filter_inclination_source_command* self);
+
+struct mip_filter_inclination_source_response
+{
+    mip_filter_mag_param_source source; ///< Inclination Source
+    float inclination; ///< Inclination angle [radians] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_inclination_source_response mip_filter_inclination_source_response;
+void insert_mip_filter_inclination_source_response(struct mip_serializer* serializer, const mip_filter_inclination_source_response* self);
+void extract_mip_filter_inclination_source_response(struct mip_serializer* serializer, mip_filter_inclination_source_response* self);
+
+mip_cmd_result mip_filter_write_inclination_source(struct mip_interface* device, mip_filter_mag_param_source source, float inclination);
+mip_cmd_result mip_filter_read_inclination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* inclination_out);
+mip_cmd_result mip_filter_save_inclination_source(struct mip_interface* device);
+mip_cmd_result mip_filter_load_inclination_source(struct mip_interface* device);
+mip_cmd_result mip_filter_default_inclination_source(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_magnetic_declination_source  (0x0D,0x43) Magnetic Declination Source [C]
+/// Set/Get the local magnetic field declination angle source.
+/// 
+/// This can be used to correct for the local value of declination of the earthmagnetic field.
+/// Having a correct value is important for best performance of the auto-mag calibration feature. If you do not have an accurate inclination angle source, it is recommended that you leave the auto-mag calibration feature off.
+/// 
+///
+///@{
+
+struct mip_filter_magnetic_declination_source_command
+{
+    mip_function_selector function;
+    mip_filter_mag_param_source source; ///< Magnetic field declination angle source
+    float declination; ///< Declination angle [radians] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_magnetic_declination_source_command mip_filter_magnetic_declination_source_command;
+void insert_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_command* self);
+void extract_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_command* self);
+
+struct mip_filter_magnetic_declination_source_response
+{
+    mip_filter_mag_param_source source; ///< Magnetic field declination angle source
+    float declination; ///< Declination angle [radians] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_magnetic_declination_source_response mip_filter_magnetic_declination_source_response;
+void insert_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_response* self);
+void extract_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_response* self);
+
+mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source source, float declination);
+mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* declination_out);
+mip_cmd_result mip_filter_save_magnetic_declination_source(struct mip_interface* device);
+mip_cmd_result mip_filter_load_magnetic_declination_source(struct mip_interface* device);
+mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_mag_field_magnitude_source  (0x0D,0x4D) Mag Field Magnitude Source [C]
+/// Set/Get the local magnetic field magnitude source.
+/// 
+/// This is used to specify the local magnitude of the earth's magnetic field.
+/// Having a correct value for magnitude is important for best performance of the auto-mag calibration feature and for the magnetometer adaptive magnitude. If you do not have an accurate value for the local magnetic field magnitude, it is recommended that you leave the auto-mag calibration feature off.
+///
+///@{
+
+struct mip_filter_mag_field_magnitude_source_command
+{
+    mip_function_selector function;
+    mip_filter_mag_param_source source; ///< Magnetic Field Magnitude Source
+    float magnitude; ///< Magnitude [gauss] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_mag_field_magnitude_source_command mip_filter_mag_field_magnitude_source_command;
+void insert_mip_filter_mag_field_magnitude_source_command(struct mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_command* self);
+void extract_mip_filter_mag_field_magnitude_source_command(struct mip_serializer* serializer, mip_filter_mag_field_magnitude_source_command* self);
+
+struct mip_filter_mag_field_magnitude_source_response
+{
+    mip_filter_mag_param_source source; ///< Magnetic Field Magnitude Source
+    float magnitude; ///< Magnitude [gauss] (only required if source = MANUAL)
+    
+};
+typedef struct mip_filter_mag_field_magnitude_source_response mip_filter_mag_field_magnitude_source_response;
+void insert_mip_filter_mag_field_magnitude_source_response(struct mip_serializer* serializer, const mip_filter_mag_field_magnitude_source_response* self);
+void extract_mip_filter_mag_field_magnitude_source_response(struct mip_serializer* serializer, mip_filter_mag_field_magnitude_source_response* self);
+
+mip_cmd_result mip_filter_write_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source source, float magnitude);
+mip_cmd_result mip_filter_read_mag_field_magnitude_source(struct mip_interface* device, mip_filter_mag_param_source* source_out, float* magnitude_out);
+mip_cmd_result mip_filter_save_mag_field_magnitude_source(struct mip_interface* device);
+mip_cmd_result mip_filter_load_mag_field_magnitude_source(struct mip_interface* device);
+mip_cmd_result mip_filter_default_mag_field_magnitude_source(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_reference_position  (0x0D,0x26) Reference Position [C]
+/// Set the Lat/Long/Alt reference position for the sensor.
+/// 
+/// This position is used by the sensor to calculate the WGS84 gravity and WMM2015 magnetic field parameters.
+/// 
+///
+///@{
+
+struct mip_filter_reference_position_command
+{
+    mip_function_selector function;
+    bool enable; ///< enable/disable
+    double latitude; ///< [degrees]
+    double longitude; ///< [degrees]
+    double altitude; ///< [meters]
+    
+};
+typedef struct mip_filter_reference_position_command mip_filter_reference_position_command;
+void insert_mip_filter_reference_position_command(struct mip_serializer* serializer, const mip_filter_reference_position_command* self);
+void extract_mip_filter_reference_position_command(struct mip_serializer* serializer, mip_filter_reference_position_command* self);
+
+struct mip_filter_reference_position_response
+{
+    bool enable; ///< enable/disable
+    double latitude; ///< [degrees]
+    double longitude; ///< [degrees]
+    double altitude; ///< [meters]
+    
+};
+typedef struct mip_filter_reference_position_response mip_filter_reference_position_response;
+void insert_mip_filter_reference_position_response(struct mip_serializer* serializer, const mip_filter_reference_position_response* self);
+void extract_mip_filter_reference_position_response(struct mip_serializer* serializer, mip_filter_reference_position_response* self);
+
+mip_cmd_result mip_filter_write_reference_position(struct mip_interface* device, bool enable, double latitude, double longitude, double altitude);
+mip_cmd_result mip_filter_read_reference_position(struct mip_interface* device, bool* enable_out, double* latitude_out, double* longitude_out, double* altitude_out);
+mip_cmd_result mip_filter_save_reference_position(struct mip_interface* device);
+mip_cmd_result mip_filter_load_reference_position(struct mip_interface* device);
+mip_cmd_result mip_filter_default_reference_position(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_accel_magnitude_error_adaptive_measurement  (0x0D,0x44) Accel Magnitude Error Adaptive Measurement [C]
+/// Enable or disable the gravity magnitude error adaptive measurement.
+/// This function can be used to tune the filter performance in the target application
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+/// Adaptive measurements can be enabled/disabled without the need for providing the additional parameters.
+/// In this case, only the function selector and enable value are required; all other parameters will remain at their previous values.
+/// When “auto-adaptive” is selected, the filter and limit parameters are ignored.
+/// Instead, aiding measurements which rely on the gravity vector will be automatically reweighted by the Kalman filter according to the perceived measurement quality.
+/// 
+///
+///@{
+
+struct mip_filter_accel_magnitude_error_adaptive_measurement_command
+{
+    mip_function_selector function;
+    mip_filter_adaptive_measurement adaptive_measurement; ///< Adaptive measurement selector
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit; ///< [meters/second^2]
+    float high_limit; ///< [meters/second^2]
+    float low_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_magnitude_error_adaptive_measurement_command mip_filter_accel_magnitude_error_adaptive_measurement_command;
+void insert_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
+void extract_mip_filter_accel_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_command* self);
+
+struct mip_filter_accel_magnitude_error_adaptive_measurement_response
+{
+    mip_filter_adaptive_measurement adaptive_measurement; ///< Adaptive measurement selector
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit; ///< [meters/second^2]
+    float high_limit; ///< [meters/second^2]
+    float low_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_accel_magnitude_error_adaptive_measurement_response mip_filter_accel_magnitude_error_adaptive_measurement_response;
+void insert_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
+void extract_mip_filter_accel_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_accel_magnitude_error_adaptive_measurement_response* self);
+
+mip_cmd_result mip_filter_write_accel_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty);
+mip_cmd_result mip_filter_read_accel_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement* adaptive_measurement_out, float* frequency_out, float* low_limit_out, float* high_limit_out, float* low_limit_uncertainty_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
+mip_cmd_result mip_filter_save_accel_magnitude_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_load_accel_magnitude_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_default_accel_magnitude_error_adaptive_measurement(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_mag_magnitude_error_adaptive_measurement  (0x0D,0x45) Mag Magnitude Error Adaptive Measurement [C]
+/// Enable or disable the magnetometer magnitude error adaptive measurement.
+/// This feature will reject magnetometer readings that are out of range of the thresholds specified (fixed adaptive) or calculated internally (auto-adaptive).
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+///
+///@{
+
+struct mip_filter_mag_magnitude_error_adaptive_measurement_command
+{
+    mip_function_selector function;
+    mip_filter_adaptive_measurement adaptive_measurement; ///< Adaptive measurement selector
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit; ///< [meters/second^2]
+    float high_limit; ///< [meters/second^2]
+    float low_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_mag_magnitude_error_adaptive_measurement_command mip_filter_mag_magnitude_error_adaptive_measurement_command;
+void insert_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
+void extract_mip_filter_mag_magnitude_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_command* self);
+
+struct mip_filter_mag_magnitude_error_adaptive_measurement_response
+{
+    mip_filter_adaptive_measurement adaptive_measurement; ///< Adaptive measurement selector
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float low_limit; ///< [meters/second^2]
+    float high_limit; ///< [meters/second^2]
+    float low_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_mag_magnitude_error_adaptive_measurement_response mip_filter_mag_magnitude_error_adaptive_measurement_response;
+void insert_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
+void extract_mip_filter_mag_magnitude_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_mag_magnitude_error_adaptive_measurement_response* self);
+
+mip_cmd_result mip_filter_write_mag_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement adaptive_measurement, float frequency, float low_limit, float high_limit, float low_limit_uncertainty, float high_limit_uncertainty, float minimum_uncertainty);
+mip_cmd_result mip_filter_read_mag_magnitude_error_adaptive_measurement(struct mip_interface* device, mip_filter_adaptive_measurement* adaptive_measurement_out, float* frequency_out, float* low_limit_out, float* high_limit_out, float* low_limit_uncertainty_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
+mip_cmd_result mip_filter_save_mag_magnitude_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_load_mag_magnitude_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_default_mag_magnitude_error_adaptive_measurement(struct mip_interface* device);
+
+///@}
+///
+////////////////////////////////////////////////////////////////////////////////
+///@defgroup c_filter_mag_dip_angle_error_adaptive_measurement  (0x0D,0x46) Mag Dip Angle Error Adaptive Measurement [C]
+/// Enable or disable the magnetometer dip angle error adaptive measurement.
+/// This function can be used to tune the filter performance in the target application
+/// 
+/// Pick values that give you the least occurrence of invalid EF attitude output.
+/// The default values are good for standard low dynamics applications.
+/// Increase values for higher dynamic conditions, lower values for lower dynamic.
+/// Too low a value will result in excessive heading errors.
+/// Higher values increase heading errors when undergoing magnetic field anomalies caused by DC currents, magnets, steel structures,etc.
+/// 
+/// The magnetometer dip angle adaptive measurement is ignored if the auto-adaptive magnetometer magnitude or auto-adaptive accel magnitude options are selected.
+/// 
+///
+///@{
+
+struct mip_filter_mag_dip_angle_error_adaptive_measurement_command
+{
+    mip_function_selector function;
+    bool enable; ///< Enable/Disable
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float high_limit; ///< [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_mag_dip_angle_error_adaptive_measurement_command mip_filter_mag_dip_angle_error_adaptive_measurement_command;
+void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct mip_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
+void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_command(struct mip_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_command* self);
+
+struct mip_filter_mag_dip_angle_error_adaptive_measurement_response
+{
+    bool enable; ///< Enable/Disable
+    float frequency; ///< Low-pass filter curoff frequency [hertz]
+    float high_limit; ///< [meters/second^2]
+    float high_limit_uncertainty; ///< 1-Sigma [meters/second^2]
+    float minimum_uncertainty; ///< 1-Sigma [meters/second^2]
+    
+};
+typedef struct mip_filter_mag_dip_angle_error_adaptive_measurement_response mip_filter_mag_dip_angle_error_adaptive_measurement_response;
+void insert_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct mip_serializer* serializer, const mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
+void extract_mip_filter_mag_dip_angle_error_adaptive_measurement_response(struct mip_serializer* serializer, mip_filter_mag_dip_angle_error_adaptive_measurement_response* self);
+
+mip_cmd_result mip_filter_write_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device, bool enable, float frequency, float high_limit, float high_limit_uncertainty, float minimum_uncertainty);
+mip_cmd_result mip_filter_read_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device, bool* enable_out, float* frequency_out, float* high_limit_out, float* high_limit_uncertainty_out, float* minimum_uncertainty_out);
+mip_cmd_result mip_filter_save_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_load_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device);
+mip_cmd_result mip_filter_default_mag_dip_angle_error_adaptive_measurement(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -956,19 +1757,22 @@ mip_cmd_result mip_filter_commanded_angular_zupt(struct mip_interface* device);
 ///@{
 
 typedef uint16_t mip_filter_aiding_measurement_enable_command_aiding_source;
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL     = 0;     ///<  GNSS Position and Velocity
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_HEADING     = 1;     ///<  GNSS Heading (dual antenna)
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALTIMETER        = 2;     ///<  Altimeter
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_SPEED            = 3;     ///<  Speed sensor / Odometer
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER     = 4;     ///<  Magnetometer
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING = 5;     ///<  External heading input
-static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL              = 65535; ///<  Save/load/reset all options
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_POS_VEL          = 0;     ///<  GNSS Position and Velocity
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_GNSS_HEADING          = 1;     ///<  GNSS Heading (dual antenna)
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALTIMETER             = 2;     ///<  Pressure altimeter (built-in sensor)
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_SPEED                 = 3;     ///<  Speed sensor / Odometer
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_MAGNETOMETER          = 4;     ///<  Magnetometer (built-in sensor)
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_HEADING      = 5;     ///<  External heading input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_ALTIMETER    = 6;     ///<  External pressure altimeter input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_EXTERNAL_MAGNETOMETER = 7;     ///<  External magnetomer input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_BODY_FRAME_VEL        = 8;     ///<  External body frame velocity input
+static const mip_filter_aiding_measurement_enable_command_aiding_source MIP_FILTER_AIDING_MEASUREMENT_ENABLE_COMMAND_AIDING_SOURCE_ALL                   = 65535; ///<  Save/load/reset all options
 
 struct mip_filter_aiding_measurement_enable_command
 {
     mip_function_selector function;
     mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
-    bool enable; ///< Controls the aiding sorce
+    bool enable; ///< Controls the aiding source
     
 };
 typedef struct mip_filter_aiding_measurement_enable_command mip_filter_aiding_measurement_enable_command;
@@ -981,7 +1785,7 @@ void extract_mip_filter_aiding_measurement_enable_command_aiding_source(struct m
 struct mip_filter_aiding_measurement_enable_response
 {
     mip_filter_aiding_measurement_enable_command_aiding_source aiding_source; ///< Aiding measurement source
-    bool enable; ///< Controls the aiding sorce
+    bool enable; ///< Controls the aiding source
     
 };
 typedef struct mip_filter_aiding_measurement_enable_response mip_filter_aiding_measurement_enable_response;
@@ -993,6 +1797,7 @@ mip_cmd_result mip_filter_read_aiding_measurement_enable(struct mip_interface* d
 mip_cmd_result mip_filter_save_aiding_measurement_enable(struct mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
 mip_cmd_result mip_filter_load_aiding_measurement_enable(struct mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
 mip_cmd_result mip_filter_default_aiding_measurement_enable(struct mip_interface* device, mip_filter_aiding_measurement_enable_command_aiding_source aiding_source);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1004,6 +1809,7 @@ mip_cmd_result mip_filter_default_aiding_measurement_enable(struct mip_interface
 ///@{
 
 mip_cmd_result mip_filter_run(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1042,6 +1848,7 @@ mip_cmd_result mip_filter_read_kinematic_constraint(struct mip_interface* device
 mip_cmd_result mip_filter_save_kinematic_constraint(struct mip_interface* device);
 mip_cmd_result mip_filter_load_kinematic_constraint(struct mip_interface* device);
 mip_cmd_result mip_filter_default_kinematic_constraint(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1058,7 +1865,9 @@ typedef uint8_t mip_filter_initialization_configuration_command_alignment_select
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_NONE         = 0x00;
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_DUAL_ANTENNA = 0x01; ///<  Dual-antenna GNSS alignment
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_KINEMATIC    = 0x02; ///<  GNSS kinematic alignment (GNSS velocity determines initial heading)
-static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04; ///<  Magnetometer heading alignment
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04; ///<  Magnetometer heading alignment (Internal magnetometer determines initial heading)
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_EXTERNAL     = 0x08; ///<  External heading alignment (External heading input determines heading)
+static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_ALL          = 0x0F;
 
 typedef uint8_t mip_filter_initialization_configuration_command_initial_condition_source;
 static const mip_filter_initialization_configuration_command_initial_condition_source MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_INITIAL_CONDITION_SOURCE_AUTO_POS_VEL_ATT        = 0; ///<  Automatic position, velocity and attitude
@@ -1075,8 +1884,8 @@ struct mip_filter_initialization_configuration_command
     float initial_heading; ///< User-specified initial platform heading (degrees).
     float initial_pitch; ///< User-specified initial platform pitch (degrees)
     float initial_roll; ///< User-specified initial platform roll (degrees)
-    float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
-    float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    mip_vector3f initial_position; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    mip_vector3f initial_velocity; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
     mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
@@ -1098,8 +1907,8 @@ struct mip_filter_initialization_configuration_response
     float initial_heading; ///< User-specified initial platform heading (degrees).
     float initial_pitch; ///< User-specified initial platform pitch (degrees)
     float initial_roll; ///< User-specified initial platform roll (degrees)
-    float initial_position[3]; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
-    float initial_velocity[3]; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
+    mip_vector3f initial_position; ///< User-specified initial platform position (units determined by reference frame selector, see note.)
+    mip_vector3f initial_velocity; ///< User-specified initial platform velocity (units determined by reference frame selector, see note.)
     mip_filter_reference_frame reference_frame_selector; ///< User-specified initial position/velocity reference frames
     
 };
@@ -1112,6 +1921,7 @@ mip_cmd_result mip_filter_read_initialization_configuration(struct mip_interface
 mip_cmd_result mip_filter_save_initialization_configuration(struct mip_interface* device);
 mip_cmd_result mip_filter_load_initialization_configuration(struct mip_interface* device);
 mip_cmd_result mip_filter_default_initialization_configuration(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1146,6 +1956,7 @@ mip_cmd_result mip_filter_read_adaptive_filter_options(struct mip_interface* dev
 mip_cmd_result mip_filter_save_adaptive_filter_options(struct mip_interface* device);
 mip_cmd_result mip_filter_load_adaptive_filter_options(struct mip_interface* device);
 mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1153,6 +1964,7 @@ mip_cmd_result mip_filter_default_adaptive_filter_options(struct mip_interface* 
 /// Set the antenna lever arm.
 /// 
 /// This command works with devices that utilize multiple antennas.
+/// <br/><br/><b>Offset Limit</b>: 10 m magnitude (default)
 ///
 ///@{
 
@@ -1160,7 +1972,7 @@ struct mip_filter_multi_antenna_offset_command
 {
     mip_function_selector function;
     uint8_t receiver_id; ///< Receiver: 1, 2, etc...
-    float antenna_offset[3]; ///< Antenna lever arm offset vector in the vehicle frame (m)
+    mip_vector3f antenna_offset; ///< Antenna lever arm offset vector in the vehicle frame (m)
     
 };
 typedef struct mip_filter_multi_antenna_offset_command mip_filter_multi_antenna_offset_command;
@@ -1170,7 +1982,7 @@ void extract_mip_filter_multi_antenna_offset_command(struct mip_serializer* seri
 struct mip_filter_multi_antenna_offset_response
 {
     uint8_t receiver_id;
-    float antenna_offset[3];
+    mip_vector3f antenna_offset;
     
 };
 typedef struct mip_filter_multi_antenna_offset_response mip_filter_multi_antenna_offset_response;
@@ -1182,6 +1994,7 @@ mip_cmd_result mip_filter_read_multi_antenna_offset(struct mip_interface* device
 mip_cmd_result mip_filter_save_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id);
 mip_cmd_result mip_filter_load_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id);
 mip_cmd_result mip_filter_default_multi_antenna_offset(struct mip_interface* device, uint8_t receiver_id);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1195,7 +2008,7 @@ struct mip_filter_rel_pos_configuration_command
     mip_function_selector function;
     uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
     mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
-    double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
+    mip_vector3d reference_coordinates; ///< reference coordinates, units determined by source selection
     
 };
 typedef struct mip_filter_rel_pos_configuration_command mip_filter_rel_pos_configuration_command;
@@ -1206,7 +2019,7 @@ struct mip_filter_rel_pos_configuration_response
 {
     uint8_t source; ///< 0 - auto (RTK base station), 1 - manual
     mip_filter_reference_frame reference_frame_selector; ///< ECEF or LLH
-    double reference_coordinates[3]; ///< reference coordinates, units determined by source selection
+    mip_vector3d reference_coordinates; ///< reference coordinates, units determined by source selection
     
 };
 typedef struct mip_filter_rel_pos_configuration_response mip_filter_rel_pos_configuration_response;
@@ -1218,6 +2031,7 @@ mip_cmd_result mip_filter_read_rel_pos_configuration(struct mip_interface* devic
 mip_cmd_result mip_filter_save_rel_pos_configuration(struct mip_interface* device);
 mip_cmd_result mip_filter_load_rel_pos_configuration(struct mip_interface* device);
 mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1226,8 +2040,10 @@ mip_cmd_result mip_filter_default_rel_pos_configuration(struct mip_interface* de
 /// This is used to change the location of the indicated point of reference, and will affect filter position and velocity outputs.
 /// Changing this setting from default will result in a global position offset that depends on vehicle attitude,
 /// and a velocity offset that depends on vehicle attitude and angular rate.
-/// The lever arm is defined by a 3-element vector that points from the sensor to the desired reference point, with (x,y,z) components given in the vehicle's reference frame.
-/// Note, if the reference point selector is set to VEH (1), this setting will affect the following data fields: (0x82, 0x01), (0x82, 0x02), (0x82, 0x40), (0x82, 0x41), and (0x82, 42)
+/// <br/>The lever arm is defined by a 3-element vector that points from the sensor to the desired reference point, with (x,y,z) components given in the vehicle's reference frame.
+/// <br/><br/>Note, if the reference point selector is set to VEH (1), this setting will affect the following data fields: (0x82, 0x01), (0x82, 0x02), (0x82, 0x40), (0x82, 0x41), and (0x82, 42)
+/// <br/><br/><b>Offset Limits</b>
+/// <br/>Reference Point VEH (1): 10 m magnitude (default)
 ///
 ///@{
 
@@ -1238,7 +2054,7 @@ struct mip_filter_ref_point_lever_arm_command
 {
     mip_function_selector function;
     mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
-    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    mip_vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 typedef struct mip_filter_ref_point_lever_arm_command mip_filter_ref_point_lever_arm_command;
@@ -1251,7 +2067,7 @@ void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(str
 struct mip_filter_ref_point_lever_arm_response
 {
     mip_filter_ref_point_lever_arm_command_reference_point_selector ref_point_sel; ///< Reserved, must be 1
-    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    mip_vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 typedef struct mip_filter_ref_point_lever_arm_response mip_filter_ref_point_lever_arm_response;
@@ -1263,6 +2079,7 @@ mip_cmd_result mip_filter_read_ref_point_lever_arm(struct mip_interface* device,
 mip_cmd_result mip_filter_save_ref_point_lever_arm(struct mip_interface* device);
 mip_cmd_result mip_filter_load_ref_point_lever_arm(struct mip_interface* device);
 mip_cmd_result mip_filter_default_ref_point_lever_arm(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1286,6 +2103,7 @@ void insert_mip_filter_speed_measurement_command(struct mip_serializer* serializ
 void extract_mip_filter_speed_measurement_command(struct mip_serializer* serializer, mip_filter_speed_measurement_command* self);
 
 mip_cmd_result mip_filter_speed_measurement(struct mip_interface* device, uint8_t source, float time_of_week, float speed, float speed_uncertainty);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1304,7 +2122,7 @@ struct mip_filter_speed_lever_arm_command
 {
     mip_function_selector function;
     uint8_t source; ///< Reserved, must be 1.
-    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    mip_vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 typedef struct mip_filter_speed_lever_arm_command mip_filter_speed_lever_arm_command;
@@ -1314,7 +2132,7 @@ void extract_mip_filter_speed_lever_arm_command(struct mip_serializer* serialize
 struct mip_filter_speed_lever_arm_response
 {
     uint8_t source; ///< Reserved, must be 1.
-    float lever_arm_offset[3]; ///< [m] Lever arm offset vector in the vehicle's reference frame.
+    mip_vector3f lever_arm_offset; ///< [m] Lever arm offset vector in the vehicle's reference frame.
     
 };
 typedef struct mip_filter_speed_lever_arm_response mip_filter_speed_lever_arm_response;
@@ -1326,6 +2144,7 @@ mip_cmd_result mip_filter_read_speed_lever_arm(struct mip_interface* device, uin
 mip_cmd_result mip_filter_save_speed_lever_arm(struct mip_interface* device, uint8_t source);
 mip_cmd_result mip_filter_load_speed_lever_arm(struct mip_interface* device, uint8_t source);
 mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* device, uint8_t source);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1336,7 +2155,7 @@ mip_cmd_result mip_filter_default_speed_lever_arm(struct mip_interface* device, 
 /// By convention, the primary vehicle axis is the vehicle X-axis (note: the sensor may be physically installed in
 /// any orientation on the vehicle if the appropriate mounting transformation has been specified).
 /// This constraint will typically improve heading estimates for vehicles where the assumption is valid, such
-/// as an automobile, particulary when GNSS coverage is intermittent.
+/// as an automobile, particularly when GNSS coverage is intermittent.
 ///
 ///@{
 
@@ -1364,6 +2183,7 @@ mip_cmd_result mip_filter_read_wheeled_vehicle_constraint_control(struct mip_int
 mip_cmd_result mip_filter_save_wheeled_vehicle_constraint_control(struct mip_interface* device);
 mip_cmd_result mip_filter_load_wheeled_vehicle_constraint_control(struct mip_interface* device);
 mip_cmd_result mip_filter_default_wheeled_vehicle_constraint_control(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1400,6 +2220,7 @@ mip_cmd_result mip_filter_read_vertical_gyro_constraint_control(struct mip_inter
 mip_cmd_result mip_filter_save_vertical_gyro_constraint_control(struct mip_interface* device);
 mip_cmd_result mip_filter_load_vertical_gyro_constraint_control(struct mip_interface* device);
 mip_cmd_result mip_filter_default_vertical_gyro_constraint_control(struct mip_interface* device);
+
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1436,40 +2257,7 @@ mip_cmd_result mip_filter_read_gnss_antenna_cal_control(struct mip_interface* de
 mip_cmd_result mip_filter_save_gnss_antenna_cal_control(struct mip_interface* device);
 mip_cmd_result mip_filter_load_gnss_antenna_cal_control(struct mip_interface* device);
 mip_cmd_result mip_filter_default_gnss_antenna_cal_control(struct mip_interface* device);
-///@}
-///
-////////////////////////////////////////////////////////////////////////////////
-///@defgroup c_filter_magnetic_declination_source  (0x0D,0x43) Magnetic Declination Source [C]
-/// Source for magnetic declination angle, and user supplied value for manual selection.
-///
-///@{
 
-struct mip_filter_magnetic_declination_source_command
-{
-    mip_function_selector function;
-    mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
-    float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
-    
-};
-typedef struct mip_filter_magnetic_declination_source_command mip_filter_magnetic_declination_source_command;
-void insert_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_command* self);
-void extract_mip_filter_magnetic_declination_source_command(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_command* self);
-
-struct mip_filter_magnetic_declination_source_response
-{
-    mip_filter_mag_declination_source source; ///< Magnetic field declination angle source
-    float declination; ///< Declination angle used when 'source' is set to 'MANUAL' (radians)
-    
-};
-typedef struct mip_filter_magnetic_declination_source_response mip_filter_magnetic_declination_source_response;
-void insert_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, const mip_filter_magnetic_declination_source_response* self);
-void extract_mip_filter_magnetic_declination_source_response(struct mip_serializer* serializer, mip_filter_magnetic_declination_source_response* self);
-
-mip_cmd_result mip_filter_write_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_declination_source source, float declination);
-mip_cmd_result mip_filter_read_magnetic_declination_source(struct mip_interface* device, mip_filter_mag_declination_source* source_out, float* declination_out);
-mip_cmd_result mip_filter_save_magnetic_declination_source(struct mip_interface* device);
-mip_cmd_result mip_filter_load_magnetic_declination_source(struct mip_interface* device);
-mip_cmd_result mip_filter_default_magnetic_declination_source(struct mip_interface* device);
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -1491,6 +2279,7 @@ void insert_mip_filter_set_initial_heading_command(struct mip_serializer* serial
 void extract_mip_filter_set_initial_heading_command(struct mip_serializer* serializer, mip_filter_set_initial_heading_command* self);
 
 mip_cmd_result mip_filter_set_initial_heading(struct mip_interface* device, float heading);
+
 ///@}
 ///
 

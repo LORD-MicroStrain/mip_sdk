@@ -29,16 +29,13 @@
 ///       The timeout for receiving one packet. Depends on the serial baud rate
 ///       and is typically 100 milliseconds.
 ///
-void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, timestamp_type timeout)
+void mip_parser_init(mip_parser* parser, uint8_t* buffer, size_t buffer_size, mip_packet_callback callback, void* callback_object, mip_timestamp timeout)
 {
-    parser->_start_time = 0;
-    parser->_timeout = timeout;
-
-    parser->_result_buffer[0] = 0;
-
     byte_ring_init(&parser->_ring, buffer, buffer_size);
 
-    parser->_expected_length = MIPPARSER_RESET_LENGTH;
+    parser->_timeout = timeout;
+
+    mip_parser_reset(parser);
 
     parser->_callback = callback;
     parser->_callback_object = callback_object;
@@ -59,6 +56,13 @@ void mip_parser_reset(mip_parser* parser)
     parser->_result_buffer[0] = 0;
     parser->_start_time = 0;
     byte_ring_clear(&parser->_ring);
+
+    MIP_DIAG_ZERO(parser->_diag_bytes_read);
+    MIP_DIAG_ZERO(parser->_diag_bytes_skipped);
+    MIP_DIAG_ZERO(parser->_diag_packet_bytes);
+    MIP_DIAG_ZERO(parser->_diag_valid_packets);
+    MIP_DIAG_ZERO(parser->_diag_invalid_packets);
+    MIP_DIAG_ZERO(parser->_diag_timeouts);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,21 +112,29 @@ void mip_parser_reset(mip_parser* parser)
 ///      conntains 0x75,0x65, has at least 6 bytes, and has a valid checksum. A
 ///      16-bit checksum has a 1 in 65,536 chance of appearing to be valid.
 ///
-remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, timestamp_type timestamp, unsigned int max_packets)
+size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t input_count, mip_timestamp timestamp, unsigned int max_packets)
 {
     // Reset the state if the timeout time has elapsed.
     if( parser->_expected_length != MIPPARSER_RESET_LENGTH && (timestamp - parser->_start_time) > parser->_timeout )
     {
         if( byte_ring_count(&parser->_ring) > 0 )
+        {
             byte_ring_pop(&parser->_ring, 1);
+            MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
+        }
+
         parser->_expected_length = MIPPARSER_RESET_LENGTH;
+
+        MIP_DIAG_INC(parser->_diag_timeouts, 1);
     }
 
     unsigned int num_packets = 0;
     do
     {
         // Copy as much data as will fit in the ring buffer.
-        byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
+        size_t count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
+
+        MIP_DIAG_INC(parser->_diag_bytes_read, count);
 
         mip_packet packet;
         while( mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp) )
@@ -136,9 +148,11 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
             if( stop )
             {
                 // Pull more data from the input buffer if possible.
-                byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
+                count = byte_ring_copy_from_and_update(&parser->_ring, &input_buffer, &input_count);
 
-                return -(remaining_count)input_count;
+                MIP_DIAG_INC(parser->_diag_bytes_read, count);
+
+                return input_count;
             }
         }
 
@@ -148,7 +162,7 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
 
     } while( input_count );
 
-    return -(remaining_count)input_count;
+    return input_count;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,7 +179,7 @@ remaining_count mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer
 ///@returns true if a packet was found, false if more data is required. If false,
 ///         the packet is not initialized.
 ///
-bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, timestamp_type timestamp)
+bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, mip_timestamp timestamp)
 {
     // Parse packets while there is sufficient data in the ring buffer.
     while( byte_ring_count(&parser->_ring) >= parser->_expected_length )
@@ -173,7 +187,11 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
         if( parser->_expected_length == MIPPARSER_RESET_LENGTH )
         {
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC1) != MIP_SYNC1 )
+            {
                 byte_ring_pop(&parser->_ring, 1);
+
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
+            }
             else
             {
                 // Synchronized - set the start time and expect more data.
@@ -187,6 +205,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             if( byte_ring_at(&parser->_ring, MIP_INDEX_SYNC2) != MIP_SYNC2 )
             {
                 byte_ring_pop(&parser->_ring, 1);
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
                 parser->_expected_length = MIPPARSER_RESET_LENGTH;
             }
             else
@@ -200,7 +219,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             uint_least16_t packet_length = parser->_expected_length;
             parser->_expected_length = MIPPARSER_RESET_LENGTH;  // Reset parsing state
 
-             byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
+            byte_ring_copy_to(&parser->_ring, parser->_result_buffer, packet_length);
 
             mip_packet_from_buffer(packet_out, parser->_result_buffer, packet_length);
 
@@ -208,11 +227,16 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
             {
                 // Invalid packet, drop just the first sync byte and restart.
                 byte_ring_pop(&parser->_ring, 1);
+                MIP_DIAG_INC(parser->_diag_bytes_skipped, 1);
+                MIP_DIAG_INC(parser->_diag_invalid_packets, 1);
             }
             else // Checksum is valid
             {
                 // Discard the packet bytes from the ring buffer since a copy was made.
                 byte_ring_pop(&parser->_ring, packet_length);
+
+                MIP_DIAG_INC(parser->_diag_valid_packets, 1);
+                MIP_DIAG_INC(parser->_diag_packet_bytes, packet_length);
 
                 // Successfully parsed a packet.
                 return true;
@@ -230,7 +254,7 @@ bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packe
 ///@brief Returns the packet timeout of the parser.
 ///
 ///
-timestamp_type mip_parser_timeout(const mip_parser* parser)
+mip_timestamp mip_parser_timeout(const mip_parser* parser)
 {
     return parser->_timeout;
 }
@@ -242,7 +266,7 @@ timestamp_type mip_parser_timeout(const mip_parser* parser)
 ///@param parser
 ///@param timeout
 ///
-void mip_parser_set_timeout(mip_parser* parser, timestamp_type timeout)
+void mip_parser_set_timeout(mip_parser* parser, mip_timestamp timeout)
 {
     parser->_timeout = timeout;
 }
@@ -303,7 +327,7 @@ void* mip_parser_callback_object(const mip_parser* parser)
 ///    won't matter because an additional call to parse won't produce a new
 ///    packet to be timestamped.
 ///
-timestamp_type mip_parser_last_packet_timestamp(const mip_parser* parser)
+mip_timestamp mip_parser_last_packet_timestamp(const mip_parser* parser)
 {
     return parser->_start_time;
 }
@@ -354,11 +378,86 @@ size_t mip_parser_get_write_ptr(mip_parser* parser, uint8_t** const ptr_out)
 ///@param timestamp
 ///@param max_packets
 ///
-void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type timestamp, unsigned int max_packets)
+void mip_parser_process_written(mip_parser* parser, size_t count, mip_timestamp timestamp, unsigned int max_packets)
 {
+    MIP_DIAG_INC(parser->_diag_bytes_read, count);
+
     byte_ring_notify_written(&parser->_ring, count);
     mip_parser_parse(parser, NULL, 0, timestamp, max_packets);
 }
+
+
+#ifdef MIP_ENABLE_DIAGNOSTICS
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the total number of bytes read from the user input buffer.
+///
+/// This includes data read into the internal ring buffer but not yet seen by
+/// the parser. Ensure all packets have been processed by the parser before
+/// comparing against the packet_bytes counter.
+///
+uint32_t mip_parser_diagnostic_bytes_read(const mip_parser* parser)
+{
+    return parser->_diag_bytes_read;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets total the number of bytes that have been parsed into valid
+///       packets.
+///
+/// This is a summation of the total length of every valid mip packet emitted by
+/// the parser.
+///
+uint32_t mip_parser_diagnostic_packet_bytes(const mip_parser* parser)
+{
+    return parser->_diag_packet_bytes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the total number of bytes which weren't part of a valid packet.
+///
+/// This is the difference between the "packet bytes" and "bytes read" counters.
+///
+uint32_t mip_parser_diagnostic_bytes_skipped(const mip_parser* parser)
+{
+    return parser->_diag_bytes_skipped;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the total number of valid packets emitted by the parser.
+///
+uint32_t mip_parser_diagnostic_valid_packets(const mip_parser* parser)
+{
+    return parser->_diag_valid_packets;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the total number of packets that failed the checksum check.
+///
+/// These invalid packets are not emitted by the parser and are not included in
+/// the "valid packets" or "packet bytes" counters.
+///
+uint32_t mip_parser_diagnostic_invalid_packets(const mip_parser* parser)
+{
+    return parser->_diag_invalid_packets;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Gets the total number of times a packet timed out waiting for more
+///       data.
+///
+/// Packets may time out under the following conditions:
+///@li The connection is interrupted
+///@li The length byte is corrupted to make the packet look longer
+///@li The connection bandwidth and/or latency is too low
+///
+uint32_t mip_parser_diagnostic_timeouts(const mip_parser* parser)
+{
+    return parser->_diag_timeouts;
+}
+
+#endif // MIP_ENABLE_DIAGNOSTICS
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -373,7 +472,7 @@ void mip_parser_process_written(mip_parser* parser, size_t count, timestamp_type
 ///        a single mip packet of maximum size at the given baud rate, plus some
 ///        tolerance.
 ///
-timeout_type mip_timeout_from_baudrate(uint32_t baudrate)
+mip_timeout mip_timeout_from_baudrate(uint32_t baudrate)
 {
     // num_symbols [b] = (packet_length [B]) * (10 [b/B])
     unsigned int num_symbols = MIP_PACKET_LENGTH_MAX * 10;

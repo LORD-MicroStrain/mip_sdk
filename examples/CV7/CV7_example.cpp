@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -27,9 +27,11 @@
 // Include Files
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "example_utils.hpp"
+
 #include <mip/mip_all.hpp>
+
 #include <array>
-#include "../example_utils.hpp"
 
 using namespace mip;
 
@@ -76,7 +78,16 @@ void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp time
 int main(int argc, const char* argv[])
 {
 
-    std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
+    std::unique_ptr<ExampleUtils> utils;
+    try {
+        utils = handleCommonArgs(argc, argv);
+    } catch(const std::underflow_error& ex) {
+        return printCommonUsage(argv);
+    } catch(const std::exception& ex) {
+        fprintf(stderr, "Error: %s\n", ex.what());
+        return 1;
+    }
+
     std::unique_ptr<mip::DeviceInterface>& device = utils->device;
 
     //
@@ -264,11 +275,13 @@ int main(int argc, const char* argv[])
     bool running = true;
     mip::Timestamp prev_print_timestamp = getCurrentTimestamp();
 
-    printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
+    printf("Sensor is configured... waiting for filter to enter AHRS mode (AHRS).\n");
 
+    auto current_state = std::string{""};
     while(running)
     {
         device->update();
+        displayFilterState(filter_status.filter_state, current_state);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == data_filter::FilterMode::AHRS))
@@ -277,7 +290,7 @@ int main(int argc, const char* argv[])
             filter_state_ahrs = true;
         }
 
-        //Once in full nav, print out data at 10 Hz
+        //Once in AHRS Flter Mode, print out data at 10 Hz
         if(filter_state_ahrs)
         {
            mip::Timestamp curr_timestamp = getCurrentTimestamp();
@@ -338,6 +351,7 @@ void exit_gracefully(const char *message)
         printf("%s\n", message);
 
 #ifdef _WIN32
+    printf("Press ENTER to exit...\n");
     int dummy = getchar();
 #endif
 
