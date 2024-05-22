@@ -114,14 +114,16 @@ mip_timestamp get_current_timestamp()
 }
 
 
-bool mip_interface_user_recv_from_device(mip_interface* device, uint8_t* buffer, size_t max_length, mip_timeout wait_time, size_t* out_length, mip_timestamp* timestamp_out)
+bool mip_interface_user_recv_from_device(mip_interface* device, mip_timeout wait_time, bool from_cmd, mip_timestamp* timestamp_out)
 {
-    (void)device;
-
     *timestamp_out = get_current_timestamp();
-    if( !serial_port_read(&port, buffer, max_length, wait_time, out_length) )
+
+    size_t length;
+
+    if( !serial_port_read(&port, parse_buffer, sizeof(parse_buffer), wait_time, &length) )
         return false;
 
+    mip_interface_input_bytes(device, parse_buffer, length, *timestamp_out);
     return true;
 }
 
@@ -165,7 +167,7 @@ int main(int argc, const char* argv[])
         return 1;
 
     mip_interface_init(
-        &device, parse_buffer, sizeof(parse_buffer), mip_timeout_from_baudrate(baudrate), 1000,
+        &device, mip_timeout_from_baudrate(baudrate), 1000,
         &mip_interface_user_send_to_device, &mip_interface_user_recv_from_device, &mip_interface_default_update, NULL
     );
 
@@ -232,7 +234,7 @@ int main(int argc, const char* argv[])
 #else
         usleep(100000);
 #endif
-        mip_interface_update(&device, false);
+        mip_interface_update(&device, 0, false);
     }
 
     result = mip_base_set_idle(&device);
