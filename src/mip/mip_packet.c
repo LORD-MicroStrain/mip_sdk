@@ -231,7 +231,7 @@ uint_least16_t mip_packet_buffer_size(const mip_packet* packet)
 ///
 /// This is equal to the buffer size less the total packet length.
 ///
-///@caution The result may be negative if the packet length exceeds the actual
+///@warning The result may be negative if the packet length exceeds the actual
 ///         buffer capacity. Such packets are not 'sane' (mip_packet_is_sane)
 ///         and can only be produced by manipulating the buffered data directly.
 ///

@@ -1,8 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///@mainpage MIP SDK
 ///
-/// Welcome to the official MIP Software Development Kit.
-///
+/// Welcome to the official MIP Software Development Kit. This software package
+/// provides everything you need to communicate with any MIP-compatible
+/// MicroStrain inertial sensor.
+/// See @ref mip_interface for details on how to get started.
 ///
 ///@par Main Features
 ///
@@ -15,17 +17,17 @@
 ///@li Dual C and C++ API for maximum usability, safety, flexibility, and convenience.
 ///@li Suitable for bare-metal microcontrollers (Minimal code size and memory footprint, No dynamic memory allocation, No dependence on any RTOS or threading)
 ///
-/// See @ref mip_interface for details on how to get started.
-///
 ///@section quickref_cpp Quick Reference [C++]
 ///
 /// All C++ functions and classes reside within the mip namespace.
 /// The C functions can be accessed via the mip::C namespace.
 ///
 ///@li @ref mip::DeviceInterface Top-level MIP interface class.
-///@li @ref mip::Packet          A class representing a MIP packet for either transmission or reception.
-///@li @ref mip::Field           A class representing a MIP field within a packet.
+///@li @ref mip::PacketRef       An interface to a MIP packet for either transmission or reception.
+///@li @ref mip::PacketBuf       Similar to PacketRef but includes the data buffer.
+///@li @ref mip::Field           An interface to a MIP field within a packet.
 ///@li @ref mip::Parser          MIP parser class for converting received bytes into packets.
+///@li @ref mip::CmdResult       Stores the status or result of a MIP command.
 ///
 ///@section quickref_c Quick Reference [C]
 ///
@@ -38,11 +40,15 @@
 ///@li @ref mip_packet_c
 ///@li @ref mip_field_c
 ///@li @ref mip_parser_c
+///@li @ref mip::C::mip_cmd_result "mip_cmd_result [C]"
 ///
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@page mip_interface Mip Interface
 ////////////////////////////////////////////////////////////////////////////////
+///
+////////////////////////////////////////////////////////////////////////////////
+///@section mip_interface_interface Application Interface
 ///
 /// The MIP interface is a high-level abstraction of a physical device which
 /// communicates using the MIP protocol. It provides both data callbacks and
@@ -57,17 +63,20 @@
 /// will return a status code.
 ///
 /// Sending and receiving to or from the device occurs via two functions:
-///@li mip_interface_user_send_to_device() for transmission and
-///@li mip_interface_user_recv_from_device() for reception.
+///@li mip::DeviceInterface::sendToDevice() or
+///    mip_interface_send_to_device() for transmission and
+///@li mip::DeviceInterface::recvFromDevice() or
+///    mip_interface_recv_from_device() for reception.
 ///
-/// The application must define these two C functions, or subclass
-/// mip::DeviceInterface and implement the pure virtual functions.
-/// This should be straightforward; simply pass the bytes between the MIP
-/// interface and the connection.
+/// Each of these has a corresponding callback to the application. The
+/// application is expected to implement the required behavior for each as
+/// described below. Additionally, there is an @ref update "update function",
+/// which handles periodic tasks such as command timeouts and streaming data
+/// collection. An application may optionally override the update callback.
 ///
-/// Because the device transmits continuously when streaming data, the
-/// application must poll the connection for new data frequently. This is
-/// done via the @ref update "update function".
+///@li @ref mip::C::mip_send_callback "mip_send_callback"
+///@li @ref mip::C::mip_recv_callback "mip_recv_callback"
+///@li @ref mip::C::mip_update_callback "mip_update_callback"
 ///
 /// An application obtains sensor data via the
 /// @ref mip_dispatch "dispatch subsystem". There are 3 ways to do so:
@@ -83,14 +92,19 @@
 ///@section mip_commands Sending Commands
 ///
 /// Typically an application will configure the device, initialize some
-/// settings, and start streaming. To do so, it must send commands. In most
-/// cases, applications will call a single function for each needed command.
+/// settings, and start streaming. To do so, it must send commands. In many
+/// cases, applications will call a single function for each needed command
+/// (e.g. @ref MipCommands_c / @ref MipCommands_cpp).
 /// These functions take the command parameters as arguments, send the packet,
-/// wait for the reply, and return a result code. When reading from the device,
-/// these commands will also report the device response information, assuming
-/// the command was successful. The command functions are blocking, that is,
-/// they halt execution until the device responds or the command times out.
+/// wait for the reply, and return a result code. Additionally some commands can
+/// report back responses from the device.
 ///
+/// The command functions are blocking, that is, they halt execution until the
+/// device responds or the command times out.
+///
+/// Note that since MIP data is received serially and is not buffered, data may
+/// be received and processed while waiting for command responses. It is
+/// recommended (but not required) to set the device to idle during configuration.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 ///@section mip_dispatch The Dispatch System
@@ -118,7 +132,7 @@
 ///@par Packet callbacks
 ///
 ///@code{.cpp}
-/// void packet_callback(void* userdata, const Packet& packet, Timestamp parseTime)
+/// void packet_callback(void* userdata, const mip::PacketRef& packet, Timestamp parseTime)
 ///@endcode
 ///
 /// Packet callbacks are invoked when a packet is received which matches the
@@ -135,7 +149,7 @@
 ///@par Field callbacks
 ///
 ///@code{.cpp}
-/// void field_callback(void* userdata, const Field& field, Timestamp parseTime)
+/// void field_callback(void* userdata, const mip::Field& field, Timestamp parseTime)
 ///@endcode
 ///
 /// Similar to packet callbacks, field callbacks are invoked when a MIP
@@ -153,13 +167,14 @@
 ///@par Data callbacks
 ///
 ///@code{.cpp}
-/// void data_callback(void* userdata, const data_sensor::ScaledAccel& packet, Timestamp parseTime)
+/// void data_callback(void* userdata, const mip::data_sensor::ScaledAccel& packet, Timestamp parseTime)
 ///@endcode
 ///
 /// Thanks to the power of templates, one additional dispatch mechanism is
 /// available for C++ applications. A data callback is similar to a field
 /// callback except that instead of getting the raw MIP field data, the function
 /// is passed the fully-deserialized data structure.
+///
 ///
 /// Typically an application will register a series of data or field callbacks
 /// and write the data to some kind of data structure. Because the order of
@@ -176,13 +191,13 @@
 ///
 /// The application should call mip_interface_update() periodically to process
 /// data sent by the device. This update function will call
-/// mip_interface_user_recv_from_device() to parse packets. When a data packet is
+/// mip_interface_recv_from_device() to parse packets. When a data packet is
 /// received, the list of packet and data callbacks is checked, and any
 /// matching callbacks are invoked. The update function should be called at
 /// a high enough rate to avoid overflowing the connection buffers. The
 /// precision of the reception timestamp is dependent on the update rate.
 ///
-/// The command functions in @ref MipCommands_c / @ref MipCommands_cpp (e.g. mip_write_message_format() / mip::writeMessageFormat())
+/// The command functions in @ref MipCommands_c / @ref MipCommands_cpp (e.g. mip::C::mip_write_message_format() / mip::writeMessageFormat())
 /// will block execution until the command completes. Either the device will
 /// respond with an ack/nack code, or the command will time out. During this
 /// time, the system must be able to receive data from the device in order for
@@ -195,7 +210,7 @@
 /// from within the command function. While the command is waiting (status code
 /// MIP_STATUS_WAITING / CmdResult::STATUS_WAITING), repeated calls to the
 /// update function will be made. By default, the update function calls
-/// mip_interface_user_recv_from_device(). Because the function is called from
+/// mip_interface_recv_from_device(). Because the function is called from
 /// within a loop, it should sleep for a short time to wait for data if none
 /// has been received yet. Doing so prevents excessive CPU usage and lowers
 /// power consumption.
@@ -254,10 +269,9 @@
 ///
 ///@par Other thread-safety concerns
 ///
-///@li Data transmission to the device (for sending commands) is thread-safe
+///@li Data transmission to the device (but not sending commands) is thread-safe
 ///    within the MIP SDK. If multiple threads will send to the device, the
-///    application should ensure that mip_interface_user_send_to_device() is
-///    thread-safe (e.g. by using a mutex).
+///    application should ensure that the device interface is properly protected.
 ///
 ///@li It is up to the application to ensure that sending and receiving from
 ///    separate threads is safe. This is true for the built-in serial and TCP
@@ -269,10 +283,10 @@
 /// applications, too:
 ///@li To update a progress bar while waiting for commands to complete
 ///@li To process data from other devices
-///@li To avoid blocking inside mip_interface_user_recv_from_device() when
+///@li To avoid blocking inside mip_interface_recv_from_device() when
 ///    called from a data processing loop.
 ///@li To push data through the system in a different way (e.g. without using
-///    mip_interface_user_recv_from_device())
+///    mip_interface_recv_from_device())
 ///
 /// Data may be pushed into the system by calling any of these functions:
 ///@li mip_interface_default_update() - this is the default behavior.
@@ -352,7 +366,7 @@
 /// to time out and make the device appear temporarily unresponsive. Setting a
 /// reasonable timeout ensures that the bad packet is rejected more quickly.
 /// The timeout should be set so that a MIP packet of the largest possible
-/// size (261 bytes) can be transfered well within the transmission time plus
+/// size (261 bytes) can be transferred well within the transmission time plus
 /// any additional processing delays in the application or operating system.
 /// As an example, for a 115200 baud serial link a timeout of 30 ms would be
 /// about right. You can use the mip_timeout_from_baudrate() function to
@@ -403,4 +417,120 @@
 /// a single byte is dropped from the ring buffer and the loop is continued.
 /// Only a single byte can be dropped, because rogue SYNC1 bytes or truncated
 /// packets may hide real mip packets in what would have been their payload.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page command_results Command Result
+////////////////////////////////////////////////////////////////////////////////
+///
+///@li @ref mip::C::mip_cmd_result "mip_command_result [C]"
+///@li @ref mip::CmdResult "CmdResult [C++]"
+///
+/// Command results are divided into two categories, reply codes and status
+/// codes. Reply codes are returned by the device, e.g.:
+///@li ACK_OK
+///@li Unknown command (NACK_COMMAND_UNKNOWN)
+///@li Invalid parameter (NACK_INVALID_PARAM)
+///@li Command failed (NACK_COMMAND_FAILED)
+/// The values of these enums match the corresponding values returned by the
+/// device. They are non-negative integers.
+///
+/// Status codes are set by this library, e.g.:
+///@li General error (STATUS_ERROR)
+///@li Timeout (STATUS_TIMEDOUT)
+///@li Other statuses are used to track commands in progress
+///@li User status codes can also be set (STATUS_USER).
+///
+/// All of these are negative integers.
+///
+/// You can use `mip_cmd_result_is_reply_code()` / `CmdResult::isReplyCode()` and
+/// `mip_cmd_result_is_status_code()` / `CmdResult::isStatusCode()` to distinguish
+/// between them.
+///
+/// In C++, CmdResult is implicitly convertible to bool. ACK_OK converts to true
+/// while everything else converts to false. This allows compact code like
+///@code{.cpp}
+/// if( !resume(device) )  // resume returns a CmdResult
+///   fprintf(stderr, "Failed to resume the sensor\n");
+///@endcode
+///
+/// For debugging, the name of command results is available via
+/// mip_cmd_result_to_string() / CmdResult::name()
+///
+/// In C++, CmdResult defaults to the initial state CmdResult::STATUS_NONE.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page timestamps Timestamps and Timeouts
+////////////////////////////////////////////////////////////////////////////////
+///
+///@section timestamp_type Timestamp Type
+/// Timestamps (`mip_timestamp` / `Timestamp`) represent the local time when data was received or a packet was parsed. These timestamps
+/// are used to implement command timeouts and provide the user with an approximate timestamp of received data. It is not intended to be
+/// a precise timestamp or used for synchronization, and it generally cannot be used instead of the timestamps from the connected MIP device.
+/// In particular, if you limit the maximum number of packets processed per `update` call, the timestamp of some packets may be delayed.
+///
+/// Because different applications may keep track of time differently (especially on embedded platforms), it is up to the user to provide
+/// the current time whenever data is received from the device. On a PC, this might come from the posix `clock()` function or from the
+/// `std::chrono` library. On ARM systems, it is often derived from the Systick timer. It should be a monotonically increasing value;
+/// jumps backwards in time (other than due to wraparound) will cause problems.
+///
+/// By default, timestamps are `typedef`'d to `uint64_t`. Typically timestamps are in milliseconds. Embedded systems may wish to use
+/// `uint32_t` or even `uint16_t` instead. The value is allowed to wrap around as long as the time between wraparounds is longer than
+/// twice the longest timeout needed. If higher precision is needed or wraparound can't be tolerated by your application, define it to
+/// `uint64_t`. It must be a standard unsigned integer type.
+///
+///@section Command Timeouts
+///
+/// Timeouts for commands are broken down into two parts.
+/// * A "base reply timeout" applies to all commands. This is useful to compensate for communication latency, such as over a TCP socket.
+/// * "Additional time" which applies per command, because some commands may take longer to complete.
+///
+/// Currently, only the C++ api offers a way to set the additional time parameter, and only when using the `runCommand` function taking
+/// the command structure and the `additionalTime` parameter.
+///
+/// The `mip_timeout` / `mip::Timeout` typedef is an alias to the timestamp type.
+///
+////////////////////////////////////////////////////////////////////////////////
+///@page other Other Considerations
+////////////////////////////////////////////////////////////////////////////////
+///
+///@section known_issues Known Issues and Workarounds
+///
+///@par suppress_ack parameters are not supported
+///
+/// Some commands accept a parameter named `suppress_ack` which acts to prevent
+/// the standard ack/nack reply from being returned by the device, e.g. the
+/// 3DM Poll Data command. Use of this parameter is not supported in the MIP SDK
+/// and will cause the command to appear to time out after a short delay.
+///
+/// If you do not wish to wait for a reply (i.e. just send the command and continue)
+/// you can build and send the command yourself:
+///@code{.cpp}
+///  // Create the command with required parameters.
+///  mip::commands_3dm::PollData cmd;
+///  cmd.desc_set = mip::data_sensor::DESCRIPTOR_SET;
+///  cmd.suppress_ack = true;
+///  cmd.num_descriptors = 2;
+///  cmd.descriptors[0] = mip::data_sensor::ScaledAccel::FIELD_DESCRIPTOR;
+///  cmd.descriptors[1] = mip::data_sensor::ScaledGyro::FIELD_DESCRIPTOR;
+///  // Build a packet.
+///  mip::PacketBuf packet(cmd);
+///  // Send it to the device.
+///  device.sendCommand(packet);
+///@endcode
+///
+///@par Some commands take longer and may time out
+///
+/// This applies to the following commands:
+///@li Save All Settings (`mip::commands_3dm::DeviceSettings` with `mip::FunctionSelector::SAVE`)
+///@li Commanded Built-In Test (`mip::commands_base::BuiltInTest`)
+///@li Capture Gyro Bias (`mip::commands_3dm::CaptureGyroBias`)
+///
+/// The device timeout must be sufficiently long when sending these commands.
+/// There are 3 potential ways to avoid erroneous timeouts:
+///@li Set a high overall device timeout. This is the easiest solution but may cause excess
+///    delays in your application if the device is unplugged, not powered, etc.
+///@li Temporarily set the timeout higher, and restore it after running the long command.
+///@li If using C++, use the `mip::DeviceInterface::runCommand` function and pass a large enough
+///    value for the `additionalTime` parameter. This raises the timeout specifically for that
+///    one command instance and is the recommended option.
 ///

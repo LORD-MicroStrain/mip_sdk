@@ -15,7 +15,7 @@
 //!
 //! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
 //! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
-//! FOR THEM TO SAVE TIME. AS A RESULT, PARKER MICROSTRAIN SHALL NOT BE HELD
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
 //! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
 //! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
 //! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
@@ -31,9 +31,9 @@
 #include <mip/utils/serial_port.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <time.h>
 
+#include "example_utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -318,9 +318,12 @@ int main(int argc, const char* argv[])
 
     printf("Sensor is configured... waiting for filter to enter AHRS mode.\n");
 
+    char *state_init = "";
+    char **current_state = &state_init;
     while(running)
     {
         mip_interface_update(&device, 0, false);
+        displayFilterState(filter_status.filter_state, current_state, false);
 
         //Check Filter State
         if((!filter_state_ahrs) && (filter_status.filter_state == MIP_FILTER_MODE_AHRS))

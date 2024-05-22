@@ -10,53 +10,52 @@
 #include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-///@typedef mip_send_callback
+///@typedef mip::C::mip_send_callback
 ///
-///@copydoc mip_interface_send_to_device
-///
-///@note There are cases where the data will not be a MIP packet.
-///
-
-////////////////////////////////////////////////////////////////////////////////
-///@typedef mip_send_callback
-///
-///@brief Called to sends raw bytes to the device port.
+///@brief Called from mip_interface_send_to_device() to send data to the device port.
+///       The application should forward the data to the device port (e.g. a
+///       serial port, TCP connection, etc).
 ///
 ///@param device
-///      The mip interface object
+///       A pointer to the device interface. Applications can use the user data
+///       pointer to access additional information such as the port handle.
 ///
 ///@param data
-///       Buffer containing data to be sent.
+///       Buffer containing the data to be transmitted to the device.
 ///
 ///@param length
-///       Number of bytes to send from data.
+///       Length of data to transmit.
 ///
-///@returns True if the data is successfully transmitted.
-///@returns False if the data could not be sent for any reason.
-///         If this function returns false, the corresponding command(s) will
-///         fail with MIP_STATUS_ERROR.
-///
-///@note Generally it's best to return true unless the system definitely
-///      couldn't send the data. I.e. if unsure, return true. Commands will time
-///      out in case of undetected transmission failures, so false positives are
-///      OK. False negatives will cause commands to immediately fail even if
-///      sent successfully however, and the unexpected ack/nack replies increase
-///      the risk of confusing which replies go with which commands.
+///@return True if all of the data was successfully transmitted.
+///@return False if an error occurred and some or all data was definitely unable
+///        to be transmitted.
+///@return Applications should prefer returning true if success is uncertain
+///        since command timeouts will help detect failed transmissions. If this
+///        function returns false, the associated command will fail with
+///        CmdResult::STATUS_ERROR. Commands will time
+///        out in case of undetected transmission failures, so false positives are
+///        OK. False negatives will cause commands to immediately fail even if
+///        sent successfully however, and the unexpected ack/nack replies increase
+///        the risk of confusing which replies go with which commands.
 ///
 
 ////////////////////////////////////////////////////////////////////////////////
-///@typedef mip_recv_callback
+///@typedef mip::C::mip_recv_callback
 ///
-///@brief Receives new data from the device. Called repeatedly
-///       by mip_interface_update() while waiting for command responses.
+///@brief Called from mip_interface_recv_from_device() to receive data from the
+///       device port.
+///
+/// This is called indirectly through mip_interface_update() to poll for new
+/// data and command responses. For single-threaded applications, it will be
+/// called while waiting for command replies.
 ///
 ///@param device
-///      The mip interface object
+///       A pointer to the device interface. Applications can use the user data
+///       pointer to access additional information such as the port handle.
 ///
 ///@param wait_time
-///       Time to wait for data from the device. The actual time
-///       waited may be less than wait_time, but it should not
-///       significantly exceed this value.
+///       Time to wait for data from the device. The actual time waited may
+///       be less than wait_time, but it should not significantly exceed this value.
 ///
 ///@param from_cmd
 ///       If true, this call is a result of waiting for a command
@@ -64,10 +63,11 @@
 ///       scheduled poll for data.
 ///
 ///@param timestamp_out
-///       Timestamp of the data was received.
+///       Timestamp of the data that was received.
 ///
 ///@returns True if successful, even if no data is received.
-///@returns False if the port is closed or some other serious error occurs.
+///@returns False if the port cannot be read or some other error occurs (e.g.
+///         if the port is closed).
 ///         If this function returns false when from_cmd is true, the
 ///         corresponding command will fail with MIP_STATUS_ERROR.
 ///
@@ -83,9 +83,11 @@
 ///      If the actual wait time exceeds wait_time, command timeouts may take
 ///      longer than intended.
 ///
+///@see mip_interface_recv_from_device
+///
 
 ////////////////////////////////////////////////////////////////////////////////
-///@typedef mip_update_callback
+///@typedef mip::C::mip_update_callback
 ///
 ///@brief Callback function typedef for custom update behavior.
 ///
@@ -129,6 +131,15 @@
 ///       Maximum length of time to wait for the end of a MIP packet. See mip_parser_init().
 ///@param base_reply_timeout
 ///       Minimum time for all commands. See mip_cmd_queue_init().
+///@param send
+///       A callback which is called to send data to the device.
+///@param recv
+///       A callback which is called when data needs to be read from the device.
+///@param update
+///       Optional callback which is called to perform routine tasks such as
+///       checking for command timeouts. Defaults to mip_interface_default_update.
+///@param user_pointer
+///       Optional pointer which is passed to the send, recv, and update callbacks.
 ///
 void mip_interface_init(
     mip_interface* device,
@@ -161,7 +172,7 @@ void mip_interface_init(
 ///
 ///@param device
 ///
-///@param function
+///@param callback
 ///       Function which sends raw bytes to the device. This can be NULL if no
 ///       commands will be issued (they would fail).
 ///
@@ -188,7 +199,7 @@ mip_send_callback mip_interface_send_function(const mip_interface* device)
 ///
 ///@param device
 ///
-///@param function
+///@param callback
 ///       Function which gets data from the device connection.
 ///       If this is NULL then commands will fail and no data will be received.
 ///
@@ -220,7 +231,7 @@ mip_recv_callback mip_interface_recv_function(const mip_interface* device)
 ///
 ///@param device
 ///
-///@param function
+///@param callback
 ///       Update function to call when polling the device for data.
 ///       If this is NULL, then update calls will fail and no data or
 ///       or command replies will be received.
@@ -504,11 +515,28 @@ enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t des
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///@copydoc mip_interface_run_command
+///@brief Runs a command using a pre-serialized payload.
 ///
+///@param device
+///@param descriptor_set
+///       Command descriptor set.
+///@param cmd_descriptor
+///       Command field descriptor.
+///@param cmd_data
+///       Optional payload data. May be NULL if cmd_length == 0.
+///@param cmd_length
+///       Length of the command payload (parameters).
 ///@param response_descriptor
 ///       Descriptor of the response data. May be MIP_INVALID_FIELD_DESCRIPTOR
 ///       if no response is expected.
+///@param response_buffer
+///       Buffer to hold response data. Can be the same as the command data buffer.
+///       Can be NULL if response_descriptor is MIP_INVALID_FIELD_DESCRIPTOR.
+///@param[in,out] response_length_inout
+///       As input, the size of response buffer and max response length.
+///       As output, returns the actual length of the response data.
+///
+///@returns mip_cmd_result
 ///
 enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device,
     uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length,

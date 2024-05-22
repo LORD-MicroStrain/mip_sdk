@@ -13,6 +13,7 @@
 
 
 #include <mip/mip_device.hpp>
+#include <mip/definitions/data_filter.hpp>
 
 #include <chrono>
 #include <memory>
@@ -33,3 +34,6 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
 
 std::unique_ptr<ExampleUtils> handleCommonArgs(int argc, const char* argv[], int maxArgs=4);
 int printCommonUsage(const char* argv[]);
+
+/// Displays current filter state for the connected device if it has changed. 
+void displayFilterState(const mip::data_filter::FilterMode &filterState, std::string &currentState, bool isFiveSeries = false);
