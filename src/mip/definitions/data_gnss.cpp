@@ -1,14 +1,14 @@
 
 #include "data_gnss.hpp"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
 
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -29,7 +29,7 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const PosLlh& self)
+void insert(::microstrain::Buffer& serializer, const PosLlh& self)
 {
     insert(serializer, self.latitude);
     
@@ -46,7 +46,7 @@ void insert(Serializer& serializer, const PosLlh& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, PosLlh& self)
+void extract(::microstrain::Buffer& serializer, PosLlh& self)
 {
     extract(serializer, self.latitude);
     
@@ -64,7 +64,7 @@ void extract(Serializer& serializer, PosLlh& self)
     
 }
 
-void insert(Serializer& serializer, const PosEcef& self)
+void insert(::microstrain::Buffer& serializer, const PosEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.x[i]);
@@ -74,7 +74,7 @@ void insert(Serializer& serializer, const PosEcef& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, PosEcef& self)
+void extract(::microstrain::Buffer& serializer, PosEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.x[i]);
@@ -85,7 +85,7 @@ void extract(Serializer& serializer, PosEcef& self)
     
 }
 
-void insert(Serializer& serializer, const VelNed& self)
+void insert(::microstrain::Buffer& serializer, const VelNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.v[i]);
@@ -103,7 +103,7 @@ void insert(Serializer& serializer, const VelNed& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, VelNed& self)
+void extract(::microstrain::Buffer& serializer, VelNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.v[i]);
@@ -122,7 +122,7 @@ void extract(Serializer& serializer, VelNed& self)
     
 }
 
-void insert(Serializer& serializer, const VelEcef& self)
+void insert(::microstrain::Buffer& serializer, const VelEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.v[i]);
@@ -132,7 +132,7 @@ void insert(Serializer& serializer, const VelEcef& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, VelEcef& self)
+void extract(::microstrain::Buffer& serializer, VelEcef& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.v[i]);
@@ -143,7 +143,7 @@ void extract(Serializer& serializer, VelEcef& self)
     
 }
 
-void insert(Serializer& serializer, const Dop& self)
+void insert(::microstrain::Buffer& serializer, const Dop& self)
 {
     insert(serializer, self.gdop);
     
@@ -162,7 +162,7 @@ void insert(Serializer& serializer, const Dop& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Dop& self)
+void extract(::microstrain::Buffer& serializer, Dop& self)
 {
     extract(serializer, self.gdop);
     
@@ -182,7 +182,7 @@ void extract(Serializer& serializer, Dop& self)
     
 }
 
-void insert(Serializer& serializer, const UtcTime& self)
+void insert(::microstrain::Buffer& serializer, const UtcTime& self)
 {
     insert(serializer, self.year);
     
@@ -201,7 +201,7 @@ void insert(Serializer& serializer, const UtcTime& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, UtcTime& self)
+void extract(::microstrain::Buffer& serializer, UtcTime& self)
 {
     extract(serializer, self.year);
     
@@ -221,7 +221,7 @@ void extract(Serializer& serializer, UtcTime& self)
     
 }
 
-void insert(Serializer& serializer, const GpsTime& self)
+void insert(::microstrain::Buffer& serializer, const GpsTime& self)
 {
     insert(serializer, self.tow);
     
@@ -230,7 +230,7 @@ void insert(Serializer& serializer, const GpsTime& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GpsTime& self)
+void extract(::microstrain::Buffer& serializer, GpsTime& self)
 {
     extract(serializer, self.tow);
     
@@ -240,7 +240,7 @@ void extract(Serializer& serializer, GpsTime& self)
     
 }
 
-void insert(Serializer& serializer, const ClockInfo& self)
+void insert(::microstrain::Buffer& serializer, const ClockInfo& self)
 {
     insert(serializer, self.bias);
     
@@ -251,7 +251,7 @@ void insert(Serializer& serializer, const ClockInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, ClockInfo& self)
+void extract(::microstrain::Buffer& serializer, ClockInfo& self)
 {
     extract(serializer, self.bias);
     
@@ -263,7 +263,7 @@ void extract(Serializer& serializer, ClockInfo& self)
     
 }
 
-void insert(Serializer& serializer, const FixInfo& self)
+void insert(::microstrain::Buffer& serializer, const FixInfo& self)
 {
     insert(serializer, self.fix_type);
     
@@ -274,7 +274,7 @@ void insert(Serializer& serializer, const FixInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, FixInfo& self)
+void extract(::microstrain::Buffer& serializer, FixInfo& self)
 {
     extract(serializer, self.fix_type);
     
@@ -286,7 +286,7 @@ void extract(Serializer& serializer, FixInfo& self)
     
 }
 
-void insert(Serializer& serializer, const SvInfo& self)
+void insert(::microstrain::Buffer& serializer, const SvInfo& self)
 {
     insert(serializer, self.channel);
     
@@ -303,7 +303,7 @@ void insert(Serializer& serializer, const SvInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, SvInfo& self)
+void extract(::microstrain::Buffer& serializer, SvInfo& self)
 {
     extract(serializer, self.channel);
     
@@ -321,7 +321,7 @@ void extract(Serializer& serializer, SvInfo& self)
     
 }
 
-void insert(Serializer& serializer, const HwStatus& self)
+void insert(::microstrain::Buffer& serializer, const HwStatus& self)
 {
     insert(serializer, self.receiver_state);
     
@@ -332,7 +332,7 @@ void insert(Serializer& serializer, const HwStatus& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, HwStatus& self)
+void extract(::microstrain::Buffer& serializer, HwStatus& self)
 {
     extract(serializer, self.receiver_state);
     
@@ -344,7 +344,7 @@ void extract(Serializer& serializer, HwStatus& self)
     
 }
 
-void insert(Serializer& serializer, const DgpsInfo& self)
+void insert(::microstrain::Buffer& serializer, const DgpsInfo& self)
 {
     insert(serializer, self.sv_id);
     
@@ -357,7 +357,7 @@ void insert(Serializer& serializer, const DgpsInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, DgpsInfo& self)
+void extract(::microstrain::Buffer& serializer, DgpsInfo& self)
 {
     extract(serializer, self.sv_id);
     
@@ -371,7 +371,7 @@ void extract(Serializer& serializer, DgpsInfo& self)
     
 }
 
-void insert(Serializer& serializer, const DgpsChannel& self)
+void insert(::microstrain::Buffer& serializer, const DgpsChannel& self)
 {
     insert(serializer, self.sv_id);
     
@@ -384,7 +384,7 @@ void insert(Serializer& serializer, const DgpsChannel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, DgpsChannel& self)
+void extract(::microstrain::Buffer& serializer, DgpsChannel& self)
 {
     extract(serializer, self.sv_id);
     
@@ -398,7 +398,7 @@ void extract(Serializer& serializer, DgpsChannel& self)
     
 }
 
-void insert(Serializer& serializer, const ClockInfo2& self)
+void insert(::microstrain::Buffer& serializer, const ClockInfo2& self)
 {
     insert(serializer, self.bias);
     
@@ -411,7 +411,7 @@ void insert(Serializer& serializer, const ClockInfo2& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, ClockInfo2& self)
+void extract(::microstrain::Buffer& serializer, ClockInfo2& self)
 {
     extract(serializer, self.bias);
     
@@ -425,14 +425,14 @@ void extract(Serializer& serializer, ClockInfo2& self)
     
 }
 
-void insert(Serializer& serializer, const GpsLeapSeconds& self)
+void insert(::microstrain::Buffer& serializer, const GpsLeapSeconds& self)
 {
     insert(serializer, self.leap_seconds);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GpsLeapSeconds& self)
+void extract(::microstrain::Buffer& serializer, GpsLeapSeconds& self)
 {
     extract(serializer, self.leap_seconds);
     
@@ -440,7 +440,7 @@ void extract(Serializer& serializer, GpsLeapSeconds& self)
     
 }
 
-void insert(Serializer& serializer, const SbasInfo& self)
+void insert(::microstrain::Buffer& serializer, const SbasInfo& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -457,7 +457,7 @@ void insert(Serializer& serializer, const SbasInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, SbasInfo& self)
+void extract(::microstrain::Buffer& serializer, SbasInfo& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -475,7 +475,7 @@ void extract(Serializer& serializer, SbasInfo& self)
     
 }
 
-void insert(Serializer& serializer, const SbasCorrection& self)
+void insert(::microstrain::Buffer& serializer, const SbasCorrection& self)
 {
     insert(serializer, self.index);
     
@@ -498,7 +498,7 @@ void insert(Serializer& serializer, const SbasCorrection& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, SbasCorrection& self)
+void extract(::microstrain::Buffer& serializer, SbasCorrection& self)
 {
     extract(serializer, self.index);
     
@@ -522,7 +522,7 @@ void extract(Serializer& serializer, SbasCorrection& self)
     
 }
 
-void insert(Serializer& serializer, const RfErrorDetection& self)
+void insert(::microstrain::Buffer& serializer, const RfErrorDetection& self)
 {
     insert(serializer, self.rf_band);
     
@@ -536,7 +536,7 @@ void insert(Serializer& serializer, const RfErrorDetection& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, RfErrorDetection& self)
+void extract(::microstrain::Buffer& serializer, RfErrorDetection& self)
 {
     extract(serializer, self.rf_band);
     
@@ -551,7 +551,7 @@ void extract(Serializer& serializer, RfErrorDetection& self)
     
 }
 
-void insert(Serializer& serializer, const BaseStationInfo& self)
+void insert(::microstrain::Buffer& serializer, const BaseStationInfo& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -569,7 +569,7 @@ void insert(Serializer& serializer, const BaseStationInfo& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, BaseStationInfo& self)
+void extract(::microstrain::Buffer& serializer, BaseStationInfo& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -588,7 +588,7 @@ void extract(Serializer& serializer, BaseStationInfo& self)
     
 }
 
-void insert(Serializer& serializer, const RtkCorrectionsStatus& self)
+void insert(::microstrain::Buffer& serializer, const RtkCorrectionsStatus& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -612,7 +612,7 @@ void insert(Serializer& serializer, const RtkCorrectionsStatus& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, RtkCorrectionsStatus& self)
+void extract(::microstrain::Buffer& serializer, RtkCorrectionsStatus& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -637,7 +637,7 @@ void extract(Serializer& serializer, RtkCorrectionsStatus& self)
     
 }
 
-void insert(Serializer& serializer, const SatelliteStatus& self)
+void insert(::microstrain::Buffer& serializer, const SatelliteStatus& self)
 {
     insert(serializer, self.index);
     
@@ -660,7 +660,7 @@ void insert(Serializer& serializer, const SatelliteStatus& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, SatelliteStatus& self)
+void extract(::microstrain::Buffer& serializer, SatelliteStatus& self)
 {
     extract(serializer, self.index);
     
@@ -684,7 +684,7 @@ void extract(Serializer& serializer, SatelliteStatus& self)
     
 }
 
-void insert(Serializer& serializer, const Raw& self)
+void insert(::microstrain::Buffer& serializer, const Raw& self)
 {
     insert(serializer, self.index);
     
@@ -725,7 +725,7 @@ void insert(Serializer& serializer, const Raw& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Raw& self)
+void extract(::microstrain::Buffer& serializer, Raw& self)
 {
     extract(serializer, self.index);
     
@@ -767,7 +767,7 @@ void extract(Serializer& serializer, Raw& self)
     
 }
 
-void insert(Serializer& serializer, const GpsEphemeris& self)
+void insert(::microstrain::Buffer& serializer, const GpsEphemeris& self)
 {
     insert(serializer, self.index);
     
@@ -838,7 +838,7 @@ void insert(Serializer& serializer, const GpsEphemeris& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GpsEphemeris& self)
+void extract(::microstrain::Buffer& serializer, GpsEphemeris& self)
 {
     extract(serializer, self.index);
     
@@ -910,7 +910,7 @@ void extract(Serializer& serializer, GpsEphemeris& self)
     
 }
 
-void insert(Serializer& serializer, const GalileoEphemeris& self)
+void insert(::microstrain::Buffer& serializer, const GalileoEphemeris& self)
 {
     insert(serializer, self.index);
     
@@ -981,7 +981,7 @@ void insert(Serializer& serializer, const GalileoEphemeris& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GalileoEphemeris& self)
+void extract(::microstrain::Buffer& serializer, GalileoEphemeris& self)
 {
     extract(serializer, self.index);
     
@@ -1053,7 +1053,7 @@ void extract(Serializer& serializer, GalileoEphemeris& self)
     
 }
 
-void insert(Serializer& serializer, const GloEphemeris& self)
+void insert(::microstrain::Buffer& serializer, const GloEphemeris& self)
 {
     insert(serializer, self.index);
     
@@ -1109,7 +1109,7 @@ void insert(Serializer& serializer, const GloEphemeris& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GloEphemeris& self)
+void extract(::microstrain::Buffer& serializer, GloEphemeris& self)
 {
     extract(serializer, self.index);
     
@@ -1166,7 +1166,7 @@ void extract(Serializer& serializer, GloEphemeris& self)
     
 }
 
-void insert(Serializer& serializer, const GpsIonoCorr& self)
+void insert(::microstrain::Buffer& serializer, const GpsIonoCorr& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -1181,7 +1181,7 @@ void insert(Serializer& serializer, const GpsIonoCorr& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GpsIonoCorr& self)
+void extract(::microstrain::Buffer& serializer, GpsIonoCorr& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -1197,7 +1197,7 @@ void extract(Serializer& serializer, GpsIonoCorr& self)
     
 }
 
-void insert(Serializer& serializer, const GalileoIonoCorr& self)
+void insert(::microstrain::Buffer& serializer, const GalileoIonoCorr& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -1211,7 +1211,7 @@ void insert(Serializer& serializer, const GalileoIonoCorr& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GalileoIonoCorr& self)
+void extract(::microstrain::Buffer& serializer, GalileoIonoCorr& self)
 {
     extract(serializer, self.time_of_week);
     

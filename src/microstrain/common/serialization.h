@@ -102,6 +102,10 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 } // extern "C"
 } // namespace C
 
+
+
+#if 0
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@addtogroup mip_cpp
 ///@{
@@ -114,8 +118,8 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 /// There are two overloaded functions defined in the mip namespace, insert and
 /// extract. The signature for each is as follows:
 ///@code{.cpp}
-/// void mip::insert(Serializer& serializer, Type value);
-/// voie mip::extract(Serializer& serializer, Type value);
+/// void mip::insert(Buffer& serializer, Type value);
+/// voie mip::extract(Buffer& serializer, Type value);
 ///@endcode
 /// Where `Type` is a struct or numeric type.
 ///
@@ -124,7 +128,7 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 ///@li Enums, bitfields, and nested structs for commands
 ///
 /// Additionally, there are overloads with a different signature which allow
-/// one to avoid creating a Serializer object every time. These overloads
+/// one to avoid creating a Buffer object every time. These overloads
 /// create a serializer internally and pass it on to the regular version.
 ///@code{.cpp}
 /// template<typename T> bool mip::insert(const T& value, uint8_t* buffer, size_t bufferSize);
@@ -146,12 +150,12 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Serialization class.
 ///
-class Serializer : public C::microstrain_serializer
+class Buffer : public C::microstrain_serializer
 {
 public:
-    // Serializer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
-    Serializer(uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
-    Serializer(const uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
+    // Buffer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
+    Buffer(uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
+    Buffer(const uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
 
     size_t capacity() const { return C::microstrain_serializer_capacity(this); }
     size_t length() const { return C::microstrain_serializer_length(this); }
@@ -166,18 +170,18 @@ public:
 
 
 
-inline void insert(Serializer& serializer, bool value)     { return C::microstrain_insert_bool(&serializer, value); }
-inline void insert(Serializer& serializer, char value)     { return C::microstrain_insert_char(&serializer, value); }
-inline void insert(Serializer& serializer, uint8_t  value) { return C::microstrain_insert_u8(&serializer, value); }
-inline void insert(Serializer& serializer, uint16_t value) { return C::microstrain_insert_u16(&serializer, value); }
-inline void insert(Serializer& serializer, uint32_t value) { return C::microstrain_insert_u32(&serializer, value); }
-inline void insert(Serializer& serializer, uint64_t value) { return C::microstrain_insert_u64(&serializer, value); }
-inline void insert(Serializer& serializer, int8_t  value)  { return C::microstrain_insert_s8(&serializer, value); }
-inline void insert(Serializer& serializer, int16_t value)  { return C::microstrain_insert_s16(&serializer, value); }
-inline void insert(Serializer& serializer, int32_t value)  { return C::microstrain_insert_s32(&serializer, value); }
-inline void insert(Serializer& serializer, int64_t value)  { return C::microstrain_insert_s64(&serializer, value); }
-inline void insert(Serializer& serializer, float  value)   { return C::microstrain_insert_float(&serializer, value); }
-inline void insert(Serializer& serializer, double value)   { return C::microstrain_insert_double(&serializer, value); }
+inline void insert(Buffer& serializer, bool value)     { return C::microstrain_insert_bool(&serializer, value); }
+inline void insert(Buffer& serializer, char value)     { return C::microstrain_insert_char(&serializer, value); }
+inline void insert(Buffer& serializer, uint8_t  value) { return C::microstrain_insert_u8(&serializer, value); }
+inline void insert(Buffer& serializer, uint16_t value) { return C::microstrain_insert_u16(&serializer, value); }
+inline void insert(Buffer& serializer, uint32_t value) { return C::microstrain_insert_u32(&serializer, value); }
+inline void insert(Buffer& serializer, uint64_t value) { return C::microstrain_insert_u64(&serializer, value); }
+inline void insert(Buffer& serializer, int8_t  value)  { return C::microstrain_insert_s8(&serializer, value); }
+inline void insert(Buffer& serializer, int16_t value)  { return C::microstrain_insert_s16(&serializer, value); }
+inline void insert(Buffer& serializer, int32_t value)  { return C::microstrain_insert_s32(&serializer, value); }
+inline void insert(Buffer& serializer, int64_t value)  { return C::microstrain_insert_s64(&serializer, value); }
+inline void insert(Buffer& serializer, float  value)   { return C::microstrain_insert_float(&serializer, value); }
+inline void insert(Buffer& serializer, double value)   { return C::microstrain_insert_double(&serializer, value); }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Inserts an enum into the buffer.
@@ -189,7 +193,7 @@ inline void insert(Serializer& serializer, double value)   { return C::microstra
 ///
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
-/*void*/ insert(Serializer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
+/*void*/ insert(Buffer& serializer, Enum value) { return insert(serializer, static_cast< typename std::underlying_type<Enum>::type >(value) ); }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Insert the given value into the buffer.
@@ -207,23 +211,23 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 template<typename T>
 bool insert(const T& value, uint8_t* buffer, size_t bufferSize, size_t offset=0)
 {
-    Serializer serializer(buffer, bufferSize, offset);
+    Buffer serializer(buffer, bufferSize, offset);
     insert(serializer, value);
     return !!serializer;
 }
 
-inline void extract(Serializer& serializer, bool& value)     { return C::microstrain_extract_bool(&serializer, &value); }
-inline void extract(Serializer& serializer, char& value)     { return C::microstrain_extract_char(&serializer, &value); }
-inline void extract(Serializer& serializer, uint8_t&  value) { return C::microstrain_extract_u8(&serializer, &value); }
-inline void extract(Serializer& serializer, uint16_t& value) { return C::microstrain_extract_u16(&serializer, &value); }
-inline void extract(Serializer& serializer, uint32_t& value) { return C::microstrain_extract_u32(&serializer, &value); }
-inline void extract(Serializer& serializer, uint64_t& value) { return C::microstrain_extract_u64(&serializer, &value); }
-inline void extract(Serializer& serializer, int8_t&  value)  { return C::microstrain_extract_s8(&serializer, &value); }
-inline void extract(Serializer& serializer, int16_t& value)  { return C::microstrain_extract_s16(&serializer, &value); }
-inline void extract(Serializer& serializer, int32_t& value)  { return C::microstrain_extract_s32(&serializer, &value); }
-inline void extract(Serializer& serializer, int64_t& value)  { return C::microstrain_extract_s64(&serializer, &value); }
-inline void extract(Serializer& serializer, float&  value)   { return C::microstrain_extract_float(&serializer, &value); }
-inline void extract(Serializer& serializer, double& value)   { return C::microstrain_extract_double(&serializer, &value); }
+inline void extract(Buffer& serializer, bool& value)     { return C::microstrain_extract_bool(&serializer, &value); }
+inline void extract(Buffer& serializer, char& value)     { return C::microstrain_extract_char(&serializer, &value); }
+inline void extract(Buffer& serializer, uint8_t&  value) { return C::microstrain_extract_u8(&serializer, &value); }
+inline void extract(Buffer& serializer, uint16_t& value) { return C::microstrain_extract_u16(&serializer, &value); }
+inline void extract(Buffer& serializer, uint32_t& value) { return C::microstrain_extract_u32(&serializer, &value); }
+inline void extract(Buffer& serializer, uint64_t& value) { return C::microstrain_extract_u64(&serializer, &value); }
+inline void extract(Buffer& serializer, int8_t&  value)  { return C::microstrain_extract_s8(&serializer, &value); }
+inline void extract(Buffer& serializer, int16_t& value)  { return C::microstrain_extract_s16(&serializer, &value); }
+inline void extract(Buffer& serializer, int32_t& value)  { return C::microstrain_extract_s32(&serializer, &value); }
+inline void extract(Buffer& serializer, int64_t& value)  { return C::microstrain_extract_s64(&serializer, &value); }
+inline void extract(Buffer& serializer, float&  value)   { return C::microstrain_extract_float(&serializer, &value); }
+inline void extract(Buffer& serializer, double& value)   { return C::microstrain_extract_double(&serializer, &value); }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Extract an enum from the buffer.
@@ -235,7 +239,7 @@ inline void extract(Serializer& serializer, double& value)   { return C::microst
 ///
 template<typename Enum>
 typename std::enable_if< std::is_enum<Enum>::value, void>::type
-/*void*/ extract(Serializer& serializer, Enum& value) {
+/*void*/ extract(Buffer& serializer, Enum& value) {
     typename std::underlying_type<Enum>::type tmp;
     extract(serializer, tmp);
     value = static_cast<Enum>(tmp);
@@ -264,7 +268,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 template<typename T>
 bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
 {
-    Serializer serializer(buffer, bufferSize, offset);
+    Buffer serializer(buffer, bufferSize, offset);
     extract(serializer, value_out);
     return exact_size ? serializer.isComplete() : serializer.isOk();
 }
@@ -272,6 +276,8 @@ bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offs
 ///@}
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
+
+#endif // 0
 
 } // namespace microstrain
 #endif // __cplusplus

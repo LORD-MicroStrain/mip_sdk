@@ -11,7 +11,7 @@
 #include "definitions/descriptors.h"
 
 //MIP Utils
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 
 //MIP Commands
 #include "definitions/commands_base.hpp"

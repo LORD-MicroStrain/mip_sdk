@@ -8,12 +8,15 @@
 
 #ifdef __cplusplus
 
+#include "microstrain/common/buffer.hpp"
+
 #include <tuple>
 #include <type_traits>
 #include <utility>
 
 namespace mip {
 namespace C {
+using namespace ::microstrain::C;
 extern "C" {
 #endif // __cplusplus
 
@@ -75,8 +78,8 @@ DECLARE_MIP_VECTOR_TYPE(4, float,  mip_quatf)
 
 using DescriptorRate = C::mip_descriptor_rate;
 
-inline void insert(microstrain::Serializer& serializer, const DescriptorRate& self) { return C::insert_mip_descriptor_rate(&serializer, &self); }
-inline void extract(microstrain::Serializer& serializer, DescriptorRate& self) { return C::extract_mip_descriptor_rate(&serializer, &self); }
+inline size_t insert(::microstrain::Buffer& buffer, const DescriptorRate& self) { return buffer.insert(self.descriptor, self.decimation); }
+inline size_t extract(::microstrain::Buffer& buffer, DescriptorRate& self) { return buffer.extract(self.descriptor, self.decimation); }
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -174,10 +177,10 @@ using Matrix3d = Vector<double,9>;
 using Quatf = Vector4f;
 
 template<typename T, size_t N>
-void insert(microstrain::Serializer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
+void insert(::microstrain::Buffer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
 
 template<typename T, size_t N>
-void extract(microstrain::Serializer& serializer, Vector<T,N>& v) { for(size_t i=0; i<N; i++) extract(serializer, v[i]); }
+void extract(::microstrain::Buffer& serializer, Vector<T,N>& v) { for(size_t i=0; i<N; i++) extract(serializer, v[i]); }
 
 //////////////////////////////////////////////////////////////////////////////////
 /////@brief A mathematical vector object used by mip commands and data.
@@ -294,21 +297,21 @@ void extract(microstrain::Serializer& serializer, Vector<T,N>& v) { for(size_t i
 //typedef Vector<float, 9> Matrix3f;
 //
 //template<typename T, size_t N>
-//void insert(Serializer& serializer, const Vector<T,N>& self)
+//void insert(Buffer& serializer, const Vector<T,N>& self)
 //{
 //    for(size_t i=0; i<N; i++)
 //        insert(serializer, self[i]);
 //}
 //
 //template<typename T, size_t N>
-//void extract(Serializer& serializer, Vector<T,N>& self)
+//void extract(Buffer& serializer, Vector<T,N>& self)
 //{
 //    for(size_t i=0; i<N; i++)
 //        extract(serializer, self[i]);
 //}
 //
 //template<typename T>
-//void insert(Serializer& serializer, const Quaternion<T>& self)
+//void insert(Buffer& serializer, const Quaternion<T>& self)
 //{
 //    insert(serializer, self.w());  // w comes first in mip
 //    insert(serializer, self.x());
@@ -317,7 +320,7 @@ void extract(microstrain::Serializer& serializer, Vector<T,N>& v) { for(size_t i
 //}
 //
 //template<typename T>
-//void extract(Serializer& serializer, Quaternion<T>& self)
+//void extract(Buffer& serializer, Quaternion<T>& self)
 //{
 //    extract(serializer, self.w());  // w comes first in mip
 //    extract(serializer, self.x());

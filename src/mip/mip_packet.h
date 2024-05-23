@@ -116,8 +116,8 @@ bool            mip_packet_is_data(const mip_packet* packet);
 ///
 ///@{
 
-void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
-void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet);
+//void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
+//void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet);
 
 ///@}
 ///@}

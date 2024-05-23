@@ -13,4 +13,10 @@
 #define MICROSTRAIN_PLATFORM_OTHER
 #endif
 
-
+#ifdef __cplusplus
+#if __cpp_if_constexpr >= 201606L
+#define IF_CONSTEXPR if constexpr
+#else
+#define IF_CONSTEXPR if
+#endif
+#endif

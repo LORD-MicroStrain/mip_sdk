@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -85,8 +85,8 @@ struct EventSource
         return std::make_tuple(std::ref(trigger_id));
     }
 };
-void insert(Serializer& serializer, const EventSource& self);
-void extract(Serializer& serializer, EventSource& self);
+void insert(::microstrain::Buffer& serializer, const EventSource& self);
+void extract(::microstrain::Buffer& serializer, EventSource& self);
 
 
 ///@}
@@ -121,8 +121,8 @@ struct Ticks
         return std::make_tuple(std::ref(ticks));
     }
 };
-void insert(Serializer& serializer, const Ticks& self);
-void extract(Serializer& serializer, Ticks& self);
+void insert(::microstrain::Buffer& serializer, const Ticks& self);
+void extract(::microstrain::Buffer& serializer, Ticks& self);
 
 
 ///@}
@@ -158,8 +158,8 @@ struct DeltaTicks
         return std::make_tuple(std::ref(ticks));
     }
 };
-void insert(Serializer& serializer, const DeltaTicks& self);
-void extract(Serializer& serializer, DeltaTicks& self);
+void insert(::microstrain::Buffer& serializer, const DeltaTicks& self);
+void extract(::microstrain::Buffer& serializer, DeltaTicks& self);
 
 
 ///@}
@@ -227,8 +227,8 @@ struct GpsTimestamp
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GpsTimestamp& self);
-void extract(Serializer& serializer, GpsTimestamp& self);
+void insert(::microstrain::Buffer& serializer, const GpsTimestamp& self);
+void extract(::microstrain::Buffer& serializer, GpsTimestamp& self);
 
 
 ///@}
@@ -269,8 +269,8 @@ struct DeltaTime
         return std::make_tuple(std::ref(seconds));
     }
 };
-void insert(Serializer& serializer, const DeltaTime& self);
-void extract(Serializer& serializer, DeltaTime& self);
+void insert(::microstrain::Buffer& serializer, const DeltaTime& self);
+void extract(::microstrain::Buffer& serializer, DeltaTime& self);
 
 
 ///@}
@@ -309,8 +309,8 @@ struct ReferenceTimestamp
         return std::make_tuple(std::ref(nanoseconds));
     }
 };
-void insert(Serializer& serializer, const ReferenceTimestamp& self);
-void extract(Serializer& serializer, ReferenceTimestamp& self);
+void insert(::microstrain::Buffer& serializer, const ReferenceTimestamp& self);
+void extract(::microstrain::Buffer& serializer, ReferenceTimestamp& self);
 
 
 ///@}
@@ -351,8 +351,8 @@ struct ReferenceTimeDelta
         return std::make_tuple(std::ref(dt_nanos));
     }
 };
-void insert(Serializer& serializer, const ReferenceTimeDelta& self);
-void extract(Serializer& serializer, ReferenceTimeDelta& self);
+void insert(::microstrain::Buffer& serializer, const ReferenceTimeDelta& self);
+void extract(::microstrain::Buffer& serializer, ReferenceTimeDelta& self);
 
 
 ///@}
@@ -418,8 +418,8 @@ struct ExternalTimestamp
         return std::make_tuple(std::ref(nanoseconds),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const ExternalTimestamp& self);
-void extract(Serializer& serializer, ExternalTimestamp& self);
+void insert(::microstrain::Buffer& serializer, const ExternalTimestamp& self);
+void extract(::microstrain::Buffer& serializer, ExternalTimestamp& self);
 
 
 ///@}
@@ -489,8 +489,8 @@ struct ExternalTimeDelta
         return std::make_tuple(std::ref(dt_nanos),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const ExternalTimeDelta& self);
-void extract(Serializer& serializer, ExternalTimeDelta& self);
+void insert(::microstrain::Buffer& serializer, const ExternalTimeDelta& self);
+void extract(::microstrain::Buffer& serializer, ExternalTimeDelta& self);
 
 
 ///@}

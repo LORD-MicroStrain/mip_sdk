@@ -1,14 +1,14 @@
 
 #include "data_system.hpp"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
 
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -29,27 +29,27 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const BuiltInTest& self)
+void insert(::microstrain::Buffer& serializer, const BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         insert(serializer, self.result[i]);
     
 }
-void extract(Serializer& serializer, BuiltInTest& self)
+void extract(::microstrain::Buffer& serializer, BuiltInTest& self)
 {
     for(unsigned int i=0; i < 16; i++)
         extract(serializer, self.result[i]);
     
 }
 
-void insert(Serializer& serializer, const TimeSyncStatus& self)
+void insert(::microstrain::Buffer& serializer, const TimeSyncStatus& self)
 {
     insert(serializer, self.time_sync);
     
     insert(serializer, self.last_pps_rcvd);
     
 }
-void extract(Serializer& serializer, TimeSyncStatus& self)
+void extract(::microstrain::Buffer& serializer, TimeSyncStatus& self)
 {
     extract(serializer, self.time_sync);
     
@@ -57,25 +57,25 @@ void extract(Serializer& serializer, TimeSyncStatus& self)
     
 }
 
-void insert(Serializer& serializer, const GpioState& self)
+void insert(::microstrain::Buffer& serializer, const GpioState& self)
 {
     insert(serializer, self.states);
     
 }
-void extract(Serializer& serializer, GpioState& self)
+void extract(::microstrain::Buffer& serializer, GpioState& self)
 {
     extract(serializer, self.states);
     
 }
 
-void insert(Serializer& serializer, const GpioAnalogValue& self)
+void insert(::microstrain::Buffer& serializer, const GpioAnalogValue& self)
 {
     insert(serializer, self.gpio_id);
     
     insert(serializer, self.value);
     
 }
-void extract(Serializer& serializer, GpioAnalogValue& self)
+void extract(::microstrain::Buffer& serializer, GpioAnalogValue& self)
 {
     extract(serializer, self.gpio_id);
     

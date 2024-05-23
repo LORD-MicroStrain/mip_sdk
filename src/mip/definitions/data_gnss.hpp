@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -241,8 +241,8 @@ struct PosLlh
         return std::make_tuple(std::ref(latitude),std::ref(longitude),std::ref(ellipsoid_height),std::ref(msl_height),std::ref(horizontal_accuracy),std::ref(vertical_accuracy),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const PosLlh& self);
-void extract(Serializer& serializer, PosLlh& self);
+void insert(::microstrain::Buffer& serializer, const PosLlh& self);
+void extract(::microstrain::Buffer& serializer, PosLlh& self);
 
 
 ///@}
@@ -307,8 +307,8 @@ struct PosEcef
         return std::make_tuple(std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(x_accuracy),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const PosEcef& self);
-void extract(Serializer& serializer, PosEcef& self);
+void insert(::microstrain::Buffer& serializer, const PosEcef& self);
+void extract(::microstrain::Buffer& serializer, PosEcef& self);
 
 
 ///@}
@@ -389,8 +389,8 @@ struct VelNed
         return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(speed),std::ref(ground_speed),std::ref(heading),std::ref(speed_accuracy),std::ref(heading_accuracy),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const VelNed& self);
-void extract(Serializer& serializer, VelNed& self);
+void insert(::microstrain::Buffer& serializer, const VelNed& self);
+void extract(::microstrain::Buffer& serializer, VelNed& self);
 
 
 ///@}
@@ -455,8 +455,8 @@ struct VelEcef
         return std::make_tuple(std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(v_accuracy),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const VelEcef& self);
-void extract(Serializer& serializer, VelEcef& self);
+void insert(::microstrain::Buffer& serializer, const VelEcef& self);
+void extract(::microstrain::Buffer& serializer, VelEcef& self);
 
 
 ///@}
@@ -541,8 +541,8 @@ struct Dop
         return std::make_tuple(std::ref(gdop),std::ref(pdop),std::ref(hdop),std::ref(vdop),std::ref(tdop),std::ref(ndop),std::ref(edop),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const Dop& self);
-void extract(Serializer& serializer, Dop& self);
+void insert(::microstrain::Buffer& serializer, const Dop& self);
+void extract(::microstrain::Buffer& serializer, Dop& self);
 
 
 ///@}
@@ -612,8 +612,8 @@ struct UtcTime
         return std::make_tuple(std::ref(year),std::ref(month),std::ref(day),std::ref(hour),std::ref(min),std::ref(sec),std::ref(msec),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const UtcTime& self);
-void extract(Serializer& serializer, UtcTime& self);
+void insert(::microstrain::Buffer& serializer, const UtcTime& self);
+void extract(::microstrain::Buffer& serializer, UtcTime& self);
 
 
 ///@}
@@ -678,8 +678,8 @@ struct GpsTime
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GpsTime& self);
-void extract(Serializer& serializer, GpsTime& self);
+void insert(::microstrain::Buffer& serializer, const GpsTime& self);
+void extract(::microstrain::Buffer& serializer, GpsTime& self);
 
 
 ///@}
@@ -748,8 +748,8 @@ struct ClockInfo
         return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(accuracy_estimate),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const ClockInfo& self);
-void extract(Serializer& serializer, ClockInfo& self);
+void insert(::microstrain::Buffer& serializer, const ClockInfo& self);
+void extract(::microstrain::Buffer& serializer, ClockInfo& self);
 
 
 ///@}
@@ -858,8 +858,8 @@ struct FixInfo
         return std::make_tuple(std::ref(fix_type),std::ref(num_sv),std::ref(fix_flags),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const FixInfo& self);
-void extract(Serializer& serializer, FixInfo& self);
+void insert(::microstrain::Buffer& serializer, const FixInfo& self);
+void extract(::microstrain::Buffer& serializer, FixInfo& self);
 
 
 ///@}
@@ -970,8 +970,8 @@ struct SvInfo
         return std::make_tuple(std::ref(channel),std::ref(sv_id),std::ref(carrier_noise_ratio),std::ref(azimuth),std::ref(elevation),std::ref(sv_flags),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const SvInfo& self);
-void extract(Serializer& serializer, SvInfo& self);
+void insert(::microstrain::Buffer& serializer, const SvInfo& self);
+void extract(::microstrain::Buffer& serializer, SvInfo& self);
 
 
 ///@}
@@ -1063,8 +1063,8 @@ struct HwStatus
         return std::make_tuple(std::ref(receiver_state),std::ref(antenna_state),std::ref(antenna_power),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const HwStatus& self);
-void extract(Serializer& serializer, HwStatus& self);
+void insert(::microstrain::Buffer& serializer, const HwStatus& self);
+void extract(::microstrain::Buffer& serializer, HwStatus& self);
 
 
 ///@}
@@ -1149,8 +1149,8 @@ struct DgpsInfo
         return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const DgpsInfo& self);
-void extract(Serializer& serializer, DgpsInfo& self);
+void insert(::microstrain::Buffer& serializer, const DgpsInfo& self);
+void extract(::microstrain::Buffer& serializer, DgpsInfo& self);
 
 
 ///@}
@@ -1225,8 +1225,8 @@ struct DgpsChannel
         return std::make_tuple(std::ref(sv_id),std::ref(age),std::ref(range_correction),std::ref(range_rate_correction),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const DgpsChannel& self);
-void extract(Serializer& serializer, DgpsChannel& self);
+void insert(::microstrain::Buffer& serializer, const DgpsChannel& self);
+void extract(::microstrain::Buffer& serializer, DgpsChannel& self);
 
 
 ///@}
@@ -1301,8 +1301,8 @@ struct ClockInfo2
         return std::make_tuple(std::ref(bias),std::ref(drift),std::ref(bias_accuracy_estimate),std::ref(drift_accuracy_estimate),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const ClockInfo2& self);
-void extract(Serializer& serializer, ClockInfo2& self);
+void insert(::microstrain::Buffer& serializer, const ClockInfo2& self);
+void extract(::microstrain::Buffer& serializer, ClockInfo2& self);
 
 
 ///@}
@@ -1360,8 +1360,8 @@ struct GpsLeapSeconds
         return std::make_tuple(std::ref(leap_seconds),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GpsLeapSeconds& self);
-void extract(Serializer& serializer, GpsLeapSeconds& self);
+void insert(::microstrain::Buffer& serializer, const GpsLeapSeconds& self);
+void extract(::microstrain::Buffer& serializer, GpsLeapSeconds& self);
 
 
 ///@}
@@ -1476,8 +1476,8 @@ struct SbasInfo
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(sbas_system),std::ref(sbas_id),std::ref(count),std::ref(sbas_status),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const SbasInfo& self);
-void extract(Serializer& serializer, SbasInfo& self);
+void insert(::microstrain::Buffer& serializer, const SbasInfo& self);
+void extract(::microstrain::Buffer& serializer, SbasInfo& self);
 
 
 ///@}
@@ -1574,8 +1574,8 @@ struct SbasCorrection
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(sv_id),std::ref(udrei),std::ref(pseudorange_correction),std::ref(iono_correction),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const SbasCorrection& self);
-void extract(Serializer& serializer, SbasCorrection& self);
+void insert(::microstrain::Buffer& serializer, const SbasCorrection& self);
+void extract(::microstrain::Buffer& serializer, SbasCorrection& self);
 
 
 ///@}
@@ -1669,8 +1669,8 @@ struct RfErrorDetection
         return std::make_tuple(std::ref(rf_band),std::ref(jamming_state),std::ref(spoofing_state),std::ref(reserved),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const RfErrorDetection& self);
-void extract(Serializer& serializer, RfErrorDetection& self);
+void insert(::microstrain::Buffer& serializer, const RfErrorDetection& self);
+void extract(::microstrain::Buffer& serializer, RfErrorDetection& self);
 
 
 ///@}
@@ -1802,8 +1802,8 @@ struct BaseStationInfo
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(ecef_pos[0]),std::ref(ecef_pos[1]),std::ref(ecef_pos[2]),std::ref(height),std::ref(station_id),std::ref(indicators),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const BaseStationInfo& self);
-void extract(Serializer& serializer, BaseStationInfo& self);
+void insert(::microstrain::Buffer& serializer, const BaseStationInfo& self);
+void extract(::microstrain::Buffer& serializer, BaseStationInfo& self);
 
 
 ///@}
@@ -1941,8 +1941,8 @@ struct RtkCorrectionsStatus
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(epoch_status),std::ref(dongle_status),std::ref(gps_correction_latency),std::ref(glonass_correction_latency),std::ref(galileo_correction_latency),std::ref(beidou_correction_latency),std::ref(reserved),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const RtkCorrectionsStatus& self);
-void extract(Serializer& serializer, RtkCorrectionsStatus& self);
+void insert(::microstrain::Buffer& serializer, const RtkCorrectionsStatus& self);
+void extract(::microstrain::Buffer& serializer, RtkCorrectionsStatus& self);
 
 
 ///@}
@@ -2029,8 +2029,8 @@ struct SatelliteStatus
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(gnss_id),std::ref(satellite_id),std::ref(elevation),std::ref(azimuth),std::ref(health),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const SatelliteStatus& self);
-void extract(Serializer& serializer, SatelliteStatus& self);
+void insert(::microstrain::Buffer& serializer, const SatelliteStatus& self);
+void extract(::microstrain::Buffer& serializer, SatelliteStatus& self);
 
 
 ///@}
@@ -2163,8 +2163,8 @@ struct Raw
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(receiver_id),std::ref(tracking_channel),std::ref(gnss_id),std::ref(satellite_id),std::ref(signal_id),std::ref(signal_strength),std::ref(quality),std::ref(pseudorange),std::ref(carrier_phase),std::ref(doppler),std::ref(range_uncert),std::ref(phase_uncert),std::ref(doppler_uncert),std::ref(lock_time),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const Raw& self);
-void extract(Serializer& serializer, Raw& self);
+void insert(::microstrain::Buffer& serializer, const Raw& self);
+void extract(::microstrain::Buffer& serializer, Raw& self);
 
 
 ///@}
@@ -2260,8 +2260,8 @@ struct GpsEphemeris
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GpsEphemeris& self);
-void extract(Serializer& serializer, GpsEphemeris& self);
+void insert(::microstrain::Buffer& serializer, const GpsEphemeris& self);
+void extract(::microstrain::Buffer& serializer, GpsEphemeris& self);
 
 
 ///@}
@@ -2357,8 +2357,8 @@ struct GalileoEphemeris
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(health),std::ref(iodc),std::ref(iode),std::ref(t_oc),std::ref(af0),std::ref(af1),std::ref(af2),std::ref(t_gd),std::ref(ISC_L1CA),std::ref(ISC_L2C),std::ref(t_oe),std::ref(a),std::ref(a_dot),std::ref(mean_anomaly),std::ref(delta_mean_motion),std::ref(delta_mean_motion_dot),std::ref(eccentricity),std::ref(argument_of_perigee),std::ref(omega),std::ref(omega_dot),std::ref(inclination),std::ref(inclination_dot),std::ref(c_ic),std::ref(c_is),std::ref(c_uc),std::ref(c_us),std::ref(c_rc),std::ref(c_rs),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GalileoEphemeris& self);
-void extract(Serializer& serializer, GalileoEphemeris& self);
+void insert(::microstrain::Buffer& serializer, const GalileoEphemeris& self);
+void extract(::microstrain::Buffer& serializer, GalileoEphemeris& self);
 
 
 ///@}
@@ -2442,8 +2442,8 @@ struct GloEphemeris
         return std::make_tuple(std::ref(index),std::ref(count),std::ref(time_of_week),std::ref(week_number),std::ref(satellite_id),std::ref(freq_number),std::ref(tk),std::ref(tb),std::ref(sat_type),std::ref(gamma),std::ref(tau_n),std::ref(x[0]),std::ref(x[1]),std::ref(x[2]),std::ref(v[0]),std::ref(v[1]),std::ref(v[2]),std::ref(a[0]),std::ref(a[1]),std::ref(a[2]),std::ref(health),std::ref(P),std::ref(NT),std::ref(delta_tau_n),std::ref(Ft),std::ref(En),std::ref(P1),std::ref(P2),std::ref(P3),std::ref(P4),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GloEphemeris& self);
-void extract(Serializer& serializer, GloEphemeris& self);
+void insert(::microstrain::Buffer& serializer, const GloEphemeris& self);
+void extract(::microstrain::Buffer& serializer, GloEphemeris& self);
 
 
 ///@}
@@ -2516,8 +2516,8 @@ struct GpsIonoCorr
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha),std::ref(beta),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GpsIonoCorr& self);
-void extract(Serializer& serializer, GpsIonoCorr& self);
+void insert(::microstrain::Buffer& serializer, const GpsIonoCorr& self);
+void extract(::microstrain::Buffer& serializer, GpsIonoCorr& self);
 
 
 ///@}
@@ -2590,8 +2590,8 @@ struct GalileoIonoCorr
         return std::make_tuple(std::ref(time_of_week),std::ref(week_number),std::ref(alpha[0]),std::ref(alpha[1]),std::ref(alpha[2]),std::ref(disturbance_flags),std::ref(valid_flags));
     }
 };
-void insert(Serializer& serializer, const GalileoIonoCorr& self);
-void extract(Serializer& serializer, GalileoIonoCorr& self);
+void insert(::microstrain::Buffer& serializer, const GalileoIonoCorr& self);
+void extract(::microstrain::Buffer& serializer, GalileoIonoCorr& self);
 
 
 ///@}

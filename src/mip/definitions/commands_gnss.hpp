@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -114,14 +114,14 @@ struct ReceiverInfo
         }
     };
 };
-void insert(Serializer& serializer, const ReceiverInfo& self);
-void extract(Serializer& serializer, ReceiverInfo& self);
+void insert(::microstrain::Buffer& serializer, const ReceiverInfo& self);
+void extract(::microstrain::Buffer& serializer, ReceiverInfo& self);
 
-void insert(Serializer& serializer, const ReceiverInfo::Info& self);
-void extract(Serializer& serializer, ReceiverInfo::Info& self);
+void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Info& self);
+void extract(::microstrain::Buffer& serializer, ReceiverInfo::Info& self);
 
-void insert(Serializer& serializer, const ReceiverInfo::Response& self);
-void extract(Serializer& serializer, ReceiverInfo::Response& self);
+void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Response& self);
+void extract(::microstrain::Buffer& serializer, ReceiverInfo::Response& self);
 
 TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numReceiversOut, uint8_t numReceiversOutMax, ReceiverInfo::Info* receiverInfoOut);
 
@@ -198,11 +198,11 @@ struct SignalConfiguration
         }
     };
 };
-void insert(Serializer& serializer, const SignalConfiguration& self);
-void extract(Serializer& serializer, SignalConfiguration& self);
+void insert(::microstrain::Buffer& serializer, const SignalConfiguration& self);
+void extract(::microstrain::Buffer& serializer, SignalConfiguration& self);
 
-void insert(Serializer& serializer, const SignalConfiguration::Response& self);
-void extract(Serializer& serializer, SignalConfiguration::Response& self);
+void insert(::microstrain::Buffer& serializer, const SignalConfiguration::Response& self);
+void extract(::microstrain::Buffer& serializer, SignalConfiguration::Response& self);
 
 TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved);
 TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut);
@@ -277,11 +277,11 @@ struct RtkDongleConfiguration
         }
     };
 };
-void insert(Serializer& serializer, const RtkDongleConfiguration& self);
-void extract(Serializer& serializer, RtkDongleConfiguration& self);
+void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration& self);
+void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration& self);
 
-void insert(Serializer& serializer, const RtkDongleConfiguration::Response& self);
-void extract(Serializer& serializer, RtkDongleConfiguration::Response& self);
+void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration::Response& self);
+void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration::Response& self);
 
 TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved);
 TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut);

@@ -1,14 +1,14 @@
 
 #include "commands_aiding.hpp"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
 
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -24,7 +24,7 @@ using namespace ::mip::C;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const Time& self)
+void insert(::microstrain::Buffer& serializer, const Time& self)
 {
     insert(serializer, self.timebase);
     
@@ -33,7 +33,7 @@ void insert(Serializer& serializer, const Time& self)
     insert(serializer, self.nanoseconds);
     
 }
-void extract(Serializer& serializer, Time& self)
+void extract(::microstrain::Buffer& serializer, Time& self)
 {
     extract(serializer, self.timebase);
     
@@ -48,7 +48,7 @@ void extract(Serializer& serializer, Time& self)
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const FrameConfig& self)
+void insert(::microstrain::Buffer& serializer, const FrameConfig& self)
 {
     insert(serializer, self.function);
     
@@ -78,7 +78,7 @@ void insert(Serializer& serializer, const FrameConfig& self)
         }
     }
 }
-void extract(Serializer& serializer, FrameConfig& self)
+void extract(::microstrain::Buffer& serializer, FrameConfig& self)
 {
     extract(serializer, self.function);
     
@@ -109,7 +109,7 @@ void extract(Serializer& serializer, FrameConfig& self)
     }
 }
 
-void insert(Serializer& serializer, const FrameConfig::Response& self)
+void insert(::microstrain::Buffer& serializer, const FrameConfig::Response& self)
 {
     insert(serializer, self.frame_id);
     
@@ -131,7 +131,7 @@ void insert(Serializer& serializer, const FrameConfig::Response& self)
         
     }
 }
-void extract(Serializer& serializer, FrameConfig::Response& self)
+void extract(::microstrain::Buffer& serializer, FrameConfig::Response& self)
 {
     extract(serializer, self.frame_id);
     
@@ -157,7 +157,7 @@ void extract(Serializer& serializer, FrameConfig::Response& self)
 TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool trackingEnabled, const float* translation, const FrameConfig::Rotation& rotation)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, frameId);
@@ -182,12 +182,12 @@ TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t fram
     }
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
 }
 TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool* trackingEnabledOut, float* translationOut, FrameConfig::Rotation* rotationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, frameId);
@@ -197,11 +197,11 @@ TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frame
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<FrameConfig> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_FRAME_CONFIG, buffer, &responseLength);
+    TypedResult<FrameConfig> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length(), REPLY_FRAME_CONFIG, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         extract(deserializer, frameId);
         
@@ -232,40 +232,40 @@ TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frame
 TypedResult<FrameConfig> saveFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, frameId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
 }
 TypedResult<FrameConfig> loadFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, frameId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
 }
 TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t frameId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, frameId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_FRAME_CONFIG, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AidingEchoControl& self)
+void insert(::microstrain::Buffer& serializer, const AidingEchoControl& self)
 {
     insert(serializer, self.function);
     
@@ -275,7 +275,7 @@ void insert(Serializer& serializer, const AidingEchoControl& self)
         
     }
 }
-void extract(Serializer& serializer, AidingEchoControl& self)
+void extract(::microstrain::Buffer& serializer, AidingEchoControl& self)
 {
     extract(serializer, self.function);
     
@@ -286,12 +286,12 @@ void extract(Serializer& serializer, AidingEchoControl& self)
     }
 }
 
-void insert(Serializer& serializer, const AidingEchoControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const AidingEchoControl::Response& self)
 {
     insert(serializer, self.mode);
     
 }
-void extract(Serializer& serializer, AidingEchoControl::Response& self)
+void extract(::microstrain::Buffer& serializer, AidingEchoControl::Response& self)
 {
     extract(serializer, self.mode);
     
@@ -300,29 +300,29 @@ void extract(Serializer& serializer, AidingEchoControl::Response& self)
 TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, mode);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AidingEchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ECHO_CONTROL, buffer, &responseLength);
+    TypedResult<AidingEchoControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ECHO_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(modeOut);
         extract(deserializer, *modeOut);
@@ -335,34 +335,34 @@ TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, A
 TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ECHO_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const EcefPos& self)
+void insert(::microstrain::Buffer& serializer, const EcefPos& self)
 {
     insert(serializer, self.time);
     
@@ -377,7 +377,7 @@ void insert(Serializer& serializer, const EcefPos& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefPos& self)
+void extract(::microstrain::Buffer& serializer, EcefPos& self)
 {
     extract(serializer, self.time);
     
@@ -396,7 +396,7 @@ void extract(Serializer& serializer, EcefPos& self)
 TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -414,9 +414,9 @@ TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_ECEF, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_ECEF, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const LlhPos& self)
+void insert(::microstrain::Buffer& serializer, const LlhPos& self)
 {
     insert(serializer, self.time);
     
@@ -434,7 +434,7 @@ void insert(Serializer& serializer, const LlhPos& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, LlhPos& self)
+void extract(::microstrain::Buffer& serializer, LlhPos& self)
 {
     extract(serializer, self.time);
     
@@ -456,7 +456,7 @@ void extract(Serializer& serializer, LlhPos& self)
 TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -476,9 +476,9 @@ TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t f
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_POS_LLH, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const Height& self)
+void insert(::microstrain::Buffer& serializer, const Height& self)
 {
     insert(serializer, self.time);
     
@@ -491,7 +491,7 @@ void insert(Serializer& serializer, const Height& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Height& self)
+void extract(::microstrain::Buffer& serializer, Height& self)
 {
     extract(serializer, self.time);
     
@@ -508,7 +508,7 @@ void extract(Serializer& serializer, Height& self)
 TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -522,9 +522,9 @@ TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t f
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEIGHT_ABS, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const EcefVel& self)
+void insert(::microstrain::Buffer& serializer, const EcefVel& self)
 {
     insert(serializer, self.time);
     
@@ -539,7 +539,7 @@ void insert(Serializer& serializer, const EcefVel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefVel& self)
+void extract(::microstrain::Buffer& serializer, EcefVel& self)
 {
     extract(serializer, self.time);
     
@@ -558,7 +558,7 @@ void extract(Serializer& serializer, EcefVel& self)
 TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -576,9 +576,9 @@ TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ECEF, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ECEF, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const NedVel& self)
+void insert(::microstrain::Buffer& serializer, const NedVel& self)
 {
     insert(serializer, self.time);
     
@@ -593,7 +593,7 @@ void insert(Serializer& serializer, const NedVel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, NedVel& self)
+void extract(::microstrain::Buffer& serializer, NedVel& self)
 {
     extract(serializer, self.time);
     
@@ -612,7 +612,7 @@ void extract(Serializer& serializer, NedVel& self)
 TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -630,9 +630,9 @@ TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t f
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_NED, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_NED, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self)
+void insert(::microstrain::Buffer& serializer, const VehicleFixedFrameVelocity& self)
 {
     insert(serializer, self.time);
     
@@ -647,7 +647,7 @@ void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, VehicleFixedFrameVelocity& self)
+void extract(::microstrain::Buffer& serializer, VehicleFixedFrameVelocity& self)
 {
     extract(serializer, self.time);
     
@@ -666,7 +666,7 @@ void extract(Serializer& serializer, VehicleFixedFrameVelocity& self)
 TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -684,9 +684,9 @@ TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interfac
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ODOM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEL_ODOM, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const TrueHeading& self)
+void insert(::microstrain::Buffer& serializer, const TrueHeading& self)
 {
     insert(serializer, self.time);
     
@@ -699,7 +699,7 @@ void insert(Serializer& serializer, const TrueHeading& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, TrueHeading& self)
+void extract(::microstrain::Buffer& serializer, TrueHeading& self)
 {
     extract(serializer, self.time);
     
@@ -716,7 +716,7 @@ void extract(Serializer& serializer, TrueHeading& self)
 TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -730,9 +730,9 @@ TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time,
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_TRUE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_TRUE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagneticField& self)
+void insert(::microstrain::Buffer& serializer, const MagneticField& self)
 {
     insert(serializer, self.time);
     
@@ -747,7 +747,7 @@ void insert(Serializer& serializer, const MagneticField& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagneticField& self)
+void extract(::microstrain::Buffer& serializer, MagneticField& self)
 {
     extract(serializer, self.time);
     
@@ -766,7 +766,7 @@ void extract(Serializer& serializer, MagneticField& self)
 TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& time, uint8_t frameId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -784,9 +784,9 @@ TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_FIELD, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const Pressure& self)
+void insert(::microstrain::Buffer& serializer, const Pressure& self)
 {
     insert(serializer, self.time);
     
@@ -799,7 +799,7 @@ void insert(Serializer& serializer, const Pressure& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Pressure& self)
+void extract(::microstrain::Buffer& serializer, Pressure& self)
 {
     extract(serializer, self.time);
     
@@ -816,7 +816,7 @@ void extract(Serializer& serializer, Pressure& self)
 TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, time);
     
@@ -830,7 +830,7 @@ TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE, buffer, (uint8_t)serializer.length());
 }
 
 } // namespace commands_aiding

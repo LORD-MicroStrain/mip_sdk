@@ -3,7 +3,7 @@
 
 #include <mip/mip_result.h>
 #include <mip/mip_dispatch.h>
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 
 #include <mip/definitions/commands_base.hpp>
 #include <mip/definitions/commands_3dm.hpp>

@@ -174,9 +174,35 @@ public:
     int remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength) { return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc mip::C::mip_packet_add_field
-    int allocField(uint8_t fieldDescriptor, uint8_t payloadLength, uint8_t** payloadPtr_out) { return C::mip_packet_alloc_field(this, fieldDescriptor, payloadLength, payloadPtr_out); }  ///<@copydoc mip::C::mip_packet_alloc_field
-    int reallocLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
-    int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
+    microstrain::Buffer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t* ptr; if(C::mip_packet_alloc_field(this, fieldDescriptor, length, &ptr) < 0) length=0; return microstrain::Buffer{ptr, length}; }
+    //std::tuple<uint8_t*, size_t> createField(uint8_t fieldDescriptor) { uint8_t* ptr; int max_size = C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr); return max_size >= 0 ? std::make_tuple(ptr, max_size) : std::make_tuple(nullptr, 0); }  ///<@copydoc mip::C::mip_packet_alloc_field
+    //int finishLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
+    //int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
+
+    class AllocatedField : public microstrain::Buffer
+    {
+    public:
+        AllocatedField(mip::PacketRef& packet, uint8_t* buffer, size_t space) : Buffer(buffer, space), m_packet(packet) {}
+        AllocatedField(const AllocatedField&) = delete;
+        AllocatedField& operator=(const AllocatedField&) = delete;
+
+        bool commit()
+        {
+            bool ok = isOk();
+
+            if(ok)
+                C::mip_packet_realloc_last_field(&m_packet, pointer(), length());
+            else
+                C::mip_packet_cancel_last_field(&m_packet, pointer());
+
+            return ok;
+        }
+
+    private:
+        PacketRef& m_packet;
+    };
+
+    AllocatedField createField(uint8_t fieldDescriptor) { uint8_t* ptr; size_t max_size = std::max<int>(0, C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr)); return {*this, ptr, max_size}; }
 
     void finalize() { C::mip_packet_finalize(this); }  ///<@copydoc mip::C::mip_packet_finalize
 
@@ -229,10 +255,10 @@ public:
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
-        microstrain::Serializer serializer(*this, fieldDescriptor);
-        insert(serializer, field);
-        C::microstrain_serializer_finish_new_field(&serializer, this);
-        return serializer.isOk();
+
+        AllocatedField buffer = createField(fieldDescriptor);
+        buffer.insert(field);
+        return buffer.commit();
     }
 
     ///@brief Creates a new PacketRef containing a single MIP field from an instance of the field type.

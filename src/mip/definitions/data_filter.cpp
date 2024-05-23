@@ -1,14 +1,14 @@
 
 #include "data_filter.hpp"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
 
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -29,7 +29,7 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const PositionLlh& self)
+void insert(::microstrain::Buffer& serializer, const PositionLlh& self)
 {
     insert(serializer, self.latitude);
     
@@ -40,7 +40,7 @@ void insert(Serializer& serializer, const PositionLlh& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, PositionLlh& self)
+void extract(::microstrain::Buffer& serializer, PositionLlh& self)
 {
     extract(serializer, self.latitude);
     
@@ -52,7 +52,7 @@ void extract(Serializer& serializer, PositionLlh& self)
     
 }
 
-void insert(Serializer& serializer, const VelocityNed& self)
+void insert(::microstrain::Buffer& serializer, const VelocityNed& self)
 {
     insert(serializer, self.north);
     
@@ -63,7 +63,7 @@ void insert(Serializer& serializer, const VelocityNed& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, VelocityNed& self)
+void extract(::microstrain::Buffer& serializer, VelocityNed& self)
 {
     extract(serializer, self.north);
     
@@ -75,7 +75,7 @@ void extract(Serializer& serializer, VelocityNed& self)
     
 }
 
-void insert(Serializer& serializer, const AttitudeQuaternion& self)
+void insert(::microstrain::Buffer& serializer, const AttitudeQuaternion& self)
 {
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.q[i]);
@@ -83,7 +83,7 @@ void insert(Serializer& serializer, const AttitudeQuaternion& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AttitudeQuaternion& self)
+void extract(::microstrain::Buffer& serializer, AttitudeQuaternion& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.q[i]);
@@ -92,7 +92,7 @@ void extract(Serializer& serializer, AttitudeQuaternion& self)
     
 }
 
-void insert(Serializer& serializer, const AttitudeDcm& self)
+void insert(::microstrain::Buffer& serializer, const AttitudeDcm& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.dcm[i]);
@@ -100,7 +100,7 @@ void insert(Serializer& serializer, const AttitudeDcm& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AttitudeDcm& self)
+void extract(::microstrain::Buffer& serializer, AttitudeDcm& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.dcm[i]);
@@ -109,7 +109,7 @@ void extract(Serializer& serializer, AttitudeDcm& self)
     
 }
 
-void insert(Serializer& serializer, const EulerAngles& self)
+void insert(::microstrain::Buffer& serializer, const EulerAngles& self)
 {
     insert(serializer, self.roll);
     
@@ -120,7 +120,7 @@ void insert(Serializer& serializer, const EulerAngles& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EulerAngles& self)
+void extract(::microstrain::Buffer& serializer, EulerAngles& self)
 {
     extract(serializer, self.roll);
     
@@ -132,7 +132,7 @@ void extract(Serializer& serializer, EulerAngles& self)
     
 }
 
-void insert(Serializer& serializer, const GyroBias& self)
+void insert(::microstrain::Buffer& serializer, const GyroBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias[i]);
@@ -140,7 +140,7 @@ void insert(Serializer& serializer, const GyroBias& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GyroBias& self)
+void extract(::microstrain::Buffer& serializer, GyroBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -149,7 +149,7 @@ void extract(Serializer& serializer, GyroBias& self)
     
 }
 
-void insert(Serializer& serializer, const AccelBias& self)
+void insert(::microstrain::Buffer& serializer, const AccelBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias[i]);
@@ -157,7 +157,7 @@ void insert(Serializer& serializer, const AccelBias& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AccelBias& self)
+void extract(::microstrain::Buffer& serializer, AccelBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -166,7 +166,7 @@ void extract(Serializer& serializer, AccelBias& self)
     
 }
 
-void insert(Serializer& serializer, const PositionLlhUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const PositionLlhUncertainty& self)
 {
     insert(serializer, self.north);
     
@@ -177,7 +177,7 @@ void insert(Serializer& serializer, const PositionLlhUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, PositionLlhUncertainty& self)
+void extract(::microstrain::Buffer& serializer, PositionLlhUncertainty& self)
 {
     extract(serializer, self.north);
     
@@ -189,7 +189,7 @@ void extract(Serializer& serializer, PositionLlhUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const VelocityNedUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const VelocityNedUncertainty& self)
 {
     insert(serializer, self.north);
     
@@ -200,7 +200,7 @@ void insert(Serializer& serializer, const VelocityNedUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, VelocityNedUncertainty& self)
+void extract(::microstrain::Buffer& serializer, VelocityNedUncertainty& self)
 {
     extract(serializer, self.north);
     
@@ -212,7 +212,7 @@ void extract(Serializer& serializer, VelocityNedUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const EulerAnglesUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const EulerAnglesUncertainty& self)
 {
     insert(serializer, self.roll);
     
@@ -223,7 +223,7 @@ void insert(Serializer& serializer, const EulerAnglesUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EulerAnglesUncertainty& self)
+void extract(::microstrain::Buffer& serializer, EulerAnglesUncertainty& self)
 {
     extract(serializer, self.roll);
     
@@ -235,7 +235,7 @@ void extract(Serializer& serializer, EulerAnglesUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const GyroBiasUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const GyroBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
@@ -243,7 +243,7 @@ void insert(Serializer& serializer, const GyroBiasUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GyroBiasUncertainty& self)
+void extract(::microstrain::Buffer& serializer, GyroBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
@@ -252,7 +252,7 @@ void extract(Serializer& serializer, GyroBiasUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const AccelBiasUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const AccelBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
@@ -260,7 +260,7 @@ void insert(Serializer& serializer, const AccelBiasUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AccelBiasUncertainty& self)
+void extract(::microstrain::Buffer& serializer, AccelBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
@@ -269,7 +269,7 @@ void extract(Serializer& serializer, AccelBiasUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const Timestamp& self)
+void insert(::microstrain::Buffer& serializer, const Timestamp& self)
 {
     insert(serializer, self.tow);
     
@@ -278,7 +278,7 @@ void insert(Serializer& serializer, const Timestamp& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Timestamp& self)
+void extract(::microstrain::Buffer& serializer, Timestamp& self)
 {
     extract(serializer, self.tow);
     
@@ -288,7 +288,7 @@ void extract(Serializer& serializer, Timestamp& self)
     
 }
 
-void insert(Serializer& serializer, const Status& self)
+void insert(::microstrain::Buffer& serializer, const Status& self)
 {
     insert(serializer, self.filter_state);
     
@@ -297,7 +297,7 @@ void insert(Serializer& serializer, const Status& self)
     insert(serializer, self.status_flags);
     
 }
-void extract(Serializer& serializer, Status& self)
+void extract(::microstrain::Buffer& serializer, Status& self)
 {
     extract(serializer, self.filter_state);
     
@@ -307,7 +307,7 @@ void extract(Serializer& serializer, Status& self)
     
 }
 
-void insert(Serializer& serializer, const LinearAccel& self)
+void insert(::microstrain::Buffer& serializer, const LinearAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.accel[i]);
@@ -315,7 +315,7 @@ void insert(Serializer& serializer, const LinearAccel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, LinearAccel& self)
+void extract(::microstrain::Buffer& serializer, LinearAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.accel[i]);
@@ -324,7 +324,7 @@ void extract(Serializer& serializer, LinearAccel& self)
     
 }
 
-void insert(Serializer& serializer, const GravityVector& self)
+void insert(::microstrain::Buffer& serializer, const GravityVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.gravity[i]);
@@ -332,7 +332,7 @@ void insert(Serializer& serializer, const GravityVector& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GravityVector& self)
+void extract(::microstrain::Buffer& serializer, GravityVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.gravity[i]);
@@ -341,7 +341,7 @@ void extract(Serializer& serializer, GravityVector& self)
     
 }
 
-void insert(Serializer& serializer, const CompAccel& self)
+void insert(::microstrain::Buffer& serializer, const CompAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.accel[i]);
@@ -349,7 +349,7 @@ void insert(Serializer& serializer, const CompAccel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, CompAccel& self)
+void extract(::microstrain::Buffer& serializer, CompAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.accel[i]);
@@ -358,7 +358,7 @@ void extract(Serializer& serializer, CompAccel& self)
     
 }
 
-void insert(Serializer& serializer, const CompAngularRate& self)
+void insert(::microstrain::Buffer& serializer, const CompAngularRate& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.gyro[i]);
@@ -366,7 +366,7 @@ void insert(Serializer& serializer, const CompAngularRate& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, CompAngularRate& self)
+void extract(::microstrain::Buffer& serializer, CompAngularRate& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.gyro[i]);
@@ -375,7 +375,7 @@ void extract(Serializer& serializer, CompAngularRate& self)
     
 }
 
-void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const QuaternionAttitudeUncertainty& self)
 {
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.q[i]);
@@ -383,7 +383,7 @@ void insert(Serializer& serializer, const QuaternionAttitudeUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self)
+void extract(::microstrain::Buffer& serializer, QuaternionAttitudeUncertainty& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.q[i]);
@@ -392,14 +392,14 @@ void extract(Serializer& serializer, QuaternionAttitudeUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const Wgs84GravityMag& self)
+void insert(::microstrain::Buffer& serializer, const Wgs84GravityMag& self)
 {
     insert(serializer, self.magnitude);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, Wgs84GravityMag& self)
+void extract(::microstrain::Buffer& serializer, Wgs84GravityMag& self)
 {
     extract(serializer, self.magnitude);
     
@@ -407,7 +407,7 @@ void extract(Serializer& serializer, Wgs84GravityMag& self)
     
 }
 
-void insert(Serializer& serializer, const HeadingUpdateState& self)
+void insert(::microstrain::Buffer& serializer, const HeadingUpdateState& self)
 {
     insert(serializer, self.heading);
     
@@ -418,7 +418,7 @@ void insert(Serializer& serializer, const HeadingUpdateState& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, HeadingUpdateState& self)
+void extract(::microstrain::Buffer& serializer, HeadingUpdateState& self)
 {
     extract(serializer, self.heading);
     
@@ -430,7 +430,7 @@ void extract(Serializer& serializer, HeadingUpdateState& self)
     
 }
 
-void insert(Serializer& serializer, const MagneticModel& self)
+void insert(::microstrain::Buffer& serializer, const MagneticModel& self)
 {
     insert(serializer, self.intensity_north);
     
@@ -445,7 +445,7 @@ void insert(Serializer& serializer, const MagneticModel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagneticModel& self)
+void extract(::microstrain::Buffer& serializer, MagneticModel& self)
 {
     extract(serializer, self.intensity_north);
     
@@ -461,7 +461,7 @@ void extract(Serializer& serializer, MagneticModel& self)
     
 }
 
-void insert(Serializer& serializer, const AccelScaleFactor& self)
+void insert(::microstrain::Buffer& serializer, const AccelScaleFactor& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scale_factor[i]);
@@ -469,7 +469,7 @@ void insert(Serializer& serializer, const AccelScaleFactor& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AccelScaleFactor& self)
+void extract(::microstrain::Buffer& serializer, AccelScaleFactor& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scale_factor[i]);
@@ -478,7 +478,7 @@ void extract(Serializer& serializer, AccelScaleFactor& self)
     
 }
 
-void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const AccelScaleFactorUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scale_factor_uncert[i]);
@@ -486,7 +486,7 @@ void insert(Serializer& serializer, const AccelScaleFactorUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AccelScaleFactorUncertainty& self)
+void extract(::microstrain::Buffer& serializer, AccelScaleFactorUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scale_factor_uncert[i]);
@@ -495,7 +495,7 @@ void extract(Serializer& serializer, AccelScaleFactorUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const GyroScaleFactor& self)
+void insert(::microstrain::Buffer& serializer, const GyroScaleFactor& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scale_factor[i]);
@@ -503,7 +503,7 @@ void insert(Serializer& serializer, const GyroScaleFactor& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GyroScaleFactor& self)
+void extract(::microstrain::Buffer& serializer, GyroScaleFactor& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scale_factor[i]);
@@ -512,7 +512,7 @@ void extract(Serializer& serializer, GyroScaleFactor& self)
     
 }
 
-void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const GyroScaleFactorUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scale_factor_uncert[i]);
@@ -520,7 +520,7 @@ void insert(Serializer& serializer, const GyroScaleFactorUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GyroScaleFactorUncertainty& self)
+void extract(::microstrain::Buffer& serializer, GyroScaleFactorUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scale_factor_uncert[i]);
@@ -529,7 +529,7 @@ void extract(Serializer& serializer, GyroScaleFactorUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const MagBias& self)
+void insert(::microstrain::Buffer& serializer, const MagBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias[i]);
@@ -537,7 +537,7 @@ void insert(Serializer& serializer, const MagBias& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagBias& self)
+void extract(::microstrain::Buffer& serializer, MagBias& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias[i]);
@@ -546,7 +546,7 @@ void extract(Serializer& serializer, MagBias& self)
     
 }
 
-void insert(Serializer& serializer, const MagBiasUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const MagBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.bias_uncert[i]);
@@ -554,7 +554,7 @@ void insert(Serializer& serializer, const MagBiasUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagBiasUncertainty& self)
+void extract(::microstrain::Buffer& serializer, MagBiasUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.bias_uncert[i]);
@@ -563,7 +563,7 @@ void extract(Serializer& serializer, MagBiasUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const StandardAtmosphere& self)
+void insert(::microstrain::Buffer& serializer, const StandardAtmosphere& self)
 {
     insert(serializer, self.geometric_altitude);
     
@@ -578,7 +578,7 @@ void insert(Serializer& serializer, const StandardAtmosphere& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, StandardAtmosphere& self)
+void extract(::microstrain::Buffer& serializer, StandardAtmosphere& self)
 {
     extract(serializer, self.geometric_altitude);
     
@@ -594,14 +594,14 @@ void extract(Serializer& serializer, StandardAtmosphere& self)
     
 }
 
-void insert(Serializer& serializer, const PressureAltitude& self)
+void insert(::microstrain::Buffer& serializer, const PressureAltitude& self)
 {
     insert(serializer, self.pressure_altitude);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, PressureAltitude& self)
+void extract(::microstrain::Buffer& serializer, PressureAltitude& self)
 {
     extract(serializer, self.pressure_altitude);
     
@@ -609,14 +609,14 @@ void extract(Serializer& serializer, PressureAltitude& self)
     
 }
 
-void insert(Serializer& serializer, const DensityAltitude& self)
+void insert(::microstrain::Buffer& serializer, const DensityAltitude& self)
 {
     insert(serializer, self.density_altitude);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, DensityAltitude& self)
+void extract(::microstrain::Buffer& serializer, DensityAltitude& self)
 {
     extract(serializer, self.density_altitude);
     
@@ -624,7 +624,7 @@ void extract(Serializer& serializer, DensityAltitude& self)
     
 }
 
-void insert(Serializer& serializer, const AntennaOffsetCorrection& self)
+void insert(::microstrain::Buffer& serializer, const AntennaOffsetCorrection& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
@@ -632,7 +632,7 @@ void insert(Serializer& serializer, const AntennaOffsetCorrection& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AntennaOffsetCorrection& self)
+void extract(::microstrain::Buffer& serializer, AntennaOffsetCorrection& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
@@ -641,7 +641,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrection& self)
     
 }
 
-void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const AntennaOffsetCorrectionUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset_uncert[i]);
@@ -649,7 +649,7 @@ void insert(Serializer& serializer, const AntennaOffsetCorrectionUncertainty& se
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self)
+void extract(::microstrain::Buffer& serializer, AntennaOffsetCorrectionUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset_uncert[i]);
@@ -658,7 +658,7 @@ void extract(Serializer& serializer, AntennaOffsetCorrectionUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self)
+void insert(::microstrain::Buffer& serializer, const MultiAntennaOffsetCorrection& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -668,7 +668,7 @@ void insert(Serializer& serializer, const MultiAntennaOffsetCorrection& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self)
+void extract(::microstrain::Buffer& serializer, MultiAntennaOffsetCorrection& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -679,7 +679,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrection& self)
     
 }
 
-void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const MultiAntennaOffsetCorrectionUncertainty& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -689,7 +689,7 @@ void insert(Serializer& serializer, const MultiAntennaOffsetCorrectionUncertaint
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& self)
+void extract(::microstrain::Buffer& serializer, MultiAntennaOffsetCorrectionUncertainty& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -700,7 +700,7 @@ void extract(Serializer& serializer, MultiAntennaOffsetCorrectionUncertainty& se
     
 }
 
-void insert(Serializer& serializer, const MagnetometerOffset& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerOffset& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.hard_iron[i]);
@@ -708,7 +708,7 @@ void insert(Serializer& serializer, const MagnetometerOffset& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerOffset& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerOffset& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.hard_iron[i]);
@@ -717,7 +717,7 @@ void extract(Serializer& serializer, MagnetometerOffset& self)
     
 }
 
-void insert(Serializer& serializer, const MagnetometerMatrix& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.soft_iron[i]);
@@ -725,7 +725,7 @@ void insert(Serializer& serializer, const MagnetometerMatrix& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerMatrix& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.soft_iron[i]);
@@ -734,7 +734,7 @@ void extract(Serializer& serializer, MagnetometerMatrix& self)
     
 }
 
-void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerOffsetUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.hard_iron_uncertainty[i]);
@@ -742,7 +742,7 @@ void insert(Serializer& serializer, const MagnetometerOffsetUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerOffsetUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.hard_iron_uncertainty[i]);
@@ -751,7 +751,7 @@ void extract(Serializer& serializer, MagnetometerOffsetUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerMatrixUncertainty& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.soft_iron_uncertainty[i]);
@@ -759,7 +759,7 @@ void insert(Serializer& serializer, const MagnetometerMatrixUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerMatrixUncertainty& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.soft_iron_uncertainty[i]);
@@ -768,7 +768,7 @@ void extract(Serializer& serializer, MagnetometerMatrixUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerCovarianceMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.covariance[i]);
@@ -776,7 +776,7 @@ void insert(Serializer& serializer, const MagnetometerCovarianceMatrix& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerCovarianceMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.covariance[i]);
@@ -785,7 +785,7 @@ void extract(Serializer& serializer, MagnetometerCovarianceMatrix& self)
     
 }
 
-void insert(Serializer& serializer, const MagnetometerResidualVector& self)
+void insert(::microstrain::Buffer& serializer, const MagnetometerResidualVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.residual[i]);
@@ -793,7 +793,7 @@ void insert(Serializer& serializer, const MagnetometerResidualVector& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, MagnetometerResidualVector& self)
+void extract(::microstrain::Buffer& serializer, MagnetometerResidualVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.residual[i]);
@@ -802,7 +802,7 @@ void extract(Serializer& serializer, MagnetometerResidualVector& self)
     
 }
 
-void insert(Serializer& serializer, const ClockCorrection& self)
+void insert(::microstrain::Buffer& serializer, const ClockCorrection& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -813,7 +813,7 @@ void insert(Serializer& serializer, const ClockCorrection& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, ClockCorrection& self)
+void extract(::microstrain::Buffer& serializer, ClockCorrection& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -825,7 +825,7 @@ void extract(Serializer& serializer, ClockCorrection& self)
     
 }
 
-void insert(Serializer& serializer, const ClockCorrectionUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const ClockCorrectionUncertainty& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -836,7 +836,7 @@ void insert(Serializer& serializer, const ClockCorrectionUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, ClockCorrectionUncertainty& self)
+void extract(::microstrain::Buffer& serializer, ClockCorrectionUncertainty& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -848,7 +848,7 @@ void extract(Serializer& serializer, ClockCorrectionUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const GnssPosAidStatus& self)
+void insert(::microstrain::Buffer& serializer, const GnssPosAidStatus& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -860,7 +860,7 @@ void insert(Serializer& serializer, const GnssPosAidStatus& self)
         insert(serializer, self.reserved[i]);
     
 }
-void extract(Serializer& serializer, GnssPosAidStatus& self)
+void extract(::microstrain::Buffer& serializer, GnssPosAidStatus& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -873,7 +873,7 @@ void extract(Serializer& serializer, GnssPosAidStatus& self)
     
 }
 
-void insert(Serializer& serializer, const GnssAttAidStatus& self)
+void insert(::microstrain::Buffer& serializer, const GnssAttAidStatus& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -883,7 +883,7 @@ void insert(Serializer& serializer, const GnssAttAidStatus& self)
         insert(serializer, self.reserved[i]);
     
 }
-void extract(Serializer& serializer, GnssAttAidStatus& self)
+void extract(::microstrain::Buffer& serializer, GnssAttAidStatus& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -894,7 +894,7 @@ void extract(Serializer& serializer, GnssAttAidStatus& self)
     
 }
 
-void insert(Serializer& serializer, const HeadAidStatus& self)
+void insert(::microstrain::Buffer& serializer, const HeadAidStatus& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -904,7 +904,7 @@ void insert(Serializer& serializer, const HeadAidStatus& self)
         insert(serializer, self.reserved[i]);
     
 }
-void extract(Serializer& serializer, HeadAidStatus& self)
+void extract(::microstrain::Buffer& serializer, HeadAidStatus& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -915,7 +915,7 @@ void extract(Serializer& serializer, HeadAidStatus& self)
     
 }
 
-void insert(Serializer& serializer, const RelPosNed& self)
+void insert(::microstrain::Buffer& serializer, const RelPosNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.relative_position[i]);
@@ -923,7 +923,7 @@ void insert(Serializer& serializer, const RelPosNed& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, RelPosNed& self)
+void extract(::microstrain::Buffer& serializer, RelPosNed& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.relative_position[i]);
@@ -932,7 +932,7 @@ void extract(Serializer& serializer, RelPosNed& self)
     
 }
 
-void insert(Serializer& serializer, const EcefPos& self)
+void insert(::microstrain::Buffer& serializer, const EcefPos& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.position_ecef[i]);
@@ -940,7 +940,7 @@ void insert(Serializer& serializer, const EcefPos& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefPos& self)
+void extract(::microstrain::Buffer& serializer, EcefPos& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.position_ecef[i]);
@@ -949,7 +949,7 @@ void extract(Serializer& serializer, EcefPos& self)
     
 }
 
-void insert(Serializer& serializer, const EcefVel& self)
+void insert(::microstrain::Buffer& serializer, const EcefVel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.velocity_ecef[i]);
@@ -957,7 +957,7 @@ void insert(Serializer& serializer, const EcefVel& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefVel& self)
+void extract(::microstrain::Buffer& serializer, EcefVel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.velocity_ecef[i]);
@@ -966,7 +966,7 @@ void extract(Serializer& serializer, EcefVel& self)
     
 }
 
-void insert(Serializer& serializer, const EcefPosUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const EcefPosUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.pos_uncertainty[i]);
@@ -974,7 +974,7 @@ void insert(Serializer& serializer, const EcefPosUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefPosUncertainty& self)
+void extract(::microstrain::Buffer& serializer, EcefPosUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.pos_uncertainty[i]);
@@ -983,7 +983,7 @@ void extract(Serializer& serializer, EcefPosUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const EcefVelUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const EcefVelUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.vel_uncertainty[i]);
@@ -991,7 +991,7 @@ void insert(Serializer& serializer, const EcefVelUncertainty& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, EcefVelUncertainty& self)
+void extract(::microstrain::Buffer& serializer, EcefVelUncertainty& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.vel_uncertainty[i]);
@@ -1000,7 +1000,7 @@ void extract(Serializer& serializer, EcefVelUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const AidingMeasurementSummary& self)
+void insert(::microstrain::Buffer& serializer, const AidingMeasurementSummary& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -1011,7 +1011,7 @@ void insert(Serializer& serializer, const AidingMeasurementSummary& self)
     insert(serializer, self.indicator);
     
 }
-void extract(Serializer& serializer, AidingMeasurementSummary& self)
+void extract(::microstrain::Buffer& serializer, AidingMeasurementSummary& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -1023,14 +1023,14 @@ void extract(Serializer& serializer, AidingMeasurementSummary& self)
     
 }
 
-void insert(Serializer& serializer, const OdometerScaleFactorError& self)
+void insert(::microstrain::Buffer& serializer, const OdometerScaleFactorError& self)
 {
     insert(serializer, self.scale_factor_error);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, OdometerScaleFactorError& self)
+void extract(::microstrain::Buffer& serializer, OdometerScaleFactorError& self)
 {
     extract(serializer, self.scale_factor_error);
     
@@ -1038,14 +1038,14 @@ void extract(Serializer& serializer, OdometerScaleFactorError& self)
     
 }
 
-void insert(Serializer& serializer, const OdometerScaleFactorErrorUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const OdometerScaleFactorErrorUncertainty& self)
 {
     insert(serializer, self.scale_factor_error_uncertainty);
     
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self)
+void extract(::microstrain::Buffer& serializer, OdometerScaleFactorErrorUncertainty& self)
 {
     extract(serializer, self.scale_factor_error_uncertainty);
     
@@ -1053,7 +1053,7 @@ void extract(Serializer& serializer, OdometerScaleFactorErrorUncertainty& self)
     
 }
 
-void insert(Serializer& serializer, const GnssDualAntennaStatus& self)
+void insert(::microstrain::Buffer& serializer, const GnssDualAntennaStatus& self)
 {
     insert(serializer, self.time_of_week);
     
@@ -1068,7 +1068,7 @@ void insert(Serializer& serializer, const GnssDualAntennaStatus& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(Serializer& serializer, GnssDualAntennaStatus& self)
+void extract(::microstrain::Buffer& serializer, GnssDualAntennaStatus& self)
 {
     extract(serializer, self.time_of_week);
     
@@ -1084,7 +1084,7 @@ void extract(Serializer& serializer, GnssDualAntennaStatus& self)
     
 }
 
-void insert(Serializer& serializer, const AidingFrameConfigError& self)
+void insert(::microstrain::Buffer& serializer, const AidingFrameConfigError& self)
 {
     insert(serializer, self.frame_id);
     
@@ -1095,7 +1095,7 @@ void insert(Serializer& serializer, const AidingFrameConfigError& self)
         insert(serializer, self.attitude[i]);
     
 }
-void extract(Serializer& serializer, AidingFrameConfigError& self)
+void extract(::microstrain::Buffer& serializer, AidingFrameConfigError& self)
 {
     extract(serializer, self.frame_id);
     
@@ -1107,7 +1107,7 @@ void extract(Serializer& serializer, AidingFrameConfigError& self)
     
 }
 
-void insert(Serializer& serializer, const AidingFrameConfigErrorUncertainty& self)
+void insert(::microstrain::Buffer& serializer, const AidingFrameConfigErrorUncertainty& self)
 {
     insert(serializer, self.frame_id);
     
@@ -1118,7 +1118,7 @@ void insert(Serializer& serializer, const AidingFrameConfigErrorUncertainty& sel
         insert(serializer, self.attitude_unc[i]);
     
 }
-void extract(Serializer& serializer, AidingFrameConfigErrorUncertainty& self)
+void extract(::microstrain::Buffer& serializer, AidingFrameConfigErrorUncertainty& self)
 {
     extract(serializer, self.frame_id);
     

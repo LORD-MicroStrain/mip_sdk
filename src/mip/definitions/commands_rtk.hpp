@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -237,11 +237,11 @@ struct GetStatusFlags
         }
     };
 };
-void insert(Serializer& serializer, const GetStatusFlags& self);
-void extract(Serializer& serializer, GetStatusFlags& self);
+void insert(::microstrain::Buffer& serializer, const GetStatusFlags& self);
+void extract(::microstrain::Buffer& serializer, GetStatusFlags& self);
 
-void insert(Serializer& serializer, const GetStatusFlags::Response& self);
-void extract(Serializer& serializer, GetStatusFlags::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetStatusFlags::Response& self);
+void extract(::microstrain::Buffer& serializer, GetStatusFlags::Response& self);
 
 TypedResult<GetStatusFlags> getStatusFlags(C::mip_interface& device, GetStatusFlags::StatusFlags* flagsOut);
 
@@ -293,11 +293,11 @@ struct GetImei
         }
     };
 };
-void insert(Serializer& serializer, const GetImei& self);
-void extract(Serializer& serializer, GetImei& self);
+void insert(::microstrain::Buffer& serializer, const GetImei& self);
+void extract(::microstrain::Buffer& serializer, GetImei& self);
 
-void insert(Serializer& serializer, const GetImei::Response& self);
-void extract(Serializer& serializer, GetImei::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetImei::Response& self);
+void extract(::microstrain::Buffer& serializer, GetImei::Response& self);
 
 TypedResult<GetImei> getImei(C::mip_interface& device, char* imeiOut);
 
@@ -349,11 +349,11 @@ struct GetImsi
         }
     };
 };
-void insert(Serializer& serializer, const GetImsi& self);
-void extract(Serializer& serializer, GetImsi& self);
+void insert(::microstrain::Buffer& serializer, const GetImsi& self);
+void extract(::microstrain::Buffer& serializer, GetImsi& self);
 
-void insert(Serializer& serializer, const GetImsi::Response& self);
-void extract(Serializer& serializer, GetImsi::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetImsi::Response& self);
+void extract(::microstrain::Buffer& serializer, GetImsi::Response& self);
 
 TypedResult<GetImsi> getImsi(C::mip_interface& device, char* imsiOut);
 
@@ -405,11 +405,11 @@ struct GetIccid
         }
     };
 };
-void insert(Serializer& serializer, const GetIccid& self);
-void extract(Serializer& serializer, GetIccid& self);
+void insert(::microstrain::Buffer& serializer, const GetIccid& self);
+void extract(::microstrain::Buffer& serializer, GetIccid& self);
 
-void insert(Serializer& serializer, const GetIccid::Response& self);
-void extract(Serializer& serializer, GetIccid::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetIccid::Response& self);
+void extract(::microstrain::Buffer& serializer, GetIccid::Response& self);
 
 TypedResult<GetIccid> getIccid(C::mip_interface& device, char* iccidOut);
 
@@ -482,11 +482,11 @@ struct ConnectedDeviceType
         }
     };
 };
-void insert(Serializer& serializer, const ConnectedDeviceType& self);
-void extract(Serializer& serializer, ConnectedDeviceType& self);
+void insert(::microstrain::Buffer& serializer, const ConnectedDeviceType& self);
+void extract(::microstrain::Buffer& serializer, ConnectedDeviceType& self);
 
-void insert(Serializer& serializer, const ConnectedDeviceType::Response& self);
-void extract(Serializer& serializer, ConnectedDeviceType::Response& self);
+void insert(::microstrain::Buffer& serializer, const ConnectedDeviceType::Response& self);
+void extract(::microstrain::Buffer& serializer, ConnectedDeviceType::Response& self);
 
 TypedResult<ConnectedDeviceType> writeConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type devtype);
 TypedResult<ConnectedDeviceType> readConnectedDeviceType(C::mip_interface& device, ConnectedDeviceType::Type* devtypeOut);
@@ -542,11 +542,11 @@ struct GetActCode
         }
     };
 };
-void insert(Serializer& serializer, const GetActCode& self);
-void extract(Serializer& serializer, GetActCode& self);
+void insert(::microstrain::Buffer& serializer, const GetActCode& self);
+void extract(::microstrain::Buffer& serializer, GetActCode& self);
 
-void insert(Serializer& serializer, const GetActCode::Response& self);
-void extract(Serializer& serializer, GetActCode::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetActCode::Response& self);
+void extract(::microstrain::Buffer& serializer, GetActCode::Response& self);
 
 TypedResult<GetActCode> getActCode(C::mip_interface& device, char* activationcodeOut);
 
@@ -598,11 +598,11 @@ struct GetModemFirmwareVersion
         }
     };
 };
-void insert(Serializer& serializer, const GetModemFirmwareVersion& self);
-void extract(Serializer& serializer, GetModemFirmwareVersion& self);
+void insert(::microstrain::Buffer& serializer, const GetModemFirmwareVersion& self);
+void extract(::microstrain::Buffer& serializer, GetModemFirmwareVersion& self);
 
-void insert(Serializer& serializer, const GetModemFirmwareVersion::Response& self);
-void extract(Serializer& serializer, GetModemFirmwareVersion::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetModemFirmwareVersion::Response& self);
+void extract(::microstrain::Buffer& serializer, GetModemFirmwareVersion::Response& self);
 
 TypedResult<GetModemFirmwareVersion> getModemFirmwareVersion(C::mip_interface& device, char* modemfirmwareversionOut);
 
@@ -657,11 +657,11 @@ struct GetRssi
         }
     };
 };
-void insert(Serializer& serializer, const GetRssi& self);
-void extract(Serializer& serializer, GetRssi& self);
+void insert(::microstrain::Buffer& serializer, const GetRssi& self);
+void extract(::microstrain::Buffer& serializer, GetRssi& self);
 
-void insert(Serializer& serializer, const GetRssi::Response& self);
-void extract(Serializer& serializer, GetRssi::Response& self);
+void insert(::microstrain::Buffer& serializer, const GetRssi::Response& self);
+void extract(::microstrain::Buffer& serializer, GetRssi::Response& self);
 
 TypedResult<GetRssi> getRssi(C::mip_interface& device, bool* validOut, int32_t* rssiOut, int32_t* signalqualityOut);
 
@@ -750,11 +750,11 @@ struct ServiceStatus
         }
     };
 };
-void insert(Serializer& serializer, const ServiceStatus& self);
-void extract(Serializer& serializer, ServiceStatus& self);
+void insert(::microstrain::Buffer& serializer, const ServiceStatus& self);
+void extract(::microstrain::Buffer& serializer, ServiceStatus& self);
 
-void insert(Serializer& serializer, const ServiceStatus::Response& self);
-void extract(Serializer& serializer, ServiceStatus::Response& self);
+void insert(::microstrain::Buffer& serializer, const ServiceStatus::Response& self);
+void extract(::microstrain::Buffer& serializer, ServiceStatus::Response& self);
 
 TypedResult<ServiceStatus> serviceStatus(C::mip_interface& device, uint32_t reserved1, uint32_t reserved2, ServiceStatus::ServiceFlags* flagsOut, uint32_t* receivedbytesOut, uint32_t* lastbytesOut, uint64_t* lastbytestimeOut);
 
@@ -791,8 +791,8 @@ struct ProdEraseStorage
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const ProdEraseStorage& self);
-void extract(Serializer& serializer, ProdEraseStorage& self);
+void insert(::microstrain::Buffer& serializer, const ProdEraseStorage& self);
+void extract(::microstrain::Buffer& serializer, ProdEraseStorage& self);
 
 TypedResult<ProdEraseStorage> prodEraseStorage(C::mip_interface& device, MediaSelector media);
 
@@ -831,8 +831,8 @@ struct LedControl
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const LedControl& self);
-void extract(Serializer& serializer, LedControl& self);
+void insert(::microstrain::Buffer& serializer, const LedControl& self);
+void extract(::microstrain::Buffer& serializer, LedControl& self);
 
 TypedResult<LedControl> ledControl(C::mip_interface& device, const uint8_t* primarycolor, const uint8_t* altcolor, LedAction act, uint32_t period);
 
@@ -868,8 +868,8 @@ struct ModemHardReset
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const ModemHardReset& self);
-void extract(Serializer& serializer, ModemHardReset& self);
+void insert(::microstrain::Buffer& serializer, const ModemHardReset& self);
+void extract(::microstrain::Buffer& serializer, ModemHardReset& self);
 
 TypedResult<ModemHardReset> modemHardReset(C::mip_interface& device);
 

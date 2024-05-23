@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -125,11 +125,11 @@ struct CommMode
         }
     };
 };
-void insert(Serializer& serializer, const CommMode& self);
-void extract(Serializer& serializer, CommMode& self);
+void insert(::microstrain::Buffer& serializer, const CommMode& self);
+void extract(::microstrain::Buffer& serializer, CommMode& self);
 
-void insert(Serializer& serializer, const CommMode::Response& self);
-void extract(Serializer& serializer, CommMode::Response& self);
+void insert(::microstrain::Buffer& serializer, const CommMode::Response& self);
+void extract(::microstrain::Buffer& serializer, CommMode::Response& self);
 
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode);
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut);

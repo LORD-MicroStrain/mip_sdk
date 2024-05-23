@@ -1,14 +1,14 @@
 
 #include "commands_filter.hpp"
 
-#include "microstrain/common/serialization.h"
+#include "microstrain/common/buffer.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
 
 
 namespace mip {
-class Serializer;
+;
 
 namespace C {
 struct mip_interface;
@@ -16,6 +16,7 @@ struct mip_interface;
 
 namespace commands_filter {
 
+using ::microstrain::Buffer;
 using ::mip::insert;
 using ::mip::extract;
 using namespace ::mip::C;
@@ -29,12 +30,12 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(Serializer& serializer, const Reset& self)
+void insert(::microstrain::Buffer& serializer, const Reset& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(Serializer& serializer, Reset& self)
+void extract(::microstrain::Buffer& serializer, Reset& self)
 {
     (void)serializer;
     (void)self;
@@ -44,7 +45,7 @@ TypedResult<Reset> reset(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RESET_FILTER, NULL, 0);
 }
-void insert(Serializer& serializer, const SetInitialAttitude& self)
+void insert(::microstrain::Buffer& serializer, const SetInitialAttitude& self)
 {
     insert(serializer, self.roll);
     
@@ -53,7 +54,7 @@ void insert(Serializer& serializer, const SetInitialAttitude& self)
     insert(serializer, self.heading);
     
 }
-void extract(Serializer& serializer, SetInitialAttitude& self)
+void extract(::microstrain::Buffer& serializer, SetInitialAttitude& self)
 {
     extract(serializer, self.roll);
     
@@ -66,7 +67,7 @@ void extract(Serializer& serializer, SetInitialAttitude& self)
 TypedResult<SetInitialAttitude> setInitialAttitude(C::mip_interface& device, float roll, float pitch, float heading)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, roll);
     
@@ -76,9 +77,9 @@ TypedResult<SetInitialAttitude> setInitialAttitude(C::mip_interface& device, flo
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_ATTITUDE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_ATTITUDE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const EstimationControl& self)
+void insert(::microstrain::Buffer& serializer, const EstimationControl& self)
 {
     insert(serializer, self.function);
     
@@ -88,7 +89,7 @@ void insert(Serializer& serializer, const EstimationControl& self)
         
     }
 }
-void extract(Serializer& serializer, EstimationControl& self)
+void extract(::microstrain::Buffer& serializer, EstimationControl& self)
 {
     extract(serializer, self.function);
     
@@ -99,12 +100,12 @@ void extract(Serializer& serializer, EstimationControl& self)
     }
 }
 
-void insert(Serializer& serializer, const EstimationControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const EstimationControl::Response& self)
 {
     insert(serializer, self.enable);
     
 }
-void extract(Serializer& serializer, EstimationControl::Response& self)
+void extract(::microstrain::Buffer& serializer, EstimationControl::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -113,29 +114,29 @@ void extract(Serializer& serializer, EstimationControl::Response& self)
 TypedResult<EstimationControl> writeEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<EstimationControl> readEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags* enableOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<EstimationControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
+    TypedResult<EstimationControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)serializer.length(), REPLY_ESTIMATION_CONTROL_FLAGS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -148,34 +149,34 @@ TypedResult<EstimationControl> readEstimationControl(C::mip_interface& device, E
 TypedResult<EstimationControl> saveEstimationControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<EstimationControl> loadEstimationControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<EstimationControl> defaultEstimationControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ESTIMATION_CONTROL_FLAGS, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const ExternalGnssUpdate& self)
+void insert(::microstrain::Buffer& serializer, const ExternalGnssUpdate& self)
 {
     insert(serializer, self.gps_time);
     
@@ -197,7 +198,7 @@ void insert(Serializer& serializer, const ExternalGnssUpdate& self)
         insert(serializer, self.vel_uncertainty[i]);
     
 }
-void extract(Serializer& serializer, ExternalGnssUpdate& self)
+void extract(::microstrain::Buffer& serializer, ExternalGnssUpdate& self)
 {
     extract(serializer, self.gps_time);
     
@@ -223,7 +224,7 @@ void extract(Serializer& serializer, ExternalGnssUpdate& self)
 TypedResult<ExternalGnssUpdate> externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, gpsTime);
     
@@ -249,9 +250,9 @@ TypedResult<ExternalGnssUpdate> externalGnssUpdate(C::mip_interface& device, dou
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_GNSS_UPDATE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_GNSS_UPDATE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const ExternalHeadingUpdate& self)
+void insert(::microstrain::Buffer& serializer, const ExternalHeadingUpdate& self)
 {
     insert(serializer, self.heading);
     
@@ -260,7 +261,7 @@ void insert(Serializer& serializer, const ExternalHeadingUpdate& self)
     insert(serializer, self.type);
     
 }
-void extract(Serializer& serializer, ExternalHeadingUpdate& self)
+void extract(::microstrain::Buffer& serializer, ExternalHeadingUpdate& self)
 {
     extract(serializer, self.heading);
     
@@ -273,7 +274,7 @@ void extract(Serializer& serializer, ExternalHeadingUpdate& self)
 TypedResult<ExternalHeadingUpdate> externalHeadingUpdate(C::mip_interface& device, float heading, float headingUncertainty, uint8_t type)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, heading);
     
@@ -283,9 +284,9 @@ TypedResult<ExternalHeadingUpdate> externalHeadingUpdate(C::mip_interface& devic
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self)
+void insert(::microstrain::Buffer& serializer, const ExternalHeadingUpdateWithTime& self)
 {
     insert(serializer, self.gps_time);
     
@@ -298,7 +299,7 @@ void insert(Serializer& serializer, const ExternalHeadingUpdateWithTime& self)
     insert(serializer, self.type);
     
 }
-void extract(Serializer& serializer, ExternalHeadingUpdateWithTime& self)
+void extract(::microstrain::Buffer& serializer, ExternalHeadingUpdateWithTime& self)
 {
     extract(serializer, self.gps_time);
     
@@ -315,7 +316,7 @@ void extract(Serializer& serializer, ExternalHeadingUpdateWithTime& self)
 TypedResult<ExternalHeadingUpdateWithTime> externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, float heading, float headingUncertainty, uint8_t type)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, gpsTime);
     
@@ -329,9 +330,9 @@ TypedResult<ExternalHeadingUpdateWithTime> externalHeadingUpdateWithTime(C::mip_
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE_WITH_TIME, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EXTERNAL_HEADING_UPDATE_WITH_TIME, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const TareOrientation& self)
+void insert(::microstrain::Buffer& serializer, const TareOrientation& self)
 {
     insert(serializer, self.function);
     
@@ -341,7 +342,7 @@ void insert(Serializer& serializer, const TareOrientation& self)
         
     }
 }
-void extract(Serializer& serializer, TareOrientation& self)
+void extract(::microstrain::Buffer& serializer, TareOrientation& self)
 {
     extract(serializer, self.function);
     
@@ -352,12 +353,12 @@ void extract(Serializer& serializer, TareOrientation& self)
     }
 }
 
-void insert(Serializer& serializer, const TareOrientation::Response& self)
+void insert(::microstrain::Buffer& serializer, const TareOrientation::Response& self)
 {
     insert(serializer, self.axes);
     
 }
-void extract(Serializer& serializer, TareOrientation::Response& self)
+void extract(::microstrain::Buffer& serializer, TareOrientation::Response& self)
 {
     extract(serializer, self.axes);
     
@@ -366,29 +367,29 @@ void extract(Serializer& serializer, TareOrientation::Response& self)
 TypedResult<TareOrientation> writeTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes axes)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, axes);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<TareOrientation> readTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes* axesOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<TareOrientation> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_TARE_ORIENTATION, buffer, &responseLength);
+    TypedResult<TareOrientation> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)serializer.length(), REPLY_TARE_ORIENTATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(axesOut);
         extract(deserializer, *axesOut);
@@ -401,34 +402,34 @@ TypedResult<TareOrientation> readTareOrientation(C::mip_interface& device, TareO
 TypedResult<TareOrientation> saveTareOrientation(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<TareOrientation> loadTareOrientation(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<TareOrientation> defaultTareOrientation(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_TARE_ORIENTATION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const VehicleDynamicsMode& self)
+void insert(::microstrain::Buffer& serializer, const VehicleDynamicsMode& self)
 {
     insert(serializer, self.function);
     
@@ -438,7 +439,7 @@ void insert(Serializer& serializer, const VehicleDynamicsMode& self)
         
     }
 }
-void extract(Serializer& serializer, VehicleDynamicsMode& self)
+void extract(::microstrain::Buffer& serializer, VehicleDynamicsMode& self)
 {
     extract(serializer, self.function);
     
@@ -449,12 +450,12 @@ void extract(Serializer& serializer, VehicleDynamicsMode& self)
     }
 }
 
-void insert(Serializer& serializer, const VehicleDynamicsMode::Response& self)
+void insert(::microstrain::Buffer& serializer, const VehicleDynamicsMode::Response& self)
 {
     insert(serializer, self.mode);
     
 }
-void extract(Serializer& serializer, VehicleDynamicsMode::Response& self)
+void extract(::microstrain::Buffer& serializer, VehicleDynamicsMode::Response& self)
 {
     extract(serializer, self.mode);
     
@@ -463,29 +464,29 @@ void extract(Serializer& serializer, VehicleDynamicsMode::Response& self)
 TypedResult<VehicleDynamicsMode> writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, mode);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VehicleDynamicsMode> readVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<VehicleDynamicsMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_VEHICLE_DYNAMICS_MODE, buffer, &responseLength);
+    TypedResult<VehicleDynamicsMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)serializer.length(), REPLY_VEHICLE_DYNAMICS_MODE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(modeOut);
         extract(deserializer, *modeOut);
@@ -498,34 +499,34 @@ TypedResult<VehicleDynamicsMode> readVehicleDynamicsMode(C::mip_interface& devic
 TypedResult<VehicleDynamicsMode> saveVehicleDynamicsMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VehicleDynamicsMode> loadVehicleDynamicsMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VehicleDynamicsMode> defaultVehicleDynamicsMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_DYNAMICS_MODE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationEuler& self)
 {
     insert(serializer, self.function);
     
@@ -539,7 +540,7 @@ void insert(Serializer& serializer, const SensorToVehicleRotationEuler& self)
         
     }
 }
-void extract(Serializer& serializer, SensorToVehicleRotationEuler& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationEuler& self)
 {
     extract(serializer, self.function);
     
@@ -554,7 +555,7 @@ void extract(Serializer& serializer, SensorToVehicleRotationEuler& self)
     }
 }
 
-void insert(Serializer& serializer, const SensorToVehicleRotationEuler::Response& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationEuler::Response& self)
 {
     insert(serializer, self.roll);
     
@@ -563,7 +564,7 @@ void insert(Serializer& serializer, const SensorToVehicleRotationEuler::Response
     insert(serializer, self.yaw);
     
 }
-void extract(Serializer& serializer, SensorToVehicleRotationEuler::Response& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationEuler::Response& self)
 {
     extract(serializer, self.roll);
     
@@ -576,7 +577,7 @@ void extract(Serializer& serializer, SensorToVehicleRotationEuler::Response& sel
 TypedResult<SensorToVehicleRotationEuler> writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, roll);
@@ -587,22 +588,22 @@ TypedResult<SensorToVehicleRotationEuler> writeSensorToVehicleRotationEuler(C::m
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationEuler> readSensorToVehicleRotationEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SensorToVehicleRotationEuler> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
+    TypedResult<SensorToVehicleRotationEuler> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)serializer.length(), REPLY_SENSOR2VEHICLE_ROTATION_EULER, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(rollOut);
         extract(deserializer, *rollOut);
@@ -621,34 +622,34 @@ TypedResult<SensorToVehicleRotationEuler> readSensorToVehicleRotationEuler(C::mi
 TypedResult<SensorToVehicleRotationEuler> saveSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationEuler> loadSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationEuler> defaultSensorToVehicleRotationEuler(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_EULER, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SensorToVehicleRotationDcm& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationDcm& self)
 {
     insert(serializer, self.function);
     
@@ -659,7 +660,7 @@ void insert(Serializer& serializer, const SensorToVehicleRotationDcm& self)
         
     }
 }
-void extract(Serializer& serializer, SensorToVehicleRotationDcm& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationDcm& self)
 {
     extract(serializer, self.function);
     
@@ -671,13 +672,13 @@ void extract(Serializer& serializer, SensorToVehicleRotationDcm& self)
     }
 }
 
-void insert(Serializer& serializer, const SensorToVehicleRotationDcm::Response& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationDcm::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.dcm[i]);
     
 }
-void extract(Serializer& serializer, SensorToVehicleRotationDcm::Response& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationDcm::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.dcm[i]);
@@ -687,7 +688,7 @@ void extract(Serializer& serializer, SensorToVehicleRotationDcm::Response& self)
 TypedResult<SensorToVehicleRotationDcm> writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(dcm || (9 == 0));
@@ -696,22 +697,22 @@ TypedResult<SensorToVehicleRotationDcm> writeSensorToVehicleRotationDcm(C::mip_i
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationDcm> readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SensorToVehicleRotationDcm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
+    TypedResult<SensorToVehicleRotationDcm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)serializer.length(), REPLY_SENSOR2VEHICLE_ROTATION_DCM, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(dcmOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
@@ -725,34 +726,34 @@ TypedResult<SensorToVehicleRotationDcm> readSensorToVehicleRotationDcm(C::mip_in
 TypedResult<SensorToVehicleRotationDcm> saveSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationDcm> loadSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationDcm> defaultSensorToVehicleRotationDcm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_DCM, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationQuaternion& self)
 {
     insert(serializer, self.function);
     
@@ -763,7 +764,7 @@ void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion& sel
         
     }
 }
-void extract(Serializer& serializer, SensorToVehicleRotationQuaternion& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationQuaternion& self)
 {
     extract(serializer, self.function);
     
@@ -775,13 +776,13 @@ void extract(Serializer& serializer, SensorToVehicleRotationQuaternion& self)
     }
 }
 
-void insert(Serializer& serializer, const SensorToVehicleRotationQuaternion::Response& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationQuaternion::Response& self)
 {
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.quat[i]);
     
 }
-void extract(Serializer& serializer, SensorToVehicleRotationQuaternion::Response& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationQuaternion::Response& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.quat[i]);
@@ -791,7 +792,7 @@ void extract(Serializer& serializer, SensorToVehicleRotationQuaternion::Response
 TypedResult<SensorToVehicleRotationQuaternion> writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(quat || (4 == 0));
@@ -800,22 +801,22 @@ TypedResult<SensorToVehicleRotationQuaternion> writeSensorToVehicleRotationQuate
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationQuaternion> readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quatOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SensorToVehicleRotationQuaternion> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
+    TypedResult<SensorToVehicleRotationQuaternion> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)serializer.length(), REPLY_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(quatOut || (4 == 0));
         for(unsigned int i=0; i < 4; i++)
@@ -829,34 +830,34 @@ TypedResult<SensorToVehicleRotationQuaternion> readSensorToVehicleRotationQuater
 TypedResult<SensorToVehicleRotationQuaternion> saveSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationQuaternion> loadSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleRotationQuaternion> defaultSensorToVehicleRotationQuaternion(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_ROTATION_QUATERNION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SensorToVehicleOffset& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleOffset& self)
 {
     insert(serializer, self.function);
     
@@ -867,7 +868,7 @@ void insert(Serializer& serializer, const SensorToVehicleOffset& self)
         
     }
 }
-void extract(Serializer& serializer, SensorToVehicleOffset& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleOffset& self)
 {
     extract(serializer, self.function);
     
@@ -879,13 +880,13 @@ void extract(Serializer& serializer, SensorToVehicleOffset& self)
     }
 }
 
-void insert(Serializer& serializer, const SensorToVehicleOffset::Response& self)
+void insert(::microstrain::Buffer& serializer, const SensorToVehicleOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
     
 }
-void extract(Serializer& serializer, SensorToVehicleOffset::Response& self)
+void extract(::microstrain::Buffer& serializer, SensorToVehicleOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
@@ -895,7 +896,7 @@ void extract(Serializer& serializer, SensorToVehicleOffset::Response& self)
 TypedResult<SensorToVehicleOffset> writeSensorToVehicleOffset(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(offset || (3 == 0));
@@ -904,22 +905,22 @@ TypedResult<SensorToVehicleOffset> writeSensorToVehicleOffset(C::mip_interface& 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleOffset> readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SensorToVehicleOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
+    TypedResult<SensorToVehicleOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)serializer.length(), REPLY_SENSOR2VEHICLE_OFFSET, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -933,34 +934,34 @@ TypedResult<SensorToVehicleOffset> readSensorToVehicleOffset(C::mip_interface& d
 TypedResult<SensorToVehicleOffset> saveSensorToVehicleOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleOffset> loadSensorToVehicleOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SensorToVehicleOffset> defaultSensorToVehicleOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR2VEHICLE_OFFSET, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AntennaOffset& self)
+void insert(::microstrain::Buffer& serializer, const AntennaOffset& self)
 {
     insert(serializer, self.function);
     
@@ -971,7 +972,7 @@ void insert(Serializer& serializer, const AntennaOffset& self)
         
     }
 }
-void extract(Serializer& serializer, AntennaOffset& self)
+void extract(::microstrain::Buffer& serializer, AntennaOffset& self)
 {
     extract(serializer, self.function);
     
@@ -983,13 +984,13 @@ void extract(Serializer& serializer, AntennaOffset& self)
     }
 }
 
-void insert(Serializer& serializer, const AntennaOffset::Response& self)
+void insert(::microstrain::Buffer& serializer, const AntennaOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.offset[i]);
     
 }
-void extract(Serializer& serializer, AntennaOffset::Response& self)
+void extract(::microstrain::Buffer& serializer, AntennaOffset::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.offset[i]);
@@ -999,7 +1000,7 @@ void extract(Serializer& serializer, AntennaOffset::Response& self)
 TypedResult<AntennaOffset> writeAntennaOffset(C::mip_interface& device, const float* offset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(offset || (3 == 0));
@@ -1008,22 +1009,22 @@ TypedResult<AntennaOffset> writeAntennaOffset(C::mip_interface& device, const fl
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AntennaOffset> readAntennaOffset(C::mip_interface& device, float* offsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AntennaOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ANTENNA_OFFSET, buffer, &responseLength);
+    TypedResult<AntennaOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length(), REPLY_ANTENNA_OFFSET, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(offsetOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -1037,34 +1038,34 @@ TypedResult<AntennaOffset> readAntennaOffset(C::mip_interface& device, float* of
 TypedResult<AntennaOffset> saveAntennaOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AntennaOffset> loadAntennaOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AntennaOffset> defaultAntennaOffset(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const GnssSource& self)
+void insert(::microstrain::Buffer& serializer, const GnssSource& self)
 {
     insert(serializer, self.function);
     
@@ -1074,7 +1075,7 @@ void insert(Serializer& serializer, const GnssSource& self)
         
     }
 }
-void extract(Serializer& serializer, GnssSource& self)
+void extract(::microstrain::Buffer& serializer, GnssSource& self)
 {
     extract(serializer, self.function);
     
@@ -1085,12 +1086,12 @@ void extract(Serializer& serializer, GnssSource& self)
     }
 }
 
-void insert(Serializer& serializer, const GnssSource::Response& self)
+void insert(::microstrain::Buffer& serializer, const GnssSource::Response& self)
 {
     insert(serializer, self.source);
     
 }
-void extract(Serializer& serializer, GnssSource::Response& self)
+void extract(::microstrain::Buffer& serializer, GnssSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -1099,29 +1100,29 @@ void extract(Serializer& serializer, GnssSource::Response& self)
 TypedResult<GnssSource> writeGnssSource(C::mip_interface& device, GnssSource::Source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssSource> readGnssSource(C::mip_interface& device, GnssSource::Source* sourceOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<GnssSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_GNSS_SOURCE_CONTROL, buffer, &responseLength);
+    TypedResult<GnssSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_GNSS_SOURCE_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -1134,34 +1135,34 @@ TypedResult<GnssSource> readGnssSource(C::mip_interface& device, GnssSource::Sou
 TypedResult<GnssSource> saveGnssSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssSource> loadGnssSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssSource> defaultGnssSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GNSS_SOURCE_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const HeadingSource& self)
+void insert(::microstrain::Buffer& serializer, const HeadingSource& self)
 {
     insert(serializer, self.function);
     
@@ -1171,7 +1172,7 @@ void insert(Serializer& serializer, const HeadingSource& self)
         
     }
 }
-void extract(Serializer& serializer, HeadingSource& self)
+void extract(::microstrain::Buffer& serializer, HeadingSource& self)
 {
     extract(serializer, self.function);
     
@@ -1182,12 +1183,12 @@ void extract(Serializer& serializer, HeadingSource& self)
     }
 }
 
-void insert(Serializer& serializer, const HeadingSource::Response& self)
+void insert(::microstrain::Buffer& serializer, const HeadingSource::Response& self)
 {
     insert(serializer, self.source);
     
 }
-void extract(Serializer& serializer, HeadingSource::Response& self)
+void extract(::microstrain::Buffer& serializer, HeadingSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -1196,29 +1197,29 @@ void extract(Serializer& serializer, HeadingSource::Response& self)
 TypedResult<HeadingSource> writeHeadingSource(C::mip_interface& device, HeadingSource::Source source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HeadingSource> readHeadingSource(C::mip_interface& device, HeadingSource::Source* sourceOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<HeadingSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_HEADING_UPDATE_CONTROL, buffer, &responseLength);
+    TypedResult<HeadingSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_HEADING_UPDATE_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -1231,34 +1232,34 @@ TypedResult<HeadingSource> readHeadingSource(C::mip_interface& device, HeadingSo
 TypedResult<HeadingSource> saveHeadingSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HeadingSource> loadHeadingSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HeadingSource> defaultHeadingSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HEADING_UPDATE_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AutoInitControl& self)
+void insert(::microstrain::Buffer& serializer, const AutoInitControl& self)
 {
     insert(serializer, self.function);
     
@@ -1268,7 +1269,7 @@ void insert(Serializer& serializer, const AutoInitControl& self)
         
     }
 }
-void extract(Serializer& serializer, AutoInitControl& self)
+void extract(::microstrain::Buffer& serializer, AutoInitControl& self)
 {
     extract(serializer, self.function);
     
@@ -1279,12 +1280,12 @@ void extract(Serializer& serializer, AutoInitControl& self)
     }
 }
 
-void insert(Serializer& serializer, const AutoInitControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const AutoInitControl::Response& self)
 {
     insert(serializer, self.enable);
     
 }
-void extract(Serializer& serializer, AutoInitControl::Response& self)
+void extract(::microstrain::Buffer& serializer, AutoInitControl::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -1293,29 +1294,29 @@ void extract(Serializer& serializer, AutoInitControl::Response& self)
 TypedResult<AutoInitControl> writeAutoInitControl(C::mip_interface& device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoInitControl> readAutoInitControl(C::mip_interface& device, uint8_t* enableOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AutoInitControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_AUTOINIT_CONTROL, buffer, &responseLength);
+    TypedResult<AutoInitControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_AUTOINIT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -1328,34 +1329,34 @@ TypedResult<AutoInitControl> readAutoInitControl(C::mip_interface& device, uint8
 TypedResult<AutoInitControl> saveAutoInitControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoInitControl> loadAutoInitControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoInitControl> defaultAutoInitControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AUTOINIT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AccelNoise& self)
+void insert(::microstrain::Buffer& serializer, const AccelNoise& self)
 {
     insert(serializer, self.function);
     
@@ -1366,7 +1367,7 @@ void insert(Serializer& serializer, const AccelNoise& self)
         
     }
 }
-void extract(Serializer& serializer, AccelNoise& self)
+void extract(::microstrain::Buffer& serializer, AccelNoise& self)
 {
     extract(serializer, self.function);
     
@@ -1378,13 +1379,13 @@ void extract(Serializer& serializer, AccelNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const AccelNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const AccelNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, AccelNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, AccelNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.noise[i]);
@@ -1394,7 +1395,7 @@ void extract(Serializer& serializer, AccelNoise::Response& self)
 TypedResult<AccelNoise> writeAccelNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (3 == 0));
@@ -1403,22 +1404,22 @@ TypedResult<AccelNoise> writeAccelNoise(C::mip_interface& device, const float* n
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelNoise> readAccelNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AccelNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ACCEL_NOISE, buffer, &responseLength);
+    TypedResult<AccelNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)serializer.length(), REPLY_ACCEL_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -1432,34 +1433,34 @@ TypedResult<AccelNoise> readAccelNoise(C::mip_interface& device, float* noiseOut
 TypedResult<AccelNoise> saveAccelNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelNoise> loadAccelNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelNoise> defaultAccelNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const GyroNoise& self)
+void insert(::microstrain::Buffer& serializer, const GyroNoise& self)
 {
     insert(serializer, self.function);
     
@@ -1470,7 +1471,7 @@ void insert(Serializer& serializer, const GyroNoise& self)
         
     }
 }
-void extract(Serializer& serializer, GyroNoise& self)
+void extract(::microstrain::Buffer& serializer, GyroNoise& self)
 {
     extract(serializer, self.function);
     
@@ -1482,13 +1483,13 @@ void extract(Serializer& serializer, GyroNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const GyroNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const GyroNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, GyroNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, GyroNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.noise[i]);
@@ -1498,7 +1499,7 @@ void extract(Serializer& serializer, GyroNoise::Response& self)
 TypedResult<GyroNoise> writeGyroNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (3 == 0));
@@ -1507,22 +1508,22 @@ TypedResult<GyroNoise> writeGyroNoise(C::mip_interface& device, const float* noi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroNoise> readGyroNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<GyroNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_GYRO_NOISE, buffer, &responseLength);
+    TypedResult<GyroNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)serializer.length(), REPLY_GYRO_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -1536,34 +1537,34 @@ TypedResult<GyroNoise> readGyroNoise(C::mip_interface& device, float* noiseOut)
 TypedResult<GyroNoise> saveGyroNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroNoise> loadGyroNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroNoise> defaultGyroNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AccelBiasModel& self)
+void insert(::microstrain::Buffer& serializer, const AccelBiasModel& self)
 {
     insert(serializer, self.function);
     
@@ -1577,7 +1578,7 @@ void insert(Serializer& serializer, const AccelBiasModel& self)
         
     }
 }
-void extract(Serializer& serializer, AccelBiasModel& self)
+void extract(::microstrain::Buffer& serializer, AccelBiasModel& self)
 {
     extract(serializer, self.function);
     
@@ -1592,7 +1593,7 @@ void extract(Serializer& serializer, AccelBiasModel& self)
     }
 }
 
-void insert(Serializer& serializer, const AccelBiasModel::Response& self)
+void insert(::microstrain::Buffer& serializer, const AccelBiasModel::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.beta[i]);
@@ -1601,7 +1602,7 @@ void insert(Serializer& serializer, const AccelBiasModel::Response& self)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, AccelBiasModel::Response& self)
+void extract(::microstrain::Buffer& serializer, AccelBiasModel::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.beta[i]);
@@ -1614,7 +1615,7 @@ void extract(Serializer& serializer, AccelBiasModel::Response& self)
 TypedResult<AccelBiasModel> writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(beta || (3 == 0));
@@ -1627,22 +1628,22 @@ TypedResult<AccelBiasModel> writeAccelBiasModel(C::mip_interface& device, const 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelBiasModel> readAccelBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AccelBiasModel> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ACCEL_BIAS_MODEL, buffer, &responseLength);
+    TypedResult<AccelBiasModel> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)serializer.length(), REPLY_ACCEL_BIAS_MODEL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(betaOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -1660,34 +1661,34 @@ TypedResult<AccelBiasModel> readAccelBiasModel(C::mip_interface& device, float* 
 TypedResult<AccelBiasModel> saveAccelBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelBiasModel> loadAccelBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelBiasModel> defaultAccelBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const GyroBiasModel& self)
+void insert(::microstrain::Buffer& serializer, const GyroBiasModel& self)
 {
     insert(serializer, self.function);
     
@@ -1701,7 +1702,7 @@ void insert(Serializer& serializer, const GyroBiasModel& self)
         
     }
 }
-void extract(Serializer& serializer, GyroBiasModel& self)
+void extract(::microstrain::Buffer& serializer, GyroBiasModel& self)
 {
     extract(serializer, self.function);
     
@@ -1716,7 +1717,7 @@ void extract(Serializer& serializer, GyroBiasModel& self)
     }
 }
 
-void insert(Serializer& serializer, const GyroBiasModel::Response& self)
+void insert(::microstrain::Buffer& serializer, const GyroBiasModel::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.beta[i]);
@@ -1725,7 +1726,7 @@ void insert(Serializer& serializer, const GyroBiasModel::Response& self)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, GyroBiasModel::Response& self)
+void extract(::microstrain::Buffer& serializer, GyroBiasModel::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.beta[i]);
@@ -1738,7 +1739,7 @@ void extract(Serializer& serializer, GyroBiasModel::Response& self)
 TypedResult<GyroBiasModel> writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(beta || (3 == 0));
@@ -1751,22 +1752,22 @@ TypedResult<GyroBiasModel> writeGyroBiasModel(C::mip_interface& device, const fl
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroBiasModel> readGyroBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<GyroBiasModel> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_GYRO_BIAS_MODEL, buffer, &responseLength);
+    TypedResult<GyroBiasModel> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)serializer.length(), REPLY_GYRO_BIAS_MODEL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(betaOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -1784,34 +1785,34 @@ TypedResult<GyroBiasModel> readGyroBiasModel(C::mip_interface& device, float* be
 TypedResult<GyroBiasModel> saveGyroBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroBiasModel> loadGyroBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GyroBiasModel> defaultGyroBiasModel(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_BIAS_MODEL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AltitudeAiding& self)
+void insert(::microstrain::Buffer& serializer, const AltitudeAiding& self)
 {
     insert(serializer, self.function);
     
@@ -1821,7 +1822,7 @@ void insert(Serializer& serializer, const AltitudeAiding& self)
         
     }
 }
-void extract(Serializer& serializer, AltitudeAiding& self)
+void extract(::microstrain::Buffer& serializer, AltitudeAiding& self)
 {
     extract(serializer, self.function);
     
@@ -1832,12 +1833,12 @@ void extract(Serializer& serializer, AltitudeAiding& self)
     }
 }
 
-void insert(Serializer& serializer, const AltitudeAiding::Response& self)
+void insert(::microstrain::Buffer& serializer, const AltitudeAiding::Response& self)
 {
     insert(serializer, self.selector);
     
 }
-void extract(Serializer& serializer, AltitudeAiding::Response& self)
+void extract(::microstrain::Buffer& serializer, AltitudeAiding::Response& self)
 {
     extract(serializer, self.selector);
     
@@ -1846,29 +1847,29 @@ void extract(Serializer& serializer, AltitudeAiding::Response& self)
 TypedResult<AltitudeAiding> writeAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector selector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, selector);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AltitudeAiding> readAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector* selectorOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AltitudeAiding> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
+    TypedResult<AltitudeAiding> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ALTITUDE_AIDING_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(selectorOut);
         extract(deserializer, *selectorOut);
@@ -1881,34 +1882,34 @@ TypedResult<AltitudeAiding> readAltitudeAiding(C::mip_interface& device, Altitud
 TypedResult<AltitudeAiding> saveAltitudeAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AltitudeAiding> loadAltitudeAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AltitudeAiding> defaultAltitudeAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ALTITUDE_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const PitchRollAiding& self)
+void insert(::microstrain::Buffer& serializer, const PitchRollAiding& self)
 {
     insert(serializer, self.function);
     
@@ -1918,7 +1919,7 @@ void insert(Serializer& serializer, const PitchRollAiding& self)
         
     }
 }
-void extract(Serializer& serializer, PitchRollAiding& self)
+void extract(::microstrain::Buffer& serializer, PitchRollAiding& self)
 {
     extract(serializer, self.function);
     
@@ -1929,12 +1930,12 @@ void extract(Serializer& serializer, PitchRollAiding& self)
     }
 }
 
-void insert(Serializer& serializer, const PitchRollAiding::Response& self)
+void insert(::microstrain::Buffer& serializer, const PitchRollAiding::Response& self)
 {
     insert(serializer, self.source);
     
 }
-void extract(Serializer& serializer, PitchRollAiding::Response& self)
+void extract(::microstrain::Buffer& serializer, PitchRollAiding::Response& self)
 {
     extract(serializer, self.source);
     
@@ -1943,29 +1944,29 @@ void extract(Serializer& serializer, PitchRollAiding::Response& self)
 TypedResult<PitchRollAiding> writePitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PitchRollAiding> readPitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource* sourceOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<PitchRollAiding> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, &responseLength);
+    TypedResult<PitchRollAiding> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -1978,34 +1979,34 @@ TypedResult<PitchRollAiding> readPitchRollAiding(C::mip_interface& device, Pitch
 TypedResult<PitchRollAiding> savePitchRollAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PitchRollAiding> loadPitchRollAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PitchRollAiding> defaultPitchRollAiding(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SECONDARY_PITCH_ROLL_AIDING_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AutoZupt& self)
+void insert(::microstrain::Buffer& serializer, const AutoZupt& self)
 {
     insert(serializer, self.function);
     
@@ -2017,7 +2018,7 @@ void insert(Serializer& serializer, const AutoZupt& self)
         
     }
 }
-void extract(Serializer& serializer, AutoZupt& self)
+void extract(::microstrain::Buffer& serializer, AutoZupt& self)
 {
     extract(serializer, self.function);
     
@@ -2030,14 +2031,14 @@ void extract(Serializer& serializer, AutoZupt& self)
     }
 }
 
-void insert(Serializer& serializer, const AutoZupt::Response& self)
+void insert(::microstrain::Buffer& serializer, const AutoZupt::Response& self)
 {
     insert(serializer, self.enable);
     
     insert(serializer, self.threshold);
     
 }
-void extract(Serializer& serializer, AutoZupt::Response& self)
+void extract(::microstrain::Buffer& serializer, AutoZupt::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -2048,7 +2049,7 @@ void extract(Serializer& serializer, AutoZupt::Response& self)
 TypedResult<AutoZupt> writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -2057,22 +2058,22 @@ TypedResult<AutoZupt> writeAutoZupt(C::mip_interface& device, uint8_t enable, fl
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoZupt> readAutoZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AutoZupt> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ZUPT_CONTROL, buffer, &responseLength);
+    TypedResult<AutoZupt> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -2088,34 +2089,34 @@ TypedResult<AutoZupt> readAutoZupt(C::mip_interface& device, uint8_t* enableOut,
 TypedResult<AutoZupt> saveAutoZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoZupt> loadAutoZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoZupt> defaultAutoZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AutoAngularZupt& self)
+void insert(::microstrain::Buffer& serializer, const AutoAngularZupt& self)
 {
     insert(serializer, self.function);
     
@@ -2127,7 +2128,7 @@ void insert(Serializer& serializer, const AutoAngularZupt& self)
         
     }
 }
-void extract(Serializer& serializer, AutoAngularZupt& self)
+void extract(::microstrain::Buffer& serializer, AutoAngularZupt& self)
 {
     extract(serializer, self.function);
     
@@ -2140,14 +2141,14 @@ void extract(Serializer& serializer, AutoAngularZupt& self)
     }
 }
 
-void insert(Serializer& serializer, const AutoAngularZupt::Response& self)
+void insert(::microstrain::Buffer& serializer, const AutoAngularZupt::Response& self)
 {
     insert(serializer, self.enable);
     
     insert(serializer, self.threshold);
     
 }
-void extract(Serializer& serializer, AutoAngularZupt::Response& self)
+void extract(::microstrain::Buffer& serializer, AutoAngularZupt::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -2158,7 +2159,7 @@ void extract(Serializer& serializer, AutoAngularZupt::Response& self)
 TypedResult<AutoAngularZupt> writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -2167,22 +2168,22 @@ TypedResult<AutoAngularZupt> writeAutoAngularZupt(C::mip_interface& device, uint
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoAngularZupt> readAutoAngularZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AutoAngularZupt> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
+    TypedResult<AutoAngularZupt> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ANGULAR_ZUPT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -2198,39 +2199,39 @@ TypedResult<AutoAngularZupt> readAutoAngularZupt(C::mip_interface& device, uint8
 TypedResult<AutoAngularZupt> saveAutoAngularZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoAngularZupt> loadAutoAngularZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AutoAngularZupt> defaultAutoAngularZupt(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANGULAR_ZUPT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const CommandedZupt& self)
+void insert(::microstrain::Buffer& serializer, const CommandedZupt& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(Serializer& serializer, CommandedZupt& self)
+void extract(::microstrain::Buffer& serializer, CommandedZupt& self)
 {
     (void)serializer;
     (void)self;
@@ -2240,12 +2241,12 @@ TypedResult<CommandedZupt> commandedZupt(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMMANDED_ZUPT, NULL, 0);
 }
-void insert(Serializer& serializer, const CommandedAngularZupt& self)
+void insert(::microstrain::Buffer& serializer, const CommandedAngularZupt& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(Serializer& serializer, CommandedAngularZupt& self)
+void extract(::microstrain::Buffer& serializer, CommandedAngularZupt& self)
 {
     (void)serializer;
     (void)self;
@@ -2255,12 +2256,12 @@ TypedResult<CommandedAngularZupt> commandedAngularZupt(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMMANDED_ANGULAR_ZUPT, NULL, 0);
 }
-void insert(Serializer& serializer, const MagCaptureAutoCal& self)
+void insert(::microstrain::Buffer& serializer, const MagCaptureAutoCal& self)
 {
     insert(serializer, self.function);
     
 }
-void extract(Serializer& serializer, MagCaptureAutoCal& self)
+void extract(::microstrain::Buffer& serializer, MagCaptureAutoCal& self)
 {
     extract(serializer, self.function);
     
@@ -2269,24 +2270,24 @@ void extract(Serializer& serializer, MagCaptureAutoCal& self)
 TypedResult<MagCaptureAutoCal> writeMagCaptureAutoCal(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagCaptureAutoCal> saveMagCaptureAutoCal(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_CAPTURE_AUTO_CALIBRATION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const GravityNoise& self)
+void insert(::microstrain::Buffer& serializer, const GravityNoise& self)
 {
     insert(serializer, self.function);
     
@@ -2297,7 +2298,7 @@ void insert(Serializer& serializer, const GravityNoise& self)
         
     }
 }
-void extract(Serializer& serializer, GravityNoise& self)
+void extract(::microstrain::Buffer& serializer, GravityNoise& self)
 {
     extract(serializer, self.function);
     
@@ -2309,13 +2310,13 @@ void extract(Serializer& serializer, GravityNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const GravityNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const GravityNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, GravityNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, GravityNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.noise[i]);
@@ -2325,7 +2326,7 @@ void extract(Serializer& serializer, GravityNoise::Response& self)
 TypedResult<GravityNoise> writeGravityNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (3 == 0));
@@ -2334,22 +2335,22 @@ TypedResult<GravityNoise> writeGravityNoise(C::mip_interface& device, const floa
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GravityNoise> readGravityNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<GravityNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_GRAVITY_NOISE, buffer, &responseLength);
+    TypedResult<GravityNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)serializer.length(), REPLY_GRAVITY_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -2363,34 +2364,34 @@ TypedResult<GravityNoise> readGravityNoise(C::mip_interface& device, float* nois
 TypedResult<GravityNoise> saveGravityNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GravityNoise> loadGravityNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GravityNoise> defaultGravityNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GRAVITY_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const PressureAltitudeNoise& self)
+void insert(::microstrain::Buffer& serializer, const PressureAltitudeNoise& self)
 {
     insert(serializer, self.function);
     
@@ -2400,7 +2401,7 @@ void insert(Serializer& serializer, const PressureAltitudeNoise& self)
         
     }
 }
-void extract(Serializer& serializer, PressureAltitudeNoise& self)
+void extract(::microstrain::Buffer& serializer, PressureAltitudeNoise& self)
 {
     extract(serializer, self.function);
     
@@ -2411,12 +2412,12 @@ void extract(Serializer& serializer, PressureAltitudeNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const PressureAltitudeNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const PressureAltitudeNoise::Response& self)
 {
     insert(serializer, self.noise);
     
 }
-void extract(Serializer& serializer, PressureAltitudeNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, PressureAltitudeNoise::Response& self)
 {
     extract(serializer, self.noise);
     
@@ -2425,29 +2426,29 @@ void extract(Serializer& serializer, PressureAltitudeNoise::Response& self)
 TypedResult<PressureAltitudeNoise> writePressureAltitudeNoise(C::mip_interface& device, float noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, noise);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PressureAltitudeNoise> readPressureAltitudeNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<PressureAltitudeNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_PRESSURE_NOISE, buffer, &responseLength);
+    TypedResult<PressureAltitudeNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)serializer.length(), REPLY_PRESSURE_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut);
         extract(deserializer, *noiseOut);
@@ -2460,34 +2461,34 @@ TypedResult<PressureAltitudeNoise> readPressureAltitudeNoise(C::mip_interface& d
 TypedResult<PressureAltitudeNoise> savePressureAltitudeNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PressureAltitudeNoise> loadPressureAltitudeNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<PressureAltitudeNoise> defaultPressureAltitudeNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PRESSURE_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const HardIronOffsetNoise& self)
+void insert(::microstrain::Buffer& serializer, const HardIronOffsetNoise& self)
 {
     insert(serializer, self.function);
     
@@ -2498,7 +2499,7 @@ void insert(Serializer& serializer, const HardIronOffsetNoise& self)
         
     }
 }
-void extract(Serializer& serializer, HardIronOffsetNoise& self)
+void extract(::microstrain::Buffer& serializer, HardIronOffsetNoise& self)
 {
     extract(serializer, self.function);
     
@@ -2510,13 +2511,13 @@ void extract(Serializer& serializer, HardIronOffsetNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const HardIronOffsetNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const HardIronOffsetNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, HardIronOffsetNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, HardIronOffsetNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.noise[i]);
@@ -2526,7 +2527,7 @@ void extract(Serializer& serializer, HardIronOffsetNoise::Response& self)
 TypedResult<HardIronOffsetNoise> writeHardIronOffsetNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (3 == 0));
@@ -2535,22 +2536,22 @@ TypedResult<HardIronOffsetNoise> writeHardIronOffsetNoise(C::mip_interface& devi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HardIronOffsetNoise> readHardIronOffsetNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<HardIronOffsetNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
+    TypedResult<HardIronOffsetNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)serializer.length(), REPLY_HARD_IRON_OFFSET_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -2564,34 +2565,34 @@ TypedResult<HardIronOffsetNoise> readHardIronOffsetNoise(C::mip_interface& devic
 TypedResult<HardIronOffsetNoise> saveHardIronOffsetNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HardIronOffsetNoise> loadHardIronOffsetNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<HardIronOffsetNoise> defaultHardIronOffsetNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_HARD_IRON_OFFSET_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SoftIronMatrixNoise& self)
+void insert(::microstrain::Buffer& serializer, const SoftIronMatrixNoise& self)
 {
     insert(serializer, self.function);
     
@@ -2602,7 +2603,7 @@ void insert(Serializer& serializer, const SoftIronMatrixNoise& self)
         
     }
 }
-void extract(Serializer& serializer, SoftIronMatrixNoise& self)
+void extract(::microstrain::Buffer& serializer, SoftIronMatrixNoise& self)
 {
     extract(serializer, self.function);
     
@@ -2614,13 +2615,13 @@ void extract(Serializer& serializer, SoftIronMatrixNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const SoftIronMatrixNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const SoftIronMatrixNoise::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, SoftIronMatrixNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, SoftIronMatrixNoise::Response& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.noise[i]);
@@ -2630,7 +2631,7 @@ void extract(Serializer& serializer, SoftIronMatrixNoise::Response& self)
 TypedResult<SoftIronMatrixNoise> writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (9 == 0));
@@ -2639,22 +2640,22 @@ TypedResult<SoftIronMatrixNoise> writeSoftIronMatrixNoise(C::mip_interface& devi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SoftIronMatrixNoise> readSoftIronMatrixNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SoftIronMatrixNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SOFT_IRON_MATRIX_NOISE, buffer, &responseLength);
+    TypedResult<SoftIronMatrixNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)serializer.length(), REPLY_SOFT_IRON_MATRIX_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (9 == 0));
         for(unsigned int i=0; i < 9; i++)
@@ -2668,34 +2669,34 @@ TypedResult<SoftIronMatrixNoise> readSoftIronMatrixNoise(C::mip_interface& devic
 TypedResult<SoftIronMatrixNoise> saveSoftIronMatrixNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SoftIronMatrixNoise> loadSoftIronMatrixNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SoftIronMatrixNoise> defaultSoftIronMatrixNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SOFT_IRON_MATRIX_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagNoise& self)
+void insert(::microstrain::Buffer& serializer, const MagNoise& self)
 {
     insert(serializer, self.function);
     
@@ -2706,7 +2707,7 @@ void insert(Serializer& serializer, const MagNoise& self)
         
     }
 }
-void extract(Serializer& serializer, MagNoise& self)
+void extract(::microstrain::Buffer& serializer, MagNoise& self)
 {
     extract(serializer, self.function);
     
@@ -2718,13 +2719,13 @@ void extract(Serializer& serializer, MagNoise& self)
     }
 }
 
-void insert(Serializer& serializer, const MagNoise::Response& self)
+void insert(::microstrain::Buffer& serializer, const MagNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.noise[i]);
     
 }
-void extract(Serializer& serializer, MagNoise::Response& self)
+void extract(::microstrain::Buffer& serializer, MagNoise::Response& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.noise[i]);
@@ -2734,7 +2735,7 @@ void extract(Serializer& serializer, MagNoise::Response& self)
 TypedResult<MagNoise> writeMagNoise(C::mip_interface& device, const float* noise)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     assert(noise || (3 == 0));
@@ -2743,22 +2744,22 @@ TypedResult<MagNoise> writeMagNoise(C::mip_interface& device, const float* noise
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagNoise> readMagNoise(C::mip_interface& device, float* noiseOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MagNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_MAG_NOISE, buffer, &responseLength);
+    TypedResult<MagNoise> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)serializer.length(), REPLY_MAG_NOISE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(noiseOut || (3 == 0));
         for(unsigned int i=0; i < 3; i++)
@@ -2772,34 +2773,34 @@ TypedResult<MagNoise> readMagNoise(C::mip_interface& device, float* noiseOut)
 TypedResult<MagNoise> saveMagNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagNoise> loadMagNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagNoise> defaultMagNoise(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_NOISE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const InclinationSource& self)
+void insert(::microstrain::Buffer& serializer, const InclinationSource& self)
 {
     insert(serializer, self.function);
     
@@ -2811,7 +2812,7 @@ void insert(Serializer& serializer, const InclinationSource& self)
         
     }
 }
-void extract(Serializer& serializer, InclinationSource& self)
+void extract(::microstrain::Buffer& serializer, InclinationSource& self)
 {
     extract(serializer, self.function);
     
@@ -2824,14 +2825,14 @@ void extract(Serializer& serializer, InclinationSource& self)
     }
 }
 
-void insert(Serializer& serializer, const InclinationSource::Response& self)
+void insert(::microstrain::Buffer& serializer, const InclinationSource::Response& self)
 {
     insert(serializer, self.source);
     
     insert(serializer, self.inclination);
     
 }
-void extract(Serializer& serializer, InclinationSource::Response& self)
+void extract(::microstrain::Buffer& serializer, InclinationSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -2842,7 +2843,7 @@ void extract(Serializer& serializer, InclinationSource::Response& self)
 TypedResult<InclinationSource> writeInclinationSource(C::mip_interface& device, FilterMagParamSource source, float inclination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
@@ -2851,22 +2852,22 @@ TypedResult<InclinationSource> writeInclinationSource(C::mip_interface& device, 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InclinationSource> readInclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* inclinationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<InclinationSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_INCLINATION_SOURCE, buffer, &responseLength);
+    TypedResult<InclinationSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)serializer.length(), REPLY_INCLINATION_SOURCE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -2882,34 +2883,34 @@ TypedResult<InclinationSource> readInclinationSource(C::mip_interface& device, F
 TypedResult<InclinationSource> saveInclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InclinationSource> loadInclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InclinationSource> defaultInclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INCLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagneticDeclinationSource& self)
+void insert(::microstrain::Buffer& serializer, const MagneticDeclinationSource& self)
 {
     insert(serializer, self.function);
     
@@ -2921,7 +2922,7 @@ void insert(Serializer& serializer, const MagneticDeclinationSource& self)
         
     }
 }
-void extract(Serializer& serializer, MagneticDeclinationSource& self)
+void extract(::microstrain::Buffer& serializer, MagneticDeclinationSource& self)
 {
     extract(serializer, self.function);
     
@@ -2934,14 +2935,14 @@ void extract(Serializer& serializer, MagneticDeclinationSource& self)
     }
 }
 
-void insert(Serializer& serializer, const MagneticDeclinationSource::Response& self)
+void insert(::microstrain::Buffer& serializer, const MagneticDeclinationSource::Response& self)
 {
     insert(serializer, self.source);
     
     insert(serializer, self.declination);
     
 }
-void extract(Serializer& serializer, MagneticDeclinationSource::Response& self)
+void extract(::microstrain::Buffer& serializer, MagneticDeclinationSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -2952,7 +2953,7 @@ void extract(Serializer& serializer, MagneticDeclinationSource::Response& self)
 TypedResult<MagneticDeclinationSource> writeMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource source, float declination)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
@@ -2961,22 +2962,22 @@ TypedResult<MagneticDeclinationSource> writeMagneticDeclinationSource(C::mip_int
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagneticDeclinationSource> readMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* declinationOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MagneticDeclinationSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_DECLINATION_SOURCE, buffer, &responseLength);
+    TypedResult<MagneticDeclinationSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)serializer.length(), REPLY_DECLINATION_SOURCE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -2992,34 +2993,34 @@ TypedResult<MagneticDeclinationSource> readMagneticDeclinationSource(C::mip_inte
 TypedResult<MagneticDeclinationSource> saveMagneticDeclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagneticDeclinationSource> loadMagneticDeclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagneticDeclinationSource> defaultMagneticDeclinationSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_DECLINATION_SOURCE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagFieldMagnitudeSource& self)
+void insert(::microstrain::Buffer& serializer, const MagFieldMagnitudeSource& self)
 {
     insert(serializer, self.function);
     
@@ -3031,7 +3032,7 @@ void insert(Serializer& serializer, const MagFieldMagnitudeSource& self)
         
     }
 }
-void extract(Serializer& serializer, MagFieldMagnitudeSource& self)
+void extract(::microstrain::Buffer& serializer, MagFieldMagnitudeSource& self)
 {
     extract(serializer, self.function);
     
@@ -3044,14 +3045,14 @@ void extract(Serializer& serializer, MagFieldMagnitudeSource& self)
     }
 }
 
-void insert(Serializer& serializer, const MagFieldMagnitudeSource::Response& self)
+void insert(::microstrain::Buffer& serializer, const MagFieldMagnitudeSource::Response& self)
 {
     insert(serializer, self.source);
     
     insert(serializer, self.magnitude);
     
 }
-void extract(Serializer& serializer, MagFieldMagnitudeSource::Response& self)
+void extract(::microstrain::Buffer& serializer, MagFieldMagnitudeSource::Response& self)
 {
     extract(serializer, self.source);
     
@@ -3062,7 +3063,7 @@ void extract(Serializer& serializer, MagFieldMagnitudeSource::Response& self)
 TypedResult<MagFieldMagnitudeSource> writeMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource source, float magnitude)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
@@ -3071,22 +3072,22 @@ TypedResult<MagFieldMagnitudeSource> writeMagFieldMagnitudeSource(C::mip_interfa
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagFieldMagnitudeSource> readMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* magnitudeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MagFieldMagnitudeSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_MAGNETIC_MAGNITUDE_SOURCE, buffer, &responseLength);
+    TypedResult<MagFieldMagnitudeSource> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)serializer.length(), REPLY_MAGNETIC_MAGNITUDE_SOURCE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -3102,34 +3103,34 @@ TypedResult<MagFieldMagnitudeSource> readMagFieldMagnitudeSource(C::mip_interfac
 TypedResult<MagFieldMagnitudeSource> saveMagFieldMagnitudeSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagFieldMagnitudeSource> loadMagFieldMagnitudeSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagFieldMagnitudeSource> defaultMagFieldMagnitudeSource(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAGNETIC_MAGNITUDE_SOURCE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const ReferencePosition& self)
+void insert(::microstrain::Buffer& serializer, const ReferencePosition& self)
 {
     insert(serializer, self.function);
     
@@ -3145,7 +3146,7 @@ void insert(Serializer& serializer, const ReferencePosition& self)
         
     }
 }
-void extract(Serializer& serializer, ReferencePosition& self)
+void extract(::microstrain::Buffer& serializer, ReferencePosition& self)
 {
     extract(serializer, self.function);
     
@@ -3162,7 +3163,7 @@ void extract(Serializer& serializer, ReferencePosition& self)
     }
 }
 
-void insert(Serializer& serializer, const ReferencePosition::Response& self)
+void insert(::microstrain::Buffer& serializer, const ReferencePosition::Response& self)
 {
     insert(serializer, self.enable);
     
@@ -3173,7 +3174,7 @@ void insert(Serializer& serializer, const ReferencePosition::Response& self)
     insert(serializer, self.altitude);
     
 }
-void extract(Serializer& serializer, ReferencePosition::Response& self)
+void extract(::microstrain::Buffer& serializer, ReferencePosition::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -3188,7 +3189,7 @@ void extract(Serializer& serializer, ReferencePosition::Response& self)
 TypedResult<ReferencePosition> writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -3201,22 +3202,22 @@ TypedResult<ReferencePosition> writeReferencePosition(C::mip_interface& device, 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<ReferencePosition> readReferencePosition(C::mip_interface& device, bool* enableOut, double* latitudeOut, double* longitudeOut, double* altitudeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<ReferencePosition> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_REFERENCE_POSITION, buffer, &responseLength);
+    TypedResult<ReferencePosition> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)serializer.length(), REPLY_REFERENCE_POSITION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -3238,34 +3239,34 @@ TypedResult<ReferencePosition> readReferencePosition(C::mip_interface& device, b
 TypedResult<ReferencePosition> saveReferencePosition(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<ReferencePosition> loadReferencePosition(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<ReferencePosition> defaultReferencePosition(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REFERENCE_POSITION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self)
+void insert(::microstrain::Buffer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self)
 {
     insert(serializer, self.function);
     
@@ -3287,7 +3288,7 @@ void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement
         
     }
 }
-void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self)
+void extract(::microstrain::Buffer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self)
 {
     extract(serializer, self.function);
     
@@ -3310,7 +3311,7 @@ void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& sel
     }
 }
 
-void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
+void insert(::microstrain::Buffer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
 {
     insert(serializer, self.adaptive_measurement);
     
@@ -3327,7 +3328,7 @@ void insert(Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement
     insert(serializer, self.minimum_uncertainty);
     
 }
-void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
+void extract(::microstrain::Buffer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self)
 {
     extract(serializer, self.adaptive_measurement);
     
@@ -3348,7 +3349,7 @@ void extract(Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Res
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, adaptiveMeasurement);
@@ -3367,22 +3368,22 @@ TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> writeAccelMagnitudeErrorAdap
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> readAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(adaptiveMeasurementOut);
         extract(deserializer, *adaptiveMeasurementOut);
@@ -3413,34 +3414,34 @@ TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> readAccelMagnitudeErrorAdapt
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> saveAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> loadAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> defaultAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ACCEL_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self)
+void insert(::microstrain::Buffer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self)
 {
     insert(serializer, self.function);
     
@@ -3462,7 +3463,7 @@ void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& 
         
     }
 }
-void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self)
+void extract(::microstrain::Buffer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self)
 {
     extract(serializer, self.function);
     
@@ -3485,7 +3486,7 @@ void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self)
     }
 }
 
-void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self)
+void insert(::microstrain::Buffer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self)
 {
     insert(serializer, self.adaptive_measurement);
     
@@ -3502,7 +3503,7 @@ void insert(Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::
     insert(serializer, self.minimum_uncertainty);
     
 }
-void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self)
+void extract(::microstrain::Buffer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self)
 {
     extract(serializer, self.adaptive_measurement);
     
@@ -3523,7 +3524,7 @@ void extract(Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Respo
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, adaptiveMeasurement);
@@ -3542,22 +3543,22 @@ TypedResult<MagMagnitudeErrorAdaptiveMeasurement> writeMagMagnitudeErrorAdaptive
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> readMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MagMagnitudeErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    TypedResult<MagMagnitudeErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(adaptiveMeasurementOut);
         extract(deserializer, *adaptiveMeasurementOut);
@@ -3588,34 +3589,34 @@ TypedResult<MagMagnitudeErrorAdaptiveMeasurement> readMagMagnitudeErrorAdaptiveM
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> saveMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> loadMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> defaultMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_MAGNITUDE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self)
+void insert(::microstrain::Buffer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self)
 {
     insert(serializer, self.function);
     
@@ -3633,7 +3634,7 @@ void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& s
         
     }
 }
-void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self)
+void extract(::microstrain::Buffer& serializer, MagDipAngleErrorAdaptiveMeasurement& self)
 {
     extract(serializer, self.function);
     
@@ -3652,7 +3653,7 @@ void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self)
     }
 }
 
-void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self)
+void insert(::microstrain::Buffer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self)
 {
     insert(serializer, self.enable);
     
@@ -3665,7 +3666,7 @@ void insert(Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::R
     insert(serializer, self.minimum_uncertainty);
     
 }
-void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self)
+void extract(::microstrain::Buffer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -3682,7 +3683,7 @@ void extract(Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Respon
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -3697,22 +3698,22 @@ TypedResult<MagDipAngleErrorAdaptiveMeasurement> writeMagDipAngleErrorAdaptiveMe
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> readMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool* enableOut, float* frequencyOut, float* highLimitOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MagDipAngleErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
+    TypedResult<MagDipAngleErrorAdaptiveMeasurement> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -3737,34 +3738,34 @@ TypedResult<MagDipAngleErrorAdaptiveMeasurement> readMagDipAngleErrorAdaptiveMea
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> saveMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> loadMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> defaultMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MAG_DIP_ANGLE_ERROR_ADAPTIVE_MEASUREMENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AidingMeasurementEnable& self)
+void insert(::microstrain::Buffer& serializer, const AidingMeasurementEnable& self)
 {
     insert(serializer, self.function);
     
@@ -3776,7 +3777,7 @@ void insert(Serializer& serializer, const AidingMeasurementEnable& self)
         
     }
 }
-void extract(Serializer& serializer, AidingMeasurementEnable& self)
+void extract(::microstrain::Buffer& serializer, AidingMeasurementEnable& self)
 {
     extract(serializer, self.function);
     
@@ -3789,14 +3790,14 @@ void extract(Serializer& serializer, AidingMeasurementEnable& self)
     }
 }
 
-void insert(Serializer& serializer, const AidingMeasurementEnable::Response& self)
+void insert(::microstrain::Buffer& serializer, const AidingMeasurementEnable::Response& self)
 {
     insert(serializer, self.aiding_source);
     
     insert(serializer, self.enable);
     
 }
-void extract(Serializer& serializer, AidingMeasurementEnable::Response& self)
+void extract(::microstrain::Buffer& serializer, AidingMeasurementEnable::Response& self)
 {
     extract(serializer, self.aiding_source);
     
@@ -3807,7 +3808,7 @@ void extract(Serializer& serializer, AidingMeasurementEnable::Response& self)
 TypedResult<AidingMeasurementEnable> writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, aidingSource);
@@ -3816,12 +3817,12 @@ TypedResult<AidingMeasurementEnable> writeAidingMeasurementEnable(C::mip_interfa
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingMeasurementEnable> readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool* enableOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, aidingSource);
@@ -3829,11 +3830,11 @@ TypedResult<AidingMeasurementEnable> readAidingMeasurementEnable(C::mip_interfac
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AidingMeasurementEnable> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_AIDING_MEASUREMENT_ENABLE, buffer, &responseLength);
+    TypedResult<AidingMeasurementEnable> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)serializer.length(), REPLY_AIDING_MEASUREMENT_ENABLE, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         extract(deserializer, aidingSource);
         
@@ -3848,45 +3849,45 @@ TypedResult<AidingMeasurementEnable> readAidingMeasurementEnable(C::mip_interfac
 TypedResult<AidingMeasurementEnable> saveAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, aidingSource);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingMeasurementEnable> loadAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, aidingSource);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AidingMeasurementEnable> defaultAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, aidingSource);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_AIDING_MEASUREMENT_ENABLE, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const Run& self)
+void insert(::microstrain::Buffer& serializer, const Run& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(Serializer& serializer, Run& self)
+void extract(::microstrain::Buffer& serializer, Run& self)
 {
     (void)serializer;
     (void)self;
@@ -3896,7 +3897,7 @@ TypedResult<Run> run(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RUN, NULL, 0);
 }
-void insert(Serializer& serializer, const KinematicConstraint& self)
+void insert(::microstrain::Buffer& serializer, const KinematicConstraint& self)
 {
     insert(serializer, self.function);
     
@@ -3910,7 +3911,7 @@ void insert(Serializer& serializer, const KinematicConstraint& self)
         
     }
 }
-void extract(Serializer& serializer, KinematicConstraint& self)
+void extract(::microstrain::Buffer& serializer, KinematicConstraint& self)
 {
     extract(serializer, self.function);
     
@@ -3925,7 +3926,7 @@ void extract(Serializer& serializer, KinematicConstraint& self)
     }
 }
 
-void insert(Serializer& serializer, const KinematicConstraint::Response& self)
+void insert(::microstrain::Buffer& serializer, const KinematicConstraint::Response& self)
 {
     insert(serializer, self.acceleration_constraint_selection);
     
@@ -3934,7 +3935,7 @@ void insert(Serializer& serializer, const KinematicConstraint::Response& self)
     insert(serializer, self.angular_constraint_selection);
     
 }
-void extract(Serializer& serializer, KinematicConstraint::Response& self)
+void extract(::microstrain::Buffer& serializer, KinematicConstraint::Response& self)
 {
     extract(serializer, self.acceleration_constraint_selection);
     
@@ -3947,7 +3948,7 @@ void extract(Serializer& serializer, KinematicConstraint::Response& self)
 TypedResult<KinematicConstraint> writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection, uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, accelerationConstraintSelection);
@@ -3958,22 +3959,22 @@ TypedResult<KinematicConstraint> writeKinematicConstraint(C::mip_interface& devi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)serializer.length());
 }
 TypedResult<KinematicConstraint> readKinematicConstraint(C::mip_interface& device, uint8_t* accelerationConstraintSelectionOut, uint8_t* velocityConstraintSelectionOut, uint8_t* angularConstraintSelectionOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<KinematicConstraint> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_KINEMATIC_CONSTRAINT, buffer, &responseLength);
+    TypedResult<KinematicConstraint> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)serializer.length(), REPLY_KINEMATIC_CONSTRAINT, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(accelerationConstraintSelectionOut);
         extract(deserializer, *accelerationConstraintSelectionOut);
@@ -3992,34 +3993,34 @@ TypedResult<KinematicConstraint> readKinematicConstraint(C::mip_interface& devic
 TypedResult<KinematicConstraint> saveKinematicConstraint(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)serializer.length());
 }
 TypedResult<KinematicConstraint> loadKinematicConstraint(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)serializer.length());
 }
 TypedResult<KinematicConstraint> defaultKinematicConstraint(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_KINEMATIC_CONSTRAINT, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const InitializationConfiguration& self)
+void insert(::microstrain::Buffer& serializer, const InitializationConfiguration& self)
 {
     insert(serializer, self.function);
     
@@ -4047,7 +4048,7 @@ void insert(Serializer& serializer, const InitializationConfiguration& self)
         
     }
 }
-void extract(Serializer& serializer, InitializationConfiguration& self)
+void extract(::microstrain::Buffer& serializer, InitializationConfiguration& self)
 {
     extract(serializer, self.function);
     
@@ -4076,7 +4077,7 @@ void extract(Serializer& serializer, InitializationConfiguration& self)
     }
 }
 
-void insert(Serializer& serializer, const InitializationConfiguration::Response& self)
+void insert(::microstrain::Buffer& serializer, const InitializationConfiguration::Response& self)
 {
     insert(serializer, self.wait_for_run_command);
     
@@ -4099,7 +4100,7 @@ void insert(Serializer& serializer, const InitializationConfiguration::Response&
     insert(serializer, self.reference_frame_selector);
     
 }
-void extract(Serializer& serializer, InitializationConfiguration::Response& self)
+void extract(::microstrain::Buffer& serializer, InitializationConfiguration::Response& self)
 {
     extract(serializer, self.wait_for_run_command);
     
@@ -4126,7 +4127,7 @@ void extract(Serializer& serializer, InitializationConfiguration::Response& self
 TypedResult<InitializationConfiguration> writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, waitForRunCommand);
@@ -4153,22 +4154,22 @@ TypedResult<InitializationConfiguration> writeInitializationConfiguration(C::mip
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InitializationConfiguration> readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<InitializationConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
+    TypedResult<InitializationConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)serializer.length(), REPLY_INITIALIZATION_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(waitForRunCommandOut);
         extract(deserializer, *waitForRunCommandOut);
@@ -4207,34 +4208,34 @@ TypedResult<InitializationConfiguration> readInitializationConfiguration(C::mip_
 TypedResult<InitializationConfiguration> saveInitializationConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InitializationConfiguration> loadInitializationConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<InitializationConfiguration> defaultInitializationConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_INITIALIZATION_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const AdaptiveFilterOptions& self)
+void insert(::microstrain::Buffer& serializer, const AdaptiveFilterOptions& self)
 {
     insert(serializer, self.function);
     
@@ -4246,7 +4247,7 @@ void insert(Serializer& serializer, const AdaptiveFilterOptions& self)
         
     }
 }
-void extract(Serializer& serializer, AdaptiveFilterOptions& self)
+void extract(::microstrain::Buffer& serializer, AdaptiveFilterOptions& self)
 {
     extract(serializer, self.function);
     
@@ -4259,14 +4260,14 @@ void extract(Serializer& serializer, AdaptiveFilterOptions& self)
     }
 }
 
-void insert(Serializer& serializer, const AdaptiveFilterOptions::Response& self)
+void insert(::microstrain::Buffer& serializer, const AdaptiveFilterOptions::Response& self)
 {
     insert(serializer, self.level);
     
     insert(serializer, self.time_limit);
     
 }
-void extract(Serializer& serializer, AdaptiveFilterOptions::Response& self)
+void extract(::microstrain::Buffer& serializer, AdaptiveFilterOptions::Response& self)
 {
     extract(serializer, self.level);
     
@@ -4277,7 +4278,7 @@ void extract(Serializer& serializer, AdaptiveFilterOptions::Response& self)
 TypedResult<AdaptiveFilterOptions> writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t timeLimit)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, level);
@@ -4286,22 +4287,22 @@ TypedResult<AdaptiveFilterOptions> writeAdaptiveFilterOptions(C::mip_interface& 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AdaptiveFilterOptions> readAdaptiveFilterOptions(C::mip_interface& device, uint8_t* levelOut, uint16_t* timeLimitOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<AdaptiveFilterOptions> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
+    TypedResult<AdaptiveFilterOptions> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)serializer.length(), REPLY_ADAPTIVE_FILTER_OPTIONS, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(levelOut);
         extract(deserializer, *levelOut);
@@ -4317,34 +4318,34 @@ TypedResult<AdaptiveFilterOptions> readAdaptiveFilterOptions(C::mip_interface& d
 TypedResult<AdaptiveFilterOptions> saveAdaptiveFilterOptions(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AdaptiveFilterOptions> loadAdaptiveFilterOptions(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)serializer.length());
 }
 TypedResult<AdaptiveFilterOptions> defaultAdaptiveFilterOptions(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ADAPTIVE_FILTER_OPTIONS, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const MultiAntennaOffset& self)
+void insert(::microstrain::Buffer& serializer, const MultiAntennaOffset& self)
 {
     insert(serializer, self.function);
     
@@ -4357,7 +4358,7 @@ void insert(Serializer& serializer, const MultiAntennaOffset& self)
         
     }
 }
-void extract(Serializer& serializer, MultiAntennaOffset& self)
+void extract(::microstrain::Buffer& serializer, MultiAntennaOffset& self)
 {
     extract(serializer, self.function);
     
@@ -4371,7 +4372,7 @@ void extract(Serializer& serializer, MultiAntennaOffset& self)
     }
 }
 
-void insert(Serializer& serializer, const MultiAntennaOffset::Response& self)
+void insert(::microstrain::Buffer& serializer, const MultiAntennaOffset::Response& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -4379,7 +4380,7 @@ void insert(Serializer& serializer, const MultiAntennaOffset::Response& self)
         insert(serializer, self.antenna_offset[i]);
     
 }
-void extract(Serializer& serializer, MultiAntennaOffset::Response& self)
+void extract(::microstrain::Buffer& serializer, MultiAntennaOffset::Response& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -4391,7 +4392,7 @@ void extract(Serializer& serializer, MultiAntennaOffset::Response& self)
 TypedResult<MultiAntennaOffset> writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, const float* antennaOffset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, receiverId);
@@ -4402,12 +4403,12 @@ TypedResult<MultiAntennaOffset> writeMultiAntennaOffset(C::mip_interface& device
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MultiAntennaOffset> readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, float* antennaOffsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, receiverId);
@@ -4415,11 +4416,11 @@ TypedResult<MultiAntennaOffset> readMultiAntennaOffset(C::mip_interface& device,
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<MultiAntennaOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_MULTI_ANTENNA_OFFSET, buffer, &responseLength);
+    TypedResult<MultiAntennaOffset> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length(), REPLY_MULTI_ANTENNA_OFFSET, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         extract(deserializer, receiverId);
         
@@ -4435,40 +4436,40 @@ TypedResult<MultiAntennaOffset> readMultiAntennaOffset(C::mip_interface& device,
 TypedResult<MultiAntennaOffset> saveMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, receiverId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MultiAntennaOffset> loadMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, receiverId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
 TypedResult<MultiAntennaOffset> defaultMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, receiverId);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_MULTI_ANTENNA_OFFSET, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const RelPosConfiguration& self)
+void insert(::microstrain::Buffer& serializer, const RelPosConfiguration& self)
 {
     insert(serializer, self.function);
     
@@ -4483,7 +4484,7 @@ void insert(Serializer& serializer, const RelPosConfiguration& self)
         
     }
 }
-void extract(Serializer& serializer, RelPosConfiguration& self)
+void extract(::microstrain::Buffer& serializer, RelPosConfiguration& self)
 {
     extract(serializer, self.function);
     
@@ -4499,7 +4500,7 @@ void extract(Serializer& serializer, RelPosConfiguration& self)
     }
 }
 
-void insert(Serializer& serializer, const RelPosConfiguration::Response& self)
+void insert(::microstrain::Buffer& serializer, const RelPosConfiguration::Response& self)
 {
     insert(serializer, self.source);
     
@@ -4509,7 +4510,7 @@ void insert(Serializer& serializer, const RelPosConfiguration::Response& self)
         insert(serializer, self.reference_coordinates[i]);
     
 }
-void extract(Serializer& serializer, RelPosConfiguration::Response& self)
+void extract(::microstrain::Buffer& serializer, RelPosConfiguration::Response& self)
 {
     extract(serializer, self.source);
     
@@ -4523,7 +4524,7 @@ void extract(Serializer& serializer, RelPosConfiguration::Response& self)
 TypedResult<RelPosConfiguration> writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
@@ -4536,22 +4537,22 @@ TypedResult<RelPosConfiguration> writeRelPosConfiguration(C::mip_interface& devi
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RelPosConfiguration> readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<RelPosConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_REL_POS_CONFIGURATION, buffer, &responseLength);
+    TypedResult<RelPosConfiguration> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)serializer.length(), REPLY_REL_POS_CONFIGURATION, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(sourceOut);
         extract(deserializer, *sourceOut);
@@ -4571,34 +4572,34 @@ TypedResult<RelPosConfiguration> readRelPosConfiguration(C::mip_interface& devic
 TypedResult<RelPosConfiguration> saveRelPosConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RelPosConfiguration> loadRelPosConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RelPosConfiguration> defaultRelPosConfiguration(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REL_POS_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const RefPointLeverArm& self)
+void insert(::microstrain::Buffer& serializer, const RefPointLeverArm& self)
 {
     insert(serializer, self.function);
     
@@ -4611,7 +4612,7 @@ void insert(Serializer& serializer, const RefPointLeverArm& self)
         
     }
 }
-void extract(Serializer& serializer, RefPointLeverArm& self)
+void extract(::microstrain::Buffer& serializer, RefPointLeverArm& self)
 {
     extract(serializer, self.function);
     
@@ -4625,7 +4626,7 @@ void extract(Serializer& serializer, RefPointLeverArm& self)
     }
 }
 
-void insert(Serializer& serializer, const RefPointLeverArm::Response& self)
+void insert(::microstrain::Buffer& serializer, const RefPointLeverArm::Response& self)
 {
     insert(serializer, self.ref_point_sel);
     
@@ -4633,7 +4634,7 @@ void insert(Serializer& serializer, const RefPointLeverArm::Response& self)
         insert(serializer, self.lever_arm_offset[i]);
     
 }
-void extract(Serializer& serializer, RefPointLeverArm::Response& self)
+void extract(::microstrain::Buffer& serializer, RefPointLeverArm::Response& self)
 {
     extract(serializer, self.ref_point_sel);
     
@@ -4645,7 +4646,7 @@ void extract(Serializer& serializer, RefPointLeverArm::Response& self)
 TypedResult<RefPointLeverArm> writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, refPointSel);
@@ -4656,22 +4657,22 @@ TypedResult<RefPointLeverArm> writeRefPointLeverArm(C::mip_interface& device, Re
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RefPointLeverArm> readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, float* leverArmOffsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<RefPointLeverArm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_REF_POINT_LEVER_ARM, buffer, &responseLength);
+    TypedResult<RefPointLeverArm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)serializer.length(), REPLY_REF_POINT_LEVER_ARM, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(refPointSelOut);
         extract(deserializer, *refPointSelOut);
@@ -4688,34 +4689,34 @@ TypedResult<RefPointLeverArm> readRefPointLeverArm(C::mip_interface& device, Ref
 TypedResult<RefPointLeverArm> saveRefPointLeverArm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RefPointLeverArm> loadRefPointLeverArm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<RefPointLeverArm> defaultRefPointLeverArm(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_REF_POINT_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SpeedMeasurement& self)
+void insert(::microstrain::Buffer& serializer, const SpeedMeasurement& self)
 {
     insert(serializer, self.source);
     
@@ -4726,7 +4727,7 @@ void insert(Serializer& serializer, const SpeedMeasurement& self)
     insert(serializer, self.speed_uncertainty);
     
 }
-void extract(Serializer& serializer, SpeedMeasurement& self)
+void extract(::microstrain::Buffer& serializer, SpeedMeasurement& self)
 {
     extract(serializer, self.source);
     
@@ -4741,7 +4742,7 @@ void extract(Serializer& serializer, SpeedMeasurement& self)
 TypedResult<SpeedMeasurement> speedMeasurement(C::mip_interface& device, uint8_t source, float timeOfWeek, float speed, float speedUncertainty)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, source);
     
@@ -4753,9 +4754,9 @@ TypedResult<SpeedMeasurement> speedMeasurement(C::mip_interface& device, uint8_t
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_MEASUREMENT, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_MEASUREMENT, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SpeedLeverArm& self)
+void insert(::microstrain::Buffer& serializer, const SpeedLeverArm& self)
 {
     insert(serializer, self.function);
     
@@ -4768,7 +4769,7 @@ void insert(Serializer& serializer, const SpeedLeverArm& self)
         
     }
 }
-void extract(Serializer& serializer, SpeedLeverArm& self)
+void extract(::microstrain::Buffer& serializer, SpeedLeverArm& self)
 {
     extract(serializer, self.function);
     
@@ -4782,7 +4783,7 @@ void extract(Serializer& serializer, SpeedLeverArm& self)
     }
 }
 
-void insert(Serializer& serializer, const SpeedLeverArm::Response& self)
+void insert(::microstrain::Buffer& serializer, const SpeedLeverArm::Response& self)
 {
     insert(serializer, self.source);
     
@@ -4790,7 +4791,7 @@ void insert(Serializer& serializer, const SpeedLeverArm::Response& self)
         insert(serializer, self.lever_arm_offset[i]);
     
 }
-void extract(Serializer& serializer, SpeedLeverArm::Response& self)
+void extract(::microstrain::Buffer& serializer, SpeedLeverArm::Response& self)
 {
     extract(serializer, self.source);
     
@@ -4802,7 +4803,7 @@ void extract(Serializer& serializer, SpeedLeverArm::Response& self)
 TypedResult<SpeedLeverArm> writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* leverArmOffset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, source);
@@ -4813,12 +4814,12 @@ TypedResult<SpeedLeverArm> writeSpeedLeverArm(C::mip_interface& device, uint8_t 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SpeedLeverArm> readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* leverArmOffsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, source);
@@ -4826,11 +4827,11 @@ TypedResult<SpeedLeverArm> readSpeedLeverArm(C::mip_interface& device, uint8_t s
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<SpeedLeverArm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_SPEED_LEVER_ARM, buffer, &responseLength);
+    TypedResult<SpeedLeverArm> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)serializer.length(), REPLY_SPEED_LEVER_ARM, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         extract(deserializer, source);
         
@@ -4846,40 +4847,40 @@ TypedResult<SpeedLeverArm> readSpeedLeverArm(C::mip_interface& device, uint8_t s
 TypedResult<SpeedLeverArm> saveSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SpeedLeverArm> loadSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
 TypedResult<SpeedLeverArm> defaultSpeedLeverArm(C::mip_interface& device, uint8_t source)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, source);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SPEED_LEVER_ARM, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const WheeledVehicleConstraintControl& self)
+void insert(::microstrain::Buffer& serializer, const WheeledVehicleConstraintControl& self)
 {
     insert(serializer, self.function);
     
@@ -4889,7 +4890,7 @@ void insert(Serializer& serializer, const WheeledVehicleConstraintControl& self)
         
     }
 }
-void extract(Serializer& serializer, WheeledVehicleConstraintControl& self)
+void extract(::microstrain::Buffer& serializer, WheeledVehicleConstraintControl& self)
 {
     extract(serializer, self.function);
     
@@ -4900,12 +4901,12 @@ void extract(Serializer& serializer, WheeledVehicleConstraintControl& self)
     }
 }
 
-void insert(Serializer& serializer, const WheeledVehicleConstraintControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const WheeledVehicleConstraintControl::Response& self)
 {
     insert(serializer, self.enable);
     
 }
-void extract(Serializer& serializer, WheeledVehicleConstraintControl::Response& self)
+void extract(::microstrain::Buffer& serializer, WheeledVehicleConstraintControl::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -4914,29 +4915,29 @@ void extract(Serializer& serializer, WheeledVehicleConstraintControl::Response& 
 TypedResult<WheeledVehicleConstraintControl> writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<WheeledVehicleConstraintControl> readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t* enableOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<WheeledVehicleConstraintControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
+    TypedResult<WheeledVehicleConstraintControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_VEHICLE_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -4949,34 +4950,34 @@ TypedResult<WheeledVehicleConstraintControl> readWheeledVehicleConstraintControl
 TypedResult<WheeledVehicleConstraintControl> saveWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<WheeledVehicleConstraintControl> loadWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<WheeledVehicleConstraintControl> defaultWheeledVehicleConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_VEHICLE_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const VerticalGyroConstraintControl& self)
+void insert(::microstrain::Buffer& serializer, const VerticalGyroConstraintControl& self)
 {
     insert(serializer, self.function);
     
@@ -4986,7 +4987,7 @@ void insert(Serializer& serializer, const VerticalGyroConstraintControl& self)
         
     }
 }
-void extract(Serializer& serializer, VerticalGyroConstraintControl& self)
+void extract(::microstrain::Buffer& serializer, VerticalGyroConstraintControl& self)
 {
     extract(serializer, self.function);
     
@@ -4997,12 +4998,12 @@ void extract(Serializer& serializer, VerticalGyroConstraintControl& self)
     }
 }
 
-void insert(Serializer& serializer, const VerticalGyroConstraintControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const VerticalGyroConstraintControl::Response& self)
 {
     insert(serializer, self.enable);
     
 }
-void extract(Serializer& serializer, VerticalGyroConstraintControl::Response& self)
+void extract(::microstrain::Buffer& serializer, VerticalGyroConstraintControl::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -5011,29 +5012,29 @@ void extract(Serializer& serializer, VerticalGyroConstraintControl::Response& se
 TypedResult<VerticalGyroConstraintControl> writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VerticalGyroConstraintControl> readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t* enableOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<VerticalGyroConstraintControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
+    TypedResult<VerticalGyroConstraintControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_GYRO_CONSTRAINT_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -5046,34 +5047,34 @@ TypedResult<VerticalGyroConstraintControl> readVerticalGyroConstraintControl(C::
 TypedResult<VerticalGyroConstraintControl> saveVerticalGyroConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VerticalGyroConstraintControl> loadVerticalGyroConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<VerticalGyroConstraintControl> defaultVerticalGyroConstraintControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GYRO_CONSTRAINT_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const GnssAntennaCalControl& self)
+void insert(::microstrain::Buffer& serializer, const GnssAntennaCalControl& self)
 {
     insert(serializer, self.function);
     
@@ -5085,7 +5086,7 @@ void insert(Serializer& serializer, const GnssAntennaCalControl& self)
         
     }
 }
-void extract(Serializer& serializer, GnssAntennaCalControl& self)
+void extract(::microstrain::Buffer& serializer, GnssAntennaCalControl& self)
 {
     extract(serializer, self.function);
     
@@ -5098,14 +5099,14 @@ void extract(Serializer& serializer, GnssAntennaCalControl& self)
     }
 }
 
-void insert(Serializer& serializer, const GnssAntennaCalControl::Response& self)
+void insert(::microstrain::Buffer& serializer, const GnssAntennaCalControl::Response& self)
 {
     insert(serializer, self.enable);
     
     insert(serializer, self.max_offset);
     
 }
-void extract(Serializer& serializer, GnssAntennaCalControl::Response& self)
+void extract(::microstrain::Buffer& serializer, GnssAntennaCalControl::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -5116,7 +5117,7 @@ void extract(Serializer& serializer, GnssAntennaCalControl::Response& self)
 TypedResult<GnssAntennaCalControl> writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float maxOffset)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -5125,22 +5126,22 @@ TypedResult<GnssAntennaCalControl> writeGnssAntennaCalControl(C::mip_interface& 
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssAntennaCalControl> readGnssAntennaCalControl(C::mip_interface& device, uint8_t* enableOut, float* maxOffsetOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
     
     uint8_t responseLength = sizeof(buffer);
-    TypedResult<GnssAntennaCalControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer), REPLY_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
+    TypedResult<GnssAntennaCalControl> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)serializer.length(), REPLY_ANTENNA_CALIBRATION_CONTROL, buffer, &responseLength);
     
     if( result == MIP_ACK_OK )
     {
-        Serializer deserializer(buffer, responseLength);
+        Buffer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -5156,39 +5157,39 @@ TypedResult<GnssAntennaCalControl> readGnssAntennaCalControl(C::mip_interface& d
 TypedResult<GnssAntennaCalControl> saveGnssAntennaCalControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssAntennaCalControl> loadGnssAntennaCalControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)serializer.length());
 }
 TypedResult<GnssAntennaCalControl> defaultGnssAntennaCalControl(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ANTENNA_CALIBRATION_CONTROL, buffer, (uint8_t)serializer.length());
 }
-void insert(Serializer& serializer, const SetInitialHeading& self)
+void insert(::microstrain::Buffer& serializer, const SetInitialHeading& self)
 {
     insert(serializer, self.heading);
     
 }
-void extract(Serializer& serializer, SetInitialHeading& self)
+void extract(::microstrain::Buffer& serializer, SetInitialHeading& self)
 {
     extract(serializer, self.heading);
     
@@ -5197,13 +5198,13 @@ void extract(Serializer& serializer, SetInitialHeading& self)
 TypedResult<SetInitialHeading> setInitialHeading(C::mip_interface& device, float heading)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Serializer serializer(buffer, sizeof(buffer));
+    Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, heading);
     
     assert(serializer.isOk());
     
-    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_HEADING, buffer, (uint8_t)microstrain_serializer_length(&serializer));
+    return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_INITIAL_HEADING, buffer, (uint8_t)serializer.length());
 }
 
 } // namespace commands_filter
