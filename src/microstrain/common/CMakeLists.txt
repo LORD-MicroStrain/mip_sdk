@@ -5,6 +5,7 @@ set(MICROSTRAIN_LOGGING_MAX_LEVEL "MICROSTRAIN_LOG_LEVEL_WARN" CACHE STRING "Max
 
 set(SOURCES
     buffer.hpp
+    connection.hpp
     descriptor_id.hpp
     index.hpp
     logging.h

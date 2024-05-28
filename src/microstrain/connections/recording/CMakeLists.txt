@@ -3,7 +3,7 @@
 set(SOURCES
     recording_connection.cpp
     recording_connection.hpp
-    ../connection.hpp
+    ../../common/connection.hpp
 )
 
 add_library(microstrain_recording_connection ${SOURCES})

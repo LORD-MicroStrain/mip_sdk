@@ -5,7 +5,7 @@ set(SOURCES
     tcp_connection.hpp
     tcp_socket.h
     tcp_socket.c
-    ../connection.hpp
+    ../../common/connection.hpp
 )
 
 add_library(microstrain_socket ${SOURCES})

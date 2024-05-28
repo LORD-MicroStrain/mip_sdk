@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/connections/connection.hpp>
+#include <microstrain/common/connection.hpp>
 
 #include <memory>
 #include <ostream>

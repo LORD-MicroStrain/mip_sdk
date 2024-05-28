@@ -1,7 +1,7 @@
 
 #include "mip_device.hpp"
 
-#include "../microstrain/connections/connection.hpp"
+#include <microstrain/common/connection.hpp>
 
 
 namespace mip {

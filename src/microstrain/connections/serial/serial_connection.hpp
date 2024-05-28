@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mip/mip_device.hpp"
-#include "../connection.hpp"
+#include <microstrain/common/connection.hpp>
 #include "serial_port.h"
 
 #include <string>

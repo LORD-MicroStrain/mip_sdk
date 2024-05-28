@@ -5,7 +5,7 @@ set(SOURCES
     serial_connection.hpp
     serial_port.h
     serial_port.c
-    ../connection.hpp
+    ../../common/connection.hpp
 )
 
 add_library(microstrain_serial ${SOURCES})
