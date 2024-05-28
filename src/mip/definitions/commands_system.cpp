@@ -64,7 +64,7 @@ void extract(::microstrain::Buffer& serializer, CommMode::Response& self)
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, mode);
@@ -76,7 +76,7 @@ TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
@@ -86,7 +86,7 @@ TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        microstrain::Buffer deserializer(buffer, responseLength);
         
         assert(modeOut);
         extract(deserializer, *modeOut);
@@ -99,7 +99,7 @@ TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 TypedResult<CommMode> defaultCommMode(C::mip_interface& device)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());

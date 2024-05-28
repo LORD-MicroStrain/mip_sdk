@@ -191,9 +191,9 @@ public:
             bool ok = isOk();
 
             if(ok)
-                C::mip_packet_realloc_last_field(&m_packet, pointer(), length());
+                C::mip_packet_realloc_last_field(&m_packet, basePointer(), length());
             else
-                C::mip_packet_cancel_last_field(&m_packet, pointer());
+                C::mip_packet_cancel_last_field(&m_packet, basePointer());
 
             return ok;
         }

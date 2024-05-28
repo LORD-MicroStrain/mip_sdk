@@ -130,7 +130,7 @@ TypedResult<GetDeviceInfo> getDeviceInfo(C::mip_interface& device, BaseDeviceInf
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         assert(deviceInfoOut);
         extract(deserializer, *deviceInfoOut);
@@ -173,7 +173,7 @@ TypedResult<GetDeviceDescriptors> getDeviceDescriptors(C::mip_interface& device,
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && (deserializer.remaining() > 0); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
@@ -214,7 +214,7 @@ TypedResult<BuiltInTest> builtInTest(C::mip_interface& device, uint32_t* resultO
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         assert(resultOut);
         extract(deserializer, *resultOut);
@@ -272,7 +272,7 @@ TypedResult<GetExtendedDescriptors> getExtendedDescriptors(C::mip_interface& dev
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && (deserializer.remaining() > 0); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
@@ -315,7 +315,7 @@ TypedResult<ContinuousBit> continuousBit(C::mip_interface& device, uint8_t* resu
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         assert(resultOut || (16 == 0));
         for(unsigned int i=0; i < 16; i++)
@@ -369,7 +369,7 @@ void extract(::microstrain::Buffer& serializer, CommSpeed::Response& self)
 TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, port);
@@ -383,7 +383,7 @@ TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, ui
 TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, port);
@@ -395,7 +395,7 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
     
     if( result == MIP_ACK_OK )
     {
-        Buffer deserializer(buffer, responseLength);
+        ::microstrain::Buffer deserializer(buffer, responseLength);
         
         extract(deserializer, port);
         
@@ -410,7 +410,7 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
 TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, port);
@@ -422,7 +422,7 @@ TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
 TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, port);
@@ -434,7 +434,7 @@ TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
 TypedResult<CommSpeed> defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, port);
@@ -471,7 +471,7 @@ void extract(::microstrain::Buffer& serializer, GpsTimeUpdate& self)
 TypedResult<GpsTimeUpdate> writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    Buffer serializer(buffer, sizeof(buffer));
+    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, fieldId);

@@ -16,7 +16,7 @@ namespace microstrain
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==1, size_t>::type
-/*size_t*/ insert_basic(uint8_t* buffer, T value)
+/*size_t*/ write(uint8_t* buffer, T value)
 {
     buffer[0] = reinterpret_cast<const uint8_t*>(&value)[0];
     return sizeof(T);
@@ -24,7 +24,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==1, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==2, size_t>::type
-/*size_t*/ insert_basic(uint8_t* buffer, T value)
+/*size_t*/ write(uint8_t* buffer, T value)
 {
     buffer[0] = reinterpret_cast<const uint8_t*>(&value)[1];
     buffer[1] = reinterpret_cast<const uint8_t*>(&value)[0];
@@ -33,7 +33,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==2, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==4, size_t>::type
-/*size_t*/ insert_basic(uint8_t* buffer, T value)
+/*size_t*/ write(uint8_t* buffer, T value)
 {
     buffer[0] = reinterpret_cast<const uint8_t*>(&value)[3];
     buffer[1] = reinterpret_cast<const uint8_t*>(&value)[2];
@@ -44,7 +44,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==4, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==8, size_t>::type
-/*size_t*/ insert_basic(uint8_t* buffer, T value)
+/*size_t*/ write(uint8_t* buffer, T value)
 {
     buffer[0] = reinterpret_cast<const uint8_t*>(&value)[7];
     buffer[1] = reinterpret_cast<const uint8_t*>(&value)[6];
@@ -63,7 +63,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==8, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==1, size_t>::type
-/*size_t*/ extract_basic(const uint8_t* buffer, T& value)
+/*size_t*/ read(const uint8_t* buffer, T& value)
 {
     reinterpret_cast<uint8_t*>(&value)[0] = buffer[0];
     return sizeof(T);
@@ -71,7 +71,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==1, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==2, size_t>::type
-/*size_t*/ extract_basic(const uint8_t* buffer, T& value)
+/*size_t*/ read(const uint8_t* buffer, T& value)
 {
     reinterpret_cast<uint8_t*>(&value)[0] = buffer[1];
     reinterpret_cast<uint8_t*>(&value)[1] = buffer[0];
@@ -80,7 +80,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==2, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==4, size_t>::type
-/*size_t*/ extract_basic(const uint8_t* buffer, T& value)
+/*size_t*/ read(const uint8_t* buffer, T& value)
 {
     reinterpret_cast<uint8_t*>(&value)[0] = buffer[3];
     reinterpret_cast<uint8_t*>(&value)[1] = buffer[2];
@@ -91,7 +91,7 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==4, size_t>::t
 
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==8, size_t>::type
-/*size_t*/ extract_basic(const uint8_t* buffer, T& value)
+/*size_t*/ read(const uint8_t* buffer, T& value)
 {
     reinterpret_cast<uint8_t*>(&value)[0] = buffer[7];
     reinterpret_cast<uint8_t*>(&value)[1] = buffer[6];
@@ -122,13 +122,13 @@ public:
     bool isOk() const { return !isOverrun(); }
     bool hasRemaining(size_t count) const { return m_offset+count <= m_size; }
 
-    const uint8_t* pointer() const { return m_ptr; }
-    uint8_t* pointer() { return m_ptr; }
+    const uint8_t* basePointer() const { return m_ptr; }
+    uint8_t* basePointer() { return m_ptr; }
 
-    const uint8_t* pointer(size_t required_size) const { return hasRemaining(required_size) ? m_ptr : nullptr; }
-    uint8_t* pointer(size_t required_size) { return hasRemaining(required_size) ? m_ptr : nullptr; }
+    const uint8_t* pointer(size_t required_size) const { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }
+    uint8_t* pointer(size_t required_size) { return hasRemaining(required_size) ? (m_ptr+m_offset) : nullptr; }
 
-    uint8_t* getPtrAndAdvance(size_t size) { uint8_t* ptr = (hasRemaining(size) ? m_ptr : nullptr); m_offset += size; return ptr; }
+    uint8_t* getPtrAndAdvance(size_t size) { uint8_t* ptr = hasRemaining(size) ? (m_ptr+m_offset) : nullptr; m_offset += size; return ptr; }
 
     void invalidate() { m_offset = -1U; }
 
@@ -139,7 +139,7 @@ public:
     bool extract(Ts&... values);
 
     template<typename T>
-    struct Count
+    struct Counter
     {
         T& count;
         size_t max_count = 0;
@@ -170,7 +170,7 @@ typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
 /*size_t*/ insert(Buffer& buffer, T value)
 {
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(T)))
-        insert_basic(ptr, value);
+        write(ptr, value);
 
     return sizeof(T);
 }
@@ -183,31 +183,32 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     using BaseType = typename std::underlying_type<T>::type;
 
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(BaseType)))
-        insert_basic(ptr, static_cast<BaseType>(value));
+        write(ptr, static_cast<BaseType>(value));
 
     return sizeof(BaseType);
 }
 
-// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-template<class T>
-typename std::enable_if<std::is_class<T>::value, size_t>::type
-/*size_t*/ insert(Buffer& buffer, const T& value)
-{
-    return value.serialize(buffer);
-}
+//// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
+//template<class T>
+//typename std::enable_if<std::is_class<T>::value, size_t>::type
+///*size_t*/ insert(Buffer& buffer, const T& value)
+//{
+//    return value.serialize(buffer);
+//}
 
-#if __cpp_fold_expressions >= 201603L
+#if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
 size_t insert(Buffer& buffer, Ts... values)
 {
-    if( (std::is_arithmetic<Ts>::value && ...) )
+    if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
         const size_t size = ( ... + sizeof(Ts) );
 
         if(uint8_t* ptr = buffer.getPtrAndAdvance(size))
         {
             size_t offset = 0;
-            return ( ... + (offset += insert_basic(ptr+offset, values)) );
+            ( ..., (offset += write(ptr+offset, values)) );
+            return offset;
         }
 
         return size;
@@ -246,7 +247,7 @@ typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
 /*size_t*/ extract(Buffer& buffer, T& value)
 {
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(T)))
-        extract_basic(ptr, value);
+        read(ptr, value);
 
     return sizeof(T);
 }
@@ -261,33 +262,34 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(BaseType)))
     {
         BaseType base;
-        extract_basic(ptr, base);
+        read(ptr, base);
         value = static_cast<T>(base);
     }
 
     return sizeof(BaseType);
 }
 
-// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-template<class T>
-typename std::enable_if<std::is_class<T>::value, size_t>::type
-/*size_t*/ extract(Buffer& buffer, T& value)
-{
-    return value.deserialize(buffer);
-}
+//// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
+//template<class T>
+//typename std::enable_if<std::is_class<T>::value, size_t>::type
+///*size_t*/ extract(Buffer& buffer, T& value)
+//{
+//    return value.deserialize(buffer);
+//}
 
-#if __cpp_fold_expressions >= 201603L
+#if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
-size_t insert(Buffer& buffer, Ts&... values)
+size_t extract(Buffer& buffer, Ts&... values)
 {
-    if( (std::is_arithmetic<Ts>::value && ...) )
+    if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
         const size_t size = ( ... + sizeof(Ts) );
 
         if(uint8_t* ptr = buffer.getPtrAndAdvance(size))
         {
             size_t offset = 0;
-            return ( ... + (offset += extract_basic(ptr+offset, values)) );
+            ( ..., (offset += read(ptr+offset, values)) );
+            return offset;
         }
 
         return size;
@@ -305,24 +307,40 @@ size_t extract(Buffer& buffer, T0 value0, Ts... values)
 
 
 
-template<class T>
-size_t extract(Buffer& buffer, Buffer::Count<T> counter)
-{
-    size_t size = extract(counter.count);
+//template<class T>
+//size_t extract(Buffer& buffer, Buffer::Counter<T> counter)
+//{
+//    size_t size = extract(counter.count);
+//
+//    if(counter.count > counter.max_count)
+//        buffer.invalidate();
+//
+//    return size;
+//}
 
-    if(counter.count > counter.max_count)
+template<class T>
+size_t extract_count(Buffer& buffer, T& count, size_t max_count)
+{
+    T tmp;
+    size_t size = extract(buffer, tmp);
+
+    if(tmp <= max_count)
+        count = tmp;
+    else
         buffer.invalidate();
 
     return size;
 }
+template<class T>
+size_t extract_count(Buffer& buffer, T* count, size_t max_count) { return extract_count(buffer, *count, max_count); }
 
 
 
 template<typename... Ts>
-bool Buffer::insert(const Ts&... values) { return insert(*this, values...); }
+bool Buffer::insert(const Ts&... values) { return microstrain::insert(*this, values...); }
 
 template<typename... Ts>
-bool Buffer::extract(Ts&... values) { return extract(*this, values...); }
+bool Buffer::extract(Ts&... values) { return microstrain::extract(*this, values...); }
 
 
 } // namespace microstrain

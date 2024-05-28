@@ -211,7 +211,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 template<typename T>
 bool insert(const T& value, uint8_t* buffer, size_t bufferSize, size_t offset=0)
 {
-    Buffer serializer(buffer, bufferSize, offset);
+    ::microstrain::Buffer serializer(buffer, bufferSize, offset);
     insert(serializer, value);
     return !!serializer;
 }
@@ -268,7 +268,7 @@ typename std::enable_if< std::is_enum<Enum>::value, void>::type
 template<typename T>
 bool extract(T& value_out, const uint8_t* buffer, size_t bufferSize, size_t offset=0, bool exact_size=false)
 {
-    Buffer serializer(buffer, bufferSize, offset);
+    ::microstrain::Buffer serializer(buffer, bufferSize, offset);
     extract(serializer, value_out);
     return exact_size ? serializer.isComplete() : serializer.isOk();
 }

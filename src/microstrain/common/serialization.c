@@ -1,10 +1,6 @@
 
 #include "serialization.h"
 
-#ifdef __cplusplus
-namespace microstrain {
-#endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Initialize a serialization struct for insertion into a buffer.
@@ -123,7 +119,7 @@ static void pack(uint8_t* buffer, const void* value, size_t size)
 }
 
 #define INSERT_MACRO(name, type) \
-void insert_##name(microstrain_serializer* serializer, type value) \
+void microstrain_insert_##name(microstrain_serializer* serializer, type value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -154,7 +150,7 @@ static void unpack(const uint8_t* buffer, void* value, size_t size)
 
 
 #define EXTRACT_MACRO(name, type) \
-void extract_##name(microstrain_serializer* serializer, type* value) \
+void microstrain_extract_##name(microstrain_serializer* serializer, type* value) \
 { \
     const size_t offset = serializer->_offset + sizeof(type); \
     if( offset <= serializer->_buffer_size ) \
@@ -189,7 +185,7 @@ EXTRACT_MACRO(double, double  )
 ///       The maximum value of the counter. If the count exceeds this, it is
 ///       set to 0 and the serializer is put into an error state.
 ///
-void extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8_t max_count)
+void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8_t max_count)
 {
     *count_out = 0;  // Default to zero if extraction fails.
     microstrain_extract_u8(serializer, count_out);
@@ -205,7 +201,3 @@ void extract_count(microstrain_serializer* serializer, uint8_t* count_out, uint8
         serializer->_offset = SIZE_MAX;
     }
 }
-
-#ifdef __cplusplus
-} // namespace microstrain
-#endif
