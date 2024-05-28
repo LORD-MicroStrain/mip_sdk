@@ -1,17 +1,12 @@
 #pragma once
 
-#include "common.h"
-#include "descriptors.h"
+#include "common.hpp"
+#include "mip/mip_descriptors.hpp"
 #include "../mip_result.h"
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-
-namespace microstrain
-{
-class Buffer;
-}
 
 namespace mip {
 namespace C {

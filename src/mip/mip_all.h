@@ -8,7 +8,7 @@
 #include "mip_offsets.h"
 #include "mip_packet.h"
 #include "mip_parser.h"
-#include "definitions/descriptors.h"
+#include "mip_descriptors.h"
 
 //MIP Utils
 #include "microstrain/common/serialization.h"

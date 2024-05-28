@@ -20,12 +20,12 @@ void extract_mip_descriptor_rate(microstrain_serializer* serializer, mip_descrip
 void insert_##name(microstrain_serializer* serializer, const name self) \
 { \
     for(unsigned int i=0; i<n; i++) \
-        insert_##type(serializer, self[i]); \
+        microstrain_insert_##type(serializer, self[i]); \
 } \
 void extract_##name(microstrain_serializer* serializer, name self) \
 { \
     for(unsigned int i=0; i<n; i++) \
-        extract_##type(serializer, &self[i]); \
+        microstrain_extract_##type(serializer, &self[i]); \
 }
 
 IMPLEMENT_MIP_VECTOR_FUNCTIONS(3, float,  mip_vector3f)

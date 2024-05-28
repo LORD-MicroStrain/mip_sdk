@@ -1,19 +1,17 @@
 #pragma once
 
 //MIP Core
-#include "mip_cmdqueue.h"
-#include "mip_dispatch.h"
-#include "mip_field.h"
-#include "mip_interface.h"
-#include "mip_offsets.h"
-#include "mip_packet.h"
-#include "mip_parser.h"
-#include "definitions/descriptors.h"
+#include "mip_cmdqueue.hpp"
+#include "mip_dispatch.hpp"
+#include "mip_field.hpp"
+#include "mip_interface.hpp"
+#include "mip_packet.hpp"
+#include "mip_parser.hpp"
 
-//MIP Utils
-#include "microstrain/common/buffer.hpp"
+#include "mip_descriptors.h"
 
 //MIP Commands
+#include "definitions/commands_aiding.hpp"
 #include "definitions/commands_base.hpp"
 #include "definitions/commands_3dm.hpp"
 #include "definitions/commands_filter.hpp"
@@ -28,7 +26,3 @@
 #include "definitions/data_sensor.hpp"
 #include "definitions/data_gnss.hpp"
 #include "definitions/data_filter.hpp"
-
-//MIP Helpers
-#include "mip.hpp"
-#include "mip_device.hpp"

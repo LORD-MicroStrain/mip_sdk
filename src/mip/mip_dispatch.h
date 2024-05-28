@@ -3,7 +3,7 @@
 #include "mip_types.h"
 #include "mip_field.h"
 #include "mip_packet.h"
-#include "definitions/descriptors.h"
+#include "mip_descriptors.h"
 
 #include <stdbool.h>
 
@@ -11,6 +11,7 @@
 #ifdef __cplusplus
 namespace mip {
 namespace C {
+extern "C" {
 #endif
 
 
@@ -35,7 +36,7 @@ namespace C {
 ///@param packet    The MIP packet triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* packet, mip_timestamp timestamp);
+typedef void (*mip_dispatch_packet_callback)(void *context, const mip_packet *packet, mip_timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for field-level callbacks.
@@ -44,7 +45,7 @@ typedef void (*mip_dispatch_packet_callback)(void* context, const mip_packet* pa
 ///@param field     The MIP field triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_field_callback )(void* context, const mip_field* field, mip_timestamp timestamp);
+typedef void (*mip_dispatch_field_callback )(void *context, const mip_field *field, mip_timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for extraction callbacks.
@@ -52,7 +53,7 @@ typedef void (*mip_dispatch_field_callback )(void* context, const mip_field* fie
 ///@param field A valid mip_field.
 ///@param ptr   A pointer to the destination field structure.
 ///
-typedef bool (*mip_dispatch_extractor)(const mip_field* field, void* ptr);
+typedef bool (*mip_dispatch_extractor)(const mip_field *field, void *ptr);
 
 
 enum {
@@ -86,14 +87,14 @@ enum {
 ///
 typedef struct mip_dispatch_handler
 {
-    struct mip_dispatch_handler* _next;                  ///<@private Pointer to the next handler in the list.
+    struct mip_dispatch_handler *_next;                  ///<@private Pointer to the next handler in the list.
     union
     {
-        mip_dispatch_packet_callback  _packet_callback;  ///<@private User function for packets. Valid if _type is MIP_DISPATCH_TYPE_PACKET_*.
-        mip_dispatch_field_callback   _field_callback;   ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_FIELD.
-        mip_dispatch_extractor        _extract_callback; ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_EXTRACT.
+        mip_dispatch_packet_callback _packet_callback;  ///<@private User function for packets. Valid if _type is MIP_DISPATCH_TYPE_PACKET_*.
+        mip_dispatch_field_callback  _field_callback;   ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_FIELD.
+        mip_dispatch_extractor       _extract_callback; ///<@private User callback for data fields. Valid if _type is MIP_DISPATCH_TYPE_EXTRACT.
     };
-    void*   _user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
+    void *_user_data;                                 ///<@private User-provided pointer which is passed directly to the callback.
     uint8_t _type;                                      ///<@private Type of the callback. (Using u8 for better struct packing.) @see mip_dispatch_type
     uint8_t _descriptor_set;                            ///<@private MIP descriptor set for this callback.
     uint8_t _field_descriptor;                          ///<@private MIP field descriptor for this callback. If 0x00, the callback is a packet callback.
@@ -101,12 +102,12 @@ typedef struct mip_dispatch_handler
 } mip_dispatch_handler;
 
 
-void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void* context);
-void mip_dispatch_handler_init_field_handler(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void* context);
-void mip_dispatch_handler_init_extractor(mip_dispatch_handler* handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void* field_ptr);
+void mip_dispatch_handler_init_packet_handler(mip_dispatch_handler *handler, uint8_t descriptor_set, bool after_fields, mip_dispatch_packet_callback callback, void *context);
+void mip_dispatch_handler_init_field_handler(mip_dispatch_handler *handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_field_callback callback, void *context);
+void mip_dispatch_handler_init_extractor(mip_dispatch_handler *handler, uint8_t descriptor_set, uint8_t field_descriptor, mip_dispatch_extractor extractor, void *field_ptr);
 
-void mip_dispatch_handler_set_enabled(mip_dispatch_handler* handler, bool enable);
-bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
+void mip_dispatch_handler_set_enabled(mip_dispatch_handler *handler, bool enable);
+bool mip_dispatch_handler_is_enabled(mip_dispatch_handler *handler);
 
 
 ///@}
@@ -120,16 +121,16 @@ bool mip_dispatch_handler_is_enabled(mip_dispatch_handler* handler);
 ///
 typedef struct mip_dispatcher
 {
-    mip_dispatch_handler* _first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
+    mip_dispatch_handler *_first_handler;   ///<@private Pointer to the first dispatch handler. May be NULL.
 } mip_dispatcher;
 
 
-void mip_dispatcher_init(mip_dispatcher* self);
-void mip_dispatcher_add_handler(mip_dispatcher* self, mip_dispatch_handler* handler);
-void mip_dispatcher_remove_handler(mip_dispatcher* self, mip_dispatch_handler* handler);
-void mip_dispatcher_remove_all_handlers(mip_dispatcher* self);
+void mip_dispatcher_init(mip_dispatcher *self);
+void mip_dispatcher_add_handler(mip_dispatcher *self, mip_dispatch_handler *handler);
+void mip_dispatcher_remove_handler(mip_dispatcher *self, mip_dispatch_handler *handler);
+void mip_dispatcher_remove_all_handlers(mip_dispatcher *self);
 
-void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* packet, mip_timestamp timestamp);
+void mip_dispatcher_dispatch_packet(mip_dispatcher *self, const mip_packet *packet, mip_timestamp timestamp);
 
 ///@}
 ///@}
@@ -138,6 +139,7 @@ void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet* pack
 
 
 #ifdef __cplusplus
+} // extern "C"
 } // namespace C
 } // namespace mip
 #endif

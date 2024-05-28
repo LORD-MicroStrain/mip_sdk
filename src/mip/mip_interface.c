@@ -3,7 +3,7 @@
 
 #include "mip_field.h"
 
-#include "definitions/descriptors.h"
+#include "mip_descriptors.h"
 
 #include <assert.h>
 

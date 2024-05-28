@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.h"
-#include "descriptors.h"
+#include "mip/mip_descriptors.h"
 #include "../mip_result.h"
 
 #include <stdint.h>

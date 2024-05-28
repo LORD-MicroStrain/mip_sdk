@@ -1,5 +1,5 @@
 
-#include "mip_device.hpp"
+#include "mip_interface.hpp"
 
 #include <microstrain/common/connection.hpp>
 

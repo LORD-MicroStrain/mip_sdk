@@ -63,7 +63,7 @@ void extract(::microstrain::Buffer& serializer, CommMode::Response& self)
 
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
     microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
@@ -75,7 +75,7 @@ TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode)
 }
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
     microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
@@ -84,7 +84,7 @@ TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
     uint8_t responseLength = sizeof(buffer);
     TypedResult<CommMode> result = mip_interface_run_command_with_response(&device, DESCRIPTOR_SET, CMD_COM_MODE, buffer, (uint8_t)serializer.length(), REPLY_COM_MODE, buffer, &responseLength);
     
-    if( result == MIP_ACK_OK )
+    if( result == CmdResult::ACK_OK )
     {
         microstrain::Buffer deserializer(buffer, responseLength);
         
@@ -92,13 +92,13 @@ TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut)
         extract(deserializer, *modeOut);
         
         if( deserializer.remaining() != 0 )
-            result = MIP_STATUS_ERROR;
+            result = CmdResult::STATUS_ERROR;
     }
     return result;
 }
 TypedResult<CommMode> defaultCommMode(C::mip_interface& device)
 {
-    uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
     microstrain::Buffer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);

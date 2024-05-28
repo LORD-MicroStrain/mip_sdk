@@ -2,9 +2,9 @@
 
 #include "microstrain/common/descriptor_id.hpp"
 
-#include "mip/mip_device.hpp"
+#include "mip/mip_interface.hpp"
 #include "mip/mip_result.h"
-#include "mip/definitions/descriptors.h"
+#include "mip/mip_descriptors.h"
 
 
 #include <stddef.h>

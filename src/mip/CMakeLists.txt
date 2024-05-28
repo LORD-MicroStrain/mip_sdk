@@ -20,14 +20,18 @@ set(UTILS_SOURCES
 # MIP Control
 #
 
-set(MIP_SOURCES
+set(MIP_SOURCES_C
     "${VERSION_OUT_FILE}"
     "${MIP_DIR}/mip_cmdqueue.c"
     "${MIP_DIR}/mip_cmdqueue.h"
+    "${MIP_DIR}/mip_descriptors.c"
+    "${MIP_DIR}/mip_descriptors.h"
     "${MIP_DIR}/mip_dispatch.c"
     "${MIP_DIR}/mip_dispatch.h"
     "${MIP_DIR}/mip_field.c"
     "${MIP_DIR}/mip_field.h"
+    "${MIP_DIR}/mip_interface.c"
+    "${MIP_DIR}/mip_interface.h"
     "${MIP_DIR}/mip_offsets.h"
     "${MIP_DIR}/mip_packet.c"
     "${MIP_DIR}/mip_packet.h"
@@ -38,18 +42,20 @@ set(MIP_SOURCES
     "${MIP_DIR}/mip_types.h"
     "${MIP_DIR}/definitions/common.c"
     "${MIP_DIR}/definitions/common.h"
-    "${MIP_DIR}/definitions/descriptors.c"
-    "${MIP_DIR}/definitions/descriptors.h"
-    "${MIP_DIR}/mip.hpp"
     "${MIP_DIR}/mip_all.h"
-    "${MIP_DIR}/mip_all.hpp"
 )
 
-set(MIPDEV_SOURCES
-    "${MIP_DIR}/mip_interface.c"
-    "${MIP_DIR}/mip_interface.h"
-    "${MIP_DIR}/mip_device.cpp"
-    "${MIP_DIR}/mip_device.hpp"
+set(MIP_SOURCES_CPP
+    "mip.hpp"
+    "mip_all.hpp"
+    "mip_cmdqueue.hpp"
+    "mip_descriptors.hpp"
+    "mip_field.hpp"
+    "mip_packet.hpp"
+    "mip_parser.hpp"
+    "mip_result.hpp"
+    "mip_interface.cpp"
+    "mip_interface.hpp"
 )
 
 set(MIPDEF_SOURCES
@@ -86,8 +92,8 @@ string(REGEX REPLACE "\.c(;|$)" ".cpp\\1" MIPDEF_CPP_SOURCES "${MIPDEF_HPP_SOURC
 set(ALL_MIP_SOURCES
     ${MIPDEF_SOURCES}
     ${MIPDEF_CPP_SOURCES}
-    ${MIPDEV_SOURCES}
-    ${MIP_SOURCES}
+    ${MIP_SOURCES_C}
+    ${MIP_SOURCES_CPP}
     ${UTILS_SOURCES}
     ${MIP_CPP_HEADERS}
     ${MIP_INTERFACE_SOURCES}

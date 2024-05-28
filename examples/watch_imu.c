@@ -7,7 +7,7 @@
 #include "microstrain/common/logging.h"
 #include "microstrain/common/serialization.h"
 
-#include <mip/definitions/descriptors.h>
+#include "mip/mip_descriptors.h"
 #include <mip/definitions/commands_base.h>
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>

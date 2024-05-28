@@ -2,7 +2,7 @@
 #include "mip_packet.h"
 #include "mip_offsets.h"
 
-#include "definitions/descriptors.h"
+#include "mip_descriptors.h"
 
 #include <microstrain/common/serialization.h>
 

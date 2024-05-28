@@ -12,7 +12,7 @@
 #endif
 
 
-#include <mip/mip_device.hpp>
+#include <mip/mip_interface.hpp>
 
 #include <chrono>
 #include <memory>
