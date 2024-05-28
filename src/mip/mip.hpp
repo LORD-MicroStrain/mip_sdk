@@ -183,7 +183,7 @@ public:
     {
     public:
         AllocatedField(mip::PacketRef& packet, uint8_t* buffer, size_t space) : Buffer(buffer, space), m_packet(packet) {}
-        AllocatedField(const AllocatedField&) = delete;
+        //AllocatedField(const AllocatedField&) = delete;
         AllocatedField& operator=(const AllocatedField&) = delete;
 
         bool commit()
