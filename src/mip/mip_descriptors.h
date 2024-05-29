@@ -7,12 +7,6 @@
 #include "mip_result.h"
 
 #ifdef __cplusplus
-#include "microstrain/common/buffer.hpp"
-
-#include <c++/11/tuple>
-#include <c++/11/type_traits>
-#include <c++/11/functional>
-
 namespace mip {
 namespace C {
 using ::microstrain::C::microstrain_serializer;
