@@ -90,11 +90,14 @@ public:
 
         bool commit()
         {
+            assert(capacity() <= FIELD_PAYLOAD_LENGTH_MAX);
+
             bool ok = isOk();
 
             if(ok)
-                C::mip_packet_realloc_last_field(&m_packet, basePointer(), length());
-            else
+                ok &= C::mip_packet_realloc_last_field(&m_packet, basePointer(), (uint8_t)length()) >= 0;
+
+            if(!ok)
                 C::mip_packet_cancel_last_field(&m_packet, basePointer());
 
             return ok;
