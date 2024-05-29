@@ -115,7 +115,7 @@ public:
     size_t capacity() const { return m_size; }
     size_t length() const { return m_size; }
     size_t offset() const { return m_offset; }
-    int remaining() const { return m_size - m_offset; }
+    int remaining() const { return int(m_size - m_offset); }
 
     bool noRemaining() const { return m_offset == m_size; }
     bool isOverrun() const { return m_offset > m_size; }
@@ -130,7 +130,7 @@ public:
 
     uint8_t* getPtrAndAdvance(size_t size) { uint8_t* ptr = hasRemaining(size) ? (m_ptr+m_offset) : nullptr; m_offset += size; return ptr; }
 
-    void invalidate() { m_offset = -1U; }
+    void invalidate() { m_offset = size_t(-1); }
 
     template<typename... Ts>
     bool insert(const Ts&... values);
@@ -198,7 +198,8 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
-size_t insert(Buffer& buffer, Ts... values)
+typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
+/*size_t*/ insert(Buffer& buffer, Ts... values)
 {
     if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
@@ -279,7 +280,8 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
-size_t extract(Buffer& buffer, Ts&... values)
+typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
+/*size_t*/ extract(Buffer& buffer, Ts&... values)
 {
     if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
