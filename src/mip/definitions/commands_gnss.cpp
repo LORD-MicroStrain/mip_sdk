@@ -1,7 +1,7 @@
 
 #include "commands_gnss.hpp"
 
-#include "microstrain/common/buffer.hpp"
+#include "microstrain/common/serialization.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
@@ -29,18 +29,18 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Buffer& serializer, const ReceiverInfo& self)
+void insert(::microstrain::Serializer& serializer, const ReceiverInfo& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, ReceiverInfo& self)
+void extract(::microstrain::Serializer& serializer, ReceiverInfo& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Response& self)
+void insert(::microstrain::Serializer& serializer, const ReceiverInfo::Response& self)
 {
     insert(serializer, self.num_receivers);
     
@@ -48,7 +48,7 @@ void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Response& sel
         insert(serializer, self.receiver_info[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ReceiverInfo::Response& self)
+void extract(::microstrain::Serializer& serializer, ReceiverInfo::Response& self)
 {
     extract_count(serializer, &self.num_receivers, sizeof(self.receiver_info)/sizeof(self.receiver_info[0]));
     for(unsigned int i=0; i < self.num_receivers; i++)
@@ -56,7 +56,7 @@ void extract(::microstrain::Buffer& serializer, ReceiverInfo::Response& self)
     
 }
 
-void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Info& self)
+void insert(::microstrain::Serializer& serializer, const ReceiverInfo::Info& self)
 {
     insert(serializer, self.receiver_id);
     
@@ -66,7 +66,7 @@ void insert(::microstrain::Buffer& serializer, const ReceiverInfo::Info& self)
         insert(serializer, self.description[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ReceiverInfo::Info& self)
+void extract(::microstrain::Serializer& serializer, ReceiverInfo::Info& self)
 {
     extract(serializer, self.receiver_id);
     
@@ -86,7 +86,7 @@ TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numRec
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         extract_count(deserializer, numReceiversOut, numReceiversOutMax);
         assert(receiverInfoOut || (numReceiversOut == 0));
@@ -98,7 +98,7 @@ TypedResult<ReceiverInfo> receiverInfo(C::mip_interface& device, uint8_t* numRec
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const SignalConfiguration& self)
+void insert(::microstrain::Serializer& serializer, const SignalConfiguration& self)
 {
     insert(serializer, self.function);
     
@@ -117,7 +117,7 @@ void insert(::microstrain::Buffer& serializer, const SignalConfiguration& self)
         
     }
 }
-void extract(::microstrain::Buffer& serializer, SignalConfiguration& self)
+void extract(::microstrain::Serializer& serializer, SignalConfiguration& self)
 {
     extract(serializer, self.function);
     
@@ -137,7 +137,7 @@ void extract(::microstrain::Buffer& serializer, SignalConfiguration& self)
     }
 }
 
-void insert(::microstrain::Buffer& serializer, const SignalConfiguration::Response& self)
+void insert(::microstrain::Serializer& serializer, const SignalConfiguration::Response& self)
 {
     insert(serializer, self.gps_enable);
     
@@ -151,7 +151,7 @@ void insert(::microstrain::Buffer& serializer, const SignalConfiguration::Respon
         insert(serializer, self.reserved[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, SignalConfiguration::Response& self)
+void extract(::microstrain::Serializer& serializer, SignalConfiguration::Response& self)
 {
     extract(serializer, self.gps_enable);
     
@@ -168,8 +168,8 @@ void extract(::microstrain::Buffer& serializer, SignalConfiguration::Response& s
 
 TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& device, uint8_t gpsEnable, uint8_t glonassEnable, uint8_t galileoEnable, uint8_t beidouEnable, const uint8_t* reserved)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, gpsEnable);
@@ -190,8 +190,8 @@ TypedResult<SignalConfiguration> writeSignalConfiguration(C::mip_interface& devi
 }
 TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& device, uint8_t* gpsEnableOut, uint8_t* glonassEnableOut, uint8_t* galileoEnableOut, uint8_t* beidouEnableOut, uint8_t* reservedOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
@@ -201,7 +201,7 @@ TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& devic
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         assert(gpsEnableOut);
         extract(deserializer, *gpsEnableOut);
@@ -226,8 +226,8 @@ TypedResult<SignalConfiguration> readSignalConfiguration(C::mip_interface& devic
 }
 TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
@@ -236,8 +236,8 @@ TypedResult<SignalConfiguration> saveSignalConfiguration(C::mip_interface& devic
 }
 TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
@@ -246,15 +246,15 @@ TypedResult<SignalConfiguration> loadSignalConfiguration(C::mip_interface& devic
 }
 TypedResult<SignalConfiguration> defaultSignalConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SIGNAL_CONFIGURATION, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration& self)
+void insert(::microstrain::Serializer& serializer, const RtkDongleConfiguration& self)
 {
     insert(serializer, self.function);
     
@@ -267,7 +267,7 @@ void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration& sel
         
     }
 }
-void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration& self)
+void extract(::microstrain::Serializer& serializer, RtkDongleConfiguration& self)
 {
     extract(serializer, self.function);
     
@@ -281,7 +281,7 @@ void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration& self)
     }
 }
 
-void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration::Response& self)
+void insert(::microstrain::Serializer& serializer, const RtkDongleConfiguration::Response& self)
 {
     insert(serializer, self.enable);
     
@@ -289,7 +289,7 @@ void insert(::microstrain::Buffer& serializer, const RtkDongleConfiguration::Res
         insert(serializer, self.reserved[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration::Response& self)
+void extract(::microstrain::Serializer& serializer, RtkDongleConfiguration::Response& self)
 {
     extract(serializer, self.enable);
     
@@ -300,8 +300,8 @@ void extract(::microstrain::Buffer& serializer, RtkDongleConfiguration::Response
 
 TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface& device, uint8_t enable, const uint8_t* reserved)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, enable);
@@ -316,8 +316,8 @@ TypedResult<RtkDongleConfiguration> writeRtkDongleConfiguration(C::mip_interface
 }
 TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface& device, uint8_t* enableOut, uint8_t* reservedOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     assert(serializer.isOk());
@@ -327,7 +327,7 @@ TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface&
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         assert(enableOut);
         extract(deserializer, *enableOut);
@@ -343,8 +343,8 @@ TypedResult<RtkDongleConfiguration> readRtkDongleConfiguration(C::mip_interface&
 }
 TypedResult<RtkDongleConfiguration> saveRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     assert(serializer.isOk());
@@ -353,8 +353,8 @@ TypedResult<RtkDongleConfiguration> saveRtkDongleConfiguration(C::mip_interface&
 }
 TypedResult<RtkDongleConfiguration> loadRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     assert(serializer.isOk());
@@ -363,8 +363,8 @@ TypedResult<RtkDongleConfiguration> loadRtkDongleConfiguration(C::mip_interface&
 }
 TypedResult<RtkDongleConfiguration> defaultRtkDongleConfiguration(C::mip_interface& device)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     assert(serializer.isOk());

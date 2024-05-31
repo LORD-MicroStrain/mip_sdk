@@ -112,7 +112,7 @@ bool            mip_packet_is_data(const mip_packet* packet);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup Serialization  Accessors - Functions for serializing a MIP packet.
+///@defgroup Serialization  Serializers - Functions for serializing a MIP packet.
 ///
 ///@{
 

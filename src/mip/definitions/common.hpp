@@ -1,6 +1,6 @@
 #pragma once
 
-#include <microstrain/common/buffer.hpp>
+#include <microstrain/common/serialization.hpp>
 
 
 namespace mip
@@ -15,8 +15,8 @@ struct DescriptorRate
     uint16_t decimation;
 };
 
-inline size_t insert(microstrain::Buffer& buffer, const DescriptorRate& self) { return buffer.insert(self.descriptor, self.decimation); }
-inline size_t extract(microstrain::Buffer& buffer, DescriptorRate& self) { return buffer.extract(self.descriptor, self.decimation); }
+inline size_t insert(microstrain::Serializer& buffer, const DescriptorRate& self) { return buffer.insert(self.descriptor, self.decimation); }
+inline size_t extract(microstrain::Serializer& buffer, DescriptorRate& self) { return buffer.extract(self.descriptor, self.decimation); }
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -114,10 +114,10 @@ using Matrix3d = Vector<double,9>;
 using Quatf = Vector4f;
 
 template<typename T, size_t N>
-void insert(::microstrain::Buffer& serializer, const Vector<T,N>& v) { for(size_t i=0; i<N; i++) insert(serializer, v[i]); }
+void insert(::microstrain::Serializer& serializer, const Vector<T,N>& v) { for(size_t i =0; i<N; i++) insert(serializer, v[i]); }
 
 template<typename T, size_t N>
-void extract(::microstrain::Buffer& serializer, Vector<T,N>& v) { for(size_t i=0; i<N; i++) extract(serializer, v[i]); }
+void extract(::microstrain::Serializer& serializer, Vector<T,N>& v) { for(size_t i =0; i<N; i++) extract(serializer, v[i]); }
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

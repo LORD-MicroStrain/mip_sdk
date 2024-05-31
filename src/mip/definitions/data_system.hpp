@@ -93,8 +93,8 @@ struct BuiltInTest
         return std::make_tuple(std::ref(result));
     }
 };
-void insert(::microstrain::Buffer& serializer, const BuiltInTest& self);
-void extract(::microstrain::Buffer& serializer, BuiltInTest& self);
+void insert(::microstrain::Serializer& serializer, const BuiltInTest& self);
+void extract(::microstrain::Serializer& serializer, BuiltInTest& self);
 
 
 ///@}
@@ -127,8 +127,8 @@ struct TimeSyncStatus
         return std::make_tuple(std::ref(time_sync),std::ref(last_pps_rcvd));
     }
 };
-void insert(::microstrain::Buffer& serializer, const TimeSyncStatus& self);
-void extract(::microstrain::Buffer& serializer, TimeSyncStatus& self);
+void insert(::microstrain::Serializer& serializer, const TimeSyncStatus& self);
+void extract(::microstrain::Serializer& serializer, TimeSyncStatus& self);
 
 
 ///@}
@@ -178,8 +178,8 @@ struct GpioState
         return std::make_tuple(std::ref(states));
     }
 };
-void insert(::microstrain::Buffer& serializer, const GpioState& self);
-void extract(::microstrain::Buffer& serializer, GpioState& self);
+void insert(::microstrain::Serializer& serializer, const GpioState& self);
+void extract(::microstrain::Serializer& serializer, GpioState& self);
 
 
 ///@}
@@ -213,8 +213,8 @@ struct GpioAnalogValue
         return std::make_tuple(std::ref(gpio_id),std::ref(value));
     }
 };
-void insert(::microstrain::Buffer& serializer, const GpioAnalogValue& self);
-void extract(::microstrain::Buffer& serializer, GpioAnalogValue& self);
+void insert(::microstrain::Serializer& serializer, const GpioAnalogValue& self);
+void extract(::microstrain::Serializer& serializer, GpioAnalogValue& self);
 
 
 ///@}

@@ -4,7 +4,7 @@
 
 #include "mip_result.hpp"
 
-#include "microstrain/common/buffer.hpp"
+#include "microstrain/common/serialization.hpp"
 
 #include <tuple>
 #include <type_traits>
@@ -44,8 +44,8 @@ struct CompositeDescriptor
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (::microstrain::Buffer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
-template<class Derived> void extract(::microstrain::Buffer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> void insert (::microstrain::Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> void extract(::microstrain::Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
 
 
 enum class FunctionSelector : uint8_t

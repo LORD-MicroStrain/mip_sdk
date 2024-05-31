@@ -125,11 +125,11 @@ struct CommMode
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const CommMode& self);
-void extract(::microstrain::Buffer& serializer, CommMode& self);
+void insert(::microstrain::Serializer& serializer, const CommMode& self);
+void extract(::microstrain::Serializer& serializer, CommMode& self);
 
-void insert(::microstrain::Buffer& serializer, const CommMode::Response& self);
-void extract(::microstrain::Buffer& serializer, CommMode::Response& self);
+void insert(::microstrain::Serializer& serializer, const CommMode::Response& self);
+void extract(::microstrain::Serializer& serializer, CommMode::Response& self);
 
 TypedResult<CommMode> writeCommMode(C::mip_interface& device, uint8_t mode);
 TypedResult<CommMode> readCommMode(C::mip_interface& device, uint8_t* modeOut);

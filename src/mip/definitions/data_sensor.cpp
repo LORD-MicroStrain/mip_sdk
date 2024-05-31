@@ -1,7 +1,7 @@
 
 #include "data_sensor.hpp"
 
-#include "microstrain/common/buffer.hpp"
+#include "microstrain/common/serialization.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
@@ -29,159 +29,159 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Buffer& serializer, const RawAccel& self)
+void insert(::microstrain::Serializer& serializer, const RawAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.raw_accel[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, RawAccel& self)
+void extract(::microstrain::Serializer& serializer, RawAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.raw_accel[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const RawGyro& self)
+void insert(::microstrain::Serializer& serializer, const RawGyro& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.raw_gyro[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, RawGyro& self)
+void extract(::microstrain::Serializer& serializer, RawGyro& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.raw_gyro[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const RawMag& self)
+void insert(::microstrain::Serializer& serializer, const RawMag& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.raw_mag[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, RawMag& self)
+void extract(::microstrain::Serializer& serializer, RawMag& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.raw_mag[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const RawPressure& self)
+void insert(::microstrain::Serializer& serializer, const RawPressure& self)
 {
     insert(serializer, self.raw_pressure);
     
 }
-void extract(::microstrain::Buffer& serializer, RawPressure& self)
+void extract(::microstrain::Serializer& serializer, RawPressure& self)
 {
     extract(serializer, self.raw_pressure);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const ScaledAccel& self)
+void insert(::microstrain::Serializer& serializer, const ScaledAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scaled_accel[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ScaledAccel& self)
+void extract(::microstrain::Serializer& serializer, ScaledAccel& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scaled_accel[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const ScaledGyro& self)
+void insert(::microstrain::Serializer& serializer, const ScaledGyro& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scaled_gyro[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ScaledGyro& self)
+void extract(::microstrain::Serializer& serializer, ScaledGyro& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scaled_gyro[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const ScaledMag& self)
+void insert(::microstrain::Serializer& serializer, const ScaledMag& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.scaled_mag[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ScaledMag& self)
+void extract(::microstrain::Serializer& serializer, ScaledMag& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.scaled_mag[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const ScaledPressure& self)
+void insert(::microstrain::Serializer& serializer, const ScaledPressure& self)
 {
     insert(serializer, self.scaled_pressure);
     
 }
-void extract(::microstrain::Buffer& serializer, ScaledPressure& self)
+void extract(::microstrain::Serializer& serializer, ScaledPressure& self)
 {
     extract(serializer, self.scaled_pressure);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const DeltaTheta& self)
+void insert(::microstrain::Serializer& serializer, const DeltaTheta& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.delta_theta[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, DeltaTheta& self)
+void extract(::microstrain::Serializer& serializer, DeltaTheta& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.delta_theta[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const DeltaVelocity& self)
+void insert(::microstrain::Serializer& serializer, const DeltaVelocity& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.delta_velocity[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, DeltaVelocity& self)
+void extract(::microstrain::Serializer& serializer, DeltaVelocity& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.delta_velocity[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const CompOrientationMatrix& self)
+void insert(::microstrain::Serializer& serializer, const CompOrientationMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.m[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, CompOrientationMatrix& self)
+void extract(::microstrain::Serializer& serializer, CompOrientationMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.m[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const CompQuaternion& self)
+void insert(::microstrain::Serializer& serializer, const CompQuaternion& self)
 {
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.q[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, CompQuaternion& self)
+void extract(::microstrain::Serializer& serializer, CompQuaternion& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.q[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const CompEulerAngles& self)
+void insert(::microstrain::Serializer& serializer, const CompEulerAngles& self)
 {
     insert(serializer, self.roll);
     
@@ -190,7 +190,7 @@ void insert(::microstrain::Buffer& serializer, const CompEulerAngles& self)
     insert(serializer, self.yaw);
     
 }
-void extract(::microstrain::Buffer& serializer, CompEulerAngles& self)
+void extract(::microstrain::Serializer& serializer, CompEulerAngles& self)
 {
     extract(serializer, self.roll);
     
@@ -200,51 +200,51 @@ void extract(::microstrain::Buffer& serializer, CompEulerAngles& self)
     
 }
 
-void insert(::microstrain::Buffer& serializer, const CompOrientationUpdateMatrix& self)
+void insert(::microstrain::Serializer& serializer, const CompOrientationUpdateMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         insert(serializer, self.m[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, CompOrientationUpdateMatrix& self)
+void extract(::microstrain::Serializer& serializer, CompOrientationUpdateMatrix& self)
 {
     for(unsigned int i=0; i < 9; i++)
         extract(serializer, self.m[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const OrientationRawTemp& self)
+void insert(::microstrain::Serializer& serializer, const OrientationRawTemp& self)
 {
     for(unsigned int i=0; i < 4; i++)
         insert(serializer, self.raw_temp[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, OrientationRawTemp& self)
+void extract(::microstrain::Serializer& serializer, OrientationRawTemp& self)
 {
     for(unsigned int i=0; i < 4; i++)
         extract(serializer, self.raw_temp[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const InternalTimestamp& self)
+void insert(::microstrain::Serializer& serializer, const InternalTimestamp& self)
 {
     insert(serializer, self.counts);
     
 }
-void extract(::microstrain::Buffer& serializer, InternalTimestamp& self)
+void extract(::microstrain::Serializer& serializer, InternalTimestamp& self)
 {
     extract(serializer, self.counts);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const PpsTimestamp& self)
+void insert(::microstrain::Serializer& serializer, const PpsTimestamp& self)
 {
     insert(serializer, self.seconds);
     
     insert(serializer, self.useconds);
     
 }
-void extract(::microstrain::Buffer& serializer, PpsTimestamp& self)
+void extract(::microstrain::Serializer& serializer, PpsTimestamp& self)
 {
     extract(serializer, self.seconds);
     
@@ -252,7 +252,7 @@ void extract(::microstrain::Buffer& serializer, PpsTimestamp& self)
     
 }
 
-void insert(::microstrain::Buffer& serializer, const GpsTimestamp& self)
+void insert(::microstrain::Serializer& serializer, const GpsTimestamp& self)
 {
     insert(serializer, self.tow);
     
@@ -261,7 +261,7 @@ void insert(::microstrain::Buffer& serializer, const GpsTimestamp& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(::microstrain::Buffer& serializer, GpsTimestamp& self)
+void extract(::microstrain::Serializer& serializer, GpsTimestamp& self)
 {
     extract(serializer, self.tow);
     
@@ -271,7 +271,7 @@ void extract(::microstrain::Buffer& serializer, GpsTimestamp& self)
     
 }
 
-void insert(::microstrain::Buffer& serializer, const TemperatureAbs& self)
+void insert(::microstrain::Serializer& serializer, const TemperatureAbs& self)
 {
     insert(serializer, self.min_temp);
     
@@ -280,7 +280,7 @@ void insert(::microstrain::Buffer& serializer, const TemperatureAbs& self)
     insert(serializer, self.mean_temp);
     
 }
-void extract(::microstrain::Buffer& serializer, TemperatureAbs& self)
+void extract(::microstrain::Serializer& serializer, TemperatureAbs& self)
 {
     extract(serializer, self.min_temp);
     
@@ -290,44 +290,44 @@ void extract(::microstrain::Buffer& serializer, TemperatureAbs& self)
     
 }
 
-void insert(::microstrain::Buffer& serializer, const UpVector& self)
+void insert(::microstrain::Serializer& serializer, const UpVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.up[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, UpVector& self)
+void extract(::microstrain::Serializer& serializer, UpVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.up[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const NorthVector& self)
+void insert(::microstrain::Serializer& serializer, const NorthVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         insert(serializer, self.north[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, NorthVector& self)
+void extract(::microstrain::Serializer& serializer, NorthVector& self)
 {
     for(unsigned int i=0; i < 3; i++)
         extract(serializer, self.north[i]);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const OverrangeStatus& self)
+void insert(::microstrain::Serializer& serializer, const OverrangeStatus& self)
 {
     insert(serializer, self.status);
     
 }
-void extract(::microstrain::Buffer& serializer, OverrangeStatus& self)
+void extract(::microstrain::Serializer& serializer, OverrangeStatus& self)
 {
     extract(serializer, self.status);
     
 }
 
-void insert(::microstrain::Buffer& serializer, const OdometerData& self)
+void insert(::microstrain::Serializer& serializer, const OdometerData& self)
 {
     insert(serializer, self.speed);
     
@@ -336,7 +336,7 @@ void insert(::microstrain::Buffer& serializer, const OdometerData& self)
     insert(serializer, self.valid_flags);
     
 }
-void extract(::microstrain::Buffer& serializer, OdometerData& self)
+void extract(::microstrain::Serializer& serializer, OdometerData& self)
 {
     extract(serializer, self.speed);
     

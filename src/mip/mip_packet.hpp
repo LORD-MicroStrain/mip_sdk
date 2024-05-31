@@ -5,7 +5,7 @@
 #include "mip_packet.h"
 #include "mip_offsets.h"
 
-#include <microstrain/common/buffer.hpp>
+#include <microstrain/common/serialization.hpp>
 
 #include <assert.h>
 #include <cstring>
@@ -76,15 +76,15 @@ public:
     int remainingSpace() const { return C::mip_packet_remaining_space(this); }  ///<@copydoc mip::C::mip_packet_remaining_space
 
     bool addField(uint8_t fieldDescriptor, const uint8_t* payload, uint8_t payloadLength) { return C::mip_packet_add_field(this, fieldDescriptor, payload, payloadLength); }  ///<@copydoc mip::C::mip_packet_add_field
-    microstrain::Buffer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t* ptr; if(C::mip_packet_alloc_field(this, fieldDescriptor, length, &ptr) < 0) length=0; return microstrain::Buffer{ptr, length}; }
+    microstrain::Serializer createField(uint8_t fieldDescriptor, uint8_t length) { uint8_t * ptr; if(C::mip_packet_alloc_field(this, fieldDescriptor, length, &ptr) < 0) length =0; return microstrain::Serializer{ptr, length}; }
     //std::tuple<uint8_t*, size_t> createField(uint8_t fieldDescriptor) { uint8_t* ptr; int max_size = C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr); return max_size >= 0 ? std::make_tuple(ptr, max_size) : std::make_tuple(nullptr, 0); }  ///<@copydoc mip::C::mip_packet_alloc_field
     //int finishLastField(uint8_t* payloadPtr, uint8_t newPayloadLength) { return C::mip_packet_realloc_last_field(this, payloadPtr, newPayloadLength); }  ///<@copydoc mip::C::mip_packet_realloc_last_field
     //int cancelLastField(uint8_t* payloadPtr) { return C::mip_packet_cancel_last_field(this, payloadPtr); }  ///<@copydoc mip::C::mip_packet_cancel_last_field
 
-    class AllocatedField : public microstrain::Buffer
+    class AllocatedField : public microstrain::Serializer
     {
     public:
-        AllocatedField(mip::PacketRef& packet, uint8_t* buffer, size_t space) : Buffer(buffer, space), m_packet(packet) {}
+        AllocatedField(mip::PacketRef& packet, uint8_t* buffer, size_t space) : Serializer(buffer, space), m_packet(packet) {}
         //AllocatedField(const AllocatedField&) = delete;
         AllocatedField& operator=(const AllocatedField&) = delete;
 

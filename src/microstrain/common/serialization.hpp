@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include <type_traits>
+#include <tuple>
 
 
 namespace microstrain
@@ -105,12 +106,12 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==8, size_t>::t
 }
 
 
-class Buffer
+class Serializer
 {
 public:
-    Buffer() = default;
-    Buffer(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
-    Buffer(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
+    Serializer() = default;
+    Serializer(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
+    Serializer(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
 
     size_t capacity() const { return m_size; }
     size_t length() const { return m_size; }
@@ -167,7 +168,7 @@ private:
 // Built-in types (bool, int, float, ...)
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
-/*size_t*/ insert(Buffer& buffer, T value)
+/*size_t*/ insert(Serializer& buffer, T value)
 {
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(T)))
         write(ptr, value);
@@ -178,7 +179,7 @@ typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
 // Enums
 template<class T>
 typename std::enable_if<std::is_enum<T>::value, size_t>::type
-/*size_t*/ insert(Buffer& buffer, T value)
+/*size_t*/ insert(Serializer& buffer, T value)
 {
     using BaseType = typename std::underlying_type<T>::type;
 
@@ -188,18 +189,10 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     return sizeof(BaseType);
 }
 
-//// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-//template<class T>
-//typename std::enable_if<std::is_class<T>::value, size_t>::type
-///*size_t*/ insert(Buffer& buffer, const T& value)
-//{
-//    return value.serialize(buffer);
-//}
-
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
 typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
-/*size_t*/ insert(Buffer& buffer, Ts... values)
+/*size_t*/ insert(Serializer& buffer, Ts... values)
 {
     if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
@@ -245,7 +238,7 @@ size_t insert(Buffer& buffer, T0 value0, Ts... values)
 // Built-in types (bool, int, float, ...)
 template<class T>
 typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
-/*size_t*/ extract(Buffer& buffer, T& value)
+/*size_t*/ extract(Serializer& buffer, T& value)
 {
     if(auto ptr = buffer.getPtrAndAdvance(sizeof(T)))
         read(ptr, value);
@@ -256,7 +249,7 @@ typename std::enable_if<std::is_arithmetic<T>::value, size_t>::type
 // Enums
 template<class T>
 typename std::enable_if<std::is_enum<T>::value, size_t>::type
-/*size_t*/ extract(Buffer& buffer, T& value)
+/*size_t*/ extract(Serializer& buffer, T& value)
 {
     using BaseType = typename std::underlying_type<T>::type;
 
@@ -270,18 +263,18 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     return sizeof(BaseType);
 }
 
-//// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-//template<class T>
-//typename std::enable_if<std::is_class<T>::value, size_t>::type
-///*size_t*/ extract(Buffer& buffer, T& value)
-//{
-//    return value.deserialize(buffer);
-//}
+// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
+template<class T>
+typename std::enable_if<std::is_class<T>::value, size_t>::type
+/*size_t*/ extract(Serializer& buffer, T& value)
+{
+    return value.deserialize(buffer);
+}
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
 typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
-/*size_t*/ extract(Buffer& buffer, Ts&... values)
+/*size_t*/ extract(Serializer& buffer, Ts&... values)
 {
     if constexpr( (std::is_arithmetic<Ts>::value && ...) )
     {
@@ -321,7 +314,7 @@ size_t extract(Buffer& buffer, T0 value0, Ts... values)
 //}
 
 template<class T>
-size_t extract_count(Buffer& buffer, T& count, size_t max_count)
+size_t extract_count(Serializer& buffer, T& count, size_t max_count)
 {
     T tmp;
     size_t size = extract(buffer, tmp);
@@ -334,15 +327,15 @@ size_t extract_count(Buffer& buffer, T& count, size_t max_count)
     return size;
 }
 template<class T>
-size_t extract_count(Buffer& buffer, T* count, size_t max_count) { return extract_count(buffer, *count, max_count); }
+size_t extract_count(Serializer& buffer, T* count, size_t max_count) { return extract_count(buffer, *count, max_count); }
 
 
 
 template<typename... Ts>
-bool Buffer::insert(const Ts&... values) { return microstrain::insert(*this, values...); }
+bool Serializer::insert(const Ts&... values) { return microstrain::insert(*this, values...); }
 
 template<typename... Ts>
-bool Buffer::extract(Ts&... values) { return microstrain::extract(*this, values...); }
+bool Serializer::extract(Ts&... values) { return microstrain::extract(*this, values...); }
 
 
 } // namespace microstrain

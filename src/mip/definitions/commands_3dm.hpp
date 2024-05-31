@@ -172,8 +172,8 @@ struct NmeaMessage
     uint16_t decimation = 0; ///< Decimation from the base rate for source_desc_set. Frequency is limited to 10 Hz or the base rate, whichever is lower. Must be 0 when polling.
     
 };
-void insert(::microstrain::Buffer& serializer, const NmeaMessage& self);
-void extract(::microstrain::Buffer& serializer, NmeaMessage& self);
+void insert(::microstrain::Serializer& serializer, const NmeaMessage& self);
+void extract(::microstrain::Serializer& serializer, NmeaMessage& self);
 
 enum class SensorRangeType : uint8_t
 {
@@ -228,8 +228,8 @@ struct PollImuMessage
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const PollImuMessage& self);
-void extract(::microstrain::Buffer& serializer, PollImuMessage& self);
+void insert(::microstrain::Serializer& serializer, const PollImuMessage& self);
+void extract(::microstrain::Serializer& serializer, PollImuMessage& self);
 
 TypedResult<PollImuMessage> pollImuMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
@@ -274,8 +274,8 @@ struct PollGnssMessage
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const PollGnssMessage& self);
-void extract(::microstrain::Buffer& serializer, PollGnssMessage& self);
+void insert(::microstrain::Serializer& serializer, const PollGnssMessage& self);
+void extract(::microstrain::Serializer& serializer, PollGnssMessage& self);
 
 TypedResult<PollGnssMessage> pollGnssMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
@@ -320,8 +320,8 @@ struct PollFilterMessage
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const PollFilterMessage& self);
-void extract(::microstrain::Buffer& serializer, PollFilterMessage& self);
+void insert(::microstrain::Serializer& serializer, const PollFilterMessage& self);
+void extract(::microstrain::Serializer& serializer, PollFilterMessage& self);
 
 TypedResult<PollFilterMessage> pollFilterMessage(C::mip_interface& device, bool suppressAck, uint8_t numDescriptors, const DescriptorRate* descriptors);
 
@@ -393,11 +393,11 @@ struct ImuMessageFormat
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ImuMessageFormat& self);
-void extract(::microstrain::Buffer& serializer, ImuMessageFormat& self);
+void insert(::microstrain::Serializer& serializer, const ImuMessageFormat& self);
+void extract(::microstrain::Serializer& serializer, ImuMessageFormat& self);
 
-void insert(::microstrain::Buffer& serializer, const ImuMessageFormat::Response& self);
-void extract(::microstrain::Buffer& serializer, ImuMessageFormat::Response& self);
+void insert(::microstrain::Serializer& serializer, const ImuMessageFormat::Response& self);
+void extract(::microstrain::Serializer& serializer, ImuMessageFormat::Response& self);
 
 TypedResult<ImuMessageFormat> writeImuMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<ImuMessageFormat> readImuMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
@@ -473,11 +473,11 @@ struct GpsMessageFormat
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GpsMessageFormat& self);
-void extract(::microstrain::Buffer& serializer, GpsMessageFormat& self);
+void insert(::microstrain::Serializer& serializer, const GpsMessageFormat& self);
+void extract(::microstrain::Serializer& serializer, GpsMessageFormat& self);
 
-void insert(::microstrain::Buffer& serializer, const GpsMessageFormat::Response& self);
-void extract(::microstrain::Buffer& serializer, GpsMessageFormat::Response& self);
+void insert(::microstrain::Serializer& serializer, const GpsMessageFormat::Response& self);
+void extract(::microstrain::Serializer& serializer, GpsMessageFormat::Response& self);
 
 TypedResult<GpsMessageFormat> writeGpsMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<GpsMessageFormat> readGpsMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
@@ -518,7 +518,7 @@ struct FilterMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(num_descriptors,descriptors);
+        return std::make_tuple(Counter(num_descriptors,descriptors),Array(descriptors,num_descriptors));
     }
     
     auto as_tuple()
@@ -545,7 +545,9 @@ struct FilterMessageFormat
         static constexpr const uint32_t COUNTER_PARAMS = 0x0000000C;
         uint8_t num_descriptors = 0; ///< Number of descriptors (limited by payload size)
         DescriptorRate descriptors[82];
-        
+        //Counter<uint8_t, +1> num_descriptors = 0;
+        //Array<DescriptorRate, 82, -1> descriptors;
+
         
         auto as_tuple()
         {
@@ -553,11 +555,11 @@ struct FilterMessageFormat
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const FilterMessageFormat& self);
-void extract(::microstrain::Buffer& serializer, FilterMessageFormat& self);
+void insert(::microstrain::Serializer& serializer, const FilterMessageFormat& self);
+void extract(::microstrain::Serializer& serializer, FilterMessageFormat& self);
 
-void insert(::microstrain::Buffer& serializer, const FilterMessageFormat::Response& self);
-void extract(::microstrain::Buffer& serializer, FilterMessageFormat::Response& self);
+void insert(::microstrain::Serializer& serializer, const FilterMessageFormat::Response& self);
+void extract(::microstrain::Serializer& serializer, FilterMessageFormat::Response& self);
 
 TypedResult<FilterMessageFormat> writeFilterMessageFormat(C::mip_interface& device, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<FilterMessageFormat> readFilterMessageFormat(C::mip_interface& device, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
@@ -617,11 +619,11 @@ struct ImuGetBaseRate
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ImuGetBaseRate& self);
-void extract(::microstrain::Buffer& serializer, ImuGetBaseRate& self);
+void insert(::microstrain::Serializer& serializer, const ImuGetBaseRate& self);
+void extract(::microstrain::Serializer& serializer, ImuGetBaseRate& self);
 
-void insert(::microstrain::Buffer& serializer, const ImuGetBaseRate::Response& self);
-void extract(::microstrain::Buffer& serializer, ImuGetBaseRate::Response& self);
+void insert(::microstrain::Serializer& serializer, const ImuGetBaseRate::Response& self);
+void extract(::microstrain::Serializer& serializer, ImuGetBaseRate::Response& self);
 
 TypedResult<ImuGetBaseRate> imuGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
@@ -677,11 +679,11 @@ struct GpsGetBaseRate
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GpsGetBaseRate& self);
-void extract(::microstrain::Buffer& serializer, GpsGetBaseRate& self);
+void insert(::microstrain::Serializer& serializer, const GpsGetBaseRate& self);
+void extract(::microstrain::Serializer& serializer, GpsGetBaseRate& self);
 
-void insert(::microstrain::Buffer& serializer, const GpsGetBaseRate::Response& self);
-void extract(::microstrain::Buffer& serializer, GpsGetBaseRate::Response& self);
+void insert(::microstrain::Serializer& serializer, const GpsGetBaseRate::Response& self);
+void extract(::microstrain::Serializer& serializer, GpsGetBaseRate::Response& self);
 
 TypedResult<GpsGetBaseRate> gpsGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
@@ -737,11 +739,11 @@ struct FilterGetBaseRate
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const FilterGetBaseRate& self);
-void extract(::microstrain::Buffer& serializer, FilterGetBaseRate& self);
+void insert(::microstrain::Serializer& serializer, const FilterGetBaseRate& self);
+void extract(::microstrain::Serializer& serializer, FilterGetBaseRate& self);
 
-void insert(::microstrain::Buffer& serializer, const FilterGetBaseRate::Response& self);
-void extract(::microstrain::Buffer& serializer, FilterGetBaseRate::Response& self);
+void insert(::microstrain::Serializer& serializer, const FilterGetBaseRate::Response& self);
+void extract(::microstrain::Serializer& serializer, FilterGetBaseRate::Response& self);
 
 TypedResult<FilterGetBaseRate> filterGetBaseRate(C::mip_interface& device, uint16_t* rateOut);
 
@@ -787,8 +789,8 @@ struct PollData
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const PollData& self);
-void extract(::microstrain::Buffer& serializer, PollData& self);
+void insert(::microstrain::Serializer& serializer, const PollData& self);
+void extract(::microstrain::Serializer& serializer, PollData& self);
 
 TypedResult<PollData> pollData(C::mip_interface& device, uint8_t descSet, bool suppressAck, uint8_t numDescriptors, const uint8_t* descriptors);
 
@@ -843,11 +845,11 @@ struct GetBaseRate
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GetBaseRate& self);
-void extract(::microstrain::Buffer& serializer, GetBaseRate& self);
+void insert(::microstrain::Serializer& serializer, const GetBaseRate& self);
+void extract(::microstrain::Serializer& serializer, GetBaseRate& self);
 
-void insert(::microstrain::Buffer& serializer, const GetBaseRate::Response& self);
-void extract(::microstrain::Buffer& serializer, GetBaseRate::Response& self);
+void insert(::microstrain::Serializer& serializer, const GetBaseRate::Response& self);
+void extract(::microstrain::Serializer& serializer, GetBaseRate::Response& self);
 
 TypedResult<GetBaseRate> getBaseRate(C::mip_interface& device, uint8_t descSet, uint16_t* rateOut);
 
@@ -922,11 +924,11 @@ struct MessageFormat
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MessageFormat& self);
-void extract(::microstrain::Buffer& serializer, MessageFormat& self);
+void insert(::microstrain::Serializer& serializer, const MessageFormat& self);
+void extract(::microstrain::Serializer& serializer, MessageFormat& self);
 
-void insert(::microstrain::Buffer& serializer, const MessageFormat::Response& self);
-void extract(::microstrain::Buffer& serializer, MessageFormat::Response& self);
+void insert(::microstrain::Serializer& serializer, const MessageFormat::Response& self);
+void extract(::microstrain::Serializer& serializer, MessageFormat::Response& self);
 
 TypedResult<MessageFormat> writeMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t numDescriptors, const DescriptorRate* descriptors);
 TypedResult<MessageFormat> readMessageFormat(C::mip_interface& device, uint8_t descSet, uint8_t* numDescriptorsOut, uint8_t numDescriptorsOutMax, DescriptorRate* descriptorsOut);
@@ -974,8 +976,8 @@ struct NmeaPollData
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const NmeaPollData& self);
-void extract(::microstrain::Buffer& serializer, NmeaPollData& self);
+void insert(::microstrain::Serializer& serializer, const NmeaPollData& self);
+void extract(::microstrain::Serializer& serializer, NmeaPollData& self);
 
 TypedResult<NmeaPollData> nmeaPollData(C::mip_interface& device, bool suppressAck, uint8_t count, const NmeaMessage* formatEntries);
 
@@ -1045,11 +1047,11 @@ struct NmeaMessageFormat
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const NmeaMessageFormat& self);
-void extract(::microstrain::Buffer& serializer, NmeaMessageFormat& self);
+void insert(::microstrain::Serializer& serializer, const NmeaMessageFormat& self);
+void extract(::microstrain::Serializer& serializer, NmeaMessageFormat& self);
 
-void insert(::microstrain::Buffer& serializer, const NmeaMessageFormat::Response& self);
-void extract(::microstrain::Buffer& serializer, NmeaMessageFormat::Response& self);
+void insert(::microstrain::Serializer& serializer, const NmeaMessageFormat::Response& self);
+void extract(::microstrain::Serializer& serializer, NmeaMessageFormat::Response& self);
 
 TypedResult<NmeaMessageFormat> writeNmeaMessageFormat(C::mip_interface& device, uint8_t count, const NmeaMessage* formatEntries);
 TypedResult<NmeaMessageFormat> readNmeaMessageFormat(C::mip_interface& device, uint8_t* countOut, uint8_t countOutMax, NmeaMessage* formatEntriesOut);
@@ -1106,8 +1108,8 @@ struct DeviceSettings
     
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const DeviceSettings& self);
-void extract(::microstrain::Buffer& serializer, DeviceSettings& self);
+void insert(::microstrain::Serializer& serializer, const DeviceSettings& self);
+void extract(::microstrain::Serializer& serializer, DeviceSettings& self);
 
 TypedResult<DeviceSettings> saveDeviceSettings(C::mip_interface& device);
 TypedResult<DeviceSettings> loadDeviceSettings(C::mip_interface& device);
@@ -1191,11 +1193,11 @@ struct UartBaudrate
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const UartBaudrate& self);
-void extract(::microstrain::Buffer& serializer, UartBaudrate& self);
+void insert(::microstrain::Serializer& serializer, const UartBaudrate& self);
+void extract(::microstrain::Serializer& serializer, UartBaudrate& self);
 
-void insert(::microstrain::Buffer& serializer, const UartBaudrate::Response& self);
-void extract(::microstrain::Buffer& serializer, UartBaudrate::Response& self);
+void insert(::microstrain::Serializer& serializer, const UartBaudrate::Response& self);
+void extract(::microstrain::Serializer& serializer, UartBaudrate::Response& self);
 
 TypedResult<UartBaudrate> writeUartBaudrate(C::mip_interface& device, uint32_t baud);
 TypedResult<UartBaudrate> readUartBaudrate(C::mip_interface& device, uint32_t* baudOut);
@@ -1246,8 +1248,8 @@ struct FactoryStreaming
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const FactoryStreaming& self);
-void extract(::microstrain::Buffer& serializer, FactoryStreaming& self);
+void insert(::microstrain::Serializer& serializer, const FactoryStreaming& self);
+void extract(::microstrain::Serializer& serializer, FactoryStreaming& self);
 
 TypedResult<FactoryStreaming> factoryStreaming(C::mip_interface& device, FactoryStreaming::Action action, uint8_t reserved);
 
@@ -1327,11 +1329,11 @@ struct DatastreamControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const DatastreamControl& self);
-void extract(::microstrain::Buffer& serializer, DatastreamControl& self);
+void insert(::microstrain::Serializer& serializer, const DatastreamControl& self);
+void extract(::microstrain::Serializer& serializer, DatastreamControl& self);
 
-void insert(::microstrain::Buffer& serializer, const DatastreamControl::Response& self);
-void extract(::microstrain::Buffer& serializer, DatastreamControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const DatastreamControl::Response& self);
+void extract(::microstrain::Serializer& serializer, DatastreamControl::Response& self);
 
 TypedResult<DatastreamControl> writeDatastreamControl(C::mip_interface& device, uint8_t descSet, bool enable);
 TypedResult<DatastreamControl> readDatastreamControl(C::mip_interface& device, uint8_t descSet, bool* enabledOut);
@@ -1469,14 +1471,14 @@ struct ConstellationSettings
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ConstellationSettings& self);
-void extract(::microstrain::Buffer& serializer, ConstellationSettings& self);
+void insert(::microstrain::Serializer& serializer, const ConstellationSettings& self);
+void extract(::microstrain::Serializer& serializer, ConstellationSettings& self);
 
-void insert(::microstrain::Buffer& serializer, const ConstellationSettings::Settings& self);
-void extract(::microstrain::Buffer& serializer, ConstellationSettings::Settings& self);
+void insert(::microstrain::Serializer& serializer, const ConstellationSettings::Settings& self);
+void extract(::microstrain::Serializer& serializer, ConstellationSettings::Settings& self);
 
-void insert(::microstrain::Buffer& serializer, const ConstellationSettings::Response& self);
-void extract(::microstrain::Buffer& serializer, ConstellationSettings::Response& self);
+void insert(::microstrain::Serializer& serializer, const ConstellationSettings::Response& self);
+void extract(::microstrain::Serializer& serializer, ConstellationSettings::Response& self);
 
 TypedResult<ConstellationSettings> writeConstellationSettings(C::mip_interface& device, uint16_t maxChannels, uint8_t configCount, const ConstellationSettings::Settings* settings);
 TypedResult<ConstellationSettings> readConstellationSettings(C::mip_interface& device, uint16_t* maxChannelsAvailableOut, uint16_t* maxChannelsUseOut, uint8_t* configCountOut, uint8_t configCountOutMax, ConstellationSettings::Settings* settingsOut);
@@ -1588,11 +1590,11 @@ struct GnssSbasSettings
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GnssSbasSettings& self);
-void extract(::microstrain::Buffer& serializer, GnssSbasSettings& self);
+void insert(::microstrain::Serializer& serializer, const GnssSbasSettings& self);
+void extract(::microstrain::Serializer& serializer, GnssSbasSettings& self);
 
-void insert(::microstrain::Buffer& serializer, const GnssSbasSettings::Response& self);
-void extract(::microstrain::Buffer& serializer, GnssSbasSettings::Response& self);
+void insert(::microstrain::Serializer& serializer, const GnssSbasSettings::Response& self);
+void extract(::microstrain::Serializer& serializer, GnssSbasSettings::Response& self);
 
 TypedResult<GnssSbasSettings> writeGnssSbasSettings(C::mip_interface& device, uint8_t enableSbas, GnssSbasSettings::SBASOptions sbasOptions, uint8_t numIncludedPrns, const uint16_t* includedPrns);
 TypedResult<GnssSbasSettings> readGnssSbasSettings(C::mip_interface& device, uint8_t* enableSbasOut, GnssSbasSettings::SBASOptions* sbasOptionsOut, uint8_t* numIncludedPrnsOut, uint8_t numIncludedPrnsOutMax, uint16_t* includedPrnsOut);
@@ -1682,11 +1684,11 @@ struct GnssAssistedFix
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GnssAssistedFix& self);
-void extract(::microstrain::Buffer& serializer, GnssAssistedFix& self);
+void insert(::microstrain::Serializer& serializer, const GnssAssistedFix& self);
+void extract(::microstrain::Serializer& serializer, GnssAssistedFix& self);
 
-void insert(::microstrain::Buffer& serializer, const GnssAssistedFix::Response& self);
-void extract(::microstrain::Buffer& serializer, GnssAssistedFix::Response& self);
+void insert(::microstrain::Serializer& serializer, const GnssAssistedFix::Response& self);
+void extract(::microstrain::Serializer& serializer, GnssAssistedFix::Response& self);
 
 TypedResult<GnssAssistedFix> writeGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption option, uint8_t flags);
 TypedResult<GnssAssistedFix> readGnssAssistedFix(C::mip_interface& device, GnssAssistedFix::AssistedFixOption* optionOut, uint8_t* flagsOut);
@@ -1765,11 +1767,11 @@ struct GnssTimeAssistance
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GnssTimeAssistance& self);
-void extract(::microstrain::Buffer& serializer, GnssTimeAssistance& self);
+void insert(::microstrain::Serializer& serializer, const GnssTimeAssistance& self);
+void extract(::microstrain::Serializer& serializer, GnssTimeAssistance& self);
 
-void insert(::microstrain::Buffer& serializer, const GnssTimeAssistance::Response& self);
-void extract(::microstrain::Buffer& serializer, GnssTimeAssistance::Response& self);
+void insert(::microstrain::Serializer& serializer, const GnssTimeAssistance::Response& self);
+void extract(::microstrain::Serializer& serializer, GnssTimeAssistance::Response& self);
 
 TypedResult<GnssTimeAssistance> writeGnssTimeAssistance(C::mip_interface& device, double tow, uint16_t weekNumber, float accuracy);
 TypedResult<GnssTimeAssistance> readGnssTimeAssistance(C::mip_interface& device, double* towOut, uint16_t* weekNumberOut, float* accuracyOut);
@@ -1862,11 +1864,11 @@ struct ImuLowpassFilter
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ImuLowpassFilter& self);
-void extract(::microstrain::Buffer& serializer, ImuLowpassFilter& self);
+void insert(::microstrain::Serializer& serializer, const ImuLowpassFilter& self);
+void extract(::microstrain::Serializer& serializer, ImuLowpassFilter& self);
 
-void insert(::microstrain::Buffer& serializer, const ImuLowpassFilter::Response& self);
-void extract(::microstrain::Buffer& serializer, ImuLowpassFilter::Response& self);
+void insert(::microstrain::Serializer& serializer, const ImuLowpassFilter::Response& self);
+void extract(::microstrain::Serializer& serializer, ImuLowpassFilter::Response& self);
 
 TypedResult<ImuLowpassFilter> writeImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool enable, bool manual, uint16_t frequency, uint8_t reserved);
 TypedResult<ImuLowpassFilter> readImuLowpassFilter(C::mip_interface& device, uint8_t targetDescriptor, bool* enableOut, bool* manualOut, uint16_t* frequencyOut, uint8_t* reservedOut);
@@ -1947,11 +1949,11 @@ struct PpsSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const PpsSource& self);
-void extract(::microstrain::Buffer& serializer, PpsSource& self);
+void insert(::microstrain::Serializer& serializer, const PpsSource& self);
+void extract(::microstrain::Serializer& serializer, PpsSource& self);
 
-void insert(::microstrain::Buffer& serializer, const PpsSource::Response& self);
-void extract(::microstrain::Buffer& serializer, PpsSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const PpsSource::Response& self);
+void extract(::microstrain::Serializer& serializer, PpsSource::Response& self);
 
 TypedResult<PpsSource> writePpsSource(C::mip_interface& device, PpsSource::Source source);
 TypedResult<PpsSource> readPpsSource(C::mip_interface& device, PpsSource::Source* sourceOut);
@@ -2106,11 +2108,11 @@ struct GpioConfig
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GpioConfig& self);
-void extract(::microstrain::Buffer& serializer, GpioConfig& self);
+void insert(::microstrain::Serializer& serializer, const GpioConfig& self);
+void extract(::microstrain::Serializer& serializer, GpioConfig& self);
 
-void insert(::microstrain::Buffer& serializer, const GpioConfig::Response& self);
-void extract(::microstrain::Buffer& serializer, GpioConfig::Response& self);
+void insert(::microstrain::Serializer& serializer, const GpioConfig::Response& self);
+void extract(::microstrain::Serializer& serializer, GpioConfig::Response& self);
 
 TypedResult<GpioConfig> writeGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature feature, GpioConfig::Behavior behavior, GpioConfig::PinMode pinMode);
 TypedResult<GpioConfig> readGpioConfig(C::mip_interface& device, uint8_t pin, GpioConfig::Feature* featureOut, GpioConfig::Behavior* behaviorOut, GpioConfig::PinMode* pinModeOut);
@@ -2199,11 +2201,11 @@ struct GpioState
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GpioState& self);
-void extract(::microstrain::Buffer& serializer, GpioState& self);
+void insert(::microstrain::Serializer& serializer, const GpioState& self);
+void extract(::microstrain::Serializer& serializer, GpioState& self);
 
-void insert(::microstrain::Buffer& serializer, const GpioState::Response& self);
-void extract(::microstrain::Buffer& serializer, GpioState::Response& self);
+void insert(::microstrain::Serializer& serializer, const GpioState::Response& self);
+void extract(::microstrain::Serializer& serializer, GpioState::Response& self);
 
 TypedResult<GpioState> writeGpioState(C::mip_interface& device, uint8_t pin, bool state);
 TypedResult<GpioState> readGpioState(C::mip_interface& device, uint8_t pin, bool* stateOut);
@@ -2283,11 +2285,11 @@ struct Odometer
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const Odometer& self);
-void extract(::microstrain::Buffer& serializer, Odometer& self);
+void insert(::microstrain::Serializer& serializer, const Odometer& self);
+void extract(::microstrain::Serializer& serializer, Odometer& self);
 
-void insert(::microstrain::Buffer& serializer, const Odometer::Response& self);
-void extract(::microstrain::Buffer& serializer, Odometer::Response& self);
+void insert(::microstrain::Serializer& serializer, const Odometer::Response& self);
+void extract(::microstrain::Serializer& serializer, Odometer::Response& self);
 
 TypedResult<Odometer> writeOdometer(C::mip_interface& device, Odometer::Mode mode, float scaling, float uncertainty);
 TypedResult<Odometer> readOdometer(C::mip_interface& device, Odometer::Mode* modeOut, float* scalingOut, float* uncertaintyOut);
@@ -2376,14 +2378,14 @@ struct GetEventSupport
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GetEventSupport& self);
-void extract(::microstrain::Buffer& serializer, GetEventSupport& self);
+void insert(::microstrain::Serializer& serializer, const GetEventSupport& self);
+void extract(::microstrain::Serializer& serializer, GetEventSupport& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventSupport::Info& self);
-void extract(::microstrain::Buffer& serializer, GetEventSupport::Info& self);
+void insert(::microstrain::Serializer& serializer, const GetEventSupport::Info& self);
+void extract(::microstrain::Serializer& serializer, GetEventSupport::Info& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventSupport::Response& self);
-void extract(::microstrain::Buffer& serializer, GetEventSupport::Response& self);
+void insert(::microstrain::Serializer& serializer, const GetEventSupport::Response& self);
+void extract(::microstrain::Serializer& serializer, GetEventSupport::Response& self);
 
 TypedResult<GetEventSupport> getEventSupport(C::mip_interface& device, GetEventSupport::Query query, uint8_t* maxInstancesOut, uint8_t* numEntriesOut, uint8_t numEntriesOutMax, GetEventSupport::Info* entriesOut);
 
@@ -2471,11 +2473,11 @@ struct EventControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const EventControl& self);
-void extract(::microstrain::Buffer& serializer, EventControl& self);
+void insert(::microstrain::Serializer& serializer, const EventControl& self);
+void extract(::microstrain::Serializer& serializer, EventControl& self);
 
-void insert(::microstrain::Buffer& serializer, const EventControl::Response& self);
-void extract(::microstrain::Buffer& serializer, EventControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const EventControl::Response& self);
+void extract(::microstrain::Serializer& serializer, EventControl::Response& self);
 
 TypedResult<EventControl> writeEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode mode);
 TypedResult<EventControl> readEventControl(C::mip_interface& device, uint8_t instance, EventControl::Mode* modeOut);
@@ -2571,14 +2573,14 @@ struct GetEventTriggerStatus
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GetEventTriggerStatus& self);
-void extract(::microstrain::Buffer& serializer, GetEventTriggerStatus& self);
+void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus& self);
+void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventTriggerStatus::Entry& self);
-void extract(::microstrain::Buffer& serializer, GetEventTriggerStatus::Entry& self);
+void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus::Entry& self);
+void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus::Entry& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventTriggerStatus::Response& self);
-void extract(::microstrain::Buffer& serializer, GetEventTriggerStatus::Response& self);
+void insert(::microstrain::Serializer& serializer, const GetEventTriggerStatus::Response& self);
+void extract(::microstrain::Serializer& serializer, GetEventTriggerStatus::Response& self);
 
 TypedResult<GetEventTriggerStatus> getEventTriggerStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventTriggerStatus::Entry* triggersOut);
 
@@ -2639,14 +2641,14 @@ struct GetEventActionStatus
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GetEventActionStatus& self);
-void extract(::microstrain::Buffer& serializer, GetEventActionStatus& self);
+void insert(::microstrain::Serializer& serializer, const GetEventActionStatus& self);
+void extract(::microstrain::Serializer& serializer, GetEventActionStatus& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventActionStatus::Entry& self);
-void extract(::microstrain::Buffer& serializer, GetEventActionStatus::Entry& self);
+void insert(::microstrain::Serializer& serializer, const GetEventActionStatus::Entry& self);
+void extract(::microstrain::Serializer& serializer, GetEventActionStatus::Entry& self);
 
-void insert(::microstrain::Buffer& serializer, const GetEventActionStatus::Response& self);
-void extract(::microstrain::Buffer& serializer, GetEventActionStatus::Response& self);
+void insert(::microstrain::Serializer& serializer, const GetEventActionStatus::Response& self);
+void extract(::microstrain::Serializer& serializer, GetEventActionStatus::Response& self);
 
 TypedResult<GetEventActionStatus> getEventActionStatus(C::mip_interface& device, uint8_t requestedCount, const uint8_t* requestedInstances, uint8_t* countOut, uint8_t countOutMax, GetEventActionStatus::Entry* actionsOut);
 
@@ -2792,20 +2794,20 @@ struct EventTrigger
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const EventTrigger& self);
-void extract(::microstrain::Buffer& serializer, EventTrigger& self);
+void insert(::microstrain::Serializer& serializer, const EventTrigger& self);
+void extract(::microstrain::Serializer& serializer, EventTrigger& self);
 
-void insert(::microstrain::Buffer& serializer, const EventTrigger::GpioParams& self);
-void extract(::microstrain::Buffer& serializer, EventTrigger::GpioParams& self);
+void insert(::microstrain::Serializer& serializer, const EventTrigger::GpioParams& self);
+void extract(::microstrain::Serializer& serializer, EventTrigger::GpioParams& self);
 
-void insert(::microstrain::Buffer& serializer, const EventTrigger::ThresholdParams& self);
-void extract(::microstrain::Buffer& serializer, EventTrigger::ThresholdParams& self);
+void insert(::microstrain::Serializer& serializer, const EventTrigger::ThresholdParams& self);
+void extract(::microstrain::Serializer& serializer, EventTrigger::ThresholdParams& self);
 
-void insert(::microstrain::Buffer& serializer, const EventTrigger::CombinationParams& self);
-void extract(::microstrain::Buffer& serializer, EventTrigger::CombinationParams& self);
+void insert(::microstrain::Serializer& serializer, const EventTrigger::CombinationParams& self);
+void extract(::microstrain::Serializer& serializer, EventTrigger::CombinationParams& self);
 
-void insert(::microstrain::Buffer& serializer, const EventTrigger::Response& self);
-void extract(::microstrain::Buffer& serializer, EventTrigger::Response& self);
+void insert(::microstrain::Serializer& serializer, const EventTrigger::Response& self);
+void extract(::microstrain::Serializer& serializer, EventTrigger::Response& self);
 
 TypedResult<EventTrigger> writeEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type type, const EventTrigger::Parameters& parameters);
 TypedResult<EventTrigger> readEventTrigger(C::mip_interface& device, uint8_t instance, EventTrigger::Type* typeOut, EventTrigger::Parameters* parametersOut);
@@ -2922,17 +2924,17 @@ struct EventAction
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const EventAction& self);
-void extract(::microstrain::Buffer& serializer, EventAction& self);
+void insert(::microstrain::Serializer& serializer, const EventAction& self);
+void extract(::microstrain::Serializer& serializer, EventAction& self);
 
-void insert(::microstrain::Buffer& serializer, const EventAction::GpioParams& self);
-void extract(::microstrain::Buffer& serializer, EventAction::GpioParams& self);
+void insert(::microstrain::Serializer& serializer, const EventAction::GpioParams& self);
+void extract(::microstrain::Serializer& serializer, EventAction::GpioParams& self);
 
-void insert(::microstrain::Buffer& serializer, const EventAction::MessageParams& self);
-void extract(::microstrain::Buffer& serializer, EventAction::MessageParams& self);
+void insert(::microstrain::Serializer& serializer, const EventAction::MessageParams& self);
+void extract(::microstrain::Serializer& serializer, EventAction::MessageParams& self);
 
-void insert(::microstrain::Buffer& serializer, const EventAction::Response& self);
-void extract(::microstrain::Buffer& serializer, EventAction::Response& self);
+void insert(::microstrain::Serializer& serializer, const EventAction::Response& self);
+void extract(::microstrain::Serializer& serializer, EventAction::Response& self);
 
 TypedResult<EventAction> writeEventAction(C::mip_interface& device, uint8_t instance, uint8_t trigger, EventAction::Type type, const EventAction::Parameters& parameters);
 TypedResult<EventAction> readEventAction(C::mip_interface& device, uint8_t instance, uint8_t* triggerOut, EventAction::Type* typeOut, EventAction::Parameters* parametersOut);
@@ -3006,11 +3008,11 @@ struct AccelBias
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AccelBias& self);
-void extract(::microstrain::Buffer& serializer, AccelBias& self);
+void insert(::microstrain::Serializer& serializer, const AccelBias& self);
+void extract(::microstrain::Serializer& serializer, AccelBias& self);
 
-void insert(::microstrain::Buffer& serializer, const AccelBias::Response& self);
-void extract(::microstrain::Buffer& serializer, AccelBias::Response& self);
+void insert(::microstrain::Serializer& serializer, const AccelBias::Response& self);
+void extract(::microstrain::Serializer& serializer, AccelBias::Response& self);
 
 TypedResult<AccelBias> writeAccelBias(C::mip_interface& device, const float* bias);
 TypedResult<AccelBias> readAccelBias(C::mip_interface& device, float* biasOut);
@@ -3084,11 +3086,11 @@ struct GyroBias
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GyroBias& self);
-void extract(::microstrain::Buffer& serializer, GyroBias& self);
+void insert(::microstrain::Serializer& serializer, const GyroBias& self);
+void extract(::microstrain::Serializer& serializer, GyroBias& self);
 
-void insert(::microstrain::Buffer& serializer, const GyroBias::Response& self);
-void extract(::microstrain::Buffer& serializer, GyroBias::Response& self);
+void insert(::microstrain::Serializer& serializer, const GyroBias::Response& self);
+void extract(::microstrain::Serializer& serializer, GyroBias::Response& self);
 
 TypedResult<GyroBias> writeGyroBias(C::mip_interface& device, const float* bias);
 TypedResult<GyroBias> readGyroBias(C::mip_interface& device, float* biasOut);
@@ -3151,11 +3153,11 @@ struct CaptureGyroBias
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const CaptureGyroBias& self);
-void extract(::microstrain::Buffer& serializer, CaptureGyroBias& self);
+void insert(::microstrain::Serializer& serializer, const CaptureGyroBias& self);
+void extract(::microstrain::Serializer& serializer, CaptureGyroBias& self);
 
-void insert(::microstrain::Buffer& serializer, const CaptureGyroBias::Response& self);
-void extract(::microstrain::Buffer& serializer, CaptureGyroBias::Response& self);
+void insert(::microstrain::Serializer& serializer, const CaptureGyroBias::Response& self);
+void extract(::microstrain::Serializer& serializer, CaptureGyroBias::Response& self);
 
 TypedResult<CaptureGyroBias> captureGyroBias(C::mip_interface& device, uint16_t averagingTimeMs, float* biasOut);
 
@@ -3229,11 +3231,11 @@ struct MagHardIronOffset
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagHardIronOffset& self);
-void extract(::microstrain::Buffer& serializer, MagHardIronOffset& self);
+void insert(::microstrain::Serializer& serializer, const MagHardIronOffset& self);
+void extract(::microstrain::Serializer& serializer, MagHardIronOffset& self);
 
-void insert(::microstrain::Buffer& serializer, const MagHardIronOffset::Response& self);
-void extract(::microstrain::Buffer& serializer, MagHardIronOffset::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagHardIronOffset::Response& self);
+void extract(::microstrain::Serializer& serializer, MagHardIronOffset::Response& self);
 
 TypedResult<MagHardIronOffset> writeMagHardIronOffset(C::mip_interface& device, const float* offset);
 TypedResult<MagHardIronOffset> readMagHardIronOffset(C::mip_interface& device, float* offsetOut);
@@ -3315,11 +3317,11 @@ struct MagSoftIronMatrix
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagSoftIronMatrix& self);
-void extract(::microstrain::Buffer& serializer, MagSoftIronMatrix& self);
+void insert(::microstrain::Serializer& serializer, const MagSoftIronMatrix& self);
+void extract(::microstrain::Serializer& serializer, MagSoftIronMatrix& self);
 
-void insert(::microstrain::Buffer& serializer, const MagSoftIronMatrix::Response& self);
-void extract(::microstrain::Buffer& serializer, MagSoftIronMatrix::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagSoftIronMatrix::Response& self);
+void extract(::microstrain::Serializer& serializer, MagSoftIronMatrix::Response& self);
 
 TypedResult<MagSoftIronMatrix> writeMagSoftIronMatrix(C::mip_interface& device, const float* offset);
 TypedResult<MagSoftIronMatrix> readMagSoftIronMatrix(C::mip_interface& device, float* offsetOut);
@@ -3391,11 +3393,11 @@ struct ConingScullingEnable
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ConingScullingEnable& self);
-void extract(::microstrain::Buffer& serializer, ConingScullingEnable& self);
+void insert(::microstrain::Serializer& serializer, const ConingScullingEnable& self);
+void extract(::microstrain::Serializer& serializer, ConingScullingEnable& self);
 
-void insert(::microstrain::Buffer& serializer, const ConingScullingEnable::Response& self);
-void extract(::microstrain::Buffer& serializer, ConingScullingEnable::Response& self);
+void insert(::microstrain::Serializer& serializer, const ConingScullingEnable::Response& self);
+void extract(::microstrain::Serializer& serializer, ConingScullingEnable::Response& self);
 
 TypedResult<ConingScullingEnable> writeConingScullingEnable(C::mip_interface& device, bool enable);
 TypedResult<ConingScullingEnable> readConingScullingEnable(C::mip_interface& device, bool* enableOut);
@@ -3495,11 +3497,11 @@ struct Sensor2VehicleTransformEuler
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformEuler& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformEuler& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformEuler& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformEuler& self);
 
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformEuler::Response& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformEuler::Response& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformEuler::Response& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformEuler::Response& self);
 
 TypedResult<Sensor2VehicleTransformEuler> writeSensor2VehicleTransformEuler(C::mip_interface& device, float roll, float pitch, float yaw);
 TypedResult<Sensor2VehicleTransformEuler> readSensor2VehicleTransformEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
@@ -3603,11 +3605,11 @@ struct Sensor2VehicleTransformQuaternion
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformQuaternion& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformQuaternion& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformQuaternion& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformQuaternion& self);
 
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformQuaternion::Response& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformQuaternion::Response& self);
 
 TypedResult<Sensor2VehicleTransformQuaternion> writeSensor2VehicleTransformQuaternion(C::mip_interface& device, const float* q);
 TypedResult<Sensor2VehicleTransformQuaternion> readSensor2VehicleTransformQuaternion(C::mip_interface& device, float* qOut);
@@ -3709,11 +3711,11 @@ struct Sensor2VehicleTransformDcm
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformDcm& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformDcm& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformDcm& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformDcm& self);
 
-void insert(::microstrain::Buffer& serializer, const Sensor2VehicleTransformDcm::Response& self);
-void extract(::microstrain::Buffer& serializer, Sensor2VehicleTransformDcm::Response& self);
+void insert(::microstrain::Serializer& serializer, const Sensor2VehicleTransformDcm::Response& self);
+void extract(::microstrain::Serializer& serializer, Sensor2VehicleTransformDcm::Response& self);
 
 TypedResult<Sensor2VehicleTransformDcm> writeSensor2VehicleTransformDcm(C::mip_interface& device, const float* dcm);
 TypedResult<Sensor2VehicleTransformDcm> readSensor2VehicleTransformDcm(C::mip_interface& device, float* dcmOut);
@@ -3795,11 +3797,11 @@ struct ComplementaryFilter
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ComplementaryFilter& self);
-void extract(::microstrain::Buffer& serializer, ComplementaryFilter& self);
+void insert(::microstrain::Serializer& serializer, const ComplementaryFilter& self);
+void extract(::microstrain::Serializer& serializer, ComplementaryFilter& self);
 
-void insert(::microstrain::Buffer& serializer, const ComplementaryFilter::Response& self);
-void extract(::microstrain::Buffer& serializer, ComplementaryFilter::Response& self);
+void insert(::microstrain::Serializer& serializer, const ComplementaryFilter::Response& self);
+void extract(::microstrain::Serializer& serializer, ComplementaryFilter::Response& self);
 
 TypedResult<ComplementaryFilter> writeComplementaryFilter(C::mip_interface& device, bool pitchRollEnable, bool headingEnable, float pitchRollTimeConstant, float headingTimeConstant);
 TypedResult<ComplementaryFilter> readComplementaryFilter(C::mip_interface& device, bool* pitchRollEnableOut, bool* headingEnableOut, float* pitchRollTimeConstantOut, float* headingTimeConstantOut);
@@ -3881,11 +3883,11 @@ struct SensorRange
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SensorRange& self);
-void extract(::microstrain::Buffer& serializer, SensorRange& self);
+void insert(::microstrain::Serializer& serializer, const SensorRange& self);
+void extract(::microstrain::Serializer& serializer, SensorRange& self);
 
-void insert(::microstrain::Buffer& serializer, const SensorRange::Response& self);
-void extract(::microstrain::Buffer& serializer, SensorRange::Response& self);
+void insert(::microstrain::Serializer& serializer, const SensorRange::Response& self);
+void extract(::microstrain::Serializer& serializer, SensorRange::Response& self);
 
 TypedResult<SensorRange> writeSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t setting);
 TypedResult<SensorRange> readSensorRange(C::mip_interface& device, SensorRangeType sensor, uint8_t* settingOut);
@@ -3954,14 +3956,14 @@ struct CalibratedSensorRanges
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const CalibratedSensorRanges& self);
-void extract(::microstrain::Buffer& serializer, CalibratedSensorRanges& self);
+void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges& self);
+void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges& self);
 
-void insert(::microstrain::Buffer& serializer, const CalibratedSensorRanges::Entry& self);
-void extract(::microstrain::Buffer& serializer, CalibratedSensorRanges::Entry& self);
+void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges::Entry& self);
+void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges::Entry& self);
 
-void insert(::microstrain::Buffer& serializer, const CalibratedSensorRanges::Response& self);
-void extract(::microstrain::Buffer& serializer, CalibratedSensorRanges::Response& self);
+void insert(::microstrain::Serializer& serializer, const CalibratedSensorRanges::Response& self);
+void extract(::microstrain::Serializer& serializer, CalibratedSensorRanges::Response& self);
 
 TypedResult<CalibratedSensorRanges> calibratedSensorRanges(C::mip_interface& device, SensorRangeType sensor, uint8_t* numRangesOut, uint8_t numRangesOutMax, CalibratedSensorRanges::Entry* rangesOut);
 
@@ -4052,11 +4054,11 @@ struct LowpassFilter
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const LowpassFilter& self);
-void extract(::microstrain::Buffer& serializer, LowpassFilter& self);
+void insert(::microstrain::Serializer& serializer, const LowpassFilter& self);
+void extract(::microstrain::Serializer& serializer, LowpassFilter& self);
 
-void insert(::microstrain::Buffer& serializer, const LowpassFilter::Response& self);
-void extract(::microstrain::Buffer& serializer, LowpassFilter::Response& self);
+void insert(::microstrain::Serializer& serializer, const LowpassFilter::Response& self);
+void extract(::microstrain::Serializer& serializer, LowpassFilter::Response& self);
 
 TypedResult<LowpassFilter> writeLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool enable, bool manual, float frequency);
 TypedResult<LowpassFilter> readLowpassFilter(C::mip_interface& device, uint8_t descSet, uint8_t fieldDesc, bool* enableOut, bool* manualOut, float* frequencyOut);

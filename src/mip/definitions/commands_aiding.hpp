@@ -73,8 +73,8 @@ struct Time
     uint64_t nanoseconds = 0; ///< Nanoseconds since the timebase epoch.
     
 };
-void insert(::microstrain::Buffer& serializer, const Time& self);
-void extract(::microstrain::Buffer& serializer, Time& self);
+void insert(::microstrain::Serializer& serializer, const Time& self);
+void extract(::microstrain::Serializer& serializer, Time& self);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -188,11 +188,11 @@ struct FrameConfig
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const FrameConfig& self);
-void extract(::microstrain::Buffer& serializer, FrameConfig& self);
+void insert(::microstrain::Serializer& serializer, const FrameConfig& self);
+void extract(::microstrain::Serializer& serializer, FrameConfig& self);
 
-void insert(::microstrain::Buffer& serializer, const FrameConfig::Response& self);
-void extract(::microstrain::Buffer& serializer, FrameConfig::Response& self);
+void insert(::microstrain::Serializer& serializer, const FrameConfig::Response& self);
+void extract(::microstrain::Serializer& serializer, FrameConfig::Response& self);
 
 TypedResult<FrameConfig> writeFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool trackingEnabled, const float* translation, const FrameConfig::Rotation& rotation);
 TypedResult<FrameConfig> readFrameConfig(C::mip_interface& device, uint8_t frameId, FrameConfig::Format format, bool* trackingEnabledOut, float* translationOut, FrameConfig::Rotation* rotationOut);
@@ -271,11 +271,11 @@ struct AidingEchoControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AidingEchoControl& self);
-void extract(::microstrain::Buffer& serializer, AidingEchoControl& self);
+void insert(::microstrain::Serializer& serializer, const AidingEchoControl& self);
+void extract(::microstrain::Serializer& serializer, AidingEchoControl& self);
 
-void insert(::microstrain::Buffer& serializer, const AidingEchoControl::Response& self);
-void extract(::microstrain::Buffer& serializer, AidingEchoControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const AidingEchoControl::Response& self);
+void extract(::microstrain::Serializer& serializer, AidingEchoControl::Response& self);
 
 TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode);
 TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut);
@@ -350,8 +350,8 @@ struct EcefPos
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const EcefPos& self);
-void extract(::microstrain::Buffer& serializer, EcefPos& self);
+void insert(::microstrain::Serializer& serializer, const EcefPos& self);
+void extract(::microstrain::Serializer& serializer, EcefPos& self);
 
 TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
 
@@ -425,8 +425,8 @@ struct LlhPos
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const LlhPos& self);
-void extract(::microstrain::Buffer& serializer, LlhPos& self);
+void insert(::microstrain::Serializer& serializer, const LlhPos& self);
+void extract(::microstrain::Serializer& serializer, LlhPos& self);
 
 TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
 
@@ -466,8 +466,8 @@ struct Height
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const Height& self);
-void extract(::microstrain::Buffer& serializer, Height& self);
+void insert(::microstrain::Serializer& serializer, const Height& self);
+void extract(::microstrain::Serializer& serializer, Height& self);
 
 TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags);
 
@@ -538,8 +538,8 @@ struct EcefVel
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const EcefVel& self);
-void extract(::microstrain::Buffer& serializer, EcefVel& self);
+void insert(::microstrain::Serializer& serializer, const EcefVel& self);
+void extract(::microstrain::Serializer& serializer, EcefVel& self);
 
 TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
 
@@ -610,8 +610,8 @@ struct NedVel
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const NedVel& self);
-void extract(::microstrain::Buffer& serializer, NedVel& self);
+void insert(::microstrain::Serializer& serializer, const NedVel& self);
+void extract(::microstrain::Serializer& serializer, NedVel& self);
 
 TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
 
@@ -683,8 +683,8 @@ struct VehicleFixedFrameVelocity
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const VehicleFixedFrameVelocity& self);
-void extract(::microstrain::Buffer& serializer, VehicleFixedFrameVelocity& self);
+void insert(::microstrain::Serializer& serializer, const VehicleFixedFrameVelocity& self);
+void extract(::microstrain::Serializer& serializer, VehicleFixedFrameVelocity& self);
 
 TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
 
@@ -723,8 +723,8 @@ struct TrueHeading
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const TrueHeading& self);
-void extract(::microstrain::Buffer& serializer, TrueHeading& self);
+void insert(::microstrain::Serializer& serializer, const TrueHeading& self);
+void extract(::microstrain::Serializer& serializer, TrueHeading& self);
 
 TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags);
 
@@ -795,8 +795,8 @@ struct MagneticField
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const MagneticField& self);
-void extract(::microstrain::Buffer& serializer, MagneticField& self);
+void insert(::microstrain::Serializer& serializer, const MagneticField& self);
+void extract(::microstrain::Serializer& serializer, MagneticField& self);
 
 TypedResult<MagneticField> magneticField(C::mip_interface& device, const Time& time, uint8_t frameId, const float* magneticField, const float* uncertainty, MagneticField::ValidFlags validFlags);
 
@@ -836,8 +836,8 @@ struct Pressure
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const Pressure& self);
-void extract(::microstrain::Buffer& serializer, Pressure& self);
+void insert(::microstrain::Serializer& serializer, const Pressure& self);
+void extract(::microstrain::Serializer& serializer, Pressure& self);
 
 TypedResult<Pressure> pressure(C::mip_interface& device, const Time& time, uint8_t frameId, float pressure, float uncertainty, uint16_t validFlags);
 

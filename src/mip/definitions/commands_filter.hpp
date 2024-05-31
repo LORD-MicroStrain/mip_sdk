@@ -212,8 +212,8 @@ struct Reset
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const Reset& self);
-void extract(::microstrain::Buffer& serializer, Reset& self);
+void insert(::microstrain::Serializer& serializer, const Reset& self);
+void extract(::microstrain::Serializer& serializer, Reset& self);
 
 TypedResult<Reset> reset(C::mip_interface& device);
 
@@ -262,8 +262,8 @@ struct SetInitialAttitude
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const SetInitialAttitude& self);
-void extract(::microstrain::Buffer& serializer, SetInitialAttitude& self);
+void insert(::microstrain::Serializer& serializer, const SetInitialAttitude& self);
+void extract(::microstrain::Serializer& serializer, SetInitialAttitude& self);
 
 TypedResult<SetInitialAttitude> setInitialAttitude(C::mip_interface& device, float roll, float pitch, float heading);
 
@@ -384,11 +384,11 @@ struct EstimationControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const EstimationControl& self);
-void extract(::microstrain::Buffer& serializer, EstimationControl& self);
+void insert(::microstrain::Serializer& serializer, const EstimationControl& self);
+void extract(::microstrain::Serializer& serializer, EstimationControl& self);
 
-void insert(::microstrain::Buffer& serializer, const EstimationControl::Response& self);
-void extract(::microstrain::Buffer& serializer, EstimationControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const EstimationControl::Response& self);
+void extract(::microstrain::Serializer& serializer, EstimationControl::Response& self);
 
 TypedResult<EstimationControl> writeEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags enable);
 TypedResult<EstimationControl> readEstimationControl(C::mip_interface& device, EstimationControl::EnableFlags* enableOut);
@@ -439,8 +439,8 @@ struct ExternalGnssUpdate
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const ExternalGnssUpdate& self);
-void extract(::microstrain::Buffer& serializer, ExternalGnssUpdate& self);
+void insert(::microstrain::Serializer& serializer, const ExternalGnssUpdate& self);
+void extract(::microstrain::Serializer& serializer, ExternalGnssUpdate& self);
 
 TypedResult<ExternalGnssUpdate> externalGnssUpdate(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, double latitude, double longitude, double height, const float* velocity, const float* posUncertainty, const float* velUncertainty);
 
@@ -490,8 +490,8 @@ struct ExternalHeadingUpdate
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const ExternalHeadingUpdate& self);
-void extract(::microstrain::Buffer& serializer, ExternalHeadingUpdate& self);
+void insert(::microstrain::Serializer& serializer, const ExternalHeadingUpdate& self);
+void extract(::microstrain::Serializer& serializer, ExternalHeadingUpdate& self);
 
 TypedResult<ExternalHeadingUpdate> externalHeadingUpdate(C::mip_interface& device, float heading, float headingUncertainty, uint8_t type);
 
@@ -547,8 +547,8 @@ struct ExternalHeadingUpdateWithTime
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const ExternalHeadingUpdateWithTime& self);
-void extract(::microstrain::Buffer& serializer, ExternalHeadingUpdateWithTime& self);
+void insert(::microstrain::Serializer& serializer, const ExternalHeadingUpdateWithTime& self);
+void extract(::microstrain::Serializer& serializer, ExternalHeadingUpdateWithTime& self);
 
 TypedResult<ExternalHeadingUpdateWithTime> externalHeadingUpdateWithTime(C::mip_interface& device, double gpsTime, uint16_t gpsWeek, float heading, float headingUncertainty, uint8_t type);
 
@@ -651,11 +651,11 @@ struct TareOrientation
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const TareOrientation& self);
-void extract(::microstrain::Buffer& serializer, TareOrientation& self);
+void insert(::microstrain::Serializer& serializer, const TareOrientation& self);
+void extract(::microstrain::Serializer& serializer, TareOrientation& self);
 
-void insert(::microstrain::Buffer& serializer, const TareOrientation::Response& self);
-void extract(::microstrain::Buffer& serializer, TareOrientation::Response& self);
+void insert(::microstrain::Serializer& serializer, const TareOrientation::Response& self);
+void extract(::microstrain::Serializer& serializer, TareOrientation::Response& self);
 
 TypedResult<TareOrientation> writeTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes axes);
 TypedResult<TareOrientation> readTareOrientation(C::mip_interface& device, TareOrientation::MipTareAxes* axesOut);
@@ -735,11 +735,11 @@ struct VehicleDynamicsMode
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const VehicleDynamicsMode& self);
-void extract(::microstrain::Buffer& serializer, VehicleDynamicsMode& self);
+void insert(::microstrain::Serializer& serializer, const VehicleDynamicsMode& self);
+void extract(::microstrain::Serializer& serializer, VehicleDynamicsMode& self);
 
-void insert(::microstrain::Buffer& serializer, const VehicleDynamicsMode::Response& self);
-void extract(::microstrain::Buffer& serializer, VehicleDynamicsMode::Response& self);
+void insert(::microstrain::Serializer& serializer, const VehicleDynamicsMode::Response& self);
+void extract(::microstrain::Serializer& serializer, VehicleDynamicsMode::Response& self);
 
 TypedResult<VehicleDynamicsMode> writeVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode mode);
 TypedResult<VehicleDynamicsMode> readVehicleDynamicsMode(C::mip_interface& device, VehicleDynamicsMode::DynamicsMode* modeOut);
@@ -837,11 +837,11 @@ struct SensorToVehicleRotationEuler
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationEuler& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationEuler& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationEuler& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationEuler& self);
 
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationEuler::Response& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationEuler::Response& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationEuler::Response& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationEuler::Response& self);
 
 TypedResult<SensorToVehicleRotationEuler> writeSensorToVehicleRotationEuler(C::mip_interface& device, float roll, float pitch, float yaw);
 TypedResult<SensorToVehicleRotationEuler> readSensorToVehicleRotationEuler(C::mip_interface& device, float* rollOut, float* pitchOut, float* yawOut);
@@ -941,11 +941,11 @@ struct SensorToVehicleRotationDcm
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationDcm& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationDcm& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationDcm& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationDcm& self);
 
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationDcm::Response& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationDcm::Response& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationDcm::Response& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationDcm::Response& self);
 
 TypedResult<SensorToVehicleRotationDcm> writeSensorToVehicleRotationDcm(C::mip_interface& device, const float* dcm);
 TypedResult<SensorToVehicleRotationDcm> readSensorToVehicleRotationDcm(C::mip_interface& device, float* dcmOut);
@@ -1044,11 +1044,11 @@ struct SensorToVehicleRotationQuaternion
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationQuaternion& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationQuaternion& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationQuaternion& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationQuaternion& self);
 
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleRotationQuaternion::Response& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleRotationQuaternion::Response& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleRotationQuaternion::Response& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleRotationQuaternion::Response& self);
 
 TypedResult<SensorToVehicleRotationQuaternion> writeSensorToVehicleRotationQuaternion(C::mip_interface& device, const float* quat);
 TypedResult<SensorToVehicleRotationQuaternion> readSensorToVehicleRotationQuaternion(C::mip_interface& device, float* quatOut);
@@ -1128,11 +1128,11 @@ struct SensorToVehicleOffset
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleOffset& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleOffset& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleOffset& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleOffset& self);
 
-void insert(::microstrain::Buffer& serializer, const SensorToVehicleOffset::Response& self);
-void extract(::microstrain::Buffer& serializer, SensorToVehicleOffset::Response& self);
+void insert(::microstrain::Serializer& serializer, const SensorToVehicleOffset::Response& self);
+void extract(::microstrain::Serializer& serializer, SensorToVehicleOffset::Response& self);
 
 TypedResult<SensorToVehicleOffset> writeSensorToVehicleOffset(C::mip_interface& device, const float* offset);
 TypedResult<SensorToVehicleOffset> readSensorToVehicleOffset(C::mip_interface& device, float* offsetOut);
@@ -1209,11 +1209,11 @@ struct AntennaOffset
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AntennaOffset& self);
-void extract(::microstrain::Buffer& serializer, AntennaOffset& self);
+void insert(::microstrain::Serializer& serializer, const AntennaOffset& self);
+void extract(::microstrain::Serializer& serializer, AntennaOffset& self);
 
-void insert(::microstrain::Buffer& serializer, const AntennaOffset::Response& self);
-void extract(::microstrain::Buffer& serializer, AntennaOffset::Response& self);
+void insert(::microstrain::Serializer& serializer, const AntennaOffset::Response& self);
+void extract(::microstrain::Serializer& serializer, AntennaOffset::Response& self);
 
 TypedResult<AntennaOffset> writeAntennaOffset(C::mip_interface& device, const float* offset);
 TypedResult<AntennaOffset> readAntennaOffset(C::mip_interface& device, float* offsetOut);
@@ -1297,11 +1297,11 @@ struct GnssSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GnssSource& self);
-void extract(::microstrain::Buffer& serializer, GnssSource& self);
+void insert(::microstrain::Serializer& serializer, const GnssSource& self);
+void extract(::microstrain::Serializer& serializer, GnssSource& self);
 
-void insert(::microstrain::Buffer& serializer, const GnssSource::Response& self);
-void extract(::microstrain::Buffer& serializer, GnssSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const GnssSource::Response& self);
+void extract(::microstrain::Serializer& serializer, GnssSource::Response& self);
 
 TypedResult<GnssSource> writeGnssSource(C::mip_interface& device, GnssSource::Source source);
 TypedResult<GnssSource> readGnssSource(C::mip_interface& device, GnssSource::Source* sourceOut);
@@ -1396,11 +1396,11 @@ struct HeadingSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const HeadingSource& self);
-void extract(::microstrain::Buffer& serializer, HeadingSource& self);
+void insert(::microstrain::Serializer& serializer, const HeadingSource& self);
+void extract(::microstrain::Serializer& serializer, HeadingSource& self);
 
-void insert(::microstrain::Buffer& serializer, const HeadingSource::Response& self);
-void extract(::microstrain::Buffer& serializer, HeadingSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const HeadingSource::Response& self);
+void extract(::microstrain::Serializer& serializer, HeadingSource::Response& self);
 
 TypedResult<HeadingSource> writeHeadingSource(C::mip_interface& device, HeadingSource::Source source);
 TypedResult<HeadingSource> readHeadingSource(C::mip_interface& device, HeadingSource::Source* sourceOut);
@@ -1480,11 +1480,11 @@ struct AutoInitControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AutoInitControl& self);
-void extract(::microstrain::Buffer& serializer, AutoInitControl& self);
+void insert(::microstrain::Serializer& serializer, const AutoInitControl& self);
+void extract(::microstrain::Serializer& serializer, AutoInitControl& self);
 
-void insert(::microstrain::Buffer& serializer, const AutoInitControl::Response& self);
-void extract(::microstrain::Buffer& serializer, AutoInitControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const AutoInitControl::Response& self);
+void extract(::microstrain::Serializer& serializer, AutoInitControl::Response& self);
 
 TypedResult<AutoInitControl> writeAutoInitControl(C::mip_interface& device, uint8_t enable);
 TypedResult<AutoInitControl> readAutoInitControl(C::mip_interface& device, uint8_t* enableOut);
@@ -1562,11 +1562,11 @@ struct AccelNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AccelNoise& self);
-void extract(::microstrain::Buffer& serializer, AccelNoise& self);
+void insert(::microstrain::Serializer& serializer, const AccelNoise& self);
+void extract(::microstrain::Serializer& serializer, AccelNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const AccelNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, AccelNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const AccelNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, AccelNoise::Response& self);
 
 TypedResult<AccelNoise> writeAccelNoise(C::mip_interface& device, const float* noise);
 TypedResult<AccelNoise> readAccelNoise(C::mip_interface& device, float* noiseOut);
@@ -1644,11 +1644,11 @@ struct GyroNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GyroNoise& self);
-void extract(::microstrain::Buffer& serializer, GyroNoise& self);
+void insert(::microstrain::Serializer& serializer, const GyroNoise& self);
+void extract(::microstrain::Serializer& serializer, GyroNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const GyroNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, GyroNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const GyroNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, GyroNoise::Response& self);
 
 TypedResult<GyroNoise> writeGyroNoise(C::mip_interface& device, const float* noise);
 TypedResult<GyroNoise> readGyroNoise(C::mip_interface& device, float* noiseOut);
@@ -1725,11 +1725,11 @@ struct AccelBiasModel
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AccelBiasModel& self);
-void extract(::microstrain::Buffer& serializer, AccelBiasModel& self);
+void insert(::microstrain::Serializer& serializer, const AccelBiasModel& self);
+void extract(::microstrain::Serializer& serializer, AccelBiasModel& self);
 
-void insert(::microstrain::Buffer& serializer, const AccelBiasModel::Response& self);
-void extract(::microstrain::Buffer& serializer, AccelBiasModel::Response& self);
+void insert(::microstrain::Serializer& serializer, const AccelBiasModel::Response& self);
+void extract(::microstrain::Serializer& serializer, AccelBiasModel::Response& self);
 
 TypedResult<AccelBiasModel> writeAccelBiasModel(C::mip_interface& device, const float* beta, const float* noise);
 TypedResult<AccelBiasModel> readAccelBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
@@ -1806,11 +1806,11 @@ struct GyroBiasModel
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GyroBiasModel& self);
-void extract(::microstrain::Buffer& serializer, GyroBiasModel& self);
+void insert(::microstrain::Serializer& serializer, const GyroBiasModel& self);
+void extract(::microstrain::Serializer& serializer, GyroBiasModel& self);
 
-void insert(::microstrain::Buffer& serializer, const GyroBiasModel::Response& self);
-void extract(::microstrain::Buffer& serializer, GyroBiasModel::Response& self);
+void insert(::microstrain::Serializer& serializer, const GyroBiasModel::Response& self);
+void extract(::microstrain::Serializer& serializer, GyroBiasModel::Response& self);
 
 TypedResult<GyroBiasModel> writeGyroBiasModel(C::mip_interface& device, const float* beta, const float* noise);
 TypedResult<GyroBiasModel> readGyroBiasModel(C::mip_interface& device, float* betaOut, float* noiseOut);
@@ -1892,11 +1892,11 @@ struct AltitudeAiding
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AltitudeAiding& self);
-void extract(::microstrain::Buffer& serializer, AltitudeAiding& self);
+void insert(::microstrain::Serializer& serializer, const AltitudeAiding& self);
+void extract(::microstrain::Serializer& serializer, AltitudeAiding& self);
 
-void insert(::microstrain::Buffer& serializer, const AltitudeAiding::Response& self);
-void extract(::microstrain::Buffer& serializer, AltitudeAiding::Response& self);
+void insert(::microstrain::Serializer& serializer, const AltitudeAiding::Response& self);
+void extract(::microstrain::Serializer& serializer, AltitudeAiding::Response& self);
 
 TypedResult<AltitudeAiding> writeAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector selector);
 TypedResult<AltitudeAiding> readAltitudeAiding(C::mip_interface& device, AltitudeAiding::AidingSelector* selectorOut);
@@ -1975,11 +1975,11 @@ struct PitchRollAiding
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const PitchRollAiding& self);
-void extract(::microstrain::Buffer& serializer, PitchRollAiding& self);
+void insert(::microstrain::Serializer& serializer, const PitchRollAiding& self);
+void extract(::microstrain::Serializer& serializer, PitchRollAiding& self);
 
-void insert(::microstrain::Buffer& serializer, const PitchRollAiding::Response& self);
-void extract(::microstrain::Buffer& serializer, PitchRollAiding::Response& self);
+void insert(::microstrain::Serializer& serializer, const PitchRollAiding::Response& self);
+void extract(::microstrain::Serializer& serializer, PitchRollAiding::Response& self);
 
 TypedResult<PitchRollAiding> writePitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource source);
 TypedResult<PitchRollAiding> readPitchRollAiding(C::mip_interface& device, PitchRollAiding::AidingSource* sourceOut);
@@ -2054,11 +2054,11 @@ struct AutoZupt
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AutoZupt& self);
-void extract(::microstrain::Buffer& serializer, AutoZupt& self);
+void insert(::microstrain::Serializer& serializer, const AutoZupt& self);
+void extract(::microstrain::Serializer& serializer, AutoZupt& self);
 
-void insert(::microstrain::Buffer& serializer, const AutoZupt::Response& self);
-void extract(::microstrain::Buffer& serializer, AutoZupt::Response& self);
+void insert(::microstrain::Serializer& serializer, const AutoZupt::Response& self);
+void extract(::microstrain::Serializer& serializer, AutoZupt::Response& self);
 
 TypedResult<AutoZupt> writeAutoZupt(C::mip_interface& device, uint8_t enable, float threshold);
 TypedResult<AutoZupt> readAutoZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut);
@@ -2134,11 +2134,11 @@ struct AutoAngularZupt
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AutoAngularZupt& self);
-void extract(::microstrain::Buffer& serializer, AutoAngularZupt& self);
+void insert(::microstrain::Serializer& serializer, const AutoAngularZupt& self);
+void extract(::microstrain::Serializer& serializer, AutoAngularZupt& self);
 
-void insert(::microstrain::Buffer& serializer, const AutoAngularZupt::Response& self);
-void extract(::microstrain::Buffer& serializer, AutoAngularZupt::Response& self);
+void insert(::microstrain::Serializer& serializer, const AutoAngularZupt::Response& self);
+void extract(::microstrain::Serializer& serializer, AutoAngularZupt::Response& self);
 
 TypedResult<AutoAngularZupt> writeAutoAngularZupt(C::mip_interface& device, uint8_t enable, float threshold);
 TypedResult<AutoAngularZupt> readAutoAngularZupt(C::mip_interface& device, uint8_t* enableOut, float* thresholdOut);
@@ -2177,8 +2177,8 @@ struct CommandedZupt
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const CommandedZupt& self);
-void extract(::microstrain::Buffer& serializer, CommandedZupt& self);
+void insert(::microstrain::Serializer& serializer, const CommandedZupt& self);
+void extract(::microstrain::Serializer& serializer, CommandedZupt& self);
 
 TypedResult<CommandedZupt> commandedZupt(C::mip_interface& device);
 
@@ -2213,8 +2213,8 @@ struct CommandedAngularZupt
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const CommandedAngularZupt& self);
-void extract(::microstrain::Buffer& serializer, CommandedAngularZupt& self);
+void insert(::microstrain::Serializer& serializer, const CommandedAngularZupt& self);
+void extract(::microstrain::Serializer& serializer, CommandedAngularZupt& self);
 
 TypedResult<CommandedAngularZupt> commandedAngularZupt(C::mip_interface& device);
 
@@ -2265,8 +2265,8 @@ struct MagCaptureAutoCal
     
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const MagCaptureAutoCal& self);
-void extract(::microstrain::Buffer& serializer, MagCaptureAutoCal& self);
+void insert(::microstrain::Serializer& serializer, const MagCaptureAutoCal& self);
+void extract(::microstrain::Serializer& serializer, MagCaptureAutoCal& self);
 
 TypedResult<MagCaptureAutoCal> writeMagCaptureAutoCal(C::mip_interface& device);
 TypedResult<MagCaptureAutoCal> saveMagCaptureAutoCal(C::mip_interface& device);
@@ -2340,11 +2340,11 @@ struct GravityNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GravityNoise& self);
-void extract(::microstrain::Buffer& serializer, GravityNoise& self);
+void insert(::microstrain::Serializer& serializer, const GravityNoise& self);
+void extract(::microstrain::Serializer& serializer, GravityNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const GravityNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, GravityNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const GravityNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, GravityNoise::Response& self);
 
 TypedResult<GravityNoise> writeGravityNoise(C::mip_interface& device, const float* noise);
 TypedResult<GravityNoise> readGravityNoise(C::mip_interface& device, float* noiseOut);
@@ -2421,11 +2421,11 @@ struct PressureAltitudeNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const PressureAltitudeNoise& self);
-void extract(::microstrain::Buffer& serializer, PressureAltitudeNoise& self);
+void insert(::microstrain::Serializer& serializer, const PressureAltitudeNoise& self);
+void extract(::microstrain::Serializer& serializer, PressureAltitudeNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const PressureAltitudeNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, PressureAltitudeNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const PressureAltitudeNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, PressureAltitudeNoise::Response& self);
 
 TypedResult<PressureAltitudeNoise> writePressureAltitudeNoise(C::mip_interface& device, float noise);
 TypedResult<PressureAltitudeNoise> readPressureAltitudeNoise(C::mip_interface& device, float* noiseOut);
@@ -2504,11 +2504,11 @@ struct HardIronOffsetNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const HardIronOffsetNoise& self);
-void extract(::microstrain::Buffer& serializer, HardIronOffsetNoise& self);
+void insert(::microstrain::Serializer& serializer, const HardIronOffsetNoise& self);
+void extract(::microstrain::Serializer& serializer, HardIronOffsetNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const HardIronOffsetNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, HardIronOffsetNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const HardIronOffsetNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, HardIronOffsetNoise::Response& self);
 
 TypedResult<HardIronOffsetNoise> writeHardIronOffsetNoise(C::mip_interface& device, const float* noise);
 TypedResult<HardIronOffsetNoise> readHardIronOffsetNoise(C::mip_interface& device, float* noiseOut);
@@ -2586,11 +2586,11 @@ struct SoftIronMatrixNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SoftIronMatrixNoise& self);
-void extract(::microstrain::Buffer& serializer, SoftIronMatrixNoise& self);
+void insert(::microstrain::Serializer& serializer, const SoftIronMatrixNoise& self);
+void extract(::microstrain::Serializer& serializer, SoftIronMatrixNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const SoftIronMatrixNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, SoftIronMatrixNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const SoftIronMatrixNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, SoftIronMatrixNoise::Response& self);
 
 TypedResult<SoftIronMatrixNoise> writeSoftIronMatrixNoise(C::mip_interface& device, const float* noise);
 TypedResult<SoftIronMatrixNoise> readSoftIronMatrixNoise(C::mip_interface& device, float* noiseOut);
@@ -2668,11 +2668,11 @@ struct MagNoise
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagNoise& self);
-void extract(::microstrain::Buffer& serializer, MagNoise& self);
+void insert(::microstrain::Serializer& serializer, const MagNoise& self);
+void extract(::microstrain::Serializer& serializer, MagNoise& self);
 
-void insert(::microstrain::Buffer& serializer, const MagNoise::Response& self);
-void extract(::microstrain::Buffer& serializer, MagNoise::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagNoise::Response& self);
+void extract(::microstrain::Serializer& serializer, MagNoise::Response& self);
 
 TypedResult<MagNoise> writeMagNoise(C::mip_interface& device, const float* noise);
 TypedResult<MagNoise> readMagNoise(C::mip_interface& device, float* noiseOut);
@@ -2750,11 +2750,11 @@ struct InclinationSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const InclinationSource& self);
-void extract(::microstrain::Buffer& serializer, InclinationSource& self);
+void insert(::microstrain::Serializer& serializer, const InclinationSource& self);
+void extract(::microstrain::Serializer& serializer, InclinationSource& self);
 
-void insert(::microstrain::Buffer& serializer, const InclinationSource::Response& self);
-void extract(::microstrain::Buffer& serializer, InclinationSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const InclinationSource::Response& self);
+void extract(::microstrain::Serializer& serializer, InclinationSource::Response& self);
 
 TypedResult<InclinationSource> writeInclinationSource(C::mip_interface& device, FilterMagParamSource source, float inclination);
 TypedResult<InclinationSource> readInclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* inclinationOut);
@@ -2832,11 +2832,11 @@ struct MagneticDeclinationSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagneticDeclinationSource& self);
-void extract(::microstrain::Buffer& serializer, MagneticDeclinationSource& self);
+void insert(::microstrain::Serializer& serializer, const MagneticDeclinationSource& self);
+void extract(::microstrain::Serializer& serializer, MagneticDeclinationSource& self);
 
-void insert(::microstrain::Buffer& serializer, const MagneticDeclinationSource::Response& self);
-void extract(::microstrain::Buffer& serializer, MagneticDeclinationSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagneticDeclinationSource::Response& self);
+void extract(::microstrain::Serializer& serializer, MagneticDeclinationSource::Response& self);
 
 TypedResult<MagneticDeclinationSource> writeMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource source, float declination);
 TypedResult<MagneticDeclinationSource> readMagneticDeclinationSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* declinationOut);
@@ -2913,11 +2913,11 @@ struct MagFieldMagnitudeSource
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagFieldMagnitudeSource& self);
-void extract(::microstrain::Buffer& serializer, MagFieldMagnitudeSource& self);
+void insert(::microstrain::Serializer& serializer, const MagFieldMagnitudeSource& self);
+void extract(::microstrain::Serializer& serializer, MagFieldMagnitudeSource& self);
 
-void insert(::microstrain::Buffer& serializer, const MagFieldMagnitudeSource::Response& self);
-void extract(::microstrain::Buffer& serializer, MagFieldMagnitudeSource::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagFieldMagnitudeSource::Response& self);
+void extract(::microstrain::Serializer& serializer, MagFieldMagnitudeSource::Response& self);
 
 TypedResult<MagFieldMagnitudeSource> writeMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource source, float magnitude);
 TypedResult<MagFieldMagnitudeSource> readMagFieldMagnitudeSource(C::mip_interface& device, FilterMagParamSource* sourceOut, float* magnitudeOut);
@@ -2998,11 +2998,11 @@ struct ReferencePosition
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const ReferencePosition& self);
-void extract(::microstrain::Buffer& serializer, ReferencePosition& self);
+void insert(::microstrain::Serializer& serializer, const ReferencePosition& self);
+void extract(::microstrain::Serializer& serializer, ReferencePosition& self);
 
-void insert(::microstrain::Buffer& serializer, const ReferencePosition::Response& self);
-void extract(::microstrain::Buffer& serializer, ReferencePosition::Response& self);
+void insert(::microstrain::Serializer& serializer, const ReferencePosition::Response& self);
+void extract(::microstrain::Serializer& serializer, ReferencePosition::Response& self);
 
 TypedResult<ReferencePosition> writeReferencePosition(C::mip_interface& device, bool enable, double latitude, double longitude, double altitude);
 TypedResult<ReferencePosition> readReferencePosition(C::mip_interface& device, bool* enableOut, double* latitudeOut, double* longitudeOut, double* altitudeOut);
@@ -3099,11 +3099,11 @@ struct AccelMagnitudeErrorAdaptiveMeasurement
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Buffer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self);
+void insert(::microstrain::Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement& self);
+void extract(::microstrain::Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement& self);
 
-void insert(::microstrain::Buffer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Buffer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
+void insert(::microstrain::Serializer& serializer, const AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
+void extract(::microstrain::Serializer& serializer, AccelMagnitudeErrorAdaptiveMeasurement::Response& self);
 
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> writeAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<AccelMagnitudeErrorAdaptiveMeasurement> readAccelMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
@@ -3195,11 +3195,11 @@ struct MagMagnitudeErrorAdaptiveMeasurement
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Buffer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self);
+void insert(::microstrain::Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement& self);
+void extract(::microstrain::Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement& self);
 
-void insert(::microstrain::Buffer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Buffer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagMagnitudeErrorAdaptiveMeasurement::Response& self);
+void extract(::microstrain::Serializer& serializer, MagMagnitudeErrorAdaptiveMeasurement::Response& self);
 
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> writeMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement adaptiveMeasurement, float frequency, float lowLimit, float highLimit, float lowLimitUncertainty, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<MagMagnitudeErrorAdaptiveMeasurement> readMagMagnitudeErrorAdaptiveMeasurement(C::mip_interface& device, FilterAdaptiveMeasurement* adaptiveMeasurementOut, float* frequencyOut, float* lowLimitOut, float* highLimitOut, float* lowLimitUncertaintyOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
@@ -3289,11 +3289,11 @@ struct MagDipAngleErrorAdaptiveMeasurement
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self);
-void extract(::microstrain::Buffer& serializer, MagDipAngleErrorAdaptiveMeasurement& self);
+void insert(::microstrain::Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement& self);
+void extract(::microstrain::Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement& self);
 
-void insert(::microstrain::Buffer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self);
-void extract(::microstrain::Buffer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self);
+void insert(::microstrain::Serializer& serializer, const MagDipAngleErrorAdaptiveMeasurement::Response& self);
+void extract(::microstrain::Serializer& serializer, MagDipAngleErrorAdaptiveMeasurement::Response& self);
 
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> writeMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool enable, float frequency, float highLimit, float highLimitUncertainty, float minimumUncertainty);
 TypedResult<MagDipAngleErrorAdaptiveMeasurement> readMagDipAngleErrorAdaptiveMeasurement(C::mip_interface& device, bool* enableOut, float* frequencyOut, float* highLimitOut, float* highLimitUncertaintyOut, float* minimumUncertaintyOut);
@@ -3384,11 +3384,11 @@ struct AidingMeasurementEnable
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AidingMeasurementEnable& self);
-void extract(::microstrain::Buffer& serializer, AidingMeasurementEnable& self);
+void insert(::microstrain::Serializer& serializer, const AidingMeasurementEnable& self);
+void extract(::microstrain::Serializer& serializer, AidingMeasurementEnable& self);
 
-void insert(::microstrain::Buffer& serializer, const AidingMeasurementEnable::Response& self);
-void extract(::microstrain::Buffer& serializer, AidingMeasurementEnable::Response& self);
+void insert(::microstrain::Serializer& serializer, const AidingMeasurementEnable::Response& self);
+void extract(::microstrain::Serializer& serializer, AidingMeasurementEnable::Response& self);
 
 TypedResult<AidingMeasurementEnable> writeAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool enable);
 TypedResult<AidingMeasurementEnable> readAidingMeasurementEnable(C::mip_interface& device, AidingMeasurementEnable::AidingSource aidingSource, bool* enableOut);
@@ -3429,8 +3429,8 @@ struct Run
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const Run& self);
-void extract(::microstrain::Buffer& serializer, Run& self);
+void insert(::microstrain::Serializer& serializer, const Run& self);
+void extract(::microstrain::Serializer& serializer, Run& self);
 
 TypedResult<Run> run(C::mip_interface& device);
 
@@ -3504,11 +3504,11 @@ struct KinematicConstraint
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const KinematicConstraint& self);
-void extract(::microstrain::Buffer& serializer, KinematicConstraint& self);
+void insert(::microstrain::Serializer& serializer, const KinematicConstraint& self);
+void extract(::microstrain::Serializer& serializer, KinematicConstraint& self);
 
-void insert(::microstrain::Buffer& serializer, const KinematicConstraint::Response& self);
-void extract(::microstrain::Buffer& serializer, KinematicConstraint::Response& self);
+void insert(::microstrain::Serializer& serializer, const KinematicConstraint::Response& self);
+void extract(::microstrain::Serializer& serializer, KinematicConstraint::Response& self);
 
 TypedResult<KinematicConstraint> writeKinematicConstraint(C::mip_interface& device, uint8_t accelerationConstraintSelection, uint8_t velocityConstraintSelection, uint8_t angularConstraintSelection);
 TypedResult<KinematicConstraint> readKinematicConstraint(C::mip_interface& device, uint8_t* accelerationConstraintSelectionOut, uint8_t* velocityConstraintSelectionOut, uint8_t* angularConstraintSelectionOut);
@@ -3642,11 +3642,11 @@ struct InitializationConfiguration
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const InitializationConfiguration& self);
-void extract(::microstrain::Buffer& serializer, InitializationConfiguration& self);
+void insert(::microstrain::Serializer& serializer, const InitializationConfiguration& self);
+void extract(::microstrain::Serializer& serializer, InitializationConfiguration& self);
 
-void insert(::microstrain::Buffer& serializer, const InitializationConfiguration::Response& self);
-void extract(::microstrain::Buffer& serializer, InitializationConfiguration::Response& self);
+void insert(::microstrain::Serializer& serializer, const InitializationConfiguration::Response& self);
+void extract(::microstrain::Serializer& serializer, InitializationConfiguration::Response& self);
 
 TypedResult<InitializationConfiguration> writeInitializationConfiguration(C::mip_interface& device, uint8_t waitForRunCommand, InitializationConfiguration::InitialConditionSource initialCondSrc, InitializationConfiguration::AlignmentSelector autoHeadingAlignmentSelector, float initialHeading, float initialPitch, float initialRoll, const float* initialPosition, const float* initialVelocity, FilterReferenceFrame referenceFrameSelector);
 TypedResult<InitializationConfiguration> readInitializationConfiguration(C::mip_interface& device, uint8_t* waitForRunCommandOut, InitializationConfiguration::InitialConditionSource* initialCondSrcOut, InitializationConfiguration::AlignmentSelector* autoHeadingAlignmentSelectorOut, float* initialHeadingOut, float* initialPitchOut, float* initialRollOut, float* initialPositionOut, float* initialVelocityOut, FilterReferenceFrame* referenceFrameSelectorOut);
@@ -3720,11 +3720,11 @@ struct AdaptiveFilterOptions
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const AdaptiveFilterOptions& self);
-void extract(::microstrain::Buffer& serializer, AdaptiveFilterOptions& self);
+void insert(::microstrain::Serializer& serializer, const AdaptiveFilterOptions& self);
+void extract(::microstrain::Serializer& serializer, AdaptiveFilterOptions& self);
 
-void insert(::microstrain::Buffer& serializer, const AdaptiveFilterOptions::Response& self);
-void extract(::microstrain::Buffer& serializer, AdaptiveFilterOptions::Response& self);
+void insert(::microstrain::Serializer& serializer, const AdaptiveFilterOptions::Response& self);
+void extract(::microstrain::Serializer& serializer, AdaptiveFilterOptions::Response& self);
 
 TypedResult<AdaptiveFilterOptions> writeAdaptiveFilterOptions(C::mip_interface& device, uint8_t level, uint16_t timeLimit);
 TypedResult<AdaptiveFilterOptions> readAdaptiveFilterOptions(C::mip_interface& device, uint8_t* levelOut, uint16_t* timeLimitOut);
@@ -3802,11 +3802,11 @@ struct MultiAntennaOffset
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const MultiAntennaOffset& self);
-void extract(::microstrain::Buffer& serializer, MultiAntennaOffset& self);
+void insert(::microstrain::Serializer& serializer, const MultiAntennaOffset& self);
+void extract(::microstrain::Serializer& serializer, MultiAntennaOffset& self);
 
-void insert(::microstrain::Buffer& serializer, const MultiAntennaOffset::Response& self);
-void extract(::microstrain::Buffer& serializer, MultiAntennaOffset::Response& self);
+void insert(::microstrain::Serializer& serializer, const MultiAntennaOffset::Response& self);
+void extract(::microstrain::Serializer& serializer, MultiAntennaOffset::Response& self);
 
 TypedResult<MultiAntennaOffset> writeMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, const float* antennaOffset);
 TypedResult<MultiAntennaOffset> readMultiAntennaOffset(C::mip_interface& device, uint8_t receiverId, float* antennaOffsetOut);
@@ -3882,11 +3882,11 @@ struct RelPosConfiguration
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const RelPosConfiguration& self);
-void extract(::microstrain::Buffer& serializer, RelPosConfiguration& self);
+void insert(::microstrain::Serializer& serializer, const RelPosConfiguration& self);
+void extract(::microstrain::Serializer& serializer, RelPosConfiguration& self);
 
-void insert(::microstrain::Buffer& serializer, const RelPosConfiguration::Response& self);
-void extract(::microstrain::Buffer& serializer, RelPosConfiguration::Response& self);
+void insert(::microstrain::Serializer& serializer, const RelPosConfiguration::Response& self);
+void extract(::microstrain::Serializer& serializer, RelPosConfiguration::Response& self);
 
 TypedResult<RelPosConfiguration> writeRelPosConfiguration(C::mip_interface& device, uint8_t source, FilterReferenceFrame referenceFrameSelector, const double* referenceCoordinates);
 TypedResult<RelPosConfiguration> readRelPosConfiguration(C::mip_interface& device, uint8_t* sourceOut, FilterReferenceFrame* referenceFrameSelectorOut, double* referenceCoordinatesOut);
@@ -3972,11 +3972,11 @@ struct RefPointLeverArm
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const RefPointLeverArm& self);
-void extract(::microstrain::Buffer& serializer, RefPointLeverArm& self);
+void insert(::microstrain::Serializer& serializer, const RefPointLeverArm& self);
+void extract(::microstrain::Serializer& serializer, RefPointLeverArm& self);
 
-void insert(::microstrain::Buffer& serializer, const RefPointLeverArm::Response& self);
-void extract(::microstrain::Buffer& serializer, RefPointLeverArm::Response& self);
+void insert(::microstrain::Serializer& serializer, const RefPointLeverArm::Response& self);
+void extract(::microstrain::Serializer& serializer, RefPointLeverArm::Response& self);
 
 TypedResult<RefPointLeverArm> writeRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector refPointSel, const float* leverArmOffset);
 TypedResult<RefPointLeverArm> readRefPointLeverArm(C::mip_interface& device, RefPointLeverArm::ReferencePointSelector* refPointSelOut, float* leverArmOffsetOut);
@@ -4021,8 +4021,8 @@ struct SpeedMeasurement
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const SpeedMeasurement& self);
-void extract(::microstrain::Buffer& serializer, SpeedMeasurement& self);
+void insert(::microstrain::Serializer& serializer, const SpeedMeasurement& self);
+void extract(::microstrain::Serializer& serializer, SpeedMeasurement& self);
 
 TypedResult<SpeedMeasurement> speedMeasurement(C::mip_interface& device, uint8_t source, float timeOfWeek, float speed, float speedUncertainty);
 
@@ -4099,11 +4099,11 @@ struct SpeedLeverArm
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const SpeedLeverArm& self);
-void extract(::microstrain::Buffer& serializer, SpeedLeverArm& self);
+void insert(::microstrain::Serializer& serializer, const SpeedLeverArm& self);
+void extract(::microstrain::Serializer& serializer, SpeedLeverArm& self);
 
-void insert(::microstrain::Buffer& serializer, const SpeedLeverArm::Response& self);
-void extract(::microstrain::Buffer& serializer, SpeedLeverArm::Response& self);
+void insert(::microstrain::Serializer& serializer, const SpeedLeverArm::Response& self);
+void extract(::microstrain::Serializer& serializer, SpeedLeverArm::Response& self);
 
 TypedResult<SpeedLeverArm> writeSpeedLeverArm(C::mip_interface& device, uint8_t source, const float* leverArmOffset);
 TypedResult<SpeedLeverArm> readSpeedLeverArm(C::mip_interface& device, uint8_t source, float* leverArmOffsetOut);
@@ -4181,11 +4181,11 @@ struct WheeledVehicleConstraintControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const WheeledVehicleConstraintControl& self);
-void extract(::microstrain::Buffer& serializer, WheeledVehicleConstraintControl& self);
+void insert(::microstrain::Serializer& serializer, const WheeledVehicleConstraintControl& self);
+void extract(::microstrain::Serializer& serializer, WheeledVehicleConstraintControl& self);
 
-void insert(::microstrain::Buffer& serializer, const WheeledVehicleConstraintControl::Response& self);
-void extract(::microstrain::Buffer& serializer, WheeledVehicleConstraintControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const WheeledVehicleConstraintControl::Response& self);
+void extract(::microstrain::Serializer& serializer, WheeledVehicleConstraintControl::Response& self);
 
 TypedResult<WheeledVehicleConstraintControl> writeWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t enable);
 TypedResult<WheeledVehicleConstraintControl> readWheeledVehicleConstraintControl(C::mip_interface& device, uint8_t* enableOut);
@@ -4261,11 +4261,11 @@ struct VerticalGyroConstraintControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const VerticalGyroConstraintControl& self);
-void extract(::microstrain::Buffer& serializer, VerticalGyroConstraintControl& self);
+void insert(::microstrain::Serializer& serializer, const VerticalGyroConstraintControl& self);
+void extract(::microstrain::Serializer& serializer, VerticalGyroConstraintControl& self);
 
-void insert(::microstrain::Buffer& serializer, const VerticalGyroConstraintControl::Response& self);
-void extract(::microstrain::Buffer& serializer, VerticalGyroConstraintControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const VerticalGyroConstraintControl::Response& self);
+void extract(::microstrain::Serializer& serializer, VerticalGyroConstraintControl::Response& self);
 
 TypedResult<VerticalGyroConstraintControl> writeVerticalGyroConstraintControl(C::mip_interface& device, uint8_t enable);
 TypedResult<VerticalGyroConstraintControl> readVerticalGyroConstraintControl(C::mip_interface& device, uint8_t* enableOut);
@@ -4341,11 +4341,11 @@ struct GnssAntennaCalControl
         }
     };
 };
-void insert(::microstrain::Buffer& serializer, const GnssAntennaCalControl& self);
-void extract(::microstrain::Buffer& serializer, GnssAntennaCalControl& self);
+void insert(::microstrain::Serializer& serializer, const GnssAntennaCalControl& self);
+void extract(::microstrain::Serializer& serializer, GnssAntennaCalControl& self);
 
-void insert(::microstrain::Buffer& serializer, const GnssAntennaCalControl::Response& self);
-void extract(::microstrain::Buffer& serializer, GnssAntennaCalControl::Response& self);
+void insert(::microstrain::Serializer& serializer, const GnssAntennaCalControl::Response& self);
+void extract(::microstrain::Serializer& serializer, GnssAntennaCalControl::Response& self);
 
 TypedResult<GnssAntennaCalControl> writeGnssAntennaCalControl(C::mip_interface& device, uint8_t enable, float maxOffset);
 TypedResult<GnssAntennaCalControl> readGnssAntennaCalControl(C::mip_interface& device, uint8_t* enableOut, float* maxOffsetOut);
@@ -4388,8 +4388,8 @@ struct SetInitialHeading
     }
     typedef void Response;
 };
-void insert(::microstrain::Buffer& serializer, const SetInitialHeading& self);
-void extract(::microstrain::Buffer& serializer, SetInitialHeading& self);
+void insert(::microstrain::Serializer& serializer, const SetInitialHeading& self);
+void extract(::microstrain::Serializer& serializer, SetInitialHeading& self);
 
 TypedResult<SetInitialHeading> setInitialHeading(C::mip_interface& device, float heading);
 

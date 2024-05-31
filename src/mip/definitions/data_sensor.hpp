@@ -98,8 +98,8 @@ struct RawAccel
         return std::make_tuple(std::ref(raw_accel[0]),std::ref(raw_accel[1]),std::ref(raw_accel[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const RawAccel& self);
-void extract(::microstrain::Buffer& serializer, RawAccel& self);
+void insert(::microstrain::Serializer& serializer, const RawAccel& self);
+void extract(::microstrain::Serializer& serializer, RawAccel& self);
 
 
 ///@}
@@ -132,8 +132,8 @@ struct RawGyro
         return std::make_tuple(std::ref(raw_gyro[0]),std::ref(raw_gyro[1]),std::ref(raw_gyro[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const RawGyro& self);
-void extract(::microstrain::Buffer& serializer, RawGyro& self);
+void insert(::microstrain::Serializer& serializer, const RawGyro& self);
+void extract(::microstrain::Serializer& serializer, RawGyro& self);
 
 
 ///@}
@@ -166,8 +166,8 @@ struct RawMag
         return std::make_tuple(std::ref(raw_mag[0]),std::ref(raw_mag[1]),std::ref(raw_mag[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const RawMag& self);
-void extract(::microstrain::Buffer& serializer, RawMag& self);
+void insert(::microstrain::Serializer& serializer, const RawMag& self);
+void extract(::microstrain::Serializer& serializer, RawMag& self);
 
 
 ///@}
@@ -200,8 +200,8 @@ struct RawPressure
         return std::make_tuple(std::ref(raw_pressure));
     }
 };
-void insert(::microstrain::Buffer& serializer, const RawPressure& self);
-void extract(::microstrain::Buffer& serializer, RawPressure& self);
+void insert(::microstrain::Serializer& serializer, const RawPressure& self);
+void extract(::microstrain::Serializer& serializer, RawPressure& self);
 
 
 ///@}
@@ -234,8 +234,8 @@ struct ScaledAccel
         return std::make_tuple(std::ref(scaled_accel[0]),std::ref(scaled_accel[1]),std::ref(scaled_accel[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const ScaledAccel& self);
-void extract(::microstrain::Buffer& serializer, ScaledAccel& self);
+void insert(::microstrain::Serializer& serializer, const ScaledAccel& self);
+void extract(::microstrain::Serializer& serializer, ScaledAccel& self);
 
 
 ///@}
@@ -268,8 +268,8 @@ struct ScaledGyro
         return std::make_tuple(std::ref(scaled_gyro[0]),std::ref(scaled_gyro[1]),std::ref(scaled_gyro[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const ScaledGyro& self);
-void extract(::microstrain::Buffer& serializer, ScaledGyro& self);
+void insert(::microstrain::Serializer& serializer, const ScaledGyro& self);
+void extract(::microstrain::Serializer& serializer, ScaledGyro& self);
 
 
 ///@}
@@ -302,8 +302,8 @@ struct ScaledMag
         return std::make_tuple(std::ref(scaled_mag[0]),std::ref(scaled_mag[1]),std::ref(scaled_mag[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const ScaledMag& self);
-void extract(::microstrain::Buffer& serializer, ScaledMag& self);
+void insert(::microstrain::Serializer& serializer, const ScaledMag& self);
+void extract(::microstrain::Serializer& serializer, ScaledMag& self);
 
 
 ///@}
@@ -335,8 +335,8 @@ struct ScaledPressure
         return std::make_tuple(std::ref(scaled_pressure));
     }
 };
-void insert(::microstrain::Buffer& serializer, const ScaledPressure& self);
-void extract(::microstrain::Buffer& serializer, ScaledPressure& self);
+void insert(::microstrain::Serializer& serializer, const ScaledPressure& self);
+void extract(::microstrain::Serializer& serializer, ScaledPressure& self);
 
 
 ///@}
@@ -369,8 +369,8 @@ struct DeltaTheta
         return std::make_tuple(std::ref(delta_theta[0]),std::ref(delta_theta[1]),std::ref(delta_theta[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const DeltaTheta& self);
-void extract(::microstrain::Buffer& serializer, DeltaTheta& self);
+void insert(::microstrain::Serializer& serializer, const DeltaTheta& self);
+void extract(::microstrain::Serializer& serializer, DeltaTheta& self);
 
 
 ///@}
@@ -403,8 +403,8 @@ struct DeltaVelocity
         return std::make_tuple(std::ref(delta_velocity[0]),std::ref(delta_velocity[1]),std::ref(delta_velocity[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const DeltaVelocity& self);
-void extract(::microstrain::Buffer& serializer, DeltaVelocity& self);
+void insert(::microstrain::Serializer& serializer, const DeltaVelocity& self);
+void extract(::microstrain::Serializer& serializer, DeltaVelocity& self);
 
 
 ///@}
@@ -446,8 +446,8 @@ struct CompOrientationMatrix
         return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const CompOrientationMatrix& self);
-void extract(::microstrain::Buffer& serializer, CompOrientationMatrix& self);
+void insert(::microstrain::Serializer& serializer, const CompOrientationMatrix& self);
+void extract(::microstrain::Serializer& serializer, CompOrientationMatrix& self);
 
 
 ///@}
@@ -487,8 +487,8 @@ struct CompQuaternion
         return std::make_tuple(std::ref(q[0]),std::ref(q[1]),std::ref(q[2]),std::ref(q[3]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const CompQuaternion& self);
-void extract(::microstrain::Buffer& serializer, CompQuaternion& self);
+void insert(::microstrain::Serializer& serializer, const CompQuaternion& self);
+void extract(::microstrain::Serializer& serializer, CompQuaternion& self);
 
 
 ///@}
@@ -523,8 +523,8 @@ struct CompEulerAngles
         return std::make_tuple(std::ref(roll),std::ref(pitch),std::ref(yaw));
     }
 };
-void insert(::microstrain::Buffer& serializer, const CompEulerAngles& self);
-void extract(::microstrain::Buffer& serializer, CompEulerAngles& self);
+void insert(::microstrain::Serializer& serializer, const CompEulerAngles& self);
+void extract(::microstrain::Serializer& serializer, CompEulerAngles& self);
 
 
 ///@}
@@ -556,8 +556,8 @@ struct CompOrientationUpdateMatrix
         return std::make_tuple(std::ref(m[0]),std::ref(m[1]),std::ref(m[2]),std::ref(m[3]),std::ref(m[4]),std::ref(m[5]),std::ref(m[6]),std::ref(m[7]),std::ref(m[8]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const CompOrientationUpdateMatrix& self);
-void extract(::microstrain::Buffer& serializer, CompOrientationUpdateMatrix& self);
+void insert(::microstrain::Serializer& serializer, const CompOrientationUpdateMatrix& self);
+void extract(::microstrain::Serializer& serializer, CompOrientationUpdateMatrix& self);
 
 
 ///@}
@@ -589,8 +589,8 @@ struct OrientationRawTemp
         return std::make_tuple(std::ref(raw_temp));
     }
 };
-void insert(::microstrain::Buffer& serializer, const OrientationRawTemp& self);
-void extract(::microstrain::Buffer& serializer, OrientationRawTemp& self);
+void insert(::microstrain::Serializer& serializer, const OrientationRawTemp& self);
+void extract(::microstrain::Serializer& serializer, OrientationRawTemp& self);
 
 
 ///@}
@@ -622,8 +622,8 @@ struct InternalTimestamp
         return std::make_tuple(std::ref(counts));
     }
 };
-void insert(::microstrain::Buffer& serializer, const InternalTimestamp& self);
-void extract(::microstrain::Buffer& serializer, InternalTimestamp& self);
+void insert(::microstrain::Serializer& serializer, const InternalTimestamp& self);
+void extract(::microstrain::Serializer& serializer, InternalTimestamp& self);
 
 
 ///@}
@@ -656,8 +656,8 @@ struct PpsTimestamp
         return std::make_tuple(std::ref(seconds),std::ref(useconds));
     }
 };
-void insert(::microstrain::Buffer& serializer, const PpsTimestamp& self);
-void extract(::microstrain::Buffer& serializer, PpsTimestamp& self);
+void insert(::microstrain::Serializer& serializer, const PpsTimestamp& self);
+void extract(::microstrain::Serializer& serializer, PpsTimestamp& self);
 
 
 ///@}
@@ -734,8 +734,8 @@ struct GpsTimestamp
         return std::make_tuple(std::ref(tow),std::ref(week_number),std::ref(valid_flags));
     }
 };
-void insert(::microstrain::Buffer& serializer, const GpsTimestamp& self);
-void extract(::microstrain::Buffer& serializer, GpsTimestamp& self);
+void insert(::microstrain::Serializer& serializer, const GpsTimestamp& self);
+void extract(::microstrain::Serializer& serializer, GpsTimestamp& self);
 
 
 ///@}
@@ -773,8 +773,8 @@ struct TemperatureAbs
         return std::make_tuple(std::ref(min_temp),std::ref(max_temp),std::ref(mean_temp));
     }
 };
-void insert(::microstrain::Buffer& serializer, const TemperatureAbs& self);
-void extract(::microstrain::Buffer& serializer, TemperatureAbs& self);
+void insert(::microstrain::Serializer& serializer, const TemperatureAbs& self);
+void extract(::microstrain::Serializer& serializer, TemperatureAbs& self);
 
 
 ///@}
@@ -812,8 +812,8 @@ struct UpVector
         return std::make_tuple(std::ref(up[0]),std::ref(up[1]),std::ref(up[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const UpVector& self);
-void extract(::microstrain::Buffer& serializer, UpVector& self);
+void insert(::microstrain::Serializer& serializer, const UpVector& self);
+void extract(::microstrain::Serializer& serializer, UpVector& self);
 
 
 ///@}
@@ -848,8 +848,8 @@ struct NorthVector
         return std::make_tuple(std::ref(north[0]),std::ref(north[1]),std::ref(north[2]));
     }
 };
-void insert(::microstrain::Buffer& serializer, const NorthVector& self);
-void extract(::microstrain::Buffer& serializer, NorthVector& self);
+void insert(::microstrain::Serializer& serializer, const NorthVector& self);
+void extract(::microstrain::Serializer& serializer, NorthVector& self);
 
 
 ///@}
@@ -932,8 +932,8 @@ struct OverrangeStatus
         return std::make_tuple(std::ref(status));
     }
 };
-void insert(::microstrain::Buffer& serializer, const OverrangeStatus& self);
-void extract(::microstrain::Buffer& serializer, OverrangeStatus& self);
+void insert(::microstrain::Serializer& serializer, const OverrangeStatus& self);
+void extract(::microstrain::Serializer& serializer, OverrangeStatus& self);
 
 
 ///@}
@@ -966,8 +966,8 @@ struct OdometerData
         return std::make_tuple(std::ref(speed),std::ref(uncertainty),std::ref(valid_flags));
     }
 };
-void insert(::microstrain::Buffer& serializer, const OdometerData& self);
-void extract(::microstrain::Buffer& serializer, OdometerData& self);
+void insert(::microstrain::Serializer& serializer, const OdometerData& self);
+void extract(::microstrain::Serializer& serializer, OdometerData& self);
 
 
 ///@}

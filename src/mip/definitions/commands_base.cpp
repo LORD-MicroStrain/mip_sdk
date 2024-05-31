@@ -1,7 +1,7 @@
 
 #include "commands_base.hpp"
 
-#include "microstrain/common/buffer.hpp"
+#include "microstrain/common/serialization.hpp"
 #include "../mip_interface.h"
 
 #include <assert.h>
@@ -14,7 +14,7 @@ struct mip_interface;
 
 namespace commands_base {
 
-using ::microstrain::Buffer;
+using ::microstrain::Serializer;
 using ::microstrain::insert;
 using ::microstrain::extract;
 using namespace ::mip::C;
@@ -23,7 +23,7 @@ using namespace ::mip::C;
 // Shared Type Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Buffer& serializer, const BaseDeviceInfo& self)
+void insert(::microstrain::Serializer& serializer, const BaseDeviceInfo& self)
 {
     insert(serializer, self.firmware_version);
     
@@ -43,7 +43,7 @@ void insert(::microstrain::Buffer& serializer, const BaseDeviceInfo& self)
         insert(serializer, self.device_options[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, BaseDeviceInfo& self)
+void extract(::microstrain::Serializer& serializer, BaseDeviceInfo& self)
 {
     extract(serializer, self.firmware_version);
     
@@ -69,12 +69,12 @@ void extract(::microstrain::Buffer& serializer, BaseDeviceInfo& self)
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
-void insert(::microstrain::Buffer& serializer, const Ping& self)
+void insert(::microstrain::Serializer& serializer, const Ping& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, Ping& self)
+void extract(::microstrain::Serializer& serializer, Ping& self)
 {
     (void)serializer;
     (void)self;
@@ -84,12 +84,12 @@ TypedResult<Ping> ping(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_PING, NULL, 0);
 }
-void insert(::microstrain::Buffer& serializer, const SetIdle& self)
+void insert(::microstrain::Serializer& serializer, const SetIdle& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, SetIdle& self)
+void extract(::microstrain::Serializer& serializer, SetIdle& self)
 {
     (void)serializer;
     (void)self;
@@ -99,23 +99,23 @@ TypedResult<SetIdle> setIdle(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SET_TO_IDLE, NULL, 0);
 }
-void insert(::microstrain::Buffer& serializer, const GetDeviceInfo& self)
+void insert(::microstrain::Serializer& serializer, const GetDeviceInfo& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, GetDeviceInfo& self)
+void extract(::microstrain::Serializer& serializer, GetDeviceInfo& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const GetDeviceInfo::Response& self)
+void insert(::microstrain::Serializer& serializer, const GetDeviceInfo::Response& self)
 {
     insert(serializer, self.device_info);
     
 }
-void extract(::microstrain::Buffer& serializer, GetDeviceInfo::Response& self)
+void extract(::microstrain::Serializer& serializer, GetDeviceInfo::Response& self)
 {
     extract(serializer, self.device_info);
     
@@ -130,7 +130,7 @@ TypedResult<GetDeviceInfo> getDeviceInfo(C::mip_interface& device, BaseDeviceInf
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         assert(deviceInfoOut);
         extract(deserializer, *deviceInfoOut);
@@ -140,24 +140,24 @@ TypedResult<GetDeviceInfo> getDeviceInfo(C::mip_interface& device, BaseDeviceInf
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const GetDeviceDescriptors& self)
+void insert(::microstrain::Serializer& serializer, const GetDeviceDescriptors& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, GetDeviceDescriptors& self)
+void extract(::microstrain::Serializer& serializer, GetDeviceDescriptors& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const GetDeviceDescriptors::Response& self)
+void insert(::microstrain::Serializer& serializer, const GetDeviceDescriptors::Response& self)
 {
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, GetDeviceDescriptors::Response& self)
+void extract(::microstrain::Serializer& serializer, GetDeviceDescriptors::Response& self)
 {
     for(self.descriptors_count = 0; (self.descriptors_count < sizeof(self.descriptors)/sizeof(self.descriptors[0])) && (serializer.remaining() > 0); (self.descriptors_count)++)
         extract(serializer, self.descriptors[self.descriptors_count]);
@@ -173,7 +173,7 @@ TypedResult<GetDeviceDescriptors> getDeviceDescriptors(C::mip_interface& device,
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && (deserializer.remaining() > 0); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
@@ -183,23 +183,23 @@ TypedResult<GetDeviceDescriptors> getDeviceDescriptors(C::mip_interface& device,
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const BuiltInTest& self)
+void insert(::microstrain::Serializer& serializer, const BuiltInTest& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, BuiltInTest& self)
+void extract(::microstrain::Serializer& serializer, BuiltInTest& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const BuiltInTest::Response& self)
+void insert(::microstrain::Serializer& serializer, const BuiltInTest::Response& self)
 {
     insert(serializer, self.result);
     
 }
-void extract(::microstrain::Buffer& serializer, BuiltInTest::Response& self)
+void extract(::microstrain::Serializer& serializer, BuiltInTest::Response& self)
 {
     extract(serializer, self.result);
     
@@ -214,7 +214,7 @@ TypedResult<BuiltInTest> builtInTest(C::mip_interface& device, uint32_t* resultO
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         assert(resultOut);
         extract(deserializer, *resultOut);
@@ -224,12 +224,12 @@ TypedResult<BuiltInTest> builtInTest(C::mip_interface& device, uint32_t* resultO
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const Resume& self)
+void insert(::microstrain::Serializer& serializer, const Resume& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, Resume& self)
+void extract(::microstrain::Serializer& serializer, Resume& self)
 {
     (void)serializer;
     (void)self;
@@ -239,24 +239,24 @@ TypedResult<Resume> resume(C::mip_interface& device)
 {
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_RESUME, NULL, 0);
 }
-void insert(::microstrain::Buffer& serializer, const GetExtendedDescriptors& self)
+void insert(::microstrain::Serializer& serializer, const GetExtendedDescriptors& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, GetExtendedDescriptors& self)
+void extract(::microstrain::Serializer& serializer, GetExtendedDescriptors& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const GetExtendedDescriptors::Response& self)
+void insert(::microstrain::Serializer& serializer, const GetExtendedDescriptors::Response& self)
 {
     for(unsigned int i=0; i < self.descriptors_count; i++)
         insert(serializer, self.descriptors[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, GetExtendedDescriptors::Response& self)
+void extract(::microstrain::Serializer& serializer, GetExtendedDescriptors::Response& self)
 {
     for(self.descriptors_count = 0; (self.descriptors_count < sizeof(self.descriptors)/sizeof(self.descriptors[0])) && (serializer.remaining() > 0); (self.descriptors_count)++)
         extract(serializer, self.descriptors[self.descriptors_count]);
@@ -272,7 +272,7 @@ TypedResult<GetExtendedDescriptors> getExtendedDescriptors(C::mip_interface& dev
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         for(*descriptorsOutCount = 0; (*descriptorsOutCount < descriptorsOutMax) && (deserializer.remaining() > 0); (*descriptorsOutCount)++)
             extract(deserializer, descriptorsOut[*descriptorsOutCount]);
@@ -282,24 +282,24 @@ TypedResult<GetExtendedDescriptors> getExtendedDescriptors(C::mip_interface& dev
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const ContinuousBit& self)
+void insert(::microstrain::Serializer& serializer, const ContinuousBit& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, ContinuousBit& self)
+void extract(::microstrain::Serializer& serializer, ContinuousBit& self)
 {
     (void)serializer;
     (void)self;
 }
 
-void insert(::microstrain::Buffer& serializer, const ContinuousBit::Response& self)
+void insert(::microstrain::Serializer& serializer, const ContinuousBit::Response& self)
 {
     for(unsigned int i=0; i < 16; i++)
         insert(serializer, self.result[i]);
     
 }
-void extract(::microstrain::Buffer& serializer, ContinuousBit::Response& self)
+void extract(::microstrain::Serializer& serializer, ContinuousBit::Response& self)
 {
     for(unsigned int i=0; i < 16; i++)
         extract(serializer, self.result[i]);
@@ -315,7 +315,7 @@ TypedResult<ContinuousBit> continuousBit(C::mip_interface& device, uint8_t* resu
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         assert(resultOut || (16 == 0));
         for(unsigned int i=0; i < 16; i++)
@@ -326,7 +326,7 @@ TypedResult<ContinuousBit> continuousBit(C::mip_interface& device, uint8_t* resu
     }
     return result;
 }
-void insert(::microstrain::Buffer& serializer, const CommSpeed& self)
+void insert(::microstrain::Serializer& serializer, const CommSpeed& self)
 {
     insert(serializer, self.function);
     
@@ -338,7 +338,7 @@ void insert(::microstrain::Buffer& serializer, const CommSpeed& self)
         
     }
 }
-void extract(::microstrain::Buffer& serializer, CommSpeed& self)
+void extract(::microstrain::Serializer& serializer, CommSpeed& self)
 {
     extract(serializer, self.function);
     
@@ -351,14 +351,14 @@ void extract(::microstrain::Buffer& serializer, CommSpeed& self)
     }
 }
 
-void insert(::microstrain::Buffer& serializer, const CommSpeed::Response& self)
+void insert(::microstrain::Serializer& serializer, const CommSpeed::Response& self)
 {
     insert(serializer, self.port);
     
     insert(serializer, self.baud);
     
 }
-void extract(::microstrain::Buffer& serializer, CommSpeed::Response& self)
+void extract(::microstrain::Serializer& serializer, CommSpeed::Response& self)
 {
     extract(serializer, self.port);
     
@@ -368,8 +368,8 @@ void extract(::microstrain::Buffer& serializer, CommSpeed::Response& self)
 
 TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, uint32_t baud)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, port);
@@ -382,8 +382,8 @@ TypedResult<CommSpeed> writeCommSpeed(C::mip_interface& device, uint8_t port, ui
 }
 TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uint32_t* baudOut)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::READ);
     insert(serializer, port);
@@ -395,7 +395,7 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
     
     if( result == CmdResult::ACK_OK )
     {
-        ::microstrain::Buffer deserializer(buffer, responseLength);
+        ::microstrain::Serializer deserializer(buffer, responseLength);
         
         extract(deserializer, port);
         
@@ -409,8 +409,8 @@ TypedResult<CommSpeed> readCommSpeed(C::mip_interface& device, uint8_t port, uin
 }
 TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::SAVE);
     insert(serializer, port);
@@ -421,8 +421,8 @@ TypedResult<CommSpeed> saveCommSpeed(C::mip_interface& device, uint8_t port)
 }
 TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::LOAD);
     insert(serializer, port);
@@ -433,8 +433,8 @@ TypedResult<CommSpeed> loadCommSpeed(C::mip_interface& device, uint8_t port)
 }
 TypedResult<CommSpeed> defaultCommSpeed(C::mip_interface& device, uint8_t port)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::RESET);
     insert(serializer, port);
@@ -443,7 +443,7 @@ TypedResult<CommSpeed> defaultCommSpeed(C::mip_interface& device, uint8_t port)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_COMM_SPEED, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Buffer& serializer, const GpsTimeUpdate& self)
+void insert(::microstrain::Serializer& serializer, const GpsTimeUpdate& self)
 {
     insert(serializer, self.function);
     
@@ -455,7 +455,7 @@ void insert(::microstrain::Buffer& serializer, const GpsTimeUpdate& self)
         
     }
 }
-void extract(::microstrain::Buffer& serializer, GpsTimeUpdate& self)
+void extract(::microstrain::Serializer& serializer, GpsTimeUpdate& self)
 {
     extract(serializer, self.function);
     
@@ -470,8 +470,8 @@ void extract(::microstrain::Buffer& serializer, GpsTimeUpdate& self)
 
 TypedResult<GpsTimeUpdate> writeGpsTimeUpdate(C::mip_interface& device, GpsTimeUpdate::FieldId fieldId, uint32_t value)
 {
-    uint8_t buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
-    ::microstrain::Buffer serializer(buffer, sizeof(buffer));
+    uint8_t                   buffer[C::MIP_FIELD_PAYLOAD_LENGTH_MAX];
+    ::microstrain::Serializer serializer(buffer, sizeof(buffer));
     
     insert(serializer, FunctionSelector::WRITE);
     insert(serializer, fieldId);
@@ -482,12 +482,12 @@ TypedResult<GpsTimeUpdate> writeGpsTimeUpdate(C::mip_interface& device, GpsTimeU
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_GPS_TIME_UPDATE, buffer, (uint8_t)serializer.length());
 }
-void insert(::microstrain::Buffer& serializer, const SoftReset& self)
+void insert(::microstrain::Serializer& serializer, const SoftReset& self)
 {
     (void)serializer;
     (void)self;
 }
-void extract(::microstrain::Buffer& serializer, SoftReset& self)
+void extract(::microstrain::Serializer& serializer, SoftReset& self)
 {
     (void)serializer;
     (void)self;
