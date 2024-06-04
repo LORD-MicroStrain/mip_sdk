@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include <assert.h>
 #include <chrono>
 
 using std::chrono::duration_cast;
