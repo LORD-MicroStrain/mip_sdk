@@ -2,18 +2,26 @@
 
 #include <chrono>
 
+using std::chrono::duration_cast;
 using Nanoseconds = std::chrono::nanoseconds;
 using Microseconds = std::chrono::microseconds;
 using Milliseconds = std::chrono::milliseconds;
 using Seconds = std::chrono::seconds;
 using Minutes = std::chrono::minutes;
 using Hours = std::chrono::hours;
-// TODO: Add check for C++ 20 and set manual for before.
-using Days = std::chrono::days;
-using Weeks = std::chrono::weeks;
-using Months = std::chrono::months;
-using Years = std::chrono::years;
-using std::chrono::duration_cast;
+#if _HAS_CXX20
+    using Days = std::chrono::days;
+    using Weeks = std::chrono::weeks;
+    using Months = std::chrono::months;
+    using Years = std::chrono::years;
+#else
+    #include <ratio>
+    // TODO: Change these to manual.
+    using Days = std::chrono::duration<int, ratio<3600>>;
+    using Weeks = std::chrono::duration<int, ratio<3600>>;
+    using Months = std::chrono::duration<int, ratio<3600>>;
+    using Years = std::chrono::duration<int, ratio<3600>>;
+#endif // _HAS_CXX20
 
 namespace mip
 {
