@@ -4,7 +4,7 @@ namespace mip
 {
     void TimestampState::synchronize()
     {
-    #if defined IC_APPLE || defined IC_LINUX
+    #if __APPLE__ || __linux__ || !_HAS_CXX20
         // Fallback GPS timestamp calculator for non-supported OSes.
         // NOTE: GPS time accounts for leap seconds.
         // NOTE: Unix time was created in 1970 while GPS time was created in 1980,
