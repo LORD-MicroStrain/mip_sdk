@@ -15,8 +15,7 @@ using Months = std::chrono::months;
 using Years = std::chrono::years;
 using std::chrono::duration_cast;
 
-// TODO: Move to mip utilities.
-namespace Widget
+namespace mip
 {
     /// -----------------------------------------------------
     /// Legend:
@@ -211,4 +210,4 @@ namespace Widget
     {
         return timestamp;
     }
-}// namespace Widget
+}// namespace mip

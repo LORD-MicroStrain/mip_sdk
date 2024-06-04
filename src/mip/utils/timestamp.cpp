@@ -1,6 +1,6 @@
 #include "mip/utils/timestamp.hpp"
 
-namespace Widget
+namespace mip
 {
     void TimestampState::synchronize()
     {
@@ -19,4 +19,4 @@ namespace Widget
         timestamp = std::chrono::duration_cast<Nanoseconds>(now_gps);
     #endif
     }
-}// namespace Widget
+}// namespace mip
