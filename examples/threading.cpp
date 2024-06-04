@@ -1,4 +1,21 @@
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// threading.cpp
+//
+// C++ example program to print device information from any mip-enabled MicroStrain device.
+//
+//!@section LICENSE
+//!
+//! THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING
+//! CUSTOMERS WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER
+//! FOR THEM TO SAVE TIME. AS A RESULT, HBK MICROSTRAIN SHALL NOT BE HELD
+//! LIABLE FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY
+//! CLAIMS ARISING FROM THE CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS
+//! OF THE CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+//
+/////////////////////////////////////////////////////////////////////////////
+
 #include "example_utils.hpp"
 
 #include <mip/definitions/commands_base.hpp>
@@ -62,7 +79,8 @@ void device_thread_loop(mip::DeviceInterface* device)
 
 bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
 {
-    if( wait_time > 0 )
+    // Thread calls this with wait_time 0, commands have wait_time > 0.
+    if( wait_time == 0 )
         return device.defaultUpdate(wait_time);
 
     // Optionally display progress while waiting for command replies.

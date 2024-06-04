@@ -42,6 +42,7 @@ if(WITH_INTERNAL)
     if(NOT DEFINED MIP_INTERNAL_DIR)
         set(MIP_INTERNAL_DIR "int" CACHE PATH "")
     endif()
+    file(REAL_PATH "${MIP_INTERNAL_DIR}" MIP_INTERNAL_DIR)
 
     add_subdirectory("${MIP_INTERNAL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/mip-internal")
 endif()

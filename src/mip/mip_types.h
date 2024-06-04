@@ -12,10 +12,6 @@ extern "C" {
 
 
 
-// Used like a signed version of size_t
-typedef int mip_remaining_count;
-
-
 ///@brief Type used for packet timestamps and timeouts.
 ///
 /// Timestamps must be monotonic except for overflow at the maximum value back to 0.
@@ -57,7 +53,6 @@ typedef mip_timestamp mip_timeout;
 } // extern "C"
 } // namespace C
 
-using RemainingCount = C::mip_remaining_count;
 using Timestamp      = C::mip_timestamp;
 using Timeout        = C::mip_timeout;
 

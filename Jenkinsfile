@@ -130,12 +130,12 @@ pipeline {
           node("linux-amd64") {
             dir("/tmp/mip_sdk_${env.BRANCH_NAME}_${currentBuild.number}") {
               copyArtifacts(projectName: "${env.JOB_NAME}", selector: specific("${currentBuild.number}"));
-              withCredentials([string(credentialsId: 'MICROSTRAIN_BUILD_GH_TOKEN', variable: 'GH_TOKEN')]) {
+              withCredentials([string(credentialsId: 'Github_Token', variable: 'GH_TOKEN')]) {
                 sh '''
                 # Release to the latest version if the master commit matches up with the commit of that version
                 if (cd "${WORKSPACE}" && git describe --exact-match --tags HEAD &> /dev/null); then
                   # Publish a release
-                  ./scripts/release.sh \
+                  ${WORKSPACE}/scripts/release.sh" \
                     --artifacts "$(find "$(pwd)" -type f)" \
                     --target "${BRANCH_NAME}" \
                     --release "$(cd ${WORKSPACE} && git describe --exact-match --tags HEAD)" \

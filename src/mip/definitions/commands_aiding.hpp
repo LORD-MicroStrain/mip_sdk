@@ -30,29 +30,29 @@ namespace commands_aiding {
 
 enum 
 {
-    DESCRIPTOR_SET         = 0x13,
+    DESCRIPTOR_SET             = 0x13,
     
-    CMD_FRAME_CONFIG       = 0x01,
-    CMD_LOCAL_FRAME        = 0x03,
-    CMD_ECHO_CONTROL       = 0x1F,
-    CMD_POS_LOCAL          = 0x20,
-    CMD_POS_ECEF           = 0x21,
-    CMD_POS_LLH            = 0x22,
-    CMD_HEIGHT_ABS         = 0x23,
-    CMD_HEIGHT_REL         = 0x24,
-    CMD_VEL_ECEF           = 0x28,
-    CMD_VEL_NED            = 0x29,
-    CMD_VEL_ODOM           = 0x2A,
-    CMD_WHEELSPEED         = 0x2B,
-    CMD_HEADING_TRUE       = 0x31,
-    CMD_MAGNETIC_FIELD     = 0x32,
-    CMD_PRESSURE           = 0x33,
-    CMD_DELTA_POSITION     = 0x38,
-    CMD_DELTA_ATTITUDE     = 0x39,
-    CMD_LOCAL_ANGULAR_RATE = 0x3A,
+    CMD_FRAME_CONFIG           = 0x01,
+    CMD_LOCAL_FRAME            = 0x03,
+    CMD_ECHO_CONTROL           = 0x1F,
+    CMD_POS_LOCAL              = 0x20,
+    CMD_POS_ECEF               = 0x21,
+    CMD_POS_LLH                = 0x22,
+    CMD_HEIGHT_ABOVE_ELLIPSOID = 0x23,
+    CMD_HEIGHT_REL             = 0x24,
+    CMD_VEL_ECEF               = 0x28,
+    CMD_VEL_NED                = 0x29,
+    CMD_VEL_BODY_FRAME         = 0x2A,
+    CMD_WHEELSPEED             = 0x2B,
+    CMD_HEADING_TRUE           = 0x31,
+    CMD_MAGNETIC_FIELD         = 0x32,
+    CMD_PRESSURE               = 0x33,
+    CMD_DELTA_POSITION         = 0x38,
+    CMD_DELTA_ATTITUDE         = 0x39,
+    CMD_ANGULAR_RATE_LOCAL     = 0x3A,
     
-    REPLY_FRAME_CONFIG     = 0x81,
-    REPLY_ECHO_CONTROL     = 0x9F,
+    REPLY_FRAME_CONFIG         = 0x81,
+    REPLY_ECHO_CONTROL         = 0x9F,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,12 +203,12 @@ TypedResult<FrameConfig> defaultFrameConfig(C::mip_interface& device, uint8_t fr
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_aiding_echo_control  (0x13,0x1F) Aiding Echo Control [CPP]
+///@defgroup cpp_aiding_echo_control  (0x13,0x1F) Echo Control [CPP]
 /// Controls command response behavior to external aiding commands
 ///
 ///@{
 
-struct AidingEchoControl
+struct EchoControl
 {
     enum class Mode : uint8_t
     {
@@ -223,7 +223,7 @@ struct AidingEchoControl
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_ECHO_CONTROL;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "AidingEchoControl";
+    static constexpr const char* NAME = "EchoControl";
     static constexpr const char* DOC_NAME = "Aiding Command Echo Control";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = true;
@@ -245,9 +245,9 @@ struct AidingEchoControl
         return std::make_tuple(std::ref(mode));
     }
     
-    static AidingEchoControl create_sld_all(::mip::FunctionSelector function)
+    static EchoControl create_sld_all(::mip::FunctionSelector function)
     {
-        AidingEchoControl cmd;
+        EchoControl cmd;
         cmd.function = function;
         return cmd;
     }
@@ -257,7 +257,7 @@ struct AidingEchoControl
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
         static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::REPLY_ECHO_CONTROL;
         static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-        static constexpr const char* NAME = "AidingEchoControl::Response";
+        static constexpr const char* NAME = "EchoControl::Response";
         static constexpr const char* DOC_NAME = "Aiding Command Echo Control Response";
         
         static constexpr const uint32_t ECHOED_PARAMS  = 0x0000;
@@ -271,27 +271,27 @@ struct AidingEchoControl
         }
     };
 };
-void insert(Serializer& serializer, const AidingEchoControl& self);
-void extract(Serializer& serializer, AidingEchoControl& self);
+void insert(Serializer& serializer, const EchoControl& self);
+void extract(Serializer& serializer, EchoControl& self);
 
-void insert(Serializer& serializer, const AidingEchoControl::Response& self);
-void extract(Serializer& serializer, AidingEchoControl::Response& self);
+void insert(Serializer& serializer, const EchoControl::Response& self);
+void extract(Serializer& serializer, EchoControl::Response& self);
 
-TypedResult<AidingEchoControl> writeAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode mode);
-TypedResult<AidingEchoControl> readAidingEchoControl(C::mip_interface& device, AidingEchoControl::Mode* modeOut);
-TypedResult<AidingEchoControl> saveAidingEchoControl(C::mip_interface& device);
-TypedResult<AidingEchoControl> loadAidingEchoControl(C::mip_interface& device);
-TypedResult<AidingEchoControl> defaultAidingEchoControl(C::mip_interface& device);
+TypedResult<EchoControl> writeEchoControl(C::mip_interface& device, EchoControl::Mode mode);
+TypedResult<EchoControl> readEchoControl(C::mip_interface& device, EchoControl::Mode* modeOut);
+TypedResult<EchoControl> saveEchoControl(C::mip_interface& device);
+TypedResult<EchoControl> loadEchoControl(C::mip_interface& device);
+TypedResult<EchoControl> defaultEchoControl(C::mip_interface& device);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_ecef_pos  (0x13,0x21) Ecef Pos [CPP]
+///@defgroup cpp_aiding_pos_ecef  (0x13,0x21) Pos Ecef [CPP]
 /// Cartesian vector position aiding command. Coordinates are given in the WGS84 ECEF system.
 ///
 ///@{
 
-struct EcefPos
+struct PosEcef
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -333,7 +333,7 @@ struct EcefPos
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "EcefPos";
+    static constexpr const char* NAME = "PosEcef";
     static constexpr const char* DOC_NAME = "ECEF Position";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
@@ -350,21 +350,21 @@ struct EcefPos
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const EcefPos& self);
-void extract(Serializer& serializer, EcefPos& self);
+void insert(Serializer& serializer, const PosEcef& self);
+void extract(Serializer& serializer, PosEcef& self);
 
-TypedResult<EcefPos> ecefPos(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, EcefPos::ValidFlags validFlags);
+TypedResult<PosEcef> posEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const double* position, const float* uncertainty, PosEcef::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_llh_pos  (0x13,0x22) Llh Pos [CPP]
+///@defgroup cpp_aiding_pos_llh  (0x13,0x22) Pos Llh [CPP]
 /// Geodetic position aiding command. Coordinates are given in WGS84 geodetic latitude, longitude, and height above the ellipsoid.
 /// Uncertainty is given in NED coordinates, which are parallel to incremental changes in latitude, longitude, and height.
 ///
 ///@{
 
-struct LlhPos
+struct PosLlh
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -408,7 +408,7 @@ struct LlhPos
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_POS_LLH;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "LlhPos";
+    static constexpr const char* NAME = "PosLlh";
     static constexpr const char* DOC_NAME = "LLH Position";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
@@ -425,20 +425,20 @@ struct LlhPos
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const LlhPos& self);
-void extract(Serializer& serializer, LlhPos& self);
+void insert(Serializer& serializer, const PosLlh& self);
+void extract(Serializer& serializer, PosLlh& self);
 
-TypedResult<LlhPos> llhPos(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, LlhPos::ValidFlags validFlags);
+TypedResult<PosLlh> posLlh(C::mip_interface& device, const Time& time, uint8_t frameId, double latitude, double longitude, double height, const float* uncertainty, PosLlh::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_height  (0x13,0x23) Height [CPP]
-/// Estimated value of height.
+///@defgroup cpp_aiding_height_above_ellipsoid  (0x13,0x23) Height Above Ellipsoid [CPP]
+/// Estimated value of the height above ellipsoid.
 ///
 ///@{
 
-struct Height
+struct HeightAboveEllipsoid
 {
     Time time; ///< Timestamp of the measurement.
     uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
@@ -447,10 +447,10 @@ struct Height
     uint16_t valid_flags = 0;
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEIGHT_ABS;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEIGHT_ABOVE_ELLIPSOID;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "Height";
-    static constexpr const char* DOC_NAME = "Height";
+    static constexpr const char* NAME = "HeightAboveEllipsoid";
+    static constexpr const char* DOC_NAME = "Height Above Ellipsoid";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -466,20 +466,20 @@ struct Height
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const Height& self);
-void extract(Serializer& serializer, Height& self);
+void insert(Serializer& serializer, const HeightAboveEllipsoid& self);
+void extract(Serializer& serializer, HeightAboveEllipsoid& self);
 
-TypedResult<Height> height(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags);
+TypedResult<HeightAboveEllipsoid> heightAboveEllipsoid(C::mip_interface& device, const Time& time, uint8_t frameId, float height, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_ecef_vel  (0x13,0x28) Ecef Vel [CPP]
+///@defgroup cpp_aiding_vel_ecef  (0x13,0x28) Vel Ecef [CPP]
 /// ECEF velocity aiding command. Coordinates are given in the WGS84 ECEF frame.
 ///
 ///@{
 
-struct EcefVel
+struct VelEcef
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -521,7 +521,7 @@ struct EcefVel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ECEF;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "EcefVel";
+    static constexpr const char* NAME = "VelEcef";
     static constexpr const char* DOC_NAME = "ECEF Velocity";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
@@ -538,20 +538,20 @@ struct EcefVel
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const EcefVel& self);
-void extract(Serializer& serializer, EcefVel& self);
+void insert(Serializer& serializer, const VelEcef& self);
+void extract(Serializer& serializer, VelEcef& self);
 
-TypedResult<EcefVel> ecefVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, EcefVel::ValidFlags validFlags);
+TypedResult<VelEcef> velEcef(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelEcef::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_ned_vel  (0x13,0x29) Ned Vel [CPP]
+///@defgroup cpp_aiding_vel_ned  (0x13,0x29) Vel Ned [CPP]
 /// NED velocity aiding command. Coordinates are given in the local North-East-Down frame.
 ///
 ///@{
 
-struct NedVel
+struct VelNed
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -593,7 +593,7 @@ struct NedVel
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_NED;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "NedVel";
+    static constexpr const char* NAME = "VelNed";
     static constexpr const char* DOC_NAME = "NED Velocity";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
@@ -610,21 +610,21 @@ struct NedVel
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const NedVel& self);
-void extract(Serializer& serializer, NedVel& self);
+void insert(Serializer& serializer, const VelNed& self);
+void extract(Serializer& serializer, VelNed& self);
 
-TypedResult<NedVel> nedVel(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, NedVel::ValidFlags validFlags);
+TypedResult<VelNed> velNed(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelNed::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_vehicle_fixed_frame_velocity  (0x13,0x2A) Vehicle Fixed Frame Velocity [CPP]
+///@defgroup cpp_aiding_vel_body_frame  (0x13,0x2A) Vel Body Frame [CPP]
 /// Estimate of velocity of the vehicle in the frame associated
-/// with the given sensor ID.
+/// with the given sensor ID, relative to the vehicle frame.
 ///
 ///@{
 
-struct VehicleFixedFrameVelocity
+struct VelBodyFrame
 {
     struct ValidFlags : Bitfield<ValidFlags>
     {
@@ -664,10 +664,10 @@ struct VehicleFixedFrameVelocity
     ValidFlags valid_flags; ///< Valid flags. Axes with 0 will be completely ignored.
     
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
-    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_ODOM;
+    static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_VEL_BODY_FRAME;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "VehicleFixedFrameVelocity";
-    static constexpr const char* DOC_NAME = "Vehicle Frame Velocity";
+    static constexpr const char* NAME = "VelBodyFrame";
+    static constexpr const char* DOC_NAME = "Body Frame Velocity";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
@@ -683,19 +683,19 @@ struct VehicleFixedFrameVelocity
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const VehicleFixedFrameVelocity& self);
-void extract(Serializer& serializer, VehicleFixedFrameVelocity& self);
+void insert(Serializer& serializer, const VelBodyFrame& self);
+void extract(Serializer& serializer, VelBodyFrame& self);
 
-TypedResult<VehicleFixedFrameVelocity> vehicleFixedFrameVelocity(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VehicleFixedFrameVelocity::ValidFlags validFlags);
+TypedResult<VelBodyFrame> velBodyFrame(C::mip_interface& device, const Time& time, uint8_t frameId, const float* velocity, const float* uncertainty, VelBodyFrame::ValidFlags validFlags);
 
 ///@}
 ///
 ////////////////////////////////////////////////////////////////////////////////
-///@defgroup cpp_aiding_true_heading  (0x13,0x31) True Heading [CPP]
+///@defgroup cpp_aiding_heading_true  (0x13,0x31) Heading True [CPP]
 ///
 ///@{
 
-struct TrueHeading
+struct HeadingTrue
 {
     Time time; ///< Timestamp of the measurement.
     uint8_t frame_id = 0; ///< Source ID for this estimate (source_id == 0 indicates this sensor, source_id > 0 indicates an external estimate).
@@ -706,7 +706,7 @@ struct TrueHeading
     static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_aiding::DESCRIPTOR_SET;
     static constexpr const uint8_t FIELD_DESCRIPTOR = ::mip::commands_aiding::CMD_HEADING_TRUE;
     static constexpr const CompositeDescriptor DESCRIPTOR = {DESCRIPTOR_SET, FIELD_DESCRIPTOR};
-    static constexpr const char* NAME = "TrueHeading";
+    static constexpr const char* NAME = "HeadingTrue";
     static constexpr const char* DOC_NAME = "True Heading";
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
@@ -723,10 +723,10 @@ struct TrueHeading
     }
     typedef void Response;
 };
-void insert(Serializer& serializer, const TrueHeading& self);
-void extract(Serializer& serializer, TrueHeading& self);
+void insert(Serializer& serializer, const HeadingTrue& self);
+void extract(Serializer& serializer, HeadingTrue& self);
 
-TypedResult<TrueHeading> trueHeading(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags);
+TypedResult<HeadingTrue> headingTrue(C::mip_interface& device, const Time& time, uint8_t frameId, float heading, float uncertainty, uint16_t validFlags);
 
 ///@}
 ///
