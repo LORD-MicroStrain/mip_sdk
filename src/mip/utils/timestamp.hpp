@@ -156,10 +156,10 @@ namespace mip
     // TODO: Add manual timestamp update function.
 
 
-    /************************************************************************************/
-    /* NOTE: The following are definitions for all template declarations above. There are
-    /*       no new declarations following this statement. 
-    /************************************************************************************/
+    /**************************************************************************************/
+    /* NOTE: The following are definitions for all template declarations above. There are */
+    /*       no new declarations following this statement.                                */
+    /**************************************************************************************/
 
     template<typename D> 
     inline D getTimeOfWeek(const D &timestamp)
