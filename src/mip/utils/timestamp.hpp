@@ -9,6 +9,7 @@ using Milliseconds = std::chrono::milliseconds;
 using Seconds = std::chrono::seconds;
 using Minutes = std::chrono::minutes;
 using Hours = std::chrono::hours;
+
 #if _HAS_CXX20
     using Days = std::chrono::days;
     using Weeks = std::chrono::weeks;
@@ -16,11 +17,10 @@ using Hours = std::chrono::hours;
     using Years = std::chrono::years;
 #else
     #include <ratio>
-    // TODO: Change these to manual.
-    using Days = std::chrono::duration<int, ratio<3600>>;
-    using Weeks = std::chrono::duration<int, ratio<3600>>;
-    using Months = std::chrono::duration<int, ratio<3600>>;
-    using Years = std::chrono::duration<int, ratio<3600>>;
+    using Days = std::chrono::duration<int, std::ratio<86400>>;
+    using Weeks = std::chrono::duration<int, std::ratio<604800>>;
+    using Months = std::chrono::duration<int, std::ratio<2629746>>;
+    using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
 
 namespace mip
