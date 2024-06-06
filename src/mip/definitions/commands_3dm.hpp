@@ -518,7 +518,7 @@ struct FilterMessageFormat
     
     auto as_tuple() const
     {
-        return std::make_tuple(Counter(num_descriptors,descriptors),Array(descriptors,num_descriptors));
+        return std::make_tuple(num_descriptors, descriptors);
     }
     
     auto as_tuple()

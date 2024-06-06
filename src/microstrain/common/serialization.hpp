@@ -263,13 +263,13 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     return sizeof(BaseType);
 }
 
-// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-template<class T>
-typename std::enable_if<std::is_class<T>::value, size_t>::type
-/*size_t*/ extract(Serializer& buffer, T& value)
-{
-    return value.deserialize(buffer);
-}
+// // Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
+// template<class T>
+// typename std::enable_if<std::is_class<T>::value, size_t>::type
+// /*size_t*/ extract(Serializer& buffer, T& value)
+// {
+//     return value.deserialize(buffer);
+// }
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
