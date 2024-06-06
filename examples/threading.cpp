@@ -41,7 +41,7 @@ unsigned int display_progress()
     return count;
 }
 
-void packet_callback(void*, const mip::PacketRef& packet, mip::Timestamp timestamp)
+void packet_callback(void*, const mip::PacketView& packet, mip::Timestamp timestamp)
 {
     numSamples = numSamples + 1;
 }

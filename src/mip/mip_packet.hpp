@@ -19,7 +19,7 @@ namespace mip
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///@brief C++ class representing a MIP PacketRef.
+///@brief C++ class representing a view of a MIP packet.
 ///
 /// This is a thin wrapper around the mip_packet_view C structure. Like the C
 /// version, it does not contain or own the data buffer. Any of the C functions
@@ -32,7 +32,7 @@ namespace mip
 /// for(Field field : packet) { ... }
 ///@endcode
 ///
-class PacketRef : public C::mip_packet_view
+class PacketView : public C::mip_packet_view
 {
 public:
     static constexpr size_t PAYLOAD_LENGTH_MAX = C::MIP_PACKET_PAYLOAD_LENGTH_MAX;
@@ -43,13 +43,13 @@ public:
 
 public:
     ///@copydoc mip::C::mip_packet_create
-    PacketRef(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
+    PacketView(uint8_t* buffer, size_t bufferSize, uint8_t descriptorSet) { C::mip_packet_create(this, buffer, bufferSize, descriptorSet); }
     ///@copydoc mip_packet_from_buffer
-    PacketRef(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
+    PacketView(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
     /// Constructs a C++ %PacketRef class from the base C object.
-    PacketRef(const C::mip_packet_view* other) { std::memcpy(static_cast<C::mip_packet_view*>(this), other, sizeof(*this)); }
+    PacketView(const C::mip_packet_view* other) { std::memcpy(static_cast<C::mip_packet_view*>(this), other, sizeof(*this)); }
     /// Constructs a C++ %PacketRef class from the base C object.
-    PacketRef(const C::mip_packet_view& other) { std::memcpy(static_cast<C::mip_packet_view*>(this), &other, sizeof(*this)); }
+    PacketView(const C::mip_packet_view& other) { std::memcpy(static_cast<C::mip_packet_view*>(this), &other, sizeof(*this)); }
 
 
     //
@@ -84,7 +84,7 @@ public:
     class AllocatedField : public microstrain::Serializer
     {
     public:
-        AllocatedField(mip::PacketRef& packet, uint8_t* buffer, size_t space) : Serializer(buffer, space), m_packet(packet) {}
+        AllocatedField(mip::PacketView& packet, uint8_t* buffer, size_t space) : Serializer(buffer, space), m_packet(packet) {}
         //AllocatedField(const AllocatedField&) = delete;
         AllocatedField& operator=(const AllocatedField&) = delete;
 
@@ -104,7 +104,7 @@ public:
         }
 
     private:
-        PacketRef& m_packet;
+        PacketView& m_packet;
     };
 
     AllocatedField createField(uint8_t fieldDescriptor) { uint8_t* ptr; size_t max_size = std::max<int>(0, C::mip_packet_alloc_field(this, fieldDescriptor, 0, &ptr)); return {*this, ptr, max_size}; }
@@ -182,11 +182,11 @@ public:
     ///@returns A PacketRef object containing the field.
     ///
     template<class FieldType>
-    static PacketRef createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
+    static PacketView createFromField(uint8_t* buffer, size_t bufferSize, const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR)
     {
         if( fieldDescriptor == INVALID_FIELD_DESCRIPTOR )
             fieldDescriptor = FieldType::FIELD_DESCRIPTOR;
-        PacketRef packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
+        PacketView packet(buffer, bufferSize, FieldType::DESCRIPTOR_SET);
         packet.addField<FieldType>(field, fieldDescriptor);
         packet.finalize();
         return packet;
@@ -241,22 +241,22 @@ public:
 ///@brief A mip packet with a self-contained buffer (useful with std::vector).
 ///
 template<size_t BufferSize>
-class SizedPacketBuf : public PacketRef
+class SizedPacketBuf : public PacketView
 {
 public:
-    SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketRef(mData, sizeof(mData), descriptorSet) {}
+    SizedPacketBuf(uint8_t descriptorSet=INVALID_DESCRIPTOR_SET) : PacketView(mData, sizeof(mData), descriptorSet) {}
 
     ///@brief Creates a PacketBuf by copying existing data.
     ///
-    explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketRef(mData, sizeof(mData)) { copyFrom(data, length); }
-    explicit SizedPacketBuf(const PacketRef& packet) : PacketRef(mData, sizeof(mData)) { copyFrom(packet); }
+    explicit SizedPacketBuf(const uint8_t* data, size_t length) : PacketView(mData, sizeof(mData)) { copyFrom(data, length); }
+    explicit SizedPacketBuf(const PacketView& packet) : PacketView(mData, sizeof(mData)) { copyFrom(packet); }
 
     ///@brief Copy constructor
-    SizedPacketBuf(const SizedPacketBuf& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); }
+    SizedPacketBuf(const SizedPacketBuf& other) : PacketView(mData, sizeof(mData)) { copyFrom(other); }
 
     ///@brief Copy constructor (required to put packets into std::vector in some cases).
     template<size_t OtherSize>
-    explicit SizedPacketBuf(const SizedPacketBuf<OtherSize>& other) : PacketRef(mData, sizeof(mData)) { copyFrom(other); };
+    explicit SizedPacketBuf(const SizedPacketBuf<OtherSize>& other) : PacketView(mData, sizeof(mData)) { copyFrom(other); };
 
     ///@brief Copy assignment operator
     SizedPacketBuf& operator=(const SizedPacketBuf& other) { copyFrom(other); return *this; }
@@ -273,16 +273,16 @@ public:
     ///@param fieldDescriptor If specified (not INVALID_FIELD_DESCRIPTOR), overrides the field descriptor.
     ///
     template<class FieldType>
-    SizedPacketBuf(const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR) : PacketRef(mData, sizeof(mData)) { createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor); }
+    SizedPacketBuf(const FieldType& field, uint8_t fieldDescriptor=INVALID_FIELD_DESCRIPTOR) : PacketView(mData, sizeof(mData)) { createFromField<FieldType>(mData, sizeof(mData), field, fieldDescriptor); }
 
 
     ///@brief Explicitly obtains a reference to the packet data.
     ///
-    PacketRef ref() { return *this; }
+    PacketView ref() { return *this; }
 
     ///@brief Explicitly obtains a const reference to the packet data.
     ///
-    const PacketRef& ref() const { return *this; }
+    const PacketView& ref() const { return *this; }
 
     ///@brief Returns a pointer to the underlying buffer.
     /// This is technically the same as PacketRef::pointer but is writable.
@@ -299,7 +299,7 @@ public:
     ///
     ///@param packet A "sane" (isSane()) mip packet.
     ///
-    void copyFrom(const PacketRef& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.totalLength()); }
+    void copyFrom(const PacketView& packet) { assert(packet.isSane()); copyFrom(packet.pointer(), packet.totalLength()); }
 
     ///@brief Copies this packet to an external buffer.
     ///

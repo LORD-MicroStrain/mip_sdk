@@ -22,11 +22,11 @@ public:
     ///@copydoc mip::C::mip_parser_init
     Parser(uint8_t* buffer, size_t bufferSize, C::mip_packet_callback callback, void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, callback, callbackObject, timeout); }
     ///@copydoc mip::C::mip_parser_init
-    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const PacketRef*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
+    Parser(uint8_t* buffer, size_t bufferSize, bool (*callback)(void*,const PacketView*,Timestamp), void* callbackObject, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, (C::mip_packet_callback)callback, callbackObject, timeout); }
 
     Parser(uint8_t* buffer, size_t bufferSize, Timeout timeout) { C::mip_parser_init(this, buffer, bufferSize, nullptr, nullptr, timeout); }
 
-    template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
+    template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
     void setCallback(T& object);
 
     ///@copydoc mip::C::mip_parser_reset
@@ -63,12 +63,12 @@ public:
 ///@param object
 ///       Instance of T to call the callback.
 ///
-template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
+template<class T, bool (T::*Callback)(const PacketView&, Timestamp)>
 void Parser::setCallback(T& object)
 {
     C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
     {
-        return (static_cast<T*>(obj)->*Callback)(PacketRef(pkt), timestamp);
+        return (static_cast<T*>(obj)->*Callback)(PacketView(pkt), timestamp);
     };
 
     C::mip_parser_set_callback(this, callback, &object);

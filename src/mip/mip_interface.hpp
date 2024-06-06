@@ -168,10 +168,10 @@ public:
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, C::mip_dispatch_field_callback callback, void* userData) { C::mip_interface_register_field_callback(this, &handler, descriptorSet, fieldDescriptor, callback, userData); }
 
 
-    template<void (*Callback)(void*, const PacketRef&, Timestamp)>
+    template<void (*Callback)(void*, const PacketView&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData=nullptr);
 
-    template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
+    template<class Object, void (Object::*Callback)(const PacketView&, Timestamp)>
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object);
 
 
@@ -439,12 +439,12 @@ void Interface::setCallbacks(T* object)
 ///
 ///@endcode
 ///
-template<void (*Callback)(void*, const PacketRef&, Timestamp)>
+template<void (*Callback)(void*, const PacketView&, Timestamp)>
 void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
     auto callback = [](void* context, const C::mip_packet_view* packet, Timestamp timestamp)
     {
-        Callback(context, PacketRef(*packet), timestamp);
+        Callback(context, PacketView(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, userData);
@@ -481,13 +481,13 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 /// };
 ///@endcode
 ///
-template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
+template<class Object, void (Object::*Callback)(const PacketView&, Timestamp)>
 void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
     auto callback = [](void* pointer, const mip::C::mip_packet_view* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(PacketRef(*packet), timestamp);
+        (obj->*Callback)(PacketView(*packet), timestamp);
     };
 
     registerPacketCallback(handler, descriptorSet, afterFields, callback, object);
