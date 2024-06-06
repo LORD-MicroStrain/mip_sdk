@@ -2,7 +2,6 @@
 
 //MIP Core
 #include "mip_cmdqueue.hpp"
-#include "mip_dispatch.hpp"
 #include "mip_field.hpp"
 #include "mip_interface.hpp"
 #include "mip_packet.hpp"

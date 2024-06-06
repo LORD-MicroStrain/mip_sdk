@@ -2,6 +2,7 @@
 
 #include "mip_cmdqueue.h"
 
+#include "mip_result.hpp"
 
 #include <assert.h>
 #include <cstring>
