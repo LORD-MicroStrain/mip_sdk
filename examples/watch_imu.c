@@ -56,7 +56,7 @@ void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp tim
 
     printf("\nGot packet with descriptor set 0x%02X:", mip_packet_descriptor_set(packet));
 
-    mip_field field;
+    mip_field_view field;
     mip_field_init_empty(&field);
     while( mip_field_next_in_packet(&field, packet) )
     {
@@ -65,7 +65,7 @@ void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp tim
     printf("\n");
 }
 
-void handleAccel(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleAccel(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_accel_data data;
@@ -82,7 +82,7 @@ void handleAccel(void* user, const mip_field* field, mip_timestamp timestamp)
     }
 }
 
-void handleGyro(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleGyro(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_gyro_data data;
@@ -91,7 +91,7 @@ void handleGyro(void* user, const mip_field* field, mip_timestamp timestamp)
         printf("Gyro Data:  %f, %f, %f\n", data.scaled_gyro[0], data.scaled_gyro[1], data.scaled_gyro[2]);
 }
 
-void handleMag(void* user, const mip_field* field, mip_timestamp timestamp)
+void handleMag(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     (void)user;
     mip_sensor_scaled_mag_data data;

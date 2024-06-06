@@ -283,7 +283,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
 
     if( mip_packet_descriptor_set(packet) == pending->_descriptor_set )
     {
-        mip_field field = {0};
+        mip_field_view field = {0};
         while( mip_field_next_in_packet(&field, packet) )
         {
             // Not an ack/nack reply field, skip it.
@@ -306,7 +306,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
             // Descriptor matches!
 
             uint8_t response_length = 0;
-            mip_field response_field;
+            mip_field_view response_field;
 
             // If the command was ACK'd, check if response data is expected.
             if( pending->_response_descriptor != 0x00 && ack_code == MIP_ACK_OK )

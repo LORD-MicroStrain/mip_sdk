@@ -527,7 +527,7 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 template<void (*Callback)(void*, const Field&, Timestamp)>
 void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData)
 {
-    auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* context, const C::mip_field_view* field, Timestamp timestamp)
     {
         Callback(context, Field(*field), timestamp);
     };
@@ -569,7 +569,7 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 template<class Object, void (Object::*Callback)(const Field&, Timestamp)>
 void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object)
 {
-    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
         (obj->*Callback)(Field(*field), timestamp);
@@ -624,7 +624,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
     if(descriptorSet == 0xFF)
         return;
 
-    auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* context, const C::mip_field_view* field, Timestamp timestamp)
     {
         DataField data;
 
@@ -683,7 +683,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
     if(descriptorSet == 0xFF)
         return;
 
-    auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* context, const C::mip_field_view* field, Timestamp timestamp)
     {
         DataField data;
 
@@ -743,7 +743,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
     if(descriptorSet == 0xFF)
         return;
 
-    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
         DataField data;
 
@@ -804,7 +804,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
     if(descriptorSet == 0xFF)
         return;
 
-    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
         DataField data;
 
@@ -822,7 +822,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
 template<class DataField>
 void Interface::registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet)
 {
-    auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
+    auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
         Field(*field).extract( *static_cast<DataField*>(pointer) );
     };

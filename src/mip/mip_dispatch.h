@@ -45,7 +45,7 @@ typedef void (*mip_dispatch_packet_callback)(void *context, const mip_packet_vie
 ///@param field     The MIP field triggering this callback.
 ///@param timestamp The approximate parse time of the packet.
 ///
-typedef void (*mip_dispatch_field_callback )(void *context, const mip_field *field, mip_timestamp timestamp);
+typedef void (*mip_dispatch_field_callback )(void *context, const mip_field_view *field, mip_timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Signature for extraction callbacks.
@@ -53,7 +53,7 @@ typedef void (*mip_dispatch_field_callback )(void *context, const mip_field *fie
 ///@param field A valid mip_field.
 ///@param ptr   A pointer to the destination field structure.
 ///
-typedef bool (*mip_dispatch_extractor)(const mip_field *field, void *ptr);
+typedef bool (*mip_dispatch_extractor)(const mip_field_view *field, void *ptr);
 
 
 enum {

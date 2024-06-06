@@ -94,7 +94,7 @@ void extract_mip_gnss_pos_llh_data(microstrain_serializer* serializer, mip_gnss_
     extract_mip_gnss_pos_llh_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_pos_llh_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_pos_llh_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_pos_llh_data* self = ptr;
@@ -135,7 +135,7 @@ void extract_mip_gnss_pos_ecef_data(microstrain_serializer* serializer, mip_gnss
     extract_mip_gnss_pos_ecef_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_pos_ecef_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_pos_ecef_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_pos_ecef_data* self = ptr;
@@ -192,7 +192,7 @@ void extract_mip_gnss_vel_ned_data(microstrain_serializer* serializer, mip_gnss_
     extract_mip_gnss_vel_ned_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_vel_ned_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_vel_ned_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_vel_ned_data* self = ptr;
@@ -233,7 +233,7 @@ void extract_mip_gnss_vel_ecef_data(microstrain_serializer* serializer, mip_gnss
     extract_mip_gnss_vel_ecef_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_vel_ecef_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_vel_ecef_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_vel_ecef_data* self = ptr;
@@ -292,7 +292,7 @@ void extract_mip_gnss_dop_data(microstrain_serializer* serializer, mip_gnss_dop_
     extract_mip_gnss_dop_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dop_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_dop_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_dop_data* self = ptr;
@@ -351,7 +351,7 @@ void extract_mip_gnss_utc_time_data(microstrain_serializer* serializer, mip_gnss
     extract_mip_gnss_utc_time_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_utc_time_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_utc_time_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_utc_time_data* self = ptr;
@@ -390,7 +390,7 @@ void extract_mip_gnss_gps_time_data(microstrain_serializer* serializer, mip_gnss
     extract_mip_gnss_gps_time_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_time_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_time_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_gps_time_data* self = ptr;
@@ -433,7 +433,7 @@ void extract_mip_gnss_clock_info_data(microstrain_serializer* serializer, mip_gn
     extract_mip_gnss_clock_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_clock_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_clock_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_clock_info_data* self = ptr;
@@ -476,7 +476,7 @@ void extract_mip_gnss_fix_info_data(microstrain_serializer* serializer, mip_gnss
     extract_mip_gnss_fix_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_fix_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_fix_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_fix_info_data* self = ptr;
@@ -553,7 +553,7 @@ void extract_mip_gnss_sv_info_data(microstrain_serializer* serializer, mip_gnss_
     extract_mip_gnss_sv_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sv_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_sv_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_sv_info_data* self = ptr;
@@ -607,7 +607,7 @@ void extract_mip_gnss_hw_status_data(microstrain_serializer* serializer, mip_gns
     extract_mip_gnss_hw_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_hw_status_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_hw_status_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_hw_status_data* self = ptr;
@@ -687,7 +687,7 @@ void extract_mip_gnss_dgps_info_data(microstrain_serializer* serializer, mip_gns
     extract_mip_gnss_dgps_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dgps_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_dgps_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_dgps_info_data* self = ptr;
@@ -734,7 +734,7 @@ void extract_mip_gnss_dgps_channel_data(microstrain_serializer* serializer, mip_
     extract_mip_gnss_dgps_channel_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_dgps_channel_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_dgps_channel_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_dgps_channel_data* self = ptr;
@@ -781,7 +781,7 @@ void extract_mip_gnss_clock_info_2_data(microstrain_serializer* serializer, mip_
     extract_mip_gnss_clock_info_2_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_clock_info_2_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_clock_info_2_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_clock_info_2_data* self = ptr;
@@ -816,7 +816,7 @@ void extract_mip_gnss_gps_leap_seconds_data(microstrain_serializer* serializer, 
     extract_mip_gnss_gps_leap_seconds_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_leap_seconds_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_leap_seconds_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_gps_leap_seconds_data* self = ptr;
@@ -871,7 +871,7 @@ void extract_mip_gnss_sbas_info_data(microstrain_serializer* serializer, mip_gns
     extract_mip_gnss_sbas_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sbas_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_sbas_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_sbas_info_data* self = ptr;
@@ -949,7 +949,7 @@ void extract_mip_gnss_sbas_correction_data(microstrain_serializer* serializer, m
     extract_mip_gnss_sbas_correction_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_sbas_correction_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_sbas_correction_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_sbas_correction_data* self = ptr;
@@ -998,7 +998,7 @@ void extract_mip_gnss_rf_error_detection_data(microstrain_serializer* serializer
     extract_mip_gnss_rf_error_detection_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_rf_error_detection_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_rf_error_detection_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_rf_error_detection_data* self = ptr;
@@ -1088,7 +1088,7 @@ void extract_mip_gnss_base_station_info_data(microstrain_serializer* serializer,
     extract_mip_gnss_base_station_info_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_base_station_info_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_base_station_info_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_base_station_info_data* self = ptr;
@@ -1168,7 +1168,7 @@ void extract_mip_gnss_rtk_corrections_status_data(microstrain_serializer* serial
     extract_mip_gnss_rtk_corrections_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_rtk_corrections_status_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_rtk_corrections_status_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_rtk_corrections_status_data* self = ptr;
@@ -1246,7 +1246,7 @@ void extract_mip_gnss_satellite_status_data(microstrain_serializer* serializer, 
     extract_mip_gnss_satellite_status_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_satellite_status_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_satellite_status_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_satellite_status_data* self = ptr;
@@ -1349,7 +1349,7 @@ void extract_mip_gnss_raw_data(microstrain_serializer* serializer, mip_gnss_raw_
     extract_mip_gnss_raw_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_raw_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_raw_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_raw_data* self = ptr;
@@ -1523,7 +1523,7 @@ void extract_mip_gnss_gps_ephemeris_data(microstrain_serializer* serializer, mip
     extract_mip_gnss_gps_ephemeris_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_ephemeris_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_ephemeris_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_gps_ephemeris_data* self = ptr;
@@ -1686,7 +1686,7 @@ void extract_mip_gnss_galileo_ephemeris_data(microstrain_serializer* serializer,
     extract_mip_gnss_galileo_ephemeris_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_galileo_ephemeris_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_galileo_ephemeris_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_galileo_ephemeris_data* self = ptr;
@@ -1819,7 +1819,7 @@ void extract_mip_gnss_glo_ephemeris_data(microstrain_serializer* serializer, mip
     extract_mip_gnss_glo_ephemeris_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_glo_ephemeris_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_glo_ephemeris_data* self = ptr;
@@ -1870,7 +1870,7 @@ void extract_mip_gnss_gps_iono_corr_data(microstrain_serializer* serializer, mip
     extract_mip_gnss_gps_iono_corr_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_gps_iono_corr_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_gps_iono_corr_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_gps_iono_corr_data* self = ptr;
@@ -1919,7 +1919,7 @@ void extract_mip_gnss_galileo_iono_corr_data(microstrain_serializer* serializer,
     extract_mip_gnss_galileo_iono_corr_data_valid_flags(serializer, &self->valid_flags);
     
 }
-bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field* field, void* ptr)
+bool extract_mip_gnss_galileo_iono_corr_data_from_field(const mip_field_view* field, void* ptr)
 {
     assert(ptr);
     mip_gnss_galileo_iono_corr_data* self = ptr;

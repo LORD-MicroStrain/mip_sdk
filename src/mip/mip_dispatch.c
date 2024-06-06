@@ -312,7 +312,7 @@ static bool mip_dispatch_is_descriptor_match(uint8_t desc_set, uint8_t field_des
 ///@param field     Valid MIP field.
 ///@param timestamp Packet parse time.
 ///
-static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_field* field, mip_timestamp timestamp)
+static void mip_dispatcher_call_field_callbacks(mip_dispatcher* self, const mip_field_view* field, mip_timestamp timestamp)
 {
     const uint8_t descriptor_set   = mip_field_descriptor_set(field);
     const uint8_t field_descriptor = mip_field_field_descriptor(field);
@@ -352,7 +352,7 @@ void mip_dispatcher_dispatch_packet(mip_dispatcher* self, const mip_packet_view*
 {
     mip_dispatcher_call_packet_callbacks(self, packet, timestamp, false);
 
-    mip_field field;
+    mip_field_view field;
     mip_field_init_empty(&field);
     while( mip_field_next_in_packet(&field, packet) )
     {

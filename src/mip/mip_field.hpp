@@ -18,19 +18,19 @@ namespace mip
 ///
 /// This is a thin wrapper around the C mip_field struct.
 ///
-class Field : public C::mip_field
+class Field : public C::mip_field_view
 {
 public:
     static constexpr size_t MAX_PAYLOAD_LENGTH = C::MIP_FIELD_PAYLOAD_LENGTH_MAX;
 
     /// Construct an empty MIP field.
-    Field() { C::mip_field::_payload=nullptr; C::mip_field::_payload_length=0; C::mip_field::_field_descriptor=0x00; C::mip_field::_descriptor_set=0x00; C::mip_field::_remaining_length=0; }
+    Field() { C::mip_field_view::_payload=nullptr; C::mip_field_view::_payload_length=0; C::mip_field_view::_field_descriptor=0x00; C::mip_field_view::_descriptor_set=0x00; C::mip_field_view::_remaining_length=0; }
     ///@copydoc mip_field_init()
     Field(uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length) { C::mip_field_init(this, descriptor_set, field_descriptor, payload, payload_length); }
     ///@copydoc mip_field_from_header_ptr()
     Field(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set) { *this = C::mip_field_from_header_ptr(header, total_length, descriptor_set); }
     /// Creates a %Field class from the mip_field C struct.
-    Field(const C::mip_field& other) { std::memcpy(static_cast<C::mip_field*>(this), &other, sizeof(C::mip_field)); }
+    Field(const C::mip_field_view& other) { std::memcpy(static_cast<C::mip_field_view*>(this), &other, sizeof(C::mip_field_view)); }
 
     //
     // C function wrappers

@@ -49,17 +49,17 @@ extern "C" {
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-typedef struct mip_field
+typedef struct mip_field_view
 {
     const uint8_t* _payload;    ///<@private The field payload, excluding the header.
     uint8_t _payload_length;    ///<@private The length of the payload, excluding the header.
     uint8_t _field_descriptor;  ///<@private MIP field descriptor. Field not valid if set to 0x00.
     uint8_t _descriptor_set;    ///<@private MIP descriptor set (from the packet)
     uint8_t _remaining_length;  ///<@private Remaining space after this field.
-} mip_field;
+} mip_field_view;
 
 
-void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+void mip_field_init(mip_field_view* field, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 
 ////////////////////////////////////////////////////////////////////////////////
 ///@defgroup FieldAccess  Field Accessors [C]
@@ -68,12 +68,12 @@ void mip_field_init(mip_field* field, uint8_t descriptor_set, uint8_t field_desc
 ///
 ///@{
 
-uint8_t mip_field_descriptor_set(const mip_field* field);
-uint8_t mip_field_field_descriptor(const mip_field* field);
-uint8_t mip_field_payload_length(const mip_field* field);
-const uint8_t* mip_field_payload(const mip_field* field);
+uint8_t mip_field_descriptor_set(const mip_field_view* field);
+uint8_t mip_field_field_descriptor(const mip_field_view* field);
+uint8_t mip_field_payload_length(const mip_field_view* field);
+const uint8_t* mip_field_payload(const mip_field_view* field);
 
-bool mip_field_is_valid(const mip_field* field);
+bool mip_field_is_valid(const mip_field_view* field);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,15 +100,15 @@ bool mip_field_is_valid(const mip_field* field);
 ///
 ///@{
 
-void mip_field_init_empty(mip_field* field);
+void mip_field_init_empty(mip_field_view* field);
 
-mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
+mip_field_view mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
 
-mip_field mip_field_first_from_packet(const mip_packet_view* packet);
-mip_field mip_field_next_after(const mip_field* field);
-bool mip_field_next(mip_field* field);
+mip_field_view mip_field_first_from_packet(const mip_packet_view* packet);
+mip_field_view mip_field_next_after(const mip_field_view* field);
+bool mip_field_next(mip_field_view* field);
 
-bool mip_field_next_in_packet(mip_field* field, const mip_packet_view* packet);
+bool mip_field_next_in_packet(mip_field_view* field, const mip_packet_view* packet);
 
 // bool mip_field_is_at_end(const struct mip_field* field);
 

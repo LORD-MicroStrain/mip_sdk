@@ -81,7 +81,7 @@ struct mip_system_built_in_test_data
 typedef struct mip_system_built_in_test_data mip_system_built_in_test_data;
 void insert_mip_system_built_in_test_data(microstrain_serializer* serializer, const mip_system_built_in_test_data* self);
 void extract_mip_system_built_in_test_data(microstrain_serializer* serializer, mip_system_built_in_test_data* self);
-bool extract_mip_system_built_in_test_data_from_field(const struct mip_field* field, void* ptr);
+bool extract_mip_system_built_in_test_data_from_field(const struct mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -101,7 +101,7 @@ struct mip_system_time_sync_status_data
 typedef struct mip_system_time_sync_status_data mip_system_time_sync_status_data;
 void insert_mip_system_time_sync_status_data(microstrain_serializer* serializer, const mip_system_time_sync_status_data* self);
 void extract_mip_system_time_sync_status_data(microstrain_serializer* serializer, mip_system_time_sync_status_data* self);
-bool extract_mip_system_time_sync_status_data_from_field(const struct mip_field* field, void* ptr);
+bool extract_mip_system_time_sync_status_data_from_field(const struct mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -138,7 +138,7 @@ struct mip_system_gpio_state_data
 typedef struct mip_system_gpio_state_data mip_system_gpio_state_data;
 void insert_mip_system_gpio_state_data(microstrain_serializer* serializer, const mip_system_gpio_state_data* self);
 void extract_mip_system_gpio_state_data(microstrain_serializer* serializer, mip_system_gpio_state_data* self);
-bool extract_mip_system_gpio_state_data_from_field(const struct mip_field* field, void* ptr);
+bool extract_mip_system_gpio_state_data_from_field(const struct mip_field_view* field, void* ptr);
 
 
 ///@}
@@ -159,7 +159,7 @@ struct mip_system_gpio_analog_value_data
 typedef struct mip_system_gpio_analog_value_data mip_system_gpio_analog_value_data;
 void insert_mip_system_gpio_analog_value_data(microstrain_serializer* serializer, const mip_system_gpio_analog_value_data* self);
 void extract_mip_system_gpio_analog_value_data(microstrain_serializer* serializer, mip_system_gpio_analog_value_data* self);
-bool extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field* field, void* ptr);
+bool extract_mip_system_gpio_analog_value_data_from_field(const struct mip_field_view* field, void* ptr);
 
 
 ///@}

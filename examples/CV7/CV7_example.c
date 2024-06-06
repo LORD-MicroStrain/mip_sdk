@@ -81,7 +81,7 @@ int usage(const char* argv0);
 void exit_gracefully(const char *message);
 bool should_exit();
 
-void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp);
+void handle_filter_event_source(void* user, const mip_field_view* field, mip_timestamp timestamp);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,7 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handle_filter_event_source(void* user, const mip_field* field, mip_timestamp timestamp)
+void handle_filter_event_source(void* user, const mip_field_view* field, mip_timestamp timestamp)
 {
     mip_shared_event_source_data data;
 
