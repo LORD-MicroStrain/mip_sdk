@@ -104,11 +104,11 @@ void mip_field_init_empty(mip_field* field);
 
 mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length, uint8_t descriptor_set);
 
-mip_field mip_field_first_from_packet(const mip_packet* packet);
+mip_field mip_field_first_from_packet(const mip_packet_view* packet);
 mip_field mip_field_next_after(const mip_field* field);
 bool mip_field_next(mip_field* field);
 
-bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet);
+bool mip_field_next_in_packet(mip_field* field, const mip_packet_view* packet);
 
 // bool mip_field_is_at_end(const struct mip_field* field);
 

@@ -50,7 +50,7 @@ void customLog(void* user, microstrain_log_level level, const char* fmt, va_list
     }
 }
 
-void handlePacket(void* unused, const mip_packet* packet, mip_timestamp timestamp)
+void handlePacket(void* unused, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     (void)unused;
 

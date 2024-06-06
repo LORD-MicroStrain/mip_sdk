@@ -66,7 +66,7 @@ public:
 template<class T, bool (T::*Callback)(const PacketRef&, Timestamp)>
 void Parser::setCallback(T& object)
 {
-    C::mip_packet_callback callback = [](void* obj, const C::mip_packet* pkt, Timestamp timestamp)->bool
+    C::mip_packet_callback callback = [](void* obj, const C::mip_packet_view* pkt, Timestamp timestamp)->bool
     {
         return (static_cast<T*>(obj)->*Callback)(PacketRef(pkt), timestamp);
     };

@@ -27,7 +27,7 @@ struct microstrain_serializer;
 ///
 ///@brief Functions for handling MIP packets.
 ///
-/// A MIP Packet is represented by the mip_packet struct.
+/// A MIP Packet is represented by the mip_packet_view struct.
 ///
 ///~~~
 /// +-------+-------+------+------+------------+-----/ /----+------------+----
@@ -47,11 +47,11 @@ struct microstrain_serializer;
 /// considered an internal implementation detail. Avoid accessing them directly
 /// as they are subject to change in future versions of this software.
 ///
-typedef struct mip_packet
+typedef struct mip_packet_view
 {
     uint8_t*       _buffer;         ///<@private Pointer to the packet data.
     uint_least16_t _buffer_length;  ///<@private Length of the buffer (NOT the packet length!).
-} mip_packet;
+} mip_packet_view;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,16 +64,16 @@ typedef struct mip_packet
 ///
 ///@{
 
-void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
+void mip_packet_create(mip_packet_view* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set);
 
-bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
-int  mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
-int  mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
-int  mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr);
+bool mip_packet_add_field(mip_packet_view* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
+int  mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** payload_ptr_out);
+int  mip_packet_realloc_last_field(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length);
+int  mip_packet_cancel_last_field(mip_packet_view* packet, uint8_t* payload_ptr);
 
-void mip_packet_finalize(mip_packet* packet);
+void mip_packet_finalize(mip_packet_view* packet);
 
-void mip_packet_reset(mip_packet* packet, uint8_t descriptor_set);
+void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,26 +89,26 @@ void mip_packet_reset(mip_packet* packet, uint8_t descriptor_set);
 ///
 ///@{
 
-void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length);
+void mip_packet_from_buffer(mip_packet_view* packet, uint8_t* buffer, size_t length);
 
-uint8_t         mip_packet_descriptor_set(const mip_packet* packet);
-uint_least16_t  mip_packet_total_length(const mip_packet* packet);
-uint8_t         mip_packet_payload_length(const mip_packet* packet);
-uint8_t*        mip_packet_buffer(mip_packet* packet);
-const uint8_t*  mip_packet_pointer(const mip_packet* packet);
-const uint8_t*  mip_packet_payload(const mip_packet* packet);
-uint16_t        mip_packet_checksum_value(const mip_packet* packet);
-uint16_t        mip_packet_compute_checksum(const mip_packet* packet);
+uint8_t         mip_packet_descriptor_set(const mip_packet_view* packet);
+uint_least16_t  mip_packet_total_length(const mip_packet_view* packet);
+uint8_t         mip_packet_payload_length(const mip_packet_view* packet);
+uint8_t*        mip_packet_buffer(mip_packet_view* packet);
+const uint8_t*  mip_packet_pointer(const mip_packet_view* packet);
+const uint8_t*  mip_packet_payload(const mip_packet_view* packet);
+uint16_t        mip_packet_checksum_value(const mip_packet_view* packet);
+uint16_t        mip_packet_compute_checksum(const mip_packet_view* packet);
 
 
-bool            mip_packet_is_sane(const mip_packet* packet);
-bool            mip_packet_is_valid(const mip_packet* packet);
-bool            mip_packet_is_empty(const mip_packet* packet);
+bool            mip_packet_is_sane(const mip_packet_view* packet);
+bool            mip_packet_is_valid(const mip_packet_view* packet);
+bool            mip_packet_is_empty(const mip_packet_view* packet);
 
-uint_least16_t  mip_packet_buffer_size(const mip_packet* packet);
-int             mip_packet_remaining_space(const mip_packet* packet);
+uint_least16_t  mip_packet_buffer_size(const mip_packet_view* packet);
+int             mip_packet_remaining_space(const mip_packet_view* packet);
 
-bool            mip_packet_is_data(const mip_packet* packet);
+bool            mip_packet_is_data(const mip_packet_view* packet);
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
@@ -116,8 +116,8 @@ bool            mip_packet_is_data(const mip_packet* packet);
 ///
 ///@{
 
-//void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor);
-//void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet);
+//void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet_view* packet, uint8_t field_descriptor);
+//void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet_view* packet);
 
 ///@}
 ///@}

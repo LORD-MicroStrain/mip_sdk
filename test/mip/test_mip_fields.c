@@ -8,7 +8,7 @@
 
 
 uint8_t packet_buffer[MIP_PACKET_LENGTH_MAX];
-struct mip_packet packet;
+struct mip_packet_view packet;
 
 struct mip_field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
 unsigned int num_fields = 0;

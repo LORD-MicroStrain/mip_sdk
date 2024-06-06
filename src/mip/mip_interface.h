@@ -72,8 +72,8 @@ bool mip_interface_update(mip_interface* device, mip_timeout wait_time);
 bool mip_interface_default_update(mip_interface* device, mip_timeout wait_time);
 size_t mip_interface_receive_bytes(mip_interface* device, const uint8_t* data, size_t length, mip_timestamp timestamp);
 void mip_interface_process_unparsed_packets(mip_interface* device);
-bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp);
-void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp);
+bool mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp);
+void mip_interface_receive_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp);
 
 //
 // Commands
@@ -82,9 +82,9 @@ void mip_interface_receive_packet(mip_interface* device, const mip_packet* packe
 enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, mip_pending_cmd* cmd);
 enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length);
 enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* device, uint8_t descriptor_set, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length, uint8_t response_descriptor, uint8_t* response_data, uint8_t* response_length_inout);
-enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd);
+enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet_view* packet, mip_pending_cmd* cmd);
 
-bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd);
+bool mip_interface_start_command_packet(mip_interface* device, const mip_packet_view* packet, mip_pending_cmd* cmd);
 
 //
 // Data Callbacks

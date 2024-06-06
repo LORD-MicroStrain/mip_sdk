@@ -163,7 +163,7 @@ mip_field mip_field_from_header_ptr(const uint8_t* header, uint8_t total_length,
 ///
 ///@returns A mip_field struct with the first field from the packet.
 ///
-mip_field mip_field_first_from_packet(const mip_packet* packet)
+mip_field mip_field_first_from_packet(const mip_packet_view* packet)
 {
     return mip_field_from_header_ptr( mip_packet_payload(packet), mip_packet_payload_length(packet), mip_packet_descriptor_set(packet) );
 }
@@ -226,7 +226,7 @@ bool mip_field_next(mip_field* field)
 /// }
 ///@endcode
 ///
-bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet)
+bool mip_field_next_in_packet(mip_field* field, const mip_packet_view* packet)
 {
     if( field->_descriptor_set != MIP_INVALID_DESCRIPTOR_SET )
         *field = mip_field_next_after(field);
@@ -252,7 +252,7 @@ bool mip_field_next_in_packet(mip_field* field, const mip_packet* packet)
 ///@param field_descriptor
 ///       Field descriptor of the new field.
 ///
-void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet* packet, uint8_t field_descriptor)
+void microstrain_serializer_init_new_field(microstrain_serializer* serializer, mip_packet_view* packet, uint8_t field_descriptor)
 {
     assert(packet);
 
@@ -275,7 +275,7 @@ void microstrain_serializer_init_new_field(microstrain_serializer* serializer, m
 ///@param serializer Must be created from microstrain_serializer_init_new_field.
 ///@param packet     Must be the original packet.
 ///
-void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet* packet)
+void microstrain_serializer_finish_new_field(const microstrain_serializer* serializer, mip_packet_view* packet)
 {
     assert(packet);
 

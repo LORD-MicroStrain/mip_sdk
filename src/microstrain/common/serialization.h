@@ -153,7 +153,7 @@ void microstrain_extract_count(microstrain_serializer* serializer, uint8_t* coun
 class Buffer : public C::microstrain_serializer
 {
 public:
-    // Buffer(C::mip_packet& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
+    // Buffer(C::mip_packet_view& packet, uint8_t newFieldDescriptor) { C::microstrain_serializer_init_new_field(this, &packet, newFieldDescriptor); }
     Buffer(uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_insertion(this, buffer, size); this->_offset = offset; }
     Buffer(const uint8_t* buffer, size_t size, size_t offset=0) { C::microstrain_serializer_init_extraction(this, const_cast<uint8_t*>(buffer), size); this->_offset = offset; }
 

@@ -21,7 +21,7 @@ namespace mip
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief C++ class representing a MIP PacketRef.
 ///
-/// This is a thin wrapper around the mip_packet C structure. Like the C
+/// This is a thin wrapper around the mip_packet_view C structure. Like the C
 /// version, it does not contain or own the data buffer. Any of the C functions
 /// can be used with the C++ packet class because it inherits from the C struct.
 ///
@@ -32,7 +32,7 @@ namespace mip
 /// for(Field field : packet) { ... }
 ///@endcode
 ///
-class PacketRef : public C::mip_packet
+class PacketRef : public C::mip_packet_view
 {
 public:
     static constexpr size_t PAYLOAD_LENGTH_MAX = C::MIP_PACKET_PAYLOAD_LENGTH_MAX;
@@ -47,9 +47,9 @@ public:
     ///@copydoc mip_packet_from_buffer
     PacketRef(uint8_t* buffer, size_t length) { C::mip_packet_from_buffer(this, buffer, length); }
     /// Constructs a C++ %PacketRef class from the base C object.
-    PacketRef(const C::mip_packet* other) { std::memcpy(static_cast<C::mip_packet*>(this), other, sizeof(*this)); }
+    PacketRef(const C::mip_packet_view* other) { std::memcpy(static_cast<C::mip_packet_view*>(this), other, sizeof(*this)); }
     /// Constructs a C++ %PacketRef class from the base C object.
-    PacketRef(const C::mip_packet& other) { std::memcpy(static_cast<C::mip_packet*>(this), &other, sizeof(*this)); }
+    PacketRef(const C::mip_packet_view& other) { std::memcpy(static_cast<C::mip_packet_view*>(this), &other, sizeof(*this)); }
 
 
     //

@@ -149,13 +149,13 @@ public:
     //
 
     bool           sendToDevice(const uint8_t* data, size_t length) { return C::mip_interface_send_to_device(this, data, length); }
-    bool           sendToDevice(const C::mip_packet& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
+    bool           sendToDevice(const C::mip_packet_view& packet) { return sendToDevice(C::mip_packet_pointer(&packet), C::mip_packet_total_length(&packet)); }
     bool           recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, Timestamp* timestamp) { return C::mip_interface_recv_from_device(this, buffer, max_length, wait_time, length_out, timestamp); }
     bool           update(Timeout wait_time=0) { return C::mip_interface_update(this, wait_time); }
     bool           defaultUpdate(Timeout wait_time=0) { return C::mip_interface_default_update(this, wait_time); }
 
     size_t         receiveBytes(const uint8_t* data, size_t length, Timestamp timestamp) { return C::mip_interface_receive_bytes(this, data, length, timestamp); }
-    void           receivePacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
+    void           receivePacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_interface_receive_packet(this, &packet, timestamp); }
     void           processUnparsedPackets() { C::mip_interface_process_unparsed_packets(this); }
 
     CmdResult      waitForReply(C::mip_pending_cmd& cmd) { return C::mip_interface_wait_for_reply(this, &cmd); }
@@ -442,7 +442,7 @@ void Interface::setCallbacks(T* object)
 template<void (*Callback)(void*, const PacketRef&, Timestamp)>
 void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
-    auto callback = [](void* context, const C::mip_packet* packet, Timestamp timestamp)
+    auto callback = [](void* context, const C::mip_packet_view* packet, Timestamp timestamp)
     {
         Callback(context, PacketRef(*packet), timestamp);
     };
@@ -484,7 +484,7 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
 void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
-    auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
+    auto callback = [](void* pointer, const mip::C::mip_packet_view* packet, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
         (obj->*Callback)(PacketRef(*packet), timestamp);

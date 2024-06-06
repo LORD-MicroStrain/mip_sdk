@@ -136,7 +136,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 
         MIP_DIAG_INC(parser->_diag_bytes_read, count);
 
-        mip_packet packet;
+        mip_packet_view packet;
         while( mip_parser_parse_one_packet_from_ring(parser, &packet, timestamp) )
         {
             num_packets++;
@@ -179,7 +179,7 @@ size_t mip_parser_parse(mip_parser* parser, const uint8_t* input_buffer, size_t 
 ///@returns true if a packet was found, false if more data is required. If false,
 ///         the packet is not initialized.
 ///
-bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet* packet_out, mip_timestamp timestamp)
+bool mip_parser_parse_one_packet_from_ring(mip_parser* parser, mip_packet_view* packet_out, mip_timestamp timestamp)
 {
     // Parse packets while there is sufficient data in the ring buffer.
     while( byte_ring_count(&parser->_ring) >= parser->_expected_length )

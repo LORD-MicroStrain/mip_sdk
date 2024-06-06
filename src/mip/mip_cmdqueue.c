@@ -265,7 +265,7 @@ void mip_cmd_queue_dequeue(mip_cmd_queue* queue, mip_pending_cmd* cmd)
 ///         not updated). The caller should set pending->_status to this value
 ///         after doing any additional processing requiring the pending struct.
 ///
-static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pending, const mip_packet* packet, mip_timeout base_timeout, mip_timestamp timestamp)
+static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pending, const mip_packet_view* packet, mip_timeout base_timeout, mip_timestamp timestamp)
 {
     assert( pending->_status != MIP_STATUS_NONE );         // pending->_status must be set to MIP_STATUS_PENDING in mip_cmd_queue_enqueue to get here.
     assert( !mip_cmd_result_is_finished(pending->_status) );  // Command shouldn't be finished yet - make sure the queue is processed properly.
@@ -372,7 +372,7 @@ static enum mip_cmd_result process_fields_for_pending_cmd(mip_pending_cmd* pendi
 ///@param packet The received MIP packet. Assumed to be valid.
 ///@param timestamp The time the packet was received
 ///
-void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, mip_timestamp timestamp)
+void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     // Check if the packet is a command descriptor set.
     const uint8_t descriptor_set = mip_packet_descriptor_set(packet);

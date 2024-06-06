@@ -116,7 +116,7 @@ void mip_cmd_queue_update(mip_cmd_queue* queue, mip_timestamp timestamp);
 void mip_cmd_queue_set_base_reply_timeout(mip_cmd_queue* queue, mip_timeout timeout);
 mip_timeout mip_cmd_queue_base_reply_timeout(const mip_cmd_queue* queue);
 
-void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet* packet, mip_timestamp timestamp);
+void mip_cmd_queue_process_packet(mip_cmd_queue* queue, const mip_packet_view* packet, mip_timestamp timestamp);
 
 
 #ifdef MIP_ENABLE_DIAGNOSTICS

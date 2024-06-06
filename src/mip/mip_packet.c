@@ -35,7 +35,7 @@
 ///      MIP_PACKET_LENGTH_MIN bytes, calling the accessor functions is undefined
 ///      behavior.
 ///
-void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
+void mip_packet_from_buffer(mip_packet_view* packet, uint8_t* buffer, size_t length)
 {
     assert(buffer != NULL);
 
@@ -61,7 +61,7 @@ void mip_packet_from_buffer(mip_packet* packet, uint8_t* buffer, size_t length)
 ///@param descriptor_set
 ///       The MIP descriptor set for the packet.
 ///
-void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set)
+void mip_packet_create(mip_packet_view* packet, uint8_t* buffer, size_t buffer_size, uint8_t descriptor_set)
 {
     mip_packet_from_buffer(packet, buffer, buffer_size);
 
@@ -86,7 +86,7 @@ void mip_packet_create(mip_packet* packet, uint8_t* buffer, size_t buffer_size, 
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the MIP descriptor set for this packet.
 ///
-uint8_t mip_packet_descriptor_set(const mip_packet* packet)
+uint8_t mip_packet_descriptor_set(const mip_packet_view* packet)
 {
     return packet->_buffer[MIP_INDEX_DESCSET];
 }
@@ -94,7 +94,7 @@ uint8_t mip_packet_descriptor_set(const mip_packet* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns the length of the payload (MIP fields).
 ///
-uint8_t mip_packet_payload_length(const mip_packet* packet)
+uint8_t mip_packet_payload_length(const mip_packet_view* packet)
 {
     return packet->_buffer[MIP_INDEX_LENGTH];
 }
@@ -104,7 +104,7 @@ uint8_t mip_packet_payload_length(const mip_packet* packet)
 ///
 ///@returns The length of the packet. Always at least MIP_PACKET_LENGTH_MIN.
 ///
-uint_least16_t mip_packet_total_length(const mip_packet* packet)
+uint_least16_t mip_packet_total_length(const mip_packet_view* packet)
 {
     return mip_packet_payload_length(packet) + MIP_PACKET_LENGTH_MIN;
 }
@@ -112,7 +112,7 @@ uint_least16_t mip_packet_total_length(const mip_packet* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a writable pointer to the data buffer.
 ///
-uint8_t* mip_packet_buffer(mip_packet* packet)
+uint8_t* mip_packet_buffer(mip_packet_view* packet)
 {
     return packet->_buffer;
 }
@@ -120,7 +120,7 @@ uint8_t* mip_packet_buffer(mip_packet* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the data buffer containing the packet.
 ///
-const uint8_t* mip_packet_pointer(const mip_packet* packet)
+const uint8_t* mip_packet_pointer(const mip_packet_view* packet)
 {
     return packet->_buffer;
 }
@@ -128,7 +128,7 @@ const uint8_t* mip_packet_pointer(const mip_packet* packet)
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Returns a pointer to the packet's payload (the first field).
 ///
-const uint8_t* mip_packet_payload(const mip_packet* packet)
+const uint8_t* mip_packet_payload(const mip_packet_view* packet)
 {
     return packet->_buffer + MIP_INDEX_PAYLOAD;
 }
@@ -139,7 +139,7 @@ const uint8_t* mip_packet_payload(const mip_packet* packet)
 /// This function does not compute the checksum. To do so, use
 /// mip_packet_compute_checksum().
 ///
-uint16_t mip_packet_checksum_value(const mip_packet* packet)
+uint16_t mip_packet_checksum_value(const mip_packet_view* packet)
 {
     const uint_least16_t index = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
 
@@ -151,7 +151,7 @@ uint16_t mip_packet_checksum_value(const mip_packet* packet)
 ///
 ///@returns The computed checksum value.
 ///
-uint16_t mip_packet_compute_checksum(const mip_packet* packet)
+uint16_t mip_packet_compute_checksum(const mip_packet_view* packet)
 {
     uint8_t a = 0;
     uint8_t b = 0;
@@ -178,7 +178,7 @@ uint16_t mip_packet_compute_checksum(const mip_packet* packet)
 /// used to access it (to do so is undefined behavior). This should never occur
 /// in normal circumstances.
 ///
-bool mip_packet_is_sane(const mip_packet* packet)
+bool mip_packet_is_sane(const mip_packet_view* packet)
 {
     return packet->_buffer && (packet->_buffer_length >= MIP_PACKET_LENGTH_MIN) && (packet->_buffer_length >= mip_packet_payload_length(packet)+MIP_PACKET_LENGTH_MIN);
 }
@@ -191,7 +191,7 @@ bool mip_packet_is_sane(const mip_packet* packet)
 /// * The descriptor set is not 0x00, and
 /// * The checksum is valid.
 ///
-bool mip_packet_is_valid(const mip_packet* packet)
+bool mip_packet_is_valid(const mip_packet_view* packet)
 {
     if( !mip_packet_is_sane(packet) || (mip_packet_descriptor_set(packet) == 0x00) )
         return false;
@@ -209,7 +209,7 @@ bool mip_packet_is_valid(const mip_packet* packet)
 ///
 ///@returns true if the packet has a payload length of 0.
 ///
-bool mip_packet_is_empty(const mip_packet* packet)
+bool mip_packet_is_empty(const mip_packet_view* packet)
 {
     if( !mip_packet_is_sane(packet) )
         return true;
@@ -223,7 +223,7 @@ bool mip_packet_is_empty(const mip_packet* packet)
 ///
 ///@note This is the BUFFER SIZE and not the packet length.
 ///
-uint_least16_t mip_packet_buffer_size(const mip_packet* packet)
+uint_least16_t mip_packet_buffer_size(const mip_packet_view* packet)
 {
     return packet->_buffer_length;
 }
@@ -237,7 +237,7 @@ uint_least16_t mip_packet_buffer_size(const mip_packet* packet)
 ///         buffer capacity. Such packets are not 'sane' (mip_packet_is_sane)
 ///         and can only be produced by manipulating the buffered data directly.
 ///
-int mip_packet_remaining_space(const mip_packet* packet)
+int mip_packet_remaining_space(const mip_packet_view* packet)
 {
     return mip_packet_buffer_size(packet) - mip_packet_total_length(packet);
 }
@@ -250,7 +250,7 @@ int mip_packet_remaining_space(const mip_packet* packet)
 ///@returns true if the packet contains data.
 ///@returns false if it contains commands or replies.
 ///
-bool mip_packet_is_data(const mip_packet* packet)
+bool mip_packet_is_data(const mip_packet_view* packet)
 {
     return mip_is_data_descriptor_set(mip_packet_descriptor_set(packet));
 }
@@ -288,7 +288,7 @@ bool mip_packet_is_data(const mip_packet* packet)
 ///
 ///@returns true if the field was added, or false if there was not enough space.
 ///
-bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
+bool mip_packet_add_field(mip_packet_view* packet, uint8_t field_descriptor, const uint8_t* payload, uint8_t payload_length)
 {
     uint8_t* payload_buffer;
     int remaining = mip_packet_alloc_field(packet, field_descriptor, payload_length, &payload_buffer);
@@ -330,7 +330,7 @@ bool mip_packet_add_field(mip_packet* packet, uint8_t field_descriptor, const ui
 ///         is negative, the field could not be allocated and the payload must
 ///         not be written.
 ///
-int mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
+int mip_packet_alloc_field(mip_packet_view* packet, uint8_t field_descriptor, uint8_t payload_length, uint8_t** const payload_ptr_out)
 {
     assert(payload_ptr_out != NULL);
     assert( payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -377,7 +377,7 @@ int mip_packet_alloc_field(mip_packet* packet, uint8_t field_descriptor, uint8_t
 ///@returns The space remaining in the packet after changing the field size.
 ///         This will be negative if the new length did not fit.
 ///
-int mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
+int mip_packet_realloc_last_field(mip_packet_view* packet, uint8_t* payload_ptr, uint8_t new_payload_length)
 {
     assert(payload_ptr != NULL);
     assert( new_payload_length <= MIP_FIELD_PAYLOAD_LENGTH_MAX );
@@ -413,7 +413,7 @@ int mip_packet_realloc_last_field(mip_packet* packet, uint8_t* payload_ptr, uint
 ///
 ///@returns The remaining space in the packet after removing the field.
 ///
-int mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr)
+int mip_packet_cancel_last_field(mip_packet_view* packet, uint8_t* payload_ptr)
 {
     assert(payload_ptr != NULL);
 
@@ -442,7 +442,7 @@ int mip_packet_cancel_last_field(mip_packet* packet, uint8_t* payload_ptr)
 ///                                                               Total Length
 ///~~~
 ///
-void mip_packet_finalize(mip_packet* packet)
+void mip_packet_finalize(mip_packet_view* packet)
 {
     uint16_t checksum = mip_packet_compute_checksum(packet);
     uint_least16_t length = mip_packet_total_length(packet) - MIP_CHECKSUM_LENGTH;
@@ -460,7 +460,7 @@ void mip_packet_finalize(mip_packet* packet)
 ///@param packet
 ///@param descriptor_set New descriptor set.
 ///
-void mip_packet_reset(mip_packet* packet, uint8_t descriptor_set)
+void mip_packet_reset(mip_packet_view* packet, uint8_t descriptor_set)
 {
     mip_packet_create(packet, mip_packet_buffer(packet), mip_packet_buffer_size(packet), descriptor_set);
 }

@@ -483,7 +483,7 @@ void mip_interface_process_unparsed_packets(mip_interface* device)
 ///@param timestamp
 ///       timestamp_type of the received MIP packet.
 ///
-void mip_interface_receive_packet(mip_interface* device, const mip_packet* packet, mip_timestamp timestamp)
+void mip_interface_receive_packet(mip_interface* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     mip_cmd_queue_process_packet(&device->_queue, packet, timestamp);
     mip_dispatcher_dispatch_packet(&device->_dispatcher, packet, timestamp);
@@ -498,7 +498,7 @@ void mip_interface_receive_packet(mip_interface* device, const mip_packet* packe
 ///
 ///@returns True
 ///
-bool mip_interface_parse_callback(void* device, const mip_packet* packet, mip_timestamp timestamp)
+bool mip_interface_parse_callback(void* device, const mip_packet_view* packet, mip_timestamp timestamp)
 {
     mip_interface_receive_packet(device, packet, timestamp);
 
@@ -602,7 +602,7 @@ enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* devic
 
     uint8_t buffer[MIP_PACKET_LENGTH_MAX];
 
-    mip_packet packet;
+    mip_packet_view packet;
     mip_packet_create(&packet, buffer, sizeof(buffer), descriptor_set);
     mip_packet_add_field(&packet, cmd_descriptor, cmd_data, cmd_length);
     mip_packet_finalize(&packet);
@@ -629,7 +629,7 @@ enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* devic
 ///@param cmd
 ///       The command status tracker. No lifetime requirement.
 ///
-enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
+enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, const mip_packet_view* packet, mip_pending_cmd* cmd)
 {
     if( !mip_interface_start_command_packet(device, packet, cmd) )
         return MIP_STATUS_ERROR;
@@ -650,7 +650,7 @@ enum mip_cmd_result mip_interface_run_command_packet(mip_interface* device, cons
 ///@returns False on error sending the packet. No cleanup is necessary and cmd
 ///         can be destroyed immediately afterward in this case.
 ///
-bool mip_interface_start_command_packet(mip_interface* device, const mip_packet* packet, mip_pending_cmd* cmd)
+bool mip_interface_start_command_packet(mip_interface* device, const mip_packet_view* packet, mip_pending_cmd* cmd)
 {
     mip_cmd_queue_enqueue(mip_interface_cmd_queue(device), cmd);
 

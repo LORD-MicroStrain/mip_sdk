@@ -34,7 +34,7 @@ struct CmdQueue : public C::mip_cmd_queue
     void setBaseReplyTimeout(Timeout timeout) { C::mip_cmd_queue_set_base_reply_timeout(this, timeout); }
     Timeout baseReplyTimeout() const { return C::mip_cmd_queue_base_reply_timeout(this); }
 
-    void processPacket(const C::mip_packet& packet, Timestamp timestamp) { C::mip_cmd_queue_process_packet(this, &packet, timestamp); }
+    void processPacket(const C::mip_packet_view& packet, Timestamp timestamp) { C::mip_cmd_queue_process_packet(this, &packet, timestamp); }
 };
 static_assert(sizeof(CmdQueue) == sizeof(C::mip_cmd_queue), "CmdQueue must not have additional data members.");
 
