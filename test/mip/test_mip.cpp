@@ -14,7 +14,7 @@ using namespace mip::C;
 uint8_t packetBuffer[PACKET_LENGTH_MAX];
 uint8_t parseBuffer[1024];
 
-Field fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
+FieldView fields[MIP_PACKET_PAYLOAD_LENGTH_MAX / MIP_FIELD_LENGTH_MIN];
 unsigned int numFields = 0;
 
 unsigned int numErrors = 0;
@@ -27,7 +27,7 @@ int main(int argc, const char* argv[])
     {
         unsigned int parsedFields = 0;
         bool error = false;
-        for(Field field : *parsedPacket)
+        for(FieldView field : *parsedPacket)
         {
             if( field.descriptorSet() != fields[parsedFields].descriptorSet() )
             {
@@ -94,7 +94,7 @@ int main(int argc, const char* argv[])
             for(unsigned int p=0; p<payloadLength; p++)
                 payload[p] = rand() & 0xFF;
 
-            fields[numFields] = Field(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
+            fields[numFields] = FieldView(packet.descriptorSet(), fieldDescriptor, payload, payloadLength);
         }
 
         packet.finalize();

@@ -175,10 +175,10 @@ public:
     void registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object);
 
 
-    template<void (*Callback)(void*, const Field&, Timestamp)>
+    template<void (*Callback)(void*, const FieldView&, Timestamp)>
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData=nullptr);
 
-    template<class Object, void (Object::*Callback)(const Field& field, Timestamp)>
+    template<class Object, void (Object::*Callback)(const FieldView& field, Timestamp)>
     void registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object);
 
 
@@ -524,12 +524,12 @@ void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t
 ///
 ///@endcode
 ///
-template<void (*Callback)(void*, const Field&, Timestamp)>
+template<void (*Callback)(void*, const FieldView&, Timestamp)>
 void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData)
 {
     auto callback = [](void* context, const C::mip_field_view* field, Timestamp timestamp)
     {
-        Callback(context, Field(*field), timestamp);
+        Callback(context, FieldView(*field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, userData);
@@ -566,13 +566,13 @@ void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t 
 /// };
 ///@endcode
 ///
-template<class Object, void (Object::*Callback)(const Field&, Timestamp)>
+template<class Object, void (Object::*Callback)(const FieldView&, Timestamp)>
 void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object)
 {
     auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
         Object* obj = static_cast<Object*>(pointer);
-        (obj->*Callback)(Field(*field), timestamp);
+        (obj->*Callback)(FieldView(*field), timestamp);
     };
 
     registerFieldCallback(handler, descriptorSet, fieldDescriptor, callback, object);
@@ -628,7 +628,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
     {
         DataField data;
 
-        bool ok = Field(*field).extract(data);
+        bool ok = FieldView(*field).extract(data);
         assert(ok); (void)ok;
 
         Callback(context, data, timestamp);
@@ -687,7 +687,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* use
     {
         DataField data;
 
-        bool ok = Field(*field).extract(data);
+        bool ok = FieldView(*field).extract(data);
         assert(ok); (void)ok;
 
         Callback(context, data, mip_field_descriptor_set(field), timestamp);
@@ -747,7 +747,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
     {
         DataField data;
 
-        bool ok = Field(*field).extract(data);
+        bool ok = FieldView(*field).extract(data);
         assert(ok); (void)ok;
 
         Object* obj = static_cast<Object*>(pointer);
@@ -808,7 +808,7 @@ void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* o
     {
         DataField data;
 
-        bool ok = Field(*field).extract(data);
+        bool ok = FieldView(*field).extract(data);
         assert(ok); (void)ok;
 
         Object* obj = static_cast<Object*>(pointer);
@@ -824,7 +824,7 @@ void Interface::registerExtractor(C::mip_dispatch_handler& handler, DataField* f
 {
     auto callback = [](void* pointer, const C::mip_field_view* field, Timestamp timestamp)
     {
-        Field(*field).extract( *static_cast<DataField*>(pointer) );
+        FieldView(*field).extract( *static_cast<DataField*>(pointer) );
     };
 
     registerFieldCallback(handler, descriptorSet, DataField::FIELD_DESCRIPTOR, callback, field);

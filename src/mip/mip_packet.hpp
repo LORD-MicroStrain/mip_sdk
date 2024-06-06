@@ -144,7 +144,7 @@ public:
     ///
     ///@returns A Field instance representing the first field (if any).
     ///
-    Field firstField() const { return Field(C::mip_field_first_from_packet(this)); }
+    FieldView firstField() const { return FieldView(C::mip_field_first_from_packet(this)); }
 
     ///@brief Adds a field of the given type to the packet.
     ///
@@ -206,7 +206,7 @@ public:
 
         /// Create an iterator given the first field to iterate in a packet.
         /// Technically this can be any field, not just the first field.
-        FieldIterator(const Field& first) : mField(first) {}
+        FieldIterator(const FieldView& first) : mField(first) {}
 
         /// Comparison between any two iterators.
         /// This works even for iterators over different packets, which will
@@ -225,13 +225,13 @@ public:
         bool operator!=(std::nullptr_t) const { return mField.isValid(); }
 
         /// Dereference the iterator as a Field instance.
-        const Field& operator*() const { return mField; }
+        const FieldView& operator*() const { return mField; }
 
         /// Advance to the next field.
         FieldIterator& operator++() { mField.next(); return *this; }
 
     private:
-        Field mField;
+        FieldView mField;
     };
 
 };

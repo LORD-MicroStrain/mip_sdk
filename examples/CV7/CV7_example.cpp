@@ -66,7 +66,7 @@ int usage(const char* argv0);
 void exit_gracefully(const char *message);
 bool should_exit();
 
-void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp timestamp);
+void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp timestamp);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Main Function
@@ -312,7 +312,7 @@ int main(int argc, const char* argv[])
 // Filter Event Source Field Handler
 ////////////////////////////////////////////////////////////////////////////////
 
-void handleFilterEventSource(void*, const mip::Field& field, mip::Timestamp timestamp)
+void handleFilterEventSource(void*, const mip::FieldView& field, mip::Timestamp timestamp)
 {
     mip::data_shared::EventSource data;
 

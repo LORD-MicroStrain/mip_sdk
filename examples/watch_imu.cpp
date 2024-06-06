@@ -26,13 +26,13 @@ void handlePacket(void*, const mip::PacketView& packet, mip::Timestamp timestamp
 
     printf("\nGot packet with descriptor set 0x%02X:", packet.descriptorSet());
 
-    for(mip::Field field : packet)
+    for(mip::FieldView field : packet)
         printf(" %02X", field.fieldDescriptor());
 
     printf("\n");
 }
 
-void handleAccel(void*, const mip::Field& field, mip::Timestamp timestamp)
+void handleAccel(void*, const mip::FieldView& field, mip::Timestamp timestamp)
 {
     mip::data_sensor::ScaledAccel data;
 
