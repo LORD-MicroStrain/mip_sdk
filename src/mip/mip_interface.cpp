@@ -33,7 +33,7 @@ namespace mip {
 ///
 ///@param device Device to configure.
 ///
-void connect_interface(mip::DeviceInterface& device, microstrain::Connection& conn)
+void connect_interface(mip::Interface& device, microstrain::Connection& conn)
 {
     using microstrain::Connection;
 

@@ -22,9 +22,9 @@ namespace mip
 ///@addtogroup mip_cpp
 ///@{
 
-class DeviceInterface;
+class Interface;
 
-void connect_interface(mip::DeviceInterface& dev, microstrain::Connection& conn);
+void connect_interface(mip::Interface& dev, microstrain::Connection& conn);
 
 
 
@@ -53,7 +53,7 @@ template<class Cmd> bool startCommand(C::mip_interface& device, C::mip_pending_c
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Represents a connected MIP device.
 ///
-class DeviceInterface : public C::mip_interface
+class Interface : public C::mip_interface
 {
 public:
     //
@@ -62,24 +62,24 @@ public:
 
     ///@copydoc mip::C::mip_interface_init
     /// The interface callbacks must be assigned separately (e.g. with Connection::connect_interface())
-    DeviceInterface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout)
+    Interface(uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout)
     {
         C::mip_interface_init(this, parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout, nullptr, nullptr, &C::mip_interface_default_update, nullptr);
     }
 
     ///@copydoc mip::C::mip_interface_init
     ///@param connection The connection object used to communicate with the device. This object must exist for the life of the DeviceInterface object
-    DeviceInterface(microstrain::Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
-        DeviceInterface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
+    Interface(microstrain::Connection* connection, uint8_t* parseBuffer, size_t parseBufferSize, Timeout parseTimeout, Timeout baseReplyTimeout) :
+        Interface(parseBuffer, parseBufferSize, parseTimeout, baseReplyTimeout)
     {
         if(connection)
             connect_interface(*this, *connection);
     }
 
-    DeviceInterface(const DeviceInterface&) = delete;
-    DeviceInterface& operator=(const DeviceInterface&) = delete;
+    Interface(const Interface&) = delete;
+    Interface& operator=(const Interface&) = delete;
 
-    ~DeviceInterface() = default;
+    ~Interface() = default;
 
     //
     // Callback functions
@@ -97,13 +97,13 @@ public:
 
     // free/nonmember function callbacks
 
-    template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
+    template<bool (*Send)(Interface&, const uint8_t*, size_t)>
     void setSendFunction();
 
-    template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+    template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
     void setRecvFunction();
 
-    template<bool (*Update)(DeviceInterface&, Timeout)>
+    template<bool (*Update)(Interface&, Timeout)>
     void setUpdateFunction();
 
     // derived member function callbacks
@@ -141,8 +141,8 @@ public:
     Parser&   parser()   { return *static_cast<Parser*>(C::mip_interface_parser(this)); }
     CmdQueue& cmdQueue() { return *static_cast<CmdQueue*>(C::mip_interface_cmd_queue(this)); }
 
-    const Parser&   parser()   const   { return const_cast<DeviceInterface*>(this)->parser(); }
-    const CmdQueue& cmdQueue() const { return const_cast<DeviceInterface*>(this)->cmdQueue(); }
+    const Parser&   parser()   const   { return const_cast<Interface*>(this)->parser(); }
+    const CmdQueue& cmdQueue() const { return const_cast<Interface*>(this)->cmdQueue(); }
 
     //
     // Communications
@@ -226,11 +226,11 @@ public:
 ///
 ///@tparam Send A compile-time pointer to the callback function.
 ///
-template<bool (*Send)(DeviceInterface&, const uint8_t*, size_t)>
-void DeviceInterface::setSendFunction()
+template<bool (*Send)(Interface&, const uint8_t*, size_t)>
+void Interface::setSendFunction()
 {
     setSendFunction([](C::mip_interface* device, const uint8_t* data, size_t length){
-        return (*Send)(*static_cast<DeviceInterface*>(device), data, length);
+        return (*Send)(*static_cast<Interface*>(device), data, length);
     });
 }
 
@@ -239,11 +239,11 @@ void DeviceInterface::setSendFunction()
 ///
 ///@tparam Send A compile-time pointer to the callback function.
 ///
-template<bool (*Recv)(DeviceInterface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
-void DeviceInterface::setRecvFunction()
+template<bool (*Recv)(Interface&, uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
+void Interface::setRecvFunction()
 {
     setRecvFunction([](C::mip_interface* device, uint8_t* buffer, size_t max_length, C::mip_timeout wait_time, size_t* length_out, C::mip_timestamp* timestamp_out){
-        return (*Recv)(*static_cast<DeviceInterface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
+        return (*Recv)(*static_cast<Interface*>(device), buffer, max_length, wait_time, length_out, timestamp_out);
     });
 }
 
@@ -252,11 +252,11 @@ void DeviceInterface::setRecvFunction()
 ///
 ///@tparam Send A compile-time pointer to the callback function.
 ///
-template<bool (*Update)(DeviceInterface&, Timeout)>
-void DeviceInterface::setUpdateFunction()
+template<bool (*Update)(Interface&, Timeout)>
+void Interface::setUpdateFunction()
 {
     setUpdateFunction([](C::mip_interface* device, C::mip_timeout wait_time){
-        return (*Update)(*static_cast<DeviceInterface*>(device), wait_time);
+        return (*Update)(*static_cast<Interface*>(device), wait_time);
     });
 }
 
@@ -283,7 +283,7 @@ void DeviceInterface::setUpdateFunction()
 ///
 
 template<class Derived, bool (Derived::*Send)(const uint8_t*, size_t)>
-void DeviceInterface::setSendFunction()
+void Interface::setSendFunction()
 {
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
@@ -304,7 +304,7 @@ void DeviceInterface::setSendFunction()
 ///@see DeviceInterface::setSendFunction()
 ///
 template<class Derived, bool (Derived::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*)>
-void DeviceInterface::setRecvFunction()
+void Interface::setRecvFunction()
 {
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
@@ -325,7 +325,7 @@ void DeviceInterface::setRecvFunction()
 ///@see DeviceInterface::setSendFunction()
 ///
 template<class Derived, bool (Derived::*Update)(Timeout)>
-void DeviceInterface::setUpdateFunction()
+void Interface::setUpdateFunction()
 {
     static_assert(std::is_base_of<C::mip_interface, Derived>::value, "Derived must be derived from C::mip_interface.");
 
@@ -381,7 +381,7 @@ template<
     bool (T::*Recv)(uint8_t*, size_t, Timeout, size_t*, Timestamp*),
     bool (T::*Update)(Timeout)
 >
-void DeviceInterface::setCallbacks(T* object)
+void Interface::setCallbacks(T* object)
 {
     auto send = [](C::mip_interface* device, const uint8_t* data, size_t size)
     {
@@ -440,7 +440,7 @@ void DeviceInterface::setCallbacks(T* object)
 ///@endcode
 ///
 template<void (*Callback)(void*, const PacketRef&, Timestamp)>
-void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
+void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, void* userData)
 {
     auto callback = [](void* context, const C::mip_packet* packet, Timestamp timestamp)
     {
@@ -482,7 +482,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///@endcode
 ///
 template<class Object, void (Object::*Callback)(const PacketRef&, Timestamp)>
-void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
+void Interface::registerPacketCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, bool afterFields, Object* object)
 {
     auto callback = [](void* pointer, const mip::C::mip_packet* packet, Timestamp timestamp)
     {
@@ -525,7 +525,7 @@ void DeviceInterface::registerPacketCallback(C::mip_dispatch_handler& handler, u
 ///@endcode
 ///
 template<void (*Callback)(void*, const Field&, Timestamp)>
-void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData)
+void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, void* userData)
 {
     auto callback = [](void* context, const C::mip_field* field, Timestamp timestamp)
     {
@@ -567,7 +567,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///@endcode
 ///
 template<class Object, void (Object::*Callback)(const Field&, Timestamp)>
-void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object)
+void Interface::registerFieldCallback(C::mip_dispatch_handler& handler, uint8_t descriptorSet, uint8_t fieldDescriptor, Object* object)
 {
     auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
     {
@@ -614,7 +614,7 @@ void DeviceInterface::registerFieldCallback(C::mip_dispatch_handler& handler, ui
 ///@endcode
 ///
 template<class DataField, void (*Callback)(void*, const DataField&, Timestamp)>
-void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
+void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
     if(descriptorSet == 0x00)
@@ -673,7 +673,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
 ///@endcode
 ///
 template<class DataField, void (*Callback)(void*, const DataField&, uint8_t, Timestamp)>
-void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
+void Interface::registerDataCallback(C::mip_dispatch_handler& handler, void* userData, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
     if(descriptorSet == 0x00)
@@ -733,7 +733,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, voi
 ///@endcode
 ///
 template<class DataField, class Object, void (Object::*Callback)(const DataField&, Timestamp)>
-void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
+void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
     if(descriptorSet == 0x00)
@@ -794,7 +794,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
 ///@endcode
 ///
 template<class DataField, class Object, void (Object::*Callback)(const DataField&, uint8_t, Timestamp)>
-void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
+void Interface::registerDataCallback(C::mip_dispatch_handler& handler, Object* object, uint8_t descriptorSet)
 {
     assert(descriptorSet != 0x00);
     if(descriptorSet == 0x00)
@@ -820,7 +820,7 @@ void DeviceInterface::registerDataCallback(C::mip_dispatch_handler& handler, Obj
 
 
 template<class DataField>
-void DeviceInterface::registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet)
+void Interface::registerExtractor(C::mip_dispatch_handler& handler, DataField* field, uint8_t descriptorSet)
 {
     auto callback = [](void* pointer, const C::mip_field* field, Timestamp timestamp)
     {

@@ -89,7 +89,7 @@ int main(int argc, const char* argv[])
     InputArguments input_arguments = parse_input_arguments(argc, argv);
 
     std::unique_ptr<ExampleUtils> utils = openFromArgs(input_arguments.mip_device_port_name, input_arguments.mip_device_baudrate, input_arguments.mip_binary_filepath);
-    std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+    std::unique_ptr<mip::Interface>& device = utils->device;
     
     //
     // Open uBlox serial port

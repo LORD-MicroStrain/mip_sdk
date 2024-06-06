@@ -46,7 +46,7 @@ void packet_callback(void*, const mip::PacketRef& packet, mip::Timestamp timesta
     numSamples = numSamples + 1;
 }
 
-void device_thread_loop(mip::DeviceInterface* device)
+void device_thread_loop(mip::Interface* device)
 {
     while(!stop)
     {
@@ -60,7 +60,7 @@ void device_thread_loop(mip::DeviceInterface* device)
     }
 }
 
-bool update_device(mip::DeviceInterface& device, mip::Timeout wait_time)
+bool update_device(mip::Interface& device, mip::Timeout wait_time)
 {
     if( wait_time > 0 )
         return device.defaultUpdate(wait_time);
@@ -82,7 +82,7 @@ int main(int argc, const char* argv[])
     try
     {
         std::unique_ptr<ExampleUtils> utils = handleCommonArgs(argc, argv);
-        std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+        std::unique_ptr<mip::Interface>& device = utils->device;
 
         // Disable all streaming channels.
         mip::commands_base::setIdle(*device);

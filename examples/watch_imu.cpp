@@ -59,7 +59,7 @@ void handleMag(void*, const mip::data_sensor::ScaledMag& data, mip::Timestamp ti
 }
 
 
-int run(mip::DeviceInterface& device)
+int run(mip::Interface& device)
 {
         mip::CmdResult result;
 

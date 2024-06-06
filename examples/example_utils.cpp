@@ -78,7 +78,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         example_utils->connection = std::make_unique<TcpConnection>(port_or_hostname, port);
 #endif  // MIP_USE_EXTRAS
 
-        example_utils->device = std::make_unique<mip::DeviceInterface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000);
+        example_utils->device = std::make_unique<mip::Interface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), 1000, 2000);
 #else  // MIP_USE_TCP
         throw std::runtime_error("This program was compiled without socket support. Recompile with -DMIP_USE_TCP=1");
 #endif // MIP_USE_TCP
@@ -100,7 +100,7 @@ std::unique_ptr<ExampleUtils> openFromArgs(const std::string& port_or_hostname, 
         example_utils->connection = std::make_unique<SerialConnection>(port_or_hostname, baud);
 #endif  // MIP_USE_EXTRAS
 
-        example_utils->device = std::make_unique<mip::DeviceInterface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500);
+        example_utils->device = std::make_unique<mip::Interface>(example_utils->connection.get(), example_utils->buffer, sizeof(example_utils->buffer), mip::C::mip_timeout_from_baudrate(baud), 500);
 #else  // MIP_USE_SERIAL
         throw std::runtime_error("This program was compiled without serial support. Recompile with -DMIP_USE_SERIAL=1.\n");
 #endif //MIP_USE_SERIAL

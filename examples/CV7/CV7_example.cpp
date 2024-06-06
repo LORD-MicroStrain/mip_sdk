@@ -86,7 +86,7 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-    std::unique_ptr<mip::DeviceInterface>& device = utils->device;
+    std::unique_ptr<mip::Interface>& device = utils->device;
 
     //
     //Ping the device (note: this is good to do to make sure the device is present)
