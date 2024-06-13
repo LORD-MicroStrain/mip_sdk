@@ -8,7 +8,7 @@
 #include "example_utils.hpp"
 
 
-#ifdef WIN32
+#ifdef _WIN32
     #define PORT_KEY "COM"
 #else
     #define PORT_KEY "/dev/"

@@ -76,7 +76,7 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
         return false;
 
     MIP_LOG_DEBUG("Opening serial port %s at %d\n", port_str, baudrate);
-#ifdef WIN32
+#ifdef _WIN32
     BOOL   ready;
     DCB    dcb;
 
@@ -260,7 +260,7 @@ bool serial_port_close(serial_port *port)
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
     //Close the serial port
     CloseHandle(port->handle);
 #else //Linux & Mac
@@ -280,7 +280,7 @@ bool serial_port_write(serial_port *port, const void *buffer, size_t num_bytes, 
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
     DWORD  local_bytes_written;
 
     //Call the windows write function
@@ -314,7 +314,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
     if(!serial_port_is_open(port))
         return false;
 
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
 
     uint32_t bytes_available = serial_port_read_count(port);
 
@@ -387,7 +387,7 @@ bool serial_port_read(serial_port *port, void *buffer, size_t num_bytes, int wai
 
 uint32_t serial_port_read_count(serial_port *port)
 {
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
     // Clear the last error, if any
     SetLastError(0);
 #endif
@@ -396,7 +396,7 @@ uint32_t serial_port_read_count(serial_port *port)
     if(!serial_port_is_open(port))
         return 0;
 
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
     COMSTAT com_status;
     DWORD   errors;
 
@@ -418,7 +418,7 @@ uint32_t serial_port_read_count(serial_port *port)
 
 bool serial_port_is_open(const serial_port *port)
 {
-#ifdef WIN32
+#ifdef _WIN32
     return port->handle != INVALID_HANDLE_VALUE;
 #else
     return port->handle >= 0;
