@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -32,7 +32,7 @@ extern "C" {
 
 typedef struct tcp_socket
 {
-#ifdef WIN32
+#ifdef _WIN32
     SOCKET handle;
 #else
     int handle;

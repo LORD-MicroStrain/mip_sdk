@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -39,7 +39,7 @@ extern "C" {
 
 typedef struct serial_port
 {
-#ifdef WIN32 //Windows
+#ifdef _WIN32 //Windows
     HANDLE handle;
 #else //Linux
     int handle;

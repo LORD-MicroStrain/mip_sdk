@@ -68,7 +68,7 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
         if( connect(socket_ptr->handle, addr->ai_addr, addr->ai_addrlen) == 0 )
             break;
 
-#ifdef WIN32
+#ifdef _WIN32
         closesocket(socket_ptr->handle);
 #else
         close(socket_ptr->handle);
@@ -81,7 +81,7 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
     if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
-#ifdef WIN32
+#ifdef _WIN32
     if( setsockopt(socket_ptr->handle, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout_ms, sizeof(timeout_ms)) != 0 )
         return false;
 
@@ -104,7 +104,7 @@ static bool tcp_socket_open_common(tcp_socket* socket_ptr, const char* hostname,
 
 bool tcp_socket_open(tcp_socket* socket_ptr, const char* hostname, uint16_t port, unsigned int timeout_ms)
 {
-#ifdef WIN32
+#ifdef _WIN32
 
     // Initialize winsock for each connection since there's no global init function.
     // This is safe to do multiple times, as long as it's shutdown the same number of times.
@@ -126,7 +126,7 @@ bool tcp_socket_close(tcp_socket* socket_ptr)
     if( socket_ptr->handle == INVALID_SOCKET )
         return false;
 
-#ifdef WIN32
+#ifdef _WIN32
     closesocket(socket_ptr->handle);
     WSACleanup(); // See tcp_socket_open
 #else
@@ -156,7 +156,7 @@ bool tcp_socket_recv(tcp_socket* socket_ptr, void* buffer, size_t num_bytes, siz
 
     if( local_bytes_read < 0 )
     {
-#ifdef WIN32
+#ifdef _WIN32
         return false;
 #else
         if(errno != EAGAIN && errno != EWOULDBLOCK)

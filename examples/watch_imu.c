@@ -23,7 +23,7 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #else
 #include <unistd.h>
 #include <fcntl.h>
@@ -228,7 +228,7 @@ int main(int argc, const char* argv[])
     // Process data for 3 seconds.
     for(unsigned int i=0; i<30; i++)
     {
-#ifdef WIN32
+#ifdef _WIN32
 #else
         usleep(100000);
 #endif
