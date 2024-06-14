@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 project(
     "MIP SDK"
-    VERSION "2.0.00"
+    VERSION "3.0.00"
     DESCRIPTION "MicroStrain Communications Library for embedded systems"
     LANGUAGES C CXX
 )
@@ -68,21 +68,42 @@ endif()
 
 # Generate the version header file
 set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
-set(VERSION_OUT_FILE "${MIP_DIR}/mip_version.h")
+set(VERSION_OUT_FILE "${CMAKE_CURRENT_LIST_DIR}/src/c/mip/mip_version.h")
 configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 
 #
 # Build options
 #
 
+option(MICROSTRAIN_CPP "Enables the C++ API. Turn off to avoid compiling the C++ API." ON)
+option(MICROSTRAIN_CPP_C_NAMESPACE "Wraps the C api in a C++ namespace to avoid global namespace pollution (e.g. microstrain::C::microstrain_serial_port)" ${MICROSTRAIN_CPP})
+option(MICROSTRAIN_CMAKE_DEBUG "If set, prints build system debug info such as source files and preprocessor definitions." ON)  # TODO: off by default
+
 option(MIP_USE_EXTRAS "Build extra support into the library including some things that might work at a higher level and use dynamically allocated memory" ON)
 
 option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 
 
+# Suppress warnings due to adding files with target_sources.
+cmake_policy(SET CMP0076 NEW)
 
-add_subdirectory(src/microstrain)
-add_subdirectory(src/mip)
+include_directories(src/c)
+if(MICROSTRAIN_CPP)
+    include_directories(src/cpp)
+endif()
+
+# Add all the C files (required even for C++ API)
+add_subdirectory(src/c/microstrain)
+add_subdirectory(src/c/mip)
+
+# Add all the C++ files (if C++ enabled)
+if(MICROSTRAIN_CPP)
+    add_subdirectory(src/cpp/microstrain)
+    add_subdirectory(src/cpp/mip)
+
+    #target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_CPP=1")
+    target_compile_definitions(microstrain_common PUBLIC "MICROSTRAIN_CPP_C_NAMESPACE=${MICROSTRAIN_CPP_C_NAMESPACE}")
+endif()
 
 
 if(MIP_USE_EXTRAS)

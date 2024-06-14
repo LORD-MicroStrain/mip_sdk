@@ -5,4 +5,4 @@ int/
 .idea/
 .vs/
 
-src/mip/mip_version.h
+src/c/mip/mip_version.h
