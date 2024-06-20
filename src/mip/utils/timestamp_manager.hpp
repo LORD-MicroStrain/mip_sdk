@@ -24,16 +24,15 @@ using Hours = std::chrono::hours;
 
 namespace mip
 {
-    /// -----------------------------------------------------
-    /// Legend:
-    /// -----------------------------------------------------
-    /// T --> Arithmetic type
-    /// D --> Duration (currently std::chrono::duration only)
-    /// -----------------------------------------------------
-    
-
     // TODO: Update documentation.
+
     /// Manages a timestamp that increments based on an underlying time system.
+    ///
+    /// Legend:
+    /// ---------------------------------------------------------------------------------
+    ///     * T --> Arithmetic type
+    ///     * D --> Duration (currently std::chrono::duration only)
+    /// ---------------------------------------------------------------------------------
     ///
     /// Notes:
     /// ---------------------------------------------------------------------------------
@@ -49,10 +48,11 @@ namespace mip
         /// Synchronizes timestamp to the current time in the underlying time system.
         void synchronize();
 
-        /// Returns time since epoch.
+        /// Returns time since epoch in duration form.
         template<typename D> D getTimestamp();
-        Nanoseconds getTimestamp();
-        /// Returns time elapsed since the start of the current week of the timestamp.
+        template<> Nanoseconds getTimestamp();
+
+        /// Returns time elapsed since the start of the current week (of the timestamp).
         ///
         /// Example usage:
         ///     // Get time of week in the same duration unit as the input timestamp.
@@ -150,6 +150,8 @@ namespace mip
     private:
         Nanoseconds m_timestamp{0};
     };
+    
+    // TODO: Add static synchronizer function.
 
 
     /**************************************************************************************/
@@ -204,13 +206,12 @@ namespace mip
         timestamp = duration_cast<DIn>(duration_cast<Weeks>(timestamp) + DTimeSet(time));
     }
 
-    template<typename D> 
-    inline D TimestampManager::getTimestamp()
+    template<typename D> inline D TimestampManager::getTimestamp()
     {
         return duration_cast<D>(m_timestamp);
     }
 
-    inline Nanoseconds TimestampManager::getTimestamp()
+    template<> inline Nanoseconds TimestampManager::getTimestamp()
     {
         return m_timestamp;
     }
