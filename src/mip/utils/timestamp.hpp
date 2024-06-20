@@ -81,7 +81,6 @@ namespace mip
     ///     bool changed1 = timeChanged<Seconds>(timestamp1, timestamp2);
     ///     bool changed2 = timeChanged<Seconds>(timestamp2, timestamp1);
     ///     // ---> changed1 is true.
-    ///     // ---> changed2 is also true. Comparison works both ways!
     ///
     ///     // Timestamps are different by more than one nanosecond.
     ///     Seconds timestamp1{2}; // 2,000,000,000 nanoseconds
