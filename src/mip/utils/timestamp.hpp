@@ -53,7 +53,7 @@ namespace mip
         Nanoseconds getTimestamp();
 
     private:
-        Nanoseconds m_timestamp{0}; 
+        Nanoseconds m_timestamp{0};
     };
 
     /// Returns time elapsed since the start of the current week of the timestamp.
