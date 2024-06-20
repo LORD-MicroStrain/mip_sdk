@@ -68,23 +68,3 @@ struct UnionConditionalParameter : Parameter<T>
 //}
 
 } // namespace mip
-
-
-// These functions must be in the microstrain namespace in order to be seen as overloads.
-namespace microstrain
-{
-
-// Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-template<class T>
-typename std::enable_if<std::is_class<T>::value, size_t>::type  // todo: only MIP structs/fields
-/*size_t*/ insert(microstrain::Serializer& serializer, const T& value)
-{
-    //return value.serialize(buffer);
-    auto values = value.as_tuple();
-
-    return std::apply([](auto... args){
-        return mip::serialize_parameters<T>(args...);
-    }, values);
-}
-
-} // namespace microstrain

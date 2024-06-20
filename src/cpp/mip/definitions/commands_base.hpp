@@ -3,6 +3,7 @@
 #include "common.hpp"
 #include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
+#include <mip/mip_metadata.hpp>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -210,7 +211,7 @@ struct Ping
     
     static constexpr const bool HAS_FUNCTION_SELECTOR = false;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-    
+
     auto as_tuple() const
     {
         return std::make_tuple();
@@ -220,6 +221,12 @@ struct Ping
     {
         return std::make_tuple();
     }
+
+    static constexpr inline ParameterInfo PARAMETERS[] = {};
+
+    auto asTuple() const { return as_tuple(); }
+    auto asTuple() { return as_tuple(); }
+
     typedef void Response;
 };
 void insert(::microstrain::Serializer& serializer, const Ping& self);
@@ -260,6 +267,11 @@ struct SetIdle
     {
         return std::make_tuple();
     }
+    static constexpr inline ParameterInfo PARAMETERS[] = {};
+
+    auto asTuple() const { return as_tuple(); }
+    auto asTuple() { return as_tuple(); }
+
     typedef void Response;
 };
 void insert(::microstrain::Serializer& serializer, const SetIdle& self);
@@ -297,6 +309,12 @@ struct GetDeviceInfo
     {
         return std::make_tuple();
     }
+
+    static constexpr inline ParameterInfo PARAMETERS[] = {};
+
+    auto asTuple() const { return as_tuple(); }
+    auto asTuple() { return as_tuple(); }
+
     struct Response
     {
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
@@ -357,6 +375,11 @@ struct GetDeviceDescriptors
     {
         return std::make_tuple();
     }
+    static constexpr inline ParameterInfo PARAMETERS[] = {};
+
+    auto asTuple() const { return as_tuple(); }
+    auto asTuple() { return as_tuple(); }
+
     struct Response
     {
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;

@@ -189,6 +189,19 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     return sizeof(BaseType);
 }
 
+// std::tuple
+template<class... Ts>
+size_t insert(Serializer& serializer, const std::tuple<Ts...>& values)
+{
+    auto lambda = [&serializer](const auto&... args) {
+        return insert(serializer, args...);
+    };
+
+    return std::apply(lambda, values);
+}
+
+
+// Multiple values at once
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
 typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
@@ -263,6 +276,16 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
     return sizeof(BaseType);
 }
 
+// std::tuple of references
+template<class... Ts>
+size_t extract(Serializer& serializer, const std::tuple<std::reference_wrapper<Ts>...>& values)
+{
+    auto lambda = [&serializer](auto&... args) {
+        return extract(serializer, args...);
+    };
+
+    return std::apply(lambda, values);
+}
 // // Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
 // template<class T>
 // typename std::enable_if<std::is_class<T>::value, size_t>::type
