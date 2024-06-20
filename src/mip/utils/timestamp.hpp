@@ -53,7 +53,7 @@ namespace mip
         Nanoseconds getTimestamp();
 
     private:
-        Nanoseconds timestamp{0}; 
+        Nanoseconds m_timestamp{0}; 
     };
 
     /// Returns time elapsed since the start of the current week of the timestamp.
@@ -210,11 +210,11 @@ namespace mip
     template<typename D> 
     inline D TimestampState::getTimestamp()
     {
-        return duration_cast<D>(timestamp);
+        return duration_cast<D>(m_timestamp);
     }
 
     inline Nanoseconds TimestampState::getTimestamp()
     {
-        return timestamp;
+        return m_timestamp;
     }
 }// namespace mip

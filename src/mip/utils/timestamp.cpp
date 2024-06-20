@@ -12,7 +12,7 @@ namespace mip
         static constexpr short leap = 18; 
         static constexpr int epoch_gap = 315964800; 
         auto now_unix = std::chrono::system_clock::now().time_since_epoch();
-        timestamp = (now_unix - Seconds{epoch_gap}) + Seconds{leap};
+        m_timestamp = (now_unix - Seconds{epoch_gap}) + Seconds{leap};
     #else
         // Auto GPS timestamp calculator (preferred). Not supported on all OSes.
         auto now_gps = std::chrono::gps_clock::now().time_since_epoch();
