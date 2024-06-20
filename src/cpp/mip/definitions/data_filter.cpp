@@ -2,7 +2,7 @@
 #include "data_filter.hpp"
 
 #include "microstrain/common/serialization.hpp"
-#include "../mip_interface.h"
+#include "../mip_interface.hpp"
 
 #include <assert.h>
 

@@ -26,4 +26,4 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C++ definitions = ${MIPDEF_SOURCES}")
 endif()
 
-target_sources(mip PUBLIC ${MIP_SOURCES})
+target_sources(mip PUBLIC ${MIPDEF_SOURCES})

@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 #include "mip/mip_descriptors.hpp"
-#include "../mip_result.h"
+#include "../mip_result.hpp"
 
 #include <stdint.h>
 #include <stddef.h>
