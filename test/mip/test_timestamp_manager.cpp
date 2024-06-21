@@ -1,35 +1,31 @@
+#include <array>
+#include <limits>
+
 #include <mip/utils/timestamp_manager.hpp>
 
 #define SUCCESS    0
 #define FAIL       1
 #define START_TIME 123456789
 
-mip::TimestampManager setUp()
-{
-    return mip::TimestampManager(START_TIME);
-}
 
-bool testGetTimestampBase() 
+bool testGetTimestamp() 
 {
-    mip::TimestampManager timestamp = setUp();
-    Nanoseconds raw_timestamp = timestamp.getTimestamp();
-    if (timestamp.getTimestamp() != Nanoseconds(START_TIME))
+    std::array<long long, 3> test_values{0, START_TIME, std::numeric_limits<long long>::max()};
+    for (long long &value : test_values)
     {
-        return false;
+        mip::TimestampManager timestamp(value);
+        if (timestamp.getTimestamp() != Nanoseconds(value))
+        {
+            return false;
+        }
     }
-
-    return true;    
-}
-
-bool testGetTimestampTemplate()
-{
+    
     return true;
 }
 
 int main(int argc, const char* argv[])
 {
-    if (!testGetTimestampBase()    ) { return FAIL; }
-    if (!testGetTimestampTemplate()) { return FAIL; }
+    if (!testGetTimestamp()) { return FAIL; }
 
     return SUCCESS;
 }
