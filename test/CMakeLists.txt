@@ -15,13 +15,12 @@ macro(add_mip_test name sources command)
 
 endmacro()
 
-# NOTE: The commented out tests are failing/stalling.
-# add_mip_test(TestMipPacketBuilding "${TEST_DIR}/mip/test_mip_packet_builder.c" TestMipPacketBuilding)
+add_mip_test(TestMipPacketBuilding "${TEST_DIR}/mip/test_mip_packet_builder.c" TestMipPacketBuilding)
 add_mip_test(TestMipParsing        "${TEST_DIR}/mip/test_mip_parser.c" TestMipParsing "${TEST_DIR}/data/mip_data.bin")
 add_mip_test(TestMipRandom         "${TEST_DIR}/mip/test_mip_random.c" TestMipRandom)
 add_mip_test(TestMipFields         "${TEST_DIR}/mip/test_mip_fields.c" TestMipFields)
 add_mip_test(TestMipCpp            "${TEST_DIR}/mip/test_mip.cpp" TestMipCpp)
-# add_mip_test(TestMipPerf           "${TEST_DIR}/mip/mip_parser_performance.cpp" TestMipPerf)
+add_mip_test(TestMipPerf           "${TEST_DIR}/mip/mip_parser_performance.cpp" TestMipPerf)
 add_mip_test(TestTimestampManager  "${TEST_DIR}/mip/test_timestamp_manager.cpp" TestTimestampManager)
 
 if(WITH_SERIAL)
