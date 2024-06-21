@@ -23,22 +23,20 @@ template<typename ActualOutput, typename ExpectedOutput>
 }
 
 template<typename DurationActual, typename DurationExpected>
-    bool testCase(const char* name, DurationActual actual, DurationExpected expected)
+    bool testCase(std::string name, DurationActual actual, DurationExpected expected)
 {
-    if (actual != expected)
+    const std::type_info& actual_type = typeid(actual);
+    const std::type_info& expected_type = typeid(expected);
+    
+    if (actual_type != expected_type)
     {
-        outputCaseResults(name, actual.count(), expected.count());
+        outputCaseResults((name + "-type").c_str(), actual_type.name(), expected_type.name());
         return false;
     }
-    
-    return true;
-}
 
-bool testCase(const char* name, const std::type_info& actual, const std::type_info& expected)
-{
     if (actual != expected)
     {
-        outputCaseResults(name, actual.name(), expected.name());
+        outputCaseResults((name + "-value").c_str(), actual.count(), expected.count());
         return false;
     }
     
@@ -52,28 +50,15 @@ bool testGetTimestamp()
     {
         mip::TimestampManager timestamp(value);
 
-        auto actual_base = timestamp.getTimestamp();
-        if (!testCase("GetTimestamp-base-type", typeid(actual_base), typeid(mip::Nanoseconds)))
-        {
-            return false;
-        }
-        if (!testCase("GetTimestamp-base-value", actual_base, mip::Nanoseconds(value)))
+        if (!testCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
         {
             return false;
         }
 
-        if (typeid(timestamp.getTimestamp<mip::Seconds>()) != typeid(mip::Seconds))
+        if (!testCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(value)))
         {
-            printf("Template function type check failed.\n");
-            return false;
+            return false;            
         }
-        
-        // if (timestamp.getTimestamp<mip::Seconds>() != mip::Seconds(value)) 
-        // {
-        //     // TODO: Figure out why this is failing.
-        //     printf("Template function value check failed.\n");
-        //     return false;
-        // }
     }
     
     return true;
