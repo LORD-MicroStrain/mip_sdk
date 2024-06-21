@@ -200,6 +200,14 @@ size_t insert(Serializer& serializer, const std::tuple<Ts...>& values)
     return std::apply(lambda, values);
 }
 
+// Raw buffer
+template<class T>
+bool insert(const T& value, uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=true)
+{
+    Serializer serializer(buffer, buffer_length, offset);
+    serializer.insert(value);
+    return exact_size ? serializer.noRemaining() : serializer.isOk();
+}
 
 // Multiple values at once
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
@@ -293,6 +301,15 @@ size_t extract(Serializer& serializer, const std::tuple<std::reference_wrapper<T
 // {
 //     return value.deserialize(buffer);
 // }
+
+// Raw buffer
+template<class T>
+bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=true)
+{
+    Serializer serializer(buffer, buffer_length, offset);
+    extract(serializer, value);
+    return exact_size ? serializer.noRemaining() : serializer.isOk();
+}
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <microstrain/common/platform.hpp>
+#include <span>
 
 #include "mip_descriptors.hpp"
 
@@ -66,15 +67,16 @@ struct ParameterInfo
     uint16_t    union_value = 0;
 };
 
+
+
 struct FieldStruct
 {
     //static_assert(std::is_base_of<FieldStruct<T>, T>::value, "T must inherit from FieldStruct<T>");
 
 private:
-    // No direct instantiation or destruction,
+    // No direct instantiation,
     // this class must be inherited.
     FieldStruct() = default;
-    ~FieldStruct() = default;
 };
 
 template<class T>
@@ -83,7 +85,7 @@ using isField = std::is_base_of<FieldStruct, T>;
 
 struct Example : public FieldStruct
 {
-    static constexpr inline ParameterInfo PARAMETERS[] = {
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
         {
             /*.type        = */ ParameterInfo::Type::BOOL,
             /*.name        = */ "Enable",
@@ -110,21 +112,3 @@ struct Example : public FieldStruct
 
 
 } // namespace mip
-
-#include <microstrain/common/serialization.hpp>
-
-// These functions must be in the microstrain namespace in order to be seen as overloads.
-namespace microstrain
-{
-
-template<class T>
-std::enable_if<mip::isField<T>::value, size_t>::type
-/*size_t*/ insert(microstrain::Serializer& serializer, const T& field)
-{
-    //static_assert(std::is_base_of<mip::FieldStruct<T>, T>::value, "T doesn't derive from FieldStruct");
-
-    return insert(serializer, static_cast<const T&>(field).asTuple());
-}
-
-
-} // namespace microstrain

@@ -68,7 +68,7 @@ endif()
 
 # Generate the version header file
 set(VERSION_IN_FILE "${MIP_CMAKE_DIR}/mip_version.h.in")
-set(VERSION_OUT_FILE "${CMAKE_CURRENT_LIST_DIR}/src/c/mip/mip_version.h")
+set(VERSION_OUT_FILE "${SRC_DIR}/c/mip/mip_version.h")
 configure_file(${VERSION_IN_FILE} ${VERSION_OUT_FILE})
 
 #

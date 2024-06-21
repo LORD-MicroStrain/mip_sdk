@@ -222,7 +222,7 @@ struct Ping
         return std::make_tuple();
     }
 
-    static constexpr inline ParameterInfo PARAMETERS[] = {};
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -267,7 +267,7 @@ struct SetIdle
     {
         return std::make_tuple();
     }
-    static constexpr inline ParameterInfo PARAMETERS[] = {};
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -310,7 +310,7 @@ struct GetDeviceInfo
         return std::make_tuple();
     }
 
-    static constexpr inline ParameterInfo PARAMETERS[] = {};
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -375,7 +375,7 @@ struct GetDeviceDescriptors
     {
         return std::make_tuple();
     }
-    static constexpr inline ParameterInfo PARAMETERS[] = {};
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -670,7 +670,26 @@ struct CommSpeed
     static constexpr const uint32_t DEFAULT_PARAMS = 0x8001;
     static constexpr const uint32_t ECHOED_PARAMS  = 0x0001;
     static constexpr const uint32_t COUNTER_PARAMS = 0x00000000;
-    
+
+    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
+        {
+            ParameterInfo::Type::U8,
+            "port",
+            "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",
+            1,
+            {true, true, true, true, true},
+            1,
+        },
+        {
+            ParameterInfo::Type::U32,
+            "baud",
+            "Port baud rate. Must be a supported rate.",
+            2,
+            {true,false,false,false,false},
+            1,
+        },
+    };
+
     auto as_tuple() const
     {
         return std::make_tuple(port,baud);
@@ -680,7 +699,7 @@ struct CommSpeed
     {
         return std::make_tuple(std::ref(port),std::ref(baud));
     }
-    
+
     static CommSpeed create_sld_all(::mip::FunctionSelector function)
     {
         CommSpeed cmd;
@@ -688,7 +707,10 @@ struct CommSpeed
         cmd.port = 0;
         return cmd;
     }
-    
+
+    auto asTuple() const { return as_tuple(); }
+    auto asTuple() { return as_tuple(); }
+
     struct Response
     {
         static constexpr const uint8_t DESCRIPTOR_SET = ::mip::commands_base::DESCRIPTOR_SET;
