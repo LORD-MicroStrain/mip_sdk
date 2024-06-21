@@ -41,9 +41,15 @@ bool testGetTimestamp()
     return true;
 }
 
+bool testGetTimeOfWeek()
+{
+    return true;
+}
+
 int main(int argc, const char* argv[])
 {
-    if (!testGetTimestamp()) { return fail; }
+    if (!testGetTimestamp() ) { return fail; }
+    if (!testGetTimeOfWeek()) { return fail; }
 
     return success;
 }

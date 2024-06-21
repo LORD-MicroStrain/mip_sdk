@@ -55,17 +55,7 @@ namespace mip
         Nanoseconds getTimestamp();
 
         /// Returns time elapsed since the start of the current week (of the timestamp).
-        ///
-        /// Example usage:
-        ///     // Get time of week in the same duration unit as the input timestamp.
-        ///     Nanoseconds timestamp{2000000000};
-        ///     Nanoseconds same_out = getTimeOfWeek(timestamp);
-        ///
-        ///     // Get time of week in a different duration unit from the input timestamp.
-        ///     Nanoseconds timestamp{2000000000};
-        ///     Seconds diff_out = getTimeOfWeek(duration_cast<Seconds>(timestamp));
-        template<typename D> 
-        D getTimeOfWeek(const D &timestamp);
+        template<typename Duration> Duration getTimeOfWeek();
 
         /// Returns whether two timestamps have diverged from each other.
         ///
@@ -171,12 +161,14 @@ namespace mip
         return m_timestamp;
     }
 
-    template<typename D> 
-    inline D TimestampManager::getTimeOfWeek(const D &timestamp)
+    template<typename Duration> inline Duration TimestampManager::getTimeOfWeek()
     {
-        if (timestamp <= Weeks{1}) {return timestamp;}
+        if (m_timestamp <= Weeks(1)) 
+        {
+            return getTimestamp<Duration>();
+        }
 
-        return timestamp - duration_cast<Weeks>(timestamp);
+        return m_timestamp - duration_cast<Weeks>(m_timestamp);
     }
 
     template<typename DCompare, typename D1, typename D2> 
