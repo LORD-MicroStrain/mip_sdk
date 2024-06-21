@@ -1,5 +1,8 @@
 #include <array>
 #include <limits>
+#include <memory>
+#include <tuple>
+#include <typeinfo>
 
 #include <mip/utils/timestamp_manager.hpp>
 
@@ -14,8 +17,28 @@ bool testGetTimestamp()
     for (long long &value : test_values)
     {
         mip::TimestampManager timestamp(value);
+        if (typeid(timestamp.getTimestamp()) != typeid(Nanoseconds))
+        {
+            printf("Base function type check failed.\n");
+            return false;
+        }
+
         if (timestamp.getTimestamp() != Nanoseconds(value))
         {
+            printf("Base function value check failed.\n");
+            return false;
+        }
+
+        if (typeid(timestamp.getTimestamp<Seconds>()) != typeid(Seconds))
+        {
+            printf("Template function type check failed.\n");
+            return false;
+        }
+        
+        if (timestamp.getTimestamp<Seconds>() != Seconds(value)) 
+        {
+            // TODO: Figure out why this is failing.
+            printf("Template function value check failed.\n");
             return false;
         }
     }
