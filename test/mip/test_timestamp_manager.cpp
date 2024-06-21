@@ -12,18 +12,33 @@
 #define START_TIME 123456789
 
 
-template<typename DurationActual, typename DurationExpected>
-    bool typeTestCase(const char* name, DurationActual actual, DurationExpected expected)
+// TODO: Organize
+template<typename ActualOutput, typename ExpectedOutput>
+    void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected)
 {
-    const std::type_info& actual_type = typeid(actual);
-    const std::type_info& expected_type = typeid(expected);
+    std::cout << 
+        "Failed: " << case_name << "\n" << 
+        "    ---> Actual: " << actual << "\n" <<
+        "    ---> Expected: " << expected << "\n";
+}
 
-    if (actual_type != expected_type)
+template<typename DurationActual, typename DurationExpected>
+    bool testCase(const char* name, DurationActual actual, DurationExpected expected)
+{
+    if (actual != expected)
     {
-        std::cout << 
-            name << " failed:\n" << 
-            "    ---> Actual: " << actual_type.name() << "\n" <<
-            "    ---> Expected: " << expected_type.name() << "\n";
+        outputCaseResults(name, actual.count(), expected.count());
+        return false;
+    }
+    
+    return true;
+}
+
+bool testCase(const char* name, const std::type_info& actual, const std::type_info& expected)
+{
+    if (actual != expected)
+    {
+        outputCaseResults(name, actual.name(), expected.name());
         return false;
     }
     
@@ -36,22 +51,16 @@ bool testGetTimestamp()
     for (long long &value : test_values)
     {
         mip::TimestampManager timestamp(value);
-        
-        if (!typeTestCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds()))
+
+        auto actual_base = timestamp.getTimestamp();
+        if (!testCase("GetTimestamp-base-type", typeid(actual_base), typeid(mip::Nanoseconds)))
         {
             return false;
         }
-
-        // const auto actual = timestamp.getTimestamp();
-        // const mip::Nanoseconds expected = mip::Nanoseconds(value+1);
-        // if (actual != expected)
-        // {
-        //     std::cout << 
-        //         "Base function value test failed:\n" << 
-        //         "\tActual: " << actual.count() << "\n" <<
-        //         "\tExpected: " << expected.count() << "\n";
-        //     return false;
-        // }
+        if (!testCase("GetTimestamp-base-value", actual_base, mip::Nanoseconds(value)))
+        {
+            return false;
+        }
 
         if (typeid(timestamp.getTimestamp<mip::Seconds>()) != typeid(mip::Seconds))
         {
