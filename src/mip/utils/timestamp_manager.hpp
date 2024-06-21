@@ -44,13 +44,14 @@ namespace mip
     {
     public:
         TimestampManager() {}
+        TimestampManager(long long start_time) : m_timestamp(Nanoseconds(start_time)) {}
 
         /// Synchronizes timestamp to the current time in the underlying time system.
         void synchronize();
 
         /// Returns time since epoch in duration form.
         template<typename D> D getTimestamp();
-        template<> Nanoseconds getTimestamp();
+        Nanoseconds getTimestamp();
 
         /// Returns time elapsed since the start of the current week (of the timestamp).
         ///
@@ -211,7 +212,7 @@ namespace mip
         return duration_cast<D>(m_timestamp);
     }
 
-    template<> inline Nanoseconds TimestampManager::getTimestamp()
+    inline Nanoseconds TimestampManager::getTimestamp()
     {
         return m_timestamp;
     }
