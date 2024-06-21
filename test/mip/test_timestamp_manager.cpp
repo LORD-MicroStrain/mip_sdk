@@ -9,7 +9,7 @@
 
 #define SUCCESS    0
 #define FAIL       1
-#define START_TIME 123456789
+constexpr long long start_time = 9000000000;
 
 
 // TODO: Organize
@@ -43,9 +43,14 @@ template<typename DurationActual, typename DurationExpected>
     return true;
 }
 
+mip::Seconds toSeconds(long long nanoseconds)
+{
+    return mip::Seconds(nanoseconds / 1000000000);
+}
+
 bool testGetTimestamp() 
 {
-    std::array<long long, 3> test_values{0, START_TIME, std::numeric_limits<long long>::max()};
+    std::array<long long, 3> test_values{0, start_time, std::numeric_limits<long long>::max()};
     for (long long &value : test_values)
     {
         mip::TimestampManager timestamp(value);
@@ -54,8 +59,8 @@ bool testGetTimestamp()
         {
             return false;
         }
-
-        if (!testCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(value)))
+        
+        if (!testCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), toSeconds(value)))
         {
             return false;            
         }
