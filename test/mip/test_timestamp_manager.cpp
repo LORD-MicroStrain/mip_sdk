@@ -11,6 +11,7 @@ constexpr long long min_nanoseconds = 0;
 constexpr long long max_nanoseconds = std::numeric_limits<long long>::max();
 constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr long long seconds_in_week = 604800;
+constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_week;
 
 
 /** Misc. Utilities *********************************************************************/
@@ -55,16 +56,19 @@ template<typename ActualOutput, typename ExpectedOutput>
 bool testGetTimestamp()
 {
     static long long test_time = toNanoseconds(seconds_in_week) + toNanoseconds(500);
-    for (long long &value : std::array<long long, 3>{min_nanoseconds, test_time, max_nanoseconds})
+
+    for (auto &value : std::array<long long, 3>{min_nanoseconds, test_time, max_nanoseconds})
     {
         mip::TimestampManager timestamp(value);
 
-        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
+        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), 
+            mip::Nanoseconds(value)))
         {
             return false;
         }
         
-        if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(toSeconds(value))))
+        if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), 
+            mip::Seconds(toSeconds(value))))
         {
             return false;            
         }
@@ -75,22 +79,25 @@ bool testGetTimestamp()
 
 bool testGetTimeOfWeek() 
 {
-    constexpr long long test_time = (long long)seconds_in_week * nanoseconds_in_second + (500 * nanoseconds_in_second);
+    static long long test_time = toNanoseconds(seconds_in_week) - toNanoseconds(500);
+    static long long test_time2 = toNanoseconds(seconds_in_week) + toNanoseconds(500);
 
-    for (long long &value : std::array<long long, 3>{0, test_time, std::numeric_limits<long long>::max()})
+    for (auto &value : std::array<long long, 4>{min_nanoseconds, test_time, test_time2, max_nanoseconds})
     {
         mip::TimestampManager timestamp(value);
+        long long time_of_week = value % nanoseconds_in_week;
 
-        // TODO: Update
-        // if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value % test_time)))
-        // {
-        //     return false;
-        // }
+        if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
+            mip::Nanoseconds(time_of_week)))
+        {
+            return false;
+        }
 
-        // if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value % test_time)))
-        // {
-        //     return false;
-        // }
+        if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), 
+            mip::Seconds(toSeconds(time_of_week))))
+        {
+            return false;
+        }
     }
     
     return true;
@@ -102,7 +109,7 @@ int main(int argc, const char* argv[])
     static constexpr short fail = 1;
 
     if (!testGetTimestamp() ) { return fail; }
-    // if (!testGetTimeOfWeek()) { return fail; }
+    if (!testGetTimeOfWeek()) { return fail; }
 
     return success;
 }
