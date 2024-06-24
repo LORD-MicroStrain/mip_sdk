@@ -25,6 +25,8 @@ namespace mip
 #endif // _HAS_CXX20
 
     // TODO: Update documentation.
+    enum class TimeSystem {GPS};
+        
 
     /// Manages a timestamp that increments based on an underlying time system.
     ///
@@ -42,7 +44,8 @@ namespace mip
         TimestampManager(long long start_time);
 
         /// Synchronizes timestamp to the current time in the underlying time system.
-        void synchronize();
+        void synchronizeGPS();
+        // TODO: Add other time system sync functions.
 
         /// Returns time since epoch.
         template<typename Duration> Duration getTimestamp();
@@ -138,8 +141,6 @@ namespace mip
         Nanoseconds m_timestamp{0};
     };
     
-    // TODO: Add static synchronizer function.
-
 
     /**************************************************************************************/
     /* NOTE: The following are definitions for all template declarations above. There are */

@@ -10,7 +10,7 @@ namespace mip
         }
     }
 
-    void TimestampManager::synchronize()
+    void TimestampManager::synchronizeGPS()
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20
         // Fallback GPS timestamp calculator for non-supported OSes.
