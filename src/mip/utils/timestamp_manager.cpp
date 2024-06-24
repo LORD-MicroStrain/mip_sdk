@@ -2,14 +2,28 @@
 
 namespace mip
 {
-    TimestampManager::TimestampManager(long long start_time)
+    TimestampManager::TimestampManager(long long nanoseconds_since_epoch)
     {
-        if (start_time > 0)
+        if (nanoseconds_since_epoch > 0)
         {
-            m_timestamp = Nanoseconds(start_time);
+            m_timestamp = Nanoseconds(nanoseconds_since_epoch);
         }
     }
+    
+    TimestampManager::TimestampManager(TimeStandard standard)
+    {
+        synchronize(standard);
+    }
 
+    void TimestampManager::synchronize(TimeStandard standard)
+    {
+        switch (standard)
+        {
+            case TimeStandard::GPS:
+                synchronizeGPS();
+        }
+    }
+    
     void TimestampManager::synchronizeGPS()
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20

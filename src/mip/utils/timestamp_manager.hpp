@@ -23,12 +23,11 @@ namespace mip
     using Weeks = std::chrono::duration<int, std::ratio<604800>>;
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
+    
+    enum class TimeStandard {GPS};
 
     // TODO: Update documentation.
-    enum class TimeSystem {GPS};
-        
-
-    /// Manages a timestamp that increments based on an underlying time system.
+    /// Manages a timestamp in nanoseconds since epoch.
     ///
     /// Notes:
     /// ---------------------------------------------------------------------------------
@@ -39,12 +38,15 @@ namespace mip
     class TimestampManager
     {
     public:
+        /// New epoch (0 nanoseconds).
         TimestampManager() {}
-        /// Initializes start_time (nanoseconds) manually.
-        TimestampManager(long long start_time);
-
+        /// Manually set time since epoch.
+        TimestampManager(long long nanoseconds_since_epoch);
+        /// Time since epoch synchronized to a coordinated time standard.
+        TimestampManager(TimeStandard standard);
+        
         /// Synchronizes timestamp to the current time in the underlying time system.
-        void synchronizeGPS();
+        void synchronize(TimeStandard standard);
         // TODO: Add other time system sync functions.
 
         /// Returns time since epoch.
@@ -139,6 +141,8 @@ namespace mip
 
     private:
         Nanoseconds m_timestamp{0};
+        
+        void synchronizeGPS();
     };
     
 
