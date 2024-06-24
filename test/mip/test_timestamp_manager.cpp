@@ -9,7 +9,13 @@
 
 constexpr short success = 0;
 constexpr short fail = 1;
-constexpr long long start_time = 1000000000; // 1 second (in nanoseconds)
+
+constexpr int nanoseconds_in_second = 1000000000; 
+constexpr int seconds_in_week = 604800;
+constexpr int weeks_in_year = 52;
+
+constexpr long long test_time = (long long)seconds_in_week * (long long)weeks_in_year * (long long)nanoseconds_in_second;
+
 
 /** Misc. Utilities *********************************************************************/
 
@@ -17,6 +23,7 @@ mip::Seconds toSeconds(long long nanoseconds);
 
 /** Test case utilities *****************************************************************/
 
+// TODO: Change to getterTestCase.
 template<typename DurationActual, typename DurationExpected>
     bool testCase(std::string name, DurationActual actual, DurationExpected expected)
 {
@@ -51,7 +58,7 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 bool testGetTimestamp() 
 {
-    std::array<long long, 3> test_values{0, start_time*500, std::numeric_limits<long long>::max()};
+    std::array<long long, 3> test_values{0, test_time, std::numeric_limits<long long>::max()};
     for (long long &value : test_values)
     {
         mip::TimestampManager timestamp(value);
@@ -72,6 +79,18 @@ bool testGetTimestamp()
 
 bool testGetTimeOfWeek()
 {
+    std::array<long long, 3> test_values{0, test_time, std::numeric_limits<long long>::max()};
+    for (long long &value : test_values)
+    {
+        mip::TimestampManager timestamp(value);
+
+        // TODO: Figure out why this isn't working.
+        if (!testCase("GetTimeOfWeek", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value)))
+        {
+            return false;
+        }
+    }
+    
     return true;
 }
 
@@ -91,5 +110,5 @@ int main(int argc, const char* argv[])
 
 mip::Seconds toSeconds(long long nanoseconds)
 {
-    return mip::Seconds(nanoseconds / 1000000000);
+    return mip::Seconds(nanoseconds / (long long)nanoseconds_in_second);
 }
