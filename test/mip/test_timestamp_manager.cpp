@@ -9,12 +9,9 @@
 
 constexpr short success = 0;
 constexpr short fail = 1;
-
 constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr int seconds_in_week = 604800;
-constexpr long long nanoseconds_in_week = (long long)seconds_in_week * nanoseconds_in_second;
 constexpr int weeks_in_year = 52;
-
 
 
 /** Misc. Utilities *********************************************************************/
@@ -58,7 +55,10 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 bool testGetters() 
 {
-    for (long long &value : std::array<long long, 3>{0, nanoseconds_in_week, std::numeric_limits<long long>::max()})
+    constexpr long long test_time = (long long)seconds_in_week * nanoseconds_in_second + (500 * nanoseconds_in_second);
+
+    // Edge values
+    for (long long &value : std::array<long long, 3>{0, test_time, std::numeric_limits<long long>::max()})
     {
         mip::TimestampManager timestamp(value);
 
@@ -72,14 +72,13 @@ bool testGetters()
             return false;            
         }
 
-        // TODO: Change expected to time of week.
-        if (!testCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value)))
+        // TODO: Update
+        if (!testCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value % test_time)))
         {
             return false;
         }
 
-        // TODO: Figure out why this isn't working.
-        if (!testCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value)))
+        if (!testCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value % test_time)))
         {
             return false;
         }

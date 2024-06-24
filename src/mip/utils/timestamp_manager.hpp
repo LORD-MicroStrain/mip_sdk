@@ -38,8 +38,8 @@ namespace mip
     {
     public:
         TimestampManager() {}
-        TimestampManager(long long start_time) : 
-            m_timestamp(Nanoseconds(start_time)) {}
+        /// Initializes start_time (nanoseconds) manually.
+        TimestampManager(long long start_time);
 
         /// Synchronizes timestamp to the current time in the underlying time system.
         void synchronize();

@@ -2,6 +2,14 @@
 
 namespace mip
 {
+    TimestampManager::TimestampManager(long long start_time)
+    {
+        if (start_time > 0)
+        {
+            m_timestamp = Nanoseconds(start_time);
+        }
+    }
+
     void TimestampManager::synchronize()
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20
