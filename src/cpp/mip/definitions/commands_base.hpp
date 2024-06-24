@@ -222,8 +222,6 @@ struct Ping
         return std::make_tuple();
     }
 
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
-
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
 
@@ -267,7 +265,6 @@ struct SetIdle
     {
         return std::make_tuple();
     }
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -309,8 +306,6 @@ struct GetDeviceInfo
     {
         return std::make_tuple();
     }
-
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 
     auto asTuple() const { return as_tuple(); }
     auto asTuple() { return as_tuple(); }
@@ -375,10 +370,6 @@ struct GetDeviceDescriptors
     {
         return std::make_tuple();
     }
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
-
-    auto asTuple() const { return as_tuple(); }
-    auto asTuple() { return as_tuple(); }
 
     struct Response
     {

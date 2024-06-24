@@ -153,14 +153,6 @@ private:
 };
 
 
-
-//template<class T, typename=void>
-//struct fixed_size {};
-//
-//template<class T>
-//struct fixed_size<T, std::void_t<decltype(T::SIZE_BYTES)>> : std::integral_constant<size_t, T::SIZE_BYTES> {};
-
-
 //
 // General Insertion
 //
@@ -233,24 +225,13 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
 }
 #else
 template<typename T0, typename... Ts>
-size_t insert(Buffer& buffer, T0 value0, Ts... values)
+size_t insert(Serializer& serializer, T0 value0, Ts... values)
 {
-    return insert(buffer, value0) + insert(buffer, values...);
+    return insert(serializer, value0) + insert(serializer, values...);
 }
 #endif
 
 
-//template<typename... Ts>
-//size_t insert(Buffer& buffer, Ts... values) { return detail::insert(buffer, values...); }
-
-
-//// Class types with known size
-//template<class T, size_t Size = fixed_size<T>::value>
-//size_t insert(Buffer& buffer, T value)
-//{
-//    if(auto ptr = buffer.getPtrAndAdvance(Size))
-//        insert
-//}
 
 //
 // General Extraction
@@ -334,9 +315,9 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
 }
 #else
 template<typename T0, typename... Ts>
-size_t extract(Buffer& buffer, T0 value0, Ts... values)
+size_t extract(Serializer& serializer, T0 value0, Ts... values)
 {
-    return extract(buffer, value0) + extract(buffer, values...);
+    return extract(serializer, value0) + extract(serializer, values...);
 }
 #endif
 

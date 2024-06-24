@@ -1,25 +1,12 @@
 #pragma once
 
 #include <microstrain/common/platform.hpp>
-#include <span>
 
+#include "mip_serialization.hpp"
 #include "mip_descriptors.hpp"
 
 namespace mip
 {
-
-struct FieldStruct
-{
-    //static_assert(std::is_base_of<FieldStruct<T>, T>::value, "T must inherit from FieldStruct<T>");
-
-private:
-    // No direct instantiation,
-    // this class must be inherited.
-    FieldStruct() = default;
-};
-
-template<class T>
-using isField = std::is_base_of<FieldStruct, T>;
 
 
 

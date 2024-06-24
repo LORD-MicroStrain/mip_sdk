@@ -40,6 +40,24 @@ struct CompositeDescriptor
 };
 
 
+// All MIP command/data fields should inherit this struct.
+struct FieldStruct
+{
+    //static_assert(std::is_base_of<FieldStruct<T>, T>::value, "T must inherit from FieldStruct<T>");
+
+private:
+    // No direct instantiation,
+    // this class must be inherited.
+    FieldStruct() = default;
+};
+
+template<class T>
+using isField = std::is_base_of<FieldStruct, T>;
+
+template<class T>
+using EnableForFieldTypes = std::enable_if<isField<T>::value, T>;
+
+
 ///@brief A dummy struct which is used to mark bitfield objects.
 ///
 template<typename DerivedT> struct Bitfield {};
