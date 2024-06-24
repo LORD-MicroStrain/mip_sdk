@@ -12,9 +12,9 @@ constexpr short fail = 1;
 
 constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr int seconds_in_week = 604800;
+constexpr long long nanoseconds_in_week = (long long)seconds_in_week * nanoseconds_in_second;
 constexpr int weeks_in_year = 52;
 
-constexpr long long test_time = (long long)seconds_in_week * (long long)weeks_in_year * nanoseconds_in_second;
 
 
 /** Misc. Utilities *********************************************************************/
@@ -58,8 +58,7 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 bool testGetters() 
 {
-    std::array<long long, 3> test_values{0, test_time, std::numeric_limits<long long>::max()};
-    for (long long &value : test_values)
+    for (long long &value : std::array<long long, 3>{0, nanoseconds_in_week, std::numeric_limits<long long>::max()})
     {
         mip::TimestampManager timestamp(value);
 
