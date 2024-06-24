@@ -131,7 +131,7 @@ public:
     // Using nullptr is simpler and more efficient than creating an end iterator.
     std::nullptr_t end() const { return nullptr; }
 #else
-    FieldIterator end() const { return Field(); }
+    FieldIterator end() const { return FieldView(); }
 #endif
 
     ///@brief Returns the first field in the packet.
