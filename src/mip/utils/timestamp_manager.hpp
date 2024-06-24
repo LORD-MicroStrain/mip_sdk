@@ -28,12 +28,6 @@ namespace mip
 
     /// Manages a timestamp that increments based on an underlying time system.
     ///
-    /// Legend:
-    /// ---------------------------------------------------------------------------------
-    ///     * T --> Arithmetic type
-    ///     * D --> Duration (currently std::chrono::duration only)
-    /// ---------------------------------------------------------------------------------
-    ///
     /// Notes:
     /// ---------------------------------------------------------------------------------
     ///     * Currently supports GPS clock (only) for the underlying time system.
@@ -56,6 +50,7 @@ namespace mip
 
         /// Returns time since the start of the current week (of the timestamp).
         template<typename Duration> Duration getTimeOfWeek();
+        Nanoseconds getTimeOfWeek();
 
         /// Returns whether two timestamps have diverged from each other.
         ///
