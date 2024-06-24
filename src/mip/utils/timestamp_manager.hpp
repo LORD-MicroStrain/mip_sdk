@@ -158,12 +158,21 @@ namespace mip
 
     template<typename Duration> inline Duration TimestampManager::getTimeOfWeek()
     {
-        if (m_timestamp <= Weeks(1)) 
-        {
-            return getTimestamp<Duration>();
-        }
+        // if (m_timestamp <= Weeks(1)) 
+        // {
+        //     return getTimestamp<Duration>();
+        // }
 
-        return duration_cast<Duration>(m_timestamp - duration_cast<Weeks>(m_timestamp));
+        // return duration_cast<Duration>(m_timestamp - duration_cast<Weeks>(m_timestamp));
+        return duration_cast<Duration>(getTimeOfWeek());
+    }
+
+    inline mip::Nanoseconds TimestampManager::getTimeOfWeek()
+    {
+        // return (m_timestamp <= Weeks(1)) ?
+        //     m_timestamp - duration_cast<Weeks>(m_timestamp) :
+        //     getTimestamp();
+        return m_timestamp % Weeks(1);
     }
 
     template<typename DCompare, typename D1, typename D2> 

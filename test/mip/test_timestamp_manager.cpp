@@ -73,8 +73,14 @@ bool testGetters()
             return false;            
         }
 
+        // TODO: Change expected to time of week.
+        if (!testCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value)))
+        {
+            return false;
+        }
+
         // TODO: Figure out why this isn't working.
-        if (!testCase("GetTimeOfWeek", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value)))
+        if (!testCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value)))
         {
             return false;
         }
