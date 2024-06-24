@@ -39,6 +39,10 @@ struct FuncBits
 
 struct StructInfo;
 
+// Type trait class to be specialized for each field type.
+template<class FieldType>
+struct FieldInfo;
+
 
 struct ParameterInfo
 {
@@ -64,20 +68,22 @@ struct ParameterInfo
         UNION,
     };
 
-    struct TypeInfo
-    {
-        template<class Field, class T>
-        TypeInfo(T Field::*member);
+    // struct TypeInfo
+    // {
+    //     template<class Field, class T>
+    //     TypeInfo(T Field::*member);
+    //
+    //     Type type;
+    //     uint8_t struct_offset = 0;
+    //     StructInfo*
+    // };
 
-        Type type;
-        uint8_t struct_offset = 0;
-        StructInfo*
-    };
+    using Accessor = void* (*)(void*);
 
     const char* name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
     const char* docs = nullptr;     ///< Human-readable documentation.
     Type        type = Type::NONE;  ///< Data type.
-    uint8_t     struct_offset = 0;  ///< Offset into the corresponding struct (e.g. using offsetof).
+    Accessor    accessor = nullptr; ///< Obtains a reference to the member variable.
     uint8_t     byte_offset   = 0;  ///< Offset "on the wire" or in a serialized buffer, in bytes.
     FuncBits    functions;          ///< This parameter is required for the specified function selectors.
     uint8_t     count = 1;          ///< Number of elements. 0 if size is specified at runtime.
@@ -86,63 +92,86 @@ struct ParameterInfo
     uint16_t    union_value = 0;    ///< When in a union, this specifies the value of the discriminator parameter that selects this member.
 };
 
+template<class T, class=void> struct ParamType { static INLINE_VAR constexpr auto value = ParameterInfo::Type::NONE; };
 
-template<class T, class=void> static constexpr inline ParameterInfo::Type paramTypeFromCppType = ParameterInfo::Type::NONE;
+template<> struct ParamType<bool,     void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::BOOL;   };
+template<> struct ParamType<uint8_t,  void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::U8;     };
+template<> struct ParamType< int8_t,  void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::S8;     };
+template<> struct ParamType<uint16_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::U16;    };
+template<> struct ParamType< int16_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::S16;    };
+template<> struct ParamType<uint32_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::U32;    };
+template<> struct ParamType< int32_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::S32;    };
+template<> struct ParamType<uint64_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::U64;    };
+template<> struct ParamType< int64_t, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::S64;    };
+template<> struct ParamType<float,    void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::FLOAT;  };
+template<> struct ParamType<double,   void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::DOUBLE; };
+template<class T> struct ParamType<Bitfield<T>, void> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::BITFIELD; };
+template<class T> struct ParamType<T, typename std::enable_if<std::is_enum<T>::value, T>::type>  { static constexpr INLINE_VAR auto value = ParameterInfo::Type::ENUM;   };
+template<class T> struct ParamType<T, typename EnableForFieldTypes<T>::type>       { static constexpr INLINE_VAR auto value = ParameterInfo::Type::STRUCT; };
+template<class T> struct ParamType<T, typename std::enable_if<std::is_union<T>::value, T>::type> { static constexpr INLINE_VAR auto value = ParameterInfo::Type::UNION;  };
 
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<bool,     void> = ParameterInfo::Type::BOOL;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<uint8_t,  void> = ParameterInfo::Type::U8;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType< int8_t,  void> = ParameterInfo::Type::S8;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<uint16_t, void> = ParameterInfo::Type::U16;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType< int16_t, void> = ParameterInfo::Type::S16;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<uint32_t, void> = ParameterInfo::Type::U32;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType< int32_t, void> = ParameterInfo::Type::S32;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<uint64_t, void> = ParameterInfo::Type::U64;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType< int64_t, void> = ParameterInfo::Type::S64;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<float,    void> = ParameterInfo::Type::FLOAT;
-template<> static constexpr inline ParameterInfo::Type paramTypeFromCppType<double,   void> = ParameterInfo::Type::DOUBLE;
-template<class T> static constexpr inline ParameterInfo::Type paramTypeFromCppType<T, typename std::enable_if<std::is_enum<T>::value, T>::type> = ParameterInfo::Type::ENUM;
-template<class T> static constexpr inline ParameterInfo::Type paramTypeFromCppType<Bitfield<T>, T> = ParameterInfo::Type::BITFIELD;
-template<class T> static constexpr inline ParameterInfo::Type paramTypeFromCppType<T, typename std::enable_if<isField<T>::value, T>::type> = ParameterInfo::Type::STRUCT;
-template<class T> static constexpr inline ParameterInfo::Type paramTypeFromCppType<T, typename std::enable_if<std::is_union<T>::value, T>::type> = ParameterInfo::Type::UNION;
+template<ParameterInfo::Type Kind>
+struct ParamEnum { using type = void; };
 
-//template<class T, class=void>
-//struct ParamTypeFromCppType;
-//
-//template<>
-//struct ParamTypeFromCppType<bool,void> : public std::integral_constant ParameterInfo::Type type =
+template<> struct ParamEnum<ParameterInfo::Type::U8    > { using type = uint8_t;  };
+template<> struct ParamEnum<ParameterInfo::Type::S8    > { using type = int8_t;   };
+template<> struct ParamEnum<ParameterInfo::Type::U16   > { using type = uint16_t; };
+template<> struct ParamEnum<ParameterInfo::Type::S16   > { using type = int16_t;  };
+template<> struct ParamEnum<ParameterInfo::Type::U32   > { using type = uint32_t; };
+template<> struct ParamEnum<ParameterInfo::Type::S32   > { using type = int32_t;  };
+template<> struct ParamEnum<ParameterInfo::Type::U64   > { using type = uint64_t; };
+template<> struct ParamEnum<ParameterInfo::Type::S64   > { using type = int64_t;  };
+template<> struct ParamEnum<ParameterInfo::Type::FLOAT > { using type = float;    };
+template<> struct ParamEnum<ParameterInfo::Type::DOUBLE> { using type = double;   };
 
-//constexpr ParameterInfo::Type typeEnumFromCppType(bool   ) { return ParameterInfo::Type::BOOL; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(uint8_t) { return ParameterInfo::Type::U8; }
-//constexpr ParameterInfo::Type typeEnumFromCppType( int8_t) { return ParameterInfo::Type::S8; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(uint16_t) { return ParameterInfo::Type::U16; }
-//constexpr ParameterInfo::Type typeEnumFromCppType( int16_t) { return ParameterInfo::Type::S16; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(uint32_t) { return ParameterInfo::Type::U32; }
-//constexpr ParameterInfo::Type typeEnumFromCppType( int32_t) { return ParameterInfo::Type::S32; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(uint64_t) { return ParameterInfo::Type::U64; }
-//constexpr ParameterInfo::Type typeEnumFromCppType( int64_t) { return ParameterInfo::Type::S64; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(float   ) { return ParameterInfo::Type::FLOAT; }
-//constexpr ParameterInfo::Type typeEnumFromCppType(double  ) { return ParameterInfo::Type::DOUBLE; }
-//
-//template<class T>
-//constexpr typename std::enable_if<std::is_enum<T>::value, ParameterInfo::Type>::type
-///*ParameterInfo::Type*/ typeEnumFromCppType() { return ParameterInfo::Type::ENUM; }
-//
-//template<class T>
-//constexpr ParameterInfo::Type typeEnumFromCppType(Bitfield<T>) { return ParameterInfo::Type::BITFIELD; }
-//
-//template<class T>
-//constexpr ParameterInfo::Type typeEnumFromCppType(typename std::enable_if<std::is_class<T>::value, T>::type) { return ParameterInfo::Type::STRUCT; }
-//
-//template<class T>
-//constexpr ParameterInfo::Type typeEnumFromCppType(typename std::enable_if<std::is_union<T>::value, T>::type) { return ParameterInfo::Type::UNION; }
+// template<ParameterInfo::Type ParamType> struct ParamEnum;
+// template<> struct ParamEnum<ParameterInfo::Type::U8> :
 
 
-static constexpr inline ParameterInfo FUNCTION_PARAMETER = {
-    /* .type          = */ ParameterInfo::Type::ENUM,
+///@brief Gets a reference to parameter 'I' in the struct for the given field.
+///
+///@tparam I     Index indicating which parameter to access. 0-based.
+///@tparam FieldType Type of the MIP field struct.
+///
+///@param field An instance of the field struct whose member variable will be accessed.
+///
+///@returns A reference to member I of the given field.
+///
+template<size_t I, class FieldType>
+auto& get(typename EnableForFieldTypes<FieldType>::type& field)
+{
+    constexpr ParameterInfo& paramInfo = FieldInfo<FieldType>::PARAMETERS[I].type;
+    using T = ParamEnum<paramInfo.type>::type;
+    return *static_cast<T*>(paramInfo.accessor(&field));
+}
+
+
+namespace utils
+{
+    // Gets a void pointer to the member identified by Ptr, given an
+    // instance of field passed by void pointer.
+    template<class Field, class T, T Field::*Ptr>
+    void* access(void* p)
+    {
+        return &(static_cast<Field*>(p)->*Ptr);
+    }
+
+    // Converts a pointer to a struct to a pointer to FunctionSelector.
+    // Note: this assumes the function selector is the very first parameter,
+    // no non-empty base classes, etc. and is legal c++.
+    inline void* accessFunctionSelector(void* p)
+    {
+        return static_cast<FunctionSelector*>(p);
+    }
+}
+
+// Function selector MUST be the first struct member (or not a member at all)!
+static constexpr INLINE_VAR ParameterInfo FUNCTION_PARAMETER = {
     /* .name          = */ "function",
     /* .docs          = */ "Standard MIP function selector",
+    /* .type          = */ ParameterInfo::Type::ENUM,
+    /* .accessor      = */ utils::accessFunctionSelector,
     /* .byte_offset   = */ 0,
-    /* .struct_offset = */ 0, // Function selector MUST be the first struct member.
     /* .functions     = */ {true,true,true,true,true},
     /* .count         = default */
     /* .counter_idx   = default */
@@ -162,7 +191,7 @@ struct EnumInfo
     const char*                  name    = nullptr;
     const char*                  docs    = nullptr;
     ParameterInfo::Type          type    = ParameterInfo::Type::NONE;
-    std::initializer_list<Entry> entries = {};
+    std::initializer_list<Entry> entries;
 };
 
 struct StructInfo
@@ -174,16 +203,11 @@ struct StructInfo
 };
 
 
-// Type trait class to be specialized for each field type.
-template<class FieldType>
-struct FieldInfo;
-
 
 
 template<class FieldType, size_t ParamIndex, class ParamType>
 ParamType get(FieldType& field)
 {
-    return
 }
 
 template<size_t ParameterIndex, class FieldType>
@@ -198,20 +222,20 @@ auto get(FieldType& field)
 
 struct Example : public FieldStruct
 {
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
+    static constexpr INLINE_VAR std::initializer_list<ParameterInfo> PARAMETERS = {
         {
-            /*.type          = */ ParameterInfo::Type::BOOL,
             /*.name          = */ "Enable",
             /*.docs          = */ "Enables the thing",
+            /*.type          = */ ParameterInfo::Type::BOOL,
+            /*.accessor      = */ nullptr,//[](void*)->void*{return nullptr;},
             /*.byte_offset   = */ 0,
-            /*.struct_offset = */ 0,
             /*.functions     = */ {true, false, false, false, false},
         },
         {
-            /*.type          = */ ParameterInfo::Type::U8,
             /*.name          = */ "Count",
             /*.docs          = */ "Number of things",
-            /*.byte_offset   = */ 1,
+            /*.type          = */ ParameterInfo::Type::U8,
+            /*.accessor      = */ nullptr, //[](void*)->void*{return nullptr;},
             /*.struct_offset = */ 1,
             /*.functions     = */ {true, true, false, false, false},
         }

@@ -35,23 +35,29 @@ struct FieldInfo<commands_base::CommSpeed>
     static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
         FUNCTION_PARAMETER,
         {
-            /* .type          = */ ParameterInfo::Type::U8,
             /* .name          = */ "port",
             /* .docs          = */ "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",
+            /* .type          = */ ParameterInfo::Type::U8,
+            /* .accessor      = */ utils::access<Cmd,uint8_t,&Cmd::port>,
             /* .byte_offset   = */ 1,
-            /* .struct_offset = */ offsetof(Cmd,port),
             /* .functions     = */ {true, true, true, true, true, true},
         },
         {
-            /* .type          = */ ParameterInfo::Type::U32,
             /* .name          = */ "baud",
             /* .docs          = */ "Port baud rate. Must be a supported rate.",
+            /* .type          = */ ParameterInfo::Type::U32,
+            /* .accessor      = */ utils::access<Cmd,uint32_t,&Cmd::baud>,
             /* .byte_offset   = */ 2,
-            /* .struct_offset = */ offsetof(Cmd,baud),
             /* .functions     = */ {true,false,false,false,false},
         },
     };
 };
 
+
+using CommandsBase = std::tuple<
+    FieldInfo<commands_base::Ping>,
+    FieldInfo<commands_base::CommSpeed>,
+    void
+>;
 
 } // namespace mip
