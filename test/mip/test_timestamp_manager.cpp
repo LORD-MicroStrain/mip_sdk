@@ -7,10 +7,9 @@
 
 #include <mip/utils/timestamp_manager.hpp>
 
-constexpr short success = 0;
-constexpr short fail = 1;
 constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr int seconds_in_week = 604800;
+constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_week;
 constexpr int weeks_in_year = 52;
 
 
@@ -20,9 +19,8 @@ mip::Seconds toSeconds(long long nanoseconds);
 
 /** Test case utilities *****************************************************************/
 
-// TODO: Change to getterTestCase.
 template<typename DurationActual, typename DurationExpected>
-    bool testCase(std::string name, DurationActual actual, DurationExpected expected)
+    bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
@@ -53,32 +51,43 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 /** Tests *******************************************************************************/
 
-bool testGetters() 
+bool testGetTimestamp()
 {
     constexpr long long test_time = (long long)seconds_in_week * nanoseconds_in_second + (500 * nanoseconds_in_second);
 
-    // Edge values
     for (long long &value : std::array<long long, 3>{0, test_time, std::numeric_limits<long long>::max()})
     {
         mip::TimestampManager timestamp(value);
 
-        if (!testCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
+        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
         {
             return false;
         }
         
-        if (!testCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), toSeconds(value)))
+        if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), toSeconds(value)))
         {
             return false;            
         }
+    }
+    
+    return true;
+}
+
+bool testGetTimeOfWeek() 
+{
+    constexpr long long test_time = (long long)seconds_in_week * nanoseconds_in_second + (500 * nanoseconds_in_second);
+
+    for (long long &value : std::array<long long, 3>{0, test_time, std::numeric_limits<long long>::max()})
+    {
+        mip::TimestampManager timestamp(value);
 
         // TODO: Update
-        if (!testCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value % test_time)))
+        if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(value % test_time)))
         {
             return false;
         }
 
-        if (!testCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value % test_time)))
+        if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value % test_time)))
         {
             return false;
         }
@@ -89,10 +98,11 @@ bool testGetters()
 
 int main(int argc, const char* argv[])
 {
-    if (!testGetters()) 
-    { 
-        return fail; 
-    }
+    static constexpr short success = 0;
+    static constexpr short fail = 1;
+
+    if (!testGetTimestamp() ) { return fail; }
+    if (!testGetTimeOfWeek()) { return fail; }
 
     return success;
 }
