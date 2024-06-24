@@ -3,7 +3,6 @@
 #include "common.hpp"
 #include <mip/mip_descriptors.hpp>
 #include <mip/mip_result.hpp>
-#include <mip/mip_metadata.hpp>
 
 #include <stdint.h>
 #include <stddef.h>

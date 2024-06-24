@@ -1,15 +1,15 @@
 #pragma once
 
-#include "commands_base.hpp"
+#include <mip/definitions/commands_base.hpp>
 
-#include <mip/mip_metadata.hpp>
+#include <mip/metadata/mip_metadata.hpp>
 
 
-namespace mip
+namespace mip::metadata
 {
 
 template<>
-struct FieldInfo<commands_base::Ping>
+struct MetadataForField<commands_base::Ping>
 {
     using Cmd = commands_base::Ping;
     using Rsp = Cmd::Response;
@@ -23,21 +23,21 @@ struct FieldInfo<commands_base::Ping>
 
 
 template<>
-struct FieldInfo<commands_base::CommSpeed>
+struct MetadataForField<commands_base::CommSpeed>
 {
     using Cmd = commands_base::CommSpeed;
-    using Rsp = Cmd::Response;
-
-    static constexpr inline const char* NAME = "CommSpeed";
-    static constexpr inline const char* DOC_NAME = "Comm Port Speed";
-    static constexpr CompositeDescriptor DESCRIPTOR = Cmd::DESCRIPTOR;
+    //using Rsp = Cmd::Response;
+    //
+    //static constexpr inline const char* NAME = "CommSpeed";
+    //static constexpr inline const char* DOC_NAME = "Comm Port Speed";
+    //static constexpr CompositeDescriptor DESCRIPTOR = Cmd::DESCRIPTOR;
 
     static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
-        FUNCTION_PARAMETER,
+        utils::FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "port",
             /* .docs          = */ "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",
-            /* .type          = */ ParameterInfo::Type::U8,
+            /* .type          = */ {Type::U8},
             /* .accessor      = */ utils::access<Cmd,uint8_t,&Cmd::port>,
             /* .byte_offset   = */ 1,
             /* .functions     = */ {true, true, true, true, true, true},
@@ -45,19 +45,26 @@ struct FieldInfo<commands_base::CommSpeed>
         {
             /* .name          = */ "baud",
             /* .docs          = */ "Port baud rate. Must be a supported rate.",
-            /* .type          = */ ParameterInfo::Type::U32,
+            /* .type          = */ {Type::U32},
             /* .accessor      = */ utils::access<Cmd,uint32_t,&Cmd::baud>,
             /* .byte_offset   = */ 2,
             /* .functions     = */ {true,false,false,false,false},
         },
     };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "CommSpeed",
+        /* .title       = */ "Comm Port Speed",
+        /* .docs        = */ "Changes the comm port speed.",
+        /* .parameters  = */ PARAMETERS,
+        /* .functions   = */ {true,true,true,true,true},
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
 };
 
 
-using CommandsBase = std::tuple<
-    FieldInfo<commands_base::Ping>,
-    FieldInfo<commands_base::CommSpeed>,
-    void
->;
+static constexpr inline
+
 
 } // namespace mip

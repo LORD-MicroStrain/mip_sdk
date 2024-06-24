@@ -185,7 +185,7 @@ typename std::enable_if<std::is_enum<T>::value, size_t>::type
 template<class... Ts>
 size_t insert(Serializer& serializer, const std::tuple<Ts...>& values)
 {
-    auto lambda = [&serializer](const auto&... args) {
+    auto lambda = [&serializer](const Ts&... args) {
         return insert(serializer, args...);
     };
 
