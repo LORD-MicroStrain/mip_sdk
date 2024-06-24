@@ -53,11 +53,12 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 /** Tests *******************************************************************************/
 
-bool testGetTimestamp()
+bool testGetters()
 {
-    static long long test_time = toNanoseconds(seconds_in_week) + toNanoseconds(500);
+    static long long test_time = toNanoseconds(seconds_in_week) - toNanoseconds(500);
+    static long long test_time2 = toNanoseconds(seconds_in_week) + toNanoseconds(500);
 
-    for (auto &value : std::array<long long, 3>{min_nanoseconds, test_time, max_nanoseconds})
+    for (auto &value : std::array<long long, 4>{min_nanoseconds, test_time, test_time2, max_nanoseconds})
     {
         mip::TimestampManager timestamp(value);
 
@@ -72,29 +73,15 @@ bool testGetTimestamp()
         {
             return false;            
         }
-    }
-    
-    return true;
-}
-
-bool testGetTimeOfWeek() 
-{
-    static long long test_time = toNanoseconds(seconds_in_week) - toNanoseconds(500);
-    static long long test_time2 = toNanoseconds(seconds_in_week) + toNanoseconds(500);
-
-    for (auto &value : std::array<long long, 4>{min_nanoseconds, test_time, test_time2, max_nanoseconds})
-    {
-        mip::TimestampManager timestamp(value);
-        long long time_of_week = value % nanoseconds_in_week;
 
         if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
-            mip::Nanoseconds(time_of_week)))
+            mip::Nanoseconds(value % nanoseconds_in_week)))
         {
             return false;
         }
 
         if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), 
-            mip::Seconds(toSeconds(time_of_week))))
+            mip::Seconds(toSeconds(value) % seconds_in_week)))
         {
             return false;
         }
@@ -108,8 +95,10 @@ int main(int argc, const char* argv[])
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testGetTimestamp() ) { return fail; }
-    if (!testGetTimeOfWeek()) { return fail; }
+    if (!testGetters()) 
+    { 
+        return fail; 
+    }
 
     return success;
 }
