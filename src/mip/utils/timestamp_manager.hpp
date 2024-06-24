@@ -54,7 +54,7 @@ namespace mip
         template<typename Duration> Duration getTimestamp();
         Nanoseconds getTimestamp();
 
-        /// Returns time elapsed since the start of the current week (of the timestamp).
+        /// Returns time since the start of the current week (of the timestamp).
         template<typename Duration> Duration getTimeOfWeek();
 
         /// Returns whether two timestamps have diverged from each other.
@@ -168,7 +168,7 @@ namespace mip
             return getTimestamp<Duration>();
         }
 
-        return m_timestamp - duration_cast<Weeks>(m_timestamp);
+        return duration_cast<Duration>(m_timestamp - duration_cast<Weeks>(m_timestamp));
     }
 
     template<typename DCompare, typename D1, typename D2> 
