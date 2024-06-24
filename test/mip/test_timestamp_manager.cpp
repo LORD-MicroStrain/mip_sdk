@@ -10,11 +10,11 @@
 constexpr short success = 0;
 constexpr short fail = 1;
 
-constexpr int nanoseconds_in_second = 1000000000; 
+constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr int seconds_in_week = 604800;
 constexpr int weeks_in_year = 52;
 
-constexpr long long test_time = (long long)seconds_in_week * (long long)weeks_in_year * (long long)nanoseconds_in_second;
+constexpr long long test_time = (long long)seconds_in_week * (long long)weeks_in_year * nanoseconds_in_second;
 
 
 /** Misc. Utilities *********************************************************************/
@@ -56,7 +56,7 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 /** Tests *******************************************************************************/
 
-bool testGetTimestamp() 
+bool testGetters() 
 {
     std::array<long long, 3> test_values{0, test_time, std::numeric_limits<long long>::max()};
     for (long long &value : test_values)
@@ -72,17 +72,6 @@ bool testGetTimestamp()
         {
             return false;            
         }
-    }
-    
-    return true;
-}
-
-bool testGetTimeOfWeek()
-{
-    std::array<long long, 3> test_values{0, test_time, std::numeric_limits<long long>::max()};
-    for (long long &value : test_values)
-    {
-        mip::TimestampManager timestamp(value);
 
         // TODO: Figure out why this isn't working.
         if (!testCase("GetTimeOfWeek", timestamp.getTimeOfWeek<mip::Seconds>(), toSeconds(value)))
@@ -96,8 +85,10 @@ bool testGetTimeOfWeek()
 
 int main(int argc, const char* argv[])
 {
-    if (!testGetTimestamp() ) { return fail; }
-    if (!testGetTimeOfWeek()) { return fail; }
+    if (!testGetters()) 
+    { 
+        return fail; 
+    }
 
     return success;
 }
@@ -110,5 +101,5 @@ int main(int argc, const char* argv[])
 
 mip::Seconds toSeconds(long long nanoseconds)
 {
-    return mip::Seconds(nanoseconds / (long long)nanoseconds_in_second);
+    return mip::Seconds(nanoseconds / nanoseconds_in_second);
 }
