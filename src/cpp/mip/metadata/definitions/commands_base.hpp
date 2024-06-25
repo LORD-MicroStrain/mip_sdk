@@ -9,11 +9,21 @@ namespace mip::metadata
 {
 
 template<>
-struct MetadataForField<commands_base::Ping>
+struct MetadataFor<commands_base::Ping>
 {
     using Cmd = commands_base::Ping;
     using Rsp = Cmd::Response;
 
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "CommSpeed",
+        /* .title       = */ "Comm Port Speed",
+        /* .docs        = */ "Changes the comm port speed.",
+        /* .parameters  = */ {
+        },
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
     static constexpr inline const char* NAME = "Ping";
     static constexpr inline const char* DOC_NAME = "Ping";
     static constexpr CompositeDescriptor DESCRIPTOR = Cmd::DESCRIPTOR;
@@ -23,7 +33,7 @@ struct MetadataForField<commands_base::Ping>
 
 
 template<>
-struct MetadataForField<commands_base::CommSpeed>
+struct MetadataFor<commands_base::CommSpeed>
 {
     using Cmd = commands_base::CommSpeed;
     //using Rsp = Cmd::Response;
@@ -64,7 +74,11 @@ struct MetadataForField<commands_base::CommSpeed>
 };
 
 
-static constexpr inline
+static constexpr inline std::initializer_list<const FieldInfo*> ALL_BASE_COMMANDS = {
+    &MetadataForField<commands_base::Ping>::value,
+    &MetadataForField<commands_base::CommSpeed>::value,
+};
+
 
 
 } // namespace mip

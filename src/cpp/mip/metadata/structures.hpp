@@ -75,15 +75,6 @@ struct BitfieldInfo : public EnumInfo {};
 
 struct ParameterInfo;  // Defined below
 
-struct StructInfo
-{
-    const char* name  = nullptr;
-    const char* title = nullptr;
-    const char* docs  = nullptr;
-    std::initializer_list<ParameterInfo> parameters;
-};
-
-
 struct FuncBits
 {
     constexpr FuncBits() = default;
@@ -109,7 +100,17 @@ struct FuncBits
 
     uint8_t bits = 0x00;
 };
+static constexpr inline FuncBits ALL_FUNCTIONS = {true,true,true,true,true};
+static constexpr inline FuncBits NO_FUNCTIONS  = {false, false, false, false, false};
 
+
+struct StructInfo
+{
+    const char* name  = nullptr;
+    const char* title = nullptr;
+    const char* docs  = nullptr;
+    std::initializer_list<ParameterInfo> parameters;
+};
 
 struct FieldInfo : public StructInfo
 {

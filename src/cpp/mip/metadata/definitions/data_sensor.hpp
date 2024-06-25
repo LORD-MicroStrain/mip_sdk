@@ -9,7 +9,7 @@ namespace mip::metadata
 {
 
 template<>
-struct MetadataForField<data_sensor::ScaledAccel>
+struct MetadataFor<data_sensor::ScaledAccel>
 {
     using Field = data_sensor::ScaledAccel;
 
@@ -34,7 +34,7 @@ struct MetadataForField<data_sensor::ScaledAccel>
 };
 
 template<>
-struct MetadataForField<data_sensor::ScaledGyro>
+struct MetadataFor<data_sensor::ScaledGyro>
 {
     using Field = data_sensor::ScaledGyro;
 
@@ -60,8 +60,8 @@ struct MetadataForField<data_sensor::ScaledGyro>
 
 
 static constexpr inline std::initializer_list<const FieldInfo*> ALL_SENSOR_DATA = {
-    &MetadataForField<data_sensor::ScaledAccel>::value,
-    &MetadataForField<data_sensor::ScaledGyro>::value,
+    &MetadataFor<data_sensor::ScaledAccel>::value,
+    &MetadataFor<data_sensor::ScaledGyro>::value,
 };
 
 } // namespace mip

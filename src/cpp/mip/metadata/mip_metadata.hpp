@@ -12,7 +12,7 @@ namespace mip::metadata
 
 // Type trait class to be specialized for each field type.
 template<class FieldType>
-struct MetadataForField;
+struct MetadataFor;
 
 
 
@@ -32,7 +32,7 @@ struct MetadataForField;
 template<size_t I, class FieldType>
 auto& get(typename EnableForFieldTypes<FieldType>::type& field)
 {
-    constexpr ParameterInfo& paramInfo = MetadataForField<FieldType>::PARAMETERS[I].type;
+    constexpr ParameterInfo& paramInfo = MetadataFor<FieldType>::PARAMETERS[I].type;
     using T = typename utils::ParamEnum<paramInfo.type.type>::type;
     return *static_cast<T*>(paramInfo.accessor(&field));
 }
@@ -52,7 +52,7 @@ ParamType get(FieldType& field)
 template<size_t ParameterIndex, class FieldType>
 auto get(FieldType& field)
 {
-    const ParameterInfo& paramInfo = MetadataForField<FieldType>::PARAMETERS[ParameterIndex];
+    const ParameterInfo& paramInfo = MetadataFor<FieldType>::PARAMETERS[ParameterIndex];
 
 
 }
