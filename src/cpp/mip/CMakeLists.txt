@@ -13,6 +13,8 @@ target_sources(mip PUBLIC
     mip_serialization.hpp
 )
 
+target_compile_features(mip PUBLIC cxx_std_11)
+
 get_target_property(MIPDEFS mip definitions)
 
 set(MIPDEF_HEADERS ${MIPDEFS})
@@ -26,4 +28,17 @@ if(MICROSTRAIN_CMAKE_DEBUG)
     message("C++ definitions = ${MIPDEF_SOURCES}")
 endif()
 
-target_sources(mip PUBLIC ${MIPDEF_SOURCES})
+set(META_SOURCES
+    metadata/mip_all_definitions.hpp
+    metadata/mip_definitions.hpp
+    metadata/mip_definitions.cpp
+    metadata/mip_metadata.hpp
+    metadata/structures.hpp
+    metadata/utils.hpp
+    metadata/definitions/commands_base.hpp
+    metadata/definitions/commands_3dm.hpp
+    metadata/definitions/data_sensor.hpp
+    metadata/definitions/common.hpp
+)
+
+target_sources(mip PUBLIC ${MIPDEF_SOURCES} ${META_SOURCES})

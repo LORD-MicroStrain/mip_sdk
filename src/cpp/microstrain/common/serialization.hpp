@@ -105,6 +105,14 @@ typename std::enable_if<std::is_arithmetic<T>::value && sizeof(T)==8, size_t>::t
     return sizeof(T);
 }
 
+template<class T>
+T read(const uint8_t* buffer)
+{
+    T value;
+    read<T>(buffer, value);
+    return value;
+}
+
 
 class Serializer
 {

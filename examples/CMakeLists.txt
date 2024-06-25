@@ -49,6 +49,7 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         add_mip_example(WatchImu   "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/watch_imu.cpp")
         add_mip_example(Threads    "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/threading.cpp")
         add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp")
+        target_compile_features(CsvExample PUBLIC cxx_std_20)
 
         # Product-specific examples
         add_mip_example(GQ7_Example                  "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/GQ7/GQ7_example.cpp")

@@ -8,3 +8,5 @@ target_sources(microstrain_common PUBLIC
     logging.hpp
     platform.hpp
 )
+
+target_compile_features(microstrain_common PUBLIC cxx_std_11)

@@ -11,8 +11,7 @@ namespace mip::metadata
 template<>
 struct MetadataFor<commands_base::Ping>
 {
-    using Cmd = commands_base::Ping;
-    using Rsp = Cmd::Response;
+    using type = commands_base::Ping;
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "CommSpeed",
@@ -20,22 +19,18 @@ struct MetadataFor<commands_base::Ping>
         /* .docs        = */ "Changes the comm port speed.",
         /* .parameters  = */ {
         },
+        /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ NO_FUNCTIONS,
         /* .proprietary = */ false,
         /* .response    = */ nullptr,
     };
-    static constexpr inline const char* NAME = "Ping";
-    static constexpr inline const char* DOC_NAME = "Ping";
-    static constexpr CompositeDescriptor DESCRIPTOR = Cmd::DESCRIPTOR;
-
-    static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {};
 };
 
 
 template<>
 struct MetadataFor<commands_base::CommSpeed>
 {
-    using Cmd = commands_base::CommSpeed;
+    using type = commands_base::CommSpeed;
     //using Rsp = Cmd::Response;
     //
     //static constexpr inline const char* NAME = "CommSpeed";
@@ -48,7 +43,7 @@ struct MetadataFor<commands_base::CommSpeed>
             /* .name          = */ "port",
             /* .docs          = */ "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",
             /* .type          = */ {Type::U8},
-            /* .accessor      = */ utils::access<Cmd,uint8_t,&Cmd::port>,
+            /* .accessor      = */ utils::access<type,uint8_t,&type::port>,
             /* .byte_offset   = */ 1,
             /* .functions     = */ {true, true, true, true, true, true},
         },
@@ -56,7 +51,7 @@ struct MetadataFor<commands_base::CommSpeed>
             /* .name          = */ "baud",
             /* .docs          = */ "Port baud rate. Must be a supported rate.",
             /* .type          = */ {Type::U32},
-            /* .accessor      = */ utils::access<Cmd,uint32_t,&Cmd::baud>,
+            /* .accessor      = */ utils::access<type,uint32_t,&type::baud>,
             /* .byte_offset   = */ 2,
             /* .functions     = */ {true,false,false,false,false},
         },
@@ -67,6 +62,7 @@ struct MetadataFor<commands_base::CommSpeed>
         /* .title       = */ "Comm Port Speed",
         /* .docs        = */ "Changes the comm port speed.",
         /* .parameters  = */ PARAMETERS,
+        /* .descriptor  = */ type::DESCRIPTOR,
         /* .functions   = */ {true,true,true,true,true},
         /* .proprietary = */ false,
         /* .response    = */ nullptr,
@@ -75,8 +71,8 @@ struct MetadataFor<commands_base::CommSpeed>
 
 
 static constexpr inline std::initializer_list<const FieldInfo*> ALL_BASE_COMMANDS = {
-    &MetadataForField<commands_base::Ping>::value,
-    &MetadataForField<commands_base::CommSpeed>::value,
+    &MetadataFor<commands_base::Ping>::value,
+    &MetadataFor<commands_base::CommSpeed>::value,
 };
 
 

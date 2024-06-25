@@ -7,3 +7,5 @@ target_sources(microstrain_socket
     tcp_connection.hpp
     ../connection.hpp
 )
+
+target_compile_features(microstrain_socket PUBLIC cxx_std_11)

@@ -114,6 +114,7 @@ struct StructInfo
 
 struct FieldInfo : public StructInfo
 {
+    CompositeDescriptor descriptor = {0x00, 0x00};
     FuncBits   functions   = {false, false, false, false, false};
     bool       proprietary = false;
     FieldInfo* response    = nullptr;
