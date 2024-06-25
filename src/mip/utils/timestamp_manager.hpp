@@ -45,9 +45,10 @@ namespace mip
         /// Time since epoch synchronized to a coordinated time standard.
         TimestampManager(TimeStandard standard);
         
-        /// Synchronizes timestamp to the current time in the underlying time system.
+        /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
+        /// the timestamp won't continue to increment after this is called). Continuously
+        /// call this method to keep the timestamp up to date with the time standard.
         void synchronize(TimeStandard standard);
-        // TODO: Add other time system sync functions.
 
         /// Returns time since epoch.
         template<typename Duration> Duration getTimestamp();
