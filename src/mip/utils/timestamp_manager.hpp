@@ -6,7 +6,6 @@
 namespace mip
 {
     using std::chrono::duration_cast;
-    using std::chrono::system_clock;
     using std::chrono::time_point;
     using Nanoseconds = std::chrono::nanoseconds;
     using Microseconds = std::chrono::microseconds;
@@ -26,9 +25,18 @@ namespace mip
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
     
-    using TimeStandard = enum class Timestandard{
-        UNIX, 
-        GPS
+    struct TimeStandard
+    {
+        using StandardId = enum class StandardId{UNIX, GPS};
+        
+        TimeStandard() : TimeStandard(StandardId::UNIX) {}
+        TimeStandard(StandardId id) : standard_id(id) {}
+
+        Nanoseconds epochDifference();
+        Nanoseconds timeSinceEpoch();
+        
+    private:
+        const StandardId standard_id;
     };
 
     // TODO: Update documentation.
@@ -150,9 +158,6 @@ namespace mip
 
     private:
         Nanoseconds m_timestamp{0};
-
-        Seconds epochDifference(TimeStandard standard);
-        Nanoseconds timeSinceEpoch(TimeStandard standard);
     };
 
 

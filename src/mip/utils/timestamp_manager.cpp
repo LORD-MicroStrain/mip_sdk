@@ -4,31 +4,59 @@
 
 namespace mip
 {
-    Seconds TimestampManager::epochDifference(TimeStandard standard)
+    // #if __APPLE__ || __linux__ || !_HAS_CXX20
+    //     static constexpr int leap_seconds = 18; 
+
+    //     int unix_epoch_difference = 0;
+    //     switch (id)
+    //     {
+    //     case StandardId::UNIX:
+    //         break;
+    //     case StandardId::GPS:
+    //         unix_epoch_difference = 315964800 - leap_seconds;
+    //         break;
+    //     }
+
+    //     epoch_difference = mip::Seconds(unix_epoch_difference - leap_seconds); 
+    // #else
+    //     epoch_difference = mip::Seconds(0);
+    // #endif
+
+    Nanoseconds TimeStandard::epochDifference()
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20
         static constexpr int leap_seconds = 18; 
+        Seconds epoch_difference(0);
 
-        switch (standard)
+        switch (standard_id)
         {
-        case TimeStandard::UNIX:
-            return Seconds(0);
-        case Timestandard::GPS:
-            return Seconds(315964800 - leap_seconds);
+        case StandardId::UNIX:
+            break;
+        case StandardId::GPS:
+            epoch_difference = Seconds(315964800 - leap_seconds);
         default:
             throw std::invalid_argument("Invalid time standard.");
         }
+
+        return duration_cast<Nanoseconds>(epoch_difference);
     #else
-        return Seconds(0);
+        return Nanoseconds(0);
     #endif
     }
     
-    Nanoseconds TimestampManager::timeSinceEpoch(TimeStandard standard)
+    Nanoseconds TimeStandard::timeSinceEpoch()
     {
-        // TODO: Add standard stuff.
-        return Nanoseconds(system_clock::now().time_since_epoch());
+        switch (standard)
+        {
+        case TimeStandard::UNIX:
+            return std::chrono::system_clock::now().time_since_epoch();
+        case Timestandard::GPS:
+            return std::chrono::gps_clock::now().time_since_epoch();
+        default:
+            throw std::invalid_argument("Invalid time standard.");
+        }
     }
-    
+
     TimestampManager::TimestampManager(long long nanoseconds_since_epoch)
     {
         if (nanoseconds_since_epoch > 0)
