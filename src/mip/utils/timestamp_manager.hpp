@@ -6,6 +6,8 @@
 namespace mip
 {
     using std::chrono::duration_cast;
+    using std::chrono::system_clock;
+    using std::chrono::time_point;
     using Nanoseconds = std::chrono::nanoseconds;
     using Microseconds = std::chrono::microseconds;
     using Milliseconds = std::chrono::milliseconds;
@@ -24,7 +26,44 @@ namespace mip
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
     
-    enum class TimeStandard {GPS};
+    struct TimeStandard 
+    {
+        enum class Code{UNIX, GPS};
+
+        TimeStandard()
+        {
+            TimeStandard(Code::UNIX);            
+        }
+
+        TimeStandard(Code standard_code)
+        {
+        #if __APPLE__ || __linux__ || !_HAS_CXX20
+            static constexpr int leap_seconds = 18; 
+
+            int unix_epoch_difference = 0;
+            switch (standard_code)
+            {
+            case Code::UNIX:
+                break;
+            case Code::GPS:
+                unix_epoch_difference = 315964800 - leap_seconds;
+                break;
+            }
+
+            epoch_difference = mip::Seconds(unix_epoch_difference - leap_seconds); 
+        #else
+            epoch_difference = mip::Seconds(0);
+        #endif
+        }
+
+        // TODO: Add standard stuff.
+        mip::Nanoseconds time_since_epoch()
+        {
+            
+        }
+            
+        mip::Seconds epoch_difference;
+    };
 
     // TODO: Update documentation.
     /// Manages a timestamp in nanoseconds since epoch.
@@ -41,6 +80,7 @@ namespace mip
         /// New epoch (0 nanoseconds).
         TimestampManager() {}
         /// Manually set time since epoch.
+        // TODO: Change to general time unit chrono duration.
         TimestampManager(long long nanoseconds_since_epoch);
         /// Time since epoch synchronized to a coordinated time standard.
         TimestampManager(TimeStandard standard);
@@ -49,13 +89,15 @@ namespace mip
         /// the timestamp won't continue to increment after this is called). Continuously
         /// call this method to keep the timestamp up to date with the time standard.
         void synchronize(TimeStandard standard);
+        
+        // TODO: Add increment method.
 
         /// Returns time since epoch.
-        template<typename Duration> Duration getTimestamp();
+        template<typename DurationOut> DurationOut getTimestamp();
         Nanoseconds getTimestamp();
 
         /// Returns time since the start of the current week (of the timestamp).
-        template<typename Duration> Duration getTimeOfWeek();
+        template<typename DurationOut> DurationOut getTimeOfWeek();
         Nanoseconds getTimeOfWeek();
 
         /// Returns whether two timestamps have diverged from each other.
@@ -143,18 +185,22 @@ namespace mip
     private:
         Nanoseconds m_timestamp{0};
         
-        void synchronizeGPS();
+        void synchronize_(TimeStandard standard);
     };
-    
+
+    inline void TimestampManager::synchronize_(TimeStandard standard)
+    {
+        m_timestamp = duration_cast<Nanoseconds>(standard.time_since_epoch() - standard.epoch_difference);       
+    }
 
     /**************************************************************************************/
     /* NOTE: The following are definitions for all template declarations above. There are */
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<typename Duration> inline Duration TimestampManager::getTimestamp()
+    template<typename DurationOut> inline DurationOut TimestampManager::getTimestamp()
     {
-        return duration_cast<Duration>(m_timestamp);
+        return duration_cast<DurationOut>(m_timestamp);
     }
 
     inline Nanoseconds TimestampManager::getTimestamp()
@@ -162,9 +208,9 @@ namespace mip
         return m_timestamp;
     }
 
-    template<typename Duration> inline Duration TimestampManager::getTimeOfWeek()
+    template<typename DurationOut> inline DurationOut TimestampManager::getTimeOfWeek()
     {
-        return duration_cast<Duration>(getTimeOfWeek());
+        return duration_cast<DurationOut>(getTimeOfWeek());
     }
 
     inline mip::Nanoseconds TimestampManager::getTimeOfWeek()
