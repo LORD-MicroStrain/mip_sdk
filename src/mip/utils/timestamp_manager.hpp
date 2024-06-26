@@ -162,14 +162,8 @@ namespace mip
 
     private:
         Nanoseconds m_timestamp{0};
-        
-        void synchronize_(TimeStandard standard);
     };
 
-    inline void TimestampManager::synchronize_(TimeStandard standard)
-    {
-        m_timestamp = duration_cast<Nanoseconds>(standard.time_since_epoch() - standard.epoch_difference);       
-    }
 
     /**************************************************************************************/
     /* NOTE: The following are definitions for all template declarations above. There are */

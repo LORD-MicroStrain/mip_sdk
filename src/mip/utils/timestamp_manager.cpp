@@ -38,7 +38,7 @@ namespace mip
 
     void TimestampManager::synchronize(TimeStandard standard)
     {
-        synchronize_(standard);
+        m_timestamp = duration_cast<Nanoseconds>(standard.time_since_epoch() - standard.epoch_difference);       
     }
 
     // void TimestampManager::synchronize(TimeStandard standard)
