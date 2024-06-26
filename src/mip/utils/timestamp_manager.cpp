@@ -1,5 +1,7 @@
 #include "mip/utils/timestamp_manager.hpp"
 
+#include <stdexcept>
+
 namespace mip
 {
     Seconds TimestampManager::epochDifference(TimeStandard standard)
@@ -7,19 +9,17 @@ namespace mip
     #if __APPLE__ || __linux__ || !_HAS_CXX20
         static constexpr int leap_seconds = 18; 
 
-        int unix_epoch_difference = 0;
-        switch (id)
+        switch (standard)
         {
-        case StandardId::UNIX:
-            break;
-        case StandardId::GPS:
-            unix_epoch_difference = 315964800 - leap_seconds;
-            break;
+        case TimeStandard::UNIX:
+            return Seconds(0);
+        case Timestandard::GPS:
+            return Seconds(315964800 - leap_seconds);
+        default:
+            throw std::invalid_argument("Invalid time standard.");
         }
-
-        epoch_difference = mip::Seconds(unix_epoch_difference - leap_seconds); 
     #else
-        epoch_difference = mip::Seconds(0);
+        return Seconds(0);
     #endif
     }
     
@@ -27,7 +27,6 @@ namespace mip
     {
         // TODO: Add standard stuff.
         return Nanoseconds(system_clock::now().time_since_epoch());
-
     }
     
     TimestampManager::TimestampManager(long long nanoseconds_since_epoch)
