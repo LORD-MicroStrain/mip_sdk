@@ -33,13 +33,11 @@ namespace mip
         };
         
         TimeStandard() = delete;
-        TimeStandard(StandardId id) : standard_id(id) {}
+        TimeStandard(StandardId id) : id(id) {}
 
-        Nanoseconds epochDifference();
         Nanoseconds timeSinceEpoch();
         
-    private:
-        const StandardId standard_id;
+        const StandardId id;
     };
 
     // TODO: Update documentation.
