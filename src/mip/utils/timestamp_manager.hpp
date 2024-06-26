@@ -33,14 +33,9 @@ namespace mip
         TimeStandard() : TimeStandard(StandardId::UNIX) {}
         TimeStandard(StandardId id);
 
-        Nanoseconds time_since_epoch()
-        {
-            // TODO: Add standard stuff.
-            return Nanoseconds(system_clock::now().time_since_epoch());
-            
-        }
-            
         mip::Seconds epoch_difference;
+
+        Nanoseconds time_since_epoch();
     };
 
     // TODO: Update documentation.

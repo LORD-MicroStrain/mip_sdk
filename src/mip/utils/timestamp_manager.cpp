@@ -23,6 +23,13 @@ namespace mip
     #endif
     }
     
+    mip::Nanoseconds TimeStandard::time_since_epoch()
+    {
+        // TODO: Add standard stuff.
+        return Nanoseconds(system_clock::now().time_since_epoch());
+
+    }
+    
     TimestampManager::TimestampManager(long long nanoseconds_since_epoch)
     {
         if (nanoseconds_since_epoch > 0)
