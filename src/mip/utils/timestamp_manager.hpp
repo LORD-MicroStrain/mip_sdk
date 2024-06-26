@@ -28,37 +28,15 @@ namespace mip
     
     struct TimeStandard 
     {
-        enum class Code{UNIX, GPS};
+        using StandardId = enum class StandardId{UNIX, GPS};
 
-        TimeStandard()
+        TimeStandard() : TimeStandard(StandardId::UNIX) {}
+        TimeStandard(StandardId id);
+
+        Nanoseconds time_since_epoch()
         {
-            TimeStandard(Code::UNIX);            
-        }
-
-        TimeStandard(Code standard_code)
-        {
-        #if __APPLE__ || __linux__ || !_HAS_CXX20
-            static constexpr int leap_seconds = 18; 
-
-            int unix_epoch_difference = 0;
-            switch (standard_code)
-            {
-            case Code::UNIX:
-                break;
-            case Code::GPS:
-                unix_epoch_difference = 315964800 - leap_seconds;
-                break;
-            }
-
-            epoch_difference = mip::Seconds(unix_epoch_difference - leap_seconds); 
-        #else
-            epoch_difference = mip::Seconds(0);
-        #endif
-        }
-
-        // TODO: Add standard stuff.
-        mip::Nanoseconds time_since_epoch()
-        {
+            // TODO: Add standard stuff.
+            return Nanoseconds(system_clock::now().time_since_epoch());
             
         }
             

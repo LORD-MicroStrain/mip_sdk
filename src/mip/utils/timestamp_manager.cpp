@@ -2,6 +2,27 @@
 
 namespace mip
 {
+    TimeStandard::TimeStandard(StandardId id)
+    {
+    #if __APPLE__ || __linux__ || !_HAS_CXX20
+        static constexpr int leap_seconds = 18; 
+
+        int unix_epoch_difference = 0;
+        switch (id)
+        {
+        case StandardId::UNIX:
+            break;
+        case StandardId::GPS:
+            unix_epoch_difference = 315964800 - leap_seconds;
+            break;
+        }
+
+        epoch_difference = mip::Seconds(unix_epoch_difference - leap_seconds); 
+    #else
+        epoch_difference = mip::Seconds(0);
+    #endif
+    }
+    
     TimestampManager::TimestampManager(long long nanoseconds_since_epoch)
     {
         if (nanoseconds_since_epoch > 0)

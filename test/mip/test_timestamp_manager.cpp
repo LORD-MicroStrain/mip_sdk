@@ -90,6 +90,33 @@ bool testGetters()
     return true;
 }
 
+bool testSynchronize()
+{
+    // TODO: Rewrite these with new structure.
+    // TODO: Add check for constructor value using Unix time when implemented.
+
+    // std::array<mip::TimeStandard, 1> standards{
+    //     mip::TimeStandard::GPS
+    // };
+
+    // for (mip::TimeStandard& standard : standards)
+    // {
+    //     mip::TimestampManager timestamp(standard);
+    //     mip::Nanoseconds synced_time = timestamp.getTimestamp();
+
+    //     if (synced_time == mip::Nanoseconds(0))
+    //     {
+    //         outputCaseResults("SyncConstructor-GPS", synced_time.count(), "time since epoch >= 0");
+    //         return false;
+    //     }
+        
+    //     static constexpr short leap = 18; 
+    //     static constexpr int epoch_gap = 315964800; 
+    // }
+
+    return true;
+}
+
 int main(int argc, const char* argv[])
 {
     static constexpr short success = 0;
@@ -98,6 +125,10 @@ int main(int argc, const char* argv[])
     if (!testGetters()) 
     { 
         return fail; 
+    }
+    if (!testSynchronize())
+    {
+        return fail;
     }
 
     return success;
