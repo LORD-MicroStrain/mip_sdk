@@ -26,16 +26,9 @@ namespace mip
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
     
-    struct TimeStandard 
-    {
-        using StandardId = enum class StandardId{UNIX, GPS};
-
-        TimeStandard() : TimeStandard(StandardId::UNIX) {}
-        TimeStandard(StandardId id);
-
-        mip::Seconds epoch_difference;
-
-        Nanoseconds time_since_epoch();
+    using TimeStandard = enum class Timestandard{
+        UNIX, 
+        GPS
     };
 
     // TODO: Update documentation.
@@ -157,6 +150,9 @@ namespace mip
 
     private:
         Nanoseconds m_timestamp{0};
+
+        Seconds epochDifference(TimeStandard standard);
+        Nanoseconds timeSinceEpoch(TimeStandard standard);
     };
 
 

@@ -2,7 +2,7 @@
 
 namespace mip
 {
-    TimeStandard::TimeStandard(StandardId id)
+    Seconds TimestampManager::epochDifference(TimeStandard standard)
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20
         static constexpr int leap_seconds = 18; 
@@ -23,7 +23,7 @@ namespace mip
     #endif
     }
     
-    mip::Nanoseconds TimeStandard::time_since_epoch()
+    Nanoseconds TimestampManager::timeSinceEpoch(TimeStandard standard)
     {
         // TODO: Add standard stuff.
         return Nanoseconds(system_clock::now().time_since_epoch());
@@ -45,7 +45,7 @@ namespace mip
 
     void TimestampManager::synchronize(TimeStandard standard)
     {
-        m_timestamp = duration_cast<Nanoseconds>(standard.time_since_epoch() - standard.epoch_difference);       
+        m_timestamp = duration_cast<Nanoseconds>(timeSinceEpoch(standard) - epochDifference(standard));
     }
 
     // void TimestampManager::synchronize(TimeStandard standard)
