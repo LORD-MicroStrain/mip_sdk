@@ -27,9 +27,12 @@ namespace mip
     
     struct TimeStandard
     {
-        using StandardId = enum class StandardId{UNIX, GPS};
+        using StandardId = enum class StandardId{
+            UNIX, 
+            GPS
+        };
         
-        TimeStandard() : TimeStandard(StandardId::UNIX) {}
+        TimeStandard() = delete;
         TimeStandard(StandardId id) : standard_id(id) {}
 
         Nanoseconds epochDifference();
