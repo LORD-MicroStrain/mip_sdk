@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-namespace mip
+namespace microstrain
 {
     class Id;
 
@@ -113,4 +113,4 @@ namespace mip
     template<class Container, typename Value>
     auto indexOrDefault(Container& container, Index index, Value default_) { return index.isValid(container.size()) ? container[index.index()] : default_; }
 
-} // namespace mip
+} // namespace microstrain
