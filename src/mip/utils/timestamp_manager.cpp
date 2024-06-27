@@ -4,7 +4,7 @@
 
 namespace mip
 {
-    Nanoseconds TimeStandard::timeSinceEpoch()
+    Nanoseconds TimeStandard::now()
     {
     #if __APPLE__ || __linux__ || !_HAS_CXX20
         return std::chrono::system_clock::now().time_since_epoch();
@@ -29,30 +29,31 @@ namespace mip
         }
     }
     
-    TimestampManager::TimestampManager(TimeStandard standard)
+    TimestampManager::TimestampManager(const TimeStandard &standard)
     {
-        synchronize(standard);
+        now(standard);
     }
 
-    void TimestampManager::synchronize(TimeStandard standard)
+    void TimestampManager::now(const TimeStandard &standard)
     {
-        Seconds epoch_difference(0);
+        m_timestamp = standard.now();
+        // Seconds epoch_difference(0);
 
-    #if __APPLE__ || __linux__ || !_HAS_CXX20
-        static constexpr int leap_seconds = 18; 
+    // #if __APPLE__ || __linux__ || !_HAS_CXX20
+    //     static constexpr int leap_seconds = 18; 
 
-        switch (standard.id)
-        {
-        case TimeStandard::StandardId::UNIX:
-            break;
-        case TimeStandard::StandardId::GPS:
-            epoch_difference = Seconds(315964800 - leap_seconds);
-        default:
-            throw std::invalid_argument("Invalid time standard.");
-        }
-    #endif
+    //     switch (standard.id)
+    //     {
+    //     case TimeStandard::StandardId::UNIX:
+    //         break;
+    //     case TimeStandard::StandardId::GPS:
+    //         epoch_difference = Seconds(315964800 - leap_seconds);
+    //     default:
+    //         throw std::invalid_argument("Invalid time standard.");
+    //     }
+    // #endif
 
-        m_timestamp = standard.timeSinceEpoch() - duration_cast<Nanoseconds>(epoch_difference);
+        // m_timestamp = standard.timeSinceEpoch() - duration_cast<Nanoseconds>(epoch_difference);
     }
 
     // void TimestampManager::synchronize(TimeStandard standard)

@@ -25,21 +25,38 @@ namespace mip
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
     
+    // TODO: Move TimeStandard stuff to separate file.
     struct TimeStandard
     {
-        using StandardId = enum class StandardId{
-            UNIX, 
-            GPS
-        };
-        
-        TimeStandard() = delete;
-        TimeStandard(StandardId id) : id(id) {}
-
-        Nanoseconds timeSinceEpoch();
-        
-        const StandardId id;
+        virtual Nanoseconds now() const = 0;
+        virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
+        virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
     };
 
+    struct UnixTime: TimeStandard
+    {
+        static const UnixTime instance;
+    };
+    
+    static const UnixTime &base_time = UnixTime::instance;
+    
+    struct GpsTime: TimeStandard
+    {
+
+    };
+
+    // TODO: Move to Timestamp.
+    // TODO: Add duration changing.
+    // template<typename DurationIn, typename DurationOut> 
+    //     DurationOut convert(std::uint64_t time, TimeStandard to, 
+    //     TimeStandard from); 
+    // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard to, 
+    //     TimeStandard from)
+    // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
+        
+
+    // TODO: Add storing of TimeStandard.
+    // TODO: Add increment method.
     // TODO: Update documentation.
     /// Manages a timestamp in nanoseconds since epoch.
     ///
@@ -53,19 +70,20 @@ namespace mip
     {
     public:
         /// New epoch (0 nanoseconds).
+        // TODO: Delete default constructor --> required time standard.
         TimestampManager() {}
         /// Manually set time since epoch.
         // TODO: Change to general time unit chrono duration.
-        TimestampManager(long long nanoseconds_since_epoch);
+        // TODO: Change to set time standard as well.
+        TimestampManager(const TimeStandard &standard, long long default = 0);
         /// Time since epoch synchronized to a coordinated time standard.
-        TimestampManager(TimeStandard standard);
+        // TODO: Change to static Now()
+        // TimestampManager(const TimeStandard &standard);
         
         /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
         /// the timestamp won't continue to increment after this is called). Continuously
         /// call this method to keep the timestamp up to date with the time standard.
-        void synchronize(TimeStandard standard);
-        
-        // TODO: Add increment method.
+        void now(const TimeStandard &standard);
 
         /// Returns time since epoch.
         template<typename DurationOut> DurationOut getTimestamp();
