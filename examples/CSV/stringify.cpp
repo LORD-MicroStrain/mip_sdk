@@ -18,63 +18,16 @@ using namespace mip::metadata;
 extern Definitions mipdefs;
 
 
-// std::string& appendFmt(std::string& base, const char* fmt, ...)
-// {
-//     std::va_list args;
-//     va_start(args, fmt);
-//     int length = std::vsnprintf(nullptr, 0, fmt, args);
-//     va_end(args);
-//
-//     if(length > 0)
-//     {
-//         size_t oldSize = base.length();
-//         base.resize(oldSize + length);
-//
-//         va_start(args, fmt);
-//         std::vsnprintf(base.data()+oldSize, length, fmt, args);
-//         va_end(args);
-//
-//         base.resize(base.size()-1);  // Remove extra terminating '\0'
-//     }
-// }
-
-
-// template<class T>
-// std::string formatBasicType(const uint8_t* buffer, size_t length, size_t offset)
-// {
-//     if(offset+sizeof(T) > length)
-//         return "?";
-//
-//     T value = microstrain::read<T>(buffer);
-//
-//     const char* fmt = nullptr;
-//     switch(utils::ParamType<T>::value)
-//     {
-//     case Type::BOOL:
-//         return value ? "true" : "false";
-//
-//     case Type::U8:     fmt = "%" PRIu8;  break;
-//     case Type::S8:     fmt = "%" PRIi8; break;
-//     case Type::U16:    fmt = "%" PRIu16; break;
-//     case Type::S16:    fmt = "%" PRIi16; break;
-//     case Type::U32:    fmt = "%" PRIu32; break;
-//     case Type::S32:    fmt = "%" PRIi32; break;
-//     case Type::U64:    fmt = "%" PRIu64; break;
-//     case Type::S64:    fmt = "%" PRIi64; break;
-//
-//     case Type::FLOAT:  fmt = "%f"; break;
-//     case Type::DOUBLE: fmt = "%f"; break;
-//
-//     default: return "?";
-//     }
-//
-//     std::string tmp;
-//     return appendFmt(tmp, fmt, value);
-// }
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format an arithmetic type (including bool) from buffer to a string.
+///
+///@param ss      Output stream
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored (may be out of range)
+///
+///@returns ss
+///
 template<class T>
 std::ostream& formatBasicType(std::ostream& ss, const uint8_t* buffer, size_t length, size_t offset)
 {
@@ -84,7 +37,18 @@ std::ostream& formatBasicType(std::ostream& ss, const uint8_t* buffer, size_t le
     return ss << microstrain::read<T>(buffer);
 }
 
-static std::optional<uint64_t> read(Type type, const uint8_t* buffer, size_t length, size_t offset)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Read an integral value from the raw buffer.
+///
+///@param type   Real type of the data in the buffer. Used for size.
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored (may be out of range)
+///
+///@returns A uint64_t containing the value. All smaller integers are converted to this type.
+///@returns std::nullopt (no value) if the offset/size is beyond the end of the buffer.
+///
+static std::optional<uint64_t> readIntegralValue(Type type, const uint8_t* buffer, size_t length, size_t offset)
 {
     switch(type)
     {
@@ -100,12 +64,23 @@ static std::optional<uint64_t> read(Type type, const uint8_t* buffer, size_t len
     }
 }
 
-std::ostream& format(std::ostream& ss, const EnumInfo* info, const uint8_t* buffer, size_t length, size_t offset=0)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format enum from buffer to a string.
+///
+///@param ss      Output stream
+///@param info    Enum metadata (may be NULL)
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored
+///
+///@returns ss
+///
+std::ostream& formatEnum(std::ostream& ss, const EnumInfo* info, const uint8_t* buffer, size_t length, size_t offset= 0)
 {
     if(!info)
         return ss << "<enum>";
 
-    std::optional<uint64_t> value = read(info->type, buffer, length, offset);
+    std::optional<uint64_t> value = readIntegralValue(info->type, buffer, length, offset);
 
     if(!value)
         return ss << "?";
@@ -119,12 +94,24 @@ std::ostream& format(std::ostream& ss, const EnumInfo* info, const uint8_t* buff
     return ss << *value << '(' << name << ')';
 }
 
-std::ostream& format(std::ostream& ss, const BitfieldInfo* info, const uint8_t* buffer, size_t length, size_t offset)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format bitfield from buffer to a string.
+///
+///@param ss      Output stream
+///@param info    Bitfield metadata (may be NULL)
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored (may be out of range)
+///
+///@returns ss
+///
+std::ostream& formatBitfield(std::ostream& ss, const BitfieldInfo* info, const uint8_t* buffer, size_t length, size_t offset)
 {
     if(!info)
         return ss << "<bitfield>";
 
-    std::optional<uint64_t> value = read(info->type, buffer, length, offset);
+    std::optional<uint64_t> value = readIntegralValue(info->type, buffer, length, offset);
+
     if(!value)
         return ss << "?";
 
@@ -146,10 +133,59 @@ std::ostream& format(std::ostream& ss, const BitfieldInfo* info, const uint8_t* 
     return ss;
 }
 
-std::ostream& format(std::ostream& ss, const StructInfo* info, const uint8_t* buffer, size_t length, size_t offset=0)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format union from buffer to a string.
+///
+///@param ss      Output stream
+///@param info    Union metadata (may be NULL)
+///@param parent  Struct metadata of the parent object (for parameter access).
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored (may be out of range)
+///
+///@returns ss
+///
+std::ostream& formatUnion(std::ostream& ss, const UnionInfo* info, const StructInfo& parent, const uint8_t* buffer, size_t length, size_t offset=0)
+{
+    if(!info)
+        return ss << "<union>";
+    if(offset > length)
+        return ss << "?";
+
+    ss << info->name << '{';
+
+    // Todo
+    // const ParameterInfo* param = nullptr;
+    //
+    // for(const auto& p : info->parameters)
+    // {
+    //     if(p.union_index < parent.parameters.size())
+    //     {
+    //
+    //     }
+    // }
+
+    ss << '}';
+    return ss;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format struct from buffer to a string.
+///
+///@param ss      Output stream
+///@param info    Struct metadata (may be NULL)
+///@param buffer  Data buffer
+///@param length  Length of data buffer
+///@param offset  Offset into data buffer where value is stored (may be out of range)
+///
+///@returns ss
+///
+std::ostream& formatStruct(std::ostream& ss, const StructInfo* info, const uint8_t* buffer, size_t length, size_t offset=0)
 {
     if(!info)
         return ss << "<struct>";
+    if(offset > length)
+        return ss << "?";
 
     ss << '{';
 
@@ -179,42 +215,31 @@ std::ostream& format(std::ostream& ss, const StructInfo* info, const uint8_t* bu
         case Type::DOUBLE: formatBasicType<double  >(ss, buffer, length, param.byte_offset); break;
 
         case Type::ENUM:
-            format(
+            formatEnum(
                 ss, static_cast<const EnumInfo *>(param.type.infoPtr),
                 buffer, length, param.byte_offset
             );
             break;
 
         case Type::BITFIELD:
-            if(!param.type.infoPtr)
-                ss << "<bits>";
-            else if(param.byte_offset > length)
-                ss << "?";
-            else
-            {
-                format(
-                    ss, static_cast<const BitfieldInfo *>(param.type.infoPtr),
-                    buffer, length, param.byte_offset
-                );
-            }
+            formatBitfield(
+                ss, static_cast<const BitfieldInfo *>(param.type.infoPtr),
+                buffer, length, param.byte_offset
+            );
             break;
 
         case Type::STRUCT:
-            if(!param.type.infoPtr)
-                ss << "<struct>";
-            else if(param.byte_offset > length)
-                ss << "{?}";
-            else
-            {
-                format(
-                    ss, static_cast<const StructInfo *>(param.type.infoPtr),
-                    buffer, length, param.byte_offset
-                );
-            }
+            formatStruct(
+                ss, static_cast<const StructInfo *>(param.type.infoPtr),
+                buffer, length, param.byte_offset
+            );
             break;
 
         case Type::UNION:
-            ss << "<union>";
+            formatUnion(
+                ss, static_cast<const UnionInfo *>(param.type.infoPtr), *info,
+                buffer, length, param.byte_offset
+            );
             break;
         }
 
@@ -225,7 +250,15 @@ std::ostream& format(std::ostream& ss, const StructInfo* info, const uint8_t* bu
     return ss;
 }
 
-std::ostream& format(std::ostream& ss, const mip::FieldView& field)
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format mip field from buffer to a string.
+///
+///@param ss      Output stream
+///@param field   FieldView containing data to print
+///
+///@returns ss
+///
+std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
 {
     const FieldInfo* info = mipdefs.findField(field.descriptor());
 
@@ -239,16 +272,23 @@ std::ostream& format(std::ostream& ss, const mip::FieldView& field)
     else
     {
         ss << info->name;
-        format(ss, static_cast<const StructInfo*>(info), field.payload(), field.payloadLength());
+        formatStruct(ss, static_cast<const StructInfo *>(info), field.payload(), field.payloadLength());
     }
     return ss;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///@brief Format bitfield to a string.
+///
+///@param field FieldView holding the buffer containing the field data.
+///
+///@returns A human and machine-readable string.
+///
 std::string formatField(const mip::FieldView& field)
 {
     std::stringstream ss;
 
-    format(ss, field);
+    formatField(ss, field);
 
     return ss.str();
 }

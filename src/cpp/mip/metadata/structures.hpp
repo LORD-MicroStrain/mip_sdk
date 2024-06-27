@@ -114,6 +114,8 @@ struct StructInfo
     std::span<const ParameterInfo> parameters;
 };
 
+struct UnionInfo : public StructInfo {};
+
 struct FieldInfo : public StructInfo
 {
     CompositeDescriptor descriptor = {0x00, 0x00};
