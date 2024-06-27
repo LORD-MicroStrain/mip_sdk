@@ -10,9 +10,46 @@
 namespace mip::metadata
 {
 
-// Type trait class to be specialized for each field type.
+// Type trait class to be specialized for each field/struct/etc.
 template<class FieldType>
 struct MetadataFor;
+
+
+template<>
+struct MetadataFor<FunctionSelector>
+{
+    using type = FunctionSelector;
+
+    static constexpr EnumInfo::Entry entries[] = {
+        { "WRITE",   (uint8_t)FunctionSelector::WRITE },
+        { "READ",    (uint8_t)FunctionSelector::READ  },
+        { "SAVE",    (uint8_t)FunctionSelector::SAVE  },
+        { "LOAD",    (uint8_t)FunctionSelector::LOAD  },
+        { "DEFAULT", (uint8_t)FunctionSelector::RESET },
+    };
+
+    static constexpr inline EnumInfo value = {
+        .name = "FunctionSelector",
+        .docs = "",
+        .type = Type::U8,
+        .entries = entries,
+    };
+};
+
+inline void* accessFunctionSelector(void* p) { return static_cast<FunctionSelector*>(p); }
+
+static constexpr inline ParameterInfo FUNCTION_SELECTOR_PARAM = {
+    /* .name          = */ "function",
+    /* .docs          = */ "Standard MIP function selector",
+    /* .type          = */ {Type::ENUM, &MetadataFor<FunctionSelector>::value},
+    /* .accessor      = */ accessFunctionSelector,
+    /* .byte_offset   = */ 0,
+    /* .functions     = */ {true,true,true,true,true},
+    /* .count         = default */
+    /* .counter_idx   = default */
+    /* .union_index   = default */
+    /* .union_value   = default */
+};
 
 
 
@@ -36,12 +73,6 @@ auto& get(typename EnableForFieldTypes<FieldType>::type& field)
     using T = typename utils::ParamEnum<paramInfo.type.type>::type;
     return *static_cast<T*>(paramInfo.accessor(&field));
 }
-
-
-namespace utils
-{
-}
-
 
 
 template<class FieldType, size_t ParamIndex, class ParamType>

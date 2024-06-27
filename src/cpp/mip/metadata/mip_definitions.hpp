@@ -13,8 +13,12 @@ namespace mip::metadata
 class Definitions
 {
 public:
+    Definitions() = default;
+    Definitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields) { registerDefinitions(fields); }
+
     void registerField(const FieldInfo* field);
     void registerDefinitions(std::initializer_list<const FieldInfo*> fields);
+    void registerDefinitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields);
 
     const FieldInfo* findField(mip::CompositeDescriptor descriptor) const;
 

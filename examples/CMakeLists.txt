@@ -48,7 +48,7 @@ if(MIP_USE_SERIAL OR MIP_USE_TCP)
         add_mip_example(DeviceInfo "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/device_info.cpp")
         add_mip_example(WatchImu   "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/watch_imu.cpp")
         add_mip_example(Threads    "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/threading.cpp")
-        add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp")
+        add_mip_example(CsvExample "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CSV/csv.cpp;${EXAMPLE_DIR}/CSV/stringify.cpp;${EXAMPLE_DIR}/CSV/stringify.hpp")
         target_compile_features(CsvExample PUBLIC cxx_std_20)
 
         # Product-specific examples

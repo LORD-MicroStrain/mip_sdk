@@ -2,7 +2,7 @@
 
 #include <mip/mip_descriptors.hpp>
 
-#include <initializer_list>
+#include <span>
 #include <stdint.h>
 
 
@@ -54,6 +54,8 @@ struct TypeInfo
     //    const BitfieldInfo *bi;
     //    const UnionInfo    *ui;
     //};
+
+    bool isBasicType() const { return type <= Type::DOUBLE; }
 };
 
 struct EnumInfo
@@ -67,7 +69,7 @@ struct EnumInfo
     const char*   name    = nullptr;
     const char*   docs    = nullptr;
     Type          type    = Type::NONE;
-    std::initializer_list<Entry> entries;
+    std::span<const Entry> entries;
 };
 
 struct BitfieldInfo : public EnumInfo {};
@@ -109,7 +111,7 @@ struct StructInfo
     const char* name  = nullptr;
     const char* title = nullptr;
     const char* docs  = nullptr;
-    std::initializer_list<ParameterInfo> parameters;
+    std::span<const ParameterInfo> parameters;
 };
 
 struct FieldInfo : public StructInfo

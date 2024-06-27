@@ -14,9 +14,9 @@ struct MetadataFor<commands_base::Ping>
     using type = commands_base::Ping;
 
     static constexpr inline FieldInfo value = {
-        /* .name        = */ "CommSpeed",
-        /* .title       = */ "Comm Port Speed",
-        /* .docs        = */ "Changes the comm port speed.",
+        /* .name        = */ "Ping",
+        /* .title       = */ "Ping",
+        /* .docs        = */ "Pings the device.",
         /* .parameters  = */ {
         },
         /* .descriptor  = */ type::DESCRIPTOR,
@@ -38,7 +38,7 @@ struct MetadataFor<commands_base::CommSpeed>
     //static constexpr CompositeDescriptor DESCRIPTOR = Cmd::DESCRIPTOR;
 
     static constexpr inline std::initializer_list<ParameterInfo> PARAMETERS = {
-        utils::FUNCTION_SELECTOR_PARAM,
+        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "port",
             /* .docs          = */ "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",

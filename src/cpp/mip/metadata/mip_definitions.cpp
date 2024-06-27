@@ -14,6 +14,13 @@ void Definitions::registerDefinitions(std::initializer_list<const FieldInfo *> f
     mFields.insert(fields);
 }
 
+void Definitions::registerDefinitions(
+    const std::initializer_list< const std::initializer_list<const FieldInfo* >* >& fields)
+{
+    for(const auto* sublist : fields)
+        registerDefinitions(*sublist);
+}
+
 //std::vector<const FieldInfo *>::const_iterator Definitions::findFieldIter(mip::CompositeDescriptor descriptor) const
 //{
 //    return std::lower_bound(

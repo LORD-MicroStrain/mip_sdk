@@ -8,6 +8,10 @@
 
 #include <cstring>
 
+#if __cpp_lib_span >= 202002L
+#include <span>
+#endif
+
 
 namespace mip
 {
@@ -55,6 +59,10 @@ public:
     uint8_t payload(unsigned int index) const { return payload()[index]; }
 
     uint8_t operator[](unsigned int index) const { return payload(index); }
+
+#if __cpp_lib_span >= 202002L
+    std::span<const uint8_t> payloadSpan() const { return {payload(), payloadLength()}; }
+#endif
 
     ///@copydoc mip_field_is_valid
     bool isValid() const { return C::mip_field_is_valid(this); }

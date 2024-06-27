@@ -5,7 +5,9 @@
 
 #include <type_traits>
 #include <tuple>
-
+#if __cpp_lib_optional >= 201606L
+#include <optional>
+#endif
 
 namespace microstrain
 {
@@ -293,12 +295,25 @@ size_t extract(Serializer& serializer, const std::tuple<std::reference_wrapper<T
 
 // Raw buffer
 template<class T>
-bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=true)
+bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offset=0, bool exact_size=false)
 {
     Serializer serializer(buffer, buffer_length, offset);
     extract(serializer, value);
     return exact_size ? serializer.noRemaining() : serializer.isOk();
 }
+
+// Returning by value (use read<T> if length is guaranteed to be in range)
+#if __cpp_lib_optional >= 201606L
+template<class T>
+std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bool exact_size=false)
+{
+    T value;
+    if(extract(value, buffer, length, offset, exact_size))
+        return value;
+    else
+        return std::nullopt;
+}
+#endif
 
 #if __cpp_fold_expressions >= 201603L && __cpp_if_constexpr >= 201606L
 template<typename... Ts>
