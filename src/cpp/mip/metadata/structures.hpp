@@ -1,5 +1,6 @@
 #pragma once
 
+#include <microstrain/common/index.hpp>
 #include <mip/mip_descriptors.hpp>
 
 #include <span>
@@ -62,8 +63,9 @@ struct EnumInfo
 {
     struct Entry
     {
-        const char* name  = nullptr;
         uint32_t    value = 0;
+        const char* name  = nullptr;
+        const char* docs  = nullptr;
     };
 
     const char*   name    = nullptr;
@@ -130,15 +132,15 @@ struct ParameterInfo
 {
     using Accessor = void* (*)(void*);
 
-    const char* name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
-    const char* docs = nullptr;     ///< Human-readable documentation.
-    TypeInfo    type;               ///< Data type.
-    Accessor    accessor = nullptr; ///< Obtains a reference to the member variable.
-    FuncBits    functions;          ///< This parameter is required for the specified function selectors.
-    uint8_t     count = 1;          ///< Number of elements. 0 if size is specified at runtime.
-    int8_t      counter_idx = 0;    ///< When count == 0, this specifies the parameter holding the runtime count, relative to this parameter's index.
-    int8_t      union_index = 0;    ///< When type is UNION, this specifies the parameter that controls which union member is active (the discriminator).
-    uint16_t    union_value = 0;    ///< When in a union, this specifies the value of the discriminator parameter that selects this member.
+    const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
+    const char*     docs = nullptr;     ///< Human-readable documentation.
+    TypeInfo        type;               ///< Data type.
+    Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
+    FuncBits        functions;          ///< This parameter is required for the specified function selectors.
+    uint8_t         count = 1;          ///< Number of elements. This is a maximum value when counter_idx != 0.
+    microstrain::Id counter_param;      ///< When valid, this specifies the parameter holding the runtime count, relative to this parameter's index.
+    microstrain::Id union_param;        ///< When type is UNION, this specifies the parameter that controls which union member is active (the discriminator).
+    uint16_t        union_value = 0;    ///< When in a union, this specifies the value of the discriminator parameter that selects this member.
 };
 
 

@@ -21,11 +21,11 @@ struct MetadataFor<FunctionSelector>
     using type = FunctionSelector;
 
     static constexpr EnumInfo::Entry entries[] = {
-        { "WRITE",   (uint8_t)FunctionSelector::WRITE },
-        { "READ",    (uint8_t)FunctionSelector::READ  },
-        { "SAVE",    (uint8_t)FunctionSelector::SAVE  },
-        { "LOAD",    (uint8_t)FunctionSelector::LOAD  },
-        { "DEFAULT", (uint8_t)FunctionSelector::RESET },
+        { (uint8_t)FunctionSelector::WRITE, "WRITE",   "Applies a new setting." },
+        { (uint8_t)FunctionSelector::READ,  "READ",    "Reads the current setting." },
+        { (uint8_t)FunctionSelector::SAVE,  "SAVE",    "Saves the current setting as power-on setting." },
+        { (uint8_t)FunctionSelector::LOAD,  "LOAD",    "Loads the power-on setting." },
+        { (uint8_t)FunctionSelector::RESET, "DEFAULT", "Resets to the factory default setting." },
     };
 
     static constexpr inline EnumInfo value = {
@@ -45,10 +45,10 @@ static constexpr inline ParameterInfo FUNCTION_SELECTOR_PARAM = {
     /* .accessor      = */ accessFunctionSelector,
     ///* .byte_offset   = */ 0,
     /* .functions     = */ {true,true,true,true,true},
-    /* .count         = default */
-    /* .counter_idx   = default */
-    /* .union_index   = default */
-    /* .union_value   = default */
+    /* .count         = */ 1,
+    /* .counter_idx   = */ {},
+    /* .union_index   = */ {},
+    /* .union_value   = */ 0,
 };
 
 

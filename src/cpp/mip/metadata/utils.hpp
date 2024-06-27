@@ -56,5 +56,10 @@ void* access(void* p)
     return &(static_cast<Field*>(p)->*Ptr);
 }
 
+template<class Field, class T, T (Field::*Ptr)[]>
+void* access(void* p)
+{
+    return static_cast<Field*>(p)->*Ptr;
+}
 
 } // namespace mip::metadata
