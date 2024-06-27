@@ -7,7 +7,7 @@
 #include "mip_packet.hpp"
 #include "mip_parser.hpp"
 
-#include "mip_descriptors.h"
+#include "mip_descriptors.hpp"
 
 //MIP Commands
 #include "definitions/commands_aiding.hpp"

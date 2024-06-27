@@ -12,21 +12,6 @@ namespace mip::metadata
 
 class Definitions
 {
-public:
-    Definitions() = default;
-    Definitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields) { registerDefinitions(fields); }
-
-    void registerField(const FieldInfo* field);
-    void registerDefinitions(std::initializer_list<const FieldInfo*> fields);
-    void registerDefinitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields);
-
-    const FieldInfo* findField(mip::CompositeDescriptor descriptor) const;
-
-    //std::span<const FieldInfo*> findDescriptorSet(uint8_t descriptorSet) const;
-
-private:
-    //std::vector<const FieldInfo*>::const_iterator findFieldIter(mip::CompositeDescriptor desc) const;
-
     struct Less
     {
         inline bool operator()(const FieldInfo *a, const FieldInfo *b) const
@@ -44,8 +29,21 @@ private:
         using is_transparent = void;
     };
 
+    using Container = std::set<const FieldInfo *, Less>;
+
+public:
+    Definitions() = default;
+    Definitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields) { registerDefinitions(fields); }
+
+    void registerField(const FieldInfo* field);
+    void registerDefinitions(std::initializer_list<const FieldInfo*> fields);
+    void registerDefinitions(const std::initializer_list<const std::initializer_list<const FieldInfo*>*>& fields);
+
+    const FieldInfo* findField(mip::CompositeDescriptor descriptor) const;
+
+
 private:
-    std::set<const FieldInfo *, Less> mFields;
+    Container mFields;
 };
 
 

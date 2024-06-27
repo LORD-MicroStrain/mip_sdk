@@ -1,8 +1,8 @@
 
 #include "data_filter.h"
 
-#include "microstrain/common/serialization.h"
-#include "../mip_interface.h"
+#include <mip/mip_serialization.h>
+#include <mip/mip_interface.h>
 
 #include <assert.h>
 

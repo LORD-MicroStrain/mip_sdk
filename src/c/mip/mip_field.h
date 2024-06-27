@@ -118,8 +118,6 @@ bool mip_field_next_in_packet(mip_field_view* field, const mip_packet_view* pack
 ////////////////////////////////////////////////////////////////////////////////
 ///
 
-//void microstrain_serializer_init_from_field(microstrain_serializer* serializer, const mip_field* field);
-
 #ifdef __cplusplus
 } // namespace mip
 } // namespace C

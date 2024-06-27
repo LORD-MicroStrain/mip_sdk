@@ -23,6 +23,8 @@ set(MIP_SOURCES
     mip_result.c
     mip_result.h
     mip_types.h
+    mip_serialization.c
+    mip_serialization.h
     definitions/common.c
     definitions/common.h
     mip_all.h
