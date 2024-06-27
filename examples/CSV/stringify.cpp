@@ -11,7 +11,11 @@
 #include <cinttypes>
 #include <sstream>
 #include <ostream>
+#include <optional>
 
+#if __cpp_lib_optional < 201606L
+#error "Needs optional support"
+#endif
 
 using namespace mip::metadata;
 
@@ -29,12 +33,13 @@ extern Definitions mipdefs;
 ///@returns ss
 ///
 template<class T>
-std::ostream& formatBasicType(std::ostream& ss, const uint8_t* buffer, size_t length, size_t offset)
+std::ostream& formatBasicType(std::ostream& ss, microstrain::Serializer& serializer)
 {
-    if(offset+sizeof(T) > length)
+    T value;
+    if(serializer.extract(value))
+        return ss << value;
+    else
         return ss << "?";
-
-    return ss << microstrain::read<T>(buffer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,18 +53,18 @@ std::ostream& formatBasicType(std::ostream& ss, const uint8_t* buffer, size_t le
 ///@returns A uint64_t containing the value. All smaller integers are converted to this type.
 ///@returns std::nullopt (no value) if the offset/size is beyond the end of the buffer.
 ///
-static std::optional<uint64_t> readIntegralValue(Type type, const uint8_t* buffer, size_t length, size_t offset)
+static std::optional<uint64_t> readIntegralValue(Type type, microstrain::Serializer& serializer)
 {
     switch(type)
     {
-    case Type::U8:  return microstrain::extract<uint8_t >(buffer, length, offset, false);
-    case Type::S8:  return microstrain::extract< int8_t >(buffer, length, offset, false);
-    case Type::U16: return microstrain::extract<uint16_t>(buffer, length, offset, false);
-    case Type::S16: return microstrain::extract< int32_t>(buffer, length, offset, false);
-    case Type::U32: return microstrain::extract<uint32_t>(buffer, length, offset, false);
-    case Type::S32: return microstrain::extract< int64_t>(buffer, length, offset, false);
-    case Type::U64: return microstrain::extract<uint64_t>(buffer, length, offset, false);
-    case Type::S64: return microstrain::extract< int64_t>(buffer, length, offset, false);
+    case Type::U8:  return microstrain::extract<uint8_t >(serializer);
+    case Type::S8:  return microstrain::extract< int8_t >(serializer);
+    case Type::U16: return microstrain::extract<uint16_t>(serializer);
+    case Type::S16: return microstrain::extract< int32_t>(serializer);
+    case Type::U32: return microstrain::extract<uint32_t>(serializer);
+    case Type::S32: return microstrain::extract< int64_t>(serializer);
+    case Type::U64: return microstrain::extract<uint64_t>(serializer);
+    case Type::S64: return microstrain::extract< int64_t>(serializer);
     default: return std::nullopt;
     }
 }
@@ -75,12 +80,12 @@ static std::optional<uint64_t> readIntegralValue(Type type, const uint8_t* buffe
 ///
 ///@returns ss
 ///
-std::ostream& formatEnum(std::ostream& ss, const EnumInfo* info, const uint8_t* buffer, size_t length, size_t offset= 0)
+std::ostream& formatEnum(std::ostream& ss, const EnumInfo* info, microstrain::Serializer& serializer)
 {
     if(!info)
         return ss << "<enum>";
 
-    std::optional<uint64_t> value = readIntegralValue(info->type, buffer, length, offset);
+    std::optional<uint64_t> value = readIntegralValue(info->type, serializer);
 
     if(!value)
         return ss << "?";
@@ -105,12 +110,12 @@ std::ostream& formatEnum(std::ostream& ss, const EnumInfo* info, const uint8_t* 
 ///
 ///@returns ss
 ///
-std::ostream& formatBitfield(std::ostream& ss, const BitfieldInfo* info, const uint8_t* buffer, size_t length, size_t offset)
+std::ostream& formatBitfield(std::ostream& ss, const BitfieldInfo* info, microstrain::Serializer& serializer)
 {
     if(!info)
         return ss << "<bitfield>";
 
-    std::optional<uint64_t> value = readIntegralValue(info->type, buffer, length, offset);
+    std::optional<uint64_t> value = readIntegralValue(info->type, serializer);
 
     if(!value)
         return ss << "?";
@@ -145,11 +150,11 @@ std::ostream& formatBitfield(std::ostream& ss, const BitfieldInfo* info, const u
 ///
 ///@returns ss
 ///
-std::ostream& formatUnion(std::ostream& ss, const UnionInfo* info, const StructInfo& parent, const uint8_t* buffer, size_t length, size_t offset=0)
+std::ostream& formatUnion(std::ostream& ss, const UnionInfo* info, const StructInfo& parent, microstrain::Serializer& serializer)
 {
     if(!info)
         return ss << "<union>";
-    if(offset > length)
+    if(serializer.isOverrun())
         return ss << "?";
 
     ss << info->name << '{';
@@ -180,11 +185,11 @@ std::ostream& formatUnion(std::ostream& ss, const UnionInfo* info, const StructI
 ///
 ///@returns ss
 ///
-std::ostream& formatStruct(std::ostream& ss, const StructInfo* info, const uint8_t* buffer, size_t length, size_t offset=0)
+std::ostream& formatStruct(std::ostream& ss, const StructInfo* info, microstrain::Serializer& serializer)
 {
     if(!info)
         return ss << "<struct>";
-    if(offset > length)
+    if(serializer.isOverrun())
         return ss << "?";
 
     ss << '{';
@@ -202,44 +207,32 @@ std::ostream& formatStruct(std::ostream& ss, const StructInfo* info, const uint8
         case Type::NONE:
             return ss << "-";
 
-        case Type::BOOL:   formatBasicType<bool    >(ss, buffer, length, param.byte_offset); break;
-        case Type::U8:     formatBasicType<uint8_t >(ss, buffer, length, param.byte_offset); break;
-        case Type::S8:     formatBasicType< int8_t >(ss, buffer, length, param.byte_offset); break;
-        case Type::U16:    formatBasicType<uint16_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::S16:    formatBasicType< int16_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::U32:    formatBasicType<uint32_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::S32:    formatBasicType< int32_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::U64:    formatBasicType<uint64_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::S64:    formatBasicType< int64_t>(ss, buffer, length, param.byte_offset); break;
-        case Type::FLOAT:  formatBasicType<float   >(ss, buffer, length, param.byte_offset); break;
-        case Type::DOUBLE: formatBasicType<double  >(ss, buffer, length, param.byte_offset); break;
+        case Type::BOOL:   formatBasicType<bool    >(ss, serializer); break;
+        case Type::U8:     formatBasicType<uint8_t >(ss, serializer); break;
+        case Type::S8:     formatBasicType< int8_t >(ss, serializer); break;
+        case Type::U16:    formatBasicType<uint16_t>(ss, serializer); break;
+        case Type::S16:    formatBasicType< int16_t>(ss, serializer); break;
+        case Type::U32:    formatBasicType<uint32_t>(ss, serializer); break;
+        case Type::S32:    formatBasicType< int32_t>(ss, serializer); break;
+        case Type::U64:    formatBasicType<uint64_t>(ss, serializer); break;
+        case Type::S64:    formatBasicType< int64_t>(ss, serializer); break;
+        case Type::FLOAT:  formatBasicType<float   >(ss, serializer); break;
+        case Type::DOUBLE: formatBasicType<double  >(ss, serializer); break;
 
         case Type::ENUM:
-            formatEnum(
-                ss, static_cast<const EnumInfo *>(param.type.infoPtr),
-                buffer, length, param.byte_offset
-            );
+            formatEnum(ss, static_cast<const EnumInfo *>(param.type.infoPtr), serializer);
             break;
 
         case Type::BITFIELD:
-            formatBitfield(
-                ss, static_cast<const BitfieldInfo *>(param.type.infoPtr),
-                buffer, length, param.byte_offset
-            );
+            formatBitfield(ss, static_cast<const BitfieldInfo *>(param.type.infoPtr), serializer);
             break;
 
         case Type::STRUCT:
-            formatStruct(
-                ss, static_cast<const StructInfo *>(param.type.infoPtr),
-                buffer, length, param.byte_offset
-            );
+            formatStruct(ss, static_cast<const StructInfo *>(param.type.infoPtr), serializer);
             break;
 
         case Type::UNION:
-            formatUnion(
-                ss, static_cast<const UnionInfo *>(param.type.infoPtr), *info,
-                buffer, length, param.byte_offset
-            );
+            formatUnion(ss, static_cast<const UnionInfo *>(param.type.infoPtr), *info, serializer);
             break;
         }
 
@@ -272,7 +265,8 @@ std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
     else
     {
         ss << info->name;
-        formatStruct(ss, static_cast<const StructInfo *>(info), field.payload(), field.payloadLength());
+        microstrain::Serializer serializer(field.payload(), field.payloadLength());
+        formatStruct(ss, static_cast<const StructInfo *>(info), serializer);
     }
     return ss;
 }

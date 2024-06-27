@@ -44,7 +44,6 @@ struct MetadataFor<commands_base::CommSpeed>
             /* .docs          = */ "Port ID number, starting with 1. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all ports.",
             /* .type          = */ {Type::U8},
             /* .accessor      = */ utils::access<type,uint8_t,&type::port>,
-            /* .byte_offset   = */ 1,
             /* .functions     = */ {true, true, true, true, true, true},
         },
         {
@@ -52,7 +51,6 @@ struct MetadataFor<commands_base::CommSpeed>
             /* .docs          = */ "Port baud rate. Must be a supported rate.",
             /* .type          = */ {Type::U32},
             /* .accessor      = */ utils::access<type,uint32_t,&type::baud>,
-            /* .byte_offset   = */ 2,
             /* .functions     = */ {true,false,false,false,false},
         },
     };

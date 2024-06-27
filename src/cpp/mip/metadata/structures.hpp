@@ -134,7 +134,6 @@ struct ParameterInfo
     const char* docs = nullptr;     ///< Human-readable documentation.
     TypeInfo    type;               ///< Data type.
     Accessor    accessor = nullptr; ///< Obtains a reference to the member variable.
-    uint8_t     byte_offset   = 0;  ///< Offset "on the wire" or in a serialized buffer, in bytes.
     FuncBits    functions;          ///< This parameter is required for the specified function selectors.
     uint8_t     count = 1;          ///< Number of elements. 0 if size is specified at runtime.
     int8_t      counter_idx = 0;    ///< When count == 0, this specifies the parameter holding the runtime count, relative to this parameter's index.

@@ -3,11 +3,17 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include <microstrain/common/platform.hpp>
+
 #include <type_traits>
 #include <tuple>
-#if __cpp_lib_optional >= 201606L
+#ifdef HAS_OPTIONAL
 #include <optional>
 #endif
+#ifdef HAS_SPAN
+#include <span>
+#endif
+
 
 namespace microstrain
 {
@@ -122,6 +128,9 @@ public:
     Serializer() = default;
     Serializer(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
     Serializer(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
+#ifdef HAS_SPAN
+    Serializer(std::span<const uint8_t> buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
+#endif
 
     size_t capacity() const { return m_size; }
     size_t length() const { return m_size; }
@@ -285,13 +294,6 @@ size_t extract(Serializer& serializer, const std::tuple<std::reference_wrapper<T
 
     return std::apply(lambda, values);
 }
-// // Generic class types - assume class has a `size_t serialize(Buffer& buffer) const` function.
-// template<class T>
-// typename std::enable_if<std::is_class<T>::value, size_t>::type
-// /*size_t*/ extract(Serializer& buffer, T& value)
-// {
-//     return value.deserialize(buffer);
-// }
 
 // Raw buffer
 template<class T>
@@ -302,8 +304,18 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
     return exact_size ? serializer.noRemaining() : serializer.isOk();
 }
 
-// Returning by value (use read<T> if length is guaranteed to be in range)
-#if __cpp_lib_optional >= 201606L
+// Returning by value (use read<T> instead if length is guaranteed to be in range)
+#ifdef HAS_OPTIONAL
+template<class T>
+std::optional<T> extract(Serializer& serializer)
+{
+    T value;
+    if(extract<T>(serializer, value))
+        return value;
+    else
+        return std::nullopt;
+}
+
 template<class T>
 std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bool exact_size=false)
 {
@@ -344,18 +356,6 @@ size_t extract(Serializer& serializer, T0 value0, Ts... values)
 }
 #endif
 
-
-
-//template<class T>
-//size_t extract(Buffer& buffer, Buffer::Counter<T> counter)
-//{
-//    size_t size = extract(counter.count);
-//
-//    if(counter.count > counter.max_count)
-//        buffer.invalidate();
-//
-//    return size;
-//}
 
 template<class T>
 size_t extract_count(Serializer& buffer, T& count, size_t max_count)

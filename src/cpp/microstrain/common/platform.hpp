@@ -14,3 +14,10 @@
 #else
     #define IF_CONSTEXPR if
 #endif
+
+#if __cpp_lib_optional >= 201606L || __cplusplus >= 201703L
+#define HAS_OPTIONAL
+#endif
+#if __cpp_lib_span >= 202002L
+#define HAS_SPAN
+#endif
