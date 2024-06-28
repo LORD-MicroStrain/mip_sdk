@@ -22,6 +22,7 @@ enum class Type
 {
     NONE = 0,  ///< Invalid/unknown.
 
+    CHAR,
     BOOL,
     U8,
     S8,
@@ -120,16 +121,85 @@ struct UnionInfo : public StructInfo {};
 
 struct FieldInfo : public StructInfo
 {
-    CompositeDescriptor descriptor = {0x00, 0x00};
-    FuncBits   functions   = {false, false, false, false, false};
-    bool       proprietary = false;
-    FieldInfo* response    = nullptr;
+    CompositeDescriptor descriptor  = {0x00, 0x00};
+    FuncBits            functions   = {false, false, false, false, false};
+    bool                proprietary = false;
+    const FieldInfo*    response    = nullptr;
 };
 
+
+///@brief Gets the size of a basic type (including bitfields and enums if class_ is not NULL).
+///
+constexpr size_t sizeForBasicType(Type type, const void* info=nullptr)
+{
+    switch(type)
+    {
+    case Type::CHAR:
+    case Type::BOOL:
+    case Type::U8:
+    case Type::S8:
+        return 1;
+    case Type::U16:
+    case Type::S16:
+        return 2;
+    case Type::U32:
+    case Type::S32:
+    case Type::FLOAT:
+        return 4;
+    case Type::U64:
+    case Type::S64:
+    case Type::DOUBLE:
+        return 8;
+
+    case Type::ENUM:
+        if(!info)
+            return 0;
+        return sizeForBasicType(static_cast<const EnumInfo *>(info)->type);
+
+    case Type::BITFIELD:
+        if(!info)
+            return 0;
+        return sizeForBasicType(static_cast<const BitfieldInfo *>(info)->type);
+
+    default:
+        return 0;
+    }
+}
+constexpr size_t sizeForBasicType(const TypeInfo& type) { return sizeForBasicType(type.type, type.infoPtr); }
 
 
 struct ParameterInfo
 {
+    struct Count
+    {
+        constexpr Count() = default;
+        constexpr Count(uint8_t n) : count(n) {}
+        constexpr Count(uint8_t n, microstrain::Id id) : count(n), paramIdx(id) {}
+
+        uint8_t         count    = 1;  ///< Fixed size if paramIdx unassigned.
+        microstrain::Id paramIdx = {}; ///< If assigned, specifies parameter that holds the actual runtime count.
+
+        constexpr bool isFixed() const { return count > 0 && !paramIdx.isAssigned(); }
+        constexpr bool hasCounter() const { return paramIdx.isAssigned(); }
+    };
+
+    struct Condition
+    {
+        enum class Type : uint8_t
+        {
+            NONE     = 0,  ///< No condition, member always valid
+            ENUM     = 1,  ///< Enum value selector (e.g. for parameters in unions)
+            //PRODUCT = 2,  ///< Depends on product variant (TBD)
+            //OPTIONAL = 2,  ///< Parameter can be omitted (TBD)
+        };
+
+        Type            type     = Type::NONE; ///< Type of condition.
+        microstrain::Id paramIdx = {};         ///< Index of enum parameter identifying whether this parameter is enabled.
+        uint16_t        value    = 0;          ///< Value of the enum parameter which activates this parameter.
+
+        constexpr bool hasCondition() const { return type != Type::NONE; }
+    };
+
     using Accessor = void* (*)(void*);
 
     const char*     name = nullptr;     ///< Programmatic name (e.g. for printing or language bindings).
@@ -137,10 +207,8 @@ struct ParameterInfo
     TypeInfo        type;               ///< Data type.
     Accessor        accessor = nullptr; ///< Obtains a reference to the member variable.
     FuncBits        functions;          ///< This parameter is required for the specified function selectors.
-    uint8_t         count = 1;          ///< Number of elements. This is a maximum value when counter_idx != 0.
-    microstrain::Id counter_param;      ///< When valid, this specifies the parameter holding the runtime count, relative to this parameter's index.
-    microstrain::Id union_param;        ///< When type is UNION, this specifies the parameter that controls which union member is active (the discriminator).
-    uint16_t        union_value = 0;    ///< When in a union, this specifies the value of the discriminator parameter that selects this member.
+    Count           count;              ///< Number of instances for arrays.
+    Condition       condition;          ///< For conditionally-enabled parameters like those in unions.
 };
 
 

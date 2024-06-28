@@ -11,6 +11,7 @@ namespace mip::metadata::utils
 //
 template<class T, class=void> struct ParamType { static inline constexpr auto value = Type::NONE; };
 
+template<> struct ParamType<char,     void> { static constexpr inline auto value = Type::CHAR;   };
 template<> struct ParamType<bool,     void> { static constexpr inline auto value = Type::BOOL;   };
 template<> struct ParamType<uint8_t,  void> { static constexpr inline auto value = Type::U8;     };
 template<> struct ParamType< int8_t,  void> { static constexpr inline auto value = Type::S8;     };
@@ -35,6 +36,7 @@ template<class T> struct ParamType<T, typename std::enable_if<std::is_union<T>::
 template<Type Kind>
 struct ParamEnum { using type = void; };
 
+template<> struct ParamEnum<Type::CHAR  > { using type = char;     };
 template<> struct ParamEnum<Type::BOOL  > { using type = bool;     };
 template<> struct ParamEnum<Type::U8    > { using type = uint8_t;  };
 template<> struct ParamEnum<Type::S8    > { using type = int8_t;   };

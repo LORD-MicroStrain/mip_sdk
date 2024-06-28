@@ -55,6 +55,13 @@ namespace microstrain
         constexpr Index(const Id& other);
         constexpr Index& operator=(const Id& other);
 
+        bool operator<(Index other) const { return m_index < other.m_index; }
+        bool operator>(Index other) const { return m_index > other.m_index; }
+        bool operator<=(Index other) const { return m_index <= other.m_index; }
+        bool operator>=(Index other) const { return m_index >= other.m_index; }
+        bool operator==(Index other) const { return m_index == other.m_index; }
+        bool operator!=(Index other) const { return m_index != other.m_index; }
+
     private:
         unsigned int m_index;
     };

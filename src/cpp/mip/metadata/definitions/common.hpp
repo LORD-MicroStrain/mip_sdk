@@ -37,36 +37,164 @@ struct MetadataFor<DescriptorRate>
     };
 };
 
-template<>
-struct MetadataFor<Vector3f>
+//template<>
+//struct MetadataFor<Vector3f>
+//{
+//    using type = Vector3f;
+//
+//    static constexpr inline ParameterInfo parameters[] = {
+//        {
+//            .name = "x",
+//            .docs = "X axis",
+//            .type = {Type::FLOAT},
+//            .accessor = nullptr,
+//        },
+//        {
+//            .name = "y",
+//            .docs = "Y axis",
+//            .type = {Type::FLOAT},
+//            .accessor = nullptr,
+//        },
+//        {
+//            .name = "z",
+//            .docs = "Z axis",
+//            .type = {Type::FLOAT},
+//            .accessor = nullptr,
+//        },
+//    };
+//
+//    static constexpr inline StructInfo value = {
+//        .name = "Vector3f",
+//        .title = "3D Vector",
+//        .docs = "Represents a 3D vector of floats.",
+//        .parameters = parameters,
+//    };
+//};
+
+
+template<typename T, size_t N>
+struct MetadataFor<Vector<T,N>>
 {
-    using type = Vector3f;
+    using type = Vector<T,N>;
 
     static constexpr inline ParameterInfo parameters[] = {
         {
             .name = "x",
             .docs = "X axis",
-            .type = {Type::FLOAT},
+            .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
         },
         {
             .name = "y",
             .docs = "Y axis",
-            .type = {Type::FLOAT},
+            .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
         },
         {
             .name = "z",
             .docs = "Z axis",
-            .type = {Type::FLOAT},
+            .type = {utils::ParamType<T>::value},
+            .accessor = nullptr,
+        },
+        {
+            .name = "w",
+            .docs = "W axis",
+            .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
         },
     };
 
+
+    static constexpr inline StructInfo values_f[] = {
+        {
+            .name = "Vector2f",
+            .title = "Vector2f",
+            .docs = "2-dimensional vector of floats",
+            .parameters = {parameters, 2}
+        },
+        {
+            .name = "Vector3f",
+            .title = "Vector3f",
+            .docs = "3-dimensional vector of floats",
+            .parameters = {parameters, 3}
+        },
+        {
+            .name = "Vector4f",
+            .title = "Vector4f",
+            .docs = "4-dimensional vector of floats",
+            .parameters = {parameters, 4}
+        },
+    };
+    static constexpr inline StructInfo values_d[] = {
+        {
+            .name = "Vector2d",
+            .title = "Vector2d",
+            .docs = "2-dimensional vector of doubles",
+            .parameters = {parameters, 2}
+        },
+        {
+            .name = "Vector3d",
+            .title = "Vector3d",
+            .docs = "3-dimensional vector of doubles",
+            .parameters = {parameters, 3}
+        },
+        {
+            .name = "Vector4d",
+            .title = "Vector4d",
+            .docs = "4-dimensional vector of doubles",
+            .parameters = {parameters, 4}
+        },
+    };
+
+    static_assert(std::is_floating_point_v<T>, "Expected either float or double");
+    static_assert(N >= 2 && N <= 4, "N should be in the range [2,4].");
+
+    static constexpr inline const StructInfo& value = std::is_same_v<T,double> ? values_d[N-2] : values_f[N-2];
+};
+
+
+template<>
+struct MetadataFor<Matrix3f>
+{
+    using type = Matrix3f;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            .name = "m",
+            .docs = "Matrix data",
+            .type = {Type::FLOAT},
+            .accessor = nullptr,
+            .count = 3,
+        },
+    };
+
     static constexpr inline StructInfo value = {
-        .name = "Vector3f",
-        .title = "3D Vector",
-        .docs = "Represents a 3D vector of floats.",
+        .name = "Matrix3f",
+        .title = "3x3 Float Matrix",
+        .docs = "Represents a 3D matrix of floats.",
+        .parameters = parameters,
+    };
+};
+
+template<>
+struct MetadataFor<Matrix3d>
+{
+    using type = Matrix3d;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            .name = "m",
+            .docs = "Matrix data",
+            .type = {Type::DOUBLE},
+            .accessor = nullptr,
+            .count = 3,
+        },
+    };
+
+    static constexpr inline StructInfo value = {
+        .name = "Matrix3f",
+        .title = "3x3 Double Matrix",
+        .docs = "Represents a 3D matrix of doubles.",
         .parameters = parameters,
     };
 };

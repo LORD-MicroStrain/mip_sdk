@@ -56,7 +56,10 @@ int main(int argc, const char* argv[])
     }
 
     mip::DispatchHandler handler;
-    device->registerFieldCallback<&handleField>(handler, 0xFF, mip::INVALID_FIELD_DESCRIPTOR);
+    device->registerFieldCallback<&handleField>(handler, 0x00, mip::INVALID_FIELD_DESCRIPTOR);
+
+    mip::commands_base::BaseDeviceInfo info;
+    mip::commands_base::getDeviceInfo(*device, &info);
 
     std::signal(SIGTERM, &signal_handler);
 

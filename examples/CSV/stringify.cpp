@@ -6,12 +6,11 @@
 
 #include <bit>
 #include <string>
-#include <cstdio>
-#include <cstdarg>
-#include <cinttypes>
 #include <sstream>
 #include <ostream>
+#include <iomanip>
 #include <optional>
+#include <assert.h>
 
 #if __cpp_lib_optional < 201606L
 #error "Needs optional support"
@@ -174,6 +173,13 @@ std::ostream& formatUnion(std::ostream& ss, const UnionInfo* info, const StructI
     return ss;
 }
 
+//static constexpr inline size_t MAX_PARAM_REFS = 5;
+//struct Offset
+//{
+//    microstrain::Index paramId = {};
+//    size_t             offset  = 0;
+//};
+
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Format struct from buffer to a string.
 ///
@@ -192,51 +198,92 @@ std::ostream& formatStruct(std::ostream& ss, const StructInfo* info, microstrain
     if(serializer.isOverrun())
         return ss << "?";
 
+    // Keep track of the offset of each parameter so we can go back and look up array sizes, etc.
+    constexpr size_t MAX_PARAMETERS = 20;
+    std::array<uint8_t, MAX_PARAMETERS> offsets;
+    assert(info->parameters.size() <= MAX_PARAMETERS);  // Increase MAX_PARAMETERS if this trips.
+
+    //std::array<Offset, MAX_PARAM_REFS> offsets;
+    //size_t nextOffsetIndex = 0;
+    //microstrain::Index firstVariadicParam;
+
+    //const size_t baseOffset = serializer.offset();
+
     ss << '{';
 
-    size_t i=0;
-    for(const auto& param : info->parameters)
+    for(size_t i=0; i<info->parameters.size(); i++)
     {
+        const auto& param = info->parameters[i];
         if(i > 0)
             ss << ", ";
 
         ss << param.name << '=';
 
-        switch(param.type.type)
+        // Save offset of each parameter (necessary due to nested structs, etc. and variable length arrays).
+        offsets[i] = serializer.offset();
+
+        uint8_t count = param.count.count;
+        if(param.count.hasCounter())
         {
-        case Type::NONE:
-            return ss << "-";
+            assert(param.count.paramIdx.isValid(i));  // Array size can't come after the array
 
-        case Type::BOOL:   formatBasicType<bool    >(ss, serializer); break;
-        case Type::U8:     formatBasicType<uint8_t >(ss, serializer); break;
-        case Type::S8:     formatBasicType< int8_t >(ss, serializer); break;
-        case Type::U16:    formatBasicType<uint16_t>(ss, serializer); break;
-        case Type::S16:    formatBasicType< int16_t>(ss, serializer); break;
-        case Type::U32:    formatBasicType<uint32_t>(ss, serializer); break;
-        case Type::S32:    formatBasicType< int32_t>(ss, serializer); break;
-        case Type::U64:    formatBasicType<uint64_t>(ss, serializer); break;
-        case Type::S64:    formatBasicType< int64_t>(ss, serializer); break;
-        case Type::FLOAT:  formatBasicType<float   >(ss, serializer); break;
-        case Type::DOUBLE: formatBasicType<double  >(ss, serializer); break;
+            const ParameterInfo& counter = info->parameters[param.count.paramIdx.index()];
+            const size_t counterOffset = offsets[param.count.paramIdx.index()];
 
-        case Type::ENUM:
-            formatEnum(ss, static_cast<const EnumInfo *>(param.type.infoPtr), serializer);
-            break;
+            const size_t oldOffset = serializer.setOffset(counterOffset);
+            std::optional<uint64_t> counterValue = readIntegralValue(counter.type.type, serializer);
+            serializer.setOffset(oldOffset);
 
-        case Type::BITFIELD:
-            formatBitfield(ss, static_cast<const BitfieldInfo *>(param.type.infoPtr), serializer);
-            break;
+            if(!counterValue)
+            {
+                serializer.invalidate();
+                ss << "[?]";
+                continue;
+            }
 
-        case Type::STRUCT:
-            formatStruct(ss, static_cast<const StructInfo *>(param.type.infoPtr), serializer);
-            break;
-
-        case Type::UNION:
-            formatUnion(ss, static_cast<const UnionInfo *>(param.type.infoPtr), *info, serializer);
-            break;
+            count = *counterValue;
         }
+        if(param.count.count != 1)
+            ss << '[';
 
-        i++;
+        for(uint8_t j=0; j<count || (count==0 && serializer.isOk()); j++)
+        {
+            switch(param.type.type)
+            {
+            case Type::NONE:
+                return ss << "-";
+
+            case Type::BOOL:   formatBasicType<bool    >(ss, serializer); break;
+            case Type::U8:     formatBasicType<uint8_t >(ss, serializer); break;
+            case Type::S8:     formatBasicType< int8_t >(ss, serializer); break;
+            case Type::U16:    formatBasicType<uint16_t>(ss, serializer); break;
+            case Type::S16:    formatBasicType< int16_t>(ss, serializer); break;
+            case Type::U32:    formatBasicType<uint32_t>(ss, serializer); break;
+            case Type::S32:    formatBasicType< int32_t>(ss, serializer); break;
+            case Type::U64:    formatBasicType<uint64_t>(ss, serializer); break;
+            case Type::S64:    formatBasicType< int64_t>(ss, serializer); break;
+            case Type::FLOAT:  formatBasicType<float   >(ss, serializer); break;
+            case Type::DOUBLE: formatBasicType<double  >(ss, serializer); break;
+
+            case Type::ENUM:
+                formatEnum(ss, static_cast<const EnumInfo *>(param.type.infoPtr), serializer);
+                break;
+
+            case Type::BITFIELD:
+                formatBitfield(ss, static_cast<const BitfieldInfo *>(param.type.infoPtr), serializer);
+                break;
+
+            case Type::STRUCT:
+                formatStruct(ss, static_cast<const StructInfo *>(param.type.infoPtr), serializer);
+                break;
+
+            case Type::UNION:
+                formatUnion(ss, static_cast<const UnionInfo *>(param.type.infoPtr), *info, serializer);
+                break;
+            }
+        }
+        if(param.count.count != 1)
+            ss << ']';
     }
     ss << '}';
 
@@ -257,9 +304,10 @@ std::ostream& formatField(std::ostream& ss, const mip::FieldView& field)
 
     if(!info)
     {
-        ss << "Unknown(%02X,%02x)[";
+        ss << std::showbase << std::hex << std::setfill('0');
+        ss << "Unknown(" << std::setw(2) << (int)field.descriptorSet() << "," << std::setw(2) << (int)field.fieldDescriptor() << ")[" << std::noshowbase;
         for(uint8_t i=0; i<field.payloadLength(); i++)
-            ss << std::hex << field.payload(i);
+            ss << std::setw(2) << (int)field.payload(i);
         ss << ']';
     }
     else

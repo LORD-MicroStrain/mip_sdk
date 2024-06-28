@@ -158,12 +158,15 @@ public:
     template<typename... Ts>
     bool extract(Ts&... values);
 
-    template<typename T>
-    struct Counter
-    {
-        T& count;
-        size_t max_count = 0;
-    };
+    // Sets a new offset and returns the old value.
+    size_t setOffset(size_t offset) { std::swap(m_offset, offset); return offset; }
+
+    //template<typename T>
+    //struct Counter
+    //{
+    //    T& count;
+    //    size_t max_count = 0;
+    //};
 
 private:
     uint8_t* m_ptr    = nullptr;
@@ -376,10 +379,10 @@ size_t extract_count(Serializer& buffer, T* count, size_t max_count) { return ex
 
 
 template<typename... Ts>
-bool Serializer::insert(const Ts&... values) { return microstrain::insert(*this, values...); }
+bool Serializer::insert(const Ts&... values) { microstrain::insert(*this, values...); return isOk(); }
 
 template<typename... Ts>
-bool Serializer::extract(Ts&... values) { return microstrain::extract(*this, values...); }
+bool Serializer::extract(Ts&... values) { microstrain::extract(*this, values...); return isOk(); }
 
 
 } // namespace microstrain

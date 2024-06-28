@@ -39,16 +39,13 @@ struct MetadataFor<FunctionSelector>
 inline void* accessFunctionSelector(void* p) { return static_cast<FunctionSelector*>(p); }
 
 static constexpr inline ParameterInfo FUNCTION_SELECTOR_PARAM = {
-    /* .name          = */ "function",
-    /* .docs          = */ "Standard MIP function selector",
-    /* .type          = */ {Type::ENUM, &MetadataFor<FunctionSelector>::value},
-    /* .accessor      = */ accessFunctionSelector,
-    ///* .byte_offset   = */ 0,
-    /* .functions     = */ {true,true,true,true,true},
-    /* .count         = */ 1,
-    /* .counter_idx   = */ {},
-    /* .union_index   = */ {},
-    /* .union_value   = */ 0,
+    /* .name      = */ "function",
+    /* .docs      = */ "Standard MIP function selector",
+    /* .type      = */ {Type::ENUM, &MetadataFor<FunctionSelector>::value},
+    /* .accessor  = */ accessFunctionSelector,
+    /* .functions = */ {true,true,true,true,true},
+    /* .count     = */ 1,
+    /* .condition = */ {},
 };
 
 
@@ -75,18 +72,103 @@ auto& get(typename EnableForFieldTypes<FieldType>::type& field)
 }
 
 
-template<class FieldType, size_t ParamIndex, class ParamType>
-ParamType get(FieldType& field)
-{
-}
+//template<class FieldType, size_t ParamIndex, class ParamType>
+//ParamType get(FieldType& field)
+//{
+//}
+//
+//template<size_t ParameterIndex, class FieldType>
+//auto get(FieldType& field)
+//{
+//    const ParameterInfo& paramInfo = MetadataFor<FieldType>::PARAMETERS[ParameterIndex];
+//
+//
+//}
 
-template<size_t ParameterIndex, class FieldType>
-auto get(FieldType& field)
-{
-    const ParameterInfo& paramInfo = MetadataFor<FieldType>::PARAMETERS[ParameterIndex];
 
-
-}
-
+//class Analyzer
+//{
+//public:
+//    Analyzer(microstrain::Serializer serializer) : m_serializer(serializer) {}
+//
+//    bool analyze(const StructInfo& info)
+//    {
+//        size_t nextOffsetEntry = 0;
+//
+//        for(const ParameterInfo& param : info.parameters)
+//        {
+//            if(param.count.paramIdx.isValid(info.parameters.size()))
+//            {
+//
+//            }
+//        }
+//    }
+//private:
+//    size_t getOffsetForParameter(const ParameterInfo* parameters, size_t index) const
+//    {
+//        for(size_t i=0; i<index; i++)
+//        {
+//            const ParameterInfo& param = parameters[i];
+//            size_t size = sizeForBasicType(param.type);
+//            if(size == 0)
+//            {
+//
+//            }
+//        }
+//        for(const auto& param : parameters)
+//    }
+//
+//private:
+//    struct Offset
+//    {
+//        microstrain::Index parameterId = {};
+//        size_t             offset      = 0;
+//    };
+//
+//private:
+//    // Maximum number of parameters in a struct that can reference other parameters,
+//    // i.e. counters for arrays or union discriminators.
+//    static constexpr inline size_t MAX_PARAM_REFS = 5;
+//
+//    microstrain::Serializer m_sserializer;
+//    std::array<Offset, MAX_PARAM_REFS> m_offsets;
+//};
+//
+//
+//
+//constexpr size_t getParameterOffset(microstrain::Serializer serializer, microstrain::Index parameterId)
+//{
+//    const auto& parameters = MetadataFor<FieldType>::parameters;
+//    if(parameterId.isValid(parameters.size()))
+//        return -1;
+//
+//    size_t offset = 0;
+//
+//    for(auto i=microstrain::Index(0); i<parameterId; i++)
+//    {
+//        const ParameterInfo& parameter = parameters[i.index()];
+//
+//        size_t size = sizeForBasicType(parameter.type);
+//        if(size == 0)
+//        {
+//            if(parameter.type.type == Type::STRUCT)
+//            {
+//                // TODO
+//            }
+//        }
+//
+//        if(parameter.count.isFixed())
+//            offset += size;
+//        else
+//        {
+//            assert(parameter.count.paramIdx.isValid(parameters.size()));
+//
+//            uint8_t count = readCount(serializer, parameters, parameter.count.paramIdx);
+//
+//        }
+//    }
+//
+//    return offset;
+//}
 
 } // namespace mip
