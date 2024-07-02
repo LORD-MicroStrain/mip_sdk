@@ -2,26 +2,27 @@
 
 #include <stdexcept>
 
-#include "mip/utils/time_standard.hpp"
-
 namespace mip
 {
-    TimestampExperimental::TimestampExperimental(long long nanoseconds_since_epoch)
-    {
-        if (nanoseconds_since_epoch > 0)
-        {
-            m_timestamp = Nanoseconds(nanoseconds_since_epoch);
-        }
-    }
-    
-    TimestampExperimental::TimestampManager(const TimeStandard &standard)
-    {
-        now(standard);
-    }
 
-    void TimestampExperimental::now(const TimeStandard &standard)
-    {
-        m_timestamp = standard.now();
+} // namespace mip
+
+    // TimestampExperimental::TimestampExperimental(std::uint64_t nanoseconds_since_epoch)
+    // {
+    //     if (nanoseconds_since_epoch > 0)
+    //     {
+    //         m_timestamp = Nanoseconds(nanoseconds_since_epoch);
+    //     }
+    // }
+    
+    // TimestampExperimental::TimestampManager(const TimeStandard &standard)
+    // {
+    //     now(standard);
+    // }
+
+    // void TimestampExperimental::now(const TimeStandard &standard)
+    // {
+    //     m_timestamp = standard.now();
         // Seconds epoch_difference(0);
 
     // #if __APPLE__ || __linux__ || !_HAS_CXX20
@@ -39,7 +40,7 @@ namespace mip
     // #endif
 
         // m_timestamp = standard.timeSinceEpoch() - duration_cast<Nanoseconds>(epoch_difference);
-    }
+    // }
 
     // void TimestampManager::synchronize(TimeStandard standard)
     // {
@@ -67,4 +68,3 @@ namespace mip
     //     m_timestamp = std::chrono::duration_cast<Nanoseconds>(now_gps);
     // #endif
     // }
-}// namespace mip
