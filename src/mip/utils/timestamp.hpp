@@ -1,12 +1,14 @@
 #pragma once
 
 #include <assert.h>
-#include <chrono>
+// #include <chrono>
 
 #include "mip/utils/time_durations.hpp"
 
 namespace mip
 {
+    class TimeStandard;
+
     // TODO: Move to Timestamp.
     // TODO: Add duration changing.
     // template<typename DurationIn, typename DurationOut> 

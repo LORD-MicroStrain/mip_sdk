@@ -2,9 +2,11 @@
 
 #include <stdexcept>
 
+#include "mip/utils/time_standard.hpp"
+
 namespace mip
 {
-    TimestampExperimental::TimestampManager(long long nanoseconds_since_epoch)
+    TimestampExperimental::TimestampExperimental(long long nanoseconds_since_epoch)
     {
         if (nanoseconds_since_epoch > 0)
         {
