@@ -15,13 +15,12 @@ namespace mip
     
     /** Common standards ****************************************************************/
 
-    struct UnixTime : TimeStandard
+    struct UnixTime : TimeStandard 
     {
-
+        Nanoseconds now() const override;
+        Nanoseconds convertToBase(Nanoseconds time) const override;
+        Nanoseconds convertFromBase(Nanoseconds time) const override;
     };
 
-    struct GpsTime : TimeStandard
-    {
-
-    };
+    struct GpsTime : TimeStandard {};
 } // namespace mip

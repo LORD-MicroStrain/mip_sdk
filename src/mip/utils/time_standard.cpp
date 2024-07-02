@@ -2,6 +2,22 @@
 
 namespace mip
 {
+    Nanoseconds UnixTime::now() const
+    {
+        return std::chrono::duration_cast<Nanoseconds>(
+            std::chrono::system_clock::now().time_since_epoch());
+    }
+
+    Nanoseconds UnixTime::convertToBase(Nanoseconds time) const
+    {
+        return time;         
+    }
+
+    Nanoseconds UnixTime::convertFromBase(Nanoseconds time) const
+    {
+        return time;      
+    }
+
     // std::chrono::nanoseconds TimeStandard::now()
     // {
     // #if __APPLE__ || __linux__ || !_HAS_CXX20
