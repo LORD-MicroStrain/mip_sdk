@@ -1,6 +1,9 @@
 
 #include "mip_definitions.hpp"
 
+#include <mip/definitions/data_shared.hpp>
+
+
 namespace mip::metadata
 {
 
@@ -37,10 +40,19 @@ const FieldInfo* Definitions::findField(mip::CompositeDescriptor descriptor) con
     //auto it = findFieldIter(descriptor);
     auto it = mFields.find(descriptor);
 
-    if(it == mFields.end())
-        return nullptr;
+    if(it != mFields.end())
+        return *it;
 
-    return *it;
+    // Check for shared data fields.
+    if(isDataDescriptorSet(descriptor.descriptorSet) && isSharedDataFieldDescriptor(descriptor.fieldDescriptor))
+    {
+        it = mFields.find(CompositeDescriptor{data_shared::DESCRIPTOR_SET, descriptor.fieldDescriptor});
+
+        if(it != mFields.end())
+            return *it;
+    }
+
+    return nullptr;
 }
 
 } // namespace mip::metadata

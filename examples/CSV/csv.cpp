@@ -35,7 +35,7 @@ void handleField(void*, const mip::FieldView& field, mip::Timestamp timestamp)
 
 int main(int argc, const char* argv[])
 {
-    mipdefs.registerDefinitions(mip::metadata::ALL_SENSOR_DATA);
+    mipdefs.registerDefinitions(mip::metadata::ALL_FIELDS);
 
     std::unique_ptr<ExampleUtils> utils;
     try {

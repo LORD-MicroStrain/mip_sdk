@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include "common.hpp"
 
@@ -14,10 +14,6 @@ template<>
 struct MetadataFor<commands_base::Ping>
 {
     using type = commands_base::Ping;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::Ping",
@@ -35,10 +31,6 @@ template<>
 struct MetadataFor<commands_base::SetIdle>
 {
     using type = commands_base::SetIdle;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::SetIdle",
@@ -73,7 +65,7 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::model_name>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
         {
@@ -82,7 +74,7 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::model_number>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
         {
@@ -91,7 +83,7 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::serial_number>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
         {
@@ -100,7 +92,7 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::lot_number>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
         {
@@ -109,7 +101,7 @@ struct MetadataFor<commands_base::BaseDeviceInfo>
             /* .type          = */ {Type::CHAR, nullptr},
             /* .accessor      = */ utils::access<type, char, &type::device_options>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
     };
@@ -156,10 +148,6 @@ struct MetadataFor<commands_base::GetDeviceInfo>
 {
     using type = commands_base::GetDeviceInfo;
 
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
-
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceInfo",
         /* .title       = */ "Get device information",
@@ -184,7 +172,7 @@ struct MetadataFor<commands_base::GetDeviceDescriptors::Response>
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::descriptors>,
             /* .functions     = */ {true, false, false, false, false,  true},
-            /* .count         = */ 1,
+            /* .count         = */ 0,
             /* .condition     = */ {},
         },
     };
@@ -205,10 +193,6 @@ template<>
 struct MetadataFor<commands_base::GetDeviceDescriptors>
 {
     using type = commands_base::GetDeviceDescriptors;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetDeviceDescriptors",
@@ -256,10 +240,6 @@ struct MetadataFor<commands_base::BuiltInTest>
 {
     using type = commands_base::BuiltInTest;
 
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
-
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::BuiltInTest",
         /* .title       = */ "Built in test",
@@ -276,10 +256,6 @@ template<>
 struct MetadataFor<commands_base::Resume>
 {
     using type = commands_base::Resume;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::Resume",
@@ -305,7 +281,7 @@ struct MetadataFor<commands_base::GetExtendedDescriptors::Response>
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::descriptors>,
             /* .functions     = */ {true, false, false, false, false,  true},
-            /* .count         = */ 1,
+            /* .count         = */ 0,
             /* .condition     = */ {},
         },
     };
@@ -326,10 +302,6 @@ template<>
 struct MetadataFor<commands_base::GetExtendedDescriptors>
 {
     using type = commands_base::GetExtendedDescriptors;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::GetExtendedDescriptors",
@@ -355,7 +327,7 @@ struct MetadataFor<commands_base::ContinuousBit::Response>
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::result>,
             /* .functions     = */ {true, false, false, false, false,  true},
-            /* .count         = */ 1,
+            /* .count         = */ 16,
             /* .condition     = */ {},
         },
     };
@@ -376,10 +348,6 @@ template<>
 struct MetadataFor<commands_base::ContinuousBit>
 {
     using type = commands_base::ContinuousBit;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::ContinuousBit",
@@ -532,10 +500,6 @@ template<>
 struct MetadataFor<commands_base::SoftReset>
 {
     using type = commands_base::SoftReset;
-
-    static constexpr inline ParameterInfo parameters[] = {
-
-    };
 
     static constexpr inline FieldInfo value = {
         /* .name        = */ "commands_base::SoftReset",

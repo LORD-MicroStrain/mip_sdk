@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include "common.hpp"
 
@@ -16,13 +16,12 @@ struct MetadataFor<commands_3dm::PollImuMessage>
     using type = commands_3dm::PollImuMessage;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "suppress_ack",
             /* .docs          = */ "Suppress the usual ACK/NACK reply.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::suppress_ack>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -31,7 +30,7 @@ struct MetadataFor<commands_3dm::PollImuMessage>
             /* .docs          = */ "Number of descriptors in the descriptor list.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -40,17 +39,21 @@ struct MetadataFor<commands_3dm::PollImuMessage>
             /* .docs          = */ "Descriptor list.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {83, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "PollImuMessage",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PollImuMessage",
         /* .title       = */ "None",
         /* .docs        = */ "Poll the device for an IMU message with the specified format\n\nThis function polls for an IMU message using the provided format. The resulting message\nwill maintain the order of descriptors sent in the command and any unrecognized\ndescriptors are ignored. If the format is not provided, the device will attempt to use the\nstored format (set with the Set IMU Message Format command.) If no format is provided\nand there is no stored format, the device will respond with a NACK. The reply packet contains\nan ACK/NACK field. The polled data packet is sent separately as an IMU Data packet.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -60,13 +63,12 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
     using type = commands_3dm::PollGnssMessage;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "suppress_ack",
             /* .docs          = */ "Suppress the usual ACK/NACK reply.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::suppress_ack>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -75,7 +77,7 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
             /* .docs          = */ "Number of descriptors in the descriptor list.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -84,17 +86,21 @@ struct MetadataFor<commands_3dm::PollGnssMessage>
             /* .docs          = */ "Descriptor list.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {83, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "PollGnssMessage",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PollGnssMessage",
         /* .title       = */ "None",
         /* .docs        = */ "Poll the device for an GNSS message with the specified format\n\nThis function polls for a GNSS message using the provided format. The resulting message\nwill maintain the order of descriptors sent in the command and any unrecognized\ndescriptors are ignored. If the format is not provided, the device will attempt to use the\nstored format (set with the Set GNSS Message Format command.) If no format is provided\nand there is no stored format, the device will respond with a NACK. The reply packet contains\nan ACK/NACK field. The polled data packet is sent separately as a GNSS Data packet.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -104,13 +110,12 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
     using type = commands_3dm::PollFilterMessage;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "suppress_ack",
             /* .docs          = */ "Suppress the usual ACK/NACK reply.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::suppress_ack>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -119,7 +124,7 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
             /* .docs          = */ "Number of descriptors in the format list.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -128,17 +133,59 @@ struct MetadataFor<commands_3dm::PollFilterMessage>
             /* .docs          = */ "Descriptor format list.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {83, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "PollFilterMessage",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PollFilterMessage",
         /* .title       = */ "None",
         /* .docs        = */ "Poll the device for an Estimation Filter message with the specified format\n\nThis function polls for an Estimation Filter message using the provided format. The resulting message\nwill maintain the order of descriptors sent in the command and any unrecognized\ndescriptors are ignored. If the format is not provided, the device will attempt to use the\nstored format (set with the Set Estimation Filter Message Format command.) If no format is provided\nand there is no stored format, the device will respond with a NACK. The reply packet contains\nan ACK/NACK field. The polled data packet is sent separately as an Estimation Filter Data packet.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::ImuMessageFormat::Response>
+{
+    using type = commands_3dm::ImuMessageFormat::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "num_descriptors",
+            /* .docs          = */ "Number of descriptors",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "descriptors",
+            /* .docs          = */ "Descriptor format list.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
+            /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuMessageFormat::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -154,7 +201,7 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
             /* .docs          = */ "Number of descriptors",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -163,17 +210,59 @@ struct MetadataFor<commands_3dm::ImuMessageFormat>
             /* .docs          = */ "Descriptor format list.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ImuMessageFormat",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuMessageFormat",
         /* .title       = */ "None",
         /* .docs        = */ "Set, read, or save the format of the IMU data packet.\n\nThe resulting data messages will maintain the order of descriptors sent in the command.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GpsMessageFormat::Response>
+{
+    using type = commands_3dm::GpsMessageFormat::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "num_descriptors",
+            /* .docs          = */ "Number of descriptors",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "descriptors",
+            /* .docs          = */ "Descriptor format list.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
+            /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpsMessageFormat::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -189,7 +278,7 @@ struct MetadataFor<commands_3dm::GpsMessageFormat>
             /* .docs          = */ "Number of descriptors",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -198,17 +287,59 @@ struct MetadataFor<commands_3dm::GpsMessageFormat>
             /* .docs          = */ "Descriptor format list.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GpsMessageFormat",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpsMessageFormat",
         /* .title       = */ "None",
         /* .docs        = */ "Set, read, or save the format of the GNSS data packet.\n\nThe resulting data messages will maintain the order of descriptors sent in the command.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::FilterMessageFormat::Response>
+{
+    using type = commands_3dm::FilterMessageFormat::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "num_descriptors",
+            /* .docs          = */ "Number of descriptors (limited by payload size)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "descriptors",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
+            /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::FilterMessageFormat::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -224,7 +355,7 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
             /* .docs          = */ "Number of descriptors (limited by payload size)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -233,17 +364,50 @@ struct MetadataFor<commands_3dm::FilterMessageFormat>
             /* .docs          = */ "",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {82, microstrain::Index(0) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "FilterMessageFormat",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::FilterMessageFormat",
         /* .title       = */ "None",
         /* .docs        = */ "Set, read, or save the format of the Estimation Filter data packet.\n\nThe resulting data messages will maintain the order of descriptors sent in the command.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::ImuGetBaseRate::Response>
+{
+    using type = commands_3dm::ImuGetBaseRate::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "rate",
+            /* .docs          = */ "[hz]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::rate>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuGetBaseRate::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -252,16 +416,44 @@ struct MetadataFor<commands_3dm::ImuGetBaseRate>
 {
     using type = commands_3dm::ImuGetBaseRate;
 
-    static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
-
-    };
-
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ImuGetBaseRate",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuGetBaseRate",
         /* .title       = */ "Get IMU Data Base Rate",
         /* .docs        = */ "Get the base rate for the IMU data in Hz\n\nThis is the fastest rate for this type of data available on the device.\nThis is used in conjunction with the IMU Message Format Command to set streaming data at a specified rate.",
+        /* .parameters  = */ {},
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GpsGetBaseRate::Response>
+{
+    using type = commands_3dm::GpsGetBaseRate::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "rate",
+            /* .docs          = */ "[hz]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::rate>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpsGetBaseRate::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -270,16 +462,44 @@ struct MetadataFor<commands_3dm::GpsGetBaseRate>
 {
     using type = commands_3dm::GpsGetBaseRate;
 
-    static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
-
-    };
-
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GpsGetBaseRate",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpsGetBaseRate",
         /* .title       = */ "Get GNSS Data Base Rate",
         /* .docs        = */ "Get the base rate for the GNSS data in Hz\n\nThis is the fastest rate for this type of data available on the device.\nThis is used in conjunction with the GNSS Message Format Command to set streaming data at a specified rate.",
+        /* .parameters  = */ {},
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::FilterGetBaseRate::Response>
+{
+    using type = commands_3dm::FilterGetBaseRate::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "rate",
+            /* .docs          = */ "[hz]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::rate>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::FilterGetBaseRate::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -288,16 +508,15 @@ struct MetadataFor<commands_3dm::FilterGetBaseRate>
 {
     using type = commands_3dm::FilterGetBaseRate;
 
-    static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
-
-    };
-
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "FilterGetBaseRate",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::FilterGetBaseRate",
         /* .title       = */ "Get Estimation Filter Data Base Rate",
         /* .docs        = */ "Get the base rate for the Estimation Filter data in Hz\n\nThis is the fastest rate for this type of data available on the device.\nThis is used in conjunction with the Estimation Filter Message Format Command to set streaming data at a specified rate.",
-        /* .parameters  = */ parameters,
+        /* .parameters  = */ {},
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -307,13 +526,12 @@ struct MetadataFor<commands_3dm::PollData>
     using type = commands_3dm::PollData;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "desc_set",
             /* .docs          = */ "Data descriptor set. Must be supported.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::desc_set>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -322,7 +540,7 @@ struct MetadataFor<commands_3dm::PollData>
             /* .docs          = */ "Suppress the usual ACK/NACK reply.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::suppress_ack>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -331,7 +549,7 @@ struct MetadataFor<commands_3dm::PollData>
             /* .docs          = */ "Number of descriptors in the format list.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -340,17 +558,59 @@ struct MetadataFor<commands_3dm::PollData>
             /* .docs          = */ "Descriptor format list.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {82, microstrain::Index(2) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "PollData",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PollData",
         /* .title       = */ "None",
         /* .docs        = */ "Poll the device for a message with the specified descriptor set and format.\n\nThis function polls for a message using the provided format. The resulting message\nwill maintain the order of descriptors sent in the command and any unrecognized\ndescriptors are ignored. If the format is not provided, the device will attempt to use the\nstored format (set with the Set Message Format command.) If no format is provided\nand there is no stored format, the device will respond with a NACK. The reply packet contains\nan ACK/NACK field. The polled data packet is sent separately as a normal Data packet.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GetBaseRate::Response>
+{
+    using type = commands_3dm::GetBaseRate::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "desc_set",
+            /* .docs          = */ "Echoes the parameter in the command.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::desc_set>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "rate",
+            /* .docs          = */ "Base rate in Hz (0 = variable, unknown, or user-defined rate.  Data will be sent when received).",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::rate>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetBaseRate::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -360,7 +620,6 @@ struct MetadataFor<commands_3dm::GetBaseRate>
     using type = commands_3dm::GetBaseRate;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "desc_set",
             /* .docs          = */ "This is the data descriptor set. It must be a supported descriptor.",
@@ -372,11 +631,62 @@ struct MetadataFor<commands_3dm::GetBaseRate>
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GetBaseRate",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetBaseRate",
         /* .title       = */ "Get Data Base Rate",
         /* .docs        = */ "Get the base rate for the specified descriptor set in Hz.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::MessageFormat::Response>
+{
+    using type = commands_3dm::MessageFormat::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "desc_set",
+            /* .docs          = */ "Echoes the descriptor set from the command.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::desc_set>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "num_descriptors",
+            /* .docs          = */ "Number of descriptors in the list.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "descriptors",
+            /* .docs          = */ "List of descriptors and decimations.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
+            /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MessageFormat::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -401,7 +711,7 @@ struct MetadataFor<commands_3dm::MessageFormat>
             /* .docs          = */ "Number of descriptors (limited by payload size)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -410,17 +720,21 @@ struct MetadataFor<commands_3dm::MessageFormat>
             /* .docs          = */ "List of descriptors and decimations.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<DescriptorRate>::value},
             /* .accessor      = */ utils::access<type, DescriptorRate, &type::descriptors>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {82, microstrain::Index(1) /* num_descriptors */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "MessageFormat",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MessageFormat",
         /* .title       = */ "None",
         /* .docs        = */ "Set, read, or save the format for a given data packet.\n\nThe resulting data messages will maintain the order of descriptors sent in the command.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -530,13 +844,12 @@ struct MetadataFor<commands_3dm::NmeaPollData>
     using type = commands_3dm::NmeaPollData;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "suppress_ack",
             /* .docs          = */ "Suppress the usual ACK/NACK reply.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::suppress_ack>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -545,7 +858,7 @@ struct MetadataFor<commands_3dm::NmeaPollData>
             /* .docs          = */ "Number of format entries (limited by payload size)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::count>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -554,17 +867,59 @@ struct MetadataFor<commands_3dm::NmeaPollData>
             /* .docs          = */ "List of format entries.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::NmeaMessage>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::NmeaMessage, &type::format_entries>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {40, microstrain::Index(1) /* count */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "NmeaPollData",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::NmeaPollData",
         /* .title       = */ "None",
         /* .docs        = */ "Poll the device for a NMEA message with the specified format.\n\nThis function polls for a NMEA message using the provided format.\nIf the format is not provided, the device will attempt to use the\nstored format (set with the Set NMEA Message Format command.) If no format is provided\nand there is no stored format, the device will respond with a NACK. The reply packet contains\nan ACK/NACK field. The polled data packet is sent separately as normal NMEA messages.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::NmeaMessageFormat::Response>
+{
+    using type = commands_3dm::NmeaMessageFormat::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "count",
+            /* .docs          = */ "Number of format entries (limited by payload size)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::count>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "format_entries",
+            /* .docs          = */ "List of format entries.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::NmeaMessage>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::NmeaMessage, &type::format_entries>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {40, microstrain::Index(0) /* count */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::NmeaMessageFormat::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -580,7 +935,7 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
             /* .docs          = */ "Number of format entries (limited by payload size)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::count>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -589,17 +944,21 @@ struct MetadataFor<commands_3dm::NmeaMessageFormat>
             /* .docs          = */ "List of format entries.",
             /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::NmeaMessage>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::NmeaMessage, &type::format_entries>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {40, microstrain::Index(0) /* count */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "NmeaMessageFormat",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::NmeaMessageFormat",
         /* .title       = */ "None",
         /* .docs        = */ "Set, read, or save the NMEA message format.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -613,11 +972,44 @@ struct MetadataFor<commands_3dm::DeviceSettings>
 
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "DeviceSettings",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::DeviceSettings",
         /* .title       = */ "None",
         /* .docs        = */ "Save, Load, or Reset to Default the values for all device settings.\n\nWhen a save current settings command is issued, a brief data disturbance may occur while all settings are written to non-volatile memory.\n\nThis command should have a long timeout as it may take up to 1 second to complete.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {false, false, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::UartBaudrate::Response>
+{
+    using type = commands_3dm::UartBaudrate::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "baud",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::U32, nullptr},
+            /* .accessor      = */ utils::access<type, uint32_t, &type::baud>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::UartBaudrate::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -633,17 +1025,21 @@ struct MetadataFor<commands_3dm::UartBaudrate>
             /* .docs          = */ "",
             /* .type          = */ {Type::U32, nullptr},
             /* .accessor      = */ utils::access<type, uint32_t, &type::baud>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "UartBaudrate",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::UartBaudrate",
         /* .title       = */ "None",
         /* .docs        = */ "Read, Save, Load, or Reset to Default the baud rate of the main communication channel.\n\nFor all functions except 0x01 (use new settings), the new baud rate value is ignored.\nPlease see the device user manual for supported baud rates.\n\nThe device will wait until all incoming and outgoing data has been sent, up\nto a maximum of 250 ms, before applying any change.\n\nNo guarantee is provided as to what happens to commands issued during this\ndelay period; They may or may not be processed and any responses aren't\nguaranteed to be at one rate or the other. The same applies to data packets.\n\nIt is highly recommended that the device be idle before issuing this command\nand that it be issued in its own packet. Users should wait 250 ms after\nsending this command before further interaction.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -673,13 +1069,12 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
     using type = commands_3dm::FactoryStreaming;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "action",
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::FactoryStreaming::Action>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::FactoryStreaming::Action, &type::action>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -688,17 +1083,59 @@ struct MetadataFor<commands_3dm::FactoryStreaming>
             /* .docs          = */ "Reserved. Set to 0x00.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::reserved>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "FactoryStreaming",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::FactoryStreaming",
         /* .title       = */ "None",
         /* .docs        = */ "Configures the device for recording data for technical support.\n\nThis command will configure all available data streams to predefined\nformats designed to be used with technical support.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::DatastreamControl::Response>
+{
+    using type = commands_3dm::DatastreamControl::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "desc_set",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::desc_set>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "enabled",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::enabled>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::DatastreamControl::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -723,17 +1160,21 @@ struct MetadataFor<commands_3dm::DatastreamControl>
             /* .docs          = */ "True or false to enable or disable the stream.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "DatastreamControl",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::DatastreamControl",
         /* .title       = */ "None",
         /* .docs        = */ "Enable/disable the selected data stream.\n\nEach data stream (descriptor set) can be enabled or disabled.\nThe default for the device is all streams enabled.\nFor all functions except 0x01 (use new setting),\nthe new enable flag value is ignored and can be omitted.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -840,6 +1281,62 @@ struct MetadataFor<commands_3dm::ConstellationSettings::Settings>
 };
 
 template<>
+struct MetadataFor<commands_3dm::ConstellationSettings::Response>
+{
+    using type = commands_3dm::ConstellationSettings::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "max_channels_available",
+            /* .docs          = */ "Maximum channels available",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::max_channels_available>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "max_channels_use",
+            /* .docs          = */ "Maximum channels to use",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::max_channels_use>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "config_count",
+            /* .docs          = */ "Number of constellation configurations",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::config_count>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "settings",
+            /* .docs          = */ "Constellation Settings",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::ConstellationSettings::Settings>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::ConstellationSettings::Settings, &type::settings>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {0, microstrain::Index(2) /* config_count */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ConstellationSettings::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::ConstellationSettings>
 {
     using type = commands_3dm::ConstellationSettings;
@@ -851,7 +1348,7 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
             /* .docs          = */ "",
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::max_channels>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -860,7 +1357,7 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
             /* .docs          = */ "",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::config_count>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -869,17 +1366,21 @@ struct MetadataFor<commands_3dm::ConstellationSettings>
             /* .docs          = */ "",
             /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::ConstellationSettings::Settings>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::ConstellationSettings::Settings, &type::settings>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {0, microstrain::Index(1) /* config_count */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ConstellationSettings",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ConstellationSettings",
         /* .title       = */ "None",
         /* .docs        = */ "This command configures which satellite constellations are enabled and how many channels are dedicated to tracking each constellation.\n\nMaximum number of tracking channels to use (total for all constellations):\n0 to max_channels_available (from reply message)\n\nFor each constellation you wish to use, include a ConstellationSettings struct.  Note the following:\n\nTotal number of tracking channels (sum of 'reserved_channels' for all constellations) must be <= 32:\n0 -> 32 Number of reserved channels\n0 -> 32 Max number of channels (>= reserved channels)\n\nThe factory default setting is: GPS and GLONASS enabled.  Min/Max for GPS = 8/16, GLONASS = 8/14, SBAS = 1/3, QZSS = 0/3.\n\nWarning: SBAS functionality shall not be used in 'safety of life' applications!\nWarning: Any setting that causes the total reserved channels to exceed 32 will result in a NACK.\nWarning: You cannot enable GLONASS and BeiDou at the same time.\nNote:    Enabling SBAS and QZSS augments GPS accuracy.\nNote:    It is recommended to disable GLONASS and BeiDou if a GPS-only antenna or GPS-only SAW filter is used.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -904,6 +1405,62 @@ struct MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GnssSbasSettings::Response>
+{
+    using type = commands_3dm::GnssSbasSettings::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "enable_sbas",
+            /* .docs          = */ "0 - SBAS Disabled, 1 - SBAS enabled",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::enable_sbas>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "sbas_options",
+            /* .docs          = */ "SBAS options, see definition",
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GnssSbasSettings::SBASOptions, &type::sbas_options>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "num_included_prns",
+            /* .docs          = */ "Number of SBAS PRNs to include in search (0 = include all)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_included_prns>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "included_prns",
+            /* .docs          = */ "List of specific SBAS PRNs to search for",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::included_prns>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {39, microstrain::Index(2) /* num_included_prns */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssSbasSettings::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GnssSbasSettings>
 {
     using type = commands_3dm::GnssSbasSettings;
@@ -915,7 +1472,7 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
             /* .docs          = */ "0 - SBAS Disabled, 1 - SBAS enabled",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::enable_sbas>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -924,7 +1481,7 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
             /* .docs          = */ "SBAS options, see definition",
             /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_3dm::GnssSbasSettings::SBASOptions>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::GnssSbasSettings::SBASOptions, &type::sbas_options>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -933,7 +1490,7 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
             /* .docs          = */ "Number of SBAS PRNs to include in search (0 = include all)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::num_included_prns>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -942,17 +1499,21 @@ struct MetadataFor<commands_3dm::GnssSbasSettings>
             /* .docs          = */ "List of specific SBAS PRNs to search for",
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::included_prns>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {39, microstrain::Index(2) /* num_included_prns */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GnssSbasSettings",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssSbasSettings",
         /* .title       = */ "SBAS Settings",
         /* .docs        = */ "Configure the SBAS subsystem\n\n\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -976,6 +1537,44 @@ struct MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GnssAssistedFix::Response>
+{
+    using type = commands_3dm::GnssAssistedFix::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "option",
+            /* .docs          = */ "Assisted fix options",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GnssAssistedFix::AssistedFixOption, &type::option>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "flags",
+            /* .docs          = */ "Assisted fix flags (set to 0xFF)",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::flags>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssAssistedFix::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GnssAssistedFix>
 {
     using type = commands_3dm::GnssAssistedFix;
@@ -987,7 +1586,7 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
             /* .docs          = */ "Assisted fix options",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GnssAssistedFix::AssistedFixOption>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::GnssAssistedFix::AssistedFixOption, &type::option>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -996,17 +1595,68 @@ struct MetadataFor<commands_3dm::GnssAssistedFix>
             /* .docs          = */ "Assisted fix flags (set to 0xFF)",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::flags>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GnssAssistedFix",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssAssistedFix",
         /* .title       = */ "GNSS Assisted Fix Settings",
         /* .docs        = */ "Set the options for assisted GNSS fix.\n\nDevices that implement this command have a dedicated GNSS flash memory and a non-volatile FRAM.\nThese storage mechanisms are used to retain information about the last good GNSS fix. This can greatly reduces the TTFF (Time To First Fix) depending on the age of the stored information.\nThe TTFF can be as low as one second, or up to the equivalent of a cold start. There is a small increase in power used when enabling assisted fix.\n\nThe fastest fix will be obtained by supplying the device with a GNSS Assist Time Update message containing the current GPS time immediately after subsequent power up.\nThis allows the device to determine if the last GNSS information saved is still fresh enough to improve the TTFF.\n\nNOTE: Non-volatile GNSS memory is cleared when going from an enabled state to a disabled state.\nWARNING: The clearing operation results in an erase operation on the GNSS Flash. The flash has a limited durability of 100,000 write/erase cycles",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GnssTimeAssistance::Response>
+{
+    using type = commands_3dm::GnssTimeAssistance::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "tow",
+            /* .docs          = */ "GPS Time of week [seconds]",
+            /* .type          = */ {Type::DOUBLE, nullptr},
+            /* .accessor      = */ utils::access<type, double, &type::tow>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "week_number",
+            /* .docs          = */ "GPS Weeks since 1980 [weeks]",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::week_number>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "accuracy",
+            /* .docs          = */ "Accuracy of time information [seconds]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::accuracy>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssTimeAssistance::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -1022,7 +1672,7 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
             /* .docs          = */ "GPS Time of week [seconds]",
             /* .type          = */ {Type::DOUBLE, nullptr},
             /* .accessor      = */ utils::access<type, double, &type::tow>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1031,7 +1681,7 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
             /* .docs          = */ "GPS Weeks since 1980 [weeks]",
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::week_number>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1040,17 +1690,86 @@ struct MetadataFor<commands_3dm::GnssTimeAssistance>
             /* .docs          = */ "Accuracy of time information [seconds]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::accuracy>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GnssTimeAssistance",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GnssTimeAssistance",
         /* .title       = */ "None",
         /* .docs        = */ "Provide the GNSS subsystem with initial time information.\n\nThis message is required immediately after power up if GNSS Assist was enabled when the device was powered off.\nThis will initialize the subsystem clock to help reduce the time to first fix (TTFF).",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, false, false, false,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::ImuLowpassFilter::Response>
+{
+    using type = commands_3dm::ImuLowpassFilter::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "target_descriptor",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::target_descriptor>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "enable",
+            /* .docs          = */ "True if the filter is currently enabled.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::enable>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "manual",
+            /* .docs          = */ "True if the filter cutoff was manually configured.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::manual>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "frequency",
+            /* .docs          = */ "The cutoff frequency of the filter. If the filter is in\nauto mode, this value is unspecified.",
+            /* .type          = */ {Type::U16, nullptr},
+            /* .accessor      = */ utils::access<type, uint16_t, &type::frequency>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "reserved",
+            /* .docs          = */ "Reserved and must be ignored.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::reserved>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuLowpassFilter::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -1075,7 +1794,7 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
             /* .docs          = */ "The target data will be filtered if this is true.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1084,7 +1803,7 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
             /* .docs          = */ "If false, the cutoff frequency is set to half of the\nstreaming rate as configured by the message format command.\nOtherwise, the cutoff frequency is set according to the\nfollowing 'frequency' parameter.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::manual>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1093,7 +1812,7 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
             /* .docs          = */ "-3dB cutoff frequency in Hz. Will not affect filtering if 'manual' is false.",
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::frequency>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1102,17 +1821,21 @@ struct MetadataFor<commands_3dm::ImuLowpassFilter>
             /* .docs          = */ "Reserved, set to 0x00.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::reserved>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ImuLowpassFilter",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ImuLowpassFilter",
         /* .title       = */ "Advanced Low-Pass Filter Settings",
         /* .docs        = */ "Advanced configuration for the IMU data quantity low-pass filters.\n\nDeprecated, use the lowpass filter (0x0C,0x54) command instead.\n\nThe scaled data quantities are by default filtered through a single-pole IIR low-pass filter\nwhich is configured with a -3dB cutoff frequency of half the reporting frequency (set by\ndecimation factor in the IMU Message Format command) to prevent aliasing on a per data\nquantity basis. This advanced configuration command allows for the cutoff frequency to\nbe configured independently of the data reporting frequency as well as allowing for a\ncomplete bypass of the digital low-pass filter.\n\nPossible data descriptors:\n0x04 - Scaled accelerometer data\n0x05 - Scaled gyro data\n0x06 - Scaled magnetometer data (if applicable)\n0x17 - Scaled pressure data (if applicable)",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1139,6 +1862,35 @@ struct MetadataFor<commands_3dm::PpsSource::Source>
 };
 
 template<>
+struct MetadataFor<commands_3dm::PpsSource::Response>
+{
+    using type = commands_3dm::PpsSource::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "source",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::PpsSource::Source>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::PpsSource::Source, &type::source>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PpsSource::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::PpsSource>
 {
     using type = commands_3dm::PpsSource;
@@ -1150,17 +1902,21 @@ struct MetadataFor<commands_3dm::PpsSource>
             /* .docs          = */ "",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::PpsSource::Source>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::PpsSource::Source, &type::source>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "PpsSource",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::PpsSource",
         /* .title       = */ "None",
         /* .docs        = */ "Controls the Pulse Per Second (PPS) source.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1240,6 +1996,62 @@ struct MetadataFor<commands_3dm::GpioConfig::PinMode>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GpioConfig::Response>
+{
+    using type = commands_3dm::GpioConfig::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "pin",
+            /* .docs          = */ "GPIO pin number counting from 1. For save, load, and default function selectors, this can be 0 to select all pins.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::pin>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "feature",
+            /* .docs          = */ "Determines how the pin will be used.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GpioConfig::Feature>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::Feature, &type::feature>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "behavior",
+            /* .docs          = */ "Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GpioConfig::Behavior>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::Behavior, &type::behavior>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "pin_mode",
+            /* .docs          = */ "GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.",
+            /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_3dm::GpioConfig::PinMode>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::PinMode, &type::pin_mode>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpioConfig::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GpioConfig>
 {
     using type = commands_3dm::GpioConfig;
@@ -1260,7 +2072,7 @@ struct MetadataFor<commands_3dm::GpioConfig>
             /* .docs          = */ "Determines how the pin will be used.",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GpioConfig::Feature>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::Feature, &type::feature>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1269,7 +2081,7 @@ struct MetadataFor<commands_3dm::GpioConfig>
             /* .docs          = */ "Select an appropriate value from the enumeration based on the selected feature (e.g. for PPS, select one of the values prefixed with PPS_.)",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GpioConfig::Behavior>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::Behavior, &type::behavior>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1278,17 +2090,59 @@ struct MetadataFor<commands_3dm::GpioConfig>
             /* .docs          = */ "GPIO configuration. May be restricted depending on device, pin, feature, and behavior. See device user manual.",
             /* .type          = */ {Type::BITFIELD, &MetadataFor<commands_3dm::GpioConfig::PinMode>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::GpioConfig::PinMode, &type::pin_mode>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GpioConfig",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpioConfig",
         /* .title       = */ "GPIO Configuration",
         /* .docs        = */ "Configures the user GPIO pins on the connector for use with several built-in functions or for general input or output.\n\nGPIO pins are device-dependent. Some features are only available on\ncertain pins. Some behaviors require specific configurations.\nConsult the device user manual for restrictions and default settings.\n\nTo avoid glitches on GPIOs configured as an output in a mode other than\nGPIO, always configure the relevant function before setting up the pin\nwith this command. Otherwise, the pin state will be undefined between\nthis command and the one to set up the feature. For input pins, use\nthis command first so the state is well-defined when the feature is\ninitialized.\n\nSome configurations can only be active on one pin at a time. If such\nconfiguration is applied to a second pin, the second one will take\nprecedence and the original pin's configuration will be reset.\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GpioState::Response>
+{
+    using type = commands_3dm::GpioState::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "pin",
+            /* .docs          = */ "GPIO pin number counting from 1. Cannot be 0.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::pin>,
+            /* .functions     = */ {true, true, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "state",
+            /* .docs          = */ "The pin state.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::state>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpioState::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -1313,17 +2167,21 @@ struct MetadataFor<commands_3dm::GpioState>
             /* .docs          = */ "The pin state.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::state>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GpioState",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GpioState",
         /* .title       = */ "GPIO State",
         /* .docs        = */ "Allows the state of the pin to be read or controlled.\n\nThis command serves two purposes: 1) To allow reading the state of a pin via command,\nrather than polling a data quantity, and 2) to provide a way to set the output state\nwithout also having to specify the operating mode.\n\nThe state read back from the pin is the physical state of the pin, rather than a\nconfiguration value. The state can be read regardless of its configuration as long as\nthe device supports GPIO input on that pin. If the pin is set to an output, the read\nvalue would match the output value.\n\nWhile the state of a pin can always be set, it will only have an observable effect if\nthe pin is set to output mode.\n\nThis command does not support saving, loading, or resetting the state. Instead, use the\nGPIO Configuration command, which allows the initial state to be configured.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, false, false, false,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1347,6 +2205,53 @@ struct MetadataFor<commands_3dm::Odometer::Mode>
 };
 
 template<>
+struct MetadataFor<commands_3dm::Odometer::Response>
+{
+    using type = commands_3dm::Odometer::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "mode",
+            /* .docs          = */ "Mode setting.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::Odometer::Mode>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::Odometer::Mode, &type::mode>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "scaling",
+            /* .docs          = */ "Encoder pulses per meter of distance traveled [pulses/m].\nDistance traveled is computed using the formula d = p / N * 2R * pi, where d is distance,\np is the number of pulses received, N is the encoder resolution, and R is the wheel radius.\nBy simplifying all of the parameters into one, the formula d = p / S is obtained, where s\nis the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and\nhas units of pulses / meter. N is in units of 'A' pulses per revolution and R is in meters.\nMake this value negative if the odometer is mounted so that it rotates backwards.",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::scaling>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "uncertainty",
+            /* .docs          = */ "Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::uncertainty>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Odometer::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::Odometer>
 {
     using type = commands_3dm::Odometer;
@@ -1358,7 +2263,7 @@ struct MetadataFor<commands_3dm::Odometer>
             /* .docs          = */ "Mode setting.",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::Odometer::Mode>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::Odometer::Mode, &type::mode>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1367,7 +2272,7 @@ struct MetadataFor<commands_3dm::Odometer>
             /* .docs          = */ "Encoder pulses per meter of distance traveled [pulses/m].\nDistance traveled is computed using the formula d = p / N * 2R * pi, where d is distance,\np is the number of pulses received, N is the encoder resolution, and R is the wheel radius.\nBy simplifying all of the parameters into one, the formula d = p / S is obtained, where s\nis the odometer scaling factor passed to this command. S is equivalent to N / (2R * pi) and\nhas units of pulses / meter. N is in units of 'A' pulses per revolution and R is in meters.\nMake this value negative if the odometer is mounted so that it rotates backwards.",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::scaling>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1376,17 +2281,21 @@ struct MetadataFor<commands_3dm::Odometer>
             /* .docs          = */ "Uncertainty in encoder counts to distance translation (1-sigma value) [m/m].",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::uncertainty>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "Odometer",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Odometer",
         /* .title       = */ "Odometer Settings",
         /* .docs        = */ "Configures the hardware odometer interface.\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1444,12 +2353,67 @@ struct MetadataFor<commands_3dm::GetEventSupport::Info>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GetEventSupport::Response>
+{
+    using type = commands_3dm::GetEventSupport::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "query",
+            /* .docs          = */ "Query type specified in the command.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::GetEventSupport::Query>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GetEventSupport::Query, &type::query>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "max_instances",
+            /* .docs          = */ "Number of slots available. The 'instance' number for\nthe configuration or control commands must be between 1 and this value.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::max_instances>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "num_entries",
+            /* .docs          = */ "Number of supported types.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_entries>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "entries",
+            /* .docs          = */ "List of supported types.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::GetEventSupport::Info>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GetEventSupport::Info, &type::entries>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {0, microstrain::Index(2) /* num_entries */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventSupport::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GetEventSupport>
 {
     using type = commands_3dm::GetEventSupport;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "query",
             /* .docs          = */ "What type of information to retrieve.",
@@ -1461,11 +2425,15 @@ struct MetadataFor<commands_3dm::GetEventSupport>
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GetEventSupport",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventSupport",
         /* .title       = */ "Get Supported Events",
         /* .docs        = */ "Lists the available trigger or action types.\n\nThere are a limited number of trigger and action slots available\nin the device. Up to M triggers and N actions can be configured at once\nin slots 1..M and 1..N respectively. M and N are identified by the\nmax_instances field in the response with the appropriate query selector.\n\nEach slot can be configured as one of a variety of different types of\ntriggers or actions. The supported types are enumerated in the response\nto this command. Additionally, there is a limit on the number of a given\ntype. In other words, while the device may support M triggers in total,\nonly a few of them maybe usable as a given type. This limit helps optimize\ndevice resources. The limit is identified in the count field.\n\nAll of the information in this command is available in the user manual.\nThis command provides a programmatic method for obtaining the information.\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1491,6 +2459,44 @@ struct MetadataFor<commands_3dm::EventControl::Mode>
 };
 
 template<>
+struct MetadataFor<commands_3dm::EventControl::Response>
+{
+    using type = commands_3dm::EventControl::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "instance",
+            /* .docs          = */ "Trigger instance to affect. 0 can be used to apply the mode to all\nconfigured triggers, except when the function selector is READ.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::instance>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "mode",
+            /* .docs          = */ "How to change the trigger state. Except when instance is 0, the\ncorresponding trigger must be configured, i.e. not have type 0.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventControl::Mode>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::EventControl::Mode, &type::mode>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventControl::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::EventControl>
 {
     using type = commands_3dm::EventControl;
@@ -1511,17 +2517,21 @@ struct MetadataFor<commands_3dm::EventControl>
             /* .docs          = */ "How to change the trigger state. Except when instance is 0, the\ncorresponding trigger must be configured, i.e. not have type 0.",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventControl::Mode>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::EventControl::Mode, &type::mode>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "EventControl",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventControl",
         /* .title       = */ "Event Control",
         /* .docs        = */ "Enables or disables event triggers.\n\nTriggers can be disabled, enabled, and tested. While disabled, a trigger will\nnot evaluate its logic and effective behave like no trigger is configured.\nA disabled trigger will not activate any actions. Triggers are disabled by default.\n\nUse this command to enable (or disable) a trigger, or to place it into a test mode.\nWhen in test mode, the trigger logic is disabled but the output is forced to\nthe active state, meaning that it will behave as if the trigger logic is satisfied\nand any associated actions will execute.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1580,18 +2590,55 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GetEventTriggerStatus::Response>
+{
+    using type = commands_3dm::GetEventTriggerStatus::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "count",
+            /* .docs          = */ "Number of entries requested. If requested_count was 0, this is the number of supported trigger slots.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::count>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "triggers",
+            /* .docs          = */ "A list of the configured triggers. Entries are in the order requested, or in increasing order if count was 0.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::GetEventTriggerStatus::Entry>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GetEventTriggerStatus::Entry, &type::triggers>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {20, microstrain::Index(0) /* count */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventTriggerStatus::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GetEventTriggerStatus>
 {
     using type = commands_3dm::GetEventTriggerStatus;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "requested_count",
             /* .docs          = */ "Number of entries requested. If 0, requests all trigger slots.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::requested_count>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1600,17 +2647,21 @@ struct MetadataFor<commands_3dm::GetEventTriggerStatus>
             /* .docs          = */ "List of trigger instances to query.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::requested_instances>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {20, microstrain::Index(0) /* requested_count */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GetEventTriggerStatus",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventTriggerStatus",
         /* .title       = */ "Get Trigger Status",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1649,18 +2700,55 @@ struct MetadataFor<commands_3dm::GetEventActionStatus::Entry>
 };
 
 template<>
+struct MetadataFor<commands_3dm::GetEventActionStatus::Response>
+{
+    using type = commands_3dm::GetEventActionStatus::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "count",
+            /* .docs          = */ "Number of entries requested. If requested_count was 0, this is the number of supported action slots.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::count>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "actions",
+            /* .docs          = */ "A list of the configured actions. Entries are in the order requested, or in increasing order if count was 0.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::GetEventActionStatus::Entry>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::GetEventActionStatus::Entry, &type::actions>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {20, microstrain::Index(0) /* count */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventActionStatus::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::GetEventActionStatus>
 {
     using type = commands_3dm::GetEventActionStatus;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "requested_count",
             /* .docs          = */ "Number of entries requested. If 0, requests all action slots.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::requested_count>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1669,17 +2757,21 @@ struct MetadataFor<commands_3dm::GetEventActionStatus>
             /* .docs          = */ "List of action instances to query.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::requested_instances>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ {20, microstrain::Index(0) /* requested_count */},
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GetEventActionStatus",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GetEventActionStatus",
         /* .title       = */ "Get Action Status",
         /* .docs        = */ "",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -1866,7 +2958,7 @@ struct MetadataFor<commands_3dm::EventTrigger::CombinationParams>
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::input_triggers>,
             /* .functions     = */ NO_FUNCTIONS,
-            /* .count         = */ 1,
+            /* .count         = */ 4,
             /* .condition     = */ {},
         },
     };
@@ -1944,6 +3036,53 @@ struct MetadataFor<commands_3dm::EventTrigger::Parameters>
 };
 
 template<>
+struct MetadataFor<commands_3dm::EventTrigger::Response>
+{
+    using type = commands_3dm::EventTrigger::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "instance",
+            /* .docs          = */ "Trigger number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::instance>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "type",
+            /* .docs          = */ "Type of trigger to configure.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventTrigger::Type>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::EventTrigger::Type, &type::type>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "parameters",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::UNION, &MetadataFor<commands_3dm::EventTrigger::Parameters>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::EventTrigger::Parameters, &type::parameters>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventTrigger::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::EventTrigger>
 {
     using type = commands_3dm::EventTrigger;
@@ -1964,7 +3103,7 @@ struct MetadataFor<commands_3dm::EventTrigger>
             /* .docs          = */ "Type of trigger to configure.",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventTrigger::Type>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::EventTrigger::Type, &type::type>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -1973,17 +3112,21 @@ struct MetadataFor<commands_3dm::EventTrigger>
             /* .docs          = */ "",
             /* .type          = */ {Type::UNION, &MetadataFor<commands_3dm::EventTrigger::Parameters>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::EventTrigger::Parameters, &type::parameters>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "EventTrigger",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventTrigger",
         /* .title       = */ "Event Trigger Configuration",
         /* .docs        = */ "Configures various types of event triggers.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -2151,6 +3294,62 @@ struct MetadataFor<commands_3dm::EventAction::Parameters>
 };
 
 template<>
+struct MetadataFor<commands_3dm::EventAction::Response>
+{
+    using type = commands_3dm::EventAction::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "instance",
+            /* .docs          = */ "Action number. When function is SAVE, LOAD, or DEFAULT, this can be 0 to apply to all instances.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::instance>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "trigger",
+            /* .docs          = */ "Trigger ID number.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::trigger>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "type",
+            /* .docs          = */ "Type of action to configure.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventAction::Type>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::EventAction::Type, &type::type>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "parameters",
+            /* .docs          = */ "",
+            /* .type          = */ {Type::UNION, &MetadataFor<commands_3dm::EventAction::Parameters>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::EventAction::Parameters, &type::parameters>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventAction::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::EventAction>
 {
     using type = commands_3dm::EventAction;
@@ -2171,7 +3370,7 @@ struct MetadataFor<commands_3dm::EventAction>
             /* .docs          = */ "Trigger ID number.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::trigger>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2180,7 +3379,7 @@ struct MetadataFor<commands_3dm::EventAction>
             /* .docs          = */ "Type of action to configure.",
             /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::EventAction::Type>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::EventAction::Type, &type::type>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2189,17 +3388,50 @@ struct MetadataFor<commands_3dm::EventAction>
             /* .docs          = */ "",
             /* .type          = */ {Type::UNION, &MetadataFor<commands_3dm::EventAction::Parameters>::value},
             /* .accessor      = */ utils::access<type, commands_3dm::EventAction::Parameters, &type::parameters>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "EventAction",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::EventAction",
         /* .title       = */ "Event Action Configuration",
         /* .docs        = */ "Configures various types of event actions.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::AccelBias::Response>
+{
+    using type = commands_3dm::AccelBias::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "bias",
+            /* .docs          = */ "accelerometer bias in the sensor frame (x,y,z) [g]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
+            /* .accessor      = */ utils::access<type, Vector3f, &type::bias>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::AccelBias::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2215,17 +3447,50 @@ struct MetadataFor<commands_3dm::AccelBias>
             /* .docs          = */ "accelerometer bias in the sensor frame (x,y,z) [g]",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
             /* .accessor      = */ utils::access<type, Vector3f, &type::bias>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "AccelBias",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::AccelBias",
         /* .title       = */ "Configure Accel Bias",
         /* .docs        = */ "Configures the user specified accelerometer bias\n\nThe user specified bias is subtracted from the calibrated accelerometer output.  Value is input in the sensor frame.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::GyroBias::Response>
+{
+    using type = commands_3dm::GyroBias::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "bias",
+            /* .docs          = */ "gyro bias in the sensor frame (x,y,z) [radians/second]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
+            /* .accessor      = */ utils::access<type, Vector3f, &type::bias>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GyroBias::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2241,17 +3506,50 @@ struct MetadataFor<commands_3dm::GyroBias>
             /* .docs          = */ "gyro bias in the sensor frame (x,y,z) [radians/second]",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
             /* .accessor      = */ utils::access<type, Vector3f, &type::bias>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "GyroBias",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::GyroBias",
         /* .title       = */ "Configure Gyro Bias",
         /* .docs        = */ "Configures the user specified gyroscope bias\n\nThe user specified bias is subtracted from the calibrated angular rate output.  Value is input in the sensor frame.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::CaptureGyroBias::Response>
+{
+    using type = commands_3dm::CaptureGyroBias::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "bias",
+            /* .docs          = */ "gyro bias in the sensor frame (x,y,z) [radians/second]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
+            /* .accessor      = */ utils::access<type, Vector3f, &type::bias>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::CaptureGyroBias::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2261,23 +3559,55 @@ struct MetadataFor<commands_3dm::CaptureGyroBias>
     using type = commands_3dm::CaptureGyroBias;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "averaging_time_ms",
             /* .docs          = */ "Averaging time [milliseconds]",
             /* .type          = */ {Type::U16, nullptr},
             /* .accessor      = */ utils::access<type, uint16_t, &type::averaging_time_ms>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "CaptureGyroBias",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::CaptureGyroBias",
         /* .title       = */ "Capture Gyro Bias",
         /* .docs        = */ "Samples gyro for a specified time range and writes the averaged result to the Gyro Bias vector in RAM\n\nThe device will average the gyro output for the duration of 'averaging_time_ms.' To store the resulting vector\nin non-volatile memory, use the Set Gyro Bias command.\nIMPORTANT: The device must be stationary and experiencing minimum vibration for the duration of 'averaging_time_ms'\nAveraging Time range: 1000 to 30,000",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::MagHardIronOffset::Response>
+{
+    using type = commands_3dm::MagHardIronOffset::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "offset",
+            /* .docs          = */ "hard iron offset in the sensor frame (x,y,z) [Gauss]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
+            /* .accessor      = */ utils::access<type, Vector3f, &type::offset>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MagHardIronOffset::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2293,17 +3623,50 @@ struct MetadataFor<commands_3dm::MagHardIronOffset>
             /* .docs          = */ "hard iron offset in the sensor frame (x,y,z) [Gauss]",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Vector3f>::value},
             /* .accessor      = */ utils::access<type, Vector3f, &type::offset>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "MagHardIronOffset",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MagHardIronOffset",
         /* .title       = */ "Magnetometer Hard Iron Offset",
         /* .docs        = */ "Configure the user specified magnetometer hard iron offset vector\n\nThe values for this offset are determined empirically by external software algorithms\nbased on calibration data taken after the device is installed in its application. These values\ncan be obtained and set by using the LORD 'MIP Iron Calibration' application.\nAlternatively, on some systems, the auto-mag calibration feature may be used to capture these values in-run.\nThe offset is applied to the scaled magnetometer vector prior to output.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::MagSoftIronMatrix::Response>
+{
+    using type = commands_3dm::MagSoftIronMatrix::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "offset",
+            /* .docs          = */ "soft iron matrix [dimensionless]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Matrix3f>::value},
+            /* .accessor      = */ utils::access<type, Matrix3f, &type::offset>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MagSoftIronMatrix::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2319,17 +3682,50 @@ struct MetadataFor<commands_3dm::MagSoftIronMatrix>
             /* .docs          = */ "soft iron matrix [dimensionless]",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Matrix3f>::value},
             /* .accessor      = */ utils::access<type, Matrix3f, &type::offset>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "MagSoftIronMatrix",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::MagSoftIronMatrix",
         /* .title       = */ "Magnetometer Soft Iron Matrix",
         /* .docs        = */ "Configure the user specified magnetometer soft iron offset matrix\n\nThe values for this matrix are determined empirically by external software algorithms\nbased on calibration data taken after the device is installed in its application. These values\ncan be obtained and set by using the LORD 'MIP Iron Calibration' application.\nAlternatively, on some systems, the auto-mag calibration feature may be used to capture these values in-run.\nThe matrix is applied to the scaled magnetometer vector prior to output.\n\nThe matrix is in row major order:\nEQSTART M = \begin{bmatrix} 0 &amp; 1 &amp; 2 \\ 3 &amp; 4 &amp; 5 \\ 6 &amp; 7 &amp; 8 \end{bmatrix} EQEND\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::ConingScullingEnable::Response>
+{
+    using type = commands_3dm::ConingScullingEnable::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "enable",
+            /* .docs          = */ "If true, coning and sculling compensation is enabled.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::enable>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ConingScullingEnable::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2345,17 +3741,68 @@ struct MetadataFor<commands_3dm::ConingScullingEnable>
             /* .docs          = */ "If true, coning and sculling compensation is enabled.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ConingScullingEnable",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ConingScullingEnable",
         /* .title       = */ "Coning and Sculling Enable",
         /* .docs        = */ "Controls the Coning and Sculling Compenstation setting.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>
+{
+    using type = commands_3dm::Sensor2VehicleTransformEuler::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "roll",
+            /* .docs          = */ "[radians]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::roll>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "pitch",
+            /* .docs          = */ "[radians]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::pitch>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "yaw",
+            /* .docs          = */ "[radians]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::yaw>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformEuler::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2371,7 +3818,7 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
             /* .docs          = */ "[radians]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::roll>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2380,7 +3827,7 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
             /* .docs          = */ "[radians]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::pitch>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2389,17 +3836,50 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>
             /* .docs          = */ "[radians]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::yaw>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "Sensor2VehicleTransformEuler",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformEuler",
         /* .title       = */ "Sensor to Vehicle Frame Transformation Euler",
         /* .docs        = */ "Sets the sensor-to-vehicle frame transformation using Yaw, Pitch, Roll Euler angles.\nThese are the Yaw, Pitch, and Roll mounting angles of the sensor with respect to vehicle frame of reference,\nand describe the transformation of vectors from the sensor body frame to the vehicle frame.<br/>\nNote: This is the transformation, the inverse of the rotation defined in our legacy products.<br/>\nThe transformation may be stored in the device as a matrix or quaternion.  When Euler angles are read back from the device, they may not\nbe exactly equal to the Euler angles used to set the transformation, but they are functionally equivalent, such that they result in the same transformation.<br/>\n<br/><br/>\nThis transformation to the vehicle frame will be applied to the following output quantities:<br/><br/>\nIMU:<br/>\nScaled Acceleration<br/>\nScaled Gyro<br/>\nScaled Magnetometer<br/>\nDelta Theta<br/>\nDelta Velocity<br/>\nComplementary Filter Orientation<br/>\n<br/><br/>\nEstimation Filter:<br/>\nEstimated Orientation, Quaternion<br/>\nEstimated Orientation, Matrix<br/>\nEstimated Orientation, Euler Angles<br/>\nEstimated Linear Acceleration<br/>\nEstimated Angular Rate<br/>\nEstimated Gravity Vector<br/>\n<br/>\nChanging this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>
+{
+    using type = commands_3dm::Sensor2VehicleTransformQuaternion::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "q",
+            /* .docs          = */ "Unit length quaternion representing transform [w, i, j, k]",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Quatf>::value},
+            /* .accessor      = */ utils::access<type, Quatf, &type::q>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformQuaternion::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2415,17 +3895,50 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>
             /* .docs          = */ "Unit length quaternion representing transform [w, i, j, k]",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Quatf>::value},
             /* .accessor      = */ utils::access<type, Quatf, &type::q>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "Sensor2VehicleTransformQuaternion",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformQuaternion",
         /* .title       = */ "Sensor to Vehicle Frame Transformation Quaternion",
         /* .docs        = */ "Set the sensor to vehicle frame transformation using unit length quaternion.\n\nNote: This is the transformation, the inverse of the rotation.\n\nThis quaternion describes the transformation of vectors from the sensor body frame to the vehicle frame of reference, and satisfies the following relationship:<br/>\n\nEQSTART p^{veh} = q^{-1} p^{sen} q EQEND<br/>\n\nWhere:<br/>\nEQSTART q = (q_w, q_x, q_y, q_z) EQEND is the quaternion describing the transformation. <br/>\nEQSTART p^{sen} = (0, v^{sen}_x, v^{sen}_y, v^{sen}_z) EQEND and EQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame.<br/>\nEQSTART p^{veh} = (0, v^{veh}_x, v^{veh}_y, v^{veh}_z) EQEND and EQSTART v^{veh} EQEND is a 3-element vector expressed in the vehicle frame.<br/>\n\nThe transformation may be stored in the device as a matrix or a quaternion.  When the quaternion is read back from the device, it may not\nbe exactly equal to the quaternion used to set the transformation, but it is functionally equivalent.<br/>\n<br/><br/>\nThis transformation affects the following output quantities:<br/><br/>\nIMU:<br/>\nScaled Acceleration<br/>\nScaled Gyro<br/>\nScaled Magnetometer<br/>\nDelta Theta<br/>\nDelta Velocity<br/>\n<br/><br/>\nEstimation Filter:<br/>\nEstimated Orientation, Quaternion<br/>\nEstimated Orientation, Matrix<br/>\nEstimated Orientation, Euler Angles<br/>\nEstimated Linear Acceleration<br/>\nEstimated Angular Rate<br/>\nEstimated Gravity Vector<br/>\n<br/>\nChanging this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>
+{
+    using type = commands_3dm::Sensor2VehicleTransformDcm::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "dcm",
+            /* .docs          = */ "3 x 3 direction cosine matrix, stored in row-major order",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<Matrix3f>::value},
+            /* .accessor      = */ utils::access<type, Matrix3f, &type::dcm>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformDcm::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2441,17 +3954,77 @@ struct MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>
             /* .docs          = */ "3 x 3 direction cosine matrix, stored in row-major order",
             /* .type          = */ {Type::STRUCT, &MetadataFor<Matrix3f>::value},
             /* .accessor      = */ utils::access<type, Matrix3f, &type::dcm>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "Sensor2VehicleTransformDcm",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::Sensor2VehicleTransformDcm",
         /* .title       = */ "Sensor to Vehicle Frame Transformation Direction Cosine Matrix",
         /* .docs        = */ "Set the sensor to vehicle frame transformation using a using a 3 x 3 direction cosine matrix EQSTART M_{ned}^{veh} EQEND, stored in row-major order in a 9-element array.\n\nThese angles define the transformation of vectors from the sensor body frame to the fixed vehicle frame, according to:<br/>\nEQSTART v^{veh} = M_{sen}^{veh} v^{sen} EQEND<br/>\n\nWhere:<br/>\n\nEQSTART v^{sen} EQEND is a 3-element vector expressed in the sensor body frame. <br/>\nEQSTART v^{veh} EQEND is the same 3-element vector expressed in the vehicle frame.  <br/>\n<br/>\nThe matrix elements are stored is row-major order: EQSTART M_{sen}^{veh} = \begin{bmatrix} M_{11}, M_{12}, M_{13}, M_{21}, M_{22}, M_{23}, M_{31}, M_{32}, M_{33} \end{bmatrix} EQEND\nThe transformation may be stored in the device as a matrix or a quaternion. When EQSTART M_{sen}^{veh} EQEND is read back from the device, it may not\nbe exactly equal to array used to set the transformation, but it is functionally equivalent.<br/>\n<br/><br/>\nThis transformation affects the following output quantities:<br/><br/>\nIMU:<br/>\nScaled Acceleration<br/>\nScaled Gyro<br/>\nScaled Magnetometer<br/>\nDelta Theta<br/>\nDelta Velocity<br/>\n<br/><br/>\nEstimation Filter:<br/>\nEstimated Orientation, Quaternion<br/>\nEstimated Orientation, Matrix<br/>\nEstimated Orientation, Euler Angles<br/>\nEstimated Linear Acceleration<br/>\nEstimated Angular Rate<br/>\nEstimated Gravity Vector<br/>\n<br/>\nChanging this setting will force all low-pass filters, the complementary filter, and the estimation filter to reset.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::ComplementaryFilter::Response>
+{
+    using type = commands_3dm::ComplementaryFilter::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "pitch_roll_enable",
+            /* .docs          = */ "Enable Pitch/Roll corrections",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::pitch_roll_enable>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "heading_enable",
+            /* .docs          = */ "Enable Heading corrections (only available on devices with magnetometer)",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::heading_enable>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "pitch_roll_time_constant",
+            /* .docs          = */ "Time constant associated with the pitch/roll corrections [s]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::pitch_roll_time_constant>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "heading_time_constant",
+            /* .docs          = */ "Time constant associated with the heading corrections [s]",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::heading_time_constant>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ComplementaryFilter::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2467,7 +4040,7 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
             /* .docs          = */ "Enable Pitch/Roll corrections",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::pitch_roll_enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2476,7 +4049,7 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
             /* .docs          = */ "Enable Heading corrections (only available on devices with magnetometer)",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::heading_enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2485,7 +4058,7 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
             /* .docs          = */ "Time constant associated with the pitch/roll corrections [s]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::pitch_roll_time_constant>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2494,17 +4067,21 @@ struct MetadataFor<commands_3dm::ComplementaryFilter>
             /* .docs          = */ "Time constant associated with the heading corrections [s]",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::heading_time_constant>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "ComplementaryFilter",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::ComplementaryFilter",
         /* .title       = */ "Complementary filter settings",
         /* .docs        = */ "Configure the settings for the complementary filter which produces the following (0x80) descriptor set values: attitude matrix (0x80,09), quaternion (0x80,0A), and  Euler angle (0x80,0C) outputs.\n\nThe filter can be configured to correct for pitch and roll using the accelerometer (with the assumption that linear acceleration is minimal),\nand to correct for heading using the magnetometer (with the assumption that the local magnetic field is dominated by the Earth's own magnetic field).\nPitch/roll and heading corrections each have their own configurable time constants, with a valid range of 1-1000 seconds. The default time constant is 10 seconds.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -2531,6 +4108,44 @@ struct MetadataFor<commands_3dm::SensorRangeType>
 };
 
 template<>
+struct MetadataFor<commands_3dm::SensorRange::Response>
+{
+    using type = commands_3dm::SensorRange::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "sensor",
+            /* .docs          = */ "Which type of sensor will get the new range value.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::SensorRangeType>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::SensorRangeType, &type::sensor>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "setting",
+            /* .docs          = */ "Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::setting>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::SensorRange::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::SensorRange>
 {
     using type = commands_3dm::SensorRange;
@@ -2551,17 +4166,21 @@ struct MetadataFor<commands_3dm::SensorRange>
             /* .docs          = */ "Use the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine this value.",
             /* .type          = */ {Type::U8, nullptr},
             /* .accessor      = */ utils::access<type, uint8_t, &type::setting>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "SensorRange",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::SensorRange",
         /* .title       = */ "Sensor Range",
         /* .docs        = */ "Changes the IMU sensor gain.\n\nThis allows you to optimize the range to get the best accuracy and performance\nwhile minimizing over-range events.\n\nUse the 3DM Get Calibrated Sensor Ranges (0x0C,0x53) command to determine\nthe appropriate setting value for your application. Using values other than\nthose specified may result in a NACK or inaccurate measurement data.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
 };
 
@@ -2600,12 +4219,58 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>
 };
 
 template<>
+struct MetadataFor<commands_3dm::CalibratedSensorRanges::Response>
+{
+    using type = commands_3dm::CalibratedSensorRanges::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "sensor",
+            /* .docs          = */ "The sensor type from the command.",
+            /* .type          = */ {Type::ENUM, &MetadataFor<commands_3dm::SensorRangeType>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::SensorRangeType, &type::sensor>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "num_ranges",
+            /* .docs          = */ "Number of supported ranges.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::num_ranges>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "ranges",
+            /* .docs          = */ "List of possible range settings.",
+            /* .type          = */ {Type::STRUCT, &MetadataFor<commands_3dm::CalibratedSensorRanges::Entry>::value},
+            /* .accessor      = */ utils::access<type, commands_3dm::CalibratedSensorRanges::Entry, &type::ranges>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ {0, microstrain::Index(1) /* num_ranges */},
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::CalibratedSensorRanges::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<commands_3dm::CalibratedSensorRanges>
 {
     using type = commands_3dm::CalibratedSensorRanges;
 
     static constexpr inline ParameterInfo parameters[] = {
-        FUNCTION_SELECTOR_PARAM,
         {
             /* .name          = */ "sensor",
             /* .docs          = */ "The sensor to query. Cannot be ALL.",
@@ -2617,11 +4282,80 @@ struct MetadataFor<commands_3dm::CalibratedSensorRanges>
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "CalibratedSensorRanges",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::CalibratedSensorRanges",
         /* .title       = */ "Get Calibrated Sensor Ranges",
         /* .docs        = */ "Returns the supported sensor ranges which may be used with the 3DM Sensor Range (0x0C,0x52) command.\n\nThe response includes an array of (u8, float) pairs which map each allowed setting\nto the corresponding maximum range in physical units. See SensorRangeType for units.",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
+    };
+};
+
+template<>
+struct MetadataFor<commands_3dm::LowpassFilter::Response>
+{
+    using type = commands_3dm::LowpassFilter::Response;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            /* .name          = */ "desc_set",
+            /* .docs          = */ "Descriptor set of the quantity to be filtered.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::desc_set>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "field_desc",
+            /* .docs          = */ "Field descriptor of the quantity to be filtered.",
+            /* .type          = */ {Type::U8, nullptr},
+            /* .accessor      = */ utils::access<type, uint8_t, &type::field_desc>,
+            /* .functions     = */ {true, true, true, true, true,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "enable",
+            /* .docs          = */ "The filter will be enabled if this is true.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::enable>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "manual",
+            /* .docs          = */ "If false, the frequency parameter is ignored and the filter\nwill track to half of the configured message format frequency.",
+            /* .type          = */ {Type::BOOL, nullptr},
+            /* .accessor      = */ utils::access<type, bool, &type::manual>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+        {
+            /* .name          = */ "frequency",
+            /* .docs          = */ "Cutoff frequency in Hz. This will return the actual frequency\nwhen read out in automatic mode.",
+            /* .type          = */ {Type::FLOAT, nullptr},
+            /* .accessor      = */ utils::access<type, float, &type::frequency>,
+            /* .functions     = */ {true, false, false, false, false,  true},
+            /* .count         = */ 1,
+            /* .condition     = */ {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::LowpassFilter::Response",
+        /* .title       = */ "None",
+        /* .docs        = */ "",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
     };
 };
 
@@ -2655,7 +4389,7 @@ struct MetadataFor<commands_3dm::LowpassFilter>
             /* .docs          = */ "The filter will be enabled if this is true.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::enable>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2664,7 +4398,7 @@ struct MetadataFor<commands_3dm::LowpassFilter>
             /* .docs          = */ "If false, the frequency parameter is ignored and the filter\nwill track to half of the configured message format frequency.",
             /* .type          = */ {Type::BOOL, nullptr},
             /* .accessor      = */ utils::access<type, bool, &type::manual>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
@@ -2673,18 +4407,111 @@ struct MetadataFor<commands_3dm::LowpassFilter>
             /* .docs          = */ "Cutoff frequency in Hz. This will return the actual frequency\nwhen read out in automatic mode.",
             /* .type          = */ {Type::FLOAT, nullptr},
             /* .accessor      = */ utils::access<type, float, &type::frequency>,
-            /* .functions     = */ {true, false, false, false, false},
+            /* .functions     = */ {true, false, false, false, false,  true},
             /* .count         = */ 1,
             /* .condition     = */ {},
         },
     };
 
-    static constexpr inline StructInfo value = {
-        /* .name        = */ "LowpassFilter",
+    static constexpr inline FieldInfo value = {
+        /* .name        = */ "commands_3dm::LowpassFilter",
         /* .title       = */ "Low-pass anti-aliasing filter",
         /* .docs        = */ "This command controls the low-pass anti-aliasing filter supported data quantities.\n\nSee the device user manual for data quantities which support the anti-aliasing filter.\n\nIf set to automatic mode, the frequency will track half of the transmission rate\nof the target descriptor according to the configured message format (0x0C,0x0F).\nFor example, if scaled accel (0x80,0x04) is set to stream at 100 Hz, the filter would\nbe set to 50 Hz. Changing the message format to 200 Hz would automatically adjust the\nfilter to 100 Hz.\n\nFor WRITE, SAVE, LOAD, and DEFAULT function selectors, the descriptor set and/or field descriptor\nmay be 0x00 to set, save, load, or reset the setting for all supported descriptors. The\nfield descriptor must be 0x00 if the descriptor set is 0x00.\n",
         /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ {true, true, true, true, true,  true},
+        /* .proprietary = */ false,
+        /* .response    = */ &MetadataFor<type::Response>::value,
     };
+};
+
+
+static constexpr inline std::initializer_list<const FieldInfo*> ALL_COMMANDS_3DM = {
+    &MetadataFor<commands_3dm::PollImuMessage>::value,
+    &MetadataFor<commands_3dm::PollGnssMessage>::value,
+    &MetadataFor<commands_3dm::PollFilterMessage>::value,
+    &MetadataFor<commands_3dm::ImuMessageFormat>::value,
+    &MetadataFor<commands_3dm::ImuMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::GpsMessageFormat>::value,
+    &MetadataFor<commands_3dm::GpsMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::FilterMessageFormat>::value,
+    &MetadataFor<commands_3dm::FilterMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::ImuGetBaseRate>::value,
+    &MetadataFor<commands_3dm::ImuGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::GpsGetBaseRate>::value,
+    &MetadataFor<commands_3dm::GpsGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::FilterGetBaseRate>::value,
+    &MetadataFor<commands_3dm::FilterGetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::PollData>::value,
+    &MetadataFor<commands_3dm::GetBaseRate>::value,
+    &MetadataFor<commands_3dm::GetBaseRate::Response>::value,
+    &MetadataFor<commands_3dm::MessageFormat>::value,
+    &MetadataFor<commands_3dm::MessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::NmeaPollData>::value,
+    &MetadataFor<commands_3dm::NmeaMessageFormat>::value,
+    &MetadataFor<commands_3dm::NmeaMessageFormat::Response>::value,
+    &MetadataFor<commands_3dm::DeviceSettings>::value,
+    &MetadataFor<commands_3dm::UartBaudrate>::value,
+    &MetadataFor<commands_3dm::UartBaudrate::Response>::value,
+    &MetadataFor<commands_3dm::FactoryStreaming>::value,
+    &MetadataFor<commands_3dm::DatastreamControl>::value,
+    &MetadataFor<commands_3dm::DatastreamControl::Response>::value,
+    &MetadataFor<commands_3dm::ConstellationSettings>::value,
+    &MetadataFor<commands_3dm::ConstellationSettings::Response>::value,
+    &MetadataFor<commands_3dm::GnssSbasSettings>::value,
+    &MetadataFor<commands_3dm::GnssSbasSettings::Response>::value,
+    &MetadataFor<commands_3dm::GnssAssistedFix>::value,
+    &MetadataFor<commands_3dm::GnssAssistedFix::Response>::value,
+    &MetadataFor<commands_3dm::GnssTimeAssistance>::value,
+    &MetadataFor<commands_3dm::GnssTimeAssistance::Response>::value,
+    &MetadataFor<commands_3dm::ImuLowpassFilter>::value,
+    &MetadataFor<commands_3dm::ImuLowpassFilter::Response>::value,
+    &MetadataFor<commands_3dm::PpsSource>::value,
+    &MetadataFor<commands_3dm::PpsSource::Response>::value,
+    &MetadataFor<commands_3dm::GpioConfig>::value,
+    &MetadataFor<commands_3dm::GpioConfig::Response>::value,
+    &MetadataFor<commands_3dm::GpioState>::value,
+    &MetadataFor<commands_3dm::GpioState::Response>::value,
+    &MetadataFor<commands_3dm::Odometer>::value,
+    &MetadataFor<commands_3dm::Odometer::Response>::value,
+    &MetadataFor<commands_3dm::GetEventSupport>::value,
+    &MetadataFor<commands_3dm::GetEventSupport::Response>::value,
+    &MetadataFor<commands_3dm::EventControl>::value,
+    &MetadataFor<commands_3dm::EventControl::Response>::value,
+    &MetadataFor<commands_3dm::GetEventTriggerStatus>::value,
+    &MetadataFor<commands_3dm::GetEventTriggerStatus::Response>::value,
+    &MetadataFor<commands_3dm::GetEventActionStatus>::value,
+    &MetadataFor<commands_3dm::GetEventActionStatus::Response>::value,
+    &MetadataFor<commands_3dm::EventTrigger>::value,
+    &MetadataFor<commands_3dm::EventTrigger::Response>::value,
+    &MetadataFor<commands_3dm::EventAction>::value,
+    &MetadataFor<commands_3dm::EventAction::Response>::value,
+    &MetadataFor<commands_3dm::AccelBias>::value,
+    &MetadataFor<commands_3dm::AccelBias::Response>::value,
+    &MetadataFor<commands_3dm::GyroBias>::value,
+    &MetadataFor<commands_3dm::GyroBias::Response>::value,
+    &MetadataFor<commands_3dm::CaptureGyroBias>::value,
+    &MetadataFor<commands_3dm::CaptureGyroBias::Response>::value,
+    &MetadataFor<commands_3dm::MagHardIronOffset>::value,
+    &MetadataFor<commands_3dm::MagHardIronOffset::Response>::value,
+    &MetadataFor<commands_3dm::MagSoftIronMatrix>::value,
+    &MetadataFor<commands_3dm::MagSoftIronMatrix::Response>::value,
+    &MetadataFor<commands_3dm::ConingScullingEnable>::value,
+    &MetadataFor<commands_3dm::ConingScullingEnable::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformEuler::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformQuaternion::Response>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm>::value,
+    &MetadataFor<commands_3dm::Sensor2VehicleTransformDcm::Response>::value,
+    &MetadataFor<commands_3dm::ComplementaryFilter>::value,
+    &MetadataFor<commands_3dm::ComplementaryFilter::Response>::value,
+    &MetadataFor<commands_3dm::SensorRange>::value,
+    &MetadataFor<commands_3dm::SensorRange::Response>::value,
+    &MetadataFor<commands_3dm::CalibratedSensorRanges>::value,
+    &MetadataFor<commands_3dm::CalibratedSensorRanges::Response>::value,
+    &MetadataFor<commands_3dm::LowpassFilter>::value,
+    &MetadataFor<commands_3dm::LowpassFilter::Response>::value,
 };
 
 

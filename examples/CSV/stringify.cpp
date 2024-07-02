@@ -56,10 +56,14 @@ template<class T>
 std::ostream& Formatter::formatBasicType()
 {
     T value;
-    if(serializer.extract(value))
-        return ss << value;
-    else
+    if(!serializer.extract(value))
         return ss << "?";
+    if constexpr(std::is_same_v<T,char>)
+        return ss << value;
+    else if constexpr(std::is_same_v<T,bool>)
+        return ss << std::boolalpha << value;
+    else
+        return ss << (int)value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
