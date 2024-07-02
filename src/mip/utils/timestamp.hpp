@@ -35,9 +35,8 @@ namespace mip
     public:
         TimestampExperimental() = delete;
         /// Manually set time since epoch.
-        // TODO: Change to general time unit chrono duration.
-        // TODO: Change to set time standard as well.
-        template<typename DurationIn> TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
+        template<typename DurationIn> 
+            TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
         /// Time since epoch synchronized to a coordinated time standard.
         // TODO: Change to static Now()
         // TimestampManager(const TimeStandard &standard);
@@ -142,15 +141,15 @@ namespace mip
     };
 
 
-//     /**************************************************************************************/
-//     /* NOTE: The following are definitions for all template declarations above. There are */
-//     /*       no new declarations following this statement.                                */
-//     /**************************************************************************************/
+    /**************************************************************************************/
+    /* NOTE: The following are definitions for all template declarations above. There are */
+    /*       no new declarations following this statement.                                */
+    /**************************************************************************************/
 
-//     template<typename DurationIn> TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0))
-//     {
-        
-//     }
+    template<typename DurationIn> inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time)
+    {
+        // TODO: Implement
+    }
 
 //     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimestamp()
 //     {
