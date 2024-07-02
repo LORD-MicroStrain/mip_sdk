@@ -55,10 +55,10 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 bool testInvalidConstructors()
 {
-    mip::Nanoseconds zero(-1);
+    mip::Nanoseconds negative(-1);
     try 
     {
-        mip::TimestampExperimental(mip::UnixTime(), zero);
+        mip::TimestampExperimental(mip::UnixTime(), negative);
     }
     catch (const std::invalid_argument&)
     {

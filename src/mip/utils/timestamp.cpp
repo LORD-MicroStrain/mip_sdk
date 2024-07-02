@@ -4,7 +4,6 @@
 
 namespace mip
 {
-
 } // namespace mip
 
     // TimestampExperimental::TimestampExperimental(std::uint64_t nanoseconds_since_epoch)

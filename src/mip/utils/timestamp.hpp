@@ -148,7 +148,13 @@ namespace mip
 
     template<typename DurationIn> inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time)
     {
-        // TODO: Implement
+        if (time < DurationIn(0))
+        {
+            throw std::invalid_argument("time < 0");
+        }
+        
+        m_timestamp = time;
+        // TODO: Set time standard.
     }
 
 //     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimestamp()
