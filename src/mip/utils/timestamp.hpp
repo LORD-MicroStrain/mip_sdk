@@ -43,24 +43,25 @@ namespace mip
     // TODO: Add storing of TimeStandard.
     // TODO: Add increment method.
     // TODO: Update documentation.
+    // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     /// Manages a timestamp in nanoseconds since epoch.
     ///
     /// Notes:
-    /// ---------------------------------------------------------------------------------
+    /// ----------------------------------------------------------------------------------
     ///     * Currently supports GPS clock (only) for the underlying time system.
     ///     * Might add support for different time systems in the future.
     ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
-    /// ---------------------------------------------------------------------------------
-    class TimestampManager
+    /// ----------------------------------------------------------------------------------
+    class TimestampExperimental
     {
     public:
         /// New epoch (0 nanoseconds).
         // TODO: Delete default constructor --> required time standard.
-        TimestampManager() {}
+        TimestampExperimental() {}
         /// Manually set time since epoch.
         // TODO: Change to general time unit chrono duration.
         // TODO: Change to set time standard as well.
-        TimestampManager(const TimeStandard &standard, long long default = 0);
+        TimestampExperimental(const TimeStandard &standard, long long default = 0);
         /// Time since epoch synchronized to a coordinated time standard.
         // TODO: Change to static Now()
         // TimestampManager(const TimeStandard &standard);
@@ -170,28 +171,28 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<typename DurationOut> inline DurationOut TimestampManager::getTimestamp()
+    template<typename DurationOut> inline DurationOut TimestampExperimental::getTimestamp()
     {
         return duration_cast<DurationOut>(m_timestamp);
     }
 
-    inline Nanoseconds TimestampManager::getTimestamp()
+    inline Nanoseconds TimestampExperimental::getTimestamp()
     {
         return m_timestamp;
     }
 
-    template<typename DurationOut> inline DurationOut TimestampManager::getTimeOfWeek()
+    template<typename DurationOut> inline DurationOut TimestampExperimental::getTimeOfWeek()
     {
         return duration_cast<DurationOut>(getTimeOfWeek());
     }
 
-    inline mip::Nanoseconds TimestampManager::getTimeOfWeek()
+    inline mip::Nanoseconds TimestampExperimental::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);
     }
 
     template<typename DCompare, typename D1, typename D2> 
-    inline bool TimestampManager::timeChanged(const D1 &timestamp1, const D2 &timestamp2)
+    inline bool TimestampExperimental::timeChanged(const D1 &timestamp1, const D2 &timestamp2)
     {
         if (timestamp1 >= timestamp2)
             return (timestamp1 - timestamp2 >= DCompare{1}) ? true : false;
@@ -200,19 +201,19 @@ namespace mip
     }
 
     template<typename T, typename DCast, typename DIn> 
-    inline T TimestampManager::castTime(const DIn &timestamp)
+    inline T TimestampExperimental::castTime(const DIn &timestamp)
     {
         return castTime<T>(duration_cast<DCast>(timestamp));
     }
 
     template<typename T, typename D> 
-    inline T TimestampManager::castTime(const D &timestamp)
+    inline T TimestampExperimental::castTime(const D &timestamp)
     {
         return static_cast<T>(timestamp.count());
     }
     
     template<typename D>
-    inline void TimestampManager::setWeek(D &timestamp, int week)
+    inline void TimestampExperimental::setWeek(D &timestamp, int week)
     {
         assert (week > 0); 
         if (week <= 0) return;
@@ -221,7 +222,7 @@ namespace mip
     }
 
     template<typename DTimeSet, typename DIn> 
-    inline void TimestampManager::setTimeOfWeek(DIn &timestamp, int time)
+    inline void TimestampExperimental::setTimeOfWeek(DIn &timestamp, int time)
     {
         assert (time > 0);
         if (time <= 0) return;

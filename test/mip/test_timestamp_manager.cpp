@@ -60,7 +60,7 @@ bool testGetters()
 
     for (auto &value : std::array<long long, 4>{min_nanoseconds, test_time, test_time2, max_nanoseconds})
     {
-        mip::TimestampManager timestamp(value);
+        mip::TimestampExperimental timestamp(value);
 
         if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), 
             mip::Nanoseconds(value)))

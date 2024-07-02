@@ -1,22 +1,26 @@
 #pragma once
 
+#include <chrono>
+
 namespace mip
 {
+    // TODO: Add more comprehensive documentation.
+    /// Extend this to create a new time standard.
     struct TimeStandard
     {
-        virtual Nanoseconds now() const = 0;
-        virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
-        virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
+        virtual std::chrono::nanoseconds now() const = 0;
+        virtual std::chrono::nanoseconds convertToBase(std::chrono::nanoseconds time) const = 0;
+        virtual std::chrono::nanoseconds convertFromBase(std::chrono::nanoseconds time) const = 0;
     };
+    
+    /** Common standards ****************************************************************/
 
-    struct UnixTime: TimeStandard
+    struct UnixTime : TimeStandard
     {
         static const UnixTime instance;
     };
-    
-    static const UnixTime &base_time = UnixTime::instance;
-    
-    struct GpsTime: TimeStandard
+
+    struct GpsTime : TimeStandard
     {
 
     };
