@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "mip/utils/time_standard.hpp"
+
 namespace mip
 {
     Nanoseconds TimeStandard::now()

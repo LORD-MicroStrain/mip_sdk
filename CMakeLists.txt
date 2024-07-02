@@ -107,6 +107,8 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/serialization.h"
     "${UTILS_DIR}/timestamp.cpp"
     "${UTILS_DIR}/timestamp.hpp"
+    "${UTILS_DIR}/time_standard.cpp"
+    "${UTILS_DIR}/time_standard.hpp"
 )
 
 #

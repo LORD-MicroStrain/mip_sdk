@@ -5,6 +5,11 @@
 
 namespace mip
 {
+    class TimeStandard;
+}
+
+namespace mip
+{
     using std::chrono::duration_cast;
     using std::chrono::time_point;
     using Nanoseconds = std::chrono::nanoseconds;
@@ -24,26 +29,6 @@ namespace mip
     using Weeks = std::chrono::duration<int, std::ratio<604800>>;
     using Years = std::chrono::duration<int, std::ratio<31556952>>;
 #endif // _HAS_CXX20
-    
-    // TODO: Move TimeStandard stuff to separate file.
-    struct TimeStandard
-    {
-        virtual Nanoseconds now() const = 0;
-        virtual Nanoseconds convertToBase(Nanoseconds time) const = 0;
-        virtual Nanoseconds convertFromBase(Nanoseconds time) const = 0;
-    };
-
-    struct UnixTime: TimeStandard
-    {
-        static const UnixTime instance;
-    };
-    
-    static const UnixTime &base_time = UnixTime::instance;
-    
-    struct GpsTime: TimeStandard
-    {
-
-    };
 
     // TODO: Move to Timestamp.
     // TODO: Add duration changing.
