@@ -1,7 +1,7 @@
 #pragma once
 
 #include <assert.h>
-// #include <chrono>
+#include <chrono>
 
 #include "mip/utils/time_durations.hpp"
 
@@ -34,9 +34,7 @@ namespace mip
     class TimestampExperimental
     {
     public:
-        /// New epoch (0 nanoseconds).
-        // TODO: Delete default constructor --> required time standard.
-        TimestampExperimental() {}
+        TimestampExperimental() = delete;
         /// Manually set time since epoch.
         // TODO: Change to general time unit chrono duration.
         // TODO: Change to set time standard as well.
