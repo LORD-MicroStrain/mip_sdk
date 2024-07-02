@@ -3,33 +3,10 @@
 #include <assert.h>
 #include <chrono>
 
-namespace mip
-{
-    class TimeStandard;
-}
+#include "mip/utils/time_durations.hpp"
 
 namespace mip
 {
-    using std::chrono::duration_cast;
-    using std::chrono::time_point;
-    using Nanoseconds = std::chrono::nanoseconds;
-    using Microseconds = std::chrono::microseconds;
-    using Milliseconds = std::chrono::milliseconds;
-    using Seconds = std::chrono::seconds;
-    using Minutes = std::chrono::minutes;
-    using Hours = std::chrono::hours;
-
-#if _HAS_CXX20
-    using Days = std::chrono::days;
-    using Weeks = std::chrono::weeks;
-    using Years = std::chrono::years;
-#else
-    #include <ratio>
-    using Days = std::chrono::duration<int, std::ratio<86400>>;
-    using Weeks = std::chrono::duration<int, std::ratio<604800>>;
-    using Years = std::chrono::duration<int, std::ratio<31556952>>;
-#endif // _HAS_CXX20
-
     // TODO: Move to Timestamp.
     // TODO: Add duration changing.
     // template<typename DurationIn, typename DurationOut> 
@@ -73,11 +50,11 @@ namespace mip
 
         /// Returns time since epoch.
         template<typename DurationOut> DurationOut getTimestamp();
-        Nanoseconds getTimestamp();
+        std::chrono::nanoseconds getTimestamp();
 
         /// Returns time since the start of the current week (of the timestamp).
         template<typename DurationOut> DurationOut getTimeOfWeek();
-        Nanoseconds getTimeOfWeek();
+        std::chrono::nanoseconds getTimeOfWeek();
 
         /// Returns whether two timestamps have diverged from each other.
         ///
@@ -162,7 +139,7 @@ namespace mip
         T castTime(const D &timestamp);
 
     private:
-        Nanoseconds m_timestamp{0};
+        std::chrono::nanoseconds m_timestamp{0};
     };
 
 
@@ -176,7 +153,7 @@ namespace mip
         return duration_cast<DurationOut>(m_timestamp);
     }
 
-    inline Nanoseconds TimestampExperimental::getTimestamp()
+    inline std::chrono::nanoseconds TimestampExperimental::getTimestamp()
     {
         return m_timestamp;
     }
@@ -186,7 +163,7 @@ namespace mip
         return duration_cast<DurationOut>(getTimeOfWeek());
     }
 
-    inline mip::Nanoseconds TimestampExperimental::getTimeOfWeek()
+    inline std::chrono::nanoseconds TimestampExperimental::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);
     }
