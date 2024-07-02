@@ -17,7 +17,7 @@ namespace mip
 
     struct UnixTime : TimeStandard
     {
-        static const UnixTime instance;
+
     };
 
     struct GpsTime : TimeStandard

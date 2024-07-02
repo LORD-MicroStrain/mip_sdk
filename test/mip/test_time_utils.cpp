@@ -53,8 +53,39 @@ template<typename ActualOutput, typename ExpectedOutput>
 
 /** Tests *******************************************************************************/
 
-bool testGetters()
+bool testInvalidConstructors()
 {
+    mip::Nanoseconds zero(0);
+    try 
+    {
+        mip::TimestampExperimental(mip::UnixTime(), zero);
+    }
+    catch (const std::invalid_argument& e)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool testGetTimestampBase()
+{
+    // mip::Nanoseconds less_than_week = mip::Nanoseconds(nanoseconds_in_week - 500);
+    // mip::Nanoseconds greater_than_week = mip::Nanoseconds(nanoseconds_in_week + 500);
+    
+    // for (auto &test_value : std::array<mip::Nanoseconds, 2>{less_than_week, greater_than_week})
+    // {
+    //    mip::TimestampExperimental(mip::UnixTime(), test_value); 
+       
+    //     if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), 
+    //         mip::Nanoseconds(value)))
+    //     {
+    //         return false;
+    //     }
+    // }
+    
+    return true;
+}
     // static long long test_time = toNanoseconds(seconds_in_week) - toNanoseconds(500);
     // static long long test_time2 = toNanoseconds(seconds_in_week) + toNanoseconds(500);
 
@@ -86,10 +117,7 @@ bool testGetters()
     //         return false;
     //     }
     // }
-    
-    return true;
-}
-
+// }
 bool testSynchronize()
 {
     // TODO: Rewrite these with new structure.
@@ -122,7 +150,11 @@ int main(int argc, const char* argv[])
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testGetters()) 
+    if (!testInvalidConstructors())
+    {
+        return fail;
+    }
+    if (!testGetTimestampBase()) 
     { 
         return fail; 
     }
