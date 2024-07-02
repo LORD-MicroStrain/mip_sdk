@@ -1,4 +1,4 @@
-#include "mip/utils/timestamp_manager.hpp"
+#include "mip/utils/timestamp.hpp"
 
 #include <stdexcept>
 

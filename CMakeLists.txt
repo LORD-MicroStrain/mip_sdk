@@ -105,8 +105,8 @@ set(UTILS_SOURCES
     "${UTILS_DIR}/byte_ring.h"
     "${UTILS_DIR}/serialization.c"
     "${UTILS_DIR}/serialization.h"
-    "${UTILS_DIR}/timestamp_manager.cpp"
-    "${UTILS_DIR}/timestamp_manager.hpp"
+    "${UTILS_DIR}/timestamp.cpp"
+    "${UTILS_DIR}/timestamp.hpp"
 )
 
 #

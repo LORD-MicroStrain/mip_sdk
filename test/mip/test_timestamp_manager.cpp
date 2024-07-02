@@ -5,7 +5,7 @@
 #include <tuple>
 #include <typeinfo>
 
-#include <mip/utils/timestamp_manager.hpp>
+#include <mip/utils/timestamp.hpp>
 
 constexpr long long min_nanoseconds = 0;
 constexpr long long max_nanoseconds = std::numeric_limits<long long>::max();
