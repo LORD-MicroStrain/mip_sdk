@@ -14,11 +14,6 @@ constexpr long long seconds_in_week = 604800;
 constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_week;
 
 
-/** Misc. Utilities *********************************************************************/
-
-long long toNanoseconds(int seconds);
-long long toSeconds(long long nanoseconds);
-
 /** Test case utilities *****************************************************************/
 
 template<typename DurationActual, typename DurationExpected>
@@ -224,18 +219,3 @@ bool testNow()
     //     }
     // }
 // }
-
-/**************************************************************************************/
-/* NOTE: The following are definitions for all utility declarations above. There are  */
-/*       no new declarations following this statement.                                */
-/**************************************************************************************/
-
-long long toNanoseconds(int seconds)
-{
-    return seconds * nanoseconds_in_second;
-}
-
-long long toSeconds(long long nanoseconds)
-{
-    return nanoseconds / nanoseconds_in_second;
-}
