@@ -175,7 +175,15 @@ bool testSynchronize()
 
 bool testNow()
 {
-    // TODO: Implement
+    mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
+    
+    mip::Nanoseconds actual = timestamp.getTimestamp();
+    mip::Nanoseconds expected = mock_sync_time;
+    if (!getterTestCase("Now", actual, expected))
+    {
+        return false;
+    }
+
     return true;
 }
     //     mip::TimestampManager timestamp(standard);
