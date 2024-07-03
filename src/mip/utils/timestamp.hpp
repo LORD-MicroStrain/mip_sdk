@@ -44,9 +44,9 @@ namespace mip
         /// call this method to keep the timestamp up to date with the time standard.
         // void synchronize();
 
-//         /// Returns time since epoch.
-//         template<typename DurationOut> DurationOut getTimestamp();
-//         Nanoseconds getTimestamp();
+        /// Returns time since epoch.
+        // template<typename DurationOut> DurationOut getTimestamp();
+        Nanoseconds getTimestamp();
 
 //         /// Returns time since the start of the current week (of the timestamp).
 //         template<typename DurationOut> DurationOut getTimeOfWeek();
