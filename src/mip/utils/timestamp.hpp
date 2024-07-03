@@ -35,8 +35,7 @@ namespace mip
     public:
         TimestampExperimental() = delete;
         /// Manually set time since epoch.
-        template<typename DurationIn> 
-            TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
+        template<typename DurationIn> TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
         /// Time since epoch synchronized to a coordinated time standard.
         // TODO: Change to static Now()
         // TimestampManager(const TimeStandard &standard);
@@ -139,7 +138,7 @@ namespace mip
 //         T castTime(const D &timestamp);
 
     private:
-        // TimeStandard &m_standard;
+        const TimeStandard &m_standard;
         Nanoseconds m_timestamp{0};
     };
 
@@ -149,14 +148,14 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<typename DurationIn> inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time)
+    template<typename DurationIn> inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time) :
+        m_standard(standard)
     {
         if (time < DurationIn(0))
         {
             throw std::invalid_argument("time < 0");
         }
         
-        // m_standard = standard;
         m_timestamp = time;
     }
 

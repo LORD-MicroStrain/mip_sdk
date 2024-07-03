@@ -21,6 +21,6 @@ namespace mip
         Nanoseconds convertToBase(Nanoseconds time) const override;
         Nanoseconds convertFromBase(Nanoseconds time) const override;
     };
-
+    
     struct GpsTime : TimeStandard {};
 } // namespace mip
