@@ -157,10 +157,11 @@ bool testGetTimestamp()
 bool testSynchronizeUnix()
 {
     mip::TimestampExperimental unix_timestamp(mip::UnixTime{});
-    mip::Nanoseconds expected = std::chrono::system_clock::now().time_since_epoch();
     unix_timestamp.synchronize();
+    mip::Nanoseconds now = std::chrono::system_clock::now().time_since_epoch();
 
-    mip::Nanoseconds actual = unix_timestamp.getTimestamp();
+    mip::Seconds actual = unix_timestamp.getTimestamp<mip::Seconds>();
+    mip::Seconds expected = std::chrono::duration_cast<mip::Seconds>(now);
     if (!getterTestCase("Synchronize-unix", actual, expected))
     {
         return false;
