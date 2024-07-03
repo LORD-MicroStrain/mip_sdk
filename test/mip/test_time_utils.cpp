@@ -63,7 +63,9 @@ void outputFailed(const char* case_name, const char* message)
 bool testManualTimeConstructorInvalid();
 bool testManualTimeConstructorValid();
 bool testGetTimestamp();
-bool testSynchronize();
+bool testSynchronizeUnix();
+bool testSynchronizeStandards();
+bool testNow();
 
 int main(int argc, const char* argv[])
 {
@@ -78,7 +80,7 @@ int main(int argc, const char* argv[])
     { 
         return fail; 
     }
-    if (!testSynchronize())
+    if (!testSynchronizeUnix() || !testSynchronizeStandards() || !testNow())
     {
         return fail;
     }
@@ -151,11 +153,60 @@ bool testGetTimestamp()
     return true;
 }
 
-    //     if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), 
-    //         mip::Seconds(toSeconds(value))))
+bool testSynchronizeUnix()
+{
+    mip::TimestampExperimental unix_timestamp(mip::UnixTime());
+    unix_timestamp.synchronize();
+
+    mip::Nanoseconds actual = unix_timestamp.getTimestamp();
+    mip::Nanoseconds expected = std::chrono::system_clock::now();
+    if (!getterTestCase("Synchronize-unix", actual, expected))
+    {
+        return false;
+    }
+    
+    return true;
+}
+
+bool testSynchronizeStandards()
+{
+    std::array<mip::TimeStandard, 2> standards{
+        mip::UnixTime(),
+        mip::GpsTime()
+    };
+    
+
+    for (const mip::TimeStandard& standard : standards)
+    {
+        mip::TimestampExperimental timestamp(standard);
+        timestamp.synchronize();
+
+        mip::Nanoseconds actual = timestamp.getTimestamp();
+        mip::Nanoseconds expected = standard.now();
+        getterTestCase("Synchronize-standards", actual, expected);
+    }
+
+    return true;
+}
+
+bool testNow()
+{
+    // TODO: Implement
+    return true;
+}
+    //     mip::TimestampManager timestamp(standard);
+    //     mip::Nanoseconds synced_time = timestamp.getTimestamp();
+
+    //     if (synced_time == mip::Nanoseconds(0))
     //     {
-    //         return false;            
+    //         outputCaseResults("SyncConstructor-GPS", synced_time.count(), "time since epoch >= 0");
+    //         return false;
     //     }
+        
+    //     static constexpr short leap = 18; 
+    //     static constexpr int epoch_gap = 315964800; 
+    // }
+
 
     //     if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
     //         mip::Nanoseconds(value % nanoseconds_in_week)))
@@ -170,33 +221,6 @@ bool testGetTimestamp()
     //     }
     // }
 // }
-bool testSynchronize()
-{
-    // TODO: Rewrite these with new structure.
-    // TODO: Add check for constructor value using Unix time when implemented.
-
-    // std::array<mip::TimeStandard, 1> standards{
-    //     mip::TimeStandard::GPS
-    // };
-
-    // for (mip::TimeStandard& standard : standards)
-    // {
-    //     mip::TimestampManager timestamp(standard);
-    //     mip::Nanoseconds synced_time = timestamp.getTimestamp();
-
-    //     if (synced_time == mip::Nanoseconds(0))
-    //     {
-    //         outputCaseResults("SyncConstructor-GPS", synced_time.count(), "time since epoch >= 0");
-    //         return false;
-    //     }
-        
-    //     static constexpr short leap = 18; 
-    //     static constexpr int epoch_gap = 315964800; 
-    // }
-
-    return true;
-}
-
 
 /**************************************************************************************/
 /* NOTE: The following are definitions for all utility declarations above. There are  */
