@@ -115,10 +115,10 @@ bool testManualTimeConstructorValid()
     }
     catch(const std::invalid_argument&)
     {
+        outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
         return false;
     }
 
-    outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
     return true; 
 }
 

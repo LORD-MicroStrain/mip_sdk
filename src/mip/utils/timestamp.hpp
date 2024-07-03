@@ -33,8 +33,10 @@ namespace mip
     {
     public:
         TimestampExperimental() = delete;
+
         /// Manually set time since epoch.
-        template<typename DurationIn> TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
+        template<typename DurationIn> 
+        TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
 
         /// Time since epoch synchronized to a coordinated time standard.
         // static TimestampExperimental Now(const TimeStandard &standard);
@@ -44,8 +46,9 @@ namespace mip
         /// call this method to keep the timestamp up to date with the time standard.
         // void synchronize();
 
-        /// Returns time since epoch.
-        // template<typename DurationOut> DurationOut getTimestamp();
+        /// Returns raw time since epoch.
+        template<typename DurationOut> 
+        DurationOut getTimestamp();
         Nanoseconds getTimestamp();
 
 //         /// Returns time since the start of the current week (of the timestamp).
@@ -145,7 +148,8 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<typename DurationIn> inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time) :
+    template<typename DurationIn> 
+    inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time) :
         m_standard(standard)
     {
         if (time < DurationIn(0))
@@ -156,15 +160,11 @@ namespace mip
         m_timestamp = time;
     }
 
-//     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimestamp()
-//     {
-//         return duration_cast<DurationOut>(m_timestamp);
-//     }
-
-//     inline std::chrono::nanoseconds TimestampExperimental::getTimestamp()
-//     {
-//         return m_timestamp;
-//     }
+    template<typename DurationOut> 
+    inline DurationOut TimestampExperimental::getTimestamp()
+    {
+        return std::chrono::duration_cast<DurationOut>(m_timestamp);
+    }
 
 //     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimeOfWeek()
 //     {
