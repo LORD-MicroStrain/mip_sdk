@@ -58,8 +58,7 @@ void outputFailed(const char* case_name, const char* message)
 bool testManualTimeConstructorInvalid();
 bool testManualTimeConstructorValid();
 bool testGetTimestamp();
-bool testSynchronizeUnix();
-bool testSynchronizeStandards();
+bool testSynchronize();
 bool testNow();
 
 int main(int argc, const char* argv[])
@@ -75,7 +74,7 @@ int main(int argc, const char* argv[])
     { 
         return fail; 
     }
-    if (!testSynchronizeUnix() || !testSynchronizeStandards() || !testNow())
+    if (!testSynchronize() || !testNow())
     {
         return fail;
     }
@@ -149,13 +148,13 @@ bool testGetTimestamp()
     return true;
 }
 
-bool testSynchronizeUnix()
+bool testSynchronize()
 {
-    mip::TimestampExperimental unix_timestamp(mip::UnixTime{});
-    unix_timestamp.synchronize();
+    mip::TimestampExperimental timestamp(mip::UnixTime{});
+    timestamp.synchronize();
     mip::Nanoseconds now = std::chrono::system_clock::now().time_since_epoch();
 
-    mip::Seconds actual = unix_timestamp.getTimestamp<mip::Seconds>();
+    mip::Seconds actual = timestamp.getTimestamp<mip::Seconds>();
     mip::Seconds expected = std::chrono::duration_cast<mip::Seconds>(now);
     if (!getterTestCase("Synchronize-unix", actual, expected))
     {
@@ -165,27 +164,26 @@ bool testSynchronizeUnix()
     return true;
 }
 
-bool testSynchronizeStandards()
-{
-    // std::array<mip::TimeStandard, 2> standards{
-    //     mip::UnixTime(),
-    //     mip::GpsTime()
+// TODO: Add for time standards
+// bool testSynchronizeStandards()
+// {
+    // std::array<std::unique_ptr<mip::TimeStandard>, 1> standards{
+    //     std::make_unique<mip::TimeStandard>(mip::UnixTime{})
+    //     // mip::GpsTime()
     // };
-    
 
-    // for (const mip::TimeStandard& standard : standards)
+    // for (std::unique_ptr<mip::TimeStandard> standard : standards)
     // {
-    //     mip::TimestampExperimental timestamp(standard);
+    //     mip::TimestampExperimental timestamp(*standard);
     //     timestamp.synchronize();
 
-    //     mip::Nanoseconds actual = timestamp.getTimestamp();
-    //     mip::Nanoseconds expected = standard.now();
+    //     mip::Seconds actual = timestamp.getTimestamp<mip::Seconds>();
+    //     mip::Nanoseconds expected = std::chrono::duration_cast<mip::Seconds>(standard.now());
     //     getterTestCase("Synchronize-standards", actual, expected);
     // }
 
-    // TODO: Implement
-    return true;
-}
+    // return true;
+// }
 
 bool testNow()
 {
