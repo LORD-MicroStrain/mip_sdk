@@ -18,7 +18,6 @@ namespace mip
     // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
         
 
-    // TODO: Add storing of TimeStandard.
     // TODO: Add increment method.
     // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
@@ -36,16 +35,14 @@ namespace mip
         TimestampExperimental() = delete;
         /// Manually set time since epoch.
         template<typename DurationIn> TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
-        /// Time since epoch synchronized to a coordinated time standard.
-        // TODO: Change to static Now()
-        // TimestampManager(const TimeStandard &standard);
 
-        // static TimestampExperimental Now(const TimeStandard &standard);
+        /// Time since epoch synchronized to a coordinated time standard.
+        static TimestampExperimental Now(const TimeStandard &standard);
         
         /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
         /// the timestamp won't continue to increment after this is called). Continuously
         /// call this method to keep the timestamp up to date with the time standard.
-        // void synchronize();
+        void synchronize();
 
 //         /// Returns time since epoch.
 //         template<typename DurationOut> DurationOut getTimestamp();

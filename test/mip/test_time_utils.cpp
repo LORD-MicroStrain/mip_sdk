@@ -60,6 +60,32 @@ void outputFailed(const char* case_name, const char* message)
 
 /** Tests *******************************************************************************/
 
+bool testManualTimeConstructorInvalid();
+bool testManualTimeConstructorValid();
+bool testGetTimestampBase();
+bool testSynchronize();
+
+int main(int argc, const char* argv[])
+{
+    static constexpr short success = 0;
+    static constexpr short fail = 1;
+
+    if (!testManualTimeConstructorInvalid() || !testManualTimeConstructorValid())
+    {
+        return fail;
+    }
+    if (!testGetTimestampBase()) 
+    { 
+        return fail; 
+    }
+    if (!testSynchronize())
+    {
+        return fail;
+    }
+
+    return success;
+}
+
 bool testManualTimeConstructorInvalid()
 {
     mip::Nanoseconds negative(-1);
@@ -171,27 +197,6 @@ bool testSynchronize()
     // }
 
     return true;
-}
-
-int main(int argc, const char* argv[])
-{
-    static constexpr short success = 0;
-    static constexpr short fail = 1;
-
-    if (!testManualTimeConstructorInvalid() || !testManualTimeConstructorValid())
-    {
-        return fail;
-    }
-    if (!testGetTimestampBase()) 
-    { 
-        return fail; 
-    }
-    if (!testSynchronize())
-    {
-        return fail;
-    }
-
-    return success;
 }
 
 
