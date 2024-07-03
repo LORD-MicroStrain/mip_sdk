@@ -62,7 +62,7 @@ void outputFailed(const char* case_name, const char* message)
 
 bool testManualTimeConstructorInvalid();
 bool testManualTimeConstructorValid();
-bool testGetTimestampBase();
+bool testGetTimestamp();
 bool testSynchronize();
 
 int main(int argc, const char* argv[])
@@ -74,7 +74,7 @@ int main(int argc, const char* argv[])
     {
         return fail;
     }
-    if (!testGetTimestampBase()) 
+    if (!testGetTimestamp())
     { 
         return fail; 
     }
@@ -122,16 +122,27 @@ bool testManualTimeConstructorValid()
     return true; 
 }
 
-bool testGetTimestampBase()
+bool testGetTimestamp()
 {
-    mip::Nanoseconds less_than_week = mip::Nanoseconds(nanoseconds_in_week - 500);
-    mip::Nanoseconds greater_than_week = mip::Nanoseconds(nanoseconds_in_week + 500);
+    std::array<mip::Nanoseconds, 3> test_values{
+        mip::Nanoseconds(0), 
+        mip::Nanoseconds(nanoseconds_in_week - 500), 
+        mip::Nanoseconds(nanoseconds_in_week + 500)
+    };
     
-    for (auto &value : std::array<mip::Nanoseconds, 2>{less_than_week, greater_than_week})
+    for (auto &value : test_values)
     {
-       mip::TimestampExperimental timestamp(mip::UnixTime(), value); 
+        mip::TimestampExperimental timestamp(mip::UnixTime(), value); 
        
-        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
+        auto base_actual = timestamp.getTimestamp();
+        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), value))
+        {
+            return false;
+        }
+
+        auto template_actual = timestamp.getTimestamp<mip::Seconds>();
+        mip::Seconds template_expected = std::chrono::duration_cast<mip::Seconds>(value);
+        if (!getterTestCase("GetTimestamp-template", template_actual, template_expected))
         {
             return false;
         }
@@ -139,19 +150,7 @@ bool testGetTimestampBase()
     
     return true;
 }
-    // static long long test_time = toNanoseconds(seconds_in_week) - toNanoseconds(500);
-    // static long long test_time2 = toNanoseconds(seconds_in_week) + toNanoseconds(500);
 
-    // for (auto &value : std::array<long long, 4>{min_nanoseconds, test_time, test_time2, max_nanoseconds})
-    // {
-    //     mip::TimestampExperimental timestamp(value);
-
-    //     if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), 
-    //         mip::Nanoseconds(value)))
-    //     {
-    //         return false;
-    //     }
-        
     //     if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), 
     //         mip::Seconds(toSeconds(value))))
     //     {
