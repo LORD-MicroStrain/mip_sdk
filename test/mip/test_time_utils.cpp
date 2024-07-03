@@ -47,7 +47,7 @@ template<typename ActualOutput, typename ExpectedOutput>
 {
     std::cout << 
         "Failed: " << case_name << "\n" << 
-        "    ---> Actual: " << actual << "\n" <<
+        "    --->   Actual: " << actual << "\n" <<
         "    ---> Expected: " << expected << "\n";
 }
 
@@ -157,10 +157,10 @@ bool testGetTimestamp()
 bool testSynchronizeUnix()
 {
     mip::TimestampExperimental unix_timestamp(mip::UnixTime{});
+    mip::Nanoseconds expected = std::chrono::system_clock::now().time_since_epoch();
     unix_timestamp.synchronize();
 
     mip::Nanoseconds actual = unix_timestamp.getTimestamp();
-    mip::Nanoseconds expected = std::chrono::system_clock::now().time_since_epoch();
     if (!getterTestCase("Synchronize-unix", actual, expected))
     {
         return false;
