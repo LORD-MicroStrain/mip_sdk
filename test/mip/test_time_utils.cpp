@@ -124,19 +124,18 @@ bool testManualTimeConstructorValid()
 
 bool testGetTimestampBase()
 {
-    // mip::Nanoseconds less_than_week = mip::Nanoseconds(nanoseconds_in_week - 500);
-    // mip::Nanoseconds greater_than_week = mip::Nanoseconds(nanoseconds_in_week + 500);
+    mip::Nanoseconds less_than_week = mip::Nanoseconds(nanoseconds_in_week - 500);
+    mip::Nanoseconds greater_than_week = mip::Nanoseconds(nanoseconds_in_week + 500);
     
-    // for (auto &test_value : std::array<mip::Nanoseconds, 2>{less_than_week, greater_than_week})
-    // {
-    //    mip::TimestampExperimental(mip::UnixTime(), test_value); 
+    for (auto &value : std::array<mip::Nanoseconds, 2>{less_than_week, greater_than_week})
+    {
+       mip::TimestampExperimental timestamp(mip::UnixTime(), value); 
        
-    //     if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), 
-    //         mip::Nanoseconds(value)))
-    //     {
-    //         return false;
-    //     }
-    // }
+        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), mip::Nanoseconds(value)))
+        {
+            return false;
+        }
+    }
     
     return true;
 }
