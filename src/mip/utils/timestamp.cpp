@@ -15,14 +15,12 @@ namespace mip
         return m_timestamp;
     }
 
-    // TODO: Get Now and synchronize working.
-    // TODO: Find a way to store the time standard.
-    // TimestampExperimental TimestampExperimental::Now(const TimeStandard &standard)
-    // {
-    //     TimestampExperimental timestamp(standard);
-    //     timestamp.synchronize();
-    //     return timestamp;
-    // }
+    TimestampExperimental TimestampExperimental::Now(const TimeStandard &standard)
+    {
+        TimestampExperimental timestamp(standard);
+        timestamp.synchronize();
+        return timestamp;
+    }
     
     void TimestampExperimental::synchronize()
     {

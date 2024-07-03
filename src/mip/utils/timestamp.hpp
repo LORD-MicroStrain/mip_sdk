@@ -42,7 +42,7 @@ namespace mip
         TimestampExperimental(const TimeStandard &standard, DurationIn time);
 
         /// Time since epoch synchronized to a coordinated time standard.
-        // static TimestampExperimental Now(const TimeStandard &standard);
+        static TimestampExperimental Now(const TimeStandard &standard);
         
         /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
         /// the timestamp won't continue to increment after this is called). Continuously
