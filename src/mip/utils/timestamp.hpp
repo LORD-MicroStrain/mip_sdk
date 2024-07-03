@@ -40,11 +40,13 @@ namespace mip
         /// Time since epoch synchronized to a coordinated time standard.
         // TODO: Change to static Now()
         // TimestampManager(const TimeStandard &standard);
+
+        // static TimestampExperimental Now(const TimeStandard &standard);
         
         /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
         /// the timestamp won't continue to increment after this is called). Continuously
         /// call this method to keep the timestamp up to date with the time standard.
-//         void now(const TimeStandard &standard);
+        // void synchronize();
 
 //         /// Returns time since epoch.
 //         template<typename DurationOut> DurationOut getTimestamp();
@@ -137,6 +139,7 @@ namespace mip
 //         T castTime(const D &timestamp);
 
     private:
+        // TimeStandard &m_standard;
         Nanoseconds m_timestamp{0};
     };
 
@@ -153,8 +156,8 @@ namespace mip
             throw std::invalid_argument("time < 0");
         }
         
+        // m_standard = standard;
         m_timestamp = time;
-        // TODO: Set time standard.
     }
 
 //     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimestamp()

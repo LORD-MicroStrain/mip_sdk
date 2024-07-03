@@ -4,16 +4,21 @@
 
 namespace mip
 {
-} // namespace mip
-
-    // TimestampExperimental::TimestampExperimental(std::uint64_t nanoseconds_since_epoch)
+    // TODO: Get Now and synchronize working.
+    // TODO: Find a way to store the time standard.
+    // TimestampExperimental TimestampExperimental::Now(const TimeStandard &standard)
     // {
-    //     if (nanoseconds_since_epoch > 0)
-    //     {
-    //         m_timestamp = Nanoseconds(nanoseconds_since_epoch);
-    //     }
+    //     TimestampExperimental timestamp(standard);
+    //     timestamp.synchronize();
+    //     return timestamp;
     // }
     
+    // void TimestampExperimental::synchronize()
+    // {
+    //     m_timestamp = standard.now();
+    // }
+} // namespace mip
+
     // TimestampExperimental::TimestampManager(const TimeStandard &standard)
     // {
     //     now(standard);

@@ -51,11 +51,19 @@ template<typename ActualOutput, typename ExpectedOutput>
         "    ---> Expected: " << expected << "\n";
 }
 
+void outputFailed(const char* case_name, const char* message)
+{
+    std::cout <<
+        "Failed: " << case_name << "\n" <<
+        "   ---> " << message << "\n";
+}
+
 /** Tests *******************************************************************************/
 
-bool testInvalidConstructors()
+bool testManualTimeConstructorInvalid()
 {
     mip::Nanoseconds negative(-1);
+
     try 
     {
         mip::TimestampExperimental(mip::UnixTime(), negative);
@@ -65,8 +73,27 @@ bool testInvalidConstructors()
         return true;
     }
 
-    std::cout << "invalid_argument not raised when time < 0\n";
+    outputFailed("ManualConstructor", "invalid_argument not raised when time < 0");
     return false;
+}
+
+bool testManualTimeConstructorValid()
+{
+    mip::Nanoseconds base(500);
+    mip::Seconds templated(500);
+    
+    try
+    {
+        mip::TimestampExperimental(mip::UnixTime(), base);
+        mip::TimestampExperimental(mip::UnixTime(), templated);
+    }
+    catch(const std::invalid_argument&)
+    {
+        return false;
+    }
+
+    outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
+    return true; 
 }
 
 bool testGetTimestampBase()
@@ -151,7 +178,7 @@ int main(int argc, const char* argv[])
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testInvalidConstructors())
+    if (!testManualTimeConstructorInvalid() || !testManualTimeConstructorValid())
     {
         return fail;
     }
