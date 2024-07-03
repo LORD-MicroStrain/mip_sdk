@@ -24,10 +24,10 @@ namespace mip
     //     return timestamp;
     // }
     
-    // void TimestampExperimental::synchronize()
-    // {
-    //     m_timestamp = standard.now();
-    // }
+    void TimestampExperimental::synchronize()
+    {
+        m_timestamp = m_standard.now();
+    }
 } // namespace mip
 
     // TimestampExperimental::TimestampManager(const TimeStandard &standard)
