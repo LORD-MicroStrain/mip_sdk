@@ -4,6 +4,12 @@
 
 namespace mip
 {
+    TimestampExperimental::TimestampExperimental(const TimeStandard &standard) :
+        m_standard(standard)
+    {
+        m_timestamp = mip::Nanoseconds(0);
+    }
+
     Nanoseconds TimestampExperimental::getTimestamp()
     {
         return m_timestamp;

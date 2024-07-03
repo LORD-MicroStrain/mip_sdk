@@ -33,10 +33,13 @@ namespace mip
     {
     public:
         TimestampExperimental() = delete;
+        
+        /// Defaults time since epoch to zero nanoseconds.
+        TimestampExperimental(const TimeStandard &standard);
 
         /// Manually set time since epoch.
         template<typename DurationIn> 
-        TimestampExperimental(const TimeStandard &standard, DurationIn time = Nanoseconds(0));
+        TimestampExperimental(const TimeStandard &standard, DurationIn time);
 
         /// Time since epoch synchronized to a coordinated time standard.
         // static TimestampExperimental Now(const TimeStandard &standard);
