@@ -186,20 +186,6 @@ bool testNow()
 
     return true;
 }
-    //     mip::TimestampManager timestamp(standard);
-    //     mip::Nanoseconds synced_time = timestamp.getTimestamp();
-
-    //     if (synced_time == mip::Nanoseconds(0))
-    //     {
-    //         outputCaseResults("SyncConstructor-GPS", synced_time.count(), "time since epoch >= 0");
-    //         return false;
-    //     }
-        
-    //     static constexpr short leap = 18; 
-    //     static constexpr int epoch_gap = 315964800; 
-    // }
-
-
     //     if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
     //         mip::Nanoseconds(value % nanoseconds_in_week)))
     //     {
