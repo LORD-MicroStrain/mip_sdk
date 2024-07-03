@@ -148,21 +148,23 @@ bool testGetTimestamp()
     return true;
 }
 
+static constexpr mip::Nanoseconds mock_sync_time(123456789);
+
+struct MockUnixTime : mip::UnixTime
+{
+    mip::Nanoseconds now() const override
+    {
+        return mock_sync_time;
+    }
+};
+
 bool testSynchronize()
 {
-    struct MockUnixTime : mip::UnixTime
-    {
-        mip::Nanoseconds now() const override
-        {
-            return mip::Nanoseconds(123456789);
-        }
-    };
-
     mip::TimestampExperimental timestamp(MockUnixTime{});
     timestamp.synchronize();
 
     mip::Nanoseconds actual = timestamp.getTimestamp();
-    mip::Nanoseconds expected = mip::Nanoseconds(123456789);
+    mip::Nanoseconds expected = mock_sync_time;
     if (!getterTestCase("Synchronize", actual, expected))
     {
         return false;
