@@ -4,13 +4,16 @@
 #include <mip/utils/timestamp.hpp>
 
 
-constexpr long long min_nanoseconds = 0;
-constexpr long long max_nanoseconds = std::numeric_limits<long long>::max();
-constexpr long long nanoseconds_in_second = 1000000000; 
-constexpr long long seconds_in_week = 604800;
-constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_week;
-constexpr mip::Nanoseconds main_test_time(123456789);
+// Time conversions
+constexpr mip::Nanoseconds nanoseconds_in_second(1000000000);
+constexpr mip::Seconds     seconds_in_week(604800);
+constexpr mip::Nanoseconds nanoseconds_in_week((std::uint64_t)1000000000 * (std::uint64_t)604800);
 
+// Test values
+constexpr mip::Nanoseconds invalid_nanoseconds(-1);
+constexpr mip::Seconds     invalid_seconds(-1);
+constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
+constexpr mip::Seconds     main_test_seconds(123456789);
 
 /** Mock objects ************************************************************************/
 
@@ -18,7 +21,7 @@ struct MockUnixTime : mip::UnixTime
 {
     mip::Nanoseconds now() const override
     {
-        return main_test_time;
+        return main_test_nanoseconds;
     }
 };
 
@@ -40,13 +43,13 @@ void outputFailed(const char* name, const char* message);
 
 bool testManualConstructor()
 {
-    auto invalid_base = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(-1)); };
+    auto invalid_base = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds); };
     if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor-base", invalid_base))
     {
         return false;
     }
 
-    auto invalid_template = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(-1)); };
+    auto invalid_template = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds); };
     if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor-template", invalid_base))
     {
         return false;
@@ -58,20 +61,19 @@ bool testManualConstructor()
 bool testGetTimestamp()
 {
     mip::TimestampExperimental timestamp_zero(mip::UnixTime{});
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+
     if (!getterTestCase("GetTimestamp-zero", timestamp_zero.getTimestamp(), mip::Nanoseconds(0)))
     {
         return false;
     }
     
-    mip::Nanoseconds expected_base(nanoseconds_in_second);
-    mip::TimestampExperimental timestamp(mip::UnixTime{}, expected_base);
-    if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), expected_base))
+    if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), nanoseconds_in_second))
     {
         return false;
     }
 
-    mip::Seconds expected_template(1);
-    if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_template))
+    if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1)))
     {
         return false;
     }
@@ -83,28 +85,26 @@ bool testSetTimestamp()
 {
     mip::TimestampExperimental timestamp(mip::UnixTime{});
 
-    auto invalid_base = [&timestamp]() -> void { timestamp.setTimestamp(mip::Nanoseconds(-1)); };
+    auto invalid_base = [&timestamp]() -> void { timestamp.setTimestamp(invalid_nanoseconds); };
     if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-base", invalid_base))
     {
         return false;
     }
 
-    auto invalid_templated = [&timestamp]() -> void { timestamp.setTimestamp(mip::Seconds(-1)); };
+    auto invalid_templated = [&timestamp]() -> void { timestamp.setTimestamp(invalid_seconds); };
     if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-template", invalid_templated))
     {
         return false;
     }
 
-    mip::Nanoseconds expected_base(123456789);
-    timestamp.setTimestamp(expected_base);
-    if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), expected_base))
+    timestamp.setTimestamp(main_test_nanoseconds);
+    if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), main_test_nanoseconds))
     {
         return false;
     }
     
-    mip::Seconds expected_templated(123456789);
-    timestamp.setTimestamp(expected_templated);
-    if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_templated))
+    timestamp.setTimestamp(main_test_seconds);
+    if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), main_test_seconds))
     {
         return false;
     }
@@ -115,9 +115,9 @@ bool testSetTimestamp()
 bool testSynchronize()
 {
     mip::TimestampExperimental timestamp(MockUnixTime{});
-    timestamp.synchronize();
 
-    if (!getterTestCase("Synchronize", timestamp.getTimestamp(), main_test_time))
+    timestamp.synchronize();
+    if (!getterTestCase("Synchronize", timestamp.getTimestamp(), main_test_nanoseconds))
     {
         return false;
     }
@@ -129,9 +129,7 @@ bool testNow()
 {
     mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
     
-    mip::Nanoseconds actual = timestamp.getTimestamp();
-    mip::Nanoseconds expected = main_test_time;
-    if (!getterTestCase("Now", actual, expected))
+    if (!getterTestCase("Now", timestamp.getTimestamp(), main_test_nanoseconds))
     {
         return false;
     }
