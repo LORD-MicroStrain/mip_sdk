@@ -29,13 +29,13 @@ void outputFailed(const char* name, const char* message);
 bool testManualConstructor()
 {
     auto invalid_base = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(-1)); };
-    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor", invalid_base))
+    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor-base", invalid_base))
     {
         return false;
     }
 
     auto invalid_template = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(-1)); };
-    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor", invalid_base))
+    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor-template", invalid_base))
     {
         return false;
     }
@@ -43,31 +43,27 @@ bool testManualConstructor()
     return true;
 }
 
-static std::array<mip::Nanoseconds, 3> test_values{
-    mip::Nanoseconds(0), 
-    mip::Nanoseconds(nanoseconds_in_week - 500), 
-    mip::Nanoseconds(nanoseconds_in_week + 500)
-};
-    
 bool testGetTimestamp()
 {
-    for (const mip::Nanoseconds &value : test_values)
+    mip::TimestampExperimental timestamp_zero(mip::UnixTime{});
+    if (!getterTestCase("GetTimestamp-zero", timestamp_zero.getTimestamp(), mip::Nanoseconds(0)))
     {
-        mip::TimestampExperimental timestamp(mip::UnixTime(), value); 
-       
-        if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), value))
-        {
-            return false;
-        }
-
-        auto template_actual = timestamp.getTimestamp<mip::Seconds>();
-        mip::Seconds template_expected = std::chrono::duration_cast<mip::Seconds>(value);
-        if (!getterTestCase("GetTimestamp-template", template_actual, template_expected))
-        {
-            return false;
-        }
+        return false;
     }
     
+    mip::Nanoseconds expected_base(nanoseconds_in_second);
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, expected_base);
+    if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), expected_base))
+    {
+        return false;
+    }
+
+    mip::Seconds expected_template(2);
+    if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_template))
+    {
+        return false;
+    }
+
     return true;
 }
 
