@@ -15,6 +15,9 @@ constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_wee
 template<typename DurationActual, typename DurationExpected>
 bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected);
 
+template<typename ExpectedException, typename Callable>
+bool invalidInputTestCase(const char *name, Callable test_wrapper);
+
 // Comprehensive failed message with actual vs. expected values.
 template<typename ActualOutput, typename ExpectedOutput>
 void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected);
@@ -92,25 +95,34 @@ bool testGetTimestamp()
 
 bool testSetTimestamp()
 {
-    // Requirements:
-    // * Check for input duration >= 0
     mip::TimestampExperimental timestamp(mip::UnixTime{});
-    mip::Nanoseconds expected_base(123456789);
-    mip::Seconds expected_templated(123456789);
 
+    auto invalid_base = [&timestamp]() -> void { timestamp.setTimestamp(mip::Nanoseconds(-1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-base", invalid_base))
+    {
+        return false;
+    }
+
+    auto invalid_templated = [&timestamp]() -> void { timestamp.setTimestamp(mip::Seconds(-1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-template", invalid_templated))
+    {
+        return false;
+    }
+
+    mip::Nanoseconds expected_base(123456789);
     timestamp.setTimestamp(expected_base);
     if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), expected_base))
     {
         return false;
     }
     
+    mip::Seconds expected_templated(123456789);
     timestamp.setTimestamp(expected_templated);
     if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_templated))
     {
         return false;
     }
-    
-    // TODO: Add invalid input cases.
+    // TODO: Refactor setter stuff into setterTestCase.
 
     return true;
 }
@@ -215,6 +227,22 @@ bool getterTestCase(std::string name, DurationActual actual, DurationExpected ex
     }
     
     return true;
+}
+
+template<typename ExpectedException, typename Callable>
+bool invalidInputTestCase(const char *name, Callable test_wrapper)
+{
+    try
+    {
+        test_wrapper();
+    }
+    catch(const ExpectedException&)
+    {
+        return true;
+    }
+    
+    outputFailed(name, "No exception was raised for invalid input.");
+    return false;
 }
 
 template<typename ActualOutput, typename ExpectedOutput>
