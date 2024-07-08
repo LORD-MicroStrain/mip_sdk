@@ -7,13 +7,15 @@
 // Time conversions
 constexpr mip::Nanoseconds nanoseconds_in_second(1000000000);
 constexpr mip::Seconds     seconds_in_week(604800);
-constexpr mip::Nanoseconds nanoseconds_in_week((std::uint64_t)1000000000 * (std::uint64_t)604800);
+constexpr mip::Nanoseconds nanoseconds_in_week(nanoseconds_in_second * seconds_in_week.count());
 
 // Test values
 constexpr mip::Nanoseconds invalid_nanoseconds(-1);
 constexpr mip::Seconds     invalid_seconds(-1);
 constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
+constexpr mip::Nanoseconds less_than_week(nanoseconds_in_week - nanoseconds_in_second);
+constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
 
 /** Mock objects ************************************************************************/
 
@@ -137,6 +139,25 @@ bool testNow()
     return true;
 }
 
+bool testGetTimeOfWeek()
+{
+    // Requirements:
+    // * If timestamp = 1 week ---> return 0
+    // * If timestamp < 1 week ---> return timestamp
+    // * If timestamp > 1 week ---> return time since start of week
+    mip::TimestampExperimental timestamp_equal(mip::UnixTime{}, nanoseconds_in_week);
+    mip::TimestampExperimental timestamp_less(mip::UnixTime{}, less_than_week);
+    mip::TimestampExperimental timestamp_more(mip::UnixTime{}, more_than_week);
+    
+    if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp_equal.getTimeOfWeek(), nanoseconds_in_week) ||
+        !getterTestCase("GetTimeOfWeek-equal-template", timestamp_equal.getTimeOfWeek<mip::Seconds>(), seconds_in_week))
+    {
+        return false;
+    }
+
+    return true;
+}
+
     // static std::array<mip::Nanoseconds, 3> test_values{
     //     mip::Nanoseconds(0), 
     //     mip::Nanoseconds(nanoseconds_in_week - 500), 
@@ -162,11 +183,8 @@ int main(int argc, const char* argv[])
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testManualConstructor() ||
-        !testGetTimestamp()      ||
-        !testSetTimestamp()      ||
-        !testSynchronize()       ||
-        !testNow()                )
+    if (!testManualConstructor() || !testGetTimestamp() || !testSetTimestamp() || 
+        !testSynchronize()       || !testNow()          || !testGetTimeOfWeek() )
     {
         return fail;
     }
