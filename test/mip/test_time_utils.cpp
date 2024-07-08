@@ -1,9 +1,5 @@
 #include <array>
 #include <iostream>
-#include <limits>
-#include <memory>
-#include <tuple>
-#include <typeinfo>
 
 #include <mip/utils/timestamp.hpp>
 
@@ -169,7 +165,7 @@ int main(int argc, const char* argv[])
 /**************************************************************************************/
 
 template<typename DurationActual, typename DurationExpected>
-    bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected)
+bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
@@ -190,7 +186,7 @@ template<typename DurationActual, typename DurationExpected>
 }
 
 template<typename ActualOutput, typename ExpectedOutput>
-    void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected)
+void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected)
 {
     std::cout << 
         "Failed: " << case_name << "\n" << 
