@@ -29,11 +29,15 @@ namespace mip
     
     void TimestampExperimental::setTimestamp(Nanoseconds time)
     {
+        validateInputTime(time); 
+        m_timestamp = time;
+    }
+    
+    void TimestampExperimental::validateInputTime(const Nanoseconds &time)
+    {
         if (time < Nanoseconds(0))
         {
             throw std::invalid_argument("time < 0");
         }
-        
-        m_timestamp = time;
     }
 } // namespace mip

@@ -147,6 +147,11 @@ namespace mip
     private:
         const TimeStandard &m_standard;
         Nanoseconds m_timestamp{0};
+        
+        // Throws std::invalid_argument if invalid.
+        template<typename DurationIn>
+        void validateInputTime(const DurationIn &time);
+        void validateInputTime(const Nanoseconds &time);
     };
 
 
@@ -159,18 +164,14 @@ namespace mip
     inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time) :
         m_standard(standard)
     {
-        if (time < DurationIn(0))
-        {
-            throw std::invalid_argument("time < 0");
-        }
-        
+        validateInputTime(time);
         m_timestamp = time;
     }
 
     template<typename DurationOut> 
     inline DurationOut TimestampExperimental::getTimestamp()
     {
-        return std::chrono::duration_cast<DurationOut>(m_timestamp);
+        return std::chrono::duration_cast<DurationOut>(getTimestamp());
     }
 
     template<typename DurationIn>
@@ -227,4 +228,9 @@ namespace mip
 
 //         timestamp = duration_cast<DIn>(duration_cast<Weeks>(timestamp) + DTimeSet(time));
 //     }
+    template<typename DurationIn>
+    void TimestampExperimental::validateInputTime(const DurationIn &time)
+    {
+        validateInputTime(std::chrono::duration_cast<Nanoseconds>(time));
+    }
 } // namespace mip
