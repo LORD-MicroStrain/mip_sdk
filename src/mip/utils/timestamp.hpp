@@ -58,9 +58,10 @@ namespace mip
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
 
-//         /// Returns time since the start of the current week (of the timestamp).
-//         template<typename DurationOut> DurationOut getTimeOfWeek();
-//         Nanoseconds getTimeOfWeek();
+        /// Returns raw time since the start of the timestamp's current week.
+        template<typename DurationOut>
+        DurationOut getTimeOfWeek();
+        Nanoseconds getTimeOfWeek();
 
 //         /// Returns whether two timestamps have diverged from each other.
 //         ///
@@ -179,16 +180,12 @@ namespace mip
     {
         setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
     }
-
-//     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimeOfWeek()
-//     {
-//         return duration_cast<DurationOut>(getTimeOfWeek());
-//     }
-
-//     inline std::chrono::nanoseconds TimestampExperimental::getTimeOfWeek()
-//     {
-//         return m_timestamp % Weeks(1);
-//     }
+    
+    template<typename DurationOut>
+    inline DurationOut TimestampExperimental::getTimeOfWeek()
+    {
+        return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
+    }
 
 //     template<typename DCompare, typename D1, typename D2> 
 //     inline bool TimestampExperimental::timeChanged(const D1 &timestamp1, const D2 &timestamp2)

@@ -142,15 +142,18 @@ bool testNow()
 bool testGetTimeOfWeek()
 {
     // Requirements:
-    // * If timestamp = 1 week ---> return 0
     // * If timestamp < 1 week ---> return timestamp
     // * If timestamp > 1 week ---> return time since start of week
     mip::TimestampExperimental timestamp_equal(mip::UnixTime{}, nanoseconds_in_week);
     mip::TimestampExperimental timestamp_less(mip::UnixTime{}, less_than_week);
     mip::TimestampExperimental timestamp_more(mip::UnixTime{}, more_than_week);
     
-    if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp_equal.getTimeOfWeek(), nanoseconds_in_week) ||
-        !getterTestCase("GetTimeOfWeek-equal-template", timestamp_equal.getTimeOfWeek<mip::Seconds>(), seconds_in_week))
+    if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp_equal.getTimeOfWeek(), mip::Nanoseconds(0)))
+    {
+        return false;
+    }
+
+    if (!getterTestCase("GetTimeOfWeek-equal-template", timestamp_equal.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0)))
     {
         return false;
     }

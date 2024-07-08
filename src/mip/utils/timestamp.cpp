@@ -10,11 +10,6 @@ namespace mip
         m_timestamp = mip::Nanoseconds(0);
     }
 
-    Nanoseconds TimestampExperimental::getTimestamp()
-    {
-        return m_timestamp;
-    }
-
     TimestampExperimental TimestampExperimental::Now(const TimeStandard &standard)
     {
         TimestampExperimental timestamp(standard);
@@ -26,11 +21,21 @@ namespace mip
     {
         m_timestamp = m_standard.now();
     }
+
+    Nanoseconds TimestampExperimental::getTimestamp()
+    {
+        return m_timestamp;
+    }
     
     void TimestampExperimental::setTimestamp(Nanoseconds time)
     {
         validateInputTime(time); 
         m_timestamp = time;
+    }
+
+    Nanoseconds TimestampExperimental::getTimeOfWeek()
+    {
+        return m_timestamp % Weeks(1);
     }
     
     void TimestampExperimental::validateInputTime(const Nanoseconds &time)
