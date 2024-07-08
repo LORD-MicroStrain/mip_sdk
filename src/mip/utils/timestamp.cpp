@@ -26,4 +26,14 @@ namespace mip
     {
         m_timestamp = m_standard.now();
     }
+    
+    void TimestampExperimental::setTimestamp(Nanoseconds time)
+    {
+        if (time < Nanoseconds(0))
+        {
+            throw std::invalid_argument("time < 0");
+        }
+        
+        m_timestamp = time;
+    }
 } // namespace mip

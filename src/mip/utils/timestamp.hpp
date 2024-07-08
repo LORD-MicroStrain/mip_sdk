@@ -52,6 +52,11 @@ namespace mip
         template<typename DurationOut> 
         DurationOut getTimestamp();
         Nanoseconds getTimestamp();
+        
+        // Sets raw time since epoch.
+        template<typename DurationIn>
+        void setTimestamp(DurationIn time);
+        void setTimestamp(Nanoseconds time);
 
 //         /// Returns time since the start of the current week (of the timestamp).
 //         template<typename DurationOut> DurationOut getTimeOfWeek();
@@ -166,6 +171,12 @@ namespace mip
     inline DurationOut TimestampExperimental::getTimestamp()
     {
         return std::chrono::duration_cast<DurationOut>(m_timestamp);
+    }
+
+    template<typename DurationIn>
+    inline void TimestampExperimental::setTimestamp(DurationIn time)
+    {
+        setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
     }
 
 //     template<typename DurationOut> inline DurationOut TimestampExperimental::getTimeOfWeek()
