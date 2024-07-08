@@ -25,11 +25,13 @@ void outputFailed(const char* case_name, const char* message);
 
 bool testManualTimeConstructorInvalid()
 {
-    mip::Nanoseconds negative(-1);
+    mip::Nanoseconds base(-1);
+    mip::Seconds templated(-1);
 
     try 
     {
-        mip::TimestampExperimental(mip::UnixTime(), negative);
+        mip::TimestampExperimental(mip::UnixTime(), base);
+        mip::TimestampExperimental(mip::UnixTime(), templated);
     }
     catch (const std::invalid_argument&)
     {
@@ -60,19 +62,18 @@ bool testManualTimeConstructorValid()
     return true; 
 }
 
+static std::array<mip::Nanoseconds, 3> test_values{
+    mip::Nanoseconds(0), 
+    mip::Nanoseconds(nanoseconds_in_week - 500), 
+    mip::Nanoseconds(nanoseconds_in_week + 500)
+};
+    
 bool testGetTimestamp()
 {
-    std::array<mip::Nanoseconds, 3> test_values{
-        mip::Nanoseconds(0), 
-        mip::Nanoseconds(nanoseconds_in_week - 500), 
-        mip::Nanoseconds(nanoseconds_in_week + 500)
-    };
-    
-    for (auto &value : test_values)
+    for (const mip::Nanoseconds &value : test_values)
     {
         mip::TimestampExperimental timestamp(mip::UnixTime(), value); 
        
-        auto base_actual = timestamp.getTimestamp();
         if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), value))
         {
             return false;
@@ -104,9 +105,7 @@ bool testSynchronize()
     mip::TimestampExperimental timestamp(MockUnixTime{});
     timestamp.synchronize();
 
-    mip::Nanoseconds actual = timestamp.getTimestamp();
-    mip::Nanoseconds expected = mock_sync_time;
-    if (!getterTestCase("Synchronize", actual, expected))
+    if (!getterTestCase("Synchronize", timestamp.getTimestamp(), mock_sync_time))
     {
         return false;
     }
@@ -116,7 +115,7 @@ bool testSynchronize()
 
 bool testNow()
 {
-    auto timestamp = mip::TimestampExperimental::Now(MockUnixTime());
+    mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
     
     mip::Nanoseconds actual = timestamp.getTimestamp();
     mip::Nanoseconds expected = mock_sync_time;
