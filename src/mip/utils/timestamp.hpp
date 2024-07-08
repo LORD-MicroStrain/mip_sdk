@@ -41,7 +41,7 @@ namespace mip
         template<typename DurationIn> 
         TimestampExperimental(const TimeStandard &standard, DurationIn time);
 
-        /// Time since epoch synchronized to a coordinated time standard.
+        /// Returns synchronized timestamp.
         static TimestampExperimental Now(const TimeStandard &standard);
         
         /// Synchronizes timestamp to a coordinated time standard. Does so only once (i.e.
