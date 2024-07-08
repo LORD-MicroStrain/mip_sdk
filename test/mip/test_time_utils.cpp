@@ -12,17 +12,17 @@ constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_wee
 
 /** Test case utilities *****************************************************************/
 
-template<typename DurationActual, typename DurationExpected>
-bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected);
+template<typename T1, typename T2>
+bool getterTestCase(const std::string &name, T1 actual, T2 expected);
 
 template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(const char *name, Callable test_wrapper);
 
 // Comprehensive failed message with actual vs. expected values.
-template<typename ActualOutput, typename ExpectedOutput>
-void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected);
+template<typename T1, typename T2>
+void outputCaseResults(const char* name, T1 actual, T2 expected);
 // Simple failed message
-void outputFailed(const char* case_name, const char* message);
+void outputFailed(const char* name, const char* message);
 
 /** Tests *******************************************************************************/
 
@@ -122,7 +122,6 @@ bool testSetTimestamp()
     {
         return false;
     }
-    // TODO: Refactor setter stuff into setterTestCase.
 
     return true;
 }
@@ -208,8 +207,8 @@ int main(int argc, const char* argv[])
 /*       declarations following this statement.                                       */
 /**************************************************************************************/
 
-template<typename DurationActual, typename DurationExpected>
-bool getterTestCase(std::string name, DurationActual actual, DurationExpected expected)
+template<typename T1, typename T2>
+bool getterTestCase(const std::string &name, T1 actual, T2 expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
@@ -245,18 +244,18 @@ bool invalidInputTestCase(const char *name, Callable test_wrapper)
     return false;
 }
 
-template<typename ActualOutput, typename ExpectedOutput>
-void outputCaseResults(const char* case_name, ActualOutput actual, ExpectedOutput expected)
+template<typename T1, typename T2>
+void outputCaseResults(const char* name, T1 actual, T2 expected)
 {
     std::cout << 
-        "Failed: " << case_name << "\n" << 
+        "Failed: " << name << "\n" << 
         "    --->   Actual: " << actual << "\n" <<
         "    ---> Expected: " << expected << "\n";
 }
 
-void outputFailed(const char* case_name, const char* message)
+void outputFailed(const char* name, const char* message)
 {
     std::cout <<
-        "Failed: " << case_name << "\n" <<
+        "Failed: " << name << "\n" <<
         "   ---> " << message << "\n";
 }
