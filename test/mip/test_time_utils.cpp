@@ -14,7 +14,6 @@ constexpr mip::Nanoseconds invalid_nanoseconds(-1);
 constexpr mip::Seconds     invalid_seconds(-1);
 constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
-constexpr mip::Nanoseconds less_than_week(nanoseconds_in_week - nanoseconds_in_second);
 constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
 
 /** Mock objects ************************************************************************/
@@ -141,45 +140,44 @@ bool testNow()
 
 bool testGetTimeOfWeek()
 {
-    // Requirements:
-    // * If timestamp < 1 week ---> return timestamp
-    // * If timestamp > 1 week ---> return time since start of week
-    mip::TimestampExperimental timestamp_equal(mip::UnixTime{}, nanoseconds_in_week);
-    mip::TimestampExperimental timestamp_less(mip::UnixTime{}, less_than_week);
-    mip::TimestampExperimental timestamp_more(mip::UnixTime{}, more_than_week);
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_week);
     
-    if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp_equal.getTimeOfWeek(), mip::Nanoseconds(0)))
+    if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(0)))
     {
         return false;
     }
 
-    if (!getterTestCase("GetTimeOfWeek-equal-template", timestamp_equal.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0)))
+    if (!getterTestCase("GetTimeOfWeek-equal-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0)))
+    {
+        return false;
+    }
+
+    timestamp.setTimestamp(nanoseconds_in_second);
+
+    if (!getterTestCase("GetTimeOfWeek-less-base", timestamp.getTimeOfWeek(), nanoseconds_in_second))
+    {
+        return false;
+    }
+
+    if (!getterTestCase("GetTimeOfWeek-less-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1)))
+    {
+        return false;
+    }
+
+    timestamp.setTimestamp(more_than_week);
+
+    if (!getterTestCase("GetTimeOfWeek-more-base", timestamp.getTimeOfWeek(), nanoseconds_in_second))
+    {
+        return false;
+    }
+
+    if (!getterTestCase("GetTimeOfWeek-more-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1)))
     {
         return false;
     }
 
     return true;
 }
-
-    // static std::array<mip::Nanoseconds, 3> test_values{
-    //     mip::Nanoseconds(0), 
-    //     mip::Nanoseconds(nanoseconds_in_week - 500), 
-    //     mip::Nanoseconds(nanoseconds_in_week + 500)
-    // };
-
-    //     if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
-    //         mip::Nanoseconds(value % nanoseconds_in_week)))
-    //     {
-    //         return false;
-    //     }
-
-    //     if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), 
-    //         mip::Seconds(toSeconds(value) % seconds_in_week)))
-    //     {
-    //         return false;
-    //     }
-    // }
-// }
 
 int main(int argc, const char* argv[])
 {
