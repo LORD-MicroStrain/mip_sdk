@@ -90,6 +90,51 @@ bool testGetTimestamp()
     return true;
 }
 
+bool testSetTimestamp()
+{
+    // Requirements:
+    // * Check for input duration >= 0
+    mip::TimestampExperimental timestamp(mip::UnixTime{});
+    mip::Nanoseconds expected_base(123456789);
+    mip::Seconds expected_templated(123456789);
+
+    timestamp.setTimestamp(expected_base);
+    if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), expected_base))
+    {
+        return false;
+    }
+    
+    timestamp.setTimestamp(expected_templated);
+    if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_templated))
+    {
+        return false;
+    }
+    
+    // TODO: Add invalid input cases.
+
+    return true;
+}
+
+    // static std::array<mip::Nanoseconds, 3> test_values{
+    //     mip::Nanoseconds(0), 
+    //     mip::Nanoseconds(nanoseconds_in_week - 500), 
+    //     mip::Nanoseconds(nanoseconds_in_week + 500)
+    // };
+
+    //     if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
+    //         mip::Nanoseconds(value % nanoseconds_in_week)))
+    //     {
+    //         return false;
+    //     }
+
+    //     if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), 
+    //         mip::Seconds(toSeconds(value) % seconds_in_week)))
+    //     {
+    //         return false;
+    //     }
+    // }
+// }
+
 static constexpr mip::Nanoseconds mock_sync_time(123456789);
 
 struct MockUnixTime : mip::UnixTime
@@ -126,19 +171,6 @@ bool testNow()
 
     return true;
 }
-    //     if (!getterTestCase("GetTimeOfWeek-base", timestamp.getTimeOfWeek(), 
-    //         mip::Nanoseconds(value % nanoseconds_in_week)))
-    //     {
-    //         return false;
-    //     }
-
-    //     if (!getterTestCase("GetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), 
-    //         mip::Seconds(toSeconds(value) % seconds_in_week)))
-    //     {
-    //         return false;
-    //     }
-    // }
-// }
 
 int main(int argc, const char* argv[])
 {
@@ -148,6 +180,7 @@ int main(int argc, const char* argv[])
     if (!testManualTimeConstructorInvalid() || 
         !testManualTimeConstructorValid()   ||
         !testGetTimestamp()                 ||
+        !testSetTimestamp()                 ||
         !testSynchronize()                  ||
         !testNow()                           )
     {
