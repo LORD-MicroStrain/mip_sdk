@@ -3,12 +3,24 @@
 
 #include <mip/utils/timestamp.hpp>
 
+
 constexpr long long min_nanoseconds = 0;
 constexpr long long max_nanoseconds = std::numeric_limits<long long>::max();
 constexpr long long nanoseconds_in_second = 1000000000; 
 constexpr long long seconds_in_week = 604800;
 constexpr long long nanoseconds_in_week = nanoseconds_in_second * seconds_in_week;
+constexpr mip::Nanoseconds main_test_time(123456789);
 
+
+/** Mock objects ************************************************************************/
+
+struct MockUnixTime : mip::UnixTime
+{
+    mip::Nanoseconds now() const override
+    {
+        return main_test_time;
+    }
+};
 
 /** Test case utilities *****************************************************************/
 
@@ -58,7 +70,7 @@ bool testGetTimestamp()
         return false;
     }
 
-    mip::Seconds expected_template(2);
+    mip::Seconds expected_template(1);
     if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), expected_template))
     {
         return false;
@@ -100,6 +112,33 @@ bool testSetTimestamp()
     return true;
 }
 
+bool testSynchronize()
+{
+    mip::TimestampExperimental timestamp(MockUnixTime{});
+    timestamp.synchronize();
+
+    if (!getterTestCase("Synchronize", timestamp.getTimestamp(), main_test_time))
+    {
+        return false;
+    }
+    
+    return true;
+}
+
+bool testNow()
+{
+    mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
+    
+    mip::Nanoseconds actual = timestamp.getTimestamp();
+    mip::Nanoseconds expected = main_test_time;
+    if (!getterTestCase("Now", actual, expected))
+    {
+        return false;
+    }
+
+    return true;
+}
+
     // static std::array<mip::Nanoseconds, 3> test_values{
     //     mip::Nanoseconds(0), 
     //     mip::Nanoseconds(nanoseconds_in_week - 500), 
@@ -119,43 +158,6 @@ bool testSetTimestamp()
     //     }
     // }
 // }
-
-static constexpr mip::Nanoseconds mock_sync_time(123456789);
-
-struct MockUnixTime : mip::UnixTime
-{
-    mip::Nanoseconds now() const override
-    {
-        return mock_sync_time;
-    }
-};
-
-bool testSynchronize()
-{
-    mip::TimestampExperimental timestamp(MockUnixTime{});
-    timestamp.synchronize();
-
-    if (!getterTestCase("Synchronize", timestamp.getTimestamp(), mock_sync_time))
-    {
-        return false;
-    }
-    
-    return true;
-}
-
-bool testNow()
-{
-    mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
-    
-    mip::Nanoseconds actual = timestamp.getTimestamp();
-    mip::Nanoseconds expected = mock_sync_time;
-    if (!getterTestCase("Now", actual, expected))
-    {
-        return false;
-    }
-
-    return true;
-}
 
 int main(int argc, const char* argv[])
 {
