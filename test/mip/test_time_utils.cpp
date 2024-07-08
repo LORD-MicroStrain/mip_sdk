@@ -43,26 +43,6 @@ bool testManualConstructor()
     return true;
 }
 
-// bool testManualTimeConstructorValid()
-// {
-//     mip::Nanoseconds base(1);
-//     mip::Seconds templated(1);
-    
-//     try
-//     {
-//         mip::TimestampExperimental(mip::UnixTime{});
-//         mip::TimestampExperimental(mip::UnixTime{}, base);
-//         mip::TimestampExperimental(mip::UnixTime{}, templated);
-//     }
-//     catch(const std::invalid_argument&)
-//     {
-//         outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
-//         return false;
-//     }
-
-//     return true; 
-// }
-
 static std::array<mip::Nanoseconds, 3> test_values{
     mip::Nanoseconds(0), 
     mip::Nanoseconds(nanoseconds_in_week - 500), 
