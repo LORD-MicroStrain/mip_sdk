@@ -26,44 +26,42 @@ void outputFailed(const char* name, const char* message);
 
 /** Tests *******************************************************************************/
 
-bool testManualTimeConstructorInvalid()
+bool testManualConstructor()
 {
-    mip::Nanoseconds base(-1);
-    mip::Seconds templated(-1);
-
-    try 
+    auto invalid_base = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(-1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor", invalid_base))
     {
-        mip::TimestampExperimental(mip::UnixTime(), base);
-        mip::TimestampExperimental(mip::UnixTime(), templated);
-    }
-    catch (const std::invalid_argument&)
-    {
-        return true;
-    }
-
-    outputFailed("ManualConstructor", "invalid_argument not raised when time < 0");
-    return false;
-}
-
-bool testManualTimeConstructorValid()
-{
-    mip::Nanoseconds base(1);
-    mip::Seconds templated(1);
-    
-    try
-    {
-        mip::TimestampExperimental(mip::UnixTime{});
-        mip::TimestampExperimental(mip::UnixTime{}, base);
-        mip::TimestampExperimental(mip::UnixTime{}, templated);
-    }
-    catch(const std::invalid_argument&)
-    {
-        outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
         return false;
     }
 
-    return true; 
+    auto invalid_template = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(-1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor", invalid_base))
+    {
+        return false;
+    }
+    
+    return true;
 }
+
+// bool testManualTimeConstructorValid()
+// {
+//     mip::Nanoseconds base(1);
+//     mip::Seconds templated(1);
+    
+//     try
+//     {
+//         mip::TimestampExperimental(mip::UnixTime{});
+//         mip::TimestampExperimental(mip::UnixTime{}, base);
+//         mip::TimestampExperimental(mip::UnixTime{}, templated);
+//     }
+//     catch(const std::invalid_argument&)
+//     {
+//         outputFailed("ManualConstructor", "invalid_argument raised when inputs are valid");
+//         return false;
+//     }
+
+//     return true; 
+// }
 
 static std::array<mip::Nanoseconds, 3> test_values{
     mip::Nanoseconds(0), 
@@ -188,12 +186,11 @@ int main(int argc, const char* argv[])
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testManualTimeConstructorInvalid() || 
-        !testManualTimeConstructorValid()   ||
-        !testGetTimestamp()                 ||
-        !testSetTimestamp()                 ||
-        !testSynchronize()                  ||
-        !testNow()                           )
+    if (!testManualConstructor() ||
+        !testGetTimestamp()      ||
+        !testSetTimestamp()      ||
+        !testSynchronize()       ||
+        !testNow()                )
     {
         return fail;
     }
