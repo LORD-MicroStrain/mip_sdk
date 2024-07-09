@@ -263,14 +263,73 @@ bool testSetTimeOfWeek()
     return true; 
 }
 
+bool testTimeElapsed()
+{
+    mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(0));
+    mip::TimestampExperimental lower(mip::UnixTime{}, mip::Nanoseconds(1));  // Intentionally higher!
+
+    auto invalid_base = [&higher, &lower]() -> void { higher.timeElapsed(lower); };
+    if (!invalidInputTestCase<std::invalid_argument>("TimeElapsed-invalid-base", invalid_base))
+    {
+        return false;
+    }
+
+    auto invalid_template = [&higher, &lower]() -> void { higher.timeElapsed<mip::Seconds>(lower); };
+    if (!invalidInputTestCase<std::invalid_argument>("TimeElapsed-invalid-template", invalid_template))
+    {
+        return false;
+    }
+    
+    lower.setTimestamp(mip::Nanoseconds(1));
+    if (!getterTestCase("TimeElapsed-same-base", higher.timeElapsed(lower), false))
+    {
+        return false;
+    }
+
+    higher.setTimestamp(mip::Seconds(1));
+    lower.setTimestamp(mip::Seconds(1));
+    if (!getterTestCase("TimeElapsed-same-template", higher.timeElapsed<mip::Seconds>(lower), false))
+    {
+        return false;
+    }
+
+    higher.setTimestamp(mip::Nanoseconds(2));
+    lower.setTimestamp(mip::Nanoseconds(1));
+    if (!getterTestCase("TimeElapsed-one-base", higher.timeElapsed(lower), true))
+    {
+        return false;
+    }
+
+    higher.setTimestamp(mip::Seconds(2));
+    lower.setTimestamp(mip::Seconds(1));
+    if (!getterTestCase("TimeElapsed-one-template", higher.timeElapsed<mip::Seconds>(lower), true))
+    {
+        return false;
+    }
+
+    higher.setTimestamp(mip::Nanoseconds(1200));
+    lower.setTimestamp(mip::Nanoseconds(900));
+    if (!getterTestCase("TimeElapsed-main-base", higher.timeElapsed(lower), true))
+    {
+        return false;
+    }
+
+    if (!getterTestCase("TimeElapsed-main-base", higher.timeElapsed<mip::Seconds>(lower), false))
+    {
+        return false;
+    }
+    
+    return true; 
+}
+
 int main(int argc, const char* argv[])
 {
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testManualConstructor() || !testGetTimestamp() || !testSetTimestamp()  || 
-        !testSynchronize()       || !testNow()          || !testSetWeek()       ||
-        !testGetTimeOfWeek()     || !testSetTimeOfWeek()                         )
+    if (!testManualConstructor() || !testGetTimestamp()  || !testSetTimestamp()        || 
+        !testSynchronize()       || !testNow()           || !testSetWeek()             ||
+        !testGetTimeOfWeek()     || !testSetTimeOfWeek() || !testTimeElapsed()  )
     {
         return fail;
     }
