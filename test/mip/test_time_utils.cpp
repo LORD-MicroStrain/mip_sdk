@@ -179,13 +179,57 @@ bool testGetTimeOfWeek()
     return true;
 }
 
+bool testSetTimeOfWeek()
+{
+    mip::TimestampExperimental timestamp(mip::UnixTime{}); 
+    
+    auto invalid_lower_base = [&timestamp]() -> void { timestamp.setTimeOfWeek(invalid_nanoseconds); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-lower-base", invalid_lower_base))
+    {
+        return false;
+    }
+
+    auto invalid_lower_template = [&timestamp]() -> void { timestamp.setTimeOfWeek(invalid_seconds); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-lower-template", invalid_lower_template))
+    {
+        return false;
+    }
+
+    auto invalid_upper_base = [&timestamp]() -> void { timestamp.setTimeOfWeek(nanoseconds_in_week + mip::Nanoseconds(1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-upper-base", invalid_upper_base))
+    {
+        return false;
+    }
+
+    auto invalid_upper_template = [&timestamp]() -> void { timestamp.setTimeOfWeek(seconds_in_week + mip::Seconds(1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-upper-template", invalid_upper_template))
+    {
+        return false;
+    }
+
+    timestamp.setTimeOfWeek(main_test_nanoseconds);
+    if (!getterTestCase("SetTimeOfWeek-base", timestamp.getTimeOfWeek(), main_test_nanoseconds))
+    {
+        return false;
+    }
+
+    timestamp.setTimeOfWeek(main_test_seconds);
+    if (!getterTestCase("SetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), main_test_seconds))
+    {
+        return false;
+    }
+
+    return true; 
+}
+
 int main(int argc, const char* argv[])
 {
     static constexpr short success = 0;
     static constexpr short fail = 1;
 
-    if (!testManualConstructor() || !testGetTimestamp() || !testSetTimestamp() || 
-        !testSynchronize()       || !testNow()          || !testGetTimeOfWeek() )
+    if (!testManualConstructor() || !testGetTimestamp() || !testSetTimestamp()  || 
+        !testSynchronize()       || !testNow()          || !testGetTimeOfWeek() ||
+        !testSetTimeOfWeek()                                                     )
     {
         return fail;
     }
