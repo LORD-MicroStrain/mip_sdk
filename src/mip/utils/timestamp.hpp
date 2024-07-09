@@ -59,18 +59,11 @@ namespace mip
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
 
-//         /// Sets a new week number for the timestamp.
-//         ///
-//         /// The resulting time since epoch is calculated using the old time of week and 
-//         /// the new week number.
-//         ///
-//         /// Example usage:
-//         ///     // The timestamp will now be different! It will be the result from setting 
-//         ///     // the new week number to 4.
-//         ///     Seconds timestamp = TimestampState{}.getTimestamp<Seconds>();
-//         ///     setWeek(timestamp, 4);
-//         template<typename D>
-//         void setWeek(D &timestamp, int week);
+        /// Sets a new week number for the timestamp.
+        ///
+        /// The resulting time since epoch is calculated using the old time of week and 
+        /// the new week number.
+        void setWeek(Weeks week);
 
         /// Returns raw time since the start of the timestamp's current week.
         template<typename DurationOut>
@@ -206,15 +199,6 @@ namespace mip
 //         return static_cast<T>(timestamp.count());
 //     }
     
-//     template<typename D>
-//     inline void TimestampExperimental::setWeek(D &timestamp, int week)
-//     {
-//         assert (week > 0); 
-//         if (week <= 0) return;
-
-//         timestamp = duration_cast<D>(Weeks(week) + getTimeOfWeek(timestamp));
-//     }
-
     template<typename DurationIn>
     void TimestampExperimental::validateInputTime(const DurationIn &time)
     {

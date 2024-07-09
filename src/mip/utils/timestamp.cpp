@@ -33,6 +33,20 @@ namespace mip
         m_timestamp = time;
     }
 
+    void TimestampExperimental::setWeek(Weeks week)
+    {
+        if (week < Weeks(0))         
+        {
+            throw std::invalid_argument("Week < weeks in a year.");
+        }
+        if (week > std::chrono::duration_cast<Weeks>(Years(1)))
+        {
+            throw std::invalid_argument("Week > weeks in a year.");
+        }
+        
+        m_timestamp = week + getTimeOfWeek();
+    }
+
     Nanoseconds TimestampExperimental::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);

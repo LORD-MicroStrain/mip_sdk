@@ -151,6 +151,12 @@ bool testSetWeek()
     {
         return false;
     }
+
+    auto invalid_upper = [&timestamp]() -> void { timestamp.setWeek(weeks_in_year + mip::Weeks(1)); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetWeek-invalid-upper", invalid_upper))
+    {
+        return false;
+    }
     
     timestamp.setWeek(mip::Weeks(0));
     if (!getterTestCase("SetWeek-zero", timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0)))
