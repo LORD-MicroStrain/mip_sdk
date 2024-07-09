@@ -141,6 +141,11 @@ namespace mip
         template<typename DurationIn>
         void validateInputTime(const DurationIn &time);
         void validateInputTime(const Nanoseconds &time);
+
+        // Throws std::invalid_argument if invalid.
+        template<typename DurationIn>
+        void validateInputTimeOfWeek(const DurationIn &time);
+        void validateInputTimeOfWeek(const Nanoseconds &time);
     };
 
 
@@ -215,5 +220,11 @@ namespace mip
     void TimestampExperimental::validateInputTime(const DurationIn &time)
     {
         validateInputTime(std::chrono::duration_cast<Nanoseconds>(time));
+    }
+
+    template<typename DurationIn>
+    void TimestampExperimental::validateInputTimeOfWeek(const DurationIn &time)
+    {
+        validateInputTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
     }
 } // namespace mip
