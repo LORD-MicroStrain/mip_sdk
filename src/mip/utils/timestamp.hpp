@@ -18,6 +18,7 @@ namespace mip
     // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
         
 
+    // TODO: Change Now to single standard constructor.
     // TODO: Add increment method.
     // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
@@ -57,6 +58,19 @@ namespace mip
         template<typename DurationIn>
         void setTimestamp(DurationIn time);
         void setTimestamp(Nanoseconds time);
+
+//         /// Sets a new week number for the timestamp.
+//         ///
+//         /// The resulting time since epoch is calculated using the old time of week and 
+//         /// the new week number.
+//         ///
+//         /// Example usage:
+//         ///     // The timestamp will now be different! It will be the result from setting 
+//         ///     // the new week number to 4.
+//         ///     Seconds timestamp = TimestampState{}.getTimestamp<Seconds>();
+//         ///     setWeek(timestamp, 4);
+//         template<typename D>
+//         void setWeek(D &timestamp, int week);
 
         /// Returns raw time since the start of the timestamp's current week.
         template<typename DurationOut>
@@ -100,19 +114,6 @@ namespace mip
 //         template<typename DCompare, typename D1, typename D2> 
 //         bool timeChanged(const D1 &timestamp1, const D2 &timestamp2);
 
-//         /// Sets a new week number for the timestamp.
-//         ///
-//         /// The resulting time since epoch is calculated using the old time of week and 
-//         /// the new week number.
-//         ///
-//         /// Example usage:
-//         ///     // The timestamp will now be different! It will be the result from setting 
-//         ///     // the new week number to 4.
-//         ///     Seconds timestamp = TimestampState{}.getTimestamp<Seconds>();
-//         ///     setWeek(timestamp, 4);
-//         template<typename D>
-//         void setWeek(D &timestamp, int week);
-
 //         /// Casts the timestamp duration to the given arithmetic type.
 //         ///
 //         /// Optionally performs a duration cast on the timestamp duration before casting 
@@ -141,8 +142,6 @@ namespace mip
         template<typename DurationIn>
         void validateInputTime(const DurationIn &time);
         void validateInputTime(const Nanoseconds &time);
-
-        // Throws std::invalid_argument if invalid.
         template<typename DurationIn>
         void validateInputTimeOfWeek(const DurationIn &time);
         void validateInputTimeOfWeek(const Nanoseconds &time);

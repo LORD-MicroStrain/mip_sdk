@@ -8,10 +8,12 @@
 constexpr mip::Nanoseconds nanoseconds_in_second(1000000000);
 constexpr mip::Seconds     seconds_in_week(604800);
 constexpr mip::Nanoseconds nanoseconds_in_week(nanoseconds_in_second * seconds_in_week.count());
+constexpr mip::Weeks       weeks_in_year(52);
 
 // Test values
 constexpr mip::Nanoseconds invalid_nanoseconds(-1);
 constexpr mip::Seconds     invalid_seconds(-1);
+constexpr mip::Weeks       invalid_weeks(-1);
 constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
 constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
@@ -140,6 +142,37 @@ bool testNow()
     return true;
 }
 
+bool testSetWeek()
+{
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0));
+
+    auto invalid_lower = [&timestamp]() -> void { timestamp.setWeek(invalid_weeks); };
+    if (!invalidInputTestCase<std::invalid_argument>("SetWeek-invalid-lower", invalid_lower))
+    {
+        return false;
+    }
+    
+    timestamp.setWeek(mip::Weeks(0));
+    if (!getterTestCase("SetWeek-zero", timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0)))
+    {
+        return false;
+    }
+
+    timestamp.setWeek(weeks_in_year);
+    if (!getterTestCase("SetWeek-upper", timestamp.getTimestamp<mip::Weeks>(), weeks_in_year))
+    {
+        return false;
+    }
+
+    timestamp.setWeek(mip::Weeks(30));
+    if (!getterTestCase("SetWeek-main", timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30)))
+    {
+        return false;
+    }
+    
+    return true;
+}
+
 bool testGetTimeOfWeek()
 {
     mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_week);
@@ -230,8 +263,8 @@ int main(int argc, const char* argv[])
     static constexpr short fail = 1;
 
     if (!testManualConstructor() || !testGetTimestamp() || !testSetTimestamp()  || 
-        !testSynchronize()       || !testNow()          || !testGetTimeOfWeek() ||
-        !testSetTimeOfWeek()                                                     )
+        !testSynchronize()       || !testNow()          || !testSetWeek()       ||
+        !testGetTimeOfWeek()     || !testSetTimeOfWeek()                         )
     {
         return fail;
     }
