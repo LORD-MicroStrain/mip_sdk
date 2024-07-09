@@ -35,15 +35,7 @@ namespace mip
 
     void TimestampExperimental::setWeek(Weeks week)
     {
-        if (week < Weeks(0))         
-        {
-            throw std::invalid_argument("Week < weeks in a year.");
-        }
-        if (week > std::chrono::duration_cast<Weeks>(Years(1)))
-        {
-            throw std::invalid_argument("Week > weeks in a year.");
-        }
-        
+        validateInputWeek(week);
         m_timestamp = week + getTimeOfWeek();
     }
 
@@ -75,6 +67,18 @@ namespace mip
         if (time > std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
         {
             throw std::invalid_argument("Time of week > one week.");
+        }
+    }
+    
+    void TimestampExperimental::validateInputWeek(const Weeks &week)
+    {
+        if (week < Weeks(0))         
+        {
+            throw std::invalid_argument("Week < weeks in a year.");
+        }
+        if (week > std::chrono::duration_cast<Weeks>(Years(1)))
+        {
+            throw std::invalid_argument("Week > weeks in a year.");
         }
     }
 } // namespace mip

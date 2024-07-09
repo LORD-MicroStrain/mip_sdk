@@ -138,6 +138,7 @@ namespace mip
         template<typename DurationIn>
         void validateInputTimeOfWeek(const DurationIn &time);
         void validateInputTimeOfWeek(const Nanoseconds &time);
+        void validateInputWeek(const Weeks &week);
     };
 
 
