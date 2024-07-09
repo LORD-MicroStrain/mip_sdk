@@ -38,6 +38,17 @@ namespace mip
         return m_timestamp % Weeks(1);
     }
     
+    void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
+    {
+        validateInputTime(time);
+        if (time > std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
+        {
+            throw std::invalid_argument("Time of week > one week.");
+        }
+        
+        m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
+    }
+    
     void TimestampExperimental::validateInputTime(const Nanoseconds &time)
     {
         if (time < Nanoseconds(0))

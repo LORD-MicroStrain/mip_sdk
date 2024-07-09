@@ -15,6 +15,8 @@ constexpr mip::Seconds     invalid_seconds(-1);
 constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
 constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
+constexpr mip::Nanoseconds half_week_nanoseconds(nanoseconds_in_week / 2);
+constexpr mip::Seconds     quarter_week_seconds(seconds_in_week / 4);
 
 /** Mock objects ************************************************************************/
 
@@ -207,14 +209,14 @@ bool testSetTimeOfWeek()
         return false;
     }
 
-    timestamp.setTimeOfWeek(main_test_nanoseconds);
-    if (!getterTestCase("SetTimeOfWeek-base", timestamp.getTimeOfWeek(), main_test_nanoseconds))
+    timestamp.setTimeOfWeek(half_week_nanoseconds);
+    if (!getterTestCase("SetTimeOfWeek-base", timestamp.getTimeOfWeek(), half_week_nanoseconds))
     {
         return false;
     }
 
-    timestamp.setTimeOfWeek(main_test_seconds);
-    if (!getterTestCase("SetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), main_test_seconds))
+    timestamp.setTimeOfWeek(quarter_week_seconds);
+    if (!getterTestCase("SetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds))
     {
         return false;
     }

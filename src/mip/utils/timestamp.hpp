@@ -63,6 +63,14 @@ namespace mip
         DurationOut getTimeOfWeek();
         Nanoseconds getTimeOfWeek();
 
+        /// Sets a new time of week for the timestamp.
+        ///
+        /// The resulting time since epoch is calculated using the old week number and 
+        /// the new time of week.
+        template<typename DurationIn> 
+        void setTimeOfWeek(DurationIn time);
+        void setTimeOfWeek(Nanoseconds time);
+
 //         /// Returns whether two timestamps have diverged from each other.
 //         ///
 //         /// Timestamps are considered diverged if they differ by one or more units of the 
@@ -104,26 +112,6 @@ namespace mip
 //         ///     setWeek(timestamp, 4);
 //         template<typename D>
 //         void setWeek(D &timestamp, int week);
-
-//         /// Sets a new time of week for the timestamp.
-//         ///
-//         /// The resulting time since epoch is calculated using the old week number and 
-//         /// the new time of week.
-//         ///
-//         /// Example usage:
-//         ///     // Setting time of week with the same unit duration as the timestamp.
-//         ///     Seconds timestamp = TimestampState{}.getTimestamp<Seconds>();
-//         ///     setTimeOfWeek<Seconds>(timestamp, 300);
-//         ///     // ---> The timestamp will now be different! It will be the result from 
-//         ///     //      setting the new time of week to 300 seconds. 
-//         ///
-//         ///     // Setting time of week with a different unit duration from the timestamp.
-//         ///     Nanoseconds timestamp = TimestampState{}.getTimestamp<Nanoseconds>();
-//         ///     setTimeOfWeek<Seconds>(timestamp, 6);
-//         ///     // ---> The timestamp will now be the result from setting the new time of 
-//         ///     //      week to 6 seconds (6,000,000,000 nanoseconds).
-//         template<typename DTimeSet, typename DIn> 
-//         void setTimeOfWeek(DIn &timestamp, int time);
 
 //         /// Casts the timestamp duration to the given arithmetic type.
 //         ///
@@ -187,6 +175,12 @@ namespace mip
         return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
     }
 
+    template<typename DurationIn>
+    inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
+    {
+        setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
+    }
+
 //     template<typename DCompare, typename D1, typename D2> 
 //     inline bool TimestampExperimental::timeChanged(const D1 &timestamp1, const D2 &timestamp2)
 //     {
@@ -217,14 +211,6 @@ namespace mip
 //         timestamp = duration_cast<D>(Weeks(week) + getTimeOfWeek(timestamp));
 //     }
 
-//     template<typename DTimeSet, typename DIn> 
-//     inline void TimestampExperimental::setTimeOfWeek(DIn &timestamp, int time)
-//     {
-//         assert (time > 0);
-//         if (time <= 0) return;
-
-//         timestamp = duration_cast<DIn>(duration_cast<Weeks>(timestamp) + DTimeSet(time));
-//     }
     template<typename DurationIn>
     void TimestampExperimental::validateInputTime(const DurationIn &time)
     {
