@@ -36,8 +36,8 @@ struct MockUnixTime : mip::UnixTime
 /** Test case utilities *****************************************************************/
 
 template<typename Duration1, typename Duration2>
-bool getterTestCase(const char *name, Duration1 actual, Duration2 expected);
-bool getterTestCase(const char *name, bool actual, bool expected);
+bool getterTestCase(Duration1 actual, Duration2 expected);
+bool getterTestCase(bool actual, bool expected);
 
 template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(Callable test_wrapper);
@@ -47,7 +47,7 @@ void outputRunning(const char *name);
 
 // Comprehensive failed message with actual vs. expected values.
 template<typename T1, typename T2>
-void outputCaseResults(const char* name, T1 actual, T2 expected);
+void outputCaseResults(T1 actual, T2 expected);
 
 // Simple failed message
 void outputFailed(const char* message);
@@ -70,31 +70,20 @@ bool testManualConstructorInvalidTemplate()
 
     return invalidInputTestCase<std::invalid_argument>([]() -> void
     {
-        mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds); 
+        mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds); 
     });
 }
 
-// bool testManualConstructor()
-// {
-//     auto invalid_template = []() -> void { mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds); };
-//     if (!invalidInputTestCase<std::invalid_argument>("ManualConstructor-template", invalid_base))
-//     {
-//         return false;
-//     }
-    
-//     return true;
-// }
+bool testGetTimestampZero()
+{
+    outputRunning(__FUNCTION__);
 
-// bool testGetTimestamp()
-// {
-//     mip::TimestampExperimental timestamp_zero(mip::UnixTime{});
+    constexpr mip::Nanoseconds expected(0);
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, expected); 
+    return getterTestCase(timestamp.getTimestamp(), expected);
+}
+
 //     mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
-
-//     if (!getterTestCase("GetTimestamp-zero", timestamp_zero.getTimestamp(), mip::Nanoseconds(0)))
-//     {
-//         return false;
-//     }
-    
 //     if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), nanoseconds_in_second))
 //     {
 //         return false;
@@ -366,7 +355,8 @@ int main(int argc, const char* argv[])
     try
     {
         if (!testManualConstructorInvalidBase()     ||
-            !testManualConstructorInvalidTemplate()  )
+            !testManualConstructorInvalidTemplate() ||
+            !testGetTimestampZero()                  )
         {
             return fail;
         }
@@ -388,7 +378,7 @@ int main(int argc, const char* argv[])
 /**************************************************************************************/
 
 template<typename Duration1, typename Duration2>
-bool getterTestCase(const char *name, Duration1 actual, Duration2 expected)
+bool getterTestCase(Duration1 actual, Duration2 expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
@@ -396,25 +386,25 @@ bool getterTestCase(const char *name, Duration1 actual, Duration2 expected)
     if (actual_type != expected_type)
     {
         std::cout << "Type ";
-        outputCaseResults(name, actual_type.name(), expected_type.name());
+        outputCaseResults(actual_type.name(), expected_type.name());
         return false;
     }
 
     if (actual != expected)
     {
         std::cout << "Value ";
-        outputCaseResults(name, actual.count(), expected.count());
+        outputCaseResults(actual.count(), expected.count());
         return false;
     }
     
     return true;
 }
 
-bool getterTestCase(const char *name, bool actual, bool expected)
+bool getterTestCase(bool actual, bool expected)
 {
     if (actual != expected)
     {
-        outputCaseResults(name, actual, expected);
+        outputCaseResults(actual, expected);
         return false;
     }
     
@@ -443,15 +433,17 @@ void outputRunning(const char *name)
 }
 
 template<typename T1, typename T2>
-void outputCaseResults(const char* name, T1 actual, T2 expected)
+void outputCaseResults(T1 actual, T2 expected)
 {
     std::cout << 
-        "Failed: " << name << "\n" << 
-        "    --->   Actual: " << actual << "\n" <<
-        "    ---> Expected: " << expected << "\n";
+        "Failed!\n" <<
+        "---> Actual:   " << actual << "\n" <<
+        "---> Expected: " << expected << "\n";
 }
 
 void outputFailed(const char* message)
 {
-    std::cerr << "Failed: " << message << "\n";
+    std::cerr << 
+        "Failed!\n" << 
+        "---> " << message << "\n";
 }
