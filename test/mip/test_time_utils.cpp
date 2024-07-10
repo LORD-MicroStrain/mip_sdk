@@ -1,5 +1,6 @@
-#include <array>
+#include <functional>
 #include <iostream>
+#include <unordered_map>
 
 #include <mip/utils/timestamp.hpp>
 
@@ -35,6 +36,9 @@ struct MockUnixTime : mip::UnixTime
 
 /** Test case utilities *****************************************************************/
 
+/// Call in 'main' function to run tests.
+int runTests(const std::unordered_map<const char *, std::function<bool()>> &tests);
+
 template<typename Duration1, typename Duration2>
 bool getterTestCase(Duration1 actual, Duration2 expected);
 bool getterTestCase(bool actual, bool expected);
@@ -42,7 +46,7 @@ bool getterTestCase(bool actual, bool expected);
 template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(Callable test_wrapper);
 
-// Pass __FUNCTION__ macro to output name of running test.
+// Outputs name of running test.
 void outputRunning(const char *name);
 
 // Comprehensive failed message with actual vs. expected values.
@@ -53,26 +57,6 @@ void outputCaseResults(T1 actual, T2 expected);
 void outputFailed(const char* message);
 
 /** Tests *******************************************************************************/
-
-bool testManualConstructorInvalidBase()
-{
-    outputRunning(__FUNCTION__);
-
-    return invalidInputTestCase<std::invalid_argument>([]() -> void
-    {
-        mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds); 
-    });
-}
-
-bool testManualConstructorInvalidTemplate()
-{
-    outputRunning(__FUNCTION__);
-
-    return invalidInputTestCase<std::invalid_argument>([]() -> void
-    {
-        mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds); 
-    });
-}
 
 bool testGetTimestampZero()
 {
@@ -98,8 +82,8 @@ bool testGetTimestampTemplate()
     return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
 }
 
-// bool testSetTimestamp()
-// {
+bool testSetTimestampInvalidBase()
+{
 //     mip::TimestampExperimental timestamp(mip::UnixTime{});
 
 //     auto invalid_base = [&timestamp]() -> void { timestamp.setTimestamp(invalid_nanoseconds); };
@@ -107,19 +91,39 @@ bool testGetTimestampTemplate()
 //     {
 //         return false;
 //     }
+    outputRunning(__FUNCTION__);
+    
+    return false;
+}
 
+bool testSetTimestampInvalidTemplate()
+{
 //     auto invalid_templated = [&timestamp]() -> void { timestamp.setTimestamp(invalid_seconds); };
 //     if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-template", invalid_templated))
 //     {
 //         return false;
 //     }
 
+    outputRunning(__FUNCTION__);
+    
+    return false;
+}
+
+bool testSetTimestampBase()
+{
 //     timestamp.setTimestamp(main_test_nanoseconds);
 //     if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), main_test_nanoseconds))
 //     {
 //         return false;
 //     }
     
+    outputRunning(__FUNCTION__);
+    
+    return false;
+}
+
+bool testSetTimestampTemplate()
+{
 //     timestamp.setTimestamp(main_test_seconds);
 //     if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), main_test_seconds))
 //     {
@@ -128,6 +132,9 @@ bool testGetTimestampTemplate()
 
 //     return true;
 // }
+
+    return false; 
+}
 
 // bool testSynchronize()
 // {
@@ -353,15 +360,44 @@ bool testGetTimestampTemplate()
 
 int main(int argc, const char* argv[])
 {
+    std::unordered_map<const char *, std::function<bool()>> tests;
+
+    tests["ManualConstructorInvalidBase"] = []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds);
+        });
+    };
+
+    tests["ManualConstructorInvalidTemplate"] = []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds);
+        });
+    };
+
+    return runTests(tests);
+}
+
+
+/**************************************************************************************/
+/* NOTE: The following are definitions for all declarations above. There are no new   */
+/*       declarations following this statement.                                       */
+/**************************************************************************************/
+
+int runTests(const std::unordered_map<const char *, std::function<bool()>> &tests)
+{
     try
     {
-        if (!testManualConstructorInvalidBase()     ||
-            !testManualConstructorInvalidTemplate() ||
-            !testGetTimestampZero()                 ||
-            !testGetTimestampBase()                 ||
-            !testGetTimestampTemplate()              )
+        for (auto const &test : tests)
         {
-            return fail;
+            outputRunning(test.first); // test name
+            if (!test.second())        // test callable
+            {
+                return fail;
+            }
         }
     }
     catch(const std::exception& e)
@@ -373,12 +409,6 @@ int main(int argc, const char* argv[])
     
     return success;
 }
-
-
-/**************************************************************************************/
-/* NOTE: The following are definitions for all declarations above. There are no new   */
-/*       declarations following this statement.                                       */
-/**************************************************************************************/
 
 template<typename Duration1, typename Duration2>
 bool getterTestCase(Duration1 actual, Duration2 expected)
