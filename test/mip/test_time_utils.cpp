@@ -32,8 +32,8 @@ struct MockUnixTime : mip::UnixTime
 
 /** Test case utilities *****************************************************************/
 
-template<typename T1, typename T2>
-bool getterTestCase(const std::string &name, T1 actual, T2 expected);
+template<typename Duration1, typename Duration2>
+bool getterTestCase(const char *name, Duration1 actual, Duration2 expected);
 bool getterTestCase(const char *name, bool actual, bool expected);
 
 template<typename ExpectedException, typename Callable>
@@ -361,21 +361,23 @@ int main(int argc, const char* argv[])
 /*       declarations following this statement.                                       */
 /**************************************************************************************/
 
-template<typename T1, typename T2>
-bool getterTestCase(const std::string &name, T1 actual, T2 expected)
+template<typename Duration1, typename Duration2>
+bool getterTestCase(const char *name, Duration1 actual, Duration2 expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
     
     if (actual_type != expected_type)
     {
-        outputCaseResults((name + "-type").c_str(), actual_type.name(), expected_type.name());
+        std::cout << "Type ";
+        outputCaseResults(name, actual_type.name(), expected_type.name());
         return false;
     }
 
     if (actual != expected)
     {
-        outputCaseResults((name + "-value").c_str(), actual.count(), expected.count());
+        std::cout << "Value ";
+        outputCaseResults(name, actual.count(), expected.count());
         return false;
     }
     
