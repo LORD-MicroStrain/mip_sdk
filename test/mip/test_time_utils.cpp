@@ -34,6 +34,7 @@ struct MockUnixTime : mip::UnixTime
 
 template<typename T1, typename T2>
 bool getterTestCase(const std::string &name, T1 actual, T2 expected);
+bool getterTestCase(const char *name, bool actual, bool expected);
 
 template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(const char *name, Callable test_wrapper);
@@ -265,60 +266,77 @@ bool testSetTimeOfWeek()
 
 bool testTimeElapsed()
 {
+    std::string current_test{""};
+try {
     mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(0));
     mip::TimestampExperimental lower(mip::UnixTime{}, mip::Nanoseconds(1));  // Intentionally higher!
 
+    current_test = "TimeElapsed-invalid-base";
     auto invalid_base = [&higher, &lower]() -> void { higher.timeElapsed(lower); };
-    if (!invalidInputTestCase<std::invalid_argument>("TimeElapsed-invalid-base", invalid_base))
+    if (!invalidInputTestCase<std::invalid_argument>(current_test.c_str(), invalid_base))
     {
         return false;
     }
 
+    current_test = "TimeElapsed-invalid-template";
     auto invalid_template = [&higher, &lower]() -> void { higher.timeElapsed<mip::Seconds>(lower); };
-    if (!invalidInputTestCase<std::invalid_argument>("TimeElapsed-invalid-template", invalid_template))
+    if (!invalidInputTestCase<std::invalid_argument>(current_test.c_str(), invalid_template))
     {
         return false;
     }
     
+    current_test = "TimeElapsed-same-base";
     lower.setTimestamp(mip::Nanoseconds(1));
-    if (!getterTestCase("TimeElapsed-same-base", higher.timeElapsed(lower), false))
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), false))
     {
         return false;
     }
 
+    current_test = "TimeElapsed-same-template";
     higher.setTimestamp(mip::Seconds(1));
     lower.setTimestamp(mip::Seconds(1));
-    if (!getterTestCase("TimeElapsed-same-template", higher.timeElapsed<mip::Seconds>(lower), false))
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), false))
     {
         return false;
     }
 
+    current_test = "TimeElapsed-one-base";
     higher.setTimestamp(mip::Nanoseconds(2));
     lower.setTimestamp(mip::Nanoseconds(1));
-    if (!getterTestCase("TimeElapsed-one-base", higher.timeElapsed(lower), true))
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), true))
     {
         return false;
     }
 
+    current_test = "TimeElapsed-one-template";
     higher.setTimestamp(mip::Seconds(2));
     lower.setTimestamp(mip::Seconds(1));
-    if (!getterTestCase("TimeElapsed-one-template", higher.timeElapsed<mip::Seconds>(lower), true))
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), true))
     {
         return false;
     }
 
-    higher.setTimestamp(mip::Nanoseconds(1200));
-    lower.setTimestamp(mip::Nanoseconds(900));
-    if (!getterTestCase("TimeElapsed-main-base", higher.timeElapsed(lower), true))
+    current_test = "TimeElapsed-main-base";
+    higher.setTimestamp(nanoseconds_in_second + mip::Nanoseconds(1));
+    lower.setTimestamp(nanoseconds_in_second);
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), true))
     {
         return false;
     }
 
-    if (!getterTestCase("TimeElapsed-main-base", higher.timeElapsed<mip::Seconds>(lower), false))
+    current_test = "TimeElapsed-main-base";
+    if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), false))
     {
         return false;
     }
-    
+}
+catch (std::exception &e)
+{
+    std::cerr << "Unexpected exception occurred: " << "\n";
+    std::cerr << current_test.c_str() << " ---> " << e.what() << "\n";    
+    return false;
+}
+
     return true; 
 }
 
@@ -358,6 +376,17 @@ bool getterTestCase(const std::string &name, T1 actual, T2 expected)
     if (actual != expected)
     {
         outputCaseResults((name + "-value").c_str(), actual.count(), expected.count());
+        return false;
+    }
+    
+    return true;
+}
+
+bool getterTestCase(const char *name, bool actual, bool expected)
+{
+    if (actual != expected)
+    {
+        outputCaseResults(name, actual, expected);
         return false;
     }
     

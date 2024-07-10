@@ -22,7 +22,7 @@ namespace mip
         m_timestamp = m_standard.now();
     }
 
-    Nanoseconds TimestampExperimental::getTimestamp()
+    Nanoseconds TimestampExperimental::getTimestamp() const
     {
         return m_timestamp;
     }
@@ -62,7 +62,7 @@ namespace mip
     {
         if (time < Nanoseconds(0))
         {
-            throw std::invalid_argument("Time of week < one week");
+            throw std::invalid_argument("Time of week < one week.");
         }
         if (time > std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
         {

@@ -51,8 +51,8 @@ namespace mip
 
         /// Returns raw time since epoch.
         template<typename DurationOut> 
-        DurationOut getTimestamp();
-        Nanoseconds getTimestamp();
+        DurationOut getTimestamp() const;
+        Nanoseconds getTimestamp() const;
         
         // Sets raw time since epoch.
         template<typename DurationIn>
@@ -77,11 +77,15 @@ namespace mip
         template<typename DurationIn> 
         void setTimeOfWeek(DurationIn time);
         void setTimeOfWeek(Nanoseconds time);
+        
+        // TODO: Update documentation.
+        /// Returns whether the timestamp has diverged since a reference timestamp.
+        ///
+        /// Timestamps are considered diverged if they differ by one or more units of the 
+        /// comparison duration.
+        template<typename DurationElapsed = Nanoseconds>
+        bool timeElapsed(const TimestampExperimental &reference);
 
-//         /// Returns whether two timestamps have diverged from each other.
-//         ///
-//         /// Timestamps are considered diverged if they differ by one or more units of the 
-//         /// comparison duration.
 //         /// 
 //         /// Example usage:
 //         ///     // Timestamps are different by one second.
@@ -156,7 +160,7 @@ namespace mip
     }
 
     template<typename DurationOut> 
-    inline DurationOut TimestampExperimental::getTimestamp()
+    inline DurationOut TimestampExperimental::getTimestamp() const
     {
         return std::chrono::duration_cast<DurationOut>(getTimestamp());
     }
@@ -177,6 +181,18 @@ namespace mip
     inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
     {
         setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
+    }
+
+    template<typename DurationElapsed>
+    inline bool TimestampExperimental::timeElapsed(const TimestampExperimental &reference)
+    {
+        const Nanoseconds m_reference = reference.getTimestamp();
+        if (m_timestamp < m_reference)
+        {
+            throw std::invalid_argument("Timestamp < reference timestamp.");
+        }
+        
+        return m_timestamp - m_reference >= DurationElapsed(1);
     }
 
 //     template<typename DCompare, typename D1, typename D2> 
