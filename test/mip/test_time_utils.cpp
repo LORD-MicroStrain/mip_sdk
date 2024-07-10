@@ -70,7 +70,7 @@ bool testManualConstructorInvalidTemplate()
 
     return invalidInputTestCase<std::invalid_argument>([]() -> void
     {
-        mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds); 
+        mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds); 
     });
 }
 
@@ -78,24 +78,25 @@ bool testGetTimestampZero()
 {
     outputRunning(__FUNCTION__);
 
-    constexpr mip::Nanoseconds expected(0);
-    mip::TimestampExperimental timestamp(mip::UnixTime{}, expected); 
-    return getterTestCase(timestamp.getTimestamp(), expected);
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0)); 
+    return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
 }
 
-//     mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
-//     if (!getterTestCase("GetTimestamp-base", timestamp.getTimestamp(), nanoseconds_in_second))
-//     {
-//         return false;
-//     }
+bool testGetTimestampBase()
+{
+    outputRunning(__FUNCTION__);
 
-//     if (!getterTestCase("GetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1)))
-//     {
-//         return false;
-//     }
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+    return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
+}
 
-//     return true;
-// }
+bool testGetTimestampTemplate()
+{
+    outputRunning(__FUNCTION__);
+
+    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+    return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
+}
 
 // bool testSetTimestamp()
 // {
@@ -356,7 +357,9 @@ int main(int argc, const char* argv[])
     {
         if (!testManualConstructorInvalidBase()     ||
             !testManualConstructorInvalidTemplate() ||
-            !testGetTimestampZero()                  )
+            !testGetTimestampZero()                 ||
+            !testGetTimestampBase()                 ||
+            !testGetTimestampTemplate()              )
         {
             return fail;
         }
