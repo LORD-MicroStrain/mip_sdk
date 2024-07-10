@@ -195,15 +195,6 @@ namespace mip
         return m_timestamp - m_reference >= DurationElapsed(1);
     }
 
-//     template<typename DCompare, typename D1, typename D2> 
-//     inline bool TimestampExperimental::timeChanged(const D1 &timestamp1, const D2 &timestamp2)
-//     {
-//         if (timestamp1 >= timestamp2)
-//             return (timestamp1 - timestamp2 >= DCompare{1}) ? true : false;
-
-//         return (timestamp2 - timestamp1 >= DCompare{1}) ? true : false;
-//     }
-
 //     template<typename T, typename DCast, typename DIn> 
 //     inline T TimestampExperimental::castTime(const DIn &timestamp)
 //     {

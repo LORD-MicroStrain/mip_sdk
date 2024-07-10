@@ -286,7 +286,7 @@ try {
     }
     
     current_test = "TimeElapsed-same-base";
-    lower.setTimestamp(mip::Nanoseconds(1));
+    higher.setTimestamp(mip::Nanoseconds(1));
     if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), false))
     {
         return false;
