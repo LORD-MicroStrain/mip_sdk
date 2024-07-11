@@ -170,6 +170,11 @@ namespace mip
     template<typename DurationOut>
     inline DurationOut TimestampExperimental::getTimeOfWeek()
     {
+        if (DurationOut(1) >= Weeks(1))
+        {
+            throw std::invalid_argument("Duration >= one week.");            
+        }
+
         return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
     }
 
