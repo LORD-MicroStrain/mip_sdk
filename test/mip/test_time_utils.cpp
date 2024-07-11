@@ -88,6 +88,11 @@ mip::TimestampExperimental setupTimestampOneSecond()
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
 }
 
+mip::TimestampExperimental setupTimestampOneSecondPlusNanosecond()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1)); 
+}
+
 mip::TimestampExperimental setupTimestampOneWeek()
 {
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Weeks(1)); 
@@ -378,7 +383,7 @@ int main(int argc, const char* argv[])
         });
     });
 
-    suite.addTest("TimeElapsedInvalidBase", []() -> bool
+    suite.addTest("TimeElapsedInvalidTemplate", []() -> bool
     {
         auto higher = setupTimestampZero();
         auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
@@ -432,15 +437,82 @@ int main(int argc, const char* argv[])
         return success;
     });
 
-    suite.addTest("TimeElapsedRelativeCheck", []() -> bool
+    suite.addTest("TimeChangedInvalidBase", []() -> bool
     {
-        // Will make more sense when timeChanged is added. Used to differentiate between the two.
-        // Should be false here when comparing on seconds (since a full second doesn't elapse).
-        // Should be true for timeChanged though, since they will be in different second intervals.
-        mip::TimestampExperimental higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
+        
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeChanged(lower);
+        });
+    });
+
+    suite.addTest("TimeChangedInvalidTemplate", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
+        
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeChanged<mip::Seconds>(lower);
+        });
+    });
+
+    suite.addTest("TimeChangedSameBase", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneNanosecond();
+        auto timestamp2 = setupTimestampOneNanosecond();
+        
+        return getterTestCase(timestamp1.timeChanged(timestamp2), false);
+    });
+
+    suite.addTest("TimeChangedSameTemplate", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneSecond();
+        auto timestamp2 = setupTimestampOneSecond();
+        
+        return getterTestCase(timestamp1.timeChanged<mip::Seconds>(timestamp2), false);
+    });
+
+    suite.addTest("TimeChangedOneBase", []() -> bool
+    {
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
+        auto lower = setupTimestampOneNanosecond();
+        
+        return getterTestCase(higher.timeChanged(lower), true);
+    });
+
+    suite.addTest("TimeChangedOneTemplate", []() -> bool
+    {
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
+        auto lower = setupTimestampOneSecond();
+        
+        return getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
+    });
+
+    suite.addTest("TimeChangedArbitrary", []() -> bool
+    {
+        auto highet = setupTimestampOneSecondPlusNanosecond();
+        auto lower = setupTimestampOneSecond();
+        
+        bool success = true;
+        success &= getterTestCase(higher.timeChanged(lower), true);
+        success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), false);
+        return success;
+    });
+
+    suite.addTest("TimeElapsedChangedDifferentiation", []() -> bool
+    {
+        auto higher = setupTimestampOneSecondPlusNanosecond();
         mip::TimestampExperimental lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
         
-        return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+        // Should be false for timeElapsed() (since a full second doesn't elapse).
+        // Should be true for timeChanged() though, since they are in different second intervals.
+        bool success = true;
+        success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+        success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
+        return success;
     });
 
     return suite.run();

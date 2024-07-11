@@ -82,6 +82,12 @@ namespace mip
         template<typename DurationElapsed = Nanoseconds>
         bool timeElapsed(const TimestampExperimental &reference);
 
+        // TODO: Update documentation.
+        /// Returns whether the timestamp has entered a new duration interval since a 
+        /// reference timestamp.
+        // template<typename DurationElapsed = Nanoseconds>
+        // bool timeChanged(const TimestampExperimental &reference);
+
 //         /// 
 //         /// Example usage:
 //         ///     // Timestamps are different by one second.
