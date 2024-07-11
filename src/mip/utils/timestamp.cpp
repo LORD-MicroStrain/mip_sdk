@@ -7,16 +7,9 @@ namespace mip
     TimestampExperimental::TimestampExperimental(const TimeStandard &standard) :
         m_standard(standard)
     {
-        m_timestamp = mip::Nanoseconds(0);
+        synchronize();
     }
 
-    TimestampExperimental TimestampExperimental::Now(const TimeStandard &standard)
-    {
-        TimestampExperimental timestamp(standard);
-        timestamp.synchronize();
-        return timestamp;
-    }
-    
     void TimestampExperimental::synchronize()
     {
         m_timestamp = m_standard.now();

@@ -34,17 +34,13 @@ namespace mip
     public:
         TimestampExperimental() = delete;
         
-        // TODO: Change Now to single standard constructor.
-        /// Defaults time since epoch to zero nanoseconds.
+        /// Calls synchronize().
         TimestampExperimental(const TimeStandard &standard);
 
-        /// Manually set time since epoch.
+        /// Manually sets time since epoch.
         template<typename DurationIn> 
         TimestampExperimental(const TimeStandard &standard, DurationIn time);
 
-        /// Returns synchronized timestamp.
-        static TimestampExperimental Now(const TimeStandard &standard);
-        
         /// Synchronizes timestamp to a coordinated time standard. Continuously call this 
         /// method to keep the timestamp up to date with the time standard.
         void synchronize();

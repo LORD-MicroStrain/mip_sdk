@@ -24,16 +24,6 @@ constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_s
 constexpr mip::Nanoseconds half_week_nanoseconds(nanoseconds_in_week / 2);
 constexpr mip::Seconds     quarter_week_seconds(seconds_in_week / 4);
 
-/** Mock objects ************************************************************************/
-
-struct MockUnixTime : mip::UnixTime
-{
-    mip::Nanoseconds now() const override
-    {
-        return main_test_nanoseconds;
-    }
-};
-
 /** Test case utilities *****************************************************************/
 
 template<typename Duration1, typename Duration2>
@@ -69,6 +59,16 @@ private:
     std::vector<std::tuple<const char *, std::function<bool()>>> tests; 
 };
 
+/** Mocks *******************************************************************************/
+
+struct MockUnixTime : mip::UnixTime
+{
+    mip::Nanoseconds now() const override
+    {
+        return main_test_nanoseconds;
+    }
+};
+
 /** Setup *******************************************************************************/
 
 mip::TimestampExperimental setupTimestampZero()
@@ -79,6 +79,11 @@ mip::TimestampExperimental setupTimestampZero()
 mip::TimestampExperimental setupTimestampOneSecond()
 {
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
+}
+
+mip::TimestampExperimental setupTimestampMockUnix()
+{
+    return mip::TimestampExperimental(MockUnixTime{}, mip::Nanoseconds(0)); 
 }
 
 /** Tests *******************************************************************************/
@@ -124,6 +129,7 @@ int main(int argc, const char* argv[])
     suite.addTest("SetTimestampInvalidBase", []() -> bool
     {
         auto timestamp = setupTimestampZero();
+
         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
         {
             timestamp.setTimestamp(invalid_nanoseconds);
@@ -133,6 +139,7 @@ int main(int argc, const char* argv[])
     suite.addTest("SetTimestampInvalidTemplate", []() -> bool
     {
         auto timestamp = setupTimestampZero();
+
         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
         {
             timestamp.setTimestamp(invalid_seconds);
@@ -154,34 +161,23 @@ int main(int argc, const char* argv[])
         timestamp.setTimestamp<mip::Seconds>(main_test_seconds);
         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), main_test_seconds);
     });
+    
+    suite.addTest("TestSynchronize", []() -> bool
+    {
+        auto timestamp = setupTimestampMockUnix();
+        
+        timestamp.synchronize();
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
+
+    suite.addTest("TestSynchronizeConstructor", []() -> bool
+    {
+        mip::TimestampExperimental timestamp(MockUnixTime{});
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
 
     return suite.run();
 }
-
-// bool testSynchronize()
-// {
-//     mip::TimestampExperimental timestamp(MockUnixTime{});
-
-//     timestamp.synchronize();
-//     if (!getterTestCase("Synchronize", timestamp.getTimestamp(), main_test_nanoseconds))
-//     {
-//         return false;
-//     }
-    
-//     return true;
-// }
-
-// bool testNow()
-// {
-//     mip::TimestampExperimental timestamp = mip::TimestampExperimental::Now(MockUnixTime());
-    
-//     if (!getterTestCase("Now", timestamp.getTimestamp(), main_test_nanoseconds))
-//     {
-//         return false;
-//     }
-
-//     return true;
-// }
 
 // bool testSetWeek()
 // {
