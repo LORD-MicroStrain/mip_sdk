@@ -56,30 +56,84 @@ void outputCaseResults(T1 actual, T2 expected);
 // Simple failed message
 void outputFailed(const char* message);
 
+class TestSuite
+{
+public:
+    TestSuite() {}
+
+    void addTest(const char *name, std::function<bool()> test)
+    {
+        tests[name] = test;
+    }
+
+    int run()
+    {
+        try
+        {
+            for (auto const &test : tests)
+            {
+                outputRunning(test.first); // test name
+                if (!test.second())        // test callable
+                {
+                    return fail;
+                }
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "Unexpected exception occurred: \n";
+            std::cerr << e.what() << '\n';
+            return fail;
+        }
+    
+        return success;
+    }   
+
+private:
+    std::unordered_map<const char *, std::function<bool()>> tests;
+};
+
 /** Tests *******************************************************************************/
 
-bool testGetTimestampZero()
+int main(int argc, const char* argv[])
 {
-    outputRunning(__FUNCTION__);
+    TestSuite suite{};
 
-    mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0)); 
-    return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
-}
+    suite.addTest("ManualConstructorInvalidBase", []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds);
+        });
+    });
 
-bool testGetTimestampBase()
-{
-    outputRunning(__FUNCTION__);
+    suite.addTest("ManualConstructorInvalidTemplate", []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds);
+        });
+    });
 
-    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
-    return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
-}
+    suite.addTest("GetTimestampZero", []() -> bool
+    {
+        mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0)); 
+        return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
+    });
 
-bool testGetTimestampTemplate()
-{
-    outputRunning(__FUNCTION__);
+    suite.addTest("GetTimestampBase", []() -> bool
+    {
+        mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+        return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
+    });
 
-    mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
-    return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
+    suite.addTest("GetTimestampTemplate", []() -> bool
+    {
+        mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+        return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
+    });
+
+    return suite.run();
 }
 
 bool testSetTimestampInvalidBase()
@@ -357,29 +411,6 @@ bool testSetTimestampTemplate()
 
 //     return true; 
 // }
-
-int main(int argc, const char* argv[])
-{
-    std::unordered_map<const char *, std::function<bool()>> tests;
-
-    tests["ManualConstructorInvalidBase"] = []() -> bool
-    {
-        return invalidInputTestCase<std::invalid_argument>([]() -> void 
-        {
-            mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds);
-        });
-    };
-
-    tests["ManualConstructorInvalidTemplate"] = []() -> bool
-    {
-        return invalidInputTestCase<std::invalid_argument>([]() -> void 
-        {
-            mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds);
-        });
-    };
-
-    return runTests(tests);
-}
 
 
 /**************************************************************************************/
