@@ -432,6 +432,17 @@ int main(int argc, const char* argv[])
         return success;
     });
 
+    suite.addTest("TimeElapsedRelativeCheck", []() -> bool
+    {
+        // Will make more sense when timeChanged is added. Used to differentiate between the two.
+        // Should be false here when comparing on seconds (since a full second doesn't elapse).
+        // Should be true for timeChanged though, since they will be in different second intervals.
+        mip::TimestampExperimental higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
+        mip::TimestampExperimental lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
+        
+        return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+    });
+
     return suite.run();
 }
 
