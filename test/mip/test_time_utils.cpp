@@ -78,6 +78,11 @@ mip::TimestampExperimental setupTimestampZero()
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(0)); 
 }
 
+mip::TimestampExperimental setupTimestampOneNanosecond()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(1)); 
+}
+
 mip::TimestampExperimental setupTimestampOneSecond()
 {
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
@@ -362,84 +367,73 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds);
     });
 
+    suite.addTest("TimeElapsedInvalidBase", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
+        
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeElapsed(lower);
+        });
+    });
+
+    suite.addTest("TimeElapsedInvalidBase", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
+        
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeElapsed<mip::Seconds>(lower);
+        });
+    });
+
+    suite.addTest("TimeElapsedSameBase", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneNanosecond();
+        auto timestamp2 = setupTimestampOneNanosecond();
+        
+        return getterTestCase(timestamp1.timeElapsed(timestamp2), false);
+    });
+
+    suite.addTest("TimeElapsedSameTemplate", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneSecond();
+        auto timestamp2 = setupTimestampOneSecond();
+        
+        return getterTestCase(timestamp1.timeElapsed<mip::Seconds>(timestamp2), false);
+    });
+
+    suite.addTest("TimeElapsedOneBase", []() -> bool
+    {
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
+        auto lower = setupTimestampOneNanosecond();
+        
+        return getterTestCase(higher.timeElapsed(lower), true);
+    });
+
+    suite.addTest("TimeElapsedOneTemplate", []() -> bool
+    {
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
+        auto lower = setupTimestampOneSecond();
+        
+        return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), true);
+    });
+
+    suite.addTest("TimeElapsedArbitrary", []() -> bool
+    {
+        mip::TimestampExperimental higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
+        auto lower = setupTimestampOneSecond();
+        
+        bool success = true;
+        success &= getterTestCase(higher.timeElapsed(lower), true);
+        success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+        return success;
+    });
+
     return suite.run();
 }
-
-// bool testTimeElapsed()
-// {
-//     std::string current_test{""};
-// try {
-//     mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(0));
-//     mip::TimestampExperimental lower(mip::UnixTime{}, mip::Nanoseconds(1));  // Intentionally higher!
-
-//     current_test = "TimeElapsed-invalid-base";
-//     auto invalid_base = [&higher, &lower]() -> void { higher.timeElapsed(lower); };
-//     if (!invalidInputTestCase<std::invalid_argument>(current_test.c_str(), invalid_base))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-invalid-template";
-//     auto invalid_template = [&higher, &lower]() -> void { higher.timeElapsed<mip::Seconds>(lower); };
-//     if (!invalidInputTestCase<std::invalid_argument>(current_test.c_str(), invalid_template))
-//     {
-//         return false;
-//     }
-    
-//     current_test = "TimeElapsed-same-base";
-//     higher.setTimestamp(mip::Nanoseconds(1));
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), false))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-same-template";
-//     higher.setTimestamp(mip::Seconds(1));
-//     lower.setTimestamp(mip::Seconds(1));
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), false))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-one-base";
-//     higher.setTimestamp(mip::Nanoseconds(2));
-//     lower.setTimestamp(mip::Nanoseconds(1));
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), true))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-one-template";
-//     higher.setTimestamp(mip::Seconds(2));
-//     lower.setTimestamp(mip::Seconds(1));
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), true))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-main-base";
-//     higher.setTimestamp(nanoseconds_in_second + mip::Nanoseconds(1));
-//     lower.setTimestamp(nanoseconds_in_second);
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed(lower), true))
-//     {
-//         return false;
-//     }
-
-//     current_test = "TimeElapsed-main-base";
-//     if (!getterTestCase(current_test.c_str(), higher.timeElapsed<mip::Seconds>(lower), false))
-//     {
-//         return false;
-//     }
-// }
-// catch (std::exception &e)
-// {
-//     std::cerr << "Unexpected exception occurred: " << "\n";
-//     std::cerr << current_test.c_str() << " ---> " << e.what() << "\n";    
-//     return false;
-// }
-
-//     return true; 
-// }
 
 
 /**************************************************************************************/
