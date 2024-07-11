@@ -36,9 +36,6 @@ struct MockUnixTime : mip::UnixTime
 
 /** Test case utilities *****************************************************************/
 
-/// Call in 'main' function to run tests.
-int runTests(const std::unordered_map<const char *, std::function<bool()>> &tests);
-
 template<typename Duration1, typename Duration2>
 bool getterTestCase(Duration1 actual, Duration2 expected);
 bool getterTestCase(bool actual, bool expected);
@@ -56,41 +53,21 @@ void outputCaseResults(T1 actual, T2 expected);
 // Simple failed message
 void outputFailed(const char* message);
 
+// TODO: Move to test utilities file.
 class TestSuite
 {
 public:
     TestSuite() {}
 
-    void addTest(const char *name, std::function<bool()> test)
-    {
-        tests[name] = test;
-    }
+    /// Test should return true if succeeded, or false if failed.
+    void addTest(const char *name, std::function<bool()> test);
 
-    int run()
-    {
-        try
-        {
-            for (auto const &test : tests)
-            {
-                outputRunning(test.first); // test name
-                if (!test.second())        // test callable
-                {
-                    return fail;
-                }
-            }
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << "Unexpected exception occurred: \n";
-            std::cerr << e.what() << '\n';
-            return fail;
-        }
-    
-        return success;
-    }   
+    /// Call at the end of the 'main' function.
+    int run();
 
 private:
-    std::unordered_map<const char *, std::function<bool()>> tests;
+    // std::unordered_map<const char *, std::function<bool()>> tests;
+    std::vector<std::tuple<const char *, std::function<bool()>>> tests; 
 };
 
 /** Tests *******************************************************************************/
@@ -418,14 +395,22 @@ bool testSetTimestampTemplate()
 /*       declarations following this statement.                                       */
 /**************************************************************************************/
 
-int runTests(const std::unordered_map<const char *, std::function<bool()>> &tests)
+void TestSuite::addTest(const char *name, std::function<bool()> test)
+{
+    tests.push_back(std::make_tuple(name, test));
+}
+
+int TestSuite::run()
 {
     try
     {
         for (auto const &test : tests)
         {
-            outputRunning(test.first); // test name
-            if (!test.second())        // test callable
+            const char *name = std::get<0>(test);
+            std::function<bool()> test_callable = std::get<1>(test);
+
+            outputRunning(name);
+            if (!test_callable())
             {
                 return fail;
             }
@@ -437,9 +422,9 @@ int runTests(const std::unordered_map<const char *, std::function<bool()>> &test
         std::cerr << e.what() << '\n';
         return fail;
     }
-    
+
     return success;
-}
+}   
 
 template<typename Duration1, typename Duration2>
 bool getterTestCase(Duration1 actual, Duration2 expected)
