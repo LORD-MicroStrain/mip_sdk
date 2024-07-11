@@ -23,6 +23,7 @@ constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
 constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
 constexpr mip::Nanoseconds half_week_nanoseconds(nanoseconds_in_week / 2);
+constexpr mip::Seconds     half_week_seconds(seconds_in_week / 2);
 constexpr mip::Seconds     quarter_week_seconds(seconds_in_week / 4);
 
 /** Test case utilities *****************************************************************/
@@ -80,6 +81,21 @@ mip::TimestampExperimental setupTimestampZero()
 mip::TimestampExperimental setupTimestampOneSecond()
 {
     return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
+}
+
+mip::TimestampExperimental setupTimestampOneWeek()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, mip::Weeks(1)); 
+}
+
+mip::TimestampExperimental setupTimestampHalfWeek()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, nanoseconds_in_week / 2); 
+}
+
+mip::TimestampExperimental setupTimestampMoreThanWeek()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, more_than_week); 
 }
 
 mip::TimestampExperimental setupTimestampMockUnix()
@@ -221,49 +237,50 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30));
     });
 
+    suite.addTest("GetTimeOfWeekEqualBase", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
+    });
+
+    suite.addTest("GetTimeOfWeekEqualTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0));
+    });
+
+    suite.addTest("GetTimeOfWeekLessBase", []() -> bool
+    {
+        auto timestamp = setupTimestampHalfWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
+    });
+
+    suite.addTest("GetTimeOfWeekLessTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampHalfWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), half_week_seconds);
+    });
+
+    suite.addTest("GetTimeOfWeekMoreBase", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek(), nanoseconds_in_second);
+    });
+
+    suite.addTest("GetTimeOfWeekMoreTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
+        
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1));
+    });
+
     return suite.run();
 }
-
-// bool testGetTimeOfWeek()
-// {
-//     mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_week);
-    
-//     if (!getterTestCase("GetTimeOfWeek-equal-base", timestamp.getTimeOfWeek(), mip::Nanoseconds(0)))
-//     {
-//         return false;
-//     }
-
-//     if (!getterTestCase("GetTimeOfWeek-equal-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0)))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setTimestamp(nanoseconds_in_second);
-
-//     if (!getterTestCase("GetTimeOfWeek-less-base", timestamp.getTimeOfWeek(), nanoseconds_in_second))
-//     {
-//         return false;
-//     }
-
-//     if (!getterTestCase("GetTimeOfWeek-less-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1)))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setTimestamp(more_than_week);
-
-//     if (!getterTestCase("GetTimeOfWeek-more-base", timestamp.getTimeOfWeek(), nanoseconds_in_second))
-//     {
-//         return false;
-//     }
-
-//     if (!getterTestCase("GetTimeOfWeek-more-template", timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1)))
-//     {
-//         return false;
-//     }
-
-//     return true;
-// }
 
 // bool testSetTimeOfWeek()
 // {
