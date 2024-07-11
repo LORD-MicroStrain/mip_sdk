@@ -237,6 +237,17 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30));
     });
 
+    suite.addTest("GetTimeOfWeekInvalidTemplateDuration", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.getTimeOfWeek<mip::Weeks>();
+        });
+    });
+
+
     suite.addTest("GetTimeOfWeekEqualBase", []() -> bool
     {
         auto timestamp = setupTimestampOneWeek();
