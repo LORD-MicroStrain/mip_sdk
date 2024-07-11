@@ -66,9 +66,20 @@ public:
     int run();
 
 private:
-    // std::unordered_map<const char *, std::function<bool()>> tests;
     std::vector<std::tuple<const char *, std::function<bool()>>> tests; 
 };
+
+/** Setup *******************************************************************************/
+
+mip::TimestampExperimental setupTimestampZero()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(0)); 
+}
+
+mip::TimestampExperimental setupTimestampOneSecond()
+{
+    return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
+}
 
 /** Tests *******************************************************************************/
 
@@ -94,19 +105,19 @@ int main(int argc, const char* argv[])
 
     suite.addTest("GetTimestampZero", []() -> bool
     {
-        mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0)); 
+        auto timestamp = setupTimestampZero();
         return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
     });
 
     suite.addTest("GetTimestampBase", []() -> bool
     {
-        mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+        auto timestamp = setupTimestampOneSecond();
         return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
     });
 
     suite.addTest("GetTimestampTemplate", []() -> bool
     {
-        mip::TimestampExperimental timestamp(mip::UnixTime{}, nanoseconds_in_second);
+        auto timestamp = setupTimestampOneSecond();
         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
     });
 

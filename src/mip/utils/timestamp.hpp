@@ -18,7 +18,6 @@ namespace mip
     // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
         
 
-    // TODO: Change Now to single standard constructor.
     // TODO: Add increment method.
     // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
@@ -35,6 +34,7 @@ namespace mip
     public:
         TimestampExperimental() = delete;
         
+        // TODO: Change Now to single standard constructor.
         /// Defaults time since epoch to zero nanoseconds.
         TimestampExperimental(const TimeStandard &standard);
 
