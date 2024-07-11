@@ -121,61 +121,41 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
     });
 
+    suite.addTest("SetTimestampInvalidBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setTimestamp(invalid_nanoseconds);
+        });
+    });
+
+    suite.addTest("SetTimestampInvalidTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setTimestamp(invalid_seconds);
+        });
+    });
+
+    suite.addTest("SetTimestampBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setTimestamp(main_test_nanoseconds);
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
+
+    suite.addTest("SetTimestampTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setTimestamp<mip::Seconds>(main_test_seconds);
+        return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), main_test_seconds);
+    });
+
     return suite.run();
-}
-
-bool testSetTimestampInvalidBase()
-{
-//     mip::TimestampExperimental timestamp(mip::UnixTime{});
-
-//     auto invalid_base = [&timestamp]() -> void { timestamp.setTimestamp(invalid_nanoseconds); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-base", invalid_base))
-//     {
-//         return false;
-//     }
-    outputRunning(__FUNCTION__);
-    
-    return false;
-}
-
-bool testSetTimestampInvalidTemplate()
-{
-//     auto invalid_templated = [&timestamp]() -> void { timestamp.setTimestamp(invalid_seconds); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimestampInvalid-template", invalid_templated))
-//     {
-//         return false;
-//     }
-
-    outputRunning(__FUNCTION__);
-    
-    return false;
-}
-
-bool testSetTimestampBase()
-{
-//     timestamp.setTimestamp(main_test_nanoseconds);
-//     if (!getterTestCase("SetTimestamp-base", timestamp.getTimestamp(), main_test_nanoseconds))
-//     {
-//         return false;
-//     }
-    
-    outputRunning(__FUNCTION__);
-    
-    return false;
-}
-
-bool testSetTimestampTemplate()
-{
-//     timestamp.setTimestamp(main_test_seconds);
-//     if (!getterTestCase("SetTimestamp-template", timestamp.getTimestamp<mip::Seconds>(), main_test_seconds))
-//     {
-//         return false;
-//     }
-
-//     return true;
-// }
-
-    return false; 
 }
 
 // bool testSynchronize()
