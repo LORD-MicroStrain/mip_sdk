@@ -17,7 +17,8 @@ constexpr mip::Weeks       weeks_in_year(52);
 // Test values
 constexpr mip::Nanoseconds invalid_nanoseconds(-1);
 constexpr mip::Seconds     invalid_seconds(-1);
-constexpr mip::Weeks       invalid_weeks(-1);
+constexpr mip::Weeks       invalid_weeks_lower(-1);
+constexpr mip::Weeks       invalid_weeks_upper(weeks_in_year + mip::Weeks(1));
 constexpr mip::Nanoseconds main_test_nanoseconds(123456789);
 constexpr mip::Seconds     main_test_seconds(123456789);
 constexpr mip::Nanoseconds more_than_week(nanoseconds_in_week + nanoseconds_in_second);
@@ -176,45 +177,52 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
     });
 
+    suite.addTest("SetWeekInvalidLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setWeek(invalid_weeks_lower);
+        });
+    });
+
+    suite.addTest("SetWeekInvalidUpper", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setWeek(invalid_weeks_upper);
+        });
+    });
+
+    suite.addTest("SetWeekLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setWeek(mip::Weeks(0));
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0));
+    });
+
+    suite.addTest("SetWeekUpper", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setWeek(weeks_in_year);
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), weeks_in_year);
+    });
+
+    suite.addTest("SetWeekMain", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setWeek(mip::Weeks(30));
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30));
+    });
+
     return suite.run();
 }
-
-// bool testSetWeek()
-// {
-//     mip::TimestampExperimental timestamp(mip::UnixTime{}, mip::Nanoseconds(0));
-
-//     auto invalid_lower = [&timestamp]() -> void { timestamp.setWeek(invalid_weeks); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetWeek-invalid-lower", invalid_lower))
-//     {
-//         return false;
-//     }
-
-//     auto invalid_upper = [&timestamp]() -> void { timestamp.setWeek(weeks_in_year + mip::Weeks(1)); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetWeek-invalid-upper", invalid_upper))
-//     {
-//         return false;
-//     }
-    
-//     timestamp.setWeek(mip::Weeks(0));
-//     if (!getterTestCase("SetWeek-zero", timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0)))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setWeek(weeks_in_year);
-//     if (!getterTestCase("SetWeek-upper", timestamp.getTimestamp<mip::Weeks>(), weeks_in_year))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setWeek(mip::Weeks(30));
-//     if (!getterTestCase("SetWeek-main", timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30)))
-//     {
-//         return false;
-//     }
-    
-//     return true;
-// }
 
 // bool testGetTimeOfWeek()
 // {
