@@ -247,7 +247,6 @@ int main(int argc, const char* argv[])
         });
     });
 
-
     suite.addTest("GetTimeOfWeekEqualBase", []() -> bool
     {
         auto timestamp = setupTimestampOneWeek();
@@ -290,51 +289,81 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1));
     });
 
+    suite.addTest("SetTimeOfWeekInvalidLowerBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(invalid_nanoseconds);
+        });
+    });
+
+    suite.addTest("SetTimeOfWeekInvalidLowerTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(invalid_seconds);
+        });
+    });
+
+    suite.addTest("SetTimeOfWeekInvalidUpperBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(nanoseconds_in_week);
+        });
+    });
+
+    suite.addTest("SetTimeOfWeekInvalidUpperTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(mip::Weeks(1));
+        });
+    });
+
+    suite.addTest("SetTimeOfWeekLower", []() -> bool
+    {
+        auto timestamp = setupTimestampOneSecond();
+        
+        timestamp.setTimeOfWeek(mip::Nanoseconds(0));
+        return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
+    });
+
+    suite.addTest("SetTimeOfWeekUpper", []() -> bool
+    {
+        constexpr mip::Nanoseconds timeOfWeekUpperBound(nanoseconds_in_week - mip::Nanoseconds(1));
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setTimeOfWeek(timeOfWeekUpperBound);
+        return getterTestCase(timestamp.getTimeOfWeek(), timeOfWeekUpperBound);
+    });
+
+    suite.addTest("SetTimeOfWeekArbitraryBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setTimeOfWeek(half_week_nanoseconds);
+        return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
+    });
+
+    suite.addTest("SetTimeOfWeekArbitraryTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        timestamp.setTimeOfWeek(quarter_week_seconds);
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds);
+    });
+
     return suite.run();
 }
-
-// bool testSetTimeOfWeek()
-// {
-//     mip::TimestampExperimental timestamp(mip::UnixTime{}); 
-    
-//     auto invalid_lower_base = [&timestamp]() -> void { timestamp.setTimeOfWeek(invalid_nanoseconds); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-lower-base", invalid_lower_base))
-//     {
-//         return false;
-//     }
-
-//     auto invalid_lower_template = [&timestamp]() -> void { timestamp.setTimeOfWeek(invalid_seconds); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-lower-template", invalid_lower_template))
-//     {
-//         return false;
-//     }
-
-//     auto invalid_upper_base = [&timestamp]() -> void { timestamp.setTimeOfWeek(nanoseconds_in_week + mip::Nanoseconds(1)); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-upper-base", invalid_upper_base))
-//     {
-//         return false;
-//     }
-
-//     auto invalid_upper_template = [&timestamp]() -> void { timestamp.setTimeOfWeek(seconds_in_week + mip::Seconds(1)); };
-//     if (!invalidInputTestCase<std::invalid_argument>("SetTimeOfWeek-invalid-upper-template", invalid_upper_template))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setTimeOfWeek(half_week_nanoseconds);
-//     if (!getterTestCase("SetTimeOfWeek-base", timestamp.getTimeOfWeek(), half_week_nanoseconds))
-//     {
-//         return false;
-//     }
-
-//     timestamp.setTimeOfWeek(quarter_week_seconds);
-//     if (!getterTestCase("SetTimeOfWeek-template", timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds))
-//     {
-//         return false;
-//     }
-
-//     return true; 
-// }
 
 // bool testTimeElapsed()
 // {

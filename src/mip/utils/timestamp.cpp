@@ -57,9 +57,9 @@ namespace mip
         {
             throw std::invalid_argument("Time of week < one week.");
         }
-        if (time > std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
+        if (time >= std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
         {
-            throw std::invalid_argument("Time of week > one week.");
+            throw std::invalid_argument("Time of week >= one week.");
         }
     }
     
