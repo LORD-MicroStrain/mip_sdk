@@ -85,8 +85,8 @@ namespace mip
         // TODO: Update documentation.
         /// Returns whether the timestamp has entered a new duration interval since a 
         /// reference timestamp.
-        // template<typename DurationElapsed = Nanoseconds>
-        // bool timeChanged(const TimestampExperimental &reference);
+        template<typename DurationChanged = Nanoseconds>
+        bool timeChanged(const TimestampExperimental &reference);
 
 //         /// 
 //         /// Example usage:
@@ -200,6 +200,18 @@ namespace mip
         }
         
         return m_timestamp - m_reference >= DurationElapsed(1);
+    }
+
+    template<typename DurationChanged>
+    inline bool TimestampExperimental::timeChanged(const TimestampExperimental &reference)
+    {
+        const Nanoseconds m_reference = reference.getTimestamp();
+        if (m_timestamp < m_reference)
+        {
+            throw std::invalid_argument("Timestamp < reference timestamp.");
+        }
+
+        return std::chrono::duration_cast<DurationChanged>(m_timestamp) > std::chrono::duration_cast<DurationChanged>(m_reference);
     }
 
 //     template<typename T, typename DCast, typename DIn> 

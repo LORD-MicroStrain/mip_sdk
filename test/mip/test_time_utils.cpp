@@ -493,7 +493,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeChangedArbitrary", []() -> bool
     {
-        auto highet = setupTimestampOneSecondPlusNanosecond();
+        auto higher = setupTimestampOneSecondPlusNanosecond();
         auto lower = setupTimestampOneSecond();
         
         bool success = true;
