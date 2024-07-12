@@ -15,6 +15,11 @@ namespace mip
         m_timestamp = m_standard.now();
     }
 
+    void TimestampExperimental::increment()
+    {
+        // TODO: Implement.
+    }
+
     Nanoseconds TimestampExperimental::getTimestamp() const
     {
         return m_timestamp;

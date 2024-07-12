@@ -1,7 +1,6 @@
 #include <functional>
 #include <iterator>
 #include <iostream>
-#include <numeric>
 #include <unordered_map>
 
 #include <mip/utils/timestamp.hpp>
@@ -136,9 +135,14 @@ mip::TimestampExperimental setupTimestampMoreThanWeek()
     return mip::TimestampExperimental(mip::UnixTime{}, more_than_week); 
 }
 
-mip::TimestampExperimental setupTimestampMockUnix()
+mip::TimestampExperimental setupTimestampMockUnixZero()
 {
     return mip::TimestampExperimental(MockUnixTime{}, mip::Nanoseconds(0)); 
+}
+
+mip::TimestampExperimental setupTimestampMockUnixSynced()
+{
+    return mip::TimestampExperimental(MockUnixTime{}); 
 }
 
 /** Tests *******************************************************************************/
@@ -219,7 +223,7 @@ int main(int argc, const char* argv[])
     
     suite.addTest("TestSynchronize", []() -> bool
     {
-        auto timestamp = setupTimestampMockUnix();
+        auto timestamp = setupTimestampMockUnixZero();
         
         timestamp.synchronize();
         return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
@@ -561,32 +565,42 @@ int main(int argc, const char* argv[])
 
     suite.addTest("IncrementNoChange", []() -> bool
     {
-        auto timestamp = setupTimestampMockUnix();
-        bool success = true;
+        auto timestamp = setupTimestampZero();
+        auto reference_synced = setupTimestampMockUnixSynced();
+        auto reference_old = setupTimestampMockUnixSynced();
 
-        // First increment should change to the main test.
-        // Second increment shouldn't change, as the simulated time standard only has one value.
-        for (int i = 0; i < 2; ++i)
-        {
-            timestamp.increment();
-            success &= getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
-        }
+        timestamp.increment(reference_synced, reference_old);
+        return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
+        // // First increment should change to the main test.
+        // // Second increment shouldn't change, as the mock time standard only returns one value.
+        // bool success = true;
+        // for (int i = 0; i < 2; ++i)
+        // {
+        //     timestamp.syncToReference(reference);
+        //     success &= getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+        // }
         
-        return success;
+        // return success;
     });
 
     suite.addTest("IncrementChange", []() -> bool
     {
+        auto timestamp = setupTimestampZero();
+        auto reference_old = setupTimestampZero();
+
         MockIncrement mock{};
-        mip::TimestampExperimental timestamp(mock, mip::Nanoseconds(500)); // Arbitrary value outside of test range.
+        mip::TimestampExperimental reference_synced(mock, mip::Nanoseconds(0));
         
         for (int i = 0; i < mock.values.size(); ++i)
         {
-            timestamp.increment();
+            timestamp.increment(reference_synced, reference_old);
             if (!getterTestCase(timestamp.getTimestamp(), mock.values[i]))
             {
                 return false;
             }
+            
+            reference_old.setTimestamp(reference_synced.getTimestamp());
+            reference_synced.synchronize();
         }
         
         return true;

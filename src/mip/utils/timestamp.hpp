@@ -45,6 +45,9 @@ namespace mip
         /// Synchronizes timestamp to a coordinated time standard. Continuously call this 
         /// method to keep the timestamp up to date with the time standard.
         void synchronize();
+        
+        // TODO: Add documentation.
+        void increment();
 
         /// Returns raw time since epoch.
         template<typename DurationOut> 
