@@ -614,26 +614,28 @@ void outputRunning(const char *name)
     std::cout << "Running: " << name << "\n";
 }
 
-template<typename Formatted, typename T>
-Formatted format(T to_format)
-{
-    return to_format;
-}
-
 template<typename Rep, typename Period>
-std::string format(std::chrono::duration<Rep, Period> to_format)
+std::string format(std::chrono::duration<Rep, Period> input)
 {
-    return std::to_string(to_format.count());
+    return std::to_string(input.count());
 }
 
-std::string format(bool to_format)
+template<typename T>
+std::string format(T input)
 {
-    if (to_format)
-    {
-        return "True";
-    }
+    return std::to_string(input);
+}
 
-    return "False";
+std::string format(bool input)
+{
+    return input ? "True" : "False";
+}
+
+// Required to support format call.
+// TODO: Find better solution that avoids needing this?
+const char * format(const char *input)
+{
+    return input;
 }
 
 template<typename T1, typename T2>
