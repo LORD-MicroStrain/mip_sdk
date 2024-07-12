@@ -70,27 +70,6 @@ struct MockUnixTime : mip::UnixTime
         return main_test_nanoseconds;
     }
 };
-    
-struct MockIncrement : mip::UnixTime
-{
-    MockIncrement()
-    {
-        for (int i = 0; i < 10; ++i)
-        {
-            values.push_back(mip::Nanoseconds(i));
-        }
-
-        j = std::make_unique<int>();
-    }
-
-    mip::Nanoseconds now() const override
-    {
-        return values[++*j];
-    }
-
-    std::vector<mip::Nanoseconds> values;
-    std::unique_ptr<int> j; // Workaround for const function.
-};
 
 /** Setup *******************************************************************************/
 
@@ -572,41 +551,29 @@ int main(int argc, const char* argv[])
     suite.addTest("IncrementNoChange", []() -> bool
     {
         auto timestamp = setupTimestampZero();
-        auto reference_synced = setupTimestampMockUnixSynced();
-        auto reference_old = setupTimestampMockUnixSynced();
+        auto reference_synced = setupTimestampOneSecond();
+        auto reference_old = setupTimestampOneSecond();
 
         timestamp.increment(reference_synced, reference_old);
         return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
-        // // First increment should change to the main test.
-        // // Second increment shouldn't change, as the mock time standard only returns one value.
-        // bool success = true;
-        // for (int i = 0; i < 2; ++i)
-        // {
-        //     timestamp.syncToReference(reference);
-        //     success &= getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
-        // }
-        
-        // return success;
     });
 
     suite.addTest("IncrementChange", []() -> bool
     {
         auto timestamp = setupTimestampZero();
         auto reference_old = setupTimestampZero();
-
-        MockIncrement mock{};
-        mip::TimestampExperimental reference_synced(mock, mip::Nanoseconds(0));
+        auto reference_synced = setupTimestampZero();
         
-        for (int i = 0; i < mock.values.size(); ++i)
+        for (int i = 0; i < 10; ++i)
         {
             timestamp.increment(reference_synced, reference_old);
-            if (!getterTestCase(timestamp.getTimestamp(), mock.values[i]))
+            if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(i))) 
             {
                 return false;
             }
             
             reference_old.setTimestamp(reference_synced.getTimestamp());
-            reference_synced.synchronize();
+            reference_synced.setTimestamp(mip::Nanoseconds(i + 1));
         }
         
         return true;

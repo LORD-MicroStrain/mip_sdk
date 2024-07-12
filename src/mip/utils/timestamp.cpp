@@ -17,7 +17,14 @@ namespace mip
 
     void TimestampExperimental::increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old)
     {
-        // TODO: Implement.
+        mip::Nanoseconds m_synced = reference_synced.getTimestamp();
+        mip::Nanoseconds m_old = reference_old.getTimestamp();
+        if (m_synced < m_old)
+        {
+            throw std::invalid_argument("Reference timestamp < old timestamp.");
+        }
+        
+        m_timestamp += (m_synced - m_old);
     }
 
     Nanoseconds TimestampExperimental::getTimestamp() const
