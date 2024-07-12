@@ -1,5 +1,7 @@
 #include <functional>
+#include <iterator>
 #include <iostream>
+#include <numeric>
 #include <unordered_map>
 
 #include <mip/utils/timestamp.hpp>
@@ -68,6 +70,33 @@ struct MockUnixTime : mip::UnixTime
     {
         return main_test_nanoseconds;
     }
+};
+    
+struct MockIncrement : mip::UnixTime
+{
+    MockIncrement()
+    {
+        for (int i = 0; i < 10; ++i)
+        {
+            values.push_back(mip::Nanoseconds(i));
+        }
+
+       current_value = values.begin(); 
+    }
+
+    mip::Nanoseconds now() const override
+    {
+        mip::Nanoseconds curr = *current_value;
+        if (current_value != values.end())
+        {
+            std::advance(current_value, 1);
+        }
+
+        return curr;
+    }
+
+    std::vector<mip::Nanoseconds> values;
+    std::vector<mip::Nanoseconds>::iterator current_value;
 };
 
 /** Setup *******************************************************************************/
@@ -528,6 +557,39 @@ int main(int argc, const char* argv[])
         std::int32_t seconds_count = 604800;
         
         return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+    });
+
+    suite.addTest("IncrementNoChange", []() -> bool
+    {
+        auto timestamp = setupTimestampMockUnix();
+        bool success = true;
+
+        // First increment should change to the main test.
+        // Second increment shouldn't change, as the simulated time standard only has one value.
+        for (int i = 0; i < 2; ++i)
+        {
+            timestamp.increment();
+            success &= getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+        }
+        
+        return success;
+    });
+
+    suite.addTest("IncrementChange", []() -> bool
+    {
+        MockIncrement mock{};
+        mip::TimestampExperimental timestamp(mock, mip::Nanoseconds(500)); // Arbitrary value outside of test range.
+        
+        for (int i = 0; i < mock.values.size(); ++i)
+        {
+            timestamp.increment();
+            if (!getterTestCase(timestamp.getTimestamp(), mock.values[i]))
+            {
+                return false;
+            }
+        }
+        
+        return true;
     });
 
     return suite.run();
