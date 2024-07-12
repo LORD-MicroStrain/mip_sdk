@@ -504,6 +504,32 @@ int main(int argc, const char* argv[])
         success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
         return success;
     });
+    
+    suite.addTest("CastTimeInvalidLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.castTime<std::uint32_t>(invalid_nanoseconds);
+        });
+    });
+
+    suite.addTest("CastTimeZero", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        std::uint32_t zero_count = 0;
+        
+        return getterTestCase(timestamp.castTime<std::uint32_t>(timestamp.getTimestamp()), zero_count);
+    });
+
+    suite.addTest("CastTimeArbitrary", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
+        std::uint32_t seconds_count = 604800;
+        
+        return getterTestCase(timestamp.castTime<std::uint32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+    });
 
     return suite.run();
 }

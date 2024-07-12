@@ -89,50 +89,22 @@ namespace mip
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 
-//         /// 
-//         /// Example usage:
-//         ///     // Timestamps are different by one second.
-//         ///     Seconds timestamp1{2};
-//         ///     Seconds timestamp2{1};
-//         ///     bool changed1 = timeChanged<Seconds>(timestamp1, timestamp2);
-//         ///     bool changed2 = timeChanged<Seconds>(timestamp2, timestamp1);
-//         ///     // ---> changed1 is true.
-//         ///
-//         ///     // Timestamps are different by more than one nanosecond.
-//         ///     Seconds timestamp1{2}; // 2,000,000,000 nanoseconds
-//         ///     Seconds timestamp2{1}; // 1,000,000,000 nanoseconds
-//         ///     bool changed = timeChanged<Nanoseconds>(timestamp1, timestamp2); 
-//         ///     // ---> changed is true. 
-//         ///     // ---> Comparison is done in nanoseconds instead of seconds.
-//         ///
-//         ///     // Timestamps aren't different by a week or more.
-//         ///     Seconds timestamp1{604800}; // 1 week
-//         ///     Seconds timestamp2{604799}; // 1 second less than a week
-//         ///     bool changed = timeChanged<Weeks>(timestamp1, timestamp2); 
-//         ///     // ---> changed is false. 
-//         ///     // ---> Comparison is done in weeks.
-//         template<typename DCompare, typename D1, typename D2> 
-//         bool timeChanged(const D1 &timestamp1, const D2 &timestamp2);
-
-//         /// Casts the timestamp duration to the given arithmetic type.
-//         ///
-//         /// Optionally performs a duration cast on the timestamp duration before casting 
-//         /// to the arithmetic type.
-//         ///
-//         /// Example usage:
-//         ///     // Cast seconds to int.
-//         ///     Seconds timestamp{123};
-//         ///     int time_casted = castTime<int>(timestamp);    
-//         ///     ---> time_casted = 123.
-//         ///
-//         ///     // Cast nanoseconds to seconds to int.
-//         ///     Nanoseconds timestamp{1000000000}; // This equals one second.
-//         ///     int time_casted = castTime<int, Seconds>(timestamp);
-//         ///     ---> time_casted = 1.
-//         template<typename T, typename DCast, typename DIn> 
-//         T castTime(const DIn &timestamp);
-//         template<typename T, typename D> 
-//         T castTime(const D &timestamp);
+        // /// Casts a timestamp duration to the given arithmetic type.
+        // ///
+        // /// Example usage:
+        // ///     // Cast seconds to int.
+        // ///     Seconds timestamp{123};
+        // ///     int time_casted = castTime<int>(timestamp);    
+        // ///     ---> time_casted = 123.
+        // ///
+        // ///     // Cast nanoseconds to seconds to int.
+        // ///     Nanoseconds timestamp{1000000000}; // This equals one second.
+        // ///     int time_casted = castTime<int, Seconds>(timestamp);
+        // ///     ---> time_casted = 1.
+        // template<typename T, typename DCast, typename DIn> 
+        // T castTime(const DIn &timestamp);
+        // template<typename T, typename D> 
+        // T castTime(const D &timestamp);
 
     private:
         const TimeStandard &m_standard;
