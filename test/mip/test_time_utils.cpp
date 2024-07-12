@@ -563,6 +563,18 @@ int main(int argc, const char* argv[])
         return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
     });
 
+    suite.addTest("IncrementInvalid", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        auto reference_synced = setupTimestampHalfWeek();
+        auto reference_old = setupTimestampMoreThanWeek(); // Intentionally higher!
+        
+        return invalidInputTestCase<std::invalid_argument>([&]() -> void 
+        {
+            timestamp.increment(reference_synced, reference_old);
+        });
+    });
+
     suite.addTest("IncrementNoChange", []() -> bool
     {
         auto timestamp = setupTimestampZero();

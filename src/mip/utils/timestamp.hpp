@@ -47,7 +47,7 @@ namespace mip
         void synchronize();
         
         // TODO: Add documentation.
-        void increment();
+        void increment(const TimeStandard &reference_synced, const TimeStandard &reference_old);
 
         /// Returns raw time since epoch.
         template<typename DurationOut> 
