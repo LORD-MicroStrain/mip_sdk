@@ -28,9 +28,8 @@ constexpr mip::Seconds     quarter_week_seconds(seconds_in_week / 4);
 
 /** Test case utilities *****************************************************************/
 
-template<typename Duration1, typename Duration2>
-bool getterTestCase(Duration1 actual, Duration2 expected);
-bool getterTestCase(bool actual, bool expected);
+template<typename T1, typename T2>
+bool getterTestCase(T1 actual, T2 expected);
 
 template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(Callable test_wrapper);
@@ -511,24 +510,24 @@ int main(int argc, const char* argv[])
         
         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
         {
-            timestamp.castTime<std::uint32_t>(invalid_nanoseconds);
+            timestamp.castTime<std::int32_t>(invalid_nanoseconds);
         });
     });
 
     suite.addTest("CastTimeZero", []() -> bool
     {
         auto timestamp = setupTimestampZero();
-        std::uint32_t zero_count = 0;
+        std::int32_t zero_count = 0;
         
-        return getterTestCase(timestamp.castTime<std::uint32_t>(timestamp.getTimestamp()), zero_count);
+        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
     });
 
     suite.addTest("CastTimeArbitrary", []() -> bool
     {
         auto timestamp = setupTimestampOneWeek();
-        std::uint32_t seconds_count = 604800;
+        std::int32_t seconds_count = 604800;
         
-        return getterTestCase(timestamp.castTime<std::uint32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
     });
 
     return suite.run();
@@ -571,8 +570,8 @@ int TestSuite::run()
     return success;
 }   
 
-template<typename Duration1, typename Duration2>
-bool getterTestCase(Duration1 actual, Duration2 expected)
+template<typename T1, typename T2>
+bool getterTestCase(T1 actual, T2 expected)
 {
     const std::type_info& actual_type = typeid(actual);
     const std::type_info& expected_type = typeid(expected);
@@ -587,17 +586,6 @@ bool getterTestCase(Duration1 actual, Duration2 expected)
     if (actual != expected)
     {
         std::cout << "Value ";
-        outputCaseResults(actual.count(), expected.count());
-        return false;
-    }
-    
-    return true;
-}
-
-bool getterTestCase(bool actual, bool expected)
-{
-    if (actual != expected)
-    {
         outputCaseResults(actual, expected);
         return false;
     }
@@ -626,13 +614,35 @@ void outputRunning(const char *name)
     std::cout << "Running: " << name << "\n";
 }
 
+template<typename Formatted, typename T>
+Formatted format(T to_format)
+{
+    return to_format;
+}
+
+template<typename Rep, typename Period>
+std::string format(std::chrono::duration<Rep, Period> to_format)
+{
+    return std::to_string(to_format.count());
+}
+
+std::string format(bool to_format)
+{
+    if (to_format)
+    {
+        return "True";
+    }
+
+    return "False";
+}
+
 template<typename T1, typename T2>
 void outputCaseResults(T1 actual, T2 expected)
 {
     std::cout << 
         "Failed!\n" <<
-        "---> Actual:   " << actual << "\n" <<
-        "---> Expected: " << expected << "\n";
+        "---> Actual:   " << format(actual) << "\n" <<
+        "---> Expected: " << format(expected) << "\n";
 }
 
 void outputFailed(const char* message)

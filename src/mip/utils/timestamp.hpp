@@ -89,22 +89,10 @@ namespace mip
         template<typename DurationChanged = Nanoseconds>
         bool timeChanged(const TimestampExperimental &reference);
 
-        // /// Casts a timestamp duration to the given arithmetic type.
-        // ///
-        // /// Example usage:
-        // ///     // Cast seconds to int.
-        // ///     Seconds timestamp{123};
-        // ///     int time_casted = castTime<int>(timestamp);    
-        // ///     ---> time_casted = 123.
-        // ///
-        // ///     // Cast nanoseconds to seconds to int.
-        // ///     Nanoseconds timestamp{1000000000}; // This equals one second.
-        // ///     int time_casted = castTime<int, Seconds>(timestamp);
-        // ///     ---> time_casted = 1.
-        // template<typename T, typename DCast, typename DIn> 
-        // T castTime(const DIn &timestamp);
-        // template<typename T, typename D> 
-        // T castTime(const D &timestamp);
+        // TODO: Update documentation.
+        /// Casts a timestamp duration to the given arithmetic type.
+        template<typename T, typename DurationIn>
+        T castTime(const DurationIn &time);
 
     private:
         const TimeStandard &m_standard;
@@ -182,15 +170,13 @@ namespace mip
         return std::chrono::duration_cast<DurationChanged>(m_timestamp) > std::chrono::duration_cast<DurationChanged>(m_reference);
     }
 
-//     template<typename T, typename DCast, typename DIn> 
-//     inline T TimestampExperimental::castTime(const DIn &timestamp)
-//     {
-//         return castTime<T>(duration_cast<DCast>(timestamp));
-//     }
-
-//     template<typename T, typename D> 
-//     inline T TimestampExperimental::castTime(const D &timestamp)
-//     {
-//         return static_cast<T>(timestamp.count());
-//     }
+    template<typename T, typename DurationIn>
+    T TimestampExperimental::castTime(const DurationIn &time)
+    {
+        if (time < mip::Nanoseconds(0))
+        {
+            throw std::invalid_argument("Time < 0.");
+        }
+        return static_cast<T>(time.count());
+    }
 } // namespace mip
