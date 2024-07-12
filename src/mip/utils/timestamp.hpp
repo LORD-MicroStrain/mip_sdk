@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <chrono>
+#include <string>
 
 #include "mip/utils/time_durations.hpp"
 #include "mip/utils/time_standard.hpp"
@@ -136,15 +137,6 @@ namespace mip
     private:
         const TimeStandard &m_standard;
         Nanoseconds m_timestamp{0};
-        
-        // Throws std::invalid_argument if invalid.
-        template<typename DurationIn>
-        void validateInputTime(const DurationIn &time);
-        void validateInputTime(const Nanoseconds &time);
-        template<typename DurationIn>
-        void validateInputTimeOfWeek(const DurationIn &time);
-        void validateInputTimeOfWeek(const Nanoseconds &time);
-        void validateInputWeek(const Weeks &week);
     };
 
 
@@ -157,7 +149,11 @@ namespace mip
     inline TimestampExperimental::TimestampExperimental(const TimeStandard &standard, DurationIn time) :
         m_standard(standard)
     {
-        validateInputTime(time);
+        if (time < mip::Nanoseconds(0))
+        {
+            throw std::invalid_argument("Time < 0.");
+        }
+
         m_timestamp = time;
     }
 
@@ -225,16 +221,4 @@ namespace mip
 //     {
 //         return static_cast<T>(timestamp.count());
 //     }
-    
-    template<typename DurationIn>
-    void TimestampExperimental::validateInputTime(const DurationIn &time)
-    {
-        validateInputTime(std::chrono::duration_cast<Nanoseconds>(time));
-    }
-
-    template<typename DurationIn>
-    void TimestampExperimental::validateInputTimeOfWeek(const DurationIn &time)
-    {
-        validateInputTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
-    }
 } // namespace mip

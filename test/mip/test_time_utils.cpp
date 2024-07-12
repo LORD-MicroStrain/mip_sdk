@@ -213,16 +213,6 @@ int main(int argc, const char* argv[])
         });
     });
 
-    suite.addTest("SetWeekInvalidUpper", []() -> bool
-    {
-        auto timestamp = setupTimestampZero();
-        
-        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
-        {
-            timestamp.setWeek(invalid_weeks_upper);
-        });
-    });
-
     suite.addTest("SetWeekLower", []() -> bool
     {
         auto timestamp = setupTimestampZero();

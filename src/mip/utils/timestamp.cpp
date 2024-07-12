@@ -22,13 +22,21 @@ namespace mip
     
     void TimestampExperimental::setTimestamp(Nanoseconds time)
     {
-        validateInputTime(time); 
+        if (time < Nanoseconds(0))
+        {
+            throw std::invalid_argument("Time < 0.");
+        }
+
         m_timestamp = time;
     }
 
     void TimestampExperimental::setWeek(Weeks week)
     {
-        validateInputWeek(week);
+        if (week < Weeks(0))         
+        {
+            throw std::invalid_argument("Week < 0.");
+        }
+
         m_timestamp = week + getTimeOfWeek();
     }
 
@@ -39,39 +47,15 @@ namespace mip
     
     void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
     {
-        validateInputTimeOfWeek(time);
-        m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
-    }
-    
-    void TimestampExperimental::validateInputTime(const Nanoseconds &time)
-    {
         if (time < Nanoseconds(0))
         {
-            throw std::invalid_argument("Time < 0");
+            throw std::invalid_argument("Time of week < 0.");
         }
-    }
-
-    void TimestampExperimental::validateInputTimeOfWeek(const Nanoseconds &time)
-    {
-        if (time < Nanoseconds(0))
-        {
-            throw std::invalid_argument("Time of week < one week.");
-        }
-        if (time >= std::chrono::duration_cast<Nanoseconds>(Weeks(1)))
+        if (time >= Weeks(1))
         {
             throw std::invalid_argument("Time of week >= one week.");
         }
-    }
-    
-    void TimestampExperimental::validateInputWeek(const Weeks &week)
-    {
-        if (week < Weeks(0))         
-        {
-            throw std::invalid_argument("Week < weeks in a year.");
-        }
-        if (week > std::chrono::duration_cast<Weeks>(Years(1)))
-        {
-            throw std::invalid_argument("Week > weeks in a year.");
-        }
+
+        m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
     }
 } // namespace mip
