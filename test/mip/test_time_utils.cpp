@@ -80,22 +80,16 @@ struct MockIncrement : mip::UnixTime
             values.push_back(mip::Nanoseconds(i));
         }
 
-       current_value = values.begin(); 
+        j = std::make_unique<int>();
     }
 
     mip::Nanoseconds now() const override
     {
-        mip::Nanoseconds curr = *current_value;
-        if (current_value != values.end())
-        {
-            std::advance(current_value, 1);
-        }
-
-        return curr;
+        return values[++*j];
     }
 
     std::vector<mip::Nanoseconds> values;
-    std::vector<mip::Nanoseconds>::iterator current_value;
+    std::unique_ptr<int> j; // Workaround for const function.
 };
 
 /** Setup *******************************************************************************/

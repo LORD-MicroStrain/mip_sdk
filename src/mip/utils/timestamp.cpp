@@ -15,7 +15,7 @@ namespace mip
         m_timestamp = m_standard.now();
     }
 
-    void TimestampExperimental::increment(const TimeStandard &reference_synced, const TimeStandard &reference_old)
+    void TimestampExperimental::increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old)
     {
         // TODO: Implement.
     }
