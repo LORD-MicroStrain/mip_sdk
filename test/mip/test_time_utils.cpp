@@ -93,530 +93,531 @@ struct MockTimeConvertOneSecond : mip::TimeStandard
 
 /** Setup *******************************************************************************/
 
-// mip::TimestampExperimental setupTimestampZero()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(0)); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampZero()
+{
+    return {mip::Nanoseconds(0)};
+}
 
-// mip::TimestampExperimental setupTimestampOneNanosecond()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, mip::Nanoseconds(1)); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampOneNanosecond()
+{
+    return {mip::Nanoseconds(1)};
+}
 
-// mip::TimestampExperimental setupTimestampOneSecond()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, mip::Seconds(1)); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampOneSecond()
+{
+    return {mip::Seconds(1)};
+}
 
-// mip::TimestampExperimental setupTimestampOneSecondPlusNanosecond()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1)); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampOneSecondPlusNanosecond()
+{
+    return {nanoseconds_in_second + mip::Nanoseconds(1)};
+}
 
-// mip::TimestampExperimental setupTimestampOneWeek()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, mip::Weeks(1)); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampOneWeek()
+{
+    return {mip::Weeks(1)};
+}
 
-// mip::TimestampExperimental setupTimestampHalfWeek()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, nanoseconds_in_week / 2); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampHalfWeek()
+{
+    return {nanoseconds_in_week / 2};
+}
 
-// mip::TimestampExperimental setupTimestampMoreThanWeek()
-// {
-//     return mip::TimestampExperimental(mip::UnixTime{}, more_than_week); 
-// }
+mip::TimestampExperimental<mip::UnixTime> setupTimestampMoreThanWeek()
+{
+    return {more_than_week}; 
+}
 
-// mip::TimestampExperimental setupTimestampMockUnixZero()
-// {
-//     return mip::TimestampExperimental(MockUnixTime{}, mip::Nanoseconds(0)); 
-// }
+mip::TimestampExperimental<MockUnixTime> setupTimestampMockUnixZero()
+{
+    return {mip::Nanoseconds(0)}; 
+}
 
-// mip::TimestampExperimental setupTimestampMockUnixSynced()
-// {
-//     return mip::TimestampExperimental(MockUnixTime{}); 
-// }
+mip::TimestampExperimental<MockUnixTime> setupTimestampMockUnixSynced()
+{
+    return {};
+}
 
-// mip::TimestampExperimental setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
-// {
-//     return mip::TimestampExperimental(MockTimeConvertOneSecond{}, time); 
-// }
+mip::TimestampExperimental<MockTimeConvertOneSecond> setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
+{
+    return {time}; 
+}
 
-// /** Tests *******************************************************************************/
+/** Tests *******************************************************************************/
 
 int main(int argc, const char* argv[])
 {
     TestSuite suite{};
 
-//     suite.addTest("ManualConstructorInvalidBase", []() -> bool
-//     {
-//         return invalidInputTestCase<std::invalid_argument>([]() -> void 
-//         {
-//             mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds);
-//         });
-//     });
+    suite.addTest("ManualConstructorInvalidBase", []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental<mip::UnixTime>(invalid_nanoseconds);
+        });
+    });
 
-//     suite.addTest("ManualConstructorInvalidTemplate", []() -> bool
-//     {
-//         return invalidInputTestCase<std::invalid_argument>([]() -> void 
-//         {
-//             mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds);
-//         });
-//     });
+    suite.addTest("ManualConstructorInvalidTemplate", []() -> bool
+    {
+        return invalidInputTestCase<std::invalid_argument>([]() -> void 
+        {
+            mip::TimestampExperimental<mip::UnixTime>(invalid_seconds);
+        });
+    });
 
-//     suite.addTest("GetTimestampZero", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
-//         return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
-//     });
+    suite.addTest("GetTimestampZero", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
+    });
 
-//     suite.addTest("GetTimestampBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneSecond();
-//         return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
-//     });
+    suite.addTest("GetTimestampBase", []() -> bool
+    {
+        auto timestamp = setupTimestampOneSecond();
+        return getterTestCase(timestamp.getTimestamp(), nanoseconds_in_second);
+    });
 
-//     suite.addTest("GetTimestampTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneSecond();
-//         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
-//     });
+    suite.addTest("GetTimestampTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampOneSecond();
+        return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(1));
+    });
 
-//     suite.addTest("SetTimestampInvalidBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimestampInvalidBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
 
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
-//         {
-//             timestamp.setTimestamp(invalid_nanoseconds);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setTimestamp(invalid_nanoseconds);
+        });
+    });
 
-//     suite.addTest("SetTimestampInvalidTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimestampInvalidTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
 
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
-//         {
-//             timestamp.setTimestamp(invalid_seconds);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setTimestamp(invalid_seconds);
+        });
+    });
 
-//     suite.addTest("SetTimestampBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimestampBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setTimestamp(main_test_nanoseconds);
-//         return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
-//     });
+        timestamp.setTimestamp(main_test_nanoseconds);
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
 
-//     suite.addTest("SetTimestampTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimestampTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setTimestamp<mip::Seconds>(main_test_seconds);
-//         return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), main_test_seconds);
-//     });
+        timestamp.setTimestamp<mip::Seconds>(main_test_seconds);
+        return getterTestCase(timestamp.getTimestamp<mip::Seconds>(), main_test_seconds);
+    });
     
-//     suite.addTest("TestSynchronize", []() -> bool
-//     {
-//         auto timestamp = setupTimestampMockUnixZero();
+    suite.addTest("TestSynchronize", []() -> bool
+    {
+        auto timestamp = setupTimestampMockUnixZero();
         
-//         timestamp.synchronize();
-//         return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
-//     });
+        timestamp.synchronize();
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
 
-//     suite.addTest("TestSynchronizeConstructor", []() -> bool
-//     {
-//         mip::TimestampExperimental timestamp(MockUnixTime{});
-//         return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
-//     });
+    suite.addTest("TestSynchronizeConstructor", []() -> bool
+    {
+        auto timestamp = setupTimestampMockUnixSynced();
 
-//     suite.addTest("SetWeekInvalidLower", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+        return getterTestCase(timestamp.getTimestamp(), main_test_nanoseconds);
+    });
+
+    suite.addTest("SetWeekInvalidLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
-//         {
-//             timestamp.setWeek(invalid_weeks_lower);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void
+        {
+            timestamp.setWeek(invalid_weeks_lower);
+        });
+    });
 
-//     suite.addTest("SetWeekLower", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetWeekLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setWeek(mip::Weeks(0));
-//         return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0));
-//     });
+        timestamp.setWeek(mip::Weeks(0));
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(0));
+    });
 
-//     suite.addTest("SetWeekUpper", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetWeekUpper", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setWeek(weeks_in_year);
-//         return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), weeks_in_year);
-//     });
+        timestamp.setWeek(weeks_in_year);
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), weeks_in_year);
+    });
 
-//     suite.addTest("SetWeekMain", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetWeekMain", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setWeek(mip::Weeks(30));
-//         return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30));
-//     });
+        timestamp.setWeek(mip::Weeks(30));
+        return getterTestCase(timestamp.getTimestamp<mip::Weeks>(), mip::Weeks(30));
+    });
 
-//     suite.addTest("GetTimeOfWeekInvalidTemplateDuration", []() -> bool
-//     {
-//         auto timestamp = setupTimestampMoreThanWeek();
+    suite.addTest("GetTimeOfWeekInvalidTemplateDuration", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.getTimeOfWeek<mip::Weeks>();
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.getTimeOfWeek<mip::Weeks>();
+        });
+    });
 
-//     suite.addTest("GetTimeOfWeekEqualBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneWeek();
+    suite.addTest("GetTimeOfWeekEqualBase", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
+    });
 
-//     suite.addTest("GetTimeOfWeekEqualTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneWeek();
+    suite.addTest("GetTimeOfWeekEqualTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0));
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(0));
+    });
 
-//     suite.addTest("GetTimeOfWeekLessBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampHalfWeek();
+    suite.addTest("GetTimeOfWeekLessBase", []() -> bool
+    {
+        auto timestamp = setupTimestampHalfWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
+    });
 
-//     suite.addTest("GetTimeOfWeekLessTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampHalfWeek();
+    suite.addTest("GetTimeOfWeekLessTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampHalfWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), half_week_seconds);
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), half_week_seconds);
+    });
 
-//     suite.addTest("GetTimeOfWeekMoreBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampMoreThanWeek();
+    suite.addTest("GetTimeOfWeekMoreBase", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek(), nanoseconds_in_second);
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek(), nanoseconds_in_second);
+    });
 
-//     suite.addTest("GetTimeOfWeekMoreTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampMoreThanWeek();
+    suite.addTest("GetTimeOfWeekMoreTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampMoreThanWeek();
         
-//         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1));
-//     });
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), mip::Seconds(1));
+    });
 
-//     suite.addTest("SetTimeOfWeekInvalidLowerBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekInvalidLowerBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.setTimeOfWeek(invalid_nanoseconds);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(invalid_nanoseconds);
+        });
+    });
 
-//     suite.addTest("SetTimeOfWeekInvalidLowerTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekInvalidLowerTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.setTimeOfWeek(invalid_seconds);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(invalid_seconds);
+        });
+    });
 
-//     suite.addTest("SetTimeOfWeekInvalidUpperBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekInvalidUpperBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.setTimeOfWeek(nanoseconds_in_week);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(nanoseconds_in_week);
+        });
+    });
 
-//     suite.addTest("SetTimeOfWeekInvalidUpperTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekInvalidUpperTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.setTimeOfWeek(mip::Weeks(1));
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.setTimeOfWeek(mip::Weeks(1));
+        });
+    });
 
-//     suite.addTest("SetTimeOfWeekLower", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneSecond();
+    suite.addTest("SetTimeOfWeekLower", []() -> bool
+    {
+        auto timestamp = setupTimestampOneSecond();
         
-//         timestamp.setTimeOfWeek(mip::Nanoseconds(0));
-//         return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
-//     });
+        timestamp.setTimeOfWeek(mip::Nanoseconds(0));
+        return getterTestCase(timestamp.getTimeOfWeek(), mip::Nanoseconds(0));
+    });
 
-//     suite.addTest("SetTimeOfWeekUpper", []() -> bool
-//     {
-//         constexpr mip::Nanoseconds timeOfWeekUpperBound(nanoseconds_in_week - mip::Nanoseconds(1));
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekUpper", []() -> bool
+    {
+        constexpr mip::Nanoseconds timeOfWeekUpperBound(nanoseconds_in_week - mip::Nanoseconds(1));
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setTimeOfWeek(timeOfWeekUpperBound);
-//         return getterTestCase(timestamp.getTimeOfWeek(), timeOfWeekUpperBound);
-//     });
+        timestamp.setTimeOfWeek(timeOfWeekUpperBound);
+        return getterTestCase(timestamp.getTimeOfWeek(), timeOfWeekUpperBound);
+    });
 
-//     suite.addTest("SetTimeOfWeekArbitraryBase", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekArbitraryBase", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setTimeOfWeek(half_week_nanoseconds);
-//         return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
-//     });
+        timestamp.setTimeOfWeek(half_week_nanoseconds);
+        return getterTestCase(timestamp.getTimeOfWeek(), half_week_nanoseconds);
+    });
 
-//     suite.addTest("SetTimeOfWeekArbitraryTemplate", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("SetTimeOfWeekArbitraryTemplate", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         timestamp.setTimeOfWeek(quarter_week_seconds);
-//         return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds);
-//     });
+        timestamp.setTimeOfWeek(quarter_week_seconds);
+        return getterTestCase(timestamp.getTimeOfWeek<mip::Seconds>(), quarter_week_seconds);
+    });
 
-//     suite.addTest("TimeElapsedInvalidBase", []() -> bool
-//     {
-//         auto higher = setupTimestampZero();
-//         auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
+    suite.addTest("TimeElapsedInvalidBase", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
         
-//         return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
-//         {
-//             higher.timeElapsed(lower);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeElapsed(lower);
+        });
+    });
 
-//     suite.addTest("TimeElapsedInvalidTemplate", []() -> bool
-//     {
-//         auto higher = setupTimestampZero();
-//         auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
+    suite.addTest("TimeElapsedInvalidTemplate", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
         
-//         return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
-//         {
-//             higher.timeElapsed<mip::Seconds>(lower);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeElapsed<mip::Seconds>(lower);
+        });
+    });
 
-//     suite.addTest("TimeElapsedSameBase", []() -> bool
-//     {
-//         auto timestamp1 = setupTimestampOneNanosecond();
-//         auto timestamp2 = setupTimestampOneNanosecond();
+    suite.addTest("TimeElapsedSameBase", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneNanosecond();
+        auto timestamp2 = setupTimestampOneNanosecond();
         
-//         return getterTestCase(timestamp1.timeElapsed(timestamp2), false);
-//     });
+        return getterTestCase(timestamp1.timeElapsed(timestamp2), false);
+    });
 
-//     suite.addTest("TimeElapsedSameTemplate", []() -> bool
-//     {
-//         auto timestamp1 = setupTimestampOneSecond();
-//         auto timestamp2 = setupTimestampOneSecond();
+    suite.addTest("TimeElapsedSameTemplate", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneSecond();
+        auto timestamp2 = setupTimestampOneSecond();
         
-//         return getterTestCase(timestamp1.timeElapsed<mip::Seconds>(timestamp2), false);
-//     });
+        return getterTestCase(timestamp1.timeElapsed<mip::Seconds>(timestamp2), false);
+    });
 
-//     suite.addTest("TimeElapsedOneBase", []() -> bool
-//     {
-//         mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
-//         auto lower = setupTimestampOneNanosecond();
+    suite.addTest("TimeElapsedOneBase", []() -> bool
+    {
+        mip::TimestampExperimental<mip::UnixTime> higher(mip::Nanoseconds(2));
+        auto lower = setupTimestampOneNanosecond();
         
-//         return getterTestCase(higher.timeElapsed(lower), true);
-//     });
+        return getterTestCase(higher.timeElapsed(lower), true);
+    });
 
-//     suite.addTest("TimeElapsedOneTemplate", []() -> bool
-//     {
-//         mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
-//         auto lower = setupTimestampOneSecond();
+    suite.addTest("TimeElapsedOneTemplate", []() -> bool
+    {
+        mip::TimestampExperimental<mip::UnixTime> higher(mip::Seconds(2));
+        auto lower = setupTimestampOneSecond();
         
-//         return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), true);
-//     });
+        return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), true);
+    });
 
-//     suite.addTest("TimeElapsedArbitrary", []() -> bool
-//     {
-//         mip::TimestampExperimental higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
-//         auto lower = setupTimestampOneSecond();
+    suite.addTest("TimeElapsedArbitrary", []() -> bool
+    {
+        mip::TimestampExperimental<mip::UnixTime> higher(nanoseconds_in_second + mip::Nanoseconds(1));
+        auto lower = setupTimestampOneSecond();
         
-//         bool success = true;
-//         success &= getterTestCase(higher.timeElapsed(lower), true);
-//         success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
-//         return success;
-//     });
+        bool success = true;
+        success &= getterTestCase(higher.timeElapsed(lower), true);
+        success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+        return success;
+    });
 
-//     suite.addTest("TimeChangedInvalidBase", []() -> bool
-//     {
-//         auto higher = setupTimestampZero();
-//         auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
+    suite.addTest("TimeChangedInvalidBase", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher!
         
-//         return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
-//         {
-//             higher.timeChanged(lower);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeChanged(lower);
+        });
+    });
 
-//     suite.addTest("TimeChangedInvalidTemplate", []() -> bool
-//     {
-//         auto higher = setupTimestampZero();
-//         auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
+    suite.addTest("TimeChangedInvalidTemplate", []() -> bool
+    {
+        auto higher = setupTimestampZero();
+        auto lower = setupTimestampOneNanosecond(); // Intentionally higher and in nanoseconds!
         
-//         return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
-//         {
-//             higher.timeChanged<mip::Seconds>(lower);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&higher, &lower]() -> void 
+        {
+            higher.timeChanged<mip::Seconds>(lower);
+        });
+    });
 
-//     suite.addTest("TimeChangedSameBase", []() -> bool
-//     {
-//         auto timestamp1 = setupTimestampOneNanosecond();
-//         auto timestamp2 = setupTimestampOneNanosecond();
+    suite.addTest("TimeChangedSameBase", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneNanosecond();
+        auto timestamp2 = setupTimestampOneNanosecond();
         
-//         return getterTestCase(timestamp1.timeChanged(timestamp2), false);
-//     });
+        return getterTestCase(timestamp1.timeChanged(timestamp2), false);
+    });
 
-//     suite.addTest("TimeChangedSameTemplate", []() -> bool
-//     {
-//         auto timestamp1 = setupTimestampOneSecond();
-//         auto timestamp2 = setupTimestampOneSecond();
+    suite.addTest("TimeChangedSameTemplate", []() -> bool
+    {
+        auto timestamp1 = setupTimestampOneSecond();
+        auto timestamp2 = setupTimestampOneSecond();
         
-//         return getterTestCase(timestamp1.timeChanged<mip::Seconds>(timestamp2), false);
-//     });
+        return getterTestCase(timestamp1.timeChanged<mip::Seconds>(timestamp2), false);
+    });
 
-//     suite.addTest("TimeChangedOneBase", []() -> bool
-//     {
-//         mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
-//         auto lower = setupTimestampOneNanosecond();
+    suite.addTest("TimeChangedOneBase", []() -> bool
+    {
+        mip::TimestampExperimental<mip::UnixTime> higher(mip::Nanoseconds(2));
+        auto lower = setupTimestampOneNanosecond();
         
-//         return getterTestCase(higher.timeChanged(lower), true);
-//     });
+        return getterTestCase(higher.timeChanged(lower), true);
+    });
 
-//     suite.addTest("TimeChangedOneTemplate", []() -> bool
-//     {
-//         mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
-//         auto lower = setupTimestampOneSecond();
+    suite.addTest("TimeChangedOneTemplate", []() -> bool
+    {
+        mip::TimestampExperimental<mip::UnixTime> higher(mip::Seconds(2));
+        auto lower = setupTimestampOneSecond();
         
-//         return getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
-//     });
+        return getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
+    });
 
-//     suite.addTest("TimeChangedArbitrary", []() -> bool
-//     {
-//         auto higher = setupTimestampOneSecondPlusNanosecond();
-//         auto lower = setupTimestampOneSecond();
+    suite.addTest("TimeChangedArbitrary", []() -> bool
+    {
+        auto higher = setupTimestampOneSecondPlusNanosecond();
+        auto lower = setupTimestampOneSecond();
         
-//         bool success = true;
-//         success &= getterTestCase(higher.timeChanged(lower), true);
-//         success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), false);
-//         return success;
-//     });
+        bool success = true;
+        success &= getterTestCase(higher.timeChanged(lower), true);
+        success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), false);
+        return success;
+    });
 
-//     suite.addTest("TimeElapsedChangedDifferentiation", []() -> bool
-//     {
-//         auto higher = setupTimestampOneSecondPlusNanosecond();
-//         mip::TimestampExperimental lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
+    suite.addTest("TimeElapsedChangedDifferentiation", []() -> bool
+    {
+        auto higher = setupTimestampOneSecondPlusNanosecond();
+        mip::TimestampExperimental<mip::UnixTime> lower(nanoseconds_in_second - mip::Nanoseconds(1));
         
-//         // Should be false for timeElapsed() (since a full second doesn't elapse).
-//         // Should be true for timeChanged() though, since they are in different second intervals.
-//         bool success = true;
-//         success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
-//         success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
-//         return success;
-//     });
+        // Should be false for timeElapsed() (since a full second doesn't elapse).
+        // Should be true for timeChanged() though, since they are in different second intervals.
+        bool success = true;
+        success &= getterTestCase(higher.timeElapsed<mip::Seconds>(lower), false);
+        success &= getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
+        return success;
+    });
     
-//     suite.addTest("CastTimeInvalidLower", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
+    suite.addTest("CastTimeInvalidLower", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
         
-//         return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
-//         {
-//             timestamp.castTime<std::int32_t>(invalid_nanoseconds);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&timestamp]() -> void 
+        {
+            timestamp.castTime<std::int32_t>(invalid_nanoseconds);
+        });
+    });
 
-//     suite.addTest("CastTimeZero", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
-//         std::int32_t zero_count = 0;
+    suite.addTest("CastTimeZero", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        std::int32_t zero_count = 0;
         
-//         return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
-//     });
+        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp()), zero_count);
+    });
 
-//     suite.addTest("CastTimeArbitrary", []() -> bool
-//     {
-//         auto timestamp = setupTimestampOneWeek();
-//         std::int32_t seconds_count = 604800;
+    suite.addTest("CastTimeArbitrary", []() -> bool
+    {
+        auto timestamp = setupTimestampOneWeek();
+        std::int32_t seconds_count = 604800;
         
-//         return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
-//     });
+        return getterTestCase(timestamp.castTime<std::int32_t>(timestamp.getTimestamp<mip::Seconds>()), seconds_count);
+    });
 
-//     suite.addTest("IncrementInvalid", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
-//         auto reference_synced = setupTimestampHalfWeek();
-//         auto reference_old = setupTimestampMoreThanWeek(); // Intentionally higher!
+    suite.addTest("IncrementInvalid", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        auto reference_synced = setupTimestampHalfWeek();
+        auto reference_old = setupTimestampMoreThanWeek(); // Intentionally higher!
         
-//         return invalidInputTestCase<std::invalid_argument>([&]() -> void 
-//         {
-//             timestamp.increment(reference_synced, reference_old);
-//         });
-//     });
+        return invalidInputTestCase<std::invalid_argument>([&]() -> void 
+        {
+            timestamp.increment(reference_synced, reference_old);
+        });
+    });
 
-//     suite.addTest("IncrementNoChange", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
-//         auto reference_synced = setupTimestampOneSecond();
-//         auto reference_old = setupTimestampOneSecond();
+    suite.addTest("IncrementNoChange", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        auto reference_synced = setupTimestampOneSecond();
+        auto reference_old = setupTimestampOneSecond();
 
-//         timestamp.increment(reference_synced, reference_old);
-//         return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
-//     });
+        timestamp.increment(reference_synced, reference_old);
+        return getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(0));
+    });
 
-//     suite.addTest("IncrementChange", []() -> bool
-//     {
-//         auto timestamp = setupTimestampZero();
-//         auto reference_old = setupTimestampZero();
-//         auto reference_synced = setupTimestampOneNanosecond();
+    suite.addTest("IncrementChange", []() -> bool
+    {
+        auto timestamp = setupTimestampZero();
+        auto reference_old = setupTimestampZero();
+        auto reference_synced = setupTimestampOneNanosecond();
         
-//         outputSubtestName("OneNanosecond");
-//         timestamp.increment(reference_synced, reference_old);
-//         if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(1)))
-//         {
-//             return false;
-//         }
+        outputSubtestName("OneNanosecond");
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(1)))
+        {
+            return false;
+        }
 
-//         outputSubtestName("ThreeNanoseconds");
-//         timestamp.setTimestamp(mip::Nanoseconds(0));
-//         reference_synced.setTimestamp(mip::Nanoseconds(3));
-//         timestamp.increment(reference_synced, reference_old);
-//         if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(3)))
-//         {
-//             return false;
-//         }
+        outputSubtestName("ThreeNanoseconds");
+        timestamp.setTimestamp(mip::Nanoseconds(0));
+        reference_synced.setTimestamp(mip::Nanoseconds(3));
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(3)))
+        {
+            return false;
+        }
 
-//         outputSubtestName("FiveSeconds");
-//         timestamp.setTimestamp(mip::Nanoseconds(0));
-//         reference_old.setTimestamp(mip::Seconds(1));
-//         reference_synced.setTimestamp(mip::Seconds(6));
-//         timestamp.increment(reference_synced, reference_old);
-//         if (!getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(5)))
-//         {
-//             return false;
-//         }
+        outputSubtestName("FiveSeconds");
+        timestamp.setTimestamp(mip::Nanoseconds(0));
+        reference_old.setTimestamp(mip::Seconds(1));
+        reference_synced.setTimestamp(mip::Seconds(6));
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(5)))
+        {
+            return false;
+        }
         
-//         return true;
-//     });
+        return true;
+    });
 
     // suite.addTest("ConvertSame", []() -> bool
     // {
