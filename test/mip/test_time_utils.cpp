@@ -36,7 +36,9 @@ template<typename ExpectedException, typename Callable>
 bool invalidInputTestCase(Callable test_wrapper);
 
 // Outputs name of running test.
-void outputRunning(const char *name);
+void outputTestName(const char *name);
+// Outputs name of running sub-test (single test case).
+void outputSubtestName(const char *name);
 
 // Comprehensive failed message with actual vs. expected values.
 template<typename T1, typename T2>
@@ -562,18 +564,32 @@ int main(int argc, const char* argv[])
     {
         auto timestamp = setupTimestampZero();
         auto reference_old = setupTimestampZero();
-        auto reference_synced = setupTimestampZero();
+        auto reference_synced = setupTimestampOneNanosecond();
         
-        for (int i = 0; i < 10; ++i)
+        outputSubtestName("OneNanosecond");
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(1)))
         {
-            timestamp.increment(reference_synced, reference_old);
-            if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(i))) 
-            {
-                return false;
-            }
-            
-            reference_old.setTimestamp(reference_synced.getTimestamp());
-            reference_synced.setTimestamp(mip::Nanoseconds(i + 1));
+            return false;
+        }
+
+        outputSubtestName("ThreeNanoseconds");
+        timestamp.setTimestamp(mip::Nanoseconds(0));
+        reference_synced.setTimestamp(mip::Nanoseconds(3));
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp(), mip::Nanoseconds(3)))
+        {
+            return false;
+        }
+
+        outputSubtestName("FiveSeconds");
+        timestamp.setTimestamp(mip::Nanoseconds(0));
+        reference_old.setTimestamp(mip::Seconds(1));
+        reference_synced.setTimestamp(mip::Seconds(6));
+        timestamp.increment(reference_synced, reference_old);
+        if (!getterTestCase(timestamp.getTimestamp<mip::Seconds>(), mip::Seconds(5)))
+        {
+            return false;
         }
         
         return true;
@@ -602,7 +618,7 @@ int TestSuite::run()
             const char *name = std::get<0>(test);
             std::function<bool()> test_callable = std::get<1>(test);
 
-            outputRunning(name);
+            outputTestName(name);
             if (!test_callable())
             {
                 return fail;
@@ -658,9 +674,14 @@ bool invalidInputTestCase(Callable test_wrapper)
     return false;
 }
 
-void outputRunning(const char *name)
+void outputTestName(const char *name)
 {
-    std::cout << "Running: " << name << "\n";
+    std::cout << "Running test: " << name << "\n";
+}
+
+void outputSubtestName(const char *name)
+{
+    std::cout << "Running subtest: " << name << "\n";
 }
 
 template<typename Rep, typename Period>

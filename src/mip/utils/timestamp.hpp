@@ -19,7 +19,6 @@ namespace mip
     // Nanoseconds setTimestamp(std::uint64_t time, TimeStandard from)
         
 
-    // TODO: Add increment method.
     // TODO: Update documentation.
     // TODO: Change name to Timestamp when old one is removed throughout mip sdk.
     /// Manages a timestamp in nanoseconds since epoch.
