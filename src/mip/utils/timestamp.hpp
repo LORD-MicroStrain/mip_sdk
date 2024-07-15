@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <chrono>
 #include <string>
+#include <stdexcept>
 
 #include "mip/utils/time_durations.hpp"
 #include "mip/utils/time_standard.hpp"
