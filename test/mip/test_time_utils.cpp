@@ -93,54 +93,54 @@ struct MockTimeConvertOneSecond : mip::TimeStandard
 
 /** Setup *******************************************************************************/
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampZero()
+mip::TimestampExperimental setupTimestampZero()
 {
-    return {mip::Nanoseconds(0)};
+    return {mip::UnixTime{}, mip::Nanoseconds(0)};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampOneNanosecond()
+mip::TimestampExperimental setupTimestampOneNanosecond()
 {
-    return {mip::Nanoseconds(1)};
+    return {mip::UnixTime{}, mip::Nanoseconds(1)};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampOneSecond()
+mip::TimestampExperimental setupTimestampOneSecond()
 {
-    return {mip::Seconds(1)};
+    return {mip::UnixTime{}, mip::Seconds(1)};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampOneSecondPlusNanosecond()
+mip::TimestampExperimental setupTimestampOneSecondPlusNanosecond()
 {
-    return {nanoseconds_in_second + mip::Nanoseconds(1)};
+    return {mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1)};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampOneWeek()
+mip::TimestampExperimental setupTimestampOneWeek()
 {
-    return {mip::Weeks(1)};
+    return {mip::UnixTime{}, mip::Weeks(1)};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampHalfWeek()
+mip::TimestampExperimental setupTimestampHalfWeek()
 {
-    return {nanoseconds_in_week / 2};
+    return {mip::UnixTime{}, nanoseconds_in_week / 2};
 }
 
-mip::TimestampExperimental<mip::UnixTime> setupTimestampMoreThanWeek()
+mip::TimestampExperimental setupTimestampMoreThanWeek()
 {
-    return {more_than_week}; 
+    return {mip::UnixTime{}, more_than_week}; 
 }
 
-mip::TimestampExperimental<MockUnixTime> setupTimestampMockUnixZero()
+mip::TimestampExperimental setupTimestampMockUnixZero()
 {
-    return {mip::Nanoseconds(0)}; 
+    return {MockUnixTime{}, mip::Nanoseconds(0)}; 
 }
 
-mip::TimestampExperimental<MockUnixTime> setupTimestampMockUnixSynced()
+mip::TimestampExperimental setupTimestampMockUnixSynced()
 {
-    return {};
+    return {MockUnixTime{}};
 }
 
-mip::TimestampExperimental<MockTimeConvertOneSecond> setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
+mip::TimestampExperimental setupTimestampMockTime(mip::Nanoseconds time = mip::Nanoseconds(0))
 {
-    return {time}; 
+    return {MockTimeConvertOneSecond{}, time}; 
 }
 
 /** Tests *******************************************************************************/
@@ -153,7 +153,7 @@ int main(int argc, const char* argv[])
     {
         return invalidInputTestCase<std::invalid_argument>([]() -> void 
         {
-            mip::TimestampExperimental<mip::UnixTime>(invalid_nanoseconds);
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_nanoseconds);
         });
     });
 
@@ -161,7 +161,7 @@ int main(int argc, const char* argv[])
     {
         return invalidInputTestCase<std::invalid_argument>([]() -> void 
         {
-            mip::TimestampExperimental<mip::UnixTime>(invalid_seconds);
+            mip::TimestampExperimental(mip::UnixTime{}, invalid_seconds);
         });
     });
 
@@ -433,7 +433,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedOneBase", []() -> bool
     {
-        mip::TimestampExperimental<mip::UnixTime> higher(mip::Nanoseconds(2));
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
         auto lower = setupTimestampOneNanosecond();
         
         return getterTestCase(higher.timeElapsed(lower), true);
@@ -441,7 +441,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedOneTemplate", []() -> bool
     {
-        mip::TimestampExperimental<mip::UnixTime> higher(mip::Seconds(2));
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
         auto lower = setupTimestampOneSecond();
         
         return getterTestCase(higher.timeElapsed<mip::Seconds>(lower), true);
@@ -449,7 +449,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeElapsedArbitrary", []() -> bool
     {
-        mip::TimestampExperimental<mip::UnixTime> higher(nanoseconds_in_second + mip::Nanoseconds(1));
+        mip::TimestampExperimental higher(mip::UnixTime{}, nanoseconds_in_second + mip::Nanoseconds(1));
         auto lower = setupTimestampOneSecond();
         
         bool success = true;
@@ -498,7 +498,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeChangedOneBase", []() -> bool
     {
-        mip::TimestampExperimental<mip::UnixTime> higher(mip::Nanoseconds(2));
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Nanoseconds(2));
         auto lower = setupTimestampOneNanosecond();
         
         return getterTestCase(higher.timeChanged(lower), true);
@@ -506,7 +506,7 @@ int main(int argc, const char* argv[])
 
     suite.addTest("TimeChangedOneTemplate", []() -> bool
     {
-        mip::TimestampExperimental<mip::UnixTime> higher(mip::Seconds(2));
+        mip::TimestampExperimental higher(mip::UnixTime{}, mip::Seconds(2));
         auto lower = setupTimestampOneSecond();
         
         return getterTestCase(higher.timeChanged<mip::Seconds>(lower), true);
@@ -526,7 +526,7 @@ int main(int argc, const char* argv[])
     suite.addTest("TimeElapsedChangedDifferentiation", []() -> bool
     {
         auto higher = setupTimestampOneSecondPlusNanosecond();
-        mip::TimestampExperimental<mip::UnixTime> lower(nanoseconds_in_second - mip::Nanoseconds(1));
+        mip::TimestampExperimental lower(mip::UnixTime{}, nanoseconds_in_second - mip::Nanoseconds(1));
         
         // Should be false for timeElapsed() (since a full second doesn't elapse).
         // Should be true for timeChanged() though, since they are in different second intervals.

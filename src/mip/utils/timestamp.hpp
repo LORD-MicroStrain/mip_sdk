@@ -4,6 +4,7 @@
 #include <chrono>
 #include <string>
 #include <stdexcept>
+#include <memory>
 
 #include "mip/utils/time_durations.hpp"
 #include "mip/utils/time_standard.hpp"
@@ -30,16 +31,17 @@ namespace mip
     ///     * Might add support for different time systems in the future.
     ///     * Currently supports std::chrono:duration (only) for timestamp inputs.
     /// ----------------------------------------------------------------------------------
-    template<typename Standard>
     class TimestampExperimental
     {
     public:
+        TimestampExperimental() = delete;
+
         /// Calls synchronize().
-        TimestampExperimental();
+        TimestampExperimental(const mip::TimeStandard &standard);
 
         /// Manually sets time since epoch.
-        template<typename DurationIn> 
-        TimestampExperimental(DurationIn time);
+        template<class DurationIn> 
+        TimestampExperimental(const mip::TimeStandard &standard, DurationIn time);
 
         /// Synchronizes timestamp to a coordinated time standard. Continuously call this 
         /// method to keep the timestamp up to date with the time standard.
@@ -97,7 +99,7 @@ namespace mip
         T castTime(const DurationIn &time);
 
     private:
-        const Standard m_standard;
+        const mip::TimeStandard &m_standard;
         Nanoseconds m_timestamp{0};
     };
 
@@ -107,17 +109,15 @@ namespace mip
     /*       no new declarations following this statement.                                */
     /**************************************************************************************/
 
-    template<typename Standard>
-    inline TimestampExperimental<Standard>::TimestampExperimental() :
-        m_standard(Standard())
+    inline TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard) :
+        m_standard(standard)
     {
         synchronize();
     }
 
-    template<typename Standard>
-    template<typename DurationIn> 
-    inline TimestampExperimental<Standard>::TimestampExperimental(DurationIn time) :
-        m_standard(Standard())
+    template<class DurationIn> 
+    inline TimestampExperimental::TimestampExperimental(const mip::TimeStandard &standard, DurationIn time) :
+        m_standard(standard)
     {
         if (time < mip::Nanoseconds(0))
         {
@@ -127,14 +127,12 @@ namespace mip
         m_timestamp = time;
     }
 
-    template<typename Standard>
-    inline void TimestampExperimental<Standard>::synchronize()
+    inline void TimestampExperimental::synchronize()
     {
         m_timestamp = m_standard.now();
     }
 
-    template<typename Standard>
-    inline void TimestampExperimental<Standard>::increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old)
+    inline void TimestampExperimental::increment(const TimestampExperimental &reference_synced, const TimestampExperimental &reference_old)
     {
         mip::Nanoseconds m_synced = reference_synced.getTimestamp();
         mip::Nanoseconds m_old = reference_old.getTimestamp();
@@ -146,28 +144,24 @@ namespace mip
         m_timestamp += (m_synced - m_old);
     }
 
-    template<typename Standard>
     template<typename DurationOut> 
-    inline DurationOut TimestampExperimental<Standard>::getTimestamp() const
+    inline DurationOut TimestampExperimental::getTimestamp() const
     {
         return std::chrono::duration_cast<DurationOut>(getTimestamp());
     }
 
-    template<typename Standard>
-    inline Nanoseconds TimestampExperimental<Standard>::getTimestamp() const
+    inline Nanoseconds TimestampExperimental::getTimestamp() const
     {
         return m_timestamp;
     }
 
-    template<typename Standard>
     template<typename DurationIn>
-    inline void TimestampExperimental<Standard>::setTimestamp(DurationIn time)
+    inline void TimestampExperimental::setTimestamp(DurationIn time)
     {
         setTimestamp(std::chrono::duration_cast<Nanoseconds>(time));
     }
     
-    template<typename Standard>
-    inline void TimestampExperimental<Standard>::setTimestamp(Nanoseconds time)
+    inline void TimestampExperimental::setTimestamp(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -177,8 +171,7 @@ namespace mip
         m_timestamp = time;
     }
 
-    template<typename Standard>
-    inline void TimestampExperimental<Standard>::setWeek(Weeks week)
+    inline void TimestampExperimental::setWeek(Weeks week)
     {
         if (week < Weeks(0))         
         {
@@ -188,9 +181,8 @@ namespace mip
         m_timestamp = week + getTimeOfWeek();
     }
 
-    template<typename Standard>
     template<typename DurationOut>
-    inline DurationOut TimestampExperimental<Standard>::getTimeOfWeek()
+    inline DurationOut TimestampExperimental::getTimeOfWeek()
     {
         if (DurationOut(1) >= Weeks(1))
         {
@@ -200,21 +192,18 @@ namespace mip
         return std::chrono::duration_cast<DurationOut>(getTimeOfWeek());
     }
 
-    template<typename Standard>
-    inline Nanoseconds TimestampExperimental<Standard>::getTimeOfWeek()
+    inline Nanoseconds TimestampExperimental::getTimeOfWeek()
     {
         return m_timestamp % Weeks(1);
     }
 
-    template<typename Standard>
     template<typename DurationIn>
-    inline void TimestampExperimental<Standard>::setTimeOfWeek(DurationIn time)
+    inline void TimestampExperimental::setTimeOfWeek(DurationIn time)
     {
         setTimeOfWeek(std::chrono::duration_cast<Nanoseconds>(time));
     }
     
-    template<typename Standard>
-    inline void TimestampExperimental<Standard>::setTimeOfWeek(Nanoseconds time)
+    inline void TimestampExperimental::setTimeOfWeek(Nanoseconds time)
     {
         if (time < Nanoseconds(0))
         {
@@ -228,9 +217,8 @@ namespace mip
         m_timestamp = std::chrono::duration_cast<Weeks>(m_timestamp) + time;
     }
 
-    template<typename Standard>
     template<typename DurationElapsed>
-    inline bool TimestampExperimental<Standard>::timeElapsed(const TimestampExperimental &reference)
+    inline bool TimestampExperimental::timeElapsed(const TimestampExperimental &reference)
     {
         const Nanoseconds m_reference = reference.getTimestamp();
         if (m_timestamp < m_reference)
@@ -241,9 +229,8 @@ namespace mip
         return m_timestamp - m_reference >= DurationElapsed(1);
     }
 
-    template<typename Standard>
     template<typename DurationChanged>
-    inline bool TimestampExperimental<Standard>::timeChanged(const TimestampExperimental &reference)
+    inline bool TimestampExperimental::timeChanged(const TimestampExperimental &reference)
     {
         const Nanoseconds m_reference = reference.getTimestamp();
         if (m_timestamp < m_reference)
@@ -254,14 +241,14 @@ namespace mip
         return std::chrono::duration_cast<DurationChanged>(m_timestamp) > std::chrono::duration_cast<DurationChanged>(m_reference);
     }
 
-    template<typename Standard>
     template<typename T, typename DurationIn>
-    T TimestampExperimental<Standard>::castTime(const DurationIn &time)
+    T TimestampExperimental::castTime(const DurationIn &time)
     {
         if (time < mip::Nanoseconds(0))
         {
             throw std::invalid_argument("Time < 0.");
         }
+
         return static_cast<T>(time.count());
     }
 } // namespace mip
