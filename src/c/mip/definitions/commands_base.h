@@ -77,11 +77,11 @@ enum mip_time_format
 };
 typedef enum mip_time_format mip_time_format;
 
-inline void insert_mip_time_format(microstrain_serializer* serializer, const mip_time_format self)
+static inline void insert_mip_time_format(microstrain_serializer* serializer, const mip_time_format self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_time_format(microstrain_serializer* serializer, mip_time_format* self)
+static inline void extract_mip_time_format(microstrain_serializer* serializer, mip_time_format* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -118,11 +118,11 @@ static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_RTK_FA
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_SOLUTION_FAULT    = 0x40000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_GNSS_GENERAL_FAULT     = 0x80000000; ///<  
 static const mip_commanded_test_bits_gq7 MIP_COMMANDED_TEST_BITS_GQ7_ALL                    = 0xFFFFFFFF;
-inline void insert_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
+static inline void insert_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, const mip_commanded_test_bits_gq7 self)
 {
     microstrain_insert_u32(serializer, (uint32_t)(self));
 }
-inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
+static inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializer, mip_commanded_test_bits_gq7* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
@@ -144,6 +144,8 @@ inline void extract_mip_commanded_test_bits_gq7(microstrain_serializer* serializ
 ///
 ///@{
 
+typedef struct mip_base_ping_command mip_base_ping_command; ///< No parameters (empty struct not allowed in C)
+
 mip_cmd_result mip_base_ping(mip_interface* device);
 
 ///@}
@@ -158,6 +160,8 @@ mip_cmd_result mip_base_ping(mip_interface* device);
 ///
 ///@{
 
+typedef struct mip_base_set_idle_command mip_base_set_idle_command; ///< No parameters (empty struct not allowed in C)
+
 mip_cmd_result mip_base_set_idle(mip_interface* device);
 
 ///@}
@@ -167,6 +171,8 @@ mip_cmd_result mip_base_set_idle(mip_interface* device);
 /// Get the device ID strings and firmware version number.
 ///
 ///@{
+
+typedef struct mip_base_get_device_info_command mip_base_get_device_info_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_base_get_device_info_response
 {
@@ -189,6 +195,8 @@ mip_cmd_result mip_base_get_device_info(mip_interface* device, mip_base_device_i
 /// The MSB specifies the descriptor set and the LSB specifies the descriptor.
 ///
 ///@{
+
+typedef struct mip_base_get_device_descriptors_command mip_base_get_device_descriptors_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_base_get_device_descriptors_response
 {
@@ -215,6 +223,8 @@ mip_cmd_result mip_base_get_device_descriptors(mip_interface* device, uint16_t* 
 ///
 ///@{
 
+typedef struct mip_base_built_in_test_command mip_base_built_in_test_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_base_built_in_test_response
 {
     uint32_t result;
@@ -236,6 +246,8 @@ mip_cmd_result mip_base_built_in_test(mip_interface* device, uint32_t* result_ou
 ///
 ///@{
 
+typedef struct mip_base_resume_command mip_base_resume_command; ///< No parameters (empty struct not allowed in C)
+
 mip_cmd_result mip_base_resume(mip_interface* device);
 
 ///@}
@@ -248,6 +260,8 @@ mip_cmd_result mip_base_resume(mip_interface* device);
 /// The MSB specifies the descriptor set and the LSB specifies the descriptor.
 ///
 ///@{
+
+typedef struct mip_base_get_extended_descriptors_command mip_base_get_extended_descriptors_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_base_get_extended_descriptors_response
 {
@@ -270,6 +284,8 @@ mip_cmd_result mip_base_get_extended_descriptors(mip_interface* device, uint16_t
 /// This test is non-disruptive but is not as thorough as the commanded BIT.
 ///
 ///@{
+
+typedef struct mip_base_continuous_bit_command mip_base_continuous_bit_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_base_continuous_bit_response
 {
@@ -350,11 +366,11 @@ enum mip_base_gps_time_update_command_field_id
 };
 typedef enum mip_base_gps_time_update_command_field_id mip_base_gps_time_update_command_field_id;
 
-inline void insert_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
+static inline void insert_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, const mip_base_gps_time_update_command_field_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
+static inline void extract_mip_base_gps_time_update_command_field_id(microstrain_serializer* serializer, mip_base_gps_time_update_command_field_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -384,6 +400,8 @@ mip_cmd_result mip_base_write_gps_time_update(mip_interface* device, mip_base_gp
 /// Device responds with ACK and immediately resets.
 ///
 ///@{
+
+typedef struct mip_base_soft_reset_command mip_base_soft_reset_command; ///< No parameters (empty struct not allowed in C)
 
 mip_cmd_result mip_base_soft_reset(mip_interface* device);
 

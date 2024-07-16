@@ -100,9 +100,9 @@ struct Vector
     /// Get the size of the array
     size_t size() const { return N; }
 
-    /// Pack vector into a raw byte buffer.
-    size_t insert(Serializer& serializer) const { return serializer.insert(m_data); }
-    size_t extract(Serializer& serializer) { return serializer.extract(m_data); }
+    ///// Pack vector into a raw byte buffer.
+    //size_t insert(Serializer& serializer) const { return serializer.insert(m_data); }
+    //size_t extract(Serializer& serializer) { return serializer.extract(m_data); }
 
 private:
     T m_data[N];
@@ -117,11 +117,11 @@ using Matrix3d = Vector<double,9>;
 
 using Quatf = Vector4f;
 
-//template<typename T, size_t N>
-//void insert(Serializer& serializer, const Vector<T,N>& v) { for(size_t i =0; i<N; i++) insert(serializer, v[i]); }
-//
-//template<typename T, size_t N>
-//void extract(Serializer& serializer, Vector<T,N>& v) { for(size_t i =0; i<N; i++) extract(serializer, v[i]); }
+template<typename T, size_t N>
+size_t insert(Serializer& serializer, const Vector<T,N>& v) { return serializer.insert(v.data()); }
+
+template<typename T, size_t N>
+size_t extract(Serializer& serializer, Vector<T,N>& v) { return serializer.extract(v.data()); }
 
 ///@}
 ////////////////////////////////////////////////////////////////////////////////

@@ -81,14 +81,14 @@ static std::optional<uint64_t> readIntegralValue(Type type, mip::Serializer& ser
 {
     switch(type)
     {
-    case Type::U8:  return microstrain::extract<microstrain::serialization::Endian::big, uint8_t >(serializer);
-    case Type::S8:  return microstrain::extract<microstrain::serialization::Endian::big,  int8_t >(serializer);
-    case Type::U16: return microstrain::extract<microstrain::serialization::Endian::big, uint16_t>(serializer);
-    case Type::S16: return microstrain::extract<microstrain::serialization::Endian::big,  int32_t>(serializer);
-    case Type::U32: return microstrain::extract<microstrain::serialization::Endian::big, uint32_t>(serializer);
-    case Type::S32: return microstrain::extract<microstrain::serialization::Endian::big,  int64_t>(serializer);
-    case Type::U64: return microstrain::extract<microstrain::serialization::Endian::big, uint64_t>(serializer);
-    case Type::S64: return microstrain::extract<microstrain::serialization::Endian::big,  int64_t>(serializer);
+    case Type::U8:  return microstrain::extract< uint8_t>(serializer);
+    case Type::S8:  return microstrain::extract<  int8_t>(serializer);
+    case Type::U16: return microstrain::extract<uint16_t>(serializer);
+    case Type::S16: return microstrain::extract< int32_t>(serializer);
+    case Type::U32: return microstrain::extract<uint32_t>(serializer);
+    case Type::S32: return microstrain::extract< int64_t>(serializer);
+    case Type::U64: return microstrain::extract<uint64_t>(serializer);
+    case Type::S64: return microstrain::extract< int64_t>(serializer);
     default: return std::nullopt;
     }
 }

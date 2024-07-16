@@ -83,11 +83,11 @@ enum mip_gnss_constellation_id
 };
 typedef enum mip_gnss_constellation_id mip_gnss_constellation_id;
 
-inline void insert_mip_gnss_constellation_id(microstrain_serializer* serializer, const mip_gnss_constellation_id self)
+static inline void insert_mip_gnss_constellation_id(microstrain_serializer* serializer, const mip_gnss_constellation_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_constellation_id(microstrain_serializer* serializer, mip_gnss_constellation_id* self)
+static inline void extract_mip_gnss_constellation_id(microstrain_serializer* serializer, mip_gnss_constellation_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -164,11 +164,11 @@ enum mip_gnss_signal_id
 };
 typedef enum mip_gnss_signal_id mip_gnss_signal_id;
 
-inline void insert_mip_gnss_signal_id(microstrain_serializer* serializer, const mip_gnss_signal_id self)
+static inline void insert_mip_gnss_signal_id(microstrain_serializer* serializer, const mip_gnss_signal_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_signal_id(microstrain_serializer* serializer, mip_gnss_signal_id* self)
+static inline void extract_mip_gnss_signal_id(microstrain_serializer* serializer, mip_gnss_signal_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -185,11 +185,11 @@ enum mip_sbas_system
 };
 typedef enum mip_sbas_system mip_sbas_system;
 
-inline void insert_mip_sbas_system(microstrain_serializer* serializer, const mip_sbas_system self)
+static inline void insert_mip_sbas_system(microstrain_serializer* serializer, const mip_sbas_system self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_sbas_system(microstrain_serializer* serializer, mip_sbas_system* self)
+static inline void extract_mip_sbas_system(microstrain_serializer* serializer, mip_sbas_system* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -218,11 +218,11 @@ static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_VERTICAL_ACCURACY   = 0x0010; ///<  
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_FLAGS               = 0x001F; ///<  
 static const mip_gnss_pos_llh_data_valid_flags MIP_GNSS_POS_LLH_DATA_VALID_FLAGS_ALL                 = 0x001F;
-inline void insert_mip_gnss_pos_llh_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_pos_llh_data_valid_flags self)
+static inline void insert_mip_gnss_pos_llh_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_pos_llh_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_pos_llh_data_valid_flags(microstrain_serializer* serializer, mip_gnss_pos_llh_data_valid_flags* self)
+static inline void extract_mip_gnss_pos_llh_data_valid_flags(microstrain_serializer* serializer, mip_gnss_pos_llh_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -261,11 +261,11 @@ static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLA
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_POSITION_ACCURACY = 0x0002; ///<  
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003; ///<  
 static const mip_gnss_pos_ecef_data_valid_flags MIP_GNSS_POS_ECEF_DATA_VALID_FLAGS_ALL               = 0x0003;
-inline void insert_mip_gnss_pos_ecef_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_pos_ecef_data_valid_flags self)
+static inline void insert_mip_gnss_pos_ecef_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_pos_ecef_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_pos_ecef_data_valid_flags(microstrain_serializer* serializer, mip_gnss_pos_ecef_data_valid_flags* self)
+static inline void extract_mip_gnss_pos_ecef_data_valid_flags(microstrain_serializer* serializer, mip_gnss_pos_ecef_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -304,11 +304,11 @@ static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_HEADING_ACCURACY = 0x0020; ///<  
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_FLAGS            = 0x003F; ///<  
 static const mip_gnss_vel_ned_data_valid_flags MIP_GNSS_VEL_NED_DATA_VALID_FLAGS_ALL              = 0x003F;
-inline void insert_mip_gnss_vel_ned_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_vel_ned_data_valid_flags self)
+static inline void insert_mip_gnss_vel_ned_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_vel_ned_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_vel_ned_data_valid_flags(microstrain_serializer* serializer, mip_gnss_vel_ned_data_valid_flags* self)
+static inline void extract_mip_gnss_vel_ned_data_valid_flags(microstrain_serializer* serializer, mip_gnss_vel_ned_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -347,11 +347,11 @@ static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLA
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_VELOCITY_ACCURACY = 0x0002; ///<  
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_FLAGS             = 0x0003; ///<  
 static const mip_gnss_vel_ecef_data_valid_flags MIP_GNSS_VEL_ECEF_DATA_VALID_FLAGS_ALL               = 0x0003;
-inline void insert_mip_gnss_vel_ecef_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_vel_ecef_data_valid_flags self)
+static inline void insert_mip_gnss_vel_ecef_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_vel_ecef_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_vel_ecef_data_valid_flags(microstrain_serializer* serializer, mip_gnss_vel_ecef_data_valid_flags* self)
+static inline void extract_mip_gnss_vel_ecef_data_valid_flags(microstrain_serializer* serializer, mip_gnss_vel_ecef_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -391,11 +391,11 @@ static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_NDOP  =
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_EDOP  = 0x0040; ///<  
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_FLAGS = 0x007F; ///<  
 static const mip_gnss_dop_data_valid_flags MIP_GNSS_DOP_DATA_VALID_FLAGS_ALL   = 0x007F;
-inline void insert_mip_gnss_dop_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dop_data_valid_flags self)
+static inline void insert_mip_gnss_dop_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dop_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_dop_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dop_data_valid_flags* self)
+static inline void extract_mip_gnss_dop_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dop_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -435,11 +435,11 @@ static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLA
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_LEAP_SECONDS_KNOWN = 0x0002; ///<  
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_FLAGS              = 0x0003; ///<  
 static const mip_gnss_utc_time_data_valid_flags MIP_GNSS_UTC_TIME_DATA_VALID_FLAGS_ALL                = 0x0003;
-inline void insert_mip_gnss_utc_time_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_utc_time_data_valid_flags self)
+static inline void insert_mip_gnss_utc_time_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_utc_time_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_utc_time_data_valid_flags(microstrain_serializer* serializer, mip_gnss_utc_time_data_valid_flags* self)
+static inline void extract_mip_gnss_utc_time_data_valid_flags(microstrain_serializer* serializer, mip_gnss_utc_time_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -479,11 +479,11 @@ static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLA
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
 static const mip_gnss_gps_time_data_valid_flags MIP_GNSS_GPS_TIME_DATA_VALID_FLAGS_ALL         = 0x0003;
-inline void insert_mip_gnss_gps_time_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_time_data_valid_flags self)
+static inline void insert_mip_gnss_gps_time_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_time_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_gps_time_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_time_data_valid_flags* self)
+static inline void extract_mip_gnss_gps_time_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_time_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -519,11 +519,11 @@ static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_ACCURACY_ESTIMATE = 0x0004; ///<  
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_FLAGS             = 0x0007; ///<  
 static const mip_gnss_clock_info_data_valid_flags MIP_GNSS_CLOCK_INFO_DATA_VALID_FLAGS_ALL               = 0x0007;
-inline void insert_mip_gnss_clock_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_clock_info_data_valid_flags self)
+static inline void insert_mip_gnss_clock_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_clock_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_clock_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_clock_info_data_valid_flags* self)
+static inline void extract_mip_gnss_clock_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_clock_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -566,11 +566,11 @@ enum mip_gnss_fix_info_data_fix_type
 };
 typedef enum mip_gnss_fix_info_data_fix_type mip_gnss_fix_info_data_fix_type;
 
-inline void insert_mip_gnss_fix_info_data_fix_type(microstrain_serializer* serializer, const mip_gnss_fix_info_data_fix_type self)
+static inline void insert_mip_gnss_fix_info_data_fix_type(microstrain_serializer* serializer, const mip_gnss_fix_info_data_fix_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_fix_info_data_fix_type(microstrain_serializer* serializer, mip_gnss_fix_info_data_fix_type* self)
+static inline void extract_mip_gnss_fix_info_data_fix_type(microstrain_serializer* serializer, mip_gnss_fix_info_data_fix_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -582,11 +582,11 @@ static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_N
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_SBAS_USED  = 0x0001; ///<  
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_DGNSS_USED = 0x0002; ///<  
 static const mip_gnss_fix_info_data_fix_flags MIP_GNSS_FIX_INFO_DATA_FIX_FLAGS_ALL        = 0x0003;
-inline void insert_mip_gnss_fix_info_data_fix_flags(microstrain_serializer* serializer, const mip_gnss_fix_info_data_fix_flags self)
+static inline void insert_mip_gnss_fix_info_data_fix_flags(microstrain_serializer* serializer, const mip_gnss_fix_info_data_fix_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_fix_info_data_fix_flags(microstrain_serializer* serializer, mip_gnss_fix_info_data_fix_flags* self)
+static inline void extract_mip_gnss_fix_info_data_fix_flags(microstrain_serializer* serializer, mip_gnss_fix_info_data_fix_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -600,11 +600,11 @@ static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLA
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FIX_FLAGS = 0x0004; ///<  
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_FLAGS     = 0x0007; ///<  
 static const mip_gnss_fix_info_data_valid_flags MIP_GNSS_FIX_INFO_DATA_VALID_FLAGS_ALL       = 0x0007;
-inline void insert_mip_gnss_fix_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_fix_info_data_valid_flags self)
+static inline void insert_mip_gnss_fix_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_fix_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_fix_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_fix_info_data_valid_flags* self)
+static inline void extract_mip_gnss_fix_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_fix_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -641,11 +641,11 @@ static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_NONE   
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_USED_FOR_NAVIGATION = 0x0001; ///<  
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_HEALTHY             = 0x0002; ///<  
 static const mip_gnss_sv_info_data_svflags MIP_GNSS_SV_INFO_DATA_SVFLAGS_ALL                 = 0x0003;
-inline void insert_mip_gnss_sv_info_data_svflags(microstrain_serializer* serializer, const mip_gnss_sv_info_data_svflags self)
+static inline void insert_mip_gnss_sv_info_data_svflags(microstrain_serializer* serializer, const mip_gnss_sv_info_data_svflags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_sv_info_data_svflags(microstrain_serializer* serializer, mip_gnss_sv_info_data_svflags* self)
+static inline void extract_mip_gnss_sv_info_data_svflags(microstrain_serializer* serializer, mip_gnss_sv_info_data_svflags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -662,11 +662,11 @@ static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_SV_FLAGS            = 0x0020; ///<  
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_FLAGS               = 0x003F; ///<  
 static const mip_gnss_sv_info_data_valid_flags MIP_GNSS_SV_INFO_DATA_VALID_FLAGS_ALL                 = 0x003F;
-inline void insert_mip_gnss_sv_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sv_info_data_valid_flags self)
+static inline void insert_mip_gnss_sv_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sv_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_sv_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sv_info_data_valid_flags* self)
+static inline void extract_mip_gnss_sv_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sv_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -707,11 +707,11 @@ enum mip_gnss_hw_status_data_receiver_state
 };
 typedef enum mip_gnss_hw_status_data_receiver_state mip_gnss_hw_status_data_receiver_state;
 
-inline void insert_mip_gnss_hw_status_data_receiver_state(microstrain_serializer* serializer, const mip_gnss_hw_status_data_receiver_state self)
+static inline void insert_mip_gnss_hw_status_data_receiver_state(microstrain_serializer* serializer, const mip_gnss_hw_status_data_receiver_state self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_hw_status_data_receiver_state(microstrain_serializer* serializer, mip_gnss_hw_status_data_receiver_state* self)
+static inline void extract_mip_gnss_hw_status_data_receiver_state(microstrain_serializer* serializer, mip_gnss_hw_status_data_receiver_state* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -728,11 +728,11 @@ enum mip_gnss_hw_status_data_antenna_state
 };
 typedef enum mip_gnss_hw_status_data_antenna_state mip_gnss_hw_status_data_antenna_state;
 
-inline void insert_mip_gnss_hw_status_data_antenna_state(microstrain_serializer* serializer, const mip_gnss_hw_status_data_antenna_state self)
+static inline void insert_mip_gnss_hw_status_data_antenna_state(microstrain_serializer* serializer, const mip_gnss_hw_status_data_antenna_state self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_hw_status_data_antenna_state(microstrain_serializer* serializer, mip_gnss_hw_status_data_antenna_state* self)
+static inline void extract_mip_gnss_hw_status_data_antenna_state(microstrain_serializer* serializer, mip_gnss_hw_status_data_antenna_state* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -747,11 +747,11 @@ enum mip_gnss_hw_status_data_antenna_power
 };
 typedef enum mip_gnss_hw_status_data_antenna_power mip_gnss_hw_status_data_antenna_power;
 
-inline void insert_mip_gnss_hw_status_data_antenna_power(microstrain_serializer* serializer, const mip_gnss_hw_status_data_antenna_power self)
+static inline void insert_mip_gnss_hw_status_data_antenna_power(microstrain_serializer* serializer, const mip_gnss_hw_status_data_antenna_power self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_hw_status_data_antenna_power(microstrain_serializer* serializer, mip_gnss_hw_status_data_antenna_power* self)
+static inline void extract_mip_gnss_hw_status_data_antenna_power(microstrain_serializer* serializer, mip_gnss_hw_status_data_antenna_power* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -765,11 +765,11 @@ static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_F
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ANTENNA_POWER = 0x0004; ///<  
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_FLAGS         = 0x0007; ///<  
 static const mip_gnss_hw_status_data_valid_flags MIP_GNSS_HW_STATUS_DATA_VALID_FLAGS_ALL           = 0x0007;
-inline void insert_mip_gnss_hw_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_hw_status_data_valid_flags self)
+static inline void insert_mip_gnss_hw_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_hw_status_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_hw_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_hw_status_data_valid_flags* self)
+static inline void extract_mip_gnss_hw_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_hw_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -819,11 +819,11 @@ static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_F
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_NUM_CHANNELS        = 0x0008; ///<  
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_FLAGS               = 0x000F; ///<  
 static const mip_gnss_dgps_info_data_valid_flags MIP_GNSS_DGPS_INFO_DATA_VALID_FLAGS_ALL                 = 0x000F;
-inline void insert_mip_gnss_dgps_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dgps_info_data_valid_flags self)
+static inline void insert_mip_gnss_dgps_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dgps_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_dgps_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dgps_info_data_valid_flags* self)
+static inline void extract_mip_gnss_dgps_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dgps_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -864,11 +864,11 @@ static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_V
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_RANGE_RATE_CORRECTION = 0x0008; ///<  
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_FLAGS                 = 0x000F; ///<  
 static const mip_gnss_dgps_channel_data_valid_flags MIP_GNSS_DGPS_CHANNEL_DATA_VALID_FLAGS_ALL                   = 0x000F;
-inline void insert_mip_gnss_dgps_channel_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dgps_channel_data_valid_flags self)
+static inline void insert_mip_gnss_dgps_channel_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_dgps_channel_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_dgps_channel_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dgps_channel_data_valid_flags* self)
+static inline void extract_mip_gnss_dgps_channel_data_valid_flags(microstrain_serializer* serializer, mip_gnss_dgps_channel_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -909,11 +909,11 @@ static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_V
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_DRIFT_ACCURACY = 0x0008; ///<  
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_FLAGS          = 0x000F; ///<  
 static const mip_gnss_clock_info_2_data_valid_flags MIP_GNSS_CLOCK_INFO_2_DATA_VALID_FLAGS_ALL            = 0x000F;
-inline void insert_mip_gnss_clock_info_2_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_clock_info_2_data_valid_flags self)
+static inline void insert_mip_gnss_clock_info_2_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_clock_info_2_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_clock_info_2_data_valid_flags(microstrain_serializer* serializer, mip_gnss_clock_info_2_data_valid_flags* self)
+static inline void extract_mip_gnss_clock_info_2_data_valid_flags(microstrain_serializer* serializer, mip_gnss_clock_info_2_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -948,11 +948,11 @@ typedef uint16_t mip_gnss_gps_leap_seconds_data_valid_flags;
 static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_NONE         = 0x0000;
 static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_LEAP_SECONDS = 0x0002; ///<  
 static const mip_gnss_gps_leap_seconds_data_valid_flags MIP_GNSS_GPS_LEAP_SECONDS_DATA_VALID_FLAGS_ALL          = 0x0002;
-inline void insert_mip_gnss_gps_leap_seconds_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_leap_seconds_data_valid_flags self)
+static inline void insert_mip_gnss_gps_leap_seconds_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_leap_seconds_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_gps_leap_seconds_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_leap_seconds_data_valid_flags* self)
+static inline void extract_mip_gnss_gps_leap_seconds_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_leap_seconds_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -987,11 +987,11 @@ static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_ST
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_INTEGRITY_AVAILABLE   = 0x04; ///<  
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_TEST_MODE             = 0x08; ///<  
 static const mip_gnss_sbas_info_data_sbas_status MIP_GNSS_SBAS_INFO_DATA_SBAS_STATUS_ALL                   = 0x0F;
-inline void insert_mip_gnss_sbas_info_data_sbas_status(microstrain_serializer* serializer, const mip_gnss_sbas_info_data_sbas_status self)
+static inline void insert_mip_gnss_sbas_info_data_sbas_status(microstrain_serializer* serializer, const mip_gnss_sbas_info_data_sbas_status self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_sbas_info_data_sbas_status(microstrain_serializer* serializer, mip_gnss_sbas_info_data_sbas_status* self)
+static inline void extract_mip_gnss_sbas_info_data_sbas_status(microstrain_serializer* serializer, mip_gnss_sbas_info_data_sbas_status* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1008,11 +1008,11 @@ static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_F
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_SBAS_STATUS = 0x0020; ///<  
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_FLAGS       = 0x003F; ///<  
 static const mip_gnss_sbas_info_data_valid_flags MIP_GNSS_SBAS_INFO_DATA_VALID_FLAGS_ALL         = 0x003F;
-inline void insert_mip_gnss_sbas_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sbas_info_data_valid_flags self)
+static inline void insert_mip_gnss_sbas_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sbas_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_sbas_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sbas_info_data_valid_flags* self)
+static inline void extract_mip_gnss_sbas_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sbas_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1074,11 +1074,11 @@ static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_IONO_CORRECTION        = 0x0004; ///<  
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_FLAGS                  = 0x0007; ///<  
 static const mip_gnss_sbas_correction_data_valid_flags MIP_GNSS_SBAS_CORRECTION_DATA_VALID_FLAGS_ALL                    = 0x0007;
-inline void insert_mip_gnss_sbas_correction_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sbas_correction_data_valid_flags self)
+static inline void insert_mip_gnss_sbas_correction_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_sbas_correction_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_sbas_correction_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sbas_correction_data_valid_flags* self)
+static inline void extract_mip_gnss_sbas_correction_data_valid_flags(microstrain_serializer* serializer, mip_gnss_sbas_correction_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1123,11 +1123,11 @@ enum mip_gnss_rf_error_detection_data_rfband
 };
 typedef enum mip_gnss_rf_error_detection_data_rfband mip_gnss_rf_error_detection_data_rfband;
 
-inline void insert_mip_gnss_rf_error_detection_data_rfband(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_rfband self)
+static inline void insert_mip_gnss_rf_error_detection_data_rfband(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_rfband self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_rf_error_detection_data_rfband(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_rfband* self)
+static inline void extract_mip_gnss_rf_error_detection_data_rfband(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_rfband* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1143,11 +1143,11 @@ enum mip_gnss_rf_error_detection_data_jamming_state
 };
 typedef enum mip_gnss_rf_error_detection_data_jamming_state mip_gnss_rf_error_detection_data_jamming_state;
 
-inline void insert_mip_gnss_rf_error_detection_data_jamming_state(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_jamming_state self)
+static inline void insert_mip_gnss_rf_error_detection_data_jamming_state(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_jamming_state self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_rf_error_detection_data_jamming_state(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_jamming_state* self)
+static inline void extract_mip_gnss_rf_error_detection_data_jamming_state(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_jamming_state* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1163,11 +1163,11 @@ enum mip_gnss_rf_error_detection_data_spoofing_state
 };
 typedef enum mip_gnss_rf_error_detection_data_spoofing_state mip_gnss_rf_error_detection_data_spoofing_state;
 
-inline void insert_mip_gnss_rf_error_detection_data_spoofing_state(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_spoofing_state self)
+static inline void insert_mip_gnss_rf_error_detection_data_spoofing_state(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_spoofing_state self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_rf_error_detection_data_spoofing_state(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_spoofing_state* self)
+static inline void extract_mip_gnss_rf_error_detection_data_spoofing_state(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_spoofing_state* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1181,11 +1181,11 @@ static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETE
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_SPOOFING_STATE = 0x0004; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_FLAGS          = 0x0007; ///<  
 static const mip_gnss_rf_error_detection_data_valid_flags MIP_GNSS_RF_ERROR_DETECTION_DATA_VALID_FLAGS_ALL            = 0x0007;
-inline void insert_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_valid_flags self)
+static inline void insert_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rf_error_detection_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_valid_flags* self)
+static inline void extract_mip_gnss_rf_error_detection_data_valid_flags(microstrain_serializer* serializer, mip_gnss_rf_error_detection_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1230,11 +1230,11 @@ static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATI
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_QUARTER_CYCLE_BIT2 = 0x0080; ///<  
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_QUARTER_CYCLE_BITS = 0x00C0; ///<  
 static const mip_gnss_base_station_info_data_indicator_flags MIP_GNSS_BASE_STATION_INFO_DATA_INDICATOR_FLAGS_ALL                = 0x00FF;
-inline void insert_mip_gnss_base_station_info_data_indicator_flags(microstrain_serializer* serializer, const mip_gnss_base_station_info_data_indicator_flags self)
+static inline void insert_mip_gnss_base_station_info_data_indicator_flags(microstrain_serializer* serializer, const mip_gnss_base_station_info_data_indicator_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_base_station_info_data_indicator_flags(microstrain_serializer* serializer, mip_gnss_base_station_info_data_indicator_flags* self)
+static inline void extract_mip_gnss_base_station_info_data_indicator_flags(microstrain_serializer* serializer, mip_gnss_base_station_info_data_indicator_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1251,11 +1251,11 @@ static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_I
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_INDICATORS    = 0x0020; ///<  
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_FLAGS         = 0x003F; ///<  
 static const mip_gnss_base_station_info_data_valid_flags MIP_GNSS_BASE_STATION_INFO_DATA_VALID_FLAGS_ALL           = 0x003F;
-inline void insert_mip_gnss_base_station_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_base_station_info_data_valid_flags self)
+static inline void insert_mip_gnss_base_station_info_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_base_station_info_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_base_station_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_base_station_info_data_valid_flags* self)
+static inline void extract_mip_gnss_base_station_info_data_valid_flags(microstrain_serializer* serializer, mip_gnss_base_station_info_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1299,11 +1299,11 @@ static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRE
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_BEIDOU_LATENCY  = 0x0080; ///<  
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_FLAGS           = 0x00FF; ///<  
 static const mip_gnss_rtk_corrections_status_data_valid_flags MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_VALID_FLAGS_ALL             = 0x00FF;
-inline void insert_mip_gnss_rtk_corrections_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rtk_corrections_status_data_valid_flags self)
+static inline void insert_mip_gnss_rtk_corrections_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_rtk_corrections_status_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_rtk_corrections_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_rtk_corrections_status_data_valid_flags* self)
+static inline void extract_mip_gnss_rtk_corrections_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_rtk_corrections_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1322,11 +1322,11 @@ static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORR
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_USING_GLONASS_MSM_MESSAGES   = 0x0080; ///<  Using MSM messages for GLONASS corrections instead of RTCM messages 1009-1012
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_DONGLE_STATUS_READ_FAILED    = 0x0100; ///<  A read of the dongle status was attempted, but failed
 static const mip_gnss_rtk_corrections_status_data_epoch_status MIP_GNSS_RTK_CORRECTIONS_STATUS_DATA_EPOCH_STATUS_ALL                          = 0x01FF;
-inline void insert_mip_gnss_rtk_corrections_status_data_epoch_status(microstrain_serializer* serializer, const mip_gnss_rtk_corrections_status_data_epoch_status self)
+static inline void insert_mip_gnss_rtk_corrections_status_data_epoch_status(microstrain_serializer* serializer, const mip_gnss_rtk_corrections_status_data_epoch_status self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_rtk_corrections_status_data_epoch_status(microstrain_serializer* serializer, mip_gnss_rtk_corrections_status_data_epoch_status* self)
+static inline void extract_mip_gnss_rtk_corrections_status_data_epoch_status(microstrain_serializer* serializer, mip_gnss_rtk_corrections_status_data_epoch_status* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1373,11 +1373,11 @@ static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATU
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_HEALTH       = 0x0040; ///<  
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_FLAGS        = 0x007F; ///<  
 static const mip_gnss_satellite_status_data_valid_flags MIP_GNSS_SATELLITE_STATUS_DATA_VALID_FLAGS_ALL          = 0x007F;
-inline void insert_mip_gnss_satellite_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_satellite_status_data_valid_flags self)
+static inline void insert_mip_gnss_satellite_status_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_satellite_status_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_satellite_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_satellite_status_data_valid_flags* self)
+static inline void extract_mip_gnss_satellite_status_data_valid_flags(microstrain_serializer* serializer, mip_gnss_satellite_status_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1424,11 +1424,11 @@ enum mip_gnss_raw_data_gnss_signal_quality
 };
 typedef enum mip_gnss_raw_data_gnss_signal_quality mip_gnss_raw_data_gnss_signal_quality;
 
-inline void insert_mip_gnss_raw_data_gnss_signal_quality(microstrain_serializer* serializer, const mip_gnss_raw_data_gnss_signal_quality self)
+static inline void insert_mip_gnss_raw_data_gnss_signal_quality(microstrain_serializer* serializer, const mip_gnss_raw_data_gnss_signal_quality self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_gnss_raw_data_gnss_signal_quality(microstrain_serializer* serializer, mip_gnss_raw_data_gnss_signal_quality* self)
+static inline void extract_mip_gnss_raw_data_gnss_signal_quality(microstrain_serializer* serializer, mip_gnss_raw_data_gnss_signal_quality* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1455,11 +1455,11 @@ static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_DOPPLER
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_LOCK_TIME                 = 0x8000; ///<  
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_FLAGS                     = 0xFFFF; ///<  
 static const mip_gnss_raw_data_valid_flags MIP_GNSS_RAW_DATA_VALID_FLAGS_ALL                       = 0xFFFF;
-inline void insert_mip_gnss_raw_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_raw_data_valid_flags self)
+static inline void insert_mip_gnss_raw_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_raw_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_raw_data_valid_flags(microstrain_serializer* serializer, mip_gnss_raw_data_valid_flags* self)
+static inline void extract_mip_gnss_raw_data_valid_flags(microstrain_serializer* serializer, mip_gnss_raw_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1510,11 +1510,11 @@ static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
 static const mip_gnss_gps_ephemeris_data_valid_flags MIP_GNSS_GPS_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
-inline void insert_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_ephemeris_data_valid_flags self)
+static inline void insert_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_ephemeris_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_ephemeris_data_valid_flags* self)
+static inline void extract_mip_gnss_gps_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_ephemeris_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1580,11 +1580,11 @@ static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEME
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_MODERN_DATA = 0x0002; ///<  
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS       = 0x0003; ///<  
 static const mip_gnss_galileo_ephemeris_data_valid_flags MIP_GNSS_GALILEO_EPHEMERIS_DATA_VALID_FLAGS_ALL         = 0x0003;
-inline void insert_mip_gnss_galileo_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_galileo_ephemeris_data_valid_flags self)
+static inline void insert_mip_gnss_galileo_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_galileo_ephemeris_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_galileo_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_galileo_ephemeris_data_valid_flags* self)
+static inline void extract_mip_gnss_galileo_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_galileo_ephemeris_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1649,11 +1649,11 @@ static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_EPHEMERIS = 0x0001; ///<  
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_FLAGS     = 0x0001; ///<  
 static const mip_gnss_glo_ephemeris_data_valid_flags MIP_GNSS_GLO_EPHEMERIS_DATA_VALID_FLAGS_ALL       = 0x0001;
-inline void insert_mip_gnss_glo_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_glo_ephemeris_data_valid_flags self)
+static inline void insert_mip_gnss_glo_ephemeris_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_glo_ephemeris_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_glo_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_glo_ephemeris_data_valid_flags* self)
+static inline void extract_mip_gnss_glo_ephemeris_data_valid_flags(microstrain_serializer* serializer, mip_gnss_glo_ephemeris_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1712,11 +1712,11 @@ static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_BETA        = 0x0008; ///<  
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_FLAGS       = 0x000F; ///<  
 static const mip_gnss_gps_iono_corr_data_valid_flags MIP_GNSS_GPS_IONO_CORR_DATA_VALID_FLAGS_ALL         = 0x000F;
-inline void insert_mip_gnss_gps_iono_corr_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_iono_corr_data_valid_flags self)
+static inline void insert_mip_gnss_gps_iono_corr_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_gps_iono_corr_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_gps_iono_corr_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_iono_corr_data_valid_flags* self)
+static inline void extract_mip_gnss_gps_iono_corr_data_valid_flags(microstrain_serializer* serializer, mip_gnss_gps_iono_corr_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1755,11 +1755,11 @@ static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_C
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_DISTURBANCE_FLAGS = 0x0008; ///<  
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_FLAGS             = 0x000F; ///<  
 static const mip_gnss_galileo_iono_corr_data_valid_flags MIP_GNSS_GALILEO_IONO_CORR_DATA_VALID_FLAGS_ALL               = 0x000F;
-inline void insert_mip_gnss_galileo_iono_corr_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_galileo_iono_corr_data_valid_flags self)
+static inline void insert_mip_gnss_galileo_iono_corr_data_valid_flags(microstrain_serializer* serializer, const mip_gnss_galileo_iono_corr_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_gnss_galileo_iono_corr_data_valid_flags(microstrain_serializer* serializer, mip_gnss_galileo_iono_corr_data_valid_flags* self)
+static inline void extract_mip_gnss_galileo_iono_corr_data_valid_flags(microstrain_serializer* serializer, mip_gnss_galileo_iono_corr_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);

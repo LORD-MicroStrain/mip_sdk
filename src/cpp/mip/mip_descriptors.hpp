@@ -61,8 +61,8 @@ using EnableForFieldTypes = std::enable_if<isField<T>::value, T>;
 ///
 template<typename DerivedT> struct Bitfield {};
 
-template<class Derived> void insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { insert(serializer, static_cast<const Derived&>(bitfield).value); }
-template<class Derived> void extract(Serializer& serializer, Bitfield<Derived>& bitfield) { extract(serializer, static_cast<Derived&>(bitfield).value); }
+template<class Derived> size_t insert (Serializer& serializer, const Bitfield<Derived>& bitfield) { return insert(serializer, static_cast<const Derived&>(bitfield).value); }
+template<class Derived> size_t extract(Serializer& serializer, Bitfield<Derived>& bitfield) { return extract(serializer, static_cast<Derived&>(bitfield).value); }
 
 
 enum class FunctionSelector : uint8_t

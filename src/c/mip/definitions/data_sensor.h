@@ -443,11 +443,11 @@ static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_TOW_VALID         = 0x0008; ///<  True if the time of week is valid.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER_VALID = 0x0010; ///<  True if the week number is valid.
 static const mip_sensor_gps_timestamp_data_valid_flags MIP_SENSOR_GPS_TIMESTAMP_DATA_VALID_FLAGS_ALL               = 0x001F;
-inline void insert_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self)
+static inline void insert_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_sensor_gps_timestamp_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self)
+static inline void extract_mip_sensor_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_sensor_gps_timestamp_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -560,11 +560,11 @@ static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_MAG_Z   = 0x0400; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_PRESS   = 0x1000; ///<  
 static const mip_sensor_overrange_status_data_status MIP_SENSOR_OVERRANGE_STATUS_DATA_STATUS_ALL     = 0x1777;
-inline void insert_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, const mip_sensor_overrange_status_data_status self)
+static inline void insert_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, const mip_sensor_overrange_status_data_status self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, mip_sensor_overrange_status_data_status* self)
+static inline void extract_mip_sensor_overrange_status_data_status(microstrain_serializer* serializer, mip_sensor_overrange_status_data_status* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);

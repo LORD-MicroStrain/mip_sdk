@@ -19,6 +19,27 @@ extern "C" {
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
+void insert_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, const mip_gnss_receiver_info_command_info* self)
+{
+    microstrain_insert_u8(serializer, self->receiver_id);
+    
+    microstrain_insert_u8(serializer, self->mip_data_descriptor_set);
+    
+    for(unsigned int i=0; i < 32; i++)
+        microstrain_insert_char(serializer, self->description[i]);
+    
+}
+void extract_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, mip_gnss_receiver_info_command_info* self)
+{
+    microstrain_extract_u8(serializer, &self->receiver_id);
+    
+    microstrain_extract_u8(serializer, &self->mip_data_descriptor_set);
+    
+    for(unsigned int i=0; i < 32; i++)
+        microstrain_extract_char(serializer, &self->description[i]);
+    
+}
+
 mip_cmd_result mip_gnss_receiver_info(mip_interface* device, uint8_t* num_receivers_out, uint8_t num_receivers_out_max, mip_gnss_receiver_info_command_info* receiver_info_out)
 {
     uint8_t buffer[MIP_FIELD_PAYLOAD_LENGTH_MAX];

@@ -76,6 +76,8 @@ void insert_mip_gnss_receiver_info_command_info(microstrain_serializer* serializ
 void extract_mip_gnss_receiver_info_command_info(microstrain_serializer* serializer, mip_gnss_receiver_info_command_info* self);
 
 
+typedef struct mip_gnss_receiver_info_command mip_gnss_receiver_info_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_gnss_receiver_info_response
 {
     uint8_t num_receivers; ///< Number of physical receivers in the device

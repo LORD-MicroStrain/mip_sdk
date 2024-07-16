@@ -10,6 +10,103 @@ namespace mip::metadata
 {
 
 template<>
+struct MetadataFor<CmdResult>
+{
+    using type = CmdResult;
+
+    static constexpr inline EnumInfo::Entry entries[] = {
+        {
+            .value = CmdResult::ACK_OK,
+            .name  = "OK",
+            .docs  = "Command completed successfully",
+        },
+        {
+            .value = CmdResult::NACK_COMMAND_UNKNOWN,
+            .name  = "Unknown Command",
+            .docs  = "The device did not recognize the command",
+        },
+        {
+            .value = CmdResult::NACK_INVALID_CHECKSUM,
+            .name  = "Invalid Checksum",
+            .docs  = "An packet with an invalid checksum was received by the device",
+        },
+        {
+            .value = CmdResult::NACK_INVALID_PARAM,
+            .name  = "Invalid Parameter",
+            .docs  = "One or more parameters to the command were not valid",
+        },
+        {
+            .value = CmdResult::NACK_COMMAND_FAILED,
+            .name  = "Command Failed",
+            .docs  = "The device could not complete the command",
+        },
+        {
+            .value = CmdResult::NACK_COMMAND_TIMEOUT,
+            .name  = "Device Timeout",
+            .docs  = "The device reported a timeout condition",
+        },
+        // Status codes not represented here as they don't come from the device.
+    };
+
+    static constexpr inline EnumInfo value = {
+        .name    = "CmdResult",
+        .docs    = "Acknowledgement/reply code from the device after a command is issued",
+        .type    = Type::U8,
+        .entries = entries,
+    };
+};
+
+struct ReplyField
+{
+    static constexpr inline uint8_t FIELD_DESCRIPTOR = 0xF1;
+    static constexpr inline CompositeDescriptor DESCRIPTOR = {INVALID_DESCRIPTOR_SET, FIELD_DESCRIPTOR};
+
+    uint8_t   cmd_field_desc;
+    CmdResult result;
+
+    size_t insert(Serializer& buffer) const { return buffer.insert(cmd_field_desc, result.value); }
+    size_t extract(Serializer& buffer) { return buffer.extract(cmd_field_desc, result.value); }
+};
+
+template<>
+struct MetadataFor<ReplyField>
+{
+    using type = ReplyField;
+
+    static constexpr inline ParameterInfo parameters[] = {
+        {
+            .name = "cmd_field_desc",
+            .docs = "The field descriptor of the command this field acknowledges.",
+            .type = {Type::U8},
+            .accessor = utils::access<type, uint8_t, &type::cmd_field_desc>,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
+        },
+        {
+            .name = "result",
+            .docs = "Result of the command.",
+            .type = {Type::ENUM, &MetadataFor<CmdResult>::value},
+            .accessor = utils::access<type, CmdResult, &type::result>,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
+        },
+    };
+
+    static constexpr inline FieldInfo value = {
+        /*.name         = */ "ReplyField",
+        /* .title       = */ "Command Reply",
+        /* .docs        = */ "Sent by the device to indicate the result of a command.",
+        /* .parameters  = */ parameters,
+        /* .descriptor  = */ type::DESCRIPTOR,
+        /* .functions   = */ NO_FUNCTIONS,
+        /* .proprietary = */ false,
+        /* .response    = */ nullptr,
+    };
+};
+
+template<>
 struct MetadataFor<DescriptorRate>
 {
     using type = DescriptorRate;
@@ -20,12 +117,18 @@ struct MetadataFor<DescriptorRate>
             .docs = "MIP data descriptor",
             .type = {Type::U8},
             .accessor = utils::access<type, uint8_t, &type::descriptor>,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
         {
             .name = "decimation",
             .docs = "Decimation from the base rate",
             .type = {Type::U16},
             .accessor = utils::access<type, uint16_t, &type::decimation>,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
     };
 
@@ -36,40 +139,6 @@ struct MetadataFor<DescriptorRate>
         .parameters = parameters,
     };
 };
-
-//template<>
-//struct MetadataFor<Vector3f>
-//{
-//    using type = Vector3f;
-//
-//    static constexpr inline ParameterInfo parameters[] = {
-//        {
-//            .name = "x",
-//            .docs = "X axis",
-//            .type = {Type::FLOAT},
-//            .accessor = nullptr,
-//        },
-//        {
-//            .name = "y",
-//            .docs = "Y axis",
-//            .type = {Type::FLOAT},
-//            .accessor = nullptr,
-//        },
-//        {
-//            .name = "z",
-//            .docs = "Z axis",
-//            .type = {Type::FLOAT},
-//            .accessor = nullptr,
-//        },
-//    };
-//
-//    static constexpr inline StructInfo value = {
-//        .name = "Vector3f",
-//        .title = "3D Vector",
-//        .docs = "Represents a 3D vector of floats.",
-//        .parameters = parameters,
-//    };
-//};
 
 
 template<typename T, size_t N>
@@ -83,24 +152,36 @@ struct MetadataFor<Vector<T,N>>
             .docs = "X axis",
             .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
         {
             .name = "y",
             .docs = "Y axis",
             .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
         {
             .name = "z",
             .docs = "Z axis",
             .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
         {
             .name = "w",
             .docs = "W axis",
             .type = {utils::ParamType<T>::value},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
+            .count = 1,
+            .condition = {},
         },
     };
 
@@ -164,7 +245,9 @@ struct MetadataFor<Matrix3f>
             .docs = "Matrix data",
             .type = {Type::FLOAT},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
             .count = 3,
+            .condition = {},
         },
     };
 
@@ -187,7 +270,9 @@ struct MetadataFor<Matrix3d>
             .docs = "Matrix data",
             .type = {Type::DOUBLE},
             .accessor = nullptr,
+            .functions = NO_FUNCTIONS,
             .count = 3,
+            .condition = {},
         },
     };
 

@@ -161,11 +161,11 @@ enum mip_filter_reference_frame
 };
 typedef enum mip_filter_reference_frame mip_filter_reference_frame;
 
-inline void insert_mip_filter_reference_frame(microstrain_serializer* serializer, const mip_filter_reference_frame self)
+static inline void insert_mip_filter_reference_frame(microstrain_serializer* serializer, const mip_filter_reference_frame self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_reference_frame(microstrain_serializer* serializer, mip_filter_reference_frame* self)
+static inline void extract_mip_filter_reference_frame(microstrain_serializer* serializer, mip_filter_reference_frame* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -180,11 +180,11 @@ enum mip_filter_mag_param_source
 };
 typedef enum mip_filter_mag_param_source mip_filter_mag_param_source;
 
-inline void insert_mip_filter_mag_param_source(microstrain_serializer* serializer, const mip_filter_mag_param_source self)
+static inline void insert_mip_filter_mag_param_source(microstrain_serializer* serializer, const mip_filter_mag_param_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_mag_param_source(microstrain_serializer* serializer, mip_filter_mag_param_source* self)
+static inline void extract_mip_filter_mag_param_source(microstrain_serializer* serializer, mip_filter_mag_param_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -199,11 +199,11 @@ enum mip_filter_adaptive_measurement
 };
 typedef enum mip_filter_adaptive_measurement mip_filter_adaptive_measurement;
 
-inline void insert_mip_filter_adaptive_measurement(microstrain_serializer* serializer, const mip_filter_adaptive_measurement self)
+static inline void insert_mip_filter_adaptive_measurement(microstrain_serializer* serializer, const mip_filter_adaptive_measurement self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_adaptive_measurement(microstrain_serializer* serializer, mip_filter_adaptive_measurement* self)
+static inline void extract_mip_filter_adaptive_measurement(microstrain_serializer* serializer, mip_filter_adaptive_measurement* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -223,6 +223,8 @@ inline void extract_mip_filter_adaptive_measurement(microstrain_serializer* seri
 /// order to enter the run state after a reset.
 ///
 ///@{
+
+typedef struct mip_filter_reset_command mip_filter_reset_command; ///< No parameters (empty struct not allowed in C)
 
 mip_cmd_result mip_filter_reset(mip_interface* device);
 
@@ -286,11 +288,11 @@ static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIM
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_HARD_IRON = 0x0020; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_AUTO_MAG_SOFT_IRON = 0x0040; ///<  
 static const mip_filter_estimation_control_command_enable_flags MIP_FILTER_ESTIMATION_CONTROL_COMMAND_ENABLE_FLAGS_ALL                = 0x007F;
-inline void insert_mip_filter_estimation_control_command_enable_flags(microstrain_serializer* serializer, const mip_filter_estimation_control_command_enable_flags self)
+static inline void insert_mip_filter_estimation_control_command_enable_flags(microstrain_serializer* serializer, const mip_filter_estimation_control_command_enable_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_filter_estimation_control_command_enable_flags(microstrain_serializer* serializer, mip_filter_estimation_control_command_enable_flags* self)
+static inline void extract_mip_filter_estimation_control_command_enable_flags(microstrain_serializer* serializer, mip_filter_estimation_control_command_enable_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -443,11 +445,11 @@ static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_O
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_PITCH = 0x2; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_YAW   = 0x4; ///<  
 static const mip_filter_tare_orientation_command_mip_tare_axes MIP_FILTER_TARE_ORIENTATION_COMMAND_MIP_TARE_AXES_ALL   = 0x7;
-inline void insert_mip_filter_tare_orientation_command_mip_tare_axes(microstrain_serializer* serializer, const mip_filter_tare_orientation_command_mip_tare_axes self)
+static inline void insert_mip_filter_tare_orientation_command_mip_tare_axes(microstrain_serializer* serializer, const mip_filter_tare_orientation_command_mip_tare_axes self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_tare_orientation_command_mip_tare_axes(microstrain_serializer* serializer, mip_filter_tare_orientation_command_mip_tare_axes* self)
+static inline void extract_mip_filter_tare_orientation_command_mip_tare_axes(microstrain_serializer* serializer, mip_filter_tare_orientation_command_mip_tare_axes* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -497,11 +499,11 @@ enum mip_filter_vehicle_dynamics_mode_command_dynamics_mode
 };
 typedef enum mip_filter_vehicle_dynamics_mode_command_dynamics_mode mip_filter_vehicle_dynamics_mode_command_dynamics_mode;
 
-inline void insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command_dynamics_mode self)
+static inline void insert_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(microstrain_serializer* serializer, const mip_filter_vehicle_dynamics_mode_command_dynamics_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* self)
+static inline void extract_mip_filter_vehicle_dynamics_mode_command_dynamics_mode(microstrain_serializer* serializer, mip_filter_vehicle_dynamics_mode_command_dynamics_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -814,11 +816,11 @@ enum mip_filter_gnss_source_command_source
 };
 typedef enum mip_filter_gnss_source_command_source mip_filter_gnss_source_command_source;
 
-inline void insert_mip_filter_gnss_source_command_source(microstrain_serializer* serializer, const mip_filter_gnss_source_command_source self)
+static inline void insert_mip_filter_gnss_source_command_source(microstrain_serializer* serializer, const mip_filter_gnss_source_command_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_gnss_source_command_source(microstrain_serializer* serializer, mip_filter_gnss_source_command_source* self)
+static inline void extract_mip_filter_gnss_source_command_source(microstrain_serializer* serializer, mip_filter_gnss_source_command_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -883,11 +885,11 @@ enum mip_filter_heading_source_command_source
 };
 typedef enum mip_filter_heading_source_command_source mip_filter_heading_source_command_source;
 
-inline void insert_mip_filter_heading_source_command_source(microstrain_serializer* serializer, const mip_filter_heading_source_command_source self)
+static inline void insert_mip_filter_heading_source_command_source(microstrain_serializer* serializer, const mip_filter_heading_source_command_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_heading_source_command_source(microstrain_serializer* serializer, mip_filter_heading_source_command_source* self)
+static inline void extract_mip_filter_heading_source_command_source(microstrain_serializer* serializer, mip_filter_heading_source_command_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1134,11 +1136,11 @@ enum mip_filter_altitude_aiding_command_aiding_selector
 };
 typedef enum mip_filter_altitude_aiding_command_aiding_selector mip_filter_altitude_aiding_command_aiding_selector;
 
-inline void insert_mip_filter_altitude_aiding_command_aiding_selector(microstrain_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self)
+static inline void insert_mip_filter_altitude_aiding_command_aiding_selector(microstrain_serializer* serializer, const mip_filter_altitude_aiding_command_aiding_selector self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_altitude_aiding_command_aiding_selector(microstrain_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self)
+static inline void extract_mip_filter_altitude_aiding_command_aiding_selector(microstrain_serializer* serializer, mip_filter_altitude_aiding_command_aiding_selector* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1187,11 +1189,11 @@ enum mip_filter_pitch_roll_aiding_command_aiding_source
 };
 typedef enum mip_filter_pitch_roll_aiding_command_aiding_source mip_filter_pitch_roll_aiding_command_aiding_source;
 
-inline void insert_mip_filter_pitch_roll_aiding_command_aiding_source(microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self)
+static inline void insert_mip_filter_pitch_roll_aiding_command_aiding_source(microstrain_serializer* serializer, const mip_filter_pitch_roll_aiding_command_aiding_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_pitch_roll_aiding_command_aiding_source(microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self)
+static inline void extract_mip_filter_pitch_roll_aiding_command_aiding_source(microstrain_serializer* serializer, mip_filter_pitch_roll_aiding_command_aiding_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1305,6 +1307,8 @@ mip_cmd_result mip_filter_default_auto_angular_zupt(mip_interface* device);
 ///
 ///@{
 
+typedef struct mip_filter_commanded_zupt_command mip_filter_commanded_zupt_command; ///< No parameters (empty struct not allowed in C)
+
 mip_cmd_result mip_filter_commanded_zupt(mip_interface* device);
 
 ///@}
@@ -1314,6 +1318,8 @@ mip_cmd_result mip_filter_commanded_zupt(mip_interface* device);
 /// Please see the device user manual for the maximum rate of this message.
 ///
 ///@{
+
+typedef struct mip_filter_commanded_angular_zupt_command mip_filter_commanded_angular_zupt_command; ///< No parameters (empty struct not allowed in C)
 
 mip_cmd_result mip_filter_commanded_angular_zupt(mip_interface* device);
 
@@ -1878,11 +1884,11 @@ enum mip_filter_aiding_measurement_enable_command_aiding_source
 };
 typedef enum mip_filter_aiding_measurement_enable_command_aiding_source mip_filter_aiding_measurement_enable_command_aiding_source;
 
-inline void insert_mip_filter_aiding_measurement_enable_command_aiding_source(microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_command_aiding_source self)
+static inline void insert_mip_filter_aiding_measurement_enable_command_aiding_source(microstrain_serializer* serializer, const mip_filter_aiding_measurement_enable_command_aiding_source self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_filter_aiding_measurement_enable_command_aiding_source(microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_command_aiding_source* self)
+static inline void extract_mip_filter_aiding_measurement_enable_command_aiding_source(microstrain_serializer* serializer, mip_filter_aiding_measurement_enable_command_aiding_source* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -1926,6 +1932,8 @@ mip_cmd_result mip_filter_default_aiding_measurement_enable(mip_interface* devic
 /// If the initialization configuration has the "wait_for_run_command" option enabled, the filter will wait until it receives this command before commencing integration and enabling the Kalman filter. Prior to the receipt of this command, the filter will remain in the filter initialization mode.
 ///
 ///@{
+
+typedef struct mip_filter_run_command mip_filter_run_command; ///< No parameters (empty struct not allowed in C)
 
 mip_cmd_result mip_filter_run(mip_interface* device);
 
@@ -1987,11 +1995,11 @@ static const mip_filter_initialization_configuration_command_alignment_selector 
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_MAGNETOMETER = 0x04; ///<  Magnetometer heading alignment (Internal magnetometer determines initial heading)
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_EXTERNAL     = 0x08; ///<  External heading alignment (External heading input determines heading)
 static const mip_filter_initialization_configuration_command_alignment_selector MIP_FILTER_INITIALIZATION_CONFIGURATION_COMMAND_ALIGNMENT_SELECTOR_ALL          = 0x0F;
-inline void insert_mip_filter_initialization_configuration_command_alignment_selector(microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_alignment_selector self)
+static inline void insert_mip_filter_initialization_configuration_command_alignment_selector(microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_alignment_selector self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_initialization_configuration_command_alignment_selector(microstrain_serializer* serializer, mip_filter_initialization_configuration_command_alignment_selector* self)
+static inline void extract_mip_filter_initialization_configuration_command_alignment_selector(microstrain_serializer* serializer, mip_filter_initialization_configuration_command_alignment_selector* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -2007,11 +2015,11 @@ enum mip_filter_initialization_configuration_command_initial_condition_source
 };
 typedef enum mip_filter_initialization_configuration_command_initial_condition_source mip_filter_initialization_configuration_command_initial_condition_source;
 
-inline void insert_mip_filter_initialization_configuration_command_initial_condition_source(microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_initial_condition_source self)
+static inline void insert_mip_filter_initialization_configuration_command_initial_condition_source(microstrain_serializer* serializer, const mip_filter_initialization_configuration_command_initial_condition_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_initialization_configuration_command_initial_condition_source(microstrain_serializer* serializer, mip_filter_initialization_configuration_command_initial_condition_source* self)
+static inline void extract_mip_filter_initialization_configuration_command_initial_condition_source(microstrain_serializer* serializer, mip_filter_initialization_configuration_command_initial_condition_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -2191,11 +2199,11 @@ enum mip_filter_ref_point_lever_arm_command_reference_point_selector
 };
 typedef enum mip_filter_ref_point_lever_arm_command_reference_point_selector mip_filter_ref_point_lever_arm_command_reference_point_selector;
 
-inline void insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_command_reference_point_selector self)
+static inline void insert_mip_filter_ref_point_lever_arm_command_reference_point_selector(microstrain_serializer* serializer, const mip_filter_ref_point_lever_arm_command_reference_point_selector self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_command_reference_point_selector* self)
+static inline void extract_mip_filter_ref_point_lever_arm_command_reference_point_selector(microstrain_serializer* serializer, mip_filter_ref_point_lever_arm_command_reference_point_selector* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);

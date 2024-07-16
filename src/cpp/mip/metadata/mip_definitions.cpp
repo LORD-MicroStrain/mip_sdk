@@ -2,7 +2,7 @@
 #include "mip_definitions.hpp"
 
 #include <mip/definitions/data_shared.hpp>
-
+#include <mip/metadata/definitions/common.hpp>
 
 namespace mip::metadata
 {
@@ -51,6 +51,9 @@ const FieldInfo* Definitions::findField(mip::CompositeDescriptor descriptor) con
         if(it != mFields.end())
             return *it;
     }
+    // Reply descriptor?
+    else if(isCommandDescriptorSet(descriptor.descriptorSet) && isReplyFieldDescriptor(descriptor.fieldDescriptor))
+        return &MetadataFor<ReplyField>::value;
 
     return nullptr;
 }

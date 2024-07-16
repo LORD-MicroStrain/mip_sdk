@@ -136,11 +136,11 @@ static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_WEEK_NUMBER = 0x0002; ///<  Week number has been set
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_TIME_VALID  = 0x0003; ///<  Both TOW and Week Number have been set
 static const mip_shared_gps_timestamp_data_valid_flags MIP_SHARED_GPS_TIMESTAMP_DATA_VALID_FLAGS_ALL         = 0x0003;
-inline void insert_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self)
+static inline void insert_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_gps_timestamp_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self)
+static inline void extract_mip_shared_gps_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_gps_timestamp_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -263,11 +263,11 @@ typedef uint16_t mip_shared_external_timestamp_data_valid_flags;
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NONE        = 0x0000;
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_NANOSECONDS = 0x0001; ///<  
 static const mip_shared_external_timestamp_data_valid_flags MIP_SHARED_EXTERNAL_TIMESTAMP_DATA_VALID_FLAGS_ALL         = 0x0001;
-inline void insert_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self)
+static inline void insert_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_timestamp_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self)
+static inline void extract_mip_shared_external_timestamp_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_timestamp_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -311,11 +311,11 @@ typedef uint16_t mip_shared_external_time_delta_data_valid_flags;
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_NONE     = 0x0000;
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_DT_NANOS = 0x0001; ///<  
 static const mip_shared_external_time_delta_data_valid_flags MIP_SHARED_EXTERNAL_TIME_DELTA_DATA_VALID_FLAGS_ALL      = 0x0001;
-inline void insert_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self)
+static inline void insert_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, const mip_shared_external_time_delta_data_valid_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self)
+static inline void extract_mip_shared_external_time_delta_data_valid_flags(microstrain_serializer* serializer, mip_shared_external_time_delta_data_valid_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);

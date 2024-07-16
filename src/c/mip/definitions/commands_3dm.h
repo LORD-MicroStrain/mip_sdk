@@ -157,11 +157,11 @@ enum mip_nmea_message_message_id
 };
 typedef enum mip_nmea_message_message_id mip_nmea_message_message_id;
 
-inline void insert_mip_nmea_message_message_id(microstrain_serializer* serializer, const mip_nmea_message_message_id self)
+static inline void insert_mip_nmea_message_message_id(microstrain_serializer* serializer, const mip_nmea_message_message_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_nmea_message_message_id(microstrain_serializer* serializer, mip_nmea_message_message_id* self)
+static inline void extract_mip_nmea_message_message_id(microstrain_serializer* serializer, mip_nmea_message_message_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -178,11 +178,11 @@ enum mip_nmea_message_talker_id
 };
 typedef enum mip_nmea_message_talker_id mip_nmea_message_talker_id;
 
-inline void insert_mip_nmea_message_talker_id(microstrain_serializer* serializer, const mip_nmea_message_talker_id self)
+static inline void insert_mip_nmea_message_talker_id(microstrain_serializer* serializer, const mip_nmea_message_talker_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_nmea_message_talker_id(microstrain_serializer* serializer, mip_nmea_message_talker_id* self)
+static inline void extract_mip_nmea_message_talker_id(microstrain_serializer* serializer, mip_nmea_message_talker_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -212,11 +212,11 @@ enum mip_sensor_range_type
 };
 typedef enum mip_sensor_range_type mip_sensor_range_type;
 
-inline void insert_mip_sensor_range_type(microstrain_serializer* serializer, const mip_sensor_range_type self)
+static inline void insert_mip_sensor_range_type(microstrain_serializer* serializer, const mip_sensor_range_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_sensor_range_type(microstrain_serializer* serializer, mip_sensor_range_type* self)
+static inline void extract_mip_sensor_range_type(microstrain_serializer* serializer, mip_sensor_range_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -432,6 +432,8 @@ mip_cmd_result mip_3dm_default_filter_message_format(mip_interface* device);
 ///
 ///@{
 
+typedef struct mip_3dm_imu_get_base_rate_command mip_3dm_imu_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_3dm_imu_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
@@ -454,6 +456,8 @@ mip_cmd_result mip_3dm_imu_get_base_rate(mip_interface* device, uint16_t* rate_o
 ///
 ///@{
 
+typedef struct mip_3dm_gps_get_base_rate_command mip_3dm_gps_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_3dm_gps_get_base_rate_response
 {
     uint16_t rate; ///< [hz]
@@ -475,6 +479,8 @@ mip_cmd_result mip_3dm_gps_get_base_rate(mip_interface* device, uint16_t* rate_o
 /// This is used in conjunction with the Estimation Filter Message Format Command to set streaming data at a specified rate.
 ///
 ///@{
+
+typedef struct mip_3dm_filter_get_base_rate_command mip_3dm_filter_get_base_rate_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_3dm_filter_get_base_rate_response
 {
@@ -737,11 +743,11 @@ enum mip_3dm_factory_streaming_command_action
 };
 typedef enum mip_3dm_factory_streaming_command_action mip_3dm_factory_streaming_command_action;
 
-inline void insert_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, const mip_3dm_factory_streaming_command_action self)
+static inline void insert_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, const mip_3dm_factory_streaming_command_action self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, mip_3dm_factory_streaming_command_action* self)
+static inline void extract_mip_3dm_factory_streaming_command_action(microstrain_serializer* serializer, mip_3dm_factory_streaming_command_action* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -842,11 +848,11 @@ enum mip_3dm_constellation_settings_command_constellation_id
 };
 typedef enum mip_3dm_constellation_settings_command_constellation_id mip_3dm_constellation_settings_command_constellation_id;
 
-inline void insert_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self)
+static inline void insert_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_constellation_id self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self)
+static inline void extract_mip_3dm_constellation_settings_command_constellation_id(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_constellation_id* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -857,11 +863,11 @@ typedef uint16_t mip_3dm_constellation_settings_command_option_flags;
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_NONE   = 0x0000;
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_L1SAIF = 0x0001; ///<  Available only for QZSS
 static const mip_3dm_constellation_settings_command_option_flags MIP_3DM_CONSTELLATION_SETTINGS_COMMAND_OPTION_FLAGS_ALL    = 0x0001;
-inline void insert_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self)
+static inline void insert_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, const mip_3dm_constellation_settings_command_option_flags self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self)
+static inline void extract_mip_3dm_constellation_settings_command_option_flags(microstrain_serializer* serializer, mip_3dm_constellation_settings_command_option_flags* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -929,11 +935,11 @@ static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SE
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ENABLE_CORRECTIONS = 0x0002; ///<  Use SBAS differential corrections
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_APPLY_INTEGRITY    = 0x0004; ///<  Use SBAS integrity information.  If enabled, only GPS satellites for which integrity information is available will be used.
 static const mip_3dm_gnss_sbas_settings_command_sbasoptions MIP_3DM_GNSS_SBAS_SETTINGS_COMMAND_SBASOPTIONS_ALL                = 0x0007;
-inline void insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_command_sbasoptions self)
+static inline void insert_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, const mip_3dm_gnss_sbas_settings_command_sbasoptions self)
 {
     microstrain_insert_u16(serializer, (uint16_t)(self));
 }
-inline void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_command_sbasoptions* self)
+static inline void extract_mip_3dm_gnss_sbas_settings_command_sbasoptions(microstrain_serializer* serializer, mip_3dm_gnss_sbas_settings_command_sbasoptions* self)
 {
     uint16_t tmp = 0;
     microstrain_extract_u16(serializer, &tmp);
@@ -997,11 +1003,11 @@ enum mip_3dm_gnss_assisted_fix_command_assisted_fix_option
 };
 typedef enum mip_3dm_gnss_assisted_fix_command_assisted_fix_option mip_3dm_gnss_assisted_fix_command_assisted_fix_option;
 
-inline void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self)
+static inline void insert_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, const mip_3dm_gnss_assisted_fix_command_assisted_fix_option self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self)
+static inline void extract_mip_3dm_gnss_assisted_fix_command_assisted_fix_option(microstrain_serializer* serializer, mip_3dm_gnss_assisted_fix_command_assisted_fix_option* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1147,11 +1153,11 @@ enum mip_3dm_pps_source_command_source
 };
 typedef enum mip_3dm_pps_source_command_source mip_3dm_pps_source_command_source;
 
-inline void insert_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, const mip_3dm_pps_source_command_source self)
+static inline void insert_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, const mip_3dm_pps_source_command_source self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, mip_3dm_pps_source_command_source* self)
+static inline void extract_mip_3dm_pps_source_command_source(microstrain_serializer* serializer, mip_3dm_pps_source_command_source* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1219,11 +1225,11 @@ enum mip_3dm_gpio_config_command_feature
 };
 typedef enum mip_3dm_gpio_config_command_feature mip_3dm_gpio_config_command_feature;
 
-inline void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
+static inline void insert_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_feature self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
+static inline void extract_mip_3dm_gpio_config_command_feature(microstrain_serializer* serializer, mip_3dm_gpio_config_command_feature* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1250,11 +1256,11 @@ enum mip_3dm_gpio_config_command_behavior
 };
 typedef enum mip_3dm_gpio_config_command_behavior mip_3dm_gpio_config_command_behavior;
 
-inline void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
+static inline void insert_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_behavior self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
+static inline void extract_mip_3dm_gpio_config_command_behavior(microstrain_serializer* serializer, mip_3dm_gpio_config_command_behavior* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1267,11 +1273,11 @@ static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PI
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLDOWN   = 0x02; ///<  The pin will have an internal pull-down resistor enabled. This is useful for connecting inputs to signals which can only be pulled high such as mechanical switches. Cannot be used in combination with pull-up. See the device specifications for the resistance value.
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_PULLUP     = 0x04; ///<  The pin will have an internal pull-up resistor enabled. Useful for connecting inputs to signals which can only be pulled low such as mechanical switches, or in combination with an open drain output. Cannot be used in combination with pull-down. See the device specifications for the resistance value. Use of this mode may restrict the maximum allowed input voltage. See the device datasheet for details.
 static const mip_3dm_gpio_config_command_pin_mode MIP_3DM_GPIO_CONFIG_COMMAND_PIN_MODE_ALL        = 0x07;
-inline void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
+static inline void insert_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, const mip_3dm_gpio_config_command_pin_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
+static inline void extract_mip_3dm_gpio_config_command_pin_mode(microstrain_serializer* serializer, mip_3dm_gpio_config_command_pin_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1373,11 +1379,11 @@ enum mip_3dm_odometer_command_mode
 };
 typedef enum mip_3dm_odometer_command_mode mip_3dm_odometer_command_mode;
 
-inline void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self)
+static inline void insert_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, const mip_3dm_odometer_command_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self)
+static inline void extract_mip_3dm_odometer_command_mode(microstrain_serializer* serializer, mip_3dm_odometer_command_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1445,11 +1451,11 @@ enum mip_3dm_get_event_support_command_query
 };
 typedef enum mip_3dm_get_event_support_command_query mip_3dm_get_event_support_command_query;
 
-inline void insert_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, const mip_3dm_get_event_support_command_query self)
+static inline void insert_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, const mip_3dm_get_event_support_command_query self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, mip_3dm_get_event_support_command_query* self)
+static inline void extract_mip_3dm_get_event_support_command_query(microstrain_serializer* serializer, mip_3dm_get_event_support_command_query* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1516,11 +1522,11 @@ enum mip_3dm_event_control_command_mode
 };
 typedef enum mip_3dm_event_control_command_mode mip_3dm_event_control_command_mode;
 
-inline void insert_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, const mip_3dm_event_control_command_mode self)
+static inline void insert_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, const mip_3dm_event_control_command_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, mip_3dm_event_control_command_mode* self)
+static inline void extract_mip_3dm_event_control_command_mode(microstrain_serializer* serializer, mip_3dm_event_control_command_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1568,11 +1574,11 @@ static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_T
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ENABLED = 0x02; ///<  True if the trigger is enabled.
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_TEST    = 0x04; ///<  True if the trigger is in test mode.
 static const mip_3dm_get_event_trigger_status_command_status MIP_3DM_GET_EVENT_TRIGGER_STATUS_COMMAND_STATUS_ALL     = 0x07;
-inline void insert_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_status self)
+static inline void insert_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, const mip_3dm_get_event_trigger_status_command_status self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_status* self)
+static inline void extract_mip_3dm_get_event_trigger_status_command_status(microstrain_serializer* serializer, mip_3dm_get_event_trigger_status_command_status* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1669,11 +1675,11 @@ enum mip_3dm_event_trigger_command_gpio_params_mode
 };
 typedef enum mip_3dm_event_trigger_command_gpio_params_mode mip_3dm_event_trigger_command_gpio_params_mode;
 
-inline void insert_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params_mode self)
+static inline void insert_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_gpio_params_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params_mode* self)
+static inline void extract_mip_3dm_event_trigger_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_trigger_command_gpio_params_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1698,11 +1704,11 @@ enum mip_3dm_event_trigger_command_threshold_params_type
 };
 typedef enum mip_3dm_event_trigger_command_threshold_params_type mip_3dm_event_trigger_command_threshold_params_type;
 
-inline void insert_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params_type self)
+static inline void insert_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_threshold_params_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params_type* self)
+static inline void extract_mip_3dm_event_trigger_command_threshold_params_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_threshold_params_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1765,11 +1771,11 @@ enum mip_3dm_event_trigger_command_type
 };
 typedef enum mip_3dm_event_trigger_command_type mip_3dm_event_trigger_command_type;
 
-inline void insert_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_type self)
+static inline void insert_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, const mip_3dm_event_trigger_command_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_type* self)
+static inline void extract_mip_3dm_event_trigger_command_type(microstrain_serializer* serializer, mip_3dm_event_trigger_command_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1832,11 +1838,11 @@ enum mip_3dm_event_action_command_gpio_params_mode
 };
 typedef enum mip_3dm_event_action_command_gpio_params_mode mip_3dm_event_action_command_gpio_params_mode;
 
-inline void insert_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params_mode self)
+static inline void insert_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, const mip_3dm_event_action_command_gpio_params_mode self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params_mode* self)
+static inline void extract_mip_3dm_event_action_command_gpio_params_mode(microstrain_serializer* serializer, mip_3dm_event_action_command_gpio_params_mode* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -1874,11 +1880,11 @@ enum mip_3dm_event_action_command_type
 };
 typedef enum mip_3dm_event_action_command_type mip_3dm_event_action_command_type;
 
-inline void insert_mip_3dm_event_action_command_type(microstrain_serializer* serializer, const mip_3dm_event_action_command_type self)
+static inline void insert_mip_3dm_event_action_command_type(microstrain_serializer* serializer, const mip_3dm_event_action_command_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_3dm_event_action_command_type(microstrain_serializer* serializer, mip_3dm_event_action_command_type* self)
+static inline void extract_mip_3dm_event_action_command_type(microstrain_serializer* serializer, mip_3dm_event_action_command_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);

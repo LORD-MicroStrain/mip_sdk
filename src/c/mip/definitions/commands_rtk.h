@@ -66,11 +66,11 @@ enum mip_media_selector
 };
 typedef enum mip_media_selector mip_media_selector;
 
-inline void insert_mip_media_selector(microstrain_serializer* serializer, const mip_media_selector self)
+static inline void insert_mip_media_selector(microstrain_serializer* serializer, const mip_media_selector self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_media_selector(microstrain_serializer* serializer, mip_media_selector* self)
+static inline void extract_mip_media_selector(microstrain_serializer* serializer, mip_media_selector* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -85,11 +85,11 @@ enum mip_led_action
 };
 typedef enum mip_led_action mip_led_action;
 
-inline void insert_mip_led_action(microstrain_serializer* serializer, const mip_led_action self)
+static inline void insert_mip_led_action(microstrain_serializer* serializer, const mip_led_action self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_led_action(microstrain_serializer* serializer, mip_led_action* self)
+static inline void extract_mip_led_action(microstrain_serializer* serializer, mip_led_action* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -120,11 +120,11 @@ static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_ST
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_RSRQ                 = 0x30000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_SINR                 = 0xC0000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags_legacy MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_LEGACY_ALL                  = 0xFFFFFFFF;
-inline void insert_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
+static inline void insert_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags_legacy self)
 {
     microstrain_insert_u32(serializer, (uint32_t)(self));
 }
-inline void extract_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
+static inline void extract_mip_rtk_get_status_flags_command_status_flags_legacy(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags_legacy* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
@@ -146,17 +146,19 @@ static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FL
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_RESERVED                = 0x20000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_VERSION                 = 0xC0000000; ///<  
 static const mip_rtk_get_status_flags_command_status_flags MIP_RTK_GET_STATUS_FLAGS_COMMAND_STATUS_FLAGS_ALL                     = 0xFFFFFFFF;
-inline void insert_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
+static inline void insert_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, const mip_rtk_get_status_flags_command_status_flags self)
 {
     microstrain_insert_u32(serializer, (uint32_t)(self));
 }
-inline void extract_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
+static inline void extract_mip_rtk_get_status_flags_command_status_flags(microstrain_serializer* serializer, mip_rtk_get_status_flags_command_status_flags* self)
 {
     uint32_t tmp = 0;
     microstrain_extract_u32(serializer, &tmp);
     *self = tmp;
 }
 
+
+typedef struct mip_rtk_get_status_flags_command mip_rtk_get_status_flags_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_rtk_get_status_flags_response
 {
@@ -176,6 +178,8 @@ mip_cmd_result mip_rtk_get_status_flags(mip_interface* device, mip_rtk_get_statu
 ///
 ///@{
 
+typedef struct mip_rtk_get_imei_command mip_rtk_get_imei_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_rtk_get_imei_response
 {
     char IMEI[32];
@@ -194,6 +198,8 @@ mip_cmd_result mip_rtk_get_imei(mip_interface* device, char* imei_out);
 ///
 ///@{
 
+typedef struct mip_rtk_get_imsi_command mip_rtk_get_imsi_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_rtk_get_imsi_response
 {
     char IMSI[32];
@@ -211,6 +217,8 @@ mip_cmd_result mip_rtk_get_imsi(mip_interface* device, char* imsi_out);
 ///@defgroup c_rtk_get_iccid  (0x0F,0x04) Get Iccid [C]
 ///
 ///@{
+
+typedef struct mip_rtk_get_iccid_command mip_rtk_get_iccid_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_rtk_get_iccid_response
 {
@@ -237,11 +245,11 @@ enum mip_rtk_connected_device_type_command_type
 };
 typedef enum mip_rtk_connected_device_type_command_type mip_rtk_connected_device_type_command_type;
 
-inline void insert_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
+static inline void insert_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, const mip_rtk_connected_device_type_command_type self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
+static inline void extract_mip_rtk_connected_device_type_command_type(microstrain_serializer* serializer, mip_rtk_connected_device_type_command_type* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -281,6 +289,8 @@ mip_cmd_result mip_rtk_default_connected_device_type(mip_interface* device);
 ///
 ///@{
 
+typedef struct mip_rtk_get_act_code_command mip_rtk_get_act_code_command; ///< No parameters (empty struct not allowed in C)
+
 struct mip_rtk_get_act_code_response
 {
     char ActivationCode[32];
@@ -298,6 +308,8 @@ mip_cmd_result mip_rtk_get_act_code(mip_interface* device, char* activation_code
 ///@defgroup c_rtk_get_modem_firmware_version  (0x0F,0x08) Get Modem Firmware Version [C]
 ///
 ///@{
+
+typedef struct mip_rtk_get_modem_firmware_version_command mip_rtk_get_modem_firmware_version_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_rtk_get_modem_firmware_version_response
 {
@@ -317,6 +329,8 @@ mip_cmd_result mip_rtk_get_modem_firmware_version(mip_interface* device, char* m
 /// Get the RSSI and connected/disconnected status of modem
 ///
 ///@{
+
+typedef struct mip_rtk_get_rssi_command mip_rtk_get_rssi_command; ///< No parameters (empty struct not allowed in C)
 
 struct mip_rtk_get_rssi_response
 {
@@ -345,11 +359,11 @@ static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_CORRECTIONS_UNAVAILABLE = 0x02; ///<  
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_RESERVED                = 0xFC; ///<  
 static const mip_rtk_service_status_command_service_flags MIP_RTK_SERVICE_STATUS_COMMAND_SERVICE_FLAGS_ALL                     = 0xFF;
-inline void insert_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
+static inline void insert_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, const mip_rtk_service_status_command_service_flags self)
 {
     microstrain_insert_u8(serializer, (uint8_t)(self));
 }
-inline void extract_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
+static inline void extract_mip_rtk_service_status_command_service_flags(microstrain_serializer* serializer, mip_rtk_service_status_command_service_flags* self)
 {
     uint8_t tmp = 0;
     microstrain_extract_u8(serializer, &tmp);
@@ -431,6 +445,8 @@ mip_cmd_result mip_rtk_led_control(mip_interface* device, const uint8_t* primary
 /// This command is only available in calibration mode.
 ///
 ///@{
+
+typedef struct mip_rtk_modem_hard_reset_command mip_rtk_modem_hard_reset_command; ///< No parameters (empty struct not allowed in C)
 
 mip_cmd_result mip_rtk_modem_hard_reset(mip_interface* device);
 

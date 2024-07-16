@@ -17,6 +17,14 @@ namespace serialization
     using namespace microstrain::serialization::big_endian;
 }
 
+//template<microstrain::serialization::Endian E, class... Ts>
+//size_t insert(const Ts&... values)
+//{
+//    static_assert(E == microstrain::serialization::Endian::big);
+//    return insert<Ts...>(values...);
+//}
+
+
 //
 //template<class... Ts>
 //size_t insert(Serializer& serializer, const Ts&... values)

@@ -22,14 +22,14 @@ namespace microstrain
 {
 
 
-class BaseSerializer
+class SerializerBase
 {
 public:
-    BaseSerializer() = default;
-    BaseSerializer(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
-    BaseSerializer(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
+    SerializerBase() = default;
+    SerializerBase(uint8_t* ptr, size_t capacity, size_t offset=0) : m_ptr(ptr), m_size(capacity), m_offset(offset) {}
+    SerializerBase(const uint8_t* ptr, size_t size, size_t offset=0) : m_ptr(const_cast<uint8_t*>(ptr)), m_size(size), m_offset(offset) {}
 #ifdef HAS_SPAN
-    BaseSerializer(std::span<const uint8_t> buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
+    SerializerBase(std::span<const uint8_t> buffer, size_t offset=0) : m_ptr(const_cast<uint8_t*>(buffer.data())), m_size(buffer.size()), m_offset(offset) {}
 #endif
 
     size_t capacity() const { return m_size; }
@@ -52,17 +52,17 @@ public:
 
     void invalidate() { m_offset = size_t(-1); }
 
-    template<serialization::Endian E, typename... Ts>
-    bool insert(const Ts&... values);
-
-    template<serialization::Endian E, typename... Ts>
-    bool extract(Ts&... values);
-
-    template<serialization::Endian E, class T, class S>
-    size_t extract_count(T& count, S max_count);
-
-    template<serialization::Endian E, class T, class S>
-    size_t extract_count(T* count, S max_count) { return extract_count(*count, max_count); }
+    //template<serialization::Endian E, typename... Ts>
+    //bool insert(const Ts&... values);
+    //
+    //template<serialization::Endian E, typename... Ts>
+    //bool extract(Ts&... values);
+    //
+    //template<serialization::Endian E, class T, class S>
+    //size_t extract_count(T& count, S max_count);
+    //
+    //template<serialization::Endian E, class T, class S>
+    //size_t extract_count(T* count, S max_count) { return extract_count(*count, max_count); }
 
     // Sets a new offset and returns the old value.
     size_t setOffset(size_t offset) { std::swap(m_offset, offset); return offset; }
@@ -76,16 +76,16 @@ private:
 
 // Serializer that has the endianness built-in
 template<serialization::Endian E>
-class Serializer : public BaseSerializer
+class Serializer : public SerializerBase
 {
 public:
-    using BaseSerializer::BaseSerializer;
+    using SerializerBase::SerializerBase;
 
-    template<typename... Ts> bool insert (const Ts&... values) { return BaseSerializer::insert<E>(values...); }
-    template<typename... Ts> bool extract(Ts&... values) { return BaseSerializer::extract<E>(values...); }
+    template<typename... Ts> bool insert (const Ts&... values);
+    template<typename... Ts> bool extract(Ts&... values);
 
-    template<class T, class S> bool extract_count(T& value, S max_value) { return BaseSerializer::extract_count<E>(value, max_value); }
-    template<class T, class S> bool extract_count(T* value, S max_value) { return BaseSerializer::extract_count<E>(value, max_value); }
+    template<class T, class S> bool extract_count(T& value, S max_value);
+    template<class T, class S> bool extract_count(T* value, S max_value) { return extract_count(*value, max_value); }
 };
 
 using BigEndianSerializer    = Serializer<serialization::Endian::big>;
@@ -192,31 +192,31 @@ size_t extract(Serializer<E>& serializer, const std::tuple<std::reference_wrappe
 
 
 //
-// Classes - if they have member functions "serialize" and "deserialize"
+// Classes - if they have member functions "insert" and "extract"
 //
 
-// Generic classes which have an "serialize" method.
-template<serialization::Endian E, class T, decltype(&T::serialize) = nullptr>
+// Generic classes which have an "insert" method.
+template<serialization::Endian E, class T, decltype(&T::insert) = nullptr>
 typename std::enable_if<std::is_class<T>::value , size_t>::type
 /*size_t*/ insert(microstrain::Serializer<E>& serializer, const T& object)
 {
     size_t offset = serializer.offset();
-    object.serialize(serializer);
+    object.insert(serializer);
     return serializer.offset() - offset;
 }
 
-// Generic classes which have an "deserialize" method.
-template<serialization::Endian E, class T, decltype(&T::deserialize) = nullptr>
+// Generic classes which have an "extract" method.
+template<serialization::Endian E, class T, decltype(&T::extract) = nullptr>
 typename std::enable_if<std::is_class<T>::value , size_t>::type
 /*size_t*/ extract(microstrain::Serializer<E>& serializer, T& object)
 {
     size_t offset = serializer.offset();
-    object.deserialize(serializer);
+    object.extract(serializer);
     return serializer.offset() - offset;
 }
 
 //
-// Arrays
+// Arrays of runtime length
 //
 
 template<serialization::Endian E, class T>
@@ -231,6 +231,7 @@ size_t insert(Serializer<E>& serializer, const T* values, size_t count)
             for(size_t i=0; i<count; i++)
                 serialization::write<E>(ptr+i*sizeof(T), values[i]);
         }
+        return size;
     }
     else  // Unknown size, have to check length every time.
     {
@@ -253,6 +254,7 @@ size_t extract(Serializer<E>& serializer, T* values, size_t count)
             for(size_t i=0; i<count; i++)
                 serialization::read<E>(ptr+i*sizeof(T), values[i]);
         }
+        return size;
     }
     else  // Unknown size, have to check length every time.
     {
@@ -318,7 +320,7 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
         if(uint8_t* ptr = buffer.getPtrAndAdvance(size))
         {
             size_t offset = 0;
-            ( ..., (offset += write(ptr+offset, values)) );
+            ( ..., (offset += serialization::write<E>(ptr+offset, values)) );
             return offset;
         }
 
@@ -348,7 +350,7 @@ typename std::enable_if<(sizeof...(Ts) > 1), size_t>::type
         if(uint8_t* ptr = buffer.getPtrAndAdvance(size))
         {
             size_t offset = 0;
-            ( ..., (offset += read(ptr+offset, values)) );
+            ( ..., (offset += serialization::read<E>(ptr+offset, values)) );
             return offset;
         }
 
@@ -400,7 +402,7 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
 // Deserialize and return by value
 
 #ifdef HAS_OPTIONAL
-template<serialization::Endian E, class T>
+template<class T, serialization::Endian E>
 std::optional<T> extract(Serializer<E>& serializer)
 {
     T value;
@@ -410,7 +412,7 @@ std::optional<T> extract(Serializer<E>& serializer)
         return std::nullopt;
 }
 
-template<serialization::Endian E, class T>
+template<class T, serialization::Endian E>
 std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bool exact_size=false)
 {
     T value;
@@ -428,35 +430,68 @@ std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bo
 //
 //
 
-template<serialization::Endian E, typename... Ts>
-bool BaseSerializer::insert(const Ts&... values)
+//template<serialization::Endian E, typename... Ts>
+//bool BaseSerializer::insert(const Ts&... values)
+//{
+//    // Prevents infinite recursion but allows ADL
+//    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
+//    using microstrain::insert;
+//
+//    microstrain::insert<E>(*this, values...);
+//    return isOk();
+//}
+//
+//template<serialization::Endian E, typename... Ts>
+//bool BaseSerializer::extract(Ts&... values)
+//{
+//    // Prevents infinite recursion but allows ADL
+//    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
+//    using microstrain::extract;
+//
+//    extract<E>(*this, values...);
+//    return isOk();
+//}
+
+//
+// Endian-specific serializer member functions
+//
+
+template<serialization::Endian E>
+template<typename... Ts>
+bool Serializer<E>::insert(const Ts&... values)
 {
-    microstrain::insert<E>(*this, values...);
-    return isOk();
+    // Prevents infinite recursion but allows ADL
+    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
+    using microstrain::insert;
+
+    return insert(*this, values...);
 }
 
-template<serialization::Endian E, typename... Ts>
-bool BaseSerializer::extract(Ts&... values)
+template<serialization::Endian E>
+template<typename... Ts>
+bool Serializer<E>::extract(Ts&... values)
 {
-    microstrain::extract<E>(*this, values...);
-    return isOk();
+    // Prevents infinite recursion but allows ADL
+    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
+    using microstrain::extract;
+
+    return extract(*this, values...);
 }
 
 // Extract a counter with maximum value.
-template<serialization::Endian E, class T, class S>
-size_t BaseSerializer::extract_count(T& count, S max_count)
+template<serialization::Endian E>
+template<class T, class S>
+bool Serializer<E>::extract_count(T& count, S max_count)
 {
-    size_t size = extract<E>(count);
+    this->extract(count);
 
-    if(count > max_count)
-    {
-        count = 0;
-        invalidate();
-    }
+    if(count <= max_count)
+        return true;
 
-    return size;
+    count = 0;
+    invalidate();
+
+    return false;
 }
-
-
 
 } // namespace microstrain

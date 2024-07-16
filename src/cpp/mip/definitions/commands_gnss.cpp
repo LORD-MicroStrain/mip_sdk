@@ -20,6 +20,27 @@ using namespace ::mip::C;
 // Mip Fields
 ////////////////////////////////////////////////////////////////////////////////
 
+void ReceiverInfo::Info::insert(Serializer& serializer) const
+{
+    serializer.insert(receiver_id);
+    
+    serializer.insert(mip_data_descriptor_set);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.insert(description[i]);
+    
+}
+void ReceiverInfo::Info::extract(Serializer& serializer)
+{
+    serializer.extract(receiver_id);
+    
+    serializer.extract(mip_data_descriptor_set);
+    
+    for(unsigned int i=0; i < 32; i++)
+        serializer.extract(description[i]);
+    
+}
+
 void ReceiverInfo::insert(Serializer& serializer) const
 {
     (void)serializer;

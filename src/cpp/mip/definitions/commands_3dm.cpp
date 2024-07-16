@@ -1113,6 +1113,33 @@ TypedResult<DatastreamControl> defaultDatastreamControl(C::mip_interface& device
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_CONTROL_DATA_STREAM, buffer, (uint8_t)serializer.length());
 }
+void ConstellationSettings::Settings::insert(Serializer& serializer) const
+{
+    serializer.insert(constellation_id);
+    
+    serializer.insert(enable);
+    
+    serializer.insert(reserved_channels);
+    
+    serializer.insert(max_channels);
+    
+    serializer.insert(option_flags);
+    
+}
+void ConstellationSettings::Settings::extract(Serializer& serializer)
+{
+    serializer.extract(constellation_id);
+    
+    serializer.extract(enable);
+    
+    serializer.extract(reserved_channels);
+    
+    serializer.extract(max_channels);
+    
+    serializer.extract(option_flags);
+    
+}
+
 void ConstellationSettings::insert(Serializer& serializer) const
 {
     serializer.insert(function);
@@ -2017,6 +2044,21 @@ TypedResult<Odometer> defaultOdometer(C::mip_interface& device)
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_ODOMETER_CONFIG, buffer, (uint8_t)serializer.length());
 }
+void GetEventSupport::Info::insert(Serializer& serializer) const
+{
+    serializer.insert(type);
+    
+    serializer.insert(count);
+    
+}
+void GetEventSupport::Info::extract(Serializer& serializer)
+{
+    serializer.extract(type);
+    
+    serializer.extract(count);
+    
+}
+
 void GetEventSupport::insert(Serializer& serializer) const
 {
     serializer.insert(query);
@@ -2161,6 +2203,21 @@ TypedResult<EventControl> defaultEventControl(C::mip_interface& device, uint8_t 
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EVENT_CONTROL, buffer, (uint8_t)serializer.length());
 }
+void GetEventTriggerStatus::Entry::insert(Serializer& serializer) const
+{
+    serializer.insert(type);
+    
+    serializer.insert(status);
+    
+}
+void GetEventTriggerStatus::Entry::extract(Serializer& serializer)
+{
+    serializer.extract(type);
+    
+    serializer.extract(status);
+    
+}
+
 void GetEventTriggerStatus::insert(Serializer& serializer) const
 {
     serializer.insert(requested_count);
@@ -2207,6 +2264,21 @@ TypedResult<GetEventTriggerStatus> getEventTriggerStatus(C::mip_interface& devic
     }
     return result;
 }
+void GetEventActionStatus::Entry::insert(Serializer& serializer) const
+{
+    serializer.insert(action_type);
+    
+    serializer.insert(trigger_id);
+    
+}
+void GetEventActionStatus::Entry::extract(Serializer& serializer)
+{
+    serializer.extract(action_type);
+    
+    serializer.extract(trigger_id);
+    
+}
+
 void GetEventActionStatus::insert(Serializer& serializer) const
 {
     serializer.insert(requested_count);
@@ -2253,6 +2325,101 @@ TypedResult<GetEventActionStatus> getEventActionStatus(C::mip_interface& device,
     }
     return result;
 }
+void EventTrigger::GpioParams::insert(Serializer& serializer) const
+{
+    serializer.insert(pin);
+    
+    serializer.insert(mode);
+    
+}
+void EventTrigger::GpioParams::extract(Serializer& serializer)
+{
+    serializer.extract(pin);
+    
+    serializer.extract(mode);
+    
+}
+
+void EventTrigger::ThresholdParams::insert(Serializer& serializer) const
+{
+    serializer.insert(desc_set);
+    
+    serializer.insert(field_desc);
+    
+    serializer.insert(param_id);
+    
+    serializer.insert(type);
+    
+    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
+    {
+        serializer.insert(low_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
+    {
+        serializer.insert(int_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
+    {
+        serializer.insert(high_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
+    {
+        serializer.insert(interval);
+        
+    }
+}
+void EventTrigger::ThresholdParams::extract(Serializer& serializer)
+{
+    serializer.extract(desc_set);
+    
+    serializer.extract(field_desc);
+    
+    serializer.extract(param_id);
+    
+    serializer.extract(type);
+    
+    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
+    {
+        serializer.extract(low_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
+    {
+        serializer.extract(int_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::WINDOW )
+    {
+        serializer.extract(high_thres);
+        
+    }
+    if( type == EventTrigger::ThresholdParams::Type::INTERVAL )
+    {
+        serializer.extract(interval);
+        
+    }
+}
+
+void EventTrigger::CombinationParams::insert(Serializer& serializer) const
+{
+    serializer.insert(logic_table);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.insert(input_triggers[i]);
+    
+}
+void EventTrigger::CombinationParams::extract(Serializer& serializer)
+{
+    serializer.extract(logic_table);
+    
+    for(unsigned int i=0; i < 4; i++)
+        serializer.extract(input_triggers[i]);
+    
+}
+
 void EventTrigger::insert(Serializer& serializer) const
 {
     serializer.insert(function);
@@ -2415,6 +2582,45 @@ TypedResult<EventTrigger> defaultEventTrigger(C::mip_interface& device, uint8_t 
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_EVENT_TRIGGER_CONFIG, buffer, (uint8_t)serializer.length());
 }
+void EventAction::GpioParams::insert(Serializer& serializer) const
+{
+    serializer.insert(pin);
+    
+    serializer.insert(mode);
+    
+}
+void EventAction::GpioParams::extract(Serializer& serializer)
+{
+    serializer.extract(pin);
+    
+    serializer.extract(mode);
+    
+}
+
+void EventAction::MessageParams::insert(Serializer& serializer) const
+{
+    serializer.insert(desc_set);
+    
+    serializer.insert(decimation);
+    
+    serializer.insert(num_fields);
+    
+    for(unsigned int i=0; i < num_fields; i++)
+        serializer.insert(descriptors[i]);
+    
+}
+void EventAction::MessageParams::extract(Serializer& serializer)
+{
+    serializer.extract(desc_set);
+    
+    serializer.extract(decimation);
+    
+    serializer.extract_count(num_fields, sizeof(descriptors)/sizeof(descriptors[0]));
+    for(unsigned int i=0; i < num_fields; i++)
+        serializer.extract(descriptors[i]);
+    
+}
+
 void EventAction::insert(Serializer& serializer) const
 {
     serializer.insert(function);
@@ -3541,6 +3747,21 @@ TypedResult<SensorRange> defaultSensorRange(C::mip_interface& device, SensorRang
     
     return mip_interface_run_command(&device, DESCRIPTOR_SET, CMD_SENSOR_RANGE, buffer, (uint8_t)serializer.length());
 }
+void CalibratedSensorRanges::Entry::insert(Serializer& serializer) const
+{
+    serializer.insert(setting);
+    
+    serializer.insert(range);
+    
+}
+void CalibratedSensorRanges::Entry::extract(Serializer& serializer)
+{
+    serializer.extract(setting);
+    
+    serializer.extract(range);
+    
+}
+
 void CalibratedSensorRanges::insert(Serializer& serializer) const
 {
     serializer.insert(sensor);
