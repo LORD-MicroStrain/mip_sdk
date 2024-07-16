@@ -88,7 +88,7 @@ public:
     ///         too few bytes (or to many if exact_size is specified). The field data is not
     ///         valid unless this function returns true.
     template<class FieldType>
-    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract(field, payload(), payloadLength(), 0, exact_size); }
+    bool extract(FieldType& field, bool exact_size=true) const { return microstrain::extract<microstrain::serialization::Endian::big>(field, payload(), payloadLength(), 0, exact_size); }
 
 
     ///@brief Determines if the field holds data (and not a command, reply, or response).

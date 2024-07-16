@@ -52,18 +52,6 @@ public:
 
     void invalidate() { m_offset = size_t(-1); }
 
-    //template<serialization::Endian E, typename... Ts>
-    //bool insert(const Ts&... values);
-    //
-    //template<serialization::Endian E, typename... Ts>
-    //bool extract(Ts&... values);
-    //
-    //template<serialization::Endian E, class T, class S>
-    //size_t extract_count(T& count, S max_count);
-    //
-    //template<serialization::Endian E, class T, class S>
-    //size_t extract_count(T* count, S max_count) { return extract_count(*count, max_count); }
-
     // Sets a new offset and returns the old value.
     size_t setOffset(size_t offset) { std::swap(m_offset, offset); return offset; }
 
@@ -81,6 +69,8 @@ class Serializer : public SerializerBase
 public:
     using SerializerBase::SerializerBase;
 
+    static const serialization::Endian ENDIAN = E;
+
     template<typename... Ts> bool insert (const Ts&... values);
     template<typename... Ts> bool extract(Ts&... values);
 
@@ -90,12 +80,6 @@ public:
 
 using BigEndianSerializer    = Serializer<serialization::Endian::big>;
 using LittleEndianSerializer = Serializer<serialization::Endian::little>;
-
-
-//template<serialization::Endian E, class... Ts>
-//size_t insert(BaseSerializer&, Ts...);
-//template<serialization::Endian E, class... Ts>
-//size_t extract(BaseSerializer&, Ts...);
 
 
 //
@@ -390,10 +374,6 @@ bool extract(T& value, const uint8_t* buffer, size_t buffer_length, size_t offse
 
 
 
-
-
-
-
 //
 // Special Deserialization
 //
@@ -428,32 +408,6 @@ std::optional<T> extract(const uint8_t* buffer, size_t length, size_t offset, bo
 //
 // Serializer member functions which depend on the above overloads.
 //
-//
-
-//template<serialization::Endian E, typename... Ts>
-//bool BaseSerializer::insert(const Ts&... values)
-//{
-//    // Prevents infinite recursion but allows ADL
-//    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
-//    using microstrain::insert;
-//
-//    microstrain::insert<E>(*this, values...);
-//    return isOk();
-//}
-//
-//template<serialization::Endian E, typename... Ts>
-//bool BaseSerializer::extract(Ts&... values)
-//{
-//    // Prevents infinite recursion but allows ADL
-//    // https://stackoverflow.com/questions/13407205/calling-nonmember-instead-of-member-function
-//    using microstrain::extract;
-//
-//    extract<E>(*this, values...);
-//    return isOk();
-//}
-
-//
-// Endian-specific serializer member functions
 //
 
 template<serialization::Endian E>
