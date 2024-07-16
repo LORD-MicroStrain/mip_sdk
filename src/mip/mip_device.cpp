@@ -1,6 +1,9 @@
 
 #include "mip_device.hpp"
 
+#include "../microstrain/connections/connection.hpp"
+
+
 namespace mip {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +26,6 @@ namespace mip {
 ///@param timestamp  Timestamp of when the data was received
 ////////////////////////////////////////////////////////////////////////////////
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Sets up the mip interface callbacks to point at this object.
 ///
@@ -31,8 +33,10 @@ namespace mip {
 ///
 ///@param device Device to configure.
 ///
-void Connection::connect_interface(C::mip_interface* device)
+void connect_interface(mip::DeviceInterface& device, microstrain::Connection& conn)
 {
+    using microstrain::Connection;
+
     auto send = [](C::mip_interface* device, const uint8_t* data, size_t length)->bool
     {
         return static_cast<Connection*>(C::mip_interface_user_pointer(device))->sendToDevice(data, length);
@@ -42,10 +46,10 @@ void Connection::connect_interface(C::mip_interface* device)
         return static_cast<Connection*>(C::mip_interface_user_pointer(device))->recvFromDevice(buffer, max_length, wait_time, length_out, timestamp_out);
     };
 
-    C::mip_interface_set_user_pointer(device, this);
+    C::mip_interface_set_user_pointer(&device, &conn);
 
-    C::mip_interface_set_send_function(device, send);
-    C::mip_interface_set_recv_function(device, recv);
+    C::mip_interface_set_send_function(&device, send);
+    C::mip_interface_set_recv_function(&device, recv);
 }
 
 } // namespace mip

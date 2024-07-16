@@ -1,13 +1,14 @@
 #pragma once
 
-#include <mip/mip_device.hpp>
-#include <mip/utils/serial_port.h>
+#include "mip/mip_device.hpp"
+#include "../connection.hpp"
+#include "serial_port.h"
 
 #include <string>
 
-namespace mip
+namespace microstrain
 {
-namespace platform
+namespace connections
 {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,16 +18,16 @@ namespace platform
 ////////////////////////////////////////////////////////////////////////////////
 ///@brief Can be used on Windows, OSX, or linux to communicate with a MIP device over serial
 ///
-class SerialConnection : public mip::Connection
+class SerialConnection : public microstrain::Connection
 {
 public:
 
     static constexpr auto TYPE = "Serial";
 
-    SerialConnection(const std::string& portName, uint32_t baudrate);
+    SerialConnection(std::string portName, uint32_t baudrate);
     ~SerialConnection();
 
-    bool recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* length_out, mip::Timestamp* timestamp) final;
+    bool recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time, size_t* length_out, Timestamp* timestamp_out) final;
     bool sendToDevice(const uint8_t* data, size_t length) final;
 
     bool isConnected() const override;
@@ -63,5 +64,5 @@ public:
 ///@}
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace platform
-}  // namespace mip
+}  // namespace connections
+}  // namespace microstrain

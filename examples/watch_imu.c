@@ -4,7 +4,7 @@
 #include <mip/mip_interface.h>
 #include <mip/mip_result.h>
 #include <mip/mip_types.h>
-#include <mip/mip_logging.h>
+#include "microstrain/common/mip_logging.h"
 #include <mip/utils/serialization.h>
 
 #include <mip/definitions/descriptors.h>
@@ -12,9 +12,9 @@
 #include <mip/definitions/commands_3dm.h>
 #include <mip/definitions/data_sensor.h>
 
-#include <mip/utils/serial_port.h>
+#include "microstrain/connections/serial/serial_port.h"
 
-#include <mip/mip_logging.h>
+#include "microstrain/common/mip_logging.h"
 
 #include <stdio.h>
 #include <stdlib.h>

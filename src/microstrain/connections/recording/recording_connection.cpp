@@ -1,8 +1,10 @@
+
 #include "recording_connection.hpp"
 
-namespace mip
+
+namespace microstrain
 {
-namespace extras
+namespace connections
 {
 
 ///@brief Creates a RecordingConnection that will write received bytes to recvStream, and sent bytes to sendStream
@@ -20,10 +22,10 @@ RecordingConnection::RecordingConnection(Connection* connection, std::ostream* r
 bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 {
     const bool ok = mConnection->sendToDevice(data, length);
-    if( ok && mSendFile != nullptr && mConnection->isConnected())
-    {
-        mSendFile->write(reinterpret_cast<const char*>(data), length);
 
+    if( ok && mSendFile != nullptr)
+    {
+        mSendFile->write(reinterpret_cast<const char *>(data), length);
         mSendFileWritten += length;
     }
 
@@ -31,18 +33,18 @@ bool RecordingConnection::sendToDevice(const uint8_t* data, size_t length)
 }
 
 ///@copydoc mip::Connection::recvFromDevice
-bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, Timeout wait_time, size_t* count_out, Timestamp* timestamp_out)
+bool RecordingConnection::recvFromDevice(uint8_t* buffer, size_t max_length, unsigned int wait_time_ms, size_t* count_out, Timestamp* timestamp_out)
 {
-    const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time, count_out, timestamp_out);
-    if (ok && mRecvFile != nullptr && mConnection->isConnected())
-    {
-        mRecvFile->write(reinterpret_cast<char*>(buffer), *count_out);
+    const bool ok = mConnection->recvFromDevice(buffer, max_length, wait_time_ms, count_out, timestamp_out);
 
+    if (ok && mRecvFile != nullptr)
+    {
+        mRecvFile->write(reinterpret_cast<char *>(buffer), *count_out);
         mRecvFileWritten += *count_out;
     }
 
     return ok;
 }
 
-}  // namespace extras
-}  // namespace mip
+}  // namespace connections
+}  // namespace microstrain

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../definitions/descriptors.h"
+#include "mip/definitions/descriptors.h"
 
 #include <stdint.h>
 

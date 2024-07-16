@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <mip/mip_all.h>
-#include <mip/utils/serial_port.h>
+#include "microstrain/connections/serial/serial_port.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
