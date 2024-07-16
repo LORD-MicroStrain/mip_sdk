@@ -67,10 +67,10 @@ endif()
 # C examples need serial support
 if(MIP_USE_SERIAL)
 
-    add_mip_example(WatchImuC                  "${EXAMPLE_DIR}/watch_imu.c")
-    add_mip_example(GQ7_ExampleC               "${EXAMPLE_DIR}/GQ7/GQ7_example.c")
-    add_mip_example(CV7_ExampleC               "${EXAMPLE_DIR}/CV7/CV7_example.c")
-    add_mip_example(CX5_GX5_45_ExampleC        "${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.c")
-    add_mip_example(CX5_GX5_CV5_15_25_ExampleC "${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.c")
+    add_mip_example(WatchImuC                  "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/watch_imu.c")
+    add_mip_example(GQ7_ExampleC               "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/GQ7/GQ7_example.c")
+    add_mip_example(CV7_ExampleC               "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CV7/CV7_example.c")
+    add_mip_example(CX5_GX5_45_ExampleC        "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CX5_GX5_45/CX5_GX5_45_example.c")
+    add_mip_example(CX5_GX5_CV5_15_25_ExampleC "${EXAMPLE_SOURCES};${EXAMPLE_DIR}/CX5_GX5_CV5_15_25/CX5_GX5_CV5_15_25_example.c")
 
 endif()
