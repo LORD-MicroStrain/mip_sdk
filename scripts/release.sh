@@ -61,8 +61,10 @@ popd
 
 # Generate a release notes file
 documentation_link="https://lord-microstrain.github.io/mip_sdk_documentation/${release_name}"
+changelog_link="https://github.com/LORD-MicroStrain/mip_sdk/blob/${release_name}/CHANGELOG.md"
 release_notes_file="${tmp_dir}/mip-sdk-release-notes-${release_name}.md"
 echo "## Useful Links" > ${release_notes_file}
+echo "* [Changelog](${changelog_link})" >> ${release_notes_file}
 echo "* [Documentation](${documentation_link})" >> ${release_notes_file}
 
 # Deploy the artifacts to Github

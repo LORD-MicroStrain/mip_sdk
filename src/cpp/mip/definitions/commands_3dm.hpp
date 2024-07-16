@@ -153,8 +153,8 @@ struct NmeaMessage
         VTG  = 5,  ///<  Course over Ground. Source can be the Filter or GNSS1/2 datasets.
         HDT  = 6,  ///<  Heading, True. Source can be the Filter or GNSS1/2 datasets.
         ZDA  = 7,  ///<  Time & Date. Source must be the GNSS1 or GNSS2 datasets.
-        PKRA = 129,  ///<  Parker proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
-        PKRR = 130,  ///<  Parker proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
+        MSRA = 129,  ///<  MicroStrain proprietary Euler angles. Source must be the Filter dataset. The talker ID must be set to IGNORED.
+        MSRR = 130,  ///<  MicroStrain proprietary Angular Rate/Acceleration. Source must be the Sensor dataset. The talker ID must be set to IGNORED.
     };
     
     enum class TalkerID : uint8_t
